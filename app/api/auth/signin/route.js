@@ -20,6 +20,7 @@ export async function POST(req) {
         id
         name
         email
+        username  // Add the username here
         password
       }
     }
