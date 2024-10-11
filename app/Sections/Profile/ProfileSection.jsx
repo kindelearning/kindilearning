@@ -1,0 +1,705 @@
+import { Slider } from "@/components/ui/slider";
+import Image from "next/image";
+import { Badge } from "@/components/ui/badge";
+import React from "react";
+import {
+  Achievement,
+  Bag,
+  Email,
+  Kid,
+  LanguageIcon,
+  Partner,
+  Payments,
+  ProfileDP,
+  Progress,
+  Support,
+  TnC,
+  User,
+  Phone,
+  MasterCard,
+  ConnectPartner,
+  KindiHeart,
+  Milestone,
+  ActivityCard,
+  ProfileSettingIcon,
+} from "@/public/Images";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import BadgeSection from "./BadgeSection";
+import { Button } from "@/components/ui/button";
+import { PopupFooter } from "..";
+import { Input } from "@/components/ui/input";
+import ReferralCard from "./ReferralCard";
+import SettingCard from "./SettingCard";
+import LevelCard from "./LevelCard";
+import MyProfileRoutes from "./MyProfileRoutes";
+import ProductCard from "./ProductCard";
+import ProfileCard from "./ProfileCard";
+import Link from "next/link";
+import { activities, data, profilData, questions } from "@/app/constant/menu";
+import { Textarea } from "@/components/ui/textarea";
+
+const IconBadge = ({ icon, backgroundColor = "3F3A64" }) => (
+  <div
+    className={`w-[24px] h-[24px] lg:w-[32px] lg:h-[32px] lg:rounded-[8px] hover:bg-[#eaeaf5] flex justify-center items-center bg-[#${backgroundColor}] rounded-[4px]`}
+    style={{
+      backgroundColor: `#${backgroundColor}`,
+    }}
+  >
+    <Image alt="Kindi" src={icon || KindiHeart} className="p-[4px]" />
+  </div>
+);
+
+const LocalActivity = ({ title, time, tags, icons }) => (
+  <Link
+    href="/p/activities/slug"
+    className="w-full min-w-[160px] h-auto bg-white items-start justify-start border rounded-3xl flex flex-col md:flex-row gap-4"
+  >
+    {/* <section className="w-full min-w-[300px] h-auto bg-white items-start justify-start border rounded-3xl flex flex-col md:flex-row gap-4"> */}
+    <div className="claracontainer w-full flex-col justify-start items-center gap-7 inline-flex">
+      <div className="w-full max-w-full h-auto">
+        <Image
+          alt="Kindi"
+          className="w-full max-h-[180px] md:max-h-[300px] object-cover rounded-tl-3xl rounded-tr-3xl"
+          src={ActivityCard}
+        />
+        <div className="w-full py-4 flex-col justify-start px-4 items-start flex gap-2 md:gap-2 lg:gap-4">
+          <div className="flex-col gap-[6px] justify-start items-start">
+            <div className="text-[#0a1932] text-[16px] md:text-xl font-semibold font-fredoka leading-[20px]">
+              {title || "Autumn Colors Leaf Wheel"}
+            </div>
+            <div className="justify-start w-full items-center gap-2 inline-flex">
+              <div className="text-[#0a1932] w-[max-content] text-[10px] md:text-[20px] font-normal font-fredoka leading-normal">
+                {time || "5 minutes"}
+              </div>
+              {tags?.map((tag, index) => (
+                <React.Fragment key={index}>
+                  <div className="w-1 h-1 bg-[#e3e3e3] rounded-full" />
+                  <div className="text-[#0a1932] w-[max-content] text-[10px] md:text-[20px] font-normal font-fredoka leading-normal">
+                    {tag}
+                  </div>
+                </React.Fragment>
+              ))}
+            </div>
+          </div>
+          <section className="items-center justify-center gap-2 md:gap-4 grid grid-cols-5">
+            {icons?.map((icon, index) => (
+              <IconBadge key={index} icon={icon} />
+            ))}
+          </section>
+        </div>
+      </div>
+    </div>
+  </Link>
+);
+
+const Accordion = ({ questions }) => {
+  return (
+    <div className="w-full claracontainer flex flex-col gap-4 py-4">
+      {questions.map((question, index) => (
+        <div key={index} className="rounded-lg bg-[white] ">
+          <div
+            className="flex justify-between items-center py-2 px-4 bg-gray-100 rounded-lg cursor-pointer"
+            aria-expanded="false"
+            aria-controls={`answer-${index}`}
+          >
+            <h2 className="text-lg font-semibold">{question.title}</h2>
+            <svg
+              id={`chevron-${index}`}
+              className="w-6 h-6 transition-transform duration-300"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M18 12H6"
+              />
+            </svg>
+          </div>
+          <div
+            id={`answer-${index}`}
+            className="hidden py-2 px-4 bg-gray-50 rounded-lg"
+          >
+            <p className="text-gray-600">{question.answer}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+const ProfileSection = () => {
+  return (
+    <section className="w-full h-auto bg-[#F5F5F5] md:bg-[#EAEAF5] items-center justify-center flex flex-col md:flex-row px-0">
+      {/* Topbar */}
+      <div className="w-full flex pt-4 pb-7 md:hidden bg-red">
+        <div className="text-center w-full text-white text-[20px] font-semibold font-fredoka leading-tight">
+          Profile
+        </div>
+      </div>
+      <div className="claracontainer bg-[#F5F5F5] md:bg-[#EAEAF5] -mt-4 rounded-t-[12px] z-2 lg:m-12 px-4 py-6 rounded-xl md:px-2 lg:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-[20px]">
+        {/* Top Profile Card */}
+        <div className="w-full flex bg-[white] rounded-[24px] p-2 md:p-4 justify-start gap-[4px] lg:gap-[12px]  items-center">
+          <div className="w-fit items-center flex justify-start">
+            <Image
+              src={ProfileDP}
+              alt="User DP"
+              className="w-32 h-32 rounded-full"
+            />
+          </div>
+          <div className="w-full gap-4 flex flex-col justify-center">
+            <div className="flex flex-row justify-between items-center w-full">
+              <h2 className="text-[#029871] text-[24px] md:text-[28px] lg:text-[32px] xl:text-[40px] font-semibold  font-fredoka leading-tight">
+                John Doe
+              </h2>
+              {/* Trigger for the Edit Profile Popup */}
+              <Link href="/profile/edit">
+                <Badge
+                  className="text-[10px] md:text-[16px] cursor-pointer"
+                  variant="outline"
+                >
+                  Edit
+                </Badge>
+              </Link>
+            </div>
+            <div className="flex flex-col w-full gap-1 items-start justify-start">
+              <div className="flex flex-row w-full justify-start items-center gap-2">
+                <div className="text-[#3f3a64] text-[16px] md:text-[20px] lg:text-[24px] xl:text-[20px] font-medium font-montserrat leading-none">
+                  Level 1
+                </div>
+                {/* Trigger for the Level Popup */}
+                <Dialog className="bg-[#EAEAF5] w-full rounded-[28px] claracontainer">
+                  <DialogTrigger asChild>
+                    <Badge
+                      className="text-[10px] md:text-[16px] cursor-pointer"
+                      variant="outline"
+                    >
+                      Check Now
+                    </Badge>
+                  </DialogTrigger>
+                  <DialogContent className="bg-[#EAEAF5] max-h-[70%] overflow-scroll p-0 overflow-x-hidden rounded-[28px] w-full claracontainer">
+                    <DialogHeader className="p-4">
+                      <div className="flex flex-row justify-center items-center w-full">
+                        <DialogTitle>
+                          <div className="text-center">
+                            <span className="text-[#3f3a64] text-[24px] md:text-[36px] font-semibold font-fredoka capitalize  ">
+                              My{" "}
+                            </span>
+                            <span className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize  ">
+                              Level
+                            </span>
+                          </div>
+                        </DialogTitle>
+                      </div>
+                    </DialogHeader>
+                    <DialogDescription className="flex w-full px-4 claracontainer flex-col justify-start items-center">
+                      <div className="flex flex-col justify-center items-center w-full claracontainer gap-4">
+                        <LevelCard level="Level 1" activities="5" />
+                        <LevelCard level="Level 2" activities="10" />
+                        <LevelCard level="Level 3" activities="15" />
+                        <LevelCard level="Level 4" activities="20" />
+                        <LevelCard level="Level 5" activities="25" />
+                      </div>
+                    </DialogDescription>
+                    <DialogFooter className="sticky  rounded-t-[16px] shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] bottom-0 m-0 w-full px-4 bg-[#ffffff]">
+                      <PopupFooter PrimaryText="Save and Continue" />
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
+              </div>
+              <div className="w-full flex flex-row justify-between items-center gap-2">
+                <Slider
+                  disabled
+                  defaultValue={[33]}
+                  max={100}
+                  className="h-[8px] text-[#3a3a89]"
+                  step={10}
+                />{" "}
+                Activities
+              </div>
+            </div>
+          </div>
+        </div>
+        {/* Quick Navigation for the Page */}
+        <div className="claracontainer px-0 w-full flex flex-row justify-start overflow-x-scroll scrollbar-hidden items-start overflow-hidden gap-2">
+          <Link href="/profile/milestone">
+            <BadgeSection
+              icon={Milestone}
+              backgroundColor="#3F3D91"
+              borderColor="#9998c2"
+              title="Milestone"
+            />
+          </Link>
+          <Link href="/profile/progress">
+            <BadgeSection
+              icon={Progress}
+              title="Progress"
+              backgroundColor="#FF8E00"
+              borderColor="#f2c99b"
+            />
+          </Link>
+          <Link href="/profile/achievements">
+            <BadgeSection
+              icon={Achievement}
+              title="Achievement"
+              backgroundColor="#C42797"
+              borderColor="#dc8dc5"
+            />
+          </Link>
+        </div>
+
+        {/* The individual Tabs for Profile Page */}
+        <div className="flex w-full justify-center items-center gap-4 flex-col">
+          {/* My Activity Model */}
+          <Dialog className="bg-[#EAEAF5] w-full  flex justify-center items-center claracontainer">
+            <DialogTrigger asChild>
+              <MyProfileRoutes
+                image={KindiHeart}
+                iconBackgroundColor="#f05c5c"
+                title="My activity"
+              />
+            </DialogTrigger>
+            <DialogContent className="bg-[#EAEAF5] max-w-[96%] max-h-[70%] scrollbar-hidden overflow-scroll p-0 overflow-x-hidden rounded-[16px] w-full claracontainer">
+              <DialogHeader className="p-4">
+                <div className="flex flex-row justify-center items-center w-full">
+                  <DialogTitle>
+                    <div className="text-center">
+                      <span className="text-[#3f3a64] text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
+                        My{" "}
+                      </span>
+                      <span className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
+                        Activity
+                      </span>
+                    </div>
+                  </DialogTitle>
+                </div>
+              </DialogHeader>
+              <DialogDescription className="flex w-full px-4 gap-4 claracontainer flex-col justify-start items-center">
+                <div className="text-black text-[20px] md:text-[28px] w-full text-start font-semibold font-fredoka  ">
+                  Completed
+                </div>
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 w-full claracontainer gap-2">
+                  {activities.map((activity, index) => (
+                    <LocalActivity
+                      key={index}
+                      title={activity.title}
+                      time={activity.time}
+                      tags={activity.tags}
+                      icons={activity.icons}
+                    />
+                  ))}
+                </div>
+              </DialogDescription>
+              <DialogFooter className="sticky rounded-t-[16px] shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] bottom-0 m-0 w-full  bg-[#ffffff]">
+                <PopupFooter PrimaryText="Save and Continue" />
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+          {/* Kids Profile Model */}
+          <Dialog className="bg-[#EAEAF5] w-full  claracontainer">
+            <DialogTrigger asChild>
+              <MyProfileRoutes
+                image={Kid}
+                iconBackgroundColor="#029871"
+                title="Kids Profile"
+              />
+            </DialogTrigger>
+            <DialogContent className="bg-[#EAEAF5] max-w-[96%] max-h-[70%] scrollbar-hidden overflow-scroll p-0 overflow-x-hidden rounded-[16px] w-full claracontainer">
+              <DialogHeader className="p-4">
+                <div className="flex flex-row justify-center items-center w-full">
+                  <DialogTitle>
+                    <div className="text-center">
+                      <span className="text-[#3f3a64] text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
+                        My{" "}
+                      </span>
+                      <span className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
+                        Profile
+                      </span>
+                    </div>
+                  </DialogTitle>
+                </div>
+              </DialogHeader>
+              <DialogDescription className="flex w-full px-4 claracontainer gap-4 flex-col justify-start items-center">
+                <div className="flex justify-between w-full items-center">
+                  <div className="text-black text-start text-[20px] md:text-[28px] font-semibold font-fredoka">
+                    Profiles
+                  </div>
+                  <div className="text-black text-start  text-[20px] md:text-[28px] font-semibold font-fredoka ">
+                    3/5
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 lg:grid-cols-2 w-full claracontainer gap-4">
+                  <ProfileCard ProfilData={profilData} />
+                  <ProfileCard ProfilData={profilData} />
+                  <ProfileCard ProfilData={profilData} />
+                  <ProfileCard ProfilData={profilData} />
+                  <ProfileCard ProfilData={profilData} />
+                </div>
+              </DialogDescription>
+              <DialogFooter className="sticky rounded-t-[16px] bottom-0 m-0 w-full ">
+                <PopupFooter PrimaryText="Save and Continue" />
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+          {/* Orders Model */}
+          <Dialog className="bg-[#EAEAF5] w-full rounded-[28px] claracontainer">
+            <DialogTrigger asChild>
+              <MyProfileRoutes
+                image={Bag}
+                iconBackgroundColor="#3F3A64"
+                title="Orders"
+              />
+            </DialogTrigger>
+            <DialogContent className="bg-[#EAEAF5] max-w-[96%] max-h-[70%] overflow-scroll p-0 overflow-x-hidden rounded-[16px] w-full claracontainer">
+              <DialogHeader className="p-4">
+                <div className="flex flex-row justify-center items-center w-full">
+                  <DialogTitle>
+                    <div className="text-center">
+                      <span className="text-[#3f3a64] text-[24px] md:text-[36px] font-semibold font-fredoka capitalize  ">
+                        My{" "}
+                      </span>
+                      <span className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize  ">
+                        Order
+                      </span>
+                    </div>
+                  </DialogTitle>
+                </div>
+              </DialogHeader>
+              <DialogDescription className="flex w-full px-4 claracontainer flex-col justify-start items-center">
+                <div className="grid grid-cols-1 md:grid-cols-4 h-auto w-full claracontainer gap-4">
+                  <ProductCard data={data} />
+                  <ProductCard data={data} />
+                  <ProductCard data={data} />
+                  <ProductCard data={data} />
+                  <ProductCard data={data} />
+                  <ProductCard data={data} />
+                  <ProductCard data={data} />
+                  <ProductCard data={data} />
+                  <ProductCard data={data} />
+                </div>
+              </DialogDescription>
+              <DialogFooter className="sticky  rounded-t-[16px] bottom-0 m-0 w-full bg-[#ffffff]">
+                <PopupFooter PrimaryText="Save and Continue" />
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+          {/* Connect a partner Model */}
+          <Dialog className="bg-[#EAEAF5] w-full rounded-[28px] claracontainer">
+            <DialogTrigger asChild>
+              <MyProfileRoutes
+                image={Partner}
+                iconBackgroundColor="#FF8E00"
+                title="Connect a Partner"
+              />
+            </DialogTrigger>
+            <DialogContent className="bg-[#EAEAF5]  scrollbar-hidden  max-w-[96%] max-h-[70%] overflow-scroll p-0 overflow-x-hidden rounded-[16px] w-full claracontainer">
+              <DialogHeader className="p-4">
+                <div className="flex flex-row justify-center items-center w-full">
+                  <DialogTitle>
+                    <div className="text-center">
+                      <span className="text-[#3f3a64] text-[24px] md:text-[36px] font-semibold font-fredoka capitalize  ">
+                        Connect{" "}
+                      </span>
+                      <span className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize  ">
+                        A Partner
+                      </span>
+                    </div>
+                  </DialogTitle>
+                </div>
+              </DialogHeader>
+              <DialogDescription className="flex w-full px-4 claracontainer flex-col justify-start items-center">
+                <div className="flex flex-col md:flex-row px-2 md:px-6 lg:px-24 max-w-[800px] justify-center items-start claracontainer gap-4">
+                  <div className="flex w-full max-w-[20%]">
+                    <Image
+                      alt="Kindi"
+                      src={ConnectPartner}
+                      className="w-full h-auto"
+                    />
+                  </div>
+                  <div className="flex w-full flex-col justify-start items-start gap-4">
+                    <div className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize  ">
+                      Get $20
+                    </div>{" "}
+                    <div className="text-[#757575] text-[16px] md:text-2xl font-medium font-fredoka ">
+                      Invite a Partner or friends, family, coworkers,
+                      neighbours, and your favourite barista to Brushlink. Every
+                      time someone books and visits a new dentist through your
+                      link, you both get $20.
+                    </div>
+                    <div className="flex w-full flex-col justify-start items-start gap-4">
+                      <Input
+                        type="text"
+                        className=" bg-white w-full rounded-lg focus-within:border-0 focus-within:border-[#ffffff00]  shadow border border-[#383838]"
+                        placeholder="Partners Name"
+                      />
+                      <Input
+                        type="email"
+                        className=" bg-white w-full rounded-lg focus-within:border-0 focus-within:border-[#ffffff00] shadow border border-[#383838]"
+                        placeholder="Partners Email"
+                      />
+                    </div>
+                    <Button className="bg-[#3f3a64]  hover:bg-purple border-purple hover:border-4 hover:border-[#4d3d9738]  rounded-[27px] border-4 border-[#3f3a64]/40 justify-center items-center inline-flex text-white font-semibold">
+                      Send an Invite
+                    </Button>
+                  </div>
+                </div>
+              </DialogDescription>
+              <DialogFooter className="sticky bottom-0 m-0 w-full ">
+                <PopupFooter PrimaryText="Save and Continue" />
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+          {/* Payment Method Model */}
+          <Dialog className="bg-[#EAEAF5] w-full rounded-[28px] claracontainer">
+            <DialogTrigger asChild>
+              <MyProfileRoutes
+                image={Payments}
+                iconBackgroundColor="#019ACF"
+                title="Payment Method"
+              />
+            </DialogTrigger>
+            <DialogContent className="bg-[#EAEAF5] max-w-[96%] max-h-[70%] scrollbar-hidden overflow-scroll p-0 overflow-x-hidden rounded-[16px] w-full claracontainer">
+              <DialogHeader className="p-4">
+                <div className="flex flex-row justify-center items-center w-full">
+                  <DialogTitle>
+                    <div className="text-center">
+                      <span className="text-[#3f3a64] text-[24px] md:text-[36px] font-semibold font-fredoka capitalize  ">
+                        Payment{" "}
+                      </span>
+                      <span className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize  ">
+                        Methods
+                      </span>
+                    </div>
+                  </DialogTitle>
+                </div>
+              </DialogHeader>
+              <DialogDescription className="flex w-full px-4 claracontainer flex-col justify-start items-center">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 px-2 md:px-4 lg:px-6 py-6 w-full claracontainer gap-4">
+                  <Image
+                    alt="Kindi"
+                    src={MasterCard}
+                    className="w-full cursor-pointer hover:scale-[1.05] transition-transform duration-300 ease-in-out h-auto"
+                  />
+                  <Image
+                    alt="Kindi"
+                    src={MasterCard}
+                    className="w-full cursor-pointer hover:scale-[1.05] transition-transform duration-300 ease-in-out h-auto"
+                  />
+                  <Image
+                    alt="Kindi"
+                    src={MasterCard}
+                    className="w-full cursor-pointer hover:scale-[1.05] transition-transform duration-300 ease-in-out h-auto"
+                  />
+                  <Image
+                    alt="Kindi"
+                    src={MasterCard}
+                    className="w-full cursor-pointer hover:scale-[1.05] transition-transform duration-300 ease-in-out h-auto"
+                  />
+                  <Image
+                    alt="Kindi"
+                    src={MasterCard}
+                    className="w-full cursor-pointer hover:scale-[1.05] transition-transform duration-300 ease-in-out h-auto"
+                  />
+                </div>
+              </DialogDescription>
+              <DialogFooter className="sticky bottom-0 m-0 w-full bg-[#ffffff]">
+                <PopupFooter PrimaryText="Save and Continue" />
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+          {/* Settings Model */}
+          <Dialog className="bg-[#EAEAF5] w-full rounded-[28px] claracontainer">
+            <DialogTrigger asChild>
+              <MyProfileRoutes
+                image={ProfileSettingIcon}
+                iconBackgroundColor="#C42797"
+                title="Settings"
+              />
+            </DialogTrigger>
+            <DialogContent className="bg-[#EAEAF5] max-w-[96%] max-h-[70%] scrollbar-hidden overflow-scroll p-0 overflow-x-hidden rounded-[16px] w-full claracontainer">
+              <DialogHeader className="flex pt-4">
+                <div className="flex flex-row justify-center items-center w-full">
+                  <DialogTitle>
+                    <div className="text-center text-[#3f3a64] text-4xl font-semibold font-fredoka capitalize  ">
+                      Settings
+                    </div>
+                  </DialogTitle>
+                </div>
+              </DialogHeader>
+              <DialogDescription className="flex w-full px-4 claracontainer flex-col justify-start items-center">
+                <section className="w-full h-auto bg-[#EAEAF5] items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">
+                  <div className="claracontainer w-full flex flex-col overflow-hidden gap-8">
+                    <div className="claracontainer w-full flex flex-col overflow-hidden gap-4">
+                      {/* Profile Edit */}
+                      <Link href="/profile/edit">
+                        <SettingCard
+                          Value="Shravya"
+                          image={User}
+                          title="Full Name"
+                        />
+                      </Link>
+                      {/* Email Edit */}
+                      <SettingCard
+                        disabled
+                        Value="abc@gmail.com"
+                        image={Email}
+                        title="Email"
+                      />
+                      {/* Mobile Edit */}
+                      <SettingCard
+                        disabled
+                        Value="09876543"
+                        image={Phone}
+                        title="Phone Number"
+                      />
+                      {/* Language Edit */}
+                      <Dialog className="bg-[#EAEAF5] w-full rounded-[28px] claracontainer">
+                        <DialogTrigger asChild>
+                          <SettingCard
+                            Value="English"
+                            image={LanguageIcon}
+                            title="Language"
+                          />
+                        </DialogTrigger>
+                        <DialogContent className="bg-[#EAEAF5] max-w-[96%] max-h-[70%] overflow-scroll p-0 overflow-x-hidden rounded-[16px] w-full claracontainer">
+                          <DialogHeader className="p-4">
+                            <div className="flex flex-row justify-center items-center w-full">
+                              <DialogTitle>
+                                <div className="text-center">
+                                  <span className="text-[#3f3a64] text-[24px] md:text-[36px] font-semibold font-fredoka capitalize  ">
+                                    My{" "}
+                                  </span>
+                                  <span className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize  ">
+                                    Activity
+                                  </span>
+                                </div>
+                              </DialogTitle>
+                            </div>
+                          </DialogHeader>
+                          <DialogDescription className="flex w-full px-4 claracontainer flex-col justify-start items-center">
+                            <div className="text-black  text-[20px] md:text-[28px]  font-semibold font-fredoka  ">
+                              Coming Soon
+                            </div>
+                          </DialogDescription>
+                          <DialogFooter className="sticky  rounded-t-[16px] shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] bottom-0 m-0 w-full px-4 bg-[#ffffff]">
+                            <PopupFooter PrimaryText="Save and Continue" />
+                          </DialogFooter>
+                        </DialogContent>
+                      </Dialog>
+                      {/* Terms & Condition  */}
+                      <Link href="/p/tnc">
+                        <SettingCard
+                          Value="Term & Condition"
+                          image={TnC}
+                          title="Kindi's Learning"
+                        />
+                      </Link>
+                    </div>
+                  </div>
+                </section>
+              </DialogDescription>
+              <DialogFooter className="sticky bottom-0 m-0 w-full">
+                <PopupFooter PrimaryText="Save and Continue" />
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+          {/* Help Center Model */}
+          <Dialog className="bg-[#EAEAF5] w-full rounded-[28px] claracontainer">
+            <DialogTrigger asChild>
+              <MyProfileRoutes
+                image={Support}
+                iconBackgroundColor="#3F3D91"
+                title="Help Center"
+              />
+            </DialogTrigger>
+            <DialogContent className="bg-[#EAEAF5] max-w-[96%] max-h-[70%] overflow-scroll scrollbar-hidden p-0 overflow-x-hidden rounded-[16px] w-full claracontainer">
+              <DialogHeader className="p-4">
+                <div className="flex flex-row justify-center items-center w-full">
+                  <DialogTitle>
+                    <div className="text-center">
+                      <span className="text-[#3f3a64] text-[24px] md:text-[36px] font-semibold font-fredoka capitalize  ">
+                        Help{" "}
+                      </span>
+                      <span className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize  ">
+                        Center
+                      </span>
+                    </div>
+                  </DialogTitle>
+                </div>
+              </DialogHeader>
+              <DialogDescription className="flex w-full px-4 claracontainer flex-col justify-start items-center">
+                <section className="w-full h-auto bg-[#EAEAF5] items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">
+                  <div className="claracontainer w-full flex flex-col overflow-hidden gap-8">
+                    <div className="flex flex-col gap-4 justify-center items-center w-full">
+                      {/* Help Card */}
+                      <div className="items-center w-full justify-center flex flex-col gap-2">
+                        <div className="flex flex-col px-0 md:px-12 lg:px-24 w-full gap-4 justify-center items-center">
+                          <div className="flex w-full gap-2">
+                            <Input
+                              placeholder="First Name"
+                              className="w-full"
+                            />
+                            <Input placeholder="Last Name" className="w-full" />
+                          </div>
+                          <Input
+                            className="w-full"
+                            type="email"
+                            placeholder="Enter your E-Mail"
+                          />
+                          <Input
+                            className="w-full"
+                            type="text"
+                            placeholder="Enter Subject"
+                          />
+                          <Input
+                            className="w-full"
+                            type="tel"
+                            placeholder="Contact Number"
+                          />
+                          <Textarea
+                            className="w-full"
+                            placeholder="Enter your Message...."
+                          />
+                          <Button className="bg-red rounded-2xl shadow border-2 border-white text-center text-white clarabutton">
+                            Send Message
+                          </Button>
+                        </div>
+                      </div>
+                      <div className="text-center text-[#3f3a64] text-4xl font-semibold font-fredoka capitalize  ">
+                        FAQ&apos;s
+                      </div>
+                      <div className="claracontainer w-full flex flex-col overflow-hidden gap-4">
+                        <Accordion questions={questions} />;
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              </DialogDescription>
+              <DialogFooter className="sticky bottom-0 m-0 w-full">
+                <PopupFooter PrimaryText="Save and Continue" />
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        </div>
+
+        {/* Reffereal Card Section */}
+        <div className="claracontainer px-0 w-full flex flex-col justify-start items-start overflow-hidden gap-8">
+          <ReferralCard />
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default ProfileSection;
