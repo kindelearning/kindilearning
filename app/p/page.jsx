@@ -19,7 +19,7 @@ export default function Home() {
     <>
       <section className="w-full flex flex-col gap-0 justify-center items-center">
         <div className="w-full flex flex-col overflow-hidden gap-0">
-          <Hero />
+          <Hero />shravya
           <Slider />
           <PromotionalSection />
           <PromotionalSectionTwo />
