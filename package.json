@@ -1,6 +1,6 @@
 {
-  "name": "kindi-w",
-  "version": "3.1.0",
+  "name": "kindi-learning",
+  "version": "4.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -31,7 +31,7 @@
     "lucide-react": "^0.429.0",
     "moment": "^2.30.1",
     "next": "14.2.5",
-    "next-auth": "^5.0.0-beta.22",
+    "next-auth": "^4.24.8",
     "react": "^18",
     "react-big-calendar": "^1.14.1",
     "react-day-picker": "^8.10.1",

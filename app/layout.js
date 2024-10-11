@@ -1,11 +1,12 @@
 /**
  * @ToDo  TO be removed as we dont use this, but need to check it infuture
  */
+
+'use client'
 import { Fredoka as FontSans } from "next/font/google";
 
 import "./globals.css";
 import { cn } from "@/lib/utils";
-import { BottomNavigation, Footer, Header, Newsletter } from "./Sections";
 import { SessionProvider } from "next-auth/react";
 
 /**
@@ -16,10 +17,10 @@ const fontSans = FontSans({
   variable: "--font-sans",
 });
 
-export const metadata = {
-  title: "Kindi Education",
-  description: "Built by ClaraVerse",
-};
+// export const metadata = {
+//   title: "Kindi Education",
+//   description: "Built by ClaraVerse",
+// };
 
 export default function RootLayout({ children }) {
   return (

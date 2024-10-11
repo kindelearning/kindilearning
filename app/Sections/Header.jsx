@@ -15,8 +15,9 @@ import {
 import { ChevronRight, Menu } from "lucide-react";
 import { HomeLight } from "@/public/Icons";
 import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react"; // Import the useSession hook
 import SignOutButton from "../auth/sign-out/page";
+// import { useSession } from "next-auth/react"; // Import the useSession hook
+// import SignOutButton from "../auth/sign-out/page";
 
 const LocalNavitem = ({
   Link = "#",
@@ -157,7 +158,7 @@ const usePathname = () => {
 
 const Header = () => {
   const pathname = usePathname();
-  const { data: session } = useSession();
+  // const { data: session } = useSession();
 
   return (
     <header className="sticky rounded-b-[12px] top-0 z-50 w-full px-4 bg-white dark:bg-dark-blue-100 shadow-md flex justify-center items-center py-4 md:py-4">
@@ -237,7 +238,7 @@ const Header = () => {
           </Link>
         </div> */}
         {/* Conditional rendering based on session status */}
-        <div className="hidden lg:flex space-x-4">
+        {/* <div className="hidden lg:flex space-x-4">
           {session ? ( // Check if the session exists
             <>
               <Link href="/profile">
@@ -269,7 +270,18 @@ const Header = () => {
               <SignOutButton />
             </>
           )}
-        </div>
+        </div> */}
+        <Link href="/auth/sign-in">
+          <Button className="bg-[#ffffff] border-black text-black hover:bg-[#ffffff] hover:border-[#2b2b2b] hover:text-dark-blue-100 px-[40px] border-2 rounded-[16px] transition duration-300 ease-in-out">
+            Log in
+          </Button>
+        </Link>
+        <Link href="/auth/sign-up">
+          <Button className="bg-red text-white border-2 border-red rounded-[16px] transition duration-300 ease-in-out hover:bg-hoverRed">
+            Get Started
+          </Button>
+        </Link>
+        <SignOutButton />
       </section>
     </header>
   );

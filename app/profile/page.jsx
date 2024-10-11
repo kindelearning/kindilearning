@@ -1,13 +1,14 @@
+
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import { ProfileSection } from "../Sections";
-import { getServerSideSession } from "next-auth"; // Updated for NextAuth v5
+import { getServerSession } from "next-auth"; // Updated for NextAuth v5
 
 export default async function ProfilePage() {
-  const session = await getServerSideSession(authOptions); // Use getServerSideSession
+  const session = await getServerSession(authOptions);
   if (!session) {
     return (
-      <div className="container mx-auto p-4">
-        <p>Please sign in to view your profile.</p>
+      <div className="claracontainer h-screen justify-center items-center flex mx-auto p-4">
+        <p >Please sign in to view your profile.</p>
       </div>
     );
   }
