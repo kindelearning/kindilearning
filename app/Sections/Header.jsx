@@ -219,6 +219,12 @@ const Header = () => {
     }
   };
 
+  const handleSignOut = () => {
+    signOut({
+      callbackUrl: "/", // Optional: Redirect users to this URL after sign out
+    });
+  };
+
   if (status === "loading") {
     return (
       <div className="w-full h-screen flex justify-center items-center">
@@ -248,7 +254,7 @@ const Header = () => {
             <SheetContent className="bg-[#F5F5F5] px-2 h-full">
               <SheetHeader className="h-full">
                 {/* Custom Sidebar Item */}
-                <section className="lg:hidden h-full flex flex-col gap-2 items-start justify-between space-y-2 mt-4">
+                <section className="lg:hidden h-full flex flex-col w-full gap-2 items-start justify-between space-y-2 mt-4">
                   <div className="flex w-full flex-col gap-2">
                     <div className="flex w-full flex-col gap-1 justify-start items-start">
                       <div className="text-[#0a1932] text-sm font-medium font-fredoka leading-tight">
@@ -276,15 +282,20 @@ const Header = () => {
                       </div>
                     </div>
                   </div>
-                  {session ? (
+                  {/* {session ? (
                     <Link
                       href="/profile"
                       target="_blank"
-                      className="rounded-full w-[48px] h-[48px]"
+                      className="rounded-full w-full"
                     >
-                      {profileData ? (
-                        <div className="flex w-full justify-start items-center">
-                          <div className="relative w-[32px] h-[32px] p-1 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600">
+                      
+                    </Link>
+                  ) : (
+                    
+                  )} */}
+                  {profileData ? (
+                    <div className="flex w-full justify-start items-center">
+                      {/* <div className="relative w-[32px] h-[32px] p-1 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600">
                             <div className="w-full h-full bg-white rounded-full flex items-center justify-center">
                               <Image
                                 src={profileData.profilePicture?.url}
@@ -294,23 +305,21 @@ const Header = () => {
                                 className="w-[32px] h-[32px] object-cover rounded-full"
                               />
                             </div>
-                          </div>
-                          <div className="flex flex-col w-full justify-start items-start">
-                            <h2 className="text-[#029871] text-[20px] font-semibold font-fredoka leading-tight">
-                              {profileData.name}
-                            </h2>
-                          </div>
-                        </div>
-                      ) : (
-                        <Image
-                          src={ProfileDP}
-                          alt="Logo"
-                          className="rounded-full border-2 border-red w-[48px] h-[48px]"
-                        />
-                      )}
-                    </Link>
+                          </div> */}
+                      <Button
+                        onClick={handleSignOut}
+                        className="bg-red hover:bg-hoverRed text-white clarabutton w-full"
+                      >
+                        Sign Out
+                      </Button>
+                      {/* <div className="flex flex-col w-full justify-start items-start">
+                        <h2 className="text-[#029871] text-[20px] font-semibold font-fredoka leading-tight">
+                          {profileData.name}
+                        </h2>
+                      </div> */}
+                    </div>
                   ) : (
-                    <div className="flex w-full flex- col gap-1 justify-start items-start">
+                    <div className="flex w-full flex-col gap-1 justify-start items-start">
                       <Link
                         href="/auth/sign-in"
                         target="_blank"
@@ -327,7 +336,7 @@ const Header = () => {
                         rel="noopener noreferrer"
                         className="w-full"
                       >
-                        <div className="bg-red hover:bg-hoverRed  text-[12px] font-fredoka text-white  w-[max-content] py-2 px-[40px]  hover:text-white border-2 border-red rounded-[10px] transition duration-300 ease-in-out">
+                        <div className="bg-red hover:bg-hoverRed text-[12px] font-fredoka text-white w-full py-2 px-[40px]  hover:text-white border-2 border-red rounded-[10px] transition duration-300 ease-in-out">
                           Get Started
                         </div>
                       </Link>
@@ -340,7 +349,7 @@ const Header = () => {
           </Sheet>
         </div>
         {/* Navigation Links - Hidden on small screens */}
-        <div className="hidden lg:flex flex-col md:flex-row gap-2 md:items-center md:justify-center w-full md:w-[max-content]">
+        <div className="hidden lg:flex flex-col md:flex-row gap-[16px] md:items-center md:justify-center w-full md:w-[max-content]">
           {NavMenu.map((menuItem, index) => (
             <a
               key={index}
@@ -390,36 +399,43 @@ const Header = () => {
         </div> */}
         <div className="hidden lg:flex space-x-4">
           {/* If the user is signed in, show the Sign Out button */}
-          {session ? (
+          {/* {session ? (
             <Link
               href="/profile"
               target="_blank"
               className="rounded-full w-[48px] h-[48px]"
             >
-              {profileData ? (
-                <div className="flex w-full justify-start items-center">
-                  <div className="relative w-[56px] flex justify-center items-center h-[56px] p-1 border-2 border-red hover:border-hoverRed rounded-full">
-                    <div className="w-[48px] h-[48px] bg-white rounded-full  flex items-center justify-center">
-                      <Image
-                        src={profileData.profilePicture?.url}
-                        alt="User DP"
-                        width={40}
-                        height={40}
-                        className="w-[48px] h-[48px] object-cover rounded-full"
-                      />
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                <Image
-                  src={ProfileDP}
-                  alt="Logo"
-                  className="rounded-full border-2 border-red w-[48px] h-[48px]"
-                />
-              )}
+             
             </Link>
           ) : (
-            // Otherwise, show the Sign In and Sign Up buttons
+            <>
+              <Link href="/auth/sign-in">
+                <Button className="bg-[#ffffff] border-purple text-purple hover:bg-[#ffffff] hover:border-[#2b2b2b] hover:text-dark-blue-100 px-[40px] border-2 rounded-[16px] transition duration-300 ease-in-out">
+                  Log In
+                </Button>
+              </Link>
+              <Link href="/auth/sign-up">
+                <Button className="bg-red px-[40px] hover:text-white border-4 border-red hover:bg-hoverRed hover:border-hoverRed rounded-[16px] transition duration-300 ease-in-out">
+                  Sign Up
+                </Button>
+              </Link>
+            </>
+          )} */}
+          {profileData ? (
+            <div className="flex w-full justify-start items-center">
+              <div className="relative w-full flex justify-center items-center p-1 border-2 border-red hover:border-hoverRed rounded-full">
+                <div className="w-full h-full bg-white rounded-full  flex items-center justify-center">
+                  <Image
+                    src={profileData.profilePicture?.url}
+                    alt="User DP"
+                    width={40}
+                    height={40}
+                    className="w-[48px] h-[48px] object-cover rounded-full"
+                  />
+                </div>
+              </div>
+            </div>
+          ) : (
             <>
               <Link href="/auth/sign-in">
                 <Button className="bg-[#ffffff] border-purple text-purple hover:bg-[#ffffff] hover:border-[#2b2b2b] hover:text-dark-blue-100 px-[40px] border-2 rounded-[16px] transition duration-300 ease-in-out">

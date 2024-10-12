@@ -1,4 +1,4 @@
-
+import Link from "next/link";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import { ProfileSection } from "../Sections";
 import { getServerSession } from "next-auth"; // Updated for NextAuth v5
@@ -8,7 +8,17 @@ export default async function ProfilePage() {
   if (!session) {
     return (
       <div className="claracontainer h-screen justify-center items-center flex mx-auto p-4">
-        <p >Please sign in to view your profile.</p>
+        <p>
+          Please sign in to view your profile. <br />
+          <Link
+            href="/auth/sign-up"
+            target="_blank"
+            className="text-red font-fredoka"
+          >
+            {" "}
+            CLick here
+          </Link>
+        </p>
       </div>
     );
   }
