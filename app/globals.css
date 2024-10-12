@@ -94,15 +94,6 @@
     @apply gap-[32px] md:gap-[36px] lg:gap-[40px];
   }
 
-  /* .script {
-    @apply gap-[30px] md:gap-[32px] lg:gap-[36px];
-  }
-  .heading {
-    @apply gap-[18px] md:gap-[23px] lg:gap-[28px];
-  }
-  .body {
-    @apply gap-[36px] md:gap-[40px] lg:gap-[44px];
-  } */
 }
 
 @layer utilities {

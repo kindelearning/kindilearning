@@ -23,7 +23,7 @@ const OurPricing = async () => {
   }
   return (
     <>
-      <section
+      <section id="pricing_Section"
         className="w-full h-auto bg-[#EAEAF5] py-12 items-center justify-center flex flex-col gap-[20px] transition-all duration-500"
         style={{
           animation: "fadeIn 1s ease-in-out",

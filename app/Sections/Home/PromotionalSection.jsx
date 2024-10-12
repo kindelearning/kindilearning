@@ -1,10 +1,14 @@
+"use client";
 import NotFound from "@/app/not-found";
 import { Button } from "@/components/ui/button";
 import { getHomeData } from "@/lib/hygraph";
 import { PromotionalImage } from "@/public/Images";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 
 const PromotionalSection = async () => {
+  const { data: session, status } = useSession();
+
   const homeData = await getHomeData();
   console.log("Home Page Data (in component):", homeData);
   if (!homeData || !homeData[0]?.hero) {
@@ -45,7 +49,7 @@ const PromotionalSection = async () => {
             </div>
             <div className="w-auto hover:pl-[4px] duration-200 h-auto animate-fade-in">
               <Button className="bg-[#ffffff] hover:bg-[white] text-[#029871] clarabutton">
-                Get Started
+                {session ? "Upgrade" : "Get Started"}
               </Button>
             </div>
           </div>

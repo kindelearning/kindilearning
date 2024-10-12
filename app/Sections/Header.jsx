@@ -422,15 +422,15 @@ const Header = () => {
             </>
           )} */}
           {profileData ? (
-            <div className="flex w-full justify-start items-center">
-              <div className="relative w-full flex justify-center items-center p-1 border-2 border-red hover:border-hoverRed rounded-full">
+            <div className="flex cursor-pointer w-full justify-start items-center">
+              <div className="relative w-full flex justify-center items-center p-[2px] border-2 border-red hover:border-hoverRed rounded-full">
                 <div className="w-full h-full bg-white rounded-full  flex items-center justify-center">
                   <Image
                     src={profileData.profilePicture?.url}
                     alt="User DP"
                     width={40}
                     height={40}
-                    className="w-[48px] h-[48px] object-cover rounded-full"
+                    className="w-[40px] h-[40px] object-cover rounded-full"
                   />
                 </div>
               </div>

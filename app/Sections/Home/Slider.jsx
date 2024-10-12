@@ -9,6 +9,7 @@ import {
   SlidePlay,
   SlideThrive,
 } from "@/public/Images";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
@@ -105,7 +106,8 @@ const slides = [
   },
 ];
 
-const Slider =  () => {
+const Slider = () => {
+  const { data: session, status } = useSession();
 
   const [loaded, setLoaded] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -206,7 +208,7 @@ const Slider =  () => {
                   color: `#${slides[currentSlide].textcolor}`,
                 }}
               >
-                Get Started
+                {session ? "Upgrade" : "Get Started"}
               </Button>
             </div>
           </div>

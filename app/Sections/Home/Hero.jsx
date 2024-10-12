@@ -10,7 +10,9 @@ import {
   HomeHeroThree,
   HomeHeroTwo,
 } from "@/public/Images";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
+import Link from "next/link";
 import { useState, useEffect } from "react";
 
 const HeroImageGif = [
@@ -51,6 +53,7 @@ const ImageSlider = () => {
 };
 
 const Hero = async () => {
+  const { data: session, status } = useSession();
   const homeData = await getHomeData();
   console.log("Home Page Data (in component):", homeData);
   if (!homeData || !homeData[0]?.hero) {
@@ -59,7 +62,7 @@ const Hero = async () => {
 
   return (
     <section className="w-full h-screen lg:h-auto bg-purple py-12 md:py-24 lg:py-28 items-center justify-center flex flex-col md:flex-row gap-[20px]">
-      <div className="claracontainer w-full flex flex-col-reverse justify-between md:flex-row px-0 md:px-6 lg:px-0 xl:px-0 bg-purple lg:flex-row xl:flex-row gap-8 md:gap-0 lg:gap-4 ">
+      <div className="claracontainer w-full flex flex-col-reverse justify-between lg:flex-row px-0 md:px-6 lg:px-0 xl:px-0 bg-purple xl:flex-row gap-8 md:gap-0 lg:gap-4 ">
         <div className="h-auto w-full md:min-w-[50%] lg:w-full flex-col px-4 md:px-0 lg:px-4 justify-center items-start gap-6 md:gap-7 lg:gap-8 xl:gap-10 inline-flex ">
           <div className="w-full flex flex-col justify-start items-start h-auto gap-6 md:gap-2 lg:gap-4 xl:gap-4 ">
             <div className="text-white animate-text-reveal clarascript ">
@@ -83,19 +86,17 @@ const Hero = async () => {
               </div>
             </div>
           </div>
-          <div className="w-auto animate-fade-in">
-            <Button className="bg-red hover:bg-hoverRed clarabutton">
-              Get Started
+          <div /* href="#pricing_Section" */ className="w-auto animate-fade-in">
+            <Button
+              onClick={() => (window.location.href = "#pricing_Section")}
+              className="bg-red hover:bg-hoverRed clarabutton"
+            >
+              {session ? "Upgrade" : "Get Started"}
             </Button>
           </div>
         </div>
-        <div className="w-full flex md:min-w-[300px] h-fit min-h-[400px] md:w-[300px] lg:w-full ">
+        <div className="w-full flex md:min-w-[300px] items-start justify-center h-fit min-h-[400px] md:w-[300px] lg:w-full ">
           <ImageSlider />
-          {/* <Image
-            alt="Kindi"
-            src={HomeHero}
-            className="w-full  md:min-w-[300px] md:w-[300px] lg:w-full object-cover"
-          /> */}
         </div>
       </div>
     </section>
