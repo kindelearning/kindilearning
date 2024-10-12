@@ -120,27 +120,33 @@ const SideBar = () => {
             </div>
           </div>
         </div>
-        <div className="flex w-full flex- col gap-1 justify-start items-start">
-          <Link
-            href="/auth/sign-in"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-full"
-          >
-            <div className="bg-[#ffffff] py-2 w-full text-[12px] font-fredoka border-[black] text-[black] hover:bg-[#ffffff] hover:border-[#2b2b2b] hover:text-dark-blue-100 px-[40px] border-2 rounded-[10px] transition duration-300 ease-in-out">
-              Log in
-            </div>
-          </Link>
-          <Link
-            href="/auth/sign-up"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-full"
-          >
-            <div className="bg-red hover:bg-hoverRed  text-[12px] font-fredoka text-white  w-[max-content] py-2 px-[40px]  hover:text-white border-2 border-red rounded-[10px] transition duration-300 ease-in-out">
-              Get Started
-            </div>
-          </Link>
+        <div className="flex w-full flex-col gap-1">
+          <div className="flex w-full flex- col gap-1 justify-start items-start">
+            <Link
+              href="/auth/sign-in"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full"
+            >
+              <div className="bg-[#ffffff] py-2 w-full text-[12px] font-fredoka border-[black] text-[black] hover:bg-[#ffffff] hover:border-[#2b2b2b] hover:text-dark-blue-100 px-[40px] border-2 rounded-[10px] transition duration-300 ease-in-out">
+                Log in
+              </div>
+            </Link>
+            <Link
+              href="/auth/sign-up"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full"
+            >
+              <div className="bg-red hover:bg-hoverRed  text-[12px] font-fredoka text-white  w-[max-content] py-2 px-[40px]  hover:text-white border-2 border-red rounded-[10px] transition duration-300 ease-in-out">
+                Get Started
+              </div>
+            </Link>
+          </div>
+          {/* <SignOutButton /> */}
+          <Button className="bg-red clarabutton" onClick={() => signOut({ callbackUrl: "/auth/sign-in" })}>
+            Sign Out
+          </Button>{" "}
         </div>
       </section>
     </>
@@ -222,7 +228,7 @@ const Header = () => {
             </a>
           ))}
         </div>
-        {/* <div className="hidden lg:flex space-x-4">
+        <div className="hidden lg:flex space-x-4">
           <Link href="/auth/sign-in">
             <Button className="bg-[#ffffff] border-purple text-purple hover:bg-[#ffffff] hover:border-[#2b2b2b] hover:text-dark-blue-100 px-[40px] border-2 rounded-[16px] transition duration-300 ease-in-out">
               Log In
@@ -233,55 +239,11 @@ const Header = () => {
               Sign Up
             </Button>
           </Link>
-        </div> */}
-        {/* Conditional rendering based on session status */}
-        {/* <div className="hidden lg:flex space-x-4">
-          {session ? ( // Check if the session exists
-            <>
-              <Link href="/profile">
-                <Button className="bg-[#ffffff] border-purple text-purple hover:bg-[#ffffff] hover:border-[#2b2b2b] hover:text-dark-blue-100 px-[40px] border-2 rounded-[16px] transition duration-300 ease-in-out">
-                  <Image
-                    src={session.user.image}
-                    alt="User Avatar"
-                    width={20}
-                    height={20}
-                    className="rounded-full"
-                  />
-                  {session.user.name || "User"}
-                </Button>
-              </Link>
-              <SignOutButton />
-            </>
-          ) : (
-            <>
-              <Link href="/auth/sign-in">
-                <Button className="bg-[#ffffff] border-black text-black hover:bg-[#ffffff] hover:border-[#2b2b2b] hover:text-dark-blue-100 px-[40px] border-2 rounded-[16px] transition duration-300 ease-in-out">
-                  Log in
-                </Button>
-              </Link>
-              <Link href="/auth/sign-up">
-                <Button className="bg-red text-white border-2 border-red rounded-[16px] transition duration-300 ease-in-out hover:bg-hoverRed">
-                  Get Started
-                </Button>
-              </Link>
-              <SignOutButton />
-            </>
-          )}
-        </div> */}
-        <Link href="/auth/sign-in">
-          <Button className="bg-[#ffffff] border-black text-black hover:bg-[#ffffff] hover:border-[#2b2b2b] hover:text-dark-blue-100 px-[40px] border-2 rounded-[16px] transition duration-300 ease-in-out">
-            Log in
-          </Button>
-        </Link>
-        <Link href="/auth/sign-up">
-          <Button className="bg-red text-white border-2 border-red rounded-[16px] transition duration-300 ease-in-out hover:bg-hoverRed">
-            Get Started
-          </Button>
-        </Link>
-        {/* <SignOutButton /> */}
-        <Button onClick={() => signOut({ callbackUrl: "/auth/sign-in" })}>
-          Sign Out
-        </Button>{" "}
+          {/* <SignOutButton /> */}
+          <Button onClick={() => signOut({ callbackUrl: "/auth/sign-in" })}>
+            Sign Out
+          </Button>{" "}
+        </div>
       </section>
     </header>
   );
