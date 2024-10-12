@@ -295,20 +295,11 @@ const Header = () => {
                               />
                             </div>
                           </div>
-                          {profileData ? (
-                            <div className="flex flex-col w-full justify-start items-start">
-                              <h2 className="text-[#029871] text-[20px] font-semibold font-fredoka leading-tight">
-                                {profileData.name}
-                              </h2>
-                              {/* <p className="font-fredoka">
-                                Email: {profileData.email}
-                              </p> */}
-                            </div>
-                          ) : (
-                            <h2 className="text-[#029871] text-[24px] md:text-[28px] lg:text-[32px] xl:text-[40px] font-semibold  font-fredoka leading-tight">
-                              John Doe
+                          <div className="flex flex-col w-full justify-start items-start">
+                            <h2 className="text-[#029871] text-[20px] font-semibold font-fredoka leading-tight">
+                              {profileData.name}
                             </h2>
-                          )}
+                          </div>
                         </div>
                       ) : (
                         <Image
@@ -405,11 +396,27 @@ const Header = () => {
               target="_blank"
               className="rounded-full w-[48px] h-[48px]"
             >
-              <Image
-                src={ProfileDP}
-                className="rounded-full border-2 border-red w-[48px] h-[48px]"
-                alt="Profile Pic"
-              />
+              {profileData ? (
+                <div className="flex w-full justify-start items-center">
+                  <div className="relative w-[56px] flex justify-center items-center h-[56px] p-1 border-2 border-red hover:border-hoverRed rounded-full">
+                    <div className="w-[48px] h-[48px] bg-white rounded-full  flex items-center justify-center">
+                      <Image
+                        src={profileData.profilePicture?.url}
+                        alt="User DP"
+                        width={40}
+                        height={40}
+                        className="w-[48px] h-[48px] object-cover rounded-full"
+                      />
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <Image
+                  src={ProfileDP}
+                  alt="Logo"
+                  className="rounded-full border-2 border-red w-[48px] h-[48px]"
+                />
+              )}
             </Link>
           ) : (
             // Otherwise, show the Sign In and Sign Up buttons
