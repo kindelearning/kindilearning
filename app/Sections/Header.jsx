@@ -1,6 +1,15 @@
 "use client";
 
-import { Achievement, Logo, Milestone, progressImage02 } from "@/public/Images";
+import {
+  Achievement,
+  BlogThumb,
+  Logo,
+  Milestone,
+  ProfessionalThumb,
+  ProfileDP,
+  progressImage02,
+  User,
+} from "@/public/Images";
 import Image from "next/image";
 import { NavMenu } from "../constant/menu";
 import { Button } from "@/components/ui/button";
@@ -15,10 +24,7 @@ import {
 import { ChevronRight, Menu } from "lucide-react";
 import { HomeLight } from "@/public/Icons";
 import { useEffect, useState } from "react";
-import SignOutButton from "../auth/signout/page";
-import { signOut } from "next-auth/react";
-// import { useSession } from "next-auth/react"; // Import the useSession hook
-// import SignOutButton from "../auth/sign-out/page";
+import { signOut, useSession } from "next-auth/react";
 
 const LocalNavitem = ({
   Link = "#",
@@ -144,7 +150,10 @@ const SideBar = () => {
             </Link>
           </div>
           {/* <SignOutButton /> */}
-          <Button className="bg-red clarabutton" onClick={() => signOut({ callbackUrl: "/auth/sign-in" })}>
+          <Button
+            className="bg-red clarabutton"
+            onClick={() => signOut({ callbackUrl: "/auth/sign-in" })}
+          >
             Sign Out
           </Button>{" "}
         </div>
@@ -165,7 +174,7 @@ const usePathname = () => {
 
 const Header = () => {
   const pathname = usePathname();
-  // const { data: session } = useSession();
+  const { data: session } = useSession();
 
   return (
     <header className="sticky rounded-b-[12px] top-0 z-50 w-full px-4 bg-white dark:bg-dark-blue-100 shadow-md flex justify-center items-center py-4 md:py-4">
@@ -188,7 +197,71 @@ const Header = () => {
             <SheetContent className="bg-[#F5F5F5] px-2 h-full">
               <SheetHeader className="h-full">
                 {/* Custom Sidebar Item */}
-                <SideBar />
+                <section className="lg:hidden h-full flex flex-col gap-2 items-start justify-between space-y-2 mt-4">
+                  <div className="flex w-full flex-col gap-2">
+                    <div className="flex w-full flex-col gap-1 justify-start items-start">
+                      <div className="text-[#0a1932] text-sm font-medium font-fredoka leading-tight">
+                        Quick Access
+                      </div>
+                      <div className="flex w-full flex-col gap-1 justify-normal items-center">
+                        {NavMenu?.map((menuItem, index) => (
+                          <LocalNavitem
+                            key={index}
+                            IconSrc={menuItem.icon}
+                            Link={menuItem.link}
+                            Title={menuItem.title}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                    <div className="flex w-full flex-col gap-1 justify-start items-start">
+                      <div className="text-[#0a1932] text-sm font-medium font-fredoka leading-tight">
+                        My Progress
+                      </div>
+                      <div className="grid grid-cols-3 w-full gap-1">
+                        <MileStone />
+                        <Progress />
+                        <Achievements />
+                      </div>
+                    </div>
+                  </div>
+                  {session ? (
+                    <Link
+                      href="/profile"
+                      target="_blank"
+                      className="rounded-full w-[48px] h-[48px]"
+                    >
+                      <Image
+                        src={ProfileDP}
+                        className="rounded-full border-2 border-red w-[48px] h-[48px]"
+                        alt="Profile Pic"
+                      />
+                    </Link>
+                  ) : (
+                    <div className="flex w-full flex- col gap-1 justify-start items-start">
+                      <Link
+                        href="/auth/sign-in"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full"
+                      >
+                        <div className="bg-[#ffffff] py-2 w-full text-[12px] font-fredoka border-[black] text-[black] hover:bg-[#ffffff] hover:border-[#2b2b2b] hover:text-dark-blue-100 px-[40px] border-2 rounded-[10px] transition duration-300 ease-in-out">
+                          Log in
+                        </div>
+                      </Link>
+                      <Link
+                        href="/auth/sign-up"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full"
+                      >
+                        <div className="bg-red hover:bg-hoverRed  text-[12px] font-fredoka text-white  w-[max-content] py-2 px-[40px]  hover:text-white border-2 border-red rounded-[10px] transition duration-300 ease-in-out">
+                          Get Started
+                        </div>
+                      </Link>
+                    </div>
+                  )}
+                </section>
                 <SheetDescription>#KindiLearning</SheetDescription>
               </SheetHeader>
             </SheetContent>
@@ -228,7 +301,7 @@ const Header = () => {
             </a>
           ))}
         </div>
-        <div className="hidden lg:flex space-x-4">
+        {/* <div className="hidden lg:flex space-x-4">
           <Link href="/auth/sign-in">
             <Button className="bg-[#ffffff] border-purple text-purple hover:bg-[#ffffff] hover:border-[#2b2b2b] hover:text-dark-blue-100 px-[40px] border-2 rounded-[16px] transition duration-300 ease-in-out">
               Log In
@@ -239,10 +312,39 @@ const Header = () => {
               Sign Up
             </Button>
           </Link>
-          {/* <SignOutButton /> */}
           <Button onClick={() => signOut({ callbackUrl: "/auth/sign-in" })}>
             Sign Out
           </Button>{" "}
+        </div> */}
+        <div className="hidden lg:flex space-x-4">
+          {/* If the user is signed in, show the Sign Out button */}
+          {session ? (
+            <Link
+              href="/profile"
+              target="_blank"
+              className="rounded-full w-[48px] h-[48px]"
+            >
+              <Image
+                src={ProfileDP}
+                className="rounded-full border-2 border-red w-[48px] h-[48px]"
+                alt="Profile Pic"
+              />
+            </Link>
+          ) : (
+            // Otherwise, show the Sign In and Sign Up buttons
+            <>
+              <Link href="/auth/sign-in">
+                <Button className="bg-[#ffffff] border-purple text-purple hover:bg-[#ffffff] hover:border-[#2b2b2b] hover:text-dark-blue-100 px-[40px] border-2 rounded-[16px] transition duration-300 ease-in-out">
+                  Log In
+                </Button>
+              </Link>
+              <Link href="/auth/sign-up">
+                <Button className="bg-red px-[40px] hover:text-white border-4 border-red hover:bg-hoverRed hover:border-hoverRed rounded-[16px] transition duration-300 ease-in-out">
+                  Sign Up
+                </Button>
+              </Link>
+            </>
+          )}
         </div>
       </section>
     </header>
