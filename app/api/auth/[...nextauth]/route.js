@@ -53,41 +53,6 @@ const CREATE_USER = gql`
   }
 `;
 
-// const handler = NextAuth({
-//   secret: process.env.NEXTAUTH_SECRET,
-//   providers: [
-//     CredentialsProvider({
-//       name: "Credentials",
-//       credentials: {
-//         email: { label: "Email", type: "text" },
-//         password: { label: "Password", type: "password" },
-//       },
-//       async authorize(credentials) {
-//         const { email, password } = credentials;
-//         try {
-//           const { account } = await client.request(GET_USER_BY_EMAIL, { email });
-
-//           if (account && account.password === password) {
-//             return {
-//               id: account.id,
-//               name: account.username,
-//               email: account.email,
-//             };
-//           }
-//           return null;
-//         } catch (error) {
-//           console.error(error);
-//           return null;
-//         }
-//       },
-//     }),
-//   ],
-//   pages: {
-//     signIn: "/auth/signin",
-//   },
-// });
-
-// export { handler as GET, handler as POST };
 
 const handler = NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
