@@ -1,49 +1,69 @@
 "use client";
+import { hygraphClient } from "@/lib/hygraph";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { gql } from "graphql-request";
+import bcrypt from "bcryptjs";
 
-export default function SignUp() {
+
+// queries/createUser.js
+export const CREATE_USER_MUTATION = `
+  mutation CreateUser($email: String!, $password: String!) {
+    createAccount(data: { email: $email, password: $password }) {
+      id
+      email
+    }
+  }
+`;
+
+export default function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState(null);
+  const router = useRouter();
 
-  const handleSubmit = async (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
 
-    const res = await fetch("/api/auth/signup", {
-      method: "POST",
-      body: JSON.stringify({ email, password }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    try {
+      const variables = { email, password };
+      const { createAccount } = await hygraphClient.request(
+        CREATE_USER_MUTATION,
+        variables
+      );
 
-    if (!res.ok) {
-      setError("Failed to sign up");
-    } else {
-      setError("");
-      window.location.href = "/auth/signin";
+      if (createAccount) {
+        // If signup is successful, redirect to login page or homepage
+        router.push("/auth/signin"); // Redirect to signin after signup
+      }
+    } catch (error) {
+      console.error("GraphQL error:", error.response?.errors || error.message);
+      setError("Signup failed. Try again.");
     }
   };
 
   return (
-    <div className="claracontainer w-full h-screen justify-center items-center flex flex-col">
-      <h1>Sign Up</h1>
-      <form onSubmit={handleSubmit} className="flex flex-col">
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Email"
-        />
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
-        />
-        <button type="submit">Sign Up</button>
-      </form>
-      {error && <p>{error}</p>}
-    </div>
+    <>
+      <div className="flex w-full h-screen justify-center items-center ">
+        <form onSubmit={handleSignup}>
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <button type="submit">Sign Up</button>
+          {error && <p style={{ color: "red" }}>{error}</p>}
+        </form>
+      </div>
+    </>
   );
 }

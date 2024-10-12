@@ -1,4 +1,5 @@
-import { gql, GraphQLClient } from "graphql-request";
+import { gql } from "graphql-request";
+import { GraphQLClient } from "graphql-request";
 
 const HYGRAPH_ENDPOINT =
   "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";
@@ -11,50 +12,42 @@ const graphQLClient = new GraphQLClient(endpoint, {
     authorization: `Bearer ${HYGRAPH_TOKEN}`, // Replace with your token
   },
 });
-
 export default async function handler(req, res) {
   if (req.method === "POST") {
-    const { email, password } = req.body;
+    const { id, email, password } = req.body; // Assuming you pass user ID and new details
 
-    // Check if email and password are provided
-    if (!email || !password) {
-      return res
-        .status(400)
-        .json({ error: "Email and password are required." });
+    // Validate input
+    if (!id || !email) {
+      return res.status(400).json({ error: "User ID and email are required." });
     }
 
     try {
-      // Query to find user by email
-      const query = gql`
-        query GetUser($email: String!) {
-          account(where: { email: $email }) {
-            id
-            email
-            password
+      const mutation = gql`
+          mutation UpdateUser($id: ID!, $email: String!, $password: String) {
+            updateAccount(
+              where: { id: $id }
+              data: { email: $email, password: $password } // Update only fields you want
+            ) {
+              id
+              email
+            }
           }
-        }
-      `;
+        `;
 
-      const variables = { email };
-      const data = await graphQLClient.request(query, variables);
-      const user = data.account;
+      const variables = { id, email, password };
+      const data = await graphQLClient.request(mutation, variables);
 
-      // If no user found
-      if (!user) {
-        return res.status(401).json({ error: "Invalid email or password." });
-      }
-
-      // Check the password (implement your password validation logic)
-      // This assumes passwords are not hashed; you should use a secure method
-      if (user.password !== password) {
-        return res.status(401).json({ error: "Invalid email or password." });
-      }
-
-      // Successful login, return user data or create a session token
-      res.status(200).json({ message: "Login successful!", user });
+      res
+        .status(200)
+        .json({
+          message: "Account updated successfully!",
+          user: data.updateAccount,
+        });
     } catch (error) {
-      console.error("Sign in error:", error);
-      res.status(500).json({ error: "An error occurred during sign in." });
+      console.error("Update account error:", error);
+      res
+        .status(500)
+        .json({ error: "An error occurred while updating the account." });
     }
   } else {
     res.setHeader("Allow", ["POST"]);

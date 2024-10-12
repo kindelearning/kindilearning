@@ -15,7 +15,7 @@ import {
 import { ChevronRight, Menu } from "lucide-react";
 import { HomeLight } from "@/public/Icons";
 import { useEffect, useState } from "react";
-import SignOutButton from "../auth/sign-out/page";
+import SignOutButton from "../auth/signout/page";
 // import { useSession } from "next-auth/react"; // Import the useSession hook
 // import SignOutButton from "../auth/sign-out/page";
 
