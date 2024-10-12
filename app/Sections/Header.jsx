@@ -16,6 +16,7 @@ import { ChevronRight, Menu } from "lucide-react";
 import { HomeLight } from "@/public/Icons";
 import { useEffect, useState } from "react";
 import SignOutButton from "../auth/signout/page";
+import { signOut } from "next-auth/react";
 // import { useSession } from "next-auth/react"; // Import the useSession hook
 // import SignOutButton from "../auth/sign-out/page";
 
@@ -172,7 +173,6 @@ const Header = () => {
             />
           </div>
         </Link>
-
         {/* Hamburger icon for small screens */}
         <div className="lg:hidden flex items-center">
           <Sheet>
@@ -188,9 +188,7 @@ const Header = () => {
             </SheetContent>
           </Sheet>
         </div>
-
         {/* Navigation Links - Hidden on small screens */}
-
         <div className="hidden lg:flex flex-col md:flex-row gap-2 md:items-center md:justify-center w-full md:w-[max-content]">
           {NavMenu.map((menuItem, index) => (
             <a
@@ -224,7 +222,6 @@ const Header = () => {
             </a>
           ))}
         </div>
-
         {/* <div className="hidden lg:flex space-x-4">
           <Link href="/auth/sign-in">
             <Button className="bg-[#ffffff] border-purple text-purple hover:bg-[#ffffff] hover:border-[#2b2b2b] hover:text-dark-blue-100 px-[40px] border-2 rounded-[16px] transition duration-300 ease-in-out">
@@ -281,7 +278,10 @@ const Header = () => {
             Get Started
           </Button>
         </Link>
-        <SignOutButton />
+        {/* <SignOutButton /> */}
+        <Button onClick={() => signOut({ callbackUrl: "/auth/sign-in" })}>
+          Sign Out
+        </Button>{" "}
       </section>
     </header>
   );

@@ -8,26 +8,31 @@ import { BottomNavigation, Header } from "@/app/Sections";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 import Image from "next/image";
+import { gql } from "graphql-request";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const router = useRouter();
 
-  const handleSubmit = async (e) => {
+  const handleSignin = async (e) => {
     e.preventDefault();
-
     const res = await signIn("credentials", {
-      redirect: false,
       email,
       password,
+      redirect: false,
     });
 
-    if (res?.error) {
-      setError("Failed to sign in");
+    console.log("Sign In Response:", res); // Add this line for more insight
+
+    if (res?.ok) {
+      router.push("/p/activities");
     } else {
-      setError("");
-      window.location.href = "/p";
+      setError("Invalid email or password.");
+      console.log("Signin failed", res);
     }
   };
 
@@ -43,7 +48,7 @@ export default function SignIn() {
             </div>
             {error && <p>{error}</p>}
             <form
-              onSubmit={handleSubmit}
+              onSubmit={handleSignin}
               className="flex flex-col w-full px-8 justify-center items-center gap-4"
             >
               <Input
@@ -51,14 +56,22 @@ export default function SignIn() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Email"
+                required
               />
               <Input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Password"
+                required
               />
-              <button type="submit">Sign In</button>
+              <Button
+                className="clarabutton hover:bg-hoverRed w-full bg-red"
+                type="submit"
+              >
+                Sign In
+              </Button>
+              {error && <p style={{ color: "red" }}>{error}</p>}
             </form>
 
             <div className="flex w-full flex-col justify-center py-4 items-center gap-4">
@@ -100,7 +113,7 @@ export default function SignIn() {
           </div>
           {error && <p>{error}</p>}
           <form
-            onSubmit={handleSubmit}
+            onSubmit={handleSignin}
             className="flex flex-col w-full justify-center items-center gap-4"
           >
             <Input
@@ -108,14 +121,22 @@ export default function SignIn() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Email"
+              required
             />
             <Input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
+              required
             />
-            <button type="submit">Sign In</button>
+            <Button
+              className="clarabutton hover:bg-hoverRed w-full bg-red"
+              type="submit"
+            >
+              Sign In
+            </Button>
+            {error && <p style={{ color: "red" }}>{error}</p>}{" "}
           </form>
         </div>
         <BottomNavigation />
@@ -124,7 +145,8 @@ export default function SignIn() {
   );
 }
 
-{/* <Dialog className="p-0 w-full rounded-[24px]">
+{
+  /* <Dialog className="p-0 w-full rounded-[24px]">
   <DialogTrigger className="w-full p-0">
     <div className="flex w-full px-0 py-8">
       <Button className="w-full bg-red hover:bg-red clarabutton rounded-2xl shadow border-2 border-white">
@@ -174,7 +196,8 @@ export default function SignIn() {
       </DialogDescription>
     </DialogHeader>
   </DialogContent>
-</Dialog>; */}
+</Dialog>; */
+}
 
 // laptop Verification
 {
