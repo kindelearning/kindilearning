@@ -2,9 +2,6 @@
 import { hygraphClient } from "@/lib/hygraph";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { gql } from "graphql-request";
-import bcrypt from "bcryptjs";
-
 
 // queries/createUser.js
 export const CREATE_USER_MUTATION = `

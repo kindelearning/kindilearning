@@ -1,4 +1,5 @@
 import { gql, GraphQLClient } from "graphql-request";
+import bcrypt from "bcryptjs";
 
 const HYGRAPH_ENDPOINT =
   "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";
@@ -18,9 +19,7 @@ export default async function handler(req, res) {
 
     // Check if email and password are provided
     if (!email || !password) {
-      return res
-        .status(400)
-        .json({ error: "Email and password are required." });
+      return res.status(400).json({ error: "Email and password are required." });
     }
 
     try {
@@ -44,9 +43,9 @@ export default async function handler(req, res) {
         return res.status(401).json({ error: "Invalid email or password." });
       }
 
-      // Check the password (implement your password validation logic)
-      // This assumes passwords are not hashed; you should use a secure method
-      if (user.password !== password) {
+      // Check the hashed password
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+      if (!isPasswordValid) {
         return res.status(401).json({ error: "Invalid email or password." });
       }
 
@@ -54,7 +53,7 @@ export default async function handler(req, res) {
       res.status(200).json({ message: "Login successful!", user });
     } catch (error) {
       console.error("Sign in error:", error);
-      res.status(500).json({ error: "An error occurred during sign in." });
+      res.status(500).json({ error: "Internal Server Error" });
     }
   } else {
     res.setHeader("Allow", ["POST"]);
