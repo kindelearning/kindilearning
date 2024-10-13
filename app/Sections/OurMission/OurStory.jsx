@@ -1,8 +1,13 @@
+"use client";
+
 import NotFound from "@/app/not-found";
 import { Button } from "@/components/ui/button";
 import { getStandardPagesContent, getStoryData } from "@/lib/hygraph";
+import { useSession } from "next-auth/react";
 
 const OurStory = async () => {
+  const { data: session, status } = useSession();
+
   const standardPages = await getStandardPagesContent();
   console.log("Standard Pages Content: ", standardPages);
 
@@ -71,7 +76,8 @@ const OurStory = async () => {
             </div>
             <div className="w-full flex">
               <Button className="bg-[#ffffff] text-[#EEBA00] animate-fadeIn animate-delay-150 hover:bg-[#ffffff] hover:border-2  px-4 md:px-8 xl:px-12 border-2 clarabutton rounded-[10px]">
-                Get Started
+                {/* Get Started */}
+                {session ? "Upgrade" : "Get Started"}
               </Button>
             </div>
           </div>

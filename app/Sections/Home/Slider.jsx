@@ -107,7 +107,7 @@ const slides = [
 ];
 
 const Slider = () => {
-  // const { data: session, status } = useSession();
+  const { data: session, status } = useSession();
 
   const [loaded, setLoaded] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -208,8 +208,7 @@ const Slider = () => {
                   color: `#${slides[currentSlide].textcolor}`,
                 }}
               >
-                {/* {session ? "Upgrade" : "Get Started"} */}
-                Get Started
+                {session ? "Upgrade" : "Get Started"}
               </Button>
             </div>
           </div>

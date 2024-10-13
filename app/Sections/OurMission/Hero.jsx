@@ -1,11 +1,16 @@
+"use client";
+
 import NotFound from "@/app/not-found";
 import { Button } from "@/components/ui/button";
 import { getStoryData } from "@/lib/hygraph";
 import { HeroBGOurStoryTwo } from "@/public/Images";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import React from "react";
 
 export default async function Hero() {
+  const { data: session, status } = useSession();
+
   const stories = await getStoryData();
   console.log("Story Page Data (in component):", stories);
   if (!stories || !stories[0]?.theKindiMission) {
@@ -52,7 +57,8 @@ export default async function Hero() {
           </div>
           <div className="w-auto animate-slideInUp animate-delay-4000">
             <Button className="bg-red hover:bg-hoverRed clarabutton px-6 md:px-12 py-3 rounded-[16px] animate-fadeIn animate-delay-4500">
-              Get Started
+              {/* Get Started */}
+              {session ? "Upgrade" : "Get Started"}
             </Button>
           </div>
         </div>

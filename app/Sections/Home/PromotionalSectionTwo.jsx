@@ -1,10 +1,15 @@
+"use client";
+
 import NotFound from "@/app/not-found";
 import { Button } from "@/components/ui/button";
 import { getHomeData, getStandardPagesContent } from "@/lib/hygraph";
 import { HowItWorkVideo } from "@/public/Images";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 
 const PromotionalSectionTwo = async () => {
+  const { data: session, status } = useSession();
+
   const standardPages = await getStandardPagesContent();
   console.log("Standard Pages Content: ", standardPages);
   const homeData = await getHomeData();
@@ -87,7 +92,8 @@ const PromotionalSectionTwo = async () => {
             </div>
             <div className="w-full h-auto animate-fade-in">
               <Button className="bg-red hover:bg-hoverRed px-4 md:px-8 xl:px-12 border-2 clarabutton rounded-[16px]">
-                Get Started
+                {/* Get Started */}
+                {session ? "Upgrade" : "Get Started"}
               </Button>
             </div>
           </div>

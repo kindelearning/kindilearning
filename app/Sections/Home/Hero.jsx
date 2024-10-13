@@ -53,7 +53,7 @@ const ImageSlider = () => {
 };
 
 const Hero = async () => {
-  // const { data: session, status } = useSession();
+  const { data: session, status } = useSession();
   const homeData = await getHomeData();
   console.log("Home Page Data (in component):", homeData);
   if (!homeData || !homeData[0]?.hero) {
@@ -86,13 +86,12 @@ const Hero = async () => {
               </div>
             </div>
           </div>
-          <div /* href="#pricing_Section" */ className="w-auto animate-fade-in">
+          <div className="w-auto animate-fade-in">
             <Button
               onClick={() => (window.location.href = "#pricing_Section")}
               className="bg-red hover:bg-hoverRed clarabutton"
             >
-              {/* {session ? "Upgrade" : "Get Started"} */}
-              Get Started
+              {session ? "Upgrade" : "Get Started"}
             </Button>
           </div>
         </div>

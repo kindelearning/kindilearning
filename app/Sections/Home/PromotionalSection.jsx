@@ -7,7 +7,7 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 
 const PromotionalSection = async () => {
-  // const { data: session, status } = useSession();
+  const { data: session, status } = useSession();
 
   const homeData = await getHomeData();
   console.log("Home Page Data (in component):", homeData);
@@ -49,8 +49,8 @@ const PromotionalSection = async () => {
             </div>
             <div className="w-auto hover:pl-[4px] duration-200 h-auto animate-fade-in">
               <Button className="bg-[#ffffff] hover:bg-[white] text-[#029871] clarabutton">
-                {/* {session ? "Upgrade" : "Get Started"} */}
-                Get Started
+                {session ? "Upgrade" : "Get Started"}
+                {/* Get Started */}
               </Button>
             </div>
           </div>
