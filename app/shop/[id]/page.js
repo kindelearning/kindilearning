@@ -1,3 +1,5 @@
+"use client";
+
 import {
   ActivityImage,
   creditCard,
@@ -22,125 +24,161 @@ import Link from "next/link";
 import { Textarea } from "@/components/ui/textarea";
 import { ArrowRight } from "lucide-react";
 
-// // const AnimatedButton = () => {
-// //   const [isAnimating, setIsAnimating] = useState(false);
-// //   const [text, setText] = useState("Share your Review");
+// const AnimatedButton = () => {
+//   const [isAnimating, setIsAnimating] = useState(false);
+//   const [text, setText] = useState("Share your Review");
 
-// //   const handleButtonClick = () => {
-// //     setIsAnimating(true);
-// //     setTimeout(() => {
-// //       setText("Done");
-// //       setIsAnimating(false);
-// //     }, 2000);
-// //   };
+//   const handleButtonClick = () => {
+//     setIsAnimating(true);
+//     setTimeout(() => {
+//       setText("Done");
+//       setIsAnimating(false);
+//     }, 2000);
+//   };
 
-// //   return (
-// //     <div className="claracontainer w-full py-6 flex flex-col gap-4 justify-between items-center">
-// //       <Button
-// //         className={`w-[300px] flex flex-row gap-1 justify-center items-center bg-red rounded-[10px] shadow border-2 border-white ${
-// //           isAnimating ? "animate-button" : ""
-// //         }`}
-// //         onClick={handleButtonClick}
-// //       >
-// //         <ArrowRight
-// //           className={`transition-transform duration-2000 ${
-// //             isAnimating ? "animate-arrow" : ""
-// //           }`}
-// //         />
-// //         <span
-// //           className={`transition-opacity duration-1000 ${
-// //             isAnimating ? "opacity-80" : "opacity-100"
-// //           }`}
-// //         >
-// //           Share your Review
-// //         </span>
-// //         <span
-// //           className={`transition-opacity duration-1000 ${
-// //             isAnimating ? "opacity-0" : "hidden"
-// //           }`}
-// //         >
-// //           Done
-// //         </span>
-// //       </Button>
-// //     </div>
-// //   );
-// // };
+//   return (
+//     <div className="claracontainer w-full py-6 flex flex-col gap-4 justify-between items-center">
+//       <Button
+//         className={`w-[300px] flex flex-row gap-1 justify-center items-center bg-red rounded-[10px] shadow border-2 border-white ${
+//           isAnimating ? "animate-button" : ""
+//         }`}
+//         onClick={handleButtonClick}
+//       >
+//         <ArrowRight
+//           className={`transition-transform duration-2000 ${
+//             isAnimating ? "animate-arrow" : ""
+//           }`}
+//         />
+//         <span
+//           className={`transition-opacity duration-1000 ${
+//             isAnimating ? "opacity-80" : "opacity-100"
+//           }`}
+//         >
+//           Share your Review
+//         </span>
+//         <span
+//           className={`transition-opacity duration-1000 ${
+//             isAnimating ? "opacity-0" : "hidden"
+//           }`}
+//         >
+//           Done
+//         </span>
+//       </Button>
+//     </div>
+//   );
+// };
 
-// export async function generateStaticParams() {
-//   const uniqueParams = productData
-//     .map((post) => ({
-//       slug: slugify(post.title),
-//     }))
-//     .filter((value, index, self) => {
-//       return self.findIndex((v) => v.slug === value.slug) === index;
-//     });
+const ReviewForm = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [content, setContent] = useState("");
+  const [rating, setRating] = useState(0);
+  const [message, setMessage] = useState("");
 
-//   console.log("Generated Params:", uniqueParams);
-//   return uniqueParams;
-// }
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-// export default async function Page({ params }) {
-//   console.log("Received Params:", params);
-//   if (!params || !params.id) {
-//     return (
-//       <main>
-//         <h1>Params ID is null or undefined</h1>
-//         <p>Please check routing configuration and generateStaticParams</p>
-//       </main>
-//     );
-//   }
+    const reviewData = {
+      name,
+      email,
+      content,
+      rating: parseInt(rating, 10),
+    };
 
-//   const post = productData.find((b) => slugify(b.title) === params.id);
+    try {
+      const response = await fetch("/api/reviews", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(reviewData),
+      });
 
-//   if (!post) {
-//     return (
-//       <section className="w-full h-auto bg-[#EAEAF5] items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">
-//         <div className="claracontainer p-4 md:p-8 xl:p-12 w-full flex flex-col md:flex-col lg:flex-row overflow-hidden gap-8">
-//           <Image alt="Kindi" src={NotFoundImg} />
-//           <div className="flex w-full flex-col justify-start items-start gap-4">
-//             <div className="flex flex-col w-full justify-start items-start gap-4">
-//               <div className="w-full">
-//                 <span className="text-[#3f3a64] text-4xl font-normal font-fredoka leading-[45px]">
-//                   404 Error!
-//                   <br />
-//                 </span>
-//                 <span className="text-red text-4xl font-normal font-fredoka leading-[45px]">
-//                   Opps... This page is taking a little nap!{" "}
-//                 </span>
-//               </div>
-//             </div>
-//             <div className="w-[460px] h-[203px]">
-//               <span className="text-[#696969] text-lg font-semibold font-['Fredoka'] leading-[21px]">
-//                 This page isn’t quite ready to play right now. While you’re
-//                 here:
-//                 <br />
-//               </span>
-//               <span className="text-[#696969] text-lg font-normal font-['Fredoka'] leading-[21px]">
-//                 <br />
-//               </span>
-//               <span className="text-[#696969] text-lg font-normal font-['Fredoka'] leading-[21px]">
-//                 Try searching for the page again
-//                 <br />
-//                 Return to our homepage, or
-//                 <br />
-//                 Take a quick detour to explore some fun activities for your
-//                 toddler!
-//                 <br />
-//               </span>
-//               <span className="text-[#696969] text-lg font-normal font-['Fredoka'] leading-[21px]">
-//                 <br />
-//               </span>
-//             </div>
-//             <p>Could not find requested resource</p>
-//             <Link href="/">Return Home</Link>
-//           </div>
-//         </div>
-//       </section>
-//     );
-//   }
+      const data = await response.json();
 
-import { getProductById } from "@/lib/hygraph";
+      if (!response.ok) {
+        setMessage(
+          `Failed to submit review: ${data.message || "Unknown error"}`
+        );
+        return;
+      }
+
+      setMessage("Review submitted successfully!");
+      setName("");
+      setEmail("");
+      setContent("");
+      setRating(0);
+    } catch (error) {
+      console.error("Error submitting review:", error);
+      setMessage("Failed to submit review. Please try again.");
+    }
+  };
+
+  return (
+    <form className="w-full flex flex-col justify-center items-center" onSubmit={handleSubmit}>
+      <div className="claracontainer w-full py-6 flex flex-row gap-4 justify-between items-start">
+        <Image
+          alt="Kindi"
+          src={ShopImage}
+          className="w-[260px] hidden lg:flex h-[200px]"
+        />
+        <div className="flex w-full flex-col gap-2 justify-start items-start claracontainer">
+          {/* <div className="text-start text-[#3f3a64] text-[20px] lg:text-4xl font-semibold font-fredoka capitalize">
+              Wooden geometrical montessori puzzle
+            </div>
+            <div className="text-[#757575] text-[16px] lg:text-2xl text-start font-light font-fredoka">
+              Lorem ipsum dolor sit amet consectetur. At lectus diam a sit
+              aliquet sollicitudin sagittis volutpat....
+            </div> */}
+          <div className="claracontainer w-full flex flex-col gap-2 justify-between items-start">
+            <div className="w-full text-[#3f3a64] clarabodyTwo font-fredoka capitalize">
+              Add your Comments
+            </div>{" "}
+            <Textarea
+              placeholder="Add your review..."
+              className="w-full p-4 text=[#0f172a] py-4 text-start rounded-lg border-2 border-[#b4b4b4] justify-center items-center gap-2.5 inline-flex"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              required
+            />
+            <Input
+              type="number"
+              placeholder="Rating"
+              value={rating}
+              className="border-2 border-[#b4b4b4] "
+              onChange={(e) => setRating(e.target.value)}
+              min="1"
+              max="5"
+              required
+            />
+          </div>
+          <div className="flex flex-col justify-start items-start w-full">
+            <div className="text-center text-red text-[12px] lg:text-[20px] font-bold font-['Montserrat']">
+              Give us Rating out of 5-Stars
+            </div>
+            <div className="flex gap-1">
+              <Image src={Ratings} alt="Rating" />
+              <Image src={Ratings} alt="Rating" />
+              <Image src={Ratings} alt="Rating" />
+              <Image src={Ratings} alt="Rating" />
+              <Image src={Ratings} alt="Rating" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <Button className="clarabutton bg-red hover:bg-hoverRed" type="submit">
+        Submit Review
+      </Button>
+      {message && <p>{message}</p>}
+    </form>
+  );
+};
+
+import { getProductById, submitReview } from "@/lib/hygraph";
 import NotFound from "@/app/not-found";
+import { useState } from "react";
+import { Input } from "@/components/ui/input";
 
 export default async function ProductDetailPage({ params }) {
   const { id } = params;
@@ -162,9 +200,7 @@ export default async function ProductDetailPage({ params }) {
           {/* Row 1 */}
           <div className="flex w-full flex-col md:flex-col lg:flex-row xl:flex-row gap-8 justify-between items-start">
             {/* column1 */}
-            {/* <div className="claracontainer min-w-[52%] flex flex-col gap-4 justify-center items-center w-full"> */}
             <div className="claracontainer py-0 flex flex-col justify-between items-start gap-8">
-              
               <ProductImages
                 images={product.productImages.map((img) => img.url)}
               />
@@ -261,61 +297,21 @@ export default async function ProductDetailPage({ params }) {
               <div className="text-[#0a1932] text-[20px] lg:text-[28px]  font-semibold font-fredoka text-start w-full leading-loose">
                 Customer Reviews
               </div>
-              <Dialog className="w-full flex justify-center items-center">
+              <Dialog className="w-full flex flex-col justify-center items-center">
                 <DialogTrigger className="text-red w-full text-end text-xl font-semibold font-fredoka leading-none">
                   {" "}
                   Write a Review
                 </DialogTrigger>
                 <DialogContent className="claracontainer w-full rounded-[24px] gap-6 min-h-[600px] justify-start items-start px-4">
-                  <DialogHeader>
-                    <DialogTitle>
+                  <DialogHeader className="w-full">
+                    <DialogTitle className="w-full">
                       {" "}
                       <div className="text-center text-red claraheading font-semibold capitalize ">
                         Write a Review
                       </div>
                     </DialogTitle>
-                    <DialogDescription>
-                      <div className="claracontainer w-full py-6 flex flex-row gap-4 justify-between items-start">
-                        <Image
-                          alt="Kindi"
-                          src={ShopImage}
-                          className="w-[260px] hidden lg:flex h-[200px]"
-                        />
-                        <div className="flex w-full flex-col gap-2 justify-start items-start claracontainer">
-                          <div className="text-start text-[#3f3a64] text-[20px] lg:text-4xl font-semibold font-fredoka capitalize">
-                            Wooden geometrical montessori puzzle
-                          </div>
-                          <div className="text-[#757575] text-[16px] lg:text-2xl text-start font-light font-fredoka">
-                            Lorem ipsum dolor sit amet consectetur. At lectus
-                            diam a sit aliquet sollicitudin sagittis
-                            volutpat....
-                          </div>
-                          <div className="flex flex-col justify-start items-start w-full">
-                            <div className="text-center text-red text-[12px] lg:text-[20px] font-bold font-['Montserrat']">
-                              Give us Rating out of 5-Stars
-                            </div>
-                            <div className="flex gap-1">
-                              <Image src={Ratings} alt="Rating" />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="claracontainer w-full py-6 flex flex-col gap-2 justify-between items-start">
-                        <div className="w-full text-[#3f3a64] text-2xl lg:text-4xl font-semibold text-start font-fredoka capitalize leading-10">
-                          add your Comments
-                        </div>{" "}
-                        <Textarea
-                          placeholder="Lorem ipsum dolor sit amet consectetur. In elementum in tempus massa tellus nullam nulla quis. Sed volutpat id mi ut diam. Faucibus lectus sit quam nascetur diam donec pharetra fermentum semper.."
-                          className="w-full p-4 text=[#0f172a] py-4 text-start rounded-lg border-2 border-[#b4b4b4] justify-center items-center gap-2.5 inline-flex"
-                        />
-                      </div>
-                      {/* <div className="claracontainer w-full py-6 flex flex-col gap-4 justify-between items-center">
-                        <Button className="w-[300px] flex flex-row gap-1 justify-center items-center bg-red rounded-[10px] shadow border-2 border-white">
-                          <ArrowRight />
-                          Share your Review
-                        </Button>
-                      </div> */}
-                      <Button>Drop Review</Button>
+                    <DialogDescription className="w-full">
+                      <ReviewForm />
                     </DialogDescription>
                   </DialogHeader>
                 </DialogContent>
