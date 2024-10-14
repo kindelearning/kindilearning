@@ -5,6 +5,7 @@ import {
   ActivityCard,
   DiscoveringOurWorldActivity,
   ExperimentsMathActivity,
+  KindiHeart,
   ReadingWritingActivity,
   SpeechLanguageActivity,
 } from "@/public/Images";
@@ -27,7 +28,6 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Badge } from "@/components/ui/badge";
@@ -87,6 +87,16 @@ const filters = [
   },
 ];
 
+const IconBadge = ({ icon, backgroundColor = "f05c5c" }) => {
+  return (
+    <div
+      className={`w-[50px] h-[50px] flex justify-center items-center bg-[#${backgroundColor}] rounded-[16px]`}
+    >
+      <Image alt="Kindi" src={icon || KindiHeart} />
+    </div>
+  );
+};
+
 const ExtraIconBadge = ({ totalIcons, backgroundColor = "f05c5c" }) => {
   if (totalIcons <= 4) return null;
 
@@ -140,7 +150,7 @@ const LocalActivity = ({
             />
           </div>
           <div className="w-full py-4 flex-col justify-start px-4 items-start flex gap-2 md:gap-2 lg:gap-4">
-            <div className="flex-col gap-[6px] justify-start items-start">
+            <div className="flex-col gap-[6px] w-full justify-start items-start">
               <div className="text-[#0a1932] text-[16px] md:text-xl font-semibold font-fredoka leading-[20px]">
                 {title || "Autumn Colors Leaf Wheel"}
               </div>
@@ -158,13 +168,13 @@ const LocalActivity = ({
                 ))}
               </div>
             </div>
+
             <GridContainer className="items-center justify-center gap-2 md:gap-4 grid grid-cols-3 md:grid-cols-5">
               <Image src={SpeechLanguageActivity} />
               <Image src={DiscoveringOurWorldActivity} />
               <Image src={ReadingWritingActivity} />
               <Image src={ExperimentsMathActivity} />
               <ExtraIconBadge />
-              {/* {icons?.map((icon, index) => ())} */}
             </GridContainer>
           </div>
         </div>
@@ -404,11 +414,47 @@ export default async function ActivitiesPage() {
                         console.log("Clicked Blog:", LocalActivity)
                       }
                     >
-                      <LocalActivity
-                        images={activity.thumbnail.url}
-                        alt={activity.title}
-                        title={activity.title}
-                      />
+                      <div className="w-full min-w-[160px] h-auto bg-white items-start justify-start border rounded-3xl flex flex-col md:flex-row gap-4">
+                        <div className="claracontainer w-full flex-col justify-start items-center gap-7 inline-flex">
+                          <div className="w-full max-w-full h-auto  ">
+                            <div className="flex  max-h-[180px] lg:min-h-[276px] lg:h-full lg:max-h-[276px] md:max-h-[300px]  overflow-clip rounded-t-3xl ">
+                              <Image
+                                width={280}
+                                height={250}
+                                alt={activity.title}
+                                className="w-full max-h-[180px] duration-300 hover:scale-105 lg:min-h-[276px] lg:h-full lg:max-h-[276px] md:max-h-[300px] object-cover rounded-t-3xl "
+                                src={activity.thumbnail.url}
+                              />
+                            </div>
+                            <div className="w-full py-4 flex-col justify-start px-4 items-start flex gap-2 md:gap-2 lg:gap-4">
+                              <div className="flex-col w-full gap-[6px] justify-start items-start">
+                                <div className="text-[#0a1932] text-[16px] md:text-xl font-semibold font-fredoka leading-[20px]">
+                                  {activity.title}
+                                </div>
+                                <div className="justify-start w-full items-center gap-2 inline-flex">
+                                  <div lassName="text-[#0a1932] min-w-[max-content] px-4 clarabodyTwo leading-none">
+                                    {activity.setUpTime}
+                                  </div>
+                                  <ul className="text-[#0a1932] justify-between items-center gap-6 flex px-4 text-[16px] font-normal font-fredoka list-disc leading-none">
+                                    {activity.skills
+                                      .slice(0, 2)
+                                      .map((skill, index) => (
+                                        <li key={index}>{skill.slice(0,10)}</li>
+                                      ))}
+                                  </ul>
+                                </div>
+                              </div>
+                              <GridContainer className="items-center justify-center gap-2 md:gap-4 grid grid-cols-3 md:grid-cols-5">
+                                <Image src={SpeechLanguageActivity} />
+                                <Image src={DiscoveringOurWorldActivity} />
+                                <Image src={ReadingWritingActivity} />
+                                <Image src={ExperimentsMathActivity} />
+                                <ExtraIconBadge />
+                              </GridContainer>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </Link>
                   </article>
                 </div>
