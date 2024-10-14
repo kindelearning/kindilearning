@@ -23,7 +23,8 @@ const OurPricing = async () => {
   }
   return (
     <>
-      <section id="pricing_Section"
+      <section
+        id="pricing_Section"
         className="w-full h-auto bg-[#EAEAF5] py-12 items-center justify-center flex flex-col gap-[20px] transition-all duration-500"
         style={{
           animation: "fadeIn 1s ease-in-out",
@@ -112,6 +113,7 @@ const OurPricing = async () => {
             >
               <PricingCard
                 title="Family"
+                paymentLink="https://buy.stripe.com/6oEbKT0yJa5qbPG28h"
                 description="No more guesswork! Unlock your child’s full potential with our affordable Milestone Tracker—an essential tool for every parent. Ensure your child gets the right support when they need it, keeping them on track and maximizing their brain growth effortlessly."
                 price="$19.99"
                 duration="/Yearly"
@@ -126,6 +128,7 @@ const OurPricing = async () => {
               />
               <PricingCard
                 title="Family Plus"
+                paymentLink="https://buy.stripe.com/aEU6qz6X7elG1b2aEI"
                 description="Unlock the secrets to child success with our engaging learning activities that turn playtime into brain time. Expertly designed to stimulate brain development through easy-to-follow guided play, you’ll build a strong foundation for lifelong success. Watch your child thrive with confidence—start today!"
                 price="$19.99"
                 duration="/Yearly"
@@ -140,6 +143,7 @@ const OurPricing = async () => {
               />
               <PricingCard
                 image={ProfessionalThumb}
+                paymentLink="https://buy.stripe.com/fZe2ajepz3H2cTKbIO"
                 title="Professional"
                 description="Enhance children’s development and simplify your workload with Kindi Professional. Our ready-to-use, play-based education activities and professional development resources equip educators to provide every child and family with the outstanding support they need for a bright and successful future."
                 price="$19.99"
@@ -165,6 +169,7 @@ const OurPricing = async () => {
             >
               <PricingCard
                 title="Annual Family Plus"
+                paymentLink="https://buy.stripe.com/5kAdT14OZelG9HydQY"
                 description="No more guesswork! Unlock your child’s full potential with our affordable Milestone Tracker—an essential tool for every parent. Ensure your child gets the right support when they need it, keeping them on track and maximizing their brain growth effortlessly."
                 price="$19.99"
                 duration="/Yearly"
@@ -182,6 +187,7 @@ const OurPricing = async () => {
                 description="Enhance children’s development and simplify your workload with Kindi Professional. Our ready-to-use, play-based education activities and professional development resources equip educators to provide every child and family with the outstanding support they need for a bright and successful future."
                 price="$19.99"
                 duration="/Yearly"
+                paymentLink="https://buy.stripe.com/4gw7uD1CNgtOf1SdQX"
                 services={["Custom Service 1", "Custom Service 2"]}
                 isOpen={true}
                 image={FamilyPlusThumb}
@@ -192,6 +198,7 @@ const OurPricing = async () => {
                 }}
               />
               <PricingCard
+                paymentLink="https://buy.stripe.com/00g02bgxH7Xi6vm8wB"
                 image={ProfessionalThumb}
                 title="Annual Family"
                 description="Enhance children’s development and simplify your workload with Kindi Professional. Our ready-to-use, play-based education activities and professional development resources equip educators to provide every child and family with the outstanding support they need for a bright and successful future."

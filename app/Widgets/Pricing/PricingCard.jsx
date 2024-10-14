@@ -11,6 +11,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import Link from "next/link";
 
 const AccordianList = ({
   text = "I am the List item",
@@ -59,12 +60,13 @@ const PricingCard = ({
   duration = "/Monthly",
   services = ["Service 1", "Service 2", "Service 3"],
   isOpen = false,
+  paymentLink,
   isActive = [false, true, false],
 }) => {
   const [isAccordionOpen, setIsAccordionOpen] = useState(isOpen);
 
   return (
-    <div className="w-full max-w-[360px] h-auto bg-[#ffffff] rounded-[32px] items-center justify-center flex flex-col gap-[20px] ">
+    <Link target="_blank" href={paymentLink} className="w-full max-w-[360px] h-auto bg-[#ffffff] rounded-[32px] items-center justify-center flex flex-col gap-[20px] ">
       <Image src={image || PricingThumb} alt="Pricing Image" />
       <div className="flex flex-col justify-normal items-start px-4 py-8">
         <div className="flex flex-col gap-6 justify-normal items-start px-4">
@@ -119,7 +121,7 @@ const PricingCard = ({
           </p>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 
