@@ -132,12 +132,30 @@ export default function Schedule() {
                 <Button className="clarabutton bg-red hover:bg-hoverRed">
                   Click here to Upgrade
                 </Button>
-                <p className="font-fredoka">Curruntly Logged in as: {profileData.email}</p>
-
+                <p className="font-fredoka">
+                  Curruntly Logged in as: {profileData.email}
+                </p>
               </Link>
             )
           ) : (
-            <p>Loading user data...</p>
+            <>
+              Loading user data...
+              <Link
+                href="/#pricing_Section"
+                className="claracontainer gap-2 flex-col h-[50vh] flex justify-center items-center"
+                title="User Not Subscribed"
+              >
+                <span className="clarabodyTwo text-purple">
+                  Please upgrade to access the Activity Scheduler
+                </span>
+                <Button className="clarabutton bg-red hover:bg-hoverRed">
+                  Click here to Upgrade
+                </Button>
+                <p className="font-fredoka">
+                  Curruntly Logged in as: {profileData.email}
+                </p>
+              </Link>
+            </>
           )}
         </div>
       </section>
