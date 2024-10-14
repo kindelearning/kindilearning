@@ -2,10 +2,8 @@
 
 import React, { useState } from "react";
 import {
-  ActivityCard,
   DiscoveringOurWorldActivity,
   ExperimentsMathActivity,
-  KindiHeart,
   ReadingWritingActivity,
   SpeechLanguageActivity,
 } from "@/public/Images";

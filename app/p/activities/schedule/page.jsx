@@ -85,30 +85,15 @@ export default function Schedule() {
             </div>
           </div>
 
-          {/* {profileData.isVerified ? (
-            <>
-              <div className="claracontainer md:p-0 p-0 py-4 w-full flex flex-col overflow-hidden gap-8">
-                <div className="flex lg:hidden">
-                  <NewCalendar />
-                </div>
-                <div className="lg:flex hidden">
-                  <KindiCalendar />
-                </div>
-              </div>
-            </>
-          ) : (
-            <Link
-              href="/#pricing_Section"
-              className="claracontainer flex-col h-[50vh] flex justify-center items-center"
-              title="User Not Subscribed"
-            >
-              <span className="clarabodyTwo text-purple">
-                Please upgrade to access the Activity Schedular
-              </span>
-              <Button className="clarabutton bg-red hover:bg-hoverRed"> Click here to Upgrade</Button>
-            </Link>
-          )} */}
-          {profileData ? (
+          <div className="claracontainer md:p-0 p-0 py-4 w-full flex flex-col overflow-hidden gap-8">
+            <div className="flex lg:hidden">
+              <NewCalendar />
+            </div>
+            <div className="lg:flex hidden">
+              <KindiCalendar />
+            </div>
+          </div>
+          {/* {profileData ? (
             profileData.isVerified ? (
               <>
                 <div className="claracontainer md:p-0 p-0 py-4 w-full flex flex-col overflow-hidden gap-8">
@@ -156,7 +141,7 @@ export default function Schedule() {
                 </p>
               </Link>
             </>
-          )}
+          )} */}
         </div>
       </section>
     </>

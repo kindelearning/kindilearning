@@ -23,7 +23,7 @@ const icons = [
     color: "#ff8e00",
   },
 ];
-const Calendar = ({ backgroundColor }) => {
+const Calendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [data, setData] = useState(initialValue);
   const [events, setEvents] = useState([
