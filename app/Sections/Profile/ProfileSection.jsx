@@ -235,9 +235,34 @@ const ProfileSection = async () => {
             <div className="flex flex-row justify-between items-center w-full">
               {profileData ? (
                 <div className="flex flex-col w-full justify-start items-start">
-                  <h2 className="text-[#029871] text-[24px] md:text-[28px] lg:text-[32px] xl:text-[40px] font-semibold  font-fredoka leading-tight">
-                    {profileData.name}
-                  </h2>
+                  <div className="flex gap-1 items-center w-full justify-start">
+                    <h2 className="text-[#029871] text-[24px] md:text-[28px] lg:text-[32px] xl:text-[40px] font-semibold  font-fredoka leading-tight">
+                      {profileData.name}
+                    </h2>
+                    {profileData.isVerified && (
+                      <span
+                        className="ml-2 text-[#255825]"
+                        title="Verified User"
+                      >
+                        {/* ✔️ */}
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="#029871"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          class="lucide lucide-badge-check"
+                        >
+                          <path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z" />
+                          <path d="m9 12 2 2 4-4" />
+                        </svg>{" "}
+                      </span>
+                    )}
+                  </div>
                   <p className="font-fredoka">Email: {profileData.email}</p>
                 </div>
               ) : (

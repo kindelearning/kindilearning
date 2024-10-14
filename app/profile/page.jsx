@@ -24,15 +24,6 @@ export default async function ProfilePage() {
   }
   return (
     <>
-      {/* <p>
-        <strong>Name:</strong> {session.user.name}
-      </p>
-      <p>
-        <strong>Email:</strong> {session.user.email}
-      </p>
-      <p>
-        <strong>Username:</strong> {session.user.username}
-      </p> */}
       <section className="w-full pb-32 bg-[#EAEAF5] flex flex-col gap-0 justify-center items-start">
         <ProfileSection />
       </section>
