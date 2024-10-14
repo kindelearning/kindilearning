@@ -67,11 +67,33 @@ const CheckBoxFilter = () => {
 const filters = [
   {
     label: "Select Learning Area",
-    options: ["Option 1", "Option 2", "Option 3"],
+    options: [
+      "Emotional & Social Strength",
+      "Confidence & Independence",
+      "Speech & Language",
+      "Physical Agility",
+      "Reading & Writing",
+      "Discovering Our World",
+      "Creativity & Imagination",
+      "Experiments & Math",
+    ],
   },
   {
     label: "Select Skill Category",
-    options: ["Option 1", "Option 2", "Option 3"],
+    options: [
+      "Sensory Development",
+      "Mastering Feelings",
+      "Listening & Talking",
+      "Problem-solving & Independence",
+      "Social Play",
+      "Fine Motor",
+      "GROSS MOTOR",
+      "Pretend Play",
+      "Crafts",
+      "Exploring the Seasons",
+      "Outdoors & Nature",
+      "Rainy Day Play",
+    ],
   },
   {
     label: "Select Theme",
@@ -79,11 +101,11 @@ const filters = [
   },
   {
     label: "Select Age Focus",
-    options: ["Option 1", "Option 2", "Option 3"],
+    options: ["BABY", "TODDLER", "PRE-SCHOOLER", "KINDI"],
   },
   {
     label: "Select Prep Time",
-    options: ["Option 1", "Option 2", "Option 3"],
+    options: ["5 Minutes", "10 Minutes", "10+ Minutes"],
   },
 ];
 
@@ -432,14 +454,16 @@ export default async function ActivitiesPage() {
                                   {activity.title}
                                 </div>
                                 <div className="justify-start w-full items-center gap-2 inline-flex">
-                                  <div lassName="text-[#0a1932] min-w-[max-content] px-4 clarabodyTwo leading-none">
+                                  <div className="text-[#0a1932] min-w-[max-content] pl-2 clarabodyTwo leading-none">
                                     {activity.setUpTime}
                                   </div>
                                   <ul className="text-[#0a1932] justify-between items-center gap-6 flex px-4 text-[16px] font-normal font-fredoka list-disc leading-none">
                                     {activity.skills
                                       .slice(0, 2)
                                       .map((skill, index) => (
-                                        <li key={index}>{skill.slice(0,10)}</li>
+                                        <li key={index}>
+                                          {skill.slice(0, 10)}
+                                        </li>
                                       ))}
                                   </ul>
                                 </div>
@@ -490,22 +514,25 @@ export default async function ActivitiesPage() {
                   FILTER ACTIVITIES BY Days
                 </div>
                 <div className="grid grid-cols-2 justify-between gap-2 items-center w-full">
-                  <CheckBoxFilter />
+                  {Days.map((day) => (
+                    <div
+                      key={day.value}
+                      className="flex items-center space-x-2"
+                    >
+                      <Checkbox
+                        id={`day-${day.value}`}
+                        className="text-red border-2 bg-[white] border-red w-[24px] h-[24px]"
+                      />
+                      <label
+                        htmlFor={`day-${day.value}`}
+                        className="w-full text-[#3f3a64] text-base font-fredoka leading-[13px] font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                      >
+                        {day.label}
+                      </label>
+                    </div>
+                  ))}
                 </div>
               </div>
-              {/* <div className="flex w-full justify-center items-start gap-4 flex-col">
-                <div className="text-[#3f3a64] text-2xl font-semibold text-start font-fredoka uppercase leading-[28px]">
-                  Calendar{" "}
-                </div>
-                <div className="flex justify-between gap-2 items-center w-full">
-                  <Calendar
-                    mode="single"
-                    selected={date}
-                    onSelect={setDate}
-                    className="rounded-md bg-white border"
-                  />
-                </div>
-              </div> */}
             </div>
           </div>
         </div>
