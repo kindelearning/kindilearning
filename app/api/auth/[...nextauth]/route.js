@@ -1,8 +1,6 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { GraphQLClient, gql } from "graphql-request";
-import { NextResponse } from "next/server";
-import bcrypt from "bcryptjs";
 
 const HYGRAPH_ENDPOINT =
   "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";
@@ -18,16 +16,6 @@ const client = new GraphQLClient(endpoint, {
   },
 });
 
-const SIGNIN_USER_QUERY = gql`
-  query SigninUser($email: String!) {
-    account(where: { email: $email }) {
-      id
-      email
-      password
-    }
-  }
-`;
-
 const GET_USER_BY_EMAIL = gql`
   query GetUserByEmail($email: String!) {
     account(where: { email: $email }) {
@@ -39,22 +27,53 @@ const GET_USER_BY_EMAIL = gql`
   }
 `;
 
-const CREATE_USER = gql`
-  mutation CreateAccount(
-    $email: String!
-    $username: String!
-    $password: String!
-  ) {
-    createAccount(
-      data: { email: $email, username: $username, password: $password }
-    ) {
-      id
-    }
-  }
-`;
+// const handler = NextAuth({
+//   secret: process.env.NEXTAUTH_SECRET,
+//   providers: [
+//     CredentialsProvider({
+//       name: "Credentials",
+//       credentials: {
+//         email: { label: "Email", type: "text" },
+//         password: { label: "Password", type: "password" },
+//       },
+//       async authorize(credentials) {
+//         const { email, password } = credentials;
+//         try {
+//           console.log("Attempting to authenticate:", { email, password });
+//           const { account } = await client.request(GET_USER_BY_EMAIL, {
+//             email,
+//           });
+//           console.log("Fetched account from Hygraph:", account);
 
+//           // Check if user exists and password matches
+//           if (account && account.password === password) {
+//             console.log("Authentication successful");
+//             return {
+//               id: account.id,
+//               name: account.username,
+//               email: account.email,
+//             };
+//           } else {
+//             // Invalid credentials
+//             console.log("Authentication failed: Invalid email or password.");
+//             return null;
+//             // throw new Error("Invalid email or password.");
+//           }
+//         } catch (error) {
+//           console.error("Error in authentication:", error);
+//           return null;
+//         }
+//       },
+//     }),
+//   ],
+//   pages: {
+//     signIn: "/auth/signin",
+//   },
+// });
 
-const handler = NextAuth({
+// export { handler as GET, handler as POST };
+
+export const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
     CredentialsProvider({
@@ -84,7 +103,6 @@ const handler = NextAuth({
             // Invalid credentials
             console.log("Authentication failed: Invalid email or password.");
             return null;
-            // throw new Error("Invalid email or password.");
           }
         } catch (error) {
           console.error("Error in authentication:", error);
@@ -96,6 +114,8 @@ const handler = NextAuth({
   pages: {
     signIn: "/auth/signin",
   },
-});
+};
+
+const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };

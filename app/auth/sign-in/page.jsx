@@ -86,7 +86,7 @@ export default function SignIn() {
             </div>
             <div className="w-[max-content] justify-end items-start text-center">
               <span className="text-[#0a1932] text-sm font-medium font-fredoka leading-tight">
-                Don't have an account.{" "}
+                Don&apos;t have an account.{" "}
               </span>
               <Link
                 href="/auth/sign-up"
