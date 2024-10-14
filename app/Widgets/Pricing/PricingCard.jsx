@@ -12,6 +12,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 const AccordianList = ({
   text = "I am the List item",
@@ -63,10 +64,12 @@ const PricingCard = ({
   paymentLink,
   isActive = [false, true, false],
 }) => {
+  const { data: session, status } = useSession();
+
   const [isAccordionOpen, setIsAccordionOpen] = useState(isOpen);
 
   return (
-    <Link target="_blank" href={paymentLink} className="w-full max-w-[360px] h-auto bg-[#ffffff] rounded-[32px] items-center justify-center flex flex-col gap-[20px] ">
+    <div className="w-full max-w-[360px] h-auto bg-[#ffffff] rounded-[32px] items-center justify-center flex flex-col gap-[20px] ">
       <Image src={image || PricingThumb} alt="Pricing Image" />
       <div className="flex flex-col justify-normal items-start px-4 py-8">
         <div className="flex flex-col gap-6 justify-normal items-start px-4">
@@ -110,9 +113,20 @@ const PricingCard = ({
           </Button>
         </div>
         <div className="flex w-full flex-row justify-between gap-4 items-center px-4">
-          <Button className="bg-red py-2 px-6 rounded-[12px] text-white hover:border-hoverRed hover:bg-hoverRed clarabutton">
-            Get Started
-          </Button>
+          {session ? (
+            <Link target="_blank" href={paymentLink}>
+              <Button className="bg-red py-2 px-6 rounded-[12px] text-white hover:border-hoverRed hover:bg-hoverRed clarabutton">
+                Upgrade
+              </Button>
+            </Link>
+          ) : (
+            <Link target="_blank" href="/auth/sign-up">
+              <Button className="bg-red py-2 px-6 rounded-[12px] text-white hover:border-hoverRed hover:bg-hoverRed clarabutton">
+                Get Started
+              </Button>
+            </Link>
+          )}
+
           <p className="text-4xl flex flex-col justify-end items-end font-semibold font-fredoka text-end text-red">
             {price}
             <span className="text-center text-[#3f3a64] text-[13px] font-normal font-montserrat leading-tight">
@@ -121,7 +135,7 @@ const PricingCard = ({
           </p>
         </div>
       </div>
-    </Link>
+    </div>
   );
 };
 
