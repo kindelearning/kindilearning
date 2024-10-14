@@ -43,27 +43,6 @@ const Days = [
   { value: 7, label: "Saturday" },
 ];
 
-const CheckBoxFilter = () => {
-  return (
-    <>
-      {Days.map((day) => (
-        <div key={day.value} className="flex items-center space-x-2">
-          <Checkbox
-            id={`day-${day.value}`}
-            className="text-red border-2 bg-[white] border-red w-[24px] h-[24px]"
-          />
-          <label
-            htmlFor={`day-${day.value}`}
-            className="w-full text-[#3f3a64] text-base font-fredoka leading-[13px] font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-          >
-            {day.label}
-          </label>
-        </div>
-      ))}
-    </>
-  );
-};
-
 const filters = [
   {
     label: "Select Learning Area",
@@ -108,102 +87,6 @@ const filters = [
     options: ["5 Minutes", "10 Minutes", "10+ Minutes"],
   },
 ];
-
-const IconBadge = ({ icon, backgroundColor = "f05c5c" }) => {
-  return (
-    <div
-      className={`w-[50px] h-[50px] flex justify-center items-center bg-[#${backgroundColor}] rounded-[16px]`}
-    >
-      <Image alt="Kindi" src={icon || KindiHeart} />
-    </div>
-  );
-};
-
-const ExtraIconBadge = ({ totalIcons, backgroundColor = "f05c5c" }) => {
-  if (totalIcons <= 4) return null;
-
-  return (
-    <div
-      className={`w-[20px] lg:w-[48px] lg:h-[48px] h-[20px] flex lg:rounded-[12px] justify-center items-center bg-[#F6BEBF] rounded-[4px]`}
-    >
-      <span className="text-red p-[2px] text-[12px] lg:text-[20px] font-medium font-fredoka">
-        +{totalIcons - 4}
-      </span>
-    </div>
-  );
-};
-
-const GridContainer = ({ children, className }) => {
-  const totalIcons = React.Children.count(children);
-  const visibleIcons = totalIcons > 4 ? 4 : totalIcons;
-
-  return (
-    <div
-      className={`items-center scrollbar-hidden justify-center grid grid-cols-5 md:grid-cols-5 ${className}`}
-    >
-      {[...React.Children.toArray(children)]
-        .slice(0, visibleIcons)
-        .map((child, index) => (
-          <React.Fragment key={index}>{child}</React.Fragment>
-        ))}
-      {totalIcons > 4 && <ExtraIconBadge totalIcons={totalIcons} />}
-    </div>
-  );
-};
-
-const LocalActivity = ({
-  images,
-  title,
-  time,
-  tags = ["df", "kindi"],
-  icons,
-}) => {
-  return (
-    <div className="w-full min-w-[160px] h-auto bg-white items-start justify-start border rounded-3xl flex flex-col md:flex-row gap-4">
-      <div className="claracontainer w-full flex-col justify-start items-center gap-7 inline-flex">
-        <div className="w-full max-w-full h-auto  ">
-          <div className="flex overflow-clip rounded-t-3xl ">
-            <Image
-              width={280}
-              height={250}
-              alt="Kindi"
-              className="w-full max-h-[180px] duration-300 hover:scale-105 lg:min-h-[250px] lg:max-h-[276px] md:max-h-[300px] object-cover rounded-t-3xl "
-              src={images || ActivityCard}
-            />
-          </div>
-          <div className="w-full py-4 flex-col justify-start px-4 items-start flex gap-2 md:gap-2 lg:gap-4">
-            <div className="flex-col gap-[6px] w-full justify-start items-start">
-              <div className="text-[#0a1932] text-[16px] md:text-xl font-semibold font-fredoka leading-[20px]">
-                {title || "Autumn Colors Leaf Wheel"}
-              </div>
-              <div className="justify-start w-full items-center gap-2 inline-flex">
-                <div className="text-[#0a1932] w-[max-content] text-[10px] md:text-[20px] font-normal font-fredoka leading-normal">
-                  {time || "5 minutes"}
-                </div>
-                {tags?.map((tag, index) => (
-                  <React.Fragment key={index}>
-                    <div className="w-1 h-1 bg-[#e3e3e3] rounded-full" />
-                    <div className="text-[#0a1932] w-[max-content] text-[10px] md:text-[20px] font-normal font-fredoka leading-normal">
-                      {tag}
-                    </div>
-                  </React.Fragment>
-                ))}
-              </div>
-            </div>
-
-            <GridContainer className="items-center justify-center gap-2 md:gap-4 grid grid-cols-3 md:grid-cols-5">
-              <Image src={SpeechLanguageActivity} />
-              <Image src={DiscoveringOurWorldActivity} />
-              <Image src={ReadingWritingActivity} />
-              <Image src={ExperimentsMathActivity} />
-              <ExtraIconBadge />
-            </GridContainer>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 const developmentAreas = [
   "Emotional & Social Strength",
@@ -432,9 +315,9 @@ export default async function ActivitiesPage() {
                     <Link
                       target="_blank"
                       href={`/p/activities/${activity.id}`}
-                      onClick={() =>
-                        console.log("Clicked Blog:", LocalActivity)
-                      }
+                      // onClick={() =>
+                      //   console.log("Clicked Blog:", LocalActivity)
+                      // }
                     >
                       <div className="w-full min-w-[160px] h-auto bg-white items-start justify-start border rounded-3xl flex flex-col md:flex-row gap-4">
                         <div className="claracontainer w-full flex-col justify-start items-center gap-7 inline-flex">
@@ -468,13 +351,19 @@ export default async function ActivitiesPage() {
                                   </ul>
                                 </div>
                               </div>
-                              <GridContainer className="items-center justify-center gap-2 md:gap-4 grid grid-cols-3 md:grid-cols-5">
+                              <div className="items-center justify-center gap-2 md:gap-4 grid grid-cols-3 md:grid-cols-5">
                                 <Image src={SpeechLanguageActivity} />
                                 <Image src={DiscoveringOurWorldActivity} />
                                 <Image src={ReadingWritingActivity} />
                                 <Image src={ExperimentsMathActivity} />
-                                <ExtraIconBadge />
-                              </GridContainer>
+                                <div
+                                  className={`w-[20px] lg:w-[48px] lg:h-[48px] h-[20px] flex lg:rounded-[12px] justify-center items-center bg-[#F6BEBF] rounded-[4px]`}
+                                >
+                                  <span className="text-red p-[2px] text-[12px] lg:text-[20px] font-medium font-fredoka">
+                                    +1
+                                  </span>
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>
