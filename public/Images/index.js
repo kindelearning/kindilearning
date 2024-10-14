@@ -49,6 +49,7 @@ import Clock from "./Clock.svg";
 import Milestone from "./Milestone.svg";
 import Progress from "./Progress.svg";
 import Achievement from "./Achievement.svg";
+import VerifiedIcon from './VerifiedIcon.svg'
 
 // Import HIW icons for Area of Learning
 import CreativityImagination from "./CreativityImagination.svg";
@@ -206,7 +207,7 @@ export {
   DiscoveringWorld,
   ReadingWriting,
   Experiments,
-  ScheduleEvent,
+  ScheduleEvent,VerifiedIcon,
   FineMotor,
   MasteringFeelings,
   ListeningTalking,
