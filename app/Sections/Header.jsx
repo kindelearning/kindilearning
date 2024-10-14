@@ -422,7 +422,7 @@ const Header = () => {
             </>
           )} */}
           {profileData ? (
-            <div className="flex cursor-pointer w-full justify-start items-center">
+            <Link href="/profile" target="_blank" className="flex cursor-pointer w-full justify-start items-center">
               <div className="relative w-full flex justify-center items-center p-[2px] border-2 border-red hover:border-hoverRed rounded-full">
                 <div className="w-full h-full bg-white rounded-full  flex items-center justify-center">
                   <Image
@@ -434,7 +434,7 @@ const Header = () => {
                   />
                 </div>
               </div>
-            </div>
+            </Link>
           ) : (
             <>
               <Link href="/auth/sign-in">
