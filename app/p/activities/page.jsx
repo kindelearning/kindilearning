@@ -87,17 +87,6 @@ const filters = [
   },
 ];
 
-// const IconBadge = ({ icon, backgroundColor = "3F3A64" }) => (
-//   <div
-//     className={`w-[24px] h-[24px] lg:w-[32px] lg:h-[32px] lg:rounded-[8px] hover:bg-[#eaeaf5] flex justify-center items-center bg-[#${backgroundColor}] rounded-[4px]`}
-//     style={{
-//       backgroundColor: `#${backgroundColor}`,
-//     }}
-//   >
-//     <Image alt="Kindi" src={icon || KindiHeart} className="p-[4px]" />
-//   </div>
-// );
-
 const ExtraIconBadge = ({ totalIcons, backgroundColor = "f05c5c" }) => {
   if (totalIcons <= 4) return null;
 
@@ -136,51 +125,53 @@ const LocalActivity = ({
   time,
   tags = ["df", "kindi"],
   icons,
-}) => (
-  <div className="w-full min-w-[160px] h-auto bg-white items-start justify-start border rounded-3xl flex flex-col md:flex-row gap-4">
-    <div className="claracontainer w-full flex-col justify-start items-center gap-7 inline-flex">
-      <div className="w-full max-w-full h-auto  ">
-        <div className="flex overflow-clip rounded-t-3xl ">
-          <Image
-            width={280}
-            height={250}
-            alt="Kindi"
-            className="w-full max-h-[180px] duration-300 hover:scale-105 lg:min-h-[250px] lg:max-h-[276px] md:max-h-[300px] object-cover rounded-t-3xl "
-            src={images || ActivityCard}
-          />
-        </div>
-        <div className="w-full py-4 flex-col justify-start px-4 items-start flex gap-2 md:gap-2 lg:gap-4">
-          <div className="flex-col gap-[6px] justify-start items-start">
-            <div className="text-[#0a1932] text-[16px] md:text-xl font-semibold font-fredoka leading-[20px]">
-              {title || "Autumn Colors Leaf Wheel"}
-            </div>
-            <div className="justify-start w-full items-center gap-2 inline-flex">
-              <div className="text-[#0a1932] w-[max-content] text-[10px] md:text-[20px] font-normal font-fredoka leading-normal">
-                {time || "5 minutes"}
-              </div>
-              {tags?.map((tag, index) => (
-                <React.Fragment key={index}>
-                  <div className="w-1 h-1 bg-[#e3e3e3] rounded-full" />
-                  <div className="text-[#0a1932] w-[max-content] text-[10px] md:text-[20px] font-normal font-fredoka leading-normal">
-                    {tag}
-                  </div>
-                </React.Fragment>
-              ))}
-            </div>
+}) => {
+  return (
+    <div className="w-full min-w-[160px] h-auto bg-white items-start justify-start border rounded-3xl flex flex-col md:flex-row gap-4">
+      <div className="claracontainer w-full flex-col justify-start items-center gap-7 inline-flex">
+        <div className="w-full max-w-full h-auto  ">
+          <div className="flex overflow-clip rounded-t-3xl ">
+            <Image
+              width={280}
+              height={250}
+              alt="Kindi"
+              className="w-full max-h-[180px] duration-300 hover:scale-105 lg:min-h-[250px] lg:max-h-[276px] md:max-h-[300px] object-cover rounded-t-3xl "
+              src={images || ActivityCard}
+            />
           </div>
-          <GridContainer className="items-center justify-center gap-2 md:gap-4 grid grid-cols-3 md:grid-cols-5">
-            <Image src={SpeechLanguageActivity} />
-            <Image src={DiscoveringOurWorldActivity} />
-            <Image src={ReadingWritingActivity} />
-            <Image src={ExperimentsMathActivity} />
-            <ExtraIconBadge />
-            {/* {icons?.map((icon, index) => ())} */}
-          </GridContainer>
+          <div className="w-full py-4 flex-col justify-start px-4 items-start flex gap-2 md:gap-2 lg:gap-4">
+            <div className="flex-col gap-[6px] justify-start items-start">
+              <div className="text-[#0a1932] text-[16px] md:text-xl font-semibold font-fredoka leading-[20px]">
+                {title || "Autumn Colors Leaf Wheel"}
+              </div>
+              <div className="justify-start w-full items-center gap-2 inline-flex">
+                <div className="text-[#0a1932] w-[max-content] text-[10px] md:text-[20px] font-normal font-fredoka leading-normal">
+                  {time || "5 minutes"}
+                </div>
+                {tags?.map((tag, index) => (
+                  <React.Fragment key={index}>
+                    <div className="w-1 h-1 bg-[#e3e3e3] rounded-full" />
+                    <div className="text-[#0a1932] w-[max-content] text-[10px] md:text-[20px] font-normal font-fredoka leading-normal">
+                      {tag}
+                    </div>
+                  </React.Fragment>
+                ))}
+              </div>
+            </div>
+            <GridContainer className="items-center justify-center gap-2 md:gap-4 grid grid-cols-3 md:grid-cols-5">
+              <Image src={SpeechLanguageActivity} />
+              <Image src={DiscoveringOurWorldActivity} />
+              <Image src={ReadingWritingActivity} />
+              <Image src={ExperimentsMathActivity} />
+              <ExtraIconBadge />
+              {/* {icons?.map((icon, index) => ())} */}
+            </GridContainer>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 const developmentAreas = [
   "Emotional & Social Strength",
