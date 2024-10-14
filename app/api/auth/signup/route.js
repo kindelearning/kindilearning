@@ -1,5 +1,5 @@
 import { CREATE_ACCOUNT } from "@/lib/hygraph";
-import bcrypt from "bcryptjs";
+import { gql, GraphQLClient } from "graphql-request";
 
 const HYGRAPH_ENDPOINT =
   "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";

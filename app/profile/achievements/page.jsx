@@ -22,6 +22,8 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import Loading from "../loading";
 import { useSession } from "next-auth/react";
+import { gql, GraphQLClient } from "graphql-request";
+
 
 const HYGRAPH_ENDPOINT =
   "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";
