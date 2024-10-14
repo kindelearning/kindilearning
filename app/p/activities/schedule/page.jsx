@@ -99,13 +99,13 @@ export default function Schedule() {
           ) : (
             <Link
               href="/#pricing_Section"
-              className="claracontainer h-full flex justify-center items-center"
+              className="claracontainer flex-col h-[50vh] flex justify-center items-center"
               title="User Not Subscribed"
             >
-              <h2 className="claraheading">
+              <span className="clarabodyTwo text-purple">
                 Please upgrade to access the Activity Schedular
-              </h2>
-              <Button className="clarabutton"> Click here to Upgrade</Button>
+              </span>
+              <Button className="clarabutton bg-red hover:bg-hoverRed"> Click here to Upgrade</Button>
             </Link>
           )}
         </div>
