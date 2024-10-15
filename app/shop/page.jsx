@@ -3,7 +3,7 @@
 import { Input } from "@/components/ui/input";
 import Banner from "./sections/Banner";
 import CardGroup from "./widgets/CardGroup";
-import { ProductImage, Ratings } from "@/public/Images";
+import { Ratings } from "@/public/Images";
 import { Slider } from "@/components/ui/slider";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -18,9 +18,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { developmentAreas } from "../constant/menu";
-import { productData } from "../constant/product";
 import Link from "next/link";
-import slugify from "../lib/utils";
 import { getProducts } from "@/lib/hygraph";
 import Image from "next/image";
 import NotFound from "../not-found";
@@ -277,6 +275,497 @@ const ProductCard = ({ image, title, rating, price }) => {
   );
 };
 
+const SidebarFilters = () => {
+  return (
+    <div className="md:hidden lg:flex h-fit xl:flex hidden sticky top-0 max-w-[26%] flex-col px-4 py-6 gap-4 w-full items-start justify-start bg-[#ffffff] rounded-[24px] z-10">
+      <div className="text-red text-[32px] font-semibold font-fredoka leading-[25px] tracking-wide">
+        Filters
+      </div>
+      <div className="claracontainer flex flex-col justify-start items-start gap-6 w-full">
+        <div className="claracontainer flex flex-col justify-start items-start gap-2 w-full">
+          <div className="text-[#252c32] text-xl font-semibold font-fredoka leading-[25px]">
+            Price Filter
+          </div>
+          <Slider />
+          <div className="claracontainer flex flex-col justify-start items-start gap-2">
+            <div className="flex">
+              <div className="flex items-center space-x-2">
+                <Checkbox id="terms" className="border-red" />
+                <label
+                  htmlFor="terms"
+                  className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Under $10
+                </label>
+              </div>
+            </div>
+            <div className="flex">
+              <div className="flex items-center space-x-2">
+                <Checkbox id="terms" className="border-red" />
+                <label
+                  htmlFor="terms"
+                  className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  $10 - $20
+                </label>
+              </div>
+            </div>
+            <div className="flex">
+              <div className="flex items-center space-x-2">
+                <Checkbox id="terms" className="border-red" />
+                <label
+                  htmlFor="terms"
+                  className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  $10 - $20
+                </label>
+              </div>
+            </div>
+            <div className="flex">
+              <div className="flex items-center space-x-2">
+                <Checkbox id="terms" className="border-red" />
+                <label
+                  htmlFor="terms"
+                  className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  $10 - $20
+                </label>
+              </div>
+            </div>
+            <div className="flex">
+              <div className="flex items-center space-x-2">
+                <Checkbox id="terms" className="border-red" />
+                <label
+                  htmlFor="terms"
+                  className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  $10 - $20
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="claracontainer flex flex-col justify-start items-start gap-2 w-full">
+          <div className="text-[#252c32] text-xl font-semibold font-fredoka leading-[25px]">
+            Material
+          </div>
+          <div className="claracontainer flex flex-col justify-start items-start gap-2">
+            <div className="flex">
+              <div className="flex items-center space-x-2">
+                <Checkbox id="terms" className="border-red" />
+                <label
+                  htmlFor="terms"
+                  className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Wood
+                </label>
+              </div>
+            </div>
+            <div className="flex">
+              <div className="flex items-center space-x-2">
+                <Checkbox id="terms" className="border-red" />
+                <label
+                  htmlFor="terms"
+                  className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Plastic
+                </label>
+              </div>
+            </div>
+            <div className="flex">
+              <div className="flex items-center space-x-2">
+                <Checkbox id="terms" className="border-red" />
+                <label
+                  htmlFor="terms"
+                  className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Fabric
+                </label>
+              </div>
+            </div>
+            <div className="flex">
+              <div className="flex items-center space-x-2">
+                <Checkbox id="terms" className="border-red" />
+                <label
+                  htmlFor="terms"
+                  className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Metal
+                </label>
+              </div>
+            </div>
+            <div className="flex">
+              <div className="flex items-center space-x-2">
+                <Checkbox id="terms" className="border-red" />
+                <label
+                  htmlFor="terms"
+                  className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Mixed
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="claracontainer flex flex-col justify-start items-start gap-2 w-full">
+          <div className="text-[#252c32] text-xl font-semibold font-fredoka leading-[25px]">
+            Type of Toy
+          </div>
+          <div className="claracontainer flex flex-col justify-start items-start gap-2">
+            <div className="flex">
+              <div className="flex items-center space-x-2">
+                <Checkbox id="terms" className="border-red" />
+                <label
+                  htmlFor="terms"
+                  className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Educational
+                </label>
+              </div>
+            </div>
+            <div className="flex">
+              <div className="flex items-center space-x-2">
+                <Checkbox id="terms" className="border-red" />
+                <label
+                  htmlFor="terms"
+                  className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Musical
+                </label>
+              </div>
+            </div>
+            <div className="flex">
+              <div className="flex items-center space-x-2">
+                <Checkbox id="terms" className="border-red" />
+                <label
+                  htmlFor="terms"
+                  className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Puzzles
+                </label>
+              </div>
+            </div>
+            <div className="flex">
+              <div className="flex items-center space-x-2">
+                <Checkbox id="terms" className="border-red" />
+                <label
+                  htmlFor="terms"
+                  className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Building Blocks
+                </label>
+              </div>
+            </div>
+            <div className="flex">
+              <div className="flex items-center space-x-2">
+                <Checkbox id="terms" className="border-red" />
+                <label
+                  htmlFor="terms"
+                  className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Soft Toy
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="claracontainer flex flex-col justify-start items-start gap-2 w-full">
+          <div className="text-[#252c32] text-xl font-semibold font-fredoka leading-[25px]">
+            Color
+          </div>
+          <div className="claracontainer flex flex-col justify-start items-start gap-2">
+            <div className="flex">
+              <div className="flex items-center space-x-2">
+                <Checkbox id="terms" className="border-red" />
+                <label
+                  htmlFor="terms"
+                  className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Multicolor
+                </label>
+              </div>
+            </div>
+            <div className="flex">
+              <div className="flex items-center space-x-2">
+                <Checkbox id="terms" className="border-red" />
+                <label
+                  htmlFor="terms"
+                  className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Primary Color
+                </label>
+              </div>
+            </div>
+            <div className="flex">
+              <div className="flex items-center space-x-2">
+                <Checkbox id="terms" className="border-red" />
+                <label
+                  htmlFor="terms"
+                  className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Pastel Color
+                </label>
+              </div>
+            </div>
+            <div className="flex">
+              <div className="flex items-center space-x-2">
+                <Checkbox id="terms" className="border-red" />
+                <label
+                  htmlFor="terms"
+                  className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Monochrome
+                </label>
+              </div>
+            </div>
+            <div className="flex">
+              <div className="flex items-center space-x-2">
+                <Checkbox id="terms" className="border-red" />
+                <label
+                  htmlFor="terms"
+                  className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Soft Toy
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="claracontainer flex flex-col justify-start items-start gap-2 w-full">
+          <div className="text-[#252c32] text-xl font-semibold font-fredoka leading-[25px]">
+            Educational Focus
+          </div>
+          <div className="claracontainer flex flex-col justify-start items-start gap-2">
+            <div className="flex">
+              <div className="flex items-center space-x-2">
+                <Checkbox id="terms" className="border-red" />
+                <label
+                  htmlFor="terms"
+                  className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Emotional & Social Strength
+                </label>
+              </div>
+            </div>
+            <div className="flex">
+              <div className="flex items-center space-x-2">
+                <Checkbox id="terms" className="border-red" />
+                <label
+                  htmlFor="terms"
+                  className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Confidence & Independence
+                </label>
+              </div>
+            </div>
+            <div className="flex">
+              <div className="flex items-center space-x-2">
+                <Checkbox id="terms" className="border-red" />
+                <label
+                  htmlFor="terms"
+                  className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Speech & Language
+                </label>
+              </div>
+            </div>
+            <div className="flex">
+              <div className="flex items-center space-x-2">
+                <Checkbox id="terms" className="border-red" />
+                <label
+                  htmlFor="terms"
+                  className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Physical Agility
+                </label>
+              </div>
+            </div>
+            <div className="flex">
+              <div className="flex items-center space-x-2">
+                <Checkbox id="terms" className="border-red" />
+                <label
+                  htmlFor="terms"
+                  className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Reading & Writing
+                </label>
+              </div>
+            </div>
+            <div className="flex">
+              <div className="flex items-center space-x-2">
+                <Checkbox id="terms" className="border-red" />
+                <label
+                  htmlFor="terms"
+                  className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Discovering our World
+                </label>
+              </div>
+            </div>
+            <div className="flex">
+              <div className="flex items-center space-x-2">
+                <Checkbox id="terms" className="border-red" />
+                <label
+                  htmlFor="terms"
+                  className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Creativity & Imagination
+                </label>
+              </div>
+            </div>
+            <div className="flex">
+              <div className="flex items-center space-x-2">
+                <Checkbox id="terms" className="border-red" />
+                <label
+                  htmlFor="terms"
+                  className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Experiments & Math
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="claracontainer flex flex-col justify-start items-start gap-2 w-full">
+          <div className="text-[#252c32] text-xl font-semibold font-fredoka leading-[25px]">
+            Skills{" "}
+          </div>
+          <div className="claracontainer flex flex-col justify-start items-start gap-2">
+            <div className="flex">
+              <div className="flex items-center space-x-2">
+                <Checkbox id="terms" className="border-red" />
+                <label
+                  htmlFor="terms"
+                  className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Exploring the Seasons{" "}
+                </label>
+              </div>
+            </div>
+            <div className="flex">
+              <div className="flex items-center space-x-2">
+                <Checkbox id="terms" className="border-red" />
+                <label
+                  htmlFor="terms"
+                  className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Sensory Development{" "}
+                </label>
+              </div>
+            </div>
+            <div className="flex">
+              <div className="flex items-center space-x-2">
+                <Checkbox id="terms" className="border-red" />
+                <label
+                  htmlFor="terms"
+                  className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Mastering Feelings{" "}
+                </label>
+              </div>
+            </div>
+            <div className="flex">
+              <div className="flex items-center space-x-2">
+                <Checkbox id="terms" className="border-red" />
+                <label
+                  htmlFor="terms"
+                  className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Gross Motor{" "}
+                </label>
+              </div>
+            </div>
+            <div className="flex">
+              <div className="flex items-center space-x-2">
+                <Checkbox id="terms" className="border-red" />
+                <label
+                  htmlFor="terms"
+                  className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Social Play{" "}
+                </label>
+              </div>
+            </div>
+            <div className="flex">
+              <div className="flex items-center space-x-2">
+                <Checkbox id="terms" className="border-red" />
+                <label
+                  htmlFor="terms"
+                  className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Problem-solving & Independence{" "}
+                </label>
+              </div>
+            </div>
+            <div className="flex">
+              <div className="flex items-center space-x-2">
+                <Checkbox id="terms" className="border-red" />
+                <label
+                  htmlFor="terms"
+                  className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Creativity & Imagination
+                </label>
+              </div>
+            </div>
+            <div className="flex">
+              <div className="flex items-center space-x-2">
+                <Checkbox id="terms" className="border-red" />
+                <label
+                  htmlFor="terms"
+                  className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Gross Motor{" "}
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="claracontainer flex flex-col justify-start items-start gap-2 w-full">
+          <div className="text-[#252c32] text-xl font-semibold font-fredoka leading-[25px]">
+            Discounts and Offers{" "}
+          </div>
+          <div className="claracontainer flex flex-col justify-start items-start gap-2">
+            <div className="flex">
+              <div className="flex items-center space-x-2">
+                <Checkbox id="terms" className="border-red" />
+                <label
+                  htmlFor="terms"
+                  className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  On Sale{" "}
+                </label>
+              </div>
+            </div>
+            <div className="flex">
+              <div className="flex items-center space-x-2">
+                <Checkbox id="terms" className="border-red" />
+                <label
+                  htmlFor="terms"
+                  className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Clearance{" "}
+                </label>
+              </div>
+            </div>
+            <div className="flex">
+              <div className="flex items-center space-x-2">
+                <Checkbox id="terms" className="border-red" />
+                <label
+                  htmlFor="terms"
+                  className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Bundle Offers{" "}
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export default async function ShopPage() {
   const products = await getProducts();
 
@@ -296,492 +785,7 @@ export default async function ShopPage() {
         <div className="w-full h-auto bg-[#eaeaf5] items-center justify-center py-2  flex flex-col md:flex-row gap-[20px]">
           <div className="claracontainer py-4 w-full bg-[#eaeaf5] flex flex-row overflow-hidden gap-8">
             {/* Filter Column */}
-            <div className="md:hidden lg:flex h-fit xl:flex hidden sticky top-0 max-w-[26%] flex-col px-4 py-6 gap-4 w-full items-start justify-start bg-[#ffffff] rounded-[24px] z-10">
-              <div className="text-red text-[32px] font-semibold font-fredoka leading-[25px] tracking-wide">
-                Filters
-              </div>
-              <div className="claracontainer flex flex-col justify-start items-start gap-6 w-full">
-                <div className="claracontainer flex flex-col justify-start items-start gap-2 w-full">
-                  <div className="text-[#252c32] text-xl font-semibold font-fredoka leading-[25px]">
-                    Price Filter
-                  </div>
-                  <Slider />
-                  <div className="claracontainer flex flex-col justify-start items-start gap-2">
-                    <div className="flex">
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="terms" className="border-red" />
-                        <label
-                          htmlFor="terms"
-                          className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          Under $10
-                        </label>
-                      </div>
-                    </div>
-                    <div className="flex">
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="terms" className="border-red" />
-                        <label
-                          htmlFor="terms"
-                          className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          $10 - $20
-                        </label>
-                      </div>
-                    </div>
-                    <div className="flex">
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="terms" className="border-red" />
-                        <label
-                          htmlFor="terms"
-                          className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          $10 - $20
-                        </label>
-                      </div>
-                    </div>
-                    <div className="flex">
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="terms" className="border-red" />
-                        <label
-                          htmlFor="terms"
-                          className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          $10 - $20
-                        </label>
-                      </div>
-                    </div>
-                    <div className="flex">
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="terms" className="border-red" />
-                        <label
-                          htmlFor="terms"
-                          className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          $10 - $20
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="claracontainer flex flex-col justify-start items-start gap-2 w-full">
-                  <div className="text-[#252c32] text-xl font-semibold font-fredoka leading-[25px]">
-                    Material
-                  </div>
-                  <div className="claracontainer flex flex-col justify-start items-start gap-2">
-                    <div className="flex">
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="terms" className="border-red" />
-                        <label
-                          htmlFor="terms"
-                          className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          Wood
-                        </label>
-                      </div>
-                    </div>
-                    <div className="flex">
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="terms" className="border-red" />
-                        <label
-                          htmlFor="terms"
-                          className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          Plastic
-                        </label>
-                      </div>
-                    </div>
-                    <div className="flex">
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="terms" className="border-red" />
-                        <label
-                          htmlFor="terms"
-                          className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          Fabric
-                        </label>
-                      </div>
-                    </div>
-                    <div className="flex">
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="terms" className="border-red" />
-                        <label
-                          htmlFor="terms"
-                          className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          Metal
-                        </label>
-                      </div>
-                    </div>
-                    <div className="flex">
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="terms" className="border-red" />
-                        <label
-                          htmlFor="terms"
-                          className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          Mixed
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="claracontainer flex flex-col justify-start items-start gap-2 w-full">
-                  <div className="text-[#252c32] text-xl font-semibold font-fredoka leading-[25px]">
-                    Type of Toy
-                  </div>
-                  <div className="claracontainer flex flex-col justify-start items-start gap-2">
-                    <div className="flex">
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="terms" className="border-red" />
-                        <label
-                          htmlFor="terms"
-                          className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          Educational
-                        </label>
-                      </div>
-                    </div>
-                    <div className="flex">
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="terms" className="border-red" />
-                        <label
-                          htmlFor="terms"
-                          className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          Musical
-                        </label>
-                      </div>
-                    </div>
-                    <div className="flex">
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="terms" className="border-red" />
-                        <label
-                          htmlFor="terms"
-                          className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          Puzzles
-                        </label>
-                      </div>
-                    </div>
-                    <div className="flex">
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="terms" className="border-red" />
-                        <label
-                          htmlFor="terms"
-                          className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          Building Blocks
-                        </label>
-                      </div>
-                    </div>
-                    <div className="flex">
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="terms" className="border-red" />
-                        <label
-                          htmlFor="terms"
-                          className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          Soft Toy
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="claracontainer flex flex-col justify-start items-start gap-2 w-full">
-                  <div className="text-[#252c32] text-xl font-semibold font-fredoka leading-[25px]">
-                    Color
-                  </div>
-                  <div className="claracontainer flex flex-col justify-start items-start gap-2">
-                    <div className="flex">
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="terms" className="border-red" />
-                        <label
-                          htmlFor="terms"
-                          className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          Multicolor
-                        </label>
-                      </div>
-                    </div>
-                    <div className="flex">
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="terms" className="border-red" />
-                        <label
-                          htmlFor="terms"
-                          className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          Primary Color
-                        </label>
-                      </div>
-                    </div>
-                    <div className="flex">
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="terms" className="border-red" />
-                        <label
-                          htmlFor="terms"
-                          className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          Pastel Color
-                        </label>
-                      </div>
-                    </div>
-                    <div className="flex">
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="terms" className="border-red" />
-                        <label
-                          htmlFor="terms"
-                          className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          Monochrome
-                        </label>
-                      </div>
-                    </div>
-                    <div className="flex">
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="terms" className="border-red" />
-                        <label
-                          htmlFor="terms"
-                          className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          Soft Toy
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="claracontainer flex flex-col justify-start items-start gap-2 w-full">
-                  <div className="text-[#252c32] text-xl font-semibold font-fredoka leading-[25px]">
-                    Educational Focus
-                  </div>
-                  <div className="claracontainer flex flex-col justify-start items-start gap-2">
-                    <div className="flex">
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="terms" className="border-red" />
-                        <label
-                          htmlFor="terms"
-                          className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          Emotional & Social Strength
-                        </label>
-                      </div>
-                    </div>
-                    <div className="flex">
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="terms" className="border-red" />
-                        <label
-                          htmlFor="terms"
-                          className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          Confidence & Independence
-                        </label>
-                      </div>
-                    </div>
-                    <div className="flex">
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="terms" className="border-red" />
-                        <label
-                          htmlFor="terms"
-                          className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          Speech & Language
-                        </label>
-                      </div>
-                    </div>
-                    <div className="flex">
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="terms" className="border-red" />
-                        <label
-                          htmlFor="terms"
-                          className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          Physical Agility
-                        </label>
-                      </div>
-                    </div>
-                    <div className="flex">
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="terms" className="border-red" />
-                        <label
-                          htmlFor="terms"
-                          className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          Reading & Writing
-                        </label>
-                      </div>
-                    </div>
-                    <div className="flex">
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="terms" className="border-red" />
-                        <label
-                          htmlFor="terms"
-                          className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          Discovering our World
-                        </label>
-                      </div>
-                    </div>
-                    <div className="flex">
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="terms" className="border-red" />
-                        <label
-                          htmlFor="terms"
-                          className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          Creativity & Imagination
-                        </label>
-                      </div>
-                    </div>
-                    <div className="flex">
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="terms" className="border-red" />
-                        <label
-                          htmlFor="terms"
-                          className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          Experiments & Math
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="claracontainer flex flex-col justify-start items-start gap-2 w-full">
-                  <div className="text-[#252c32] text-xl font-semibold font-fredoka leading-[25px]">
-                    Skills{" "}
-                  </div>
-                  <div className="claracontainer flex flex-col justify-start items-start gap-2">
-                    <div className="flex">
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="terms" className="border-red" />
-                        <label
-                          htmlFor="terms"
-                          className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          Exploring the Seasons{" "}
-                        </label>
-                      </div>
-                    </div>
-                    <div className="flex">
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="terms" className="border-red" />
-                        <label
-                          htmlFor="terms"
-                          className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          Sensory Development{" "}
-                        </label>
-                      </div>
-                    </div>
-                    <div className="flex">
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="terms" className="border-red" />
-                        <label
-                          htmlFor="terms"
-                          className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          Mastering Feelings{" "}
-                        </label>
-                      </div>
-                    </div>
-                    <div className="flex">
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="terms" className="border-red" />
-                        <label
-                          htmlFor="terms"
-                          className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          Gross Motor{" "}
-                        </label>
-                      </div>
-                    </div>
-                    <div className="flex">
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="terms" className="border-red" />
-                        <label
-                          htmlFor="terms"
-                          className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          Social Play{" "}
-                        </label>
-                      </div>
-                    </div>
-                    <div className="flex">
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="terms" className="border-red" />
-                        <label
-                          htmlFor="terms"
-                          className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          Problem-solving & Independence{" "}
-                        </label>
-                      </div>
-                    </div>
-                    <div className="flex">
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="terms" className="border-red" />
-                        <label
-                          htmlFor="terms"
-                          className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          Creativity & Imagination
-                        </label>
-                      </div>
-                    </div>
-                    <div className="flex">
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="terms" className="border-red" />
-                        <label
-                          htmlFor="terms"
-                          className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          Gross Motor{" "}
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="claracontainer flex flex-col justify-start items-start gap-2 w-full">
-                  <div className="text-[#252c32] text-xl font-semibold font-fredoka leading-[25px]">
-                    Discounts and Offers{" "}
-                  </div>
-                  <div className="claracontainer flex flex-col justify-start items-start gap-2">
-                    <div className="flex">
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="terms" className="border-red" />
-                        <label
-                          htmlFor="terms"
-                          className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          On Sale{" "}
-                        </label>
-                      </div>
-                    </div>
-                    <div className="flex">
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="terms" className="border-red" />
-                        <label
-                          htmlFor="terms"
-                          className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          Clearance{" "}
-                        </label>
-                      </div>
-                    </div>
-                    <div className="flex">
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="terms" className="border-red" />
-                        <label
-                          htmlFor="terms"
-                          className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          Bundle Offers{" "}
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <SidebarFilters />
             {/* the product Grid Column */}
             <div className="flex w-full flex-col justift-start items-start gap-[20px] md:gap-[28px]">
               <div className="flex flex-col w-full gap-2">

@@ -2,12 +2,13 @@
  * @ToDo  TO be removed as we dont use this, but need to check it infuture
  */
 
-'use client'
+"use client";
 import { Fredoka as FontSans } from "next/font/google";
 
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { SessionProvider } from "next-auth/react";
+import { CartProvider } from "./context/CartContext";
 
 /**
  * @ToDo  TO be removed as we dont use this, but need to check it infuture
@@ -39,7 +40,9 @@ export default function RootLayout({ children }) {
             fontSans.variable
           )}
         >
-          <SessionProvider>{children}</SessionProvider>
+          <SessionProvider>
+            <CartProvider>{children}</CartProvider>
+          </SessionProvider>
         </body>
       </html>
     </>

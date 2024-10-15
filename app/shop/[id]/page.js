@@ -24,50 +24,6 @@ import Link from "next/link";
 import { Textarea } from "@/components/ui/textarea";
 import { ArrowRight } from "lucide-react";
 
-// const AnimatedButton = () => {
-//   const [isAnimating, setIsAnimating] = useState(false);
-//   const [text, setText] = useState("Share your Review");
-
-//   const handleButtonClick = () => {
-//     setIsAnimating(true);
-//     setTimeout(() => {
-//       setText("Done");
-//       setIsAnimating(false);
-//     }, 2000);
-//   };
-
-//   return (
-//     <div className="claracontainer w-full py-6 flex flex-col gap-4 justify-between items-center">
-//       <Button
-//         className={`w-[300px] flex flex-row gap-1 justify-center items-center bg-red rounded-[10px] shadow border-2 border-white ${
-//           isAnimating ? "animate-button" : ""
-//         }`}
-//         onClick={handleButtonClick}
-//       >
-//         <ArrowRight
-//           className={`transition-transform duration-2000 ${
-//             isAnimating ? "animate-arrow" : ""
-//           }`}
-//         />
-//         <span
-//           className={`transition-opacity duration-1000 ${
-//             isAnimating ? "opacity-80" : "opacity-100"
-//           }`}
-//         >
-//           Share your Review
-//         </span>
-//         <span
-//           className={`transition-opacity duration-1000 ${
-//             isAnimating ? "opacity-0" : "hidden"
-//           }`}
-//         >
-//           Done
-//         </span>
-//       </Button>
-//     </div>
-//   );
-// };
-
 const ReviewForm = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -115,7 +71,10 @@ const ReviewForm = () => {
   };
 
   return (
-    <form className="w-full flex flex-col justify-center items-center" onSubmit={handleSubmit}>
+    <form
+      className="w-full flex flex-col justify-center items-center"
+      onSubmit={handleSubmit}
+    >
       <div className="claracontainer w-full py-6 flex flex-row gap-4 justify-between items-start">
         <Image
           alt="Kindi"
@@ -179,11 +138,24 @@ import { getProductById, submitReview } from "@/lib/hygraph";
 import NotFound from "@/app/not-found";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
+import { useCart } from "@/app/context/CartContext";
 
 export default async function ProductDetailPage({ params }) {
   const { id } = params;
+  const { addToCart } = useCart();
 
   const product = await getProductById(id);
+
+  const handleAddToCart = () => {
+    console.log("Adding to cart:", product);
+    addToCart({
+      id: product.id,
+      title: product.title,
+      price: product.salePrice,
+      image: product.productImages[0]?.url,
+      quantity: 1,
+    });
+  };
 
   if (!product) {
     return (
@@ -267,11 +239,13 @@ export default async function ProductDetailPage({ params }) {
               <div className="claracontainer flex flex-col w-full gap-1">
                 <div className="claracontainer w-full justify-between items-center flex flex-row gap-4">
                   <QuantityControl />
-                  <Link className="w-full" href="/shop/cart">
-                    <Button className="bg-red w-full rounded-[16px] border-2 border-[white]">
-                      Add to Cart
-                    </Button>
-                  </Link>
+                  <Button
+                    onClick={handleAddToCart}
+                    className="bg-red w-full rounded-[16px] border-2 border-[white]"
+                  >
+                    Add to Cart
+                  </Button>
+                  {/* <Link className="w-full" href="/shop/cart"></Link> */}
                 </div>
                 <div className="claracontainer w-full justify-end items-end flex flex-row gap-4">
                   <div className="w-full flex flex-row justify-center items-center gap-2">

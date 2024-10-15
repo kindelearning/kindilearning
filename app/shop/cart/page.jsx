@@ -1,12 +1,32 @@
+"use client";
+
 import React from "react";
 import ProductChip from "../widgets/Checkout/ProductChip";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
-import { ShopImage } from "@/public/Images";
 import { checkoutProduct } from "@/app/constant/menu";
+import { useCart } from "@/app/context/CartContext";
 
-const Page = () => {
+export default function CartPage() {
+  const { cart, removeFromCart, clearCart } = useCart();
+  console.log("CartPage:", cart);
+
+  const handleCheckout = () => {
+    if (cart.length === 0) {
+      alert("Your cart is empty!");
+      return;
+    }
+
+    console.log("Proceeding to checkout with cart items:", cart);
+    alert("Proceeding to checkout!");
+    clearCart();
+  };
+
+  if (cart.length === 0) {
+    return <p>Your cart is empty</p>;
+  }
+
   return (
     <>
       <section className="w-full h-screen bg-[#eaeaf5] items-center justify-between p-0 flex flex-col">
@@ -25,6 +45,18 @@ const Page = () => {
               Products
             </div>
           </div>
+          {cart.map((item) => (
+            <div key={item.id}>
+              {/* <img src={item.image} alt={item.title} /> */}
+              <h2>{item.title}</h2>
+              <p>${item.price}</p>
+              <button onClick={() => removeFromCart(item.id)}>Remove</button>
+            </div>
+          ))}
+          <button onClick={clearCart}>Clear Cart</button>
+          <button onClick={handleCheckout}>Proceed to Checkout</button>
+          {/* <Link href="/shop/cart/checkout">
+          </Link> */}
           <div className="w-full flex overflow-y-scroll scrollbar-hidden flex-col gap-2">
             <ProductChip product={checkoutProduct} />
             <ProductChip product={checkoutProduct} />
@@ -50,6 +82,4 @@ const Page = () => {
       </section>
     </>
   );
-};
-
-export default Page;
+}

@@ -4,12 +4,7 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronDownIcon, ChevronLeft, ChevronRightIcon } from "lucide-react";
 import Image from "next/image";
-import {
-  CheckVector,
-  LocationIcon,
-  OrderConfirmed,
-  PaymentsIcon,
-} from "@/public/Images";
+import { LocationIcon, OrderConfirmed, PaymentsIcon } from "@/public/Images";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -20,6 +15,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import Link from "next/link";
+import { useCart } from "@/app/context/CartContext";
+import { loadStripe } from "@stripe/stripe-js";
 
 const Accordion = ({
   trailingIcon,
@@ -132,17 +129,61 @@ const OrderSummaryCard = () => {
   );
 };
 
-const Page = () => {
+const stripePromise = loadStripe(
+  "pk_live_51NcT49CjBezv2y8r9rE0b8L5W37kGyDZ4ER8m3gCrcFJW0pA1C7P7goLmUx2yaAftCibKGcvwRuhEkDq6Mlymz7b00oBy7wN5m"
+); // Replace with your Stripe Publishable Key
+
+const CheckoutPage = () => {
+  const { cart, clearCart } = useCart();
+  const completeCheckout = async () => {
+    try {
+      const response = await fetch("/api/checkout-session", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ cart }),
+      });
+
+      const session = await response.json();
+      console.log("Stripe Session:", session);
+
+      if (response.ok && session.id) {
+        const stripe = await stripePromise;
+        const result = await stripe.redirectToCheckout({
+          sessionId: session.id,
+        });
+
+        if (result.error) {
+          alert(result.error.message);
+        }
+      } else {
+        console.error("Error creating session:", session.error);
+        alert(`Error: ${session.error || "Failed to initiate checkout."}`);
+      }
+    } catch (error) {
+      console.error("Error during checkout:", error);
+      alert("An error occurred during checkout. Please try again.");
+    }
+  };
+
   return (
     <>
-      <section className="w-full h-screen bg-[rgb(234,234,245)] items-start justify-start lg:items-center lg:justify-center p-0 flex flex-col">
+      <section className="w-full h-screen py-24 bg-[rgb(234,234,245)] items-start justify-start lg:items-center lg:justify-center p-0 flex flex-col">
         <div className="w-full flex pt-4 pb-7 md:hidden bg-red">
           <div className="text-center w-full text-white text-[20px] font-semibold font-fredoka leading-tight">
             Checkout
           </div>
         </div>
-        <div className="claracontainer h-screen -mt-4 rounded-t-[12px] z-2 md:m-12  p-6 rounded-xl bg-[#eaeaf5] md:bg-[white] w-full flex flex-col overflow-hidden gap-4">
-          {/* <div className="claracontainer min-h-[600px] m-12 p-6 rounded-xl bg-[white] w-full flex flex-col overflow-hidden gap-8"> */}
+        {cart.map((item, index) => (
+          <div key={index}>
+            <img src={item.image} alt={item.title} style={{ width: "100px" }} />
+            <p>{item.title}</p>
+            <p>${item.price}</p>
+          </div>
+        ))}
+        <button onClick={completeCheckout}>Complete Purchase</button>
+        {/* <div className="claracontainer h-screen -mt-4 rounded-t-[12px] z-2 md:m-12  p-6 rounded-xl bg-[#eaeaf5] md:bg-[white] w-full flex flex-col overflow-hidden gap-4">
           <div className="flex flex-col justify-start items-start gap-4 w-full">
             <div className="text-red hidden justify-center items-center md:flex text-[32px] md:text-[44px] w-full text-center font-semibold font-fredoka capitalize leading-10">
               Checkout
@@ -161,9 +202,8 @@ const Page = () => {
             />
             <OrderSummaryCard />
           </div>
-          {/* The middle COntent */}
-        </div>
-        <div className="shadow-upper rounded-t-[12px] bottom-0 z-24  sticky bg-[white] shadow py-4 flex flex-row justify-center w-full items-center gap-4">
+        </div> */}
+        {/* <div className="shadow-upper rounded-t-[12px] bottom-0 z-24  sticky bg-[white] shadow py-4 flex flex-row justify-center w-full items-center gap-4">
           <div className="claracontainer px-4 w-full justify-between items-center flex">
             <Button className="px-4 py-2 bg-white hover:bg-white text-[#3f3a64] text-2xl font-medium font-fredoka leading-none rounded-2xl border-2 border-[#3f3a64] justify-center items-center gap-1 inline-flex">
               <ChevronLeft className="w-[24px] h-[24px]" />
@@ -201,10 +241,10 @@ const Page = () => {
               </DialogContent>
             </Dialog>
           </div>
-        </div>
+        </div> */}
       </section>
     </>
   );
 };
 
-export default Page;
+export default CheckoutPage;
