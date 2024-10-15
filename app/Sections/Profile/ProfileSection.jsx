@@ -52,6 +52,7 @@ import { GraphQLClient, gql } from "graphql-request";
 import { authOptions } from "../../api/auth/[...nextauth]/route";
 import { useSession } from "next-auth/react";
 import Loading from "@/app/loading";
+import SignOutButton from "@/app/auth/signout/page";
 
 const IconBadge = ({ icon, backgroundColor = "3F3A64" }) => (
   <div
@@ -784,6 +785,7 @@ const ProfileSection = async () => {
               </DialogFooter>
             </DialogContent>
           </Dialog>
+          <SignOutButton />
         </div>
 
         {/* Reffereal Card Section */}

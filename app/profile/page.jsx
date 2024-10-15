@@ -1,3 +1,5 @@
+"use lient";
+
 import Link from "next/link";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import { ProfileSection } from "../Sections";
@@ -16,7 +18,7 @@ export default async function ProfilePage() {
             className="text-red font-fredoka"
           >
             {" "}
-            CLick here
+            Click here
           </Link>
         </p>
       </div>

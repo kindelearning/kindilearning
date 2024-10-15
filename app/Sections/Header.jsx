@@ -22,11 +22,12 @@ import {
   SheetHeader,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { ChevronRight, Menu } from "lucide-react";
+import { ChevronRight, Menu, ShoppingBag } from "lucide-react";
 import { HomeLight } from "@/public/Icons";
 import { useEffect, useState } from "react";
 import { signOut, useSession } from "next-auth/react";
 import Loading from "../loading";
+import { useCart } from "../context/CartContext";
 
 const LocalNavitem = ({
   Link = "#",
@@ -200,6 +201,8 @@ const GET_ACCOUNT_BY_EMAIL = gql`
 `;
 
 const Header = () => {
+  const { cart } = useCart();
+
   const pathname = usePathname();
   const { data: session, status } = useSession();
   const [profileData, setProfileData] = useState(null);
@@ -257,7 +260,7 @@ const Header = () => {
                 <section className="lg:hidden h-full flex flex-col w-full gap-2 items-start justify-between space-y-2 mt-4">
                   <div className="flex w-full flex-col gap-2">
                     <div className="flex w-full flex-col gap-1 justify-start items-start">
-                      <div className="text-[#0a1932] text-sm font-medium font-fredoka leading-tight">
+                      <div className="text-[#0a1932] clarabodyTwo font-medium font-fredoka leading-tight">
                         Quick Access
                       </div>
                       <div className="flex w-full flex-col gap-1 justify-normal items-center">
@@ -272,7 +275,7 @@ const Header = () => {
                       </div>
                     </div>
                     <div className="flex w-full flex-col gap-1 justify-start items-start">
-                      <div className="text-[#0a1932] text-sm font-medium font-fredoka leading-tight">
+                      <div className="text-[#0a1932] clarabodyTwo  font-fredoka leading-tight">
                         My Progress
                       </div>
                       <div className="grid grid-cols-3 w-full gap-1">
@@ -282,41 +285,26 @@ const Header = () => {
                       </div>
                     </div>
                   </div>
-                  {/* {session ? (
-                    <Link
-                      href="/profile"
-                      target="_blank"
-                      className="rounded-full w-full"
-                    >
-                      
-                    </Link>
-                  ) : (
-                    
-                  )} */}
                   {profileData ? (
-                    <div className="flex w-full justify-start items-center">
-                      {/* <div className="relative w-[32px] h-[32px] p-1 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600">
-                            <div className="w-full h-full bg-white rounded-full flex items-center justify-center">
-                              <Image
-                                src={profileData.profilePicture?.url}
-                                alt="User DP"
-                                width={40}
-                                height={40}
-                                className="w-[32px] h-[32px] object-cover rounded-full"
-                              />
-                            </div>
-                          </div> */}
+                    <div className="flex w-full gap-2 justify-start items-center">
+                      <div className="flex">
+                        <Link
+                          target="_blank"
+                          className="flex flex-col justify-end items-end"
+                          href="/shop/cart"
+                        >
+                          <p className="bg-[eaeaf5] border -mb-[8px] border-red text-red flex justify-center items-center text-[12px] z-12 w-[16px] h-[16px] font-fredoka rounded-full">
+                            {cart.length}
+                          </p>
+                          <ShoppingBag className="text-red w-[28px] h-[28px]" />
+                        </Link>
+                      </div>
                       <Button
                         onClick={handleSignOut}
                         className="bg-red hover:bg-hoverRed text-white clarabutton w-full"
                       >
                         Sign Out
                       </Button>
-                      {/* <div className="flex flex-col w-full justify-start items-start">
-                        <h2 className="text-[#029871] text-[20px] font-semibold font-fredoka leading-tight">
-                          {profileData.name}
-                        </h2>
-                      </div> */}
                     </div>
                   ) : (
                     <div className="flex w-full flex-col gap-1 justify-start items-start">
@@ -382,59 +370,40 @@ const Header = () => {
             </a>
           ))}
         </div>
-        {/* <div className="hidden lg:flex space-x-4">
-          <Link href="/auth/sign-in">
-            <Button className="bg-[#ffffff] border-purple text-purple hover:bg-[#ffffff] hover:border-[#2b2b2b] hover:text-dark-blue-100 px-[40px] border-2 rounded-[16px] transition duration-300 ease-in-out">
-              Log In
-            </Button>
-          </Link>
-          <Link href="/auth/sign-up">
-            <Button className="bg-red px-[40px]  hover:text-white border-4 border-red hover:bg-hoverRed hover:border-hoverRed  rounded-[16px] transition duration-300 ease-in-out">
-              Sign Up
-            </Button>
-          </Link>
-          <Button onClick={() => signOut({ callbackUrl: "/auth/sign-in" })}>
-            Sign Out
-          </Button>{" "}
-        </div> */}
+
         <div className="hidden lg:flex space-x-4">
-          {/* If the user is signed in, show the Sign Out button */}
-          {/* {session ? (
-            <Link
-              href="/profile"
-              target="_blank"
-              className="rounded-full w-[48px] h-[48px]"
-            >
-             
-            </Link>
-          ) : (
-            <>
-              <Link href="/auth/sign-in">
-                <Button className="bg-[#ffffff] border-purple text-purple hover:bg-[#ffffff] hover:border-[#2b2b2b] hover:text-dark-blue-100 px-[40px] border-2 rounded-[16px] transition duration-300 ease-in-out">
-                  Log In
-                </Button>
-              </Link>
-              <Link href="/auth/sign-up">
-                <Button className="bg-red px-[40px] hover:text-white border-4 border-red hover:bg-hoverRed hover:border-hoverRed rounded-[16px] transition duration-300 ease-in-out">
-                  Sign Up
-                </Button>
-              </Link>
-            </>
-          )} */}
           {profileData ? (
-            <Link href="/profile" target="_blank" className="flex cursor-pointer w-full justify-start items-center">
-              <div className="relative w-full flex justify-center items-center p-[2px] border-2 border-red hover:border-hoverRed rounded-full">
-                <div className="w-full h-full bg-white rounded-full  flex items-center justify-center">
-                  <Image
-                    src={profileData.profilePicture?.url}
-                    alt="User DP"
-                    width={40}
-                    height={40}
-                    className="w-[40px] h-[40px] object-cover rounded-full"
-                  />
-                </div>
+            <div className="flex flex-row justify-center items-center gap-2">
+              <div className="flex z-12">
+                <Link
+                  target="_blank"
+                  className="flex flex-col justify-end items-end"
+                  href="/shop/cart"
+                >
+                  <p className="bg-[eaeaf5] border border-red text-red flex justify-center items-center text-[12px] z-12 w-[16px] h-[16px] font-fredoka rounded-full">
+                    {cart.length}
+                  </p>
+                  <ShoppingBag className="text-red w-[28px] h-[28px]" />
+                </Link>
               </div>
-            </Link>
+              <Link
+                href="/profile"
+                target="_blank"
+                className="flex -mt-[6px] -z-12 cursor-pointer w-full justify-start items-center"
+              >
+                <div className="relative w-full flex justify-center items-center p-[2px] border-2 border-red hover:border-hoverRed rounded-full">
+                  <div className="w-full h-full bg-white rounded-full  flex items-center justify-center">
+                    <Image
+                      src={profileData.profilePicture?.url}
+                      alt="User DP"
+                      width={40}
+                      height={40}
+                      className="w-[40px] h-[40px] object-cover rounded-full"
+                    />
+                  </div>
+                </div>
+              </Link>
+            </div>
           ) : (
             <>
               <Link href="/auth/sign-in">

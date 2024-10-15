@@ -8,11 +8,10 @@ import { BottomNavigation, Header } from "@/app/Sections";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 import Image from "next/image";
-import { gql } from "graphql-request";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 
-export default function SignIn() {
+export default function Signin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -26,8 +25,7 @@ export default function SignIn() {
       redirect: false,
     });
 
-    console.log("Sign In Response:", res); // Add this line for more insight
-
+    console.log("Sign In Response:", res);
     if (res?.ok) {
       router.push("/p/activities");
     } else {
@@ -46,7 +44,6 @@ export default function SignIn() {
             <div className="text-[#0a1932] w-[50%] claraheading font-semibold flex flex-col justify-center items-center font-fredoka leading-10">
               Login
             </div>
-            {error && <p>{error}</p>}
             <form
               onSubmit={handleSignin}
               className="flex flex-col w-full px-8 justify-center items-center gap-4"
@@ -111,7 +108,6 @@ export default function SignIn() {
           <div className="text-[#0a1932] text-2xl font-semibold font-fredoka leading-loose">
             Login
           </div>
-          {error && <p>{error}</p>}
           <form
             onSubmit={handleSignin}
             className="flex flex-col w-full justify-center items-center gap-4"
@@ -136,7 +132,7 @@ export default function SignIn() {
             >
               Sign In
             </Button>
-            {error && <p style={{ color: "red" }}>{error}</p>}{" "}
+            {error && <p style={{ color: "red" }}>{error}</p>}
           </form>
         </div>
         <BottomNavigation />

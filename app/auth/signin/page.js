@@ -2,20 +2,11 @@
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { gql } from "graphql-request";
-
-const SIGNIN_USER_QUERY = gql`
-  query SigninUser($email: String!, $password: String!) {
-    account(where: { email: $email, password: $password }) {
-      id
-      email
-    }
-  }
-`;
 
 export default function Signin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const router = useRouter();
 
   const handleSignin = async (e) => {
@@ -27,7 +18,6 @@ export default function Signin() {
     });
 
     console.log("Sign In Response:", res); // Add this line for more insight
-
     if (res?.ok) {
       router.push("/");
     } else {
