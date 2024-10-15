@@ -84,16 +84,15 @@ export default function Schedule() {
               for a smooth and integrated learning experience.
             </div>
           </div>
-
-          {/* <div className="claracontainer md:p-0 p-0 py-4 w-full flex flex-col overflow-hidden gap-8">
+          <div className="claracontainer md:p-0 p-0 py-4 w-full flex flex-col overflow-hidden gap-8">
             <div className="flex lg:hidden">
               <NewCalendar />
             </div>
             <div className="lg:flex hidden">
               <KindiCalendar />
             </div>
-          </div> */}
-          {profileData ? (
+          </div>
+          {/* {profileData ? (
             profileData.isVerified ? (
               <>
                 <div className="claracontainer md:p-0 p-0 py-4 w-full flex flex-col overflow-hidden gap-8">
@@ -140,11 +139,11 @@ export default function Schedule() {
                 </Link>
                 <p className="font-fredoka">
                   Curruntly Logged in as:
-                  <p className="text-red">{profileData.email}</p>
+                  <p className="text-red">{profileData.name}</p>
                 </p>
               </Link>
             </>
-          )}
+          )} */}
         </div>
       </section>
     </>
