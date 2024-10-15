@@ -12,6 +12,58 @@ const client = new GraphQLClient(HYGRAPH_ENDPOINT, {
   },
 });
 
+// const createAndPublishUser = async (userData) => {
+//   const mutation = `
+//     mutation CreateAndPublishUser($name: String!, $email: String!, $password: String!) {
+//       createUser(data: { name: $name, email: $email, password: $password }) {
+//         id
+//         name
+//         email
+//       }
+//       publishUser(where: { email: $email }, to: PUBLISHED) {
+//         id
+//         name
+//         email
+//       }
+//     }
+//   `;
+const createAndPublishUser = async (userData) => {
+  const mutation = `
+    mutation CreateAndPublishUser($name: String!, $email: String!, $password: String!) {
+      createAccount(data: { name: $name, email: $email, password: $password }) {
+        id
+        name
+        email
+      }
+      publishAccount(where: { email: $email }, to: PUBLISHED) {
+        id
+        name
+        email
+      }
+    }
+  `;
+
+  const response = await fetch(HYGRAPH_ENDPOINT, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${HYGRAPH_TOKEN}`,
+    },
+    body: JSON.stringify({
+      query: mutation,
+      variables: {
+        name: userData.name,
+        email: userData.email,
+        password: userData.password,
+      },
+    }),
+  });
+
+  // return await response.json();
+  const result = await response.json();
+  return result;
+};
+
 const CREATE_USER = gql`
   mutation CreateAccount(
     $email: String!
@@ -26,16 +78,39 @@ const CREATE_USER = gql`
   }
 `;
 
+// export async function POST(req) {
+//   const { email, username, password } = await req.json();
 
+//   try {
+//     await client.request(CREATE_USER, { email, username, password });
+//     return new Response(JSON.stringify({ success: true }), { status: 200 });
+//   } catch (error) {
+//     console.error("Signup Error:", error);
+//     return new Response(JSON.stringify({ success: false }), { status: 500 });
+//   }
+// }
 
 export async function POST(req) {
-  const { email, username, password } = await req.json();
+  const { name, email, password } = await req.json();
 
   try {
-    await client.request(CREATE_USER, { email, username, password });
-    return new Response(JSON.stringify({ success: true }), { status: 200 });
+    const result = await createAndPublishUser({ name, email, password });
+
+    if (result.errors) {
+      return NextResponse.json(
+        { error: result.errors[0].message },
+        { status: 400 }
+      );
+    }
+
+    return NextResponse.json({
+      message: "User registered successfully!",
+      user: result.data.createUser,
+    });
   } catch (error) {
-    console.error("Signup Error:", error);
-    return new Response(JSON.stringify({ success: false }), { status: 500 });
+    return NextResponse.json(
+      { error: "User registration failed." },
+      { status: 500 }
+    );
   }
 }
