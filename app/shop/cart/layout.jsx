@@ -1,5 +1,4 @@
 import { Fredoka as FontSans } from "next/font/google";
-// import "../globals.css";
 import { cn } from "@/lib/utils";
 import { Header } from "@/app/Sections";
 import "../../globals.css";
