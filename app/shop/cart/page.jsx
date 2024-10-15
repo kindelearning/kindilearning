@@ -12,16 +12,6 @@ export default function CartPage() {
   const { cart, removeFromCart, clearCart } = useCart();
   console.log("CartPage:", cart);
 
-  // const handleCheckout = () => {
-  //   if (cart.length === 0) {
-  //     alert("Your cart is empty!");
-  //     return;
-  //   }
-
-  //   console.log("Proceeding to checkout with cart items:", cart);
-  //   alert("Proceeding to checkout!");
-  //   clearCart();
-  // };
   const handleCheckout = async () => {
     if (cart.length === 0) {
       alert("Your cart is empty!");
@@ -101,7 +91,8 @@ export default function CartPage() {
                         ${item.price}
                       </div>
                       <div className="w-full gap-[2px] flex justify-end items-center">
-                        <button onClick={handleCheckout}>
+                        {/* <button onClick={handleCheckout}> */}
+                        <button /* onClick={handleCheckout} */>
                           <Image src={DeleteItem} />
                         </button>
                       </div>
