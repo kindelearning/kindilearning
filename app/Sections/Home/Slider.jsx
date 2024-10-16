@@ -32,6 +32,44 @@ const SimpleLine = ({ SlideTitle = "Educational play for young children" }) => {
 
 const slides = [
   {
+    image: SlidePlay,
+    script: "Early Years Learning with Added Fun",
+    heading: "Play",
+    description:
+      "At Kindi, we provide adults with the necessary tools to nurture toddlers effectively, maximising each day of brain growth in early years children, eliminating uncertainty, worry, and time constraints. We've curated a comprehensive programme of activities meticulously designed to stimulate cognitive, social, emotional, and physical development through easy-to-follow expert daily guided play activities, unlocking every child's full potential and providing a strong foundation for lifelong success.",
+    backgroundColor: "FF8E00",
+    textcolor: "FF8E00",
+  },
+
+  {
+    image: SlideLearn,
+    script: "Education for Everyone",
+    heading: "Learn",
+    description:
+      "We understand that each child is unique, with their own pace and path of learning. That's why our platform goes beyond a one-size-fits-all approach, offering a dynamic and customizable experience for every child. Guided by our platform, carers are empowered to target different learning outcomes for each child, ensuring that every interaction becomes a rich and meaningful learning experience regardless of age and stage. Helping carers navigate the complexities of early childhood development with confidence and ease.",
+    backgroundColor: "F05C5C",
+    textcolor: "F05C5C",
+  },
+
+  {
+    image: SlideThrive,
+    script: "Vital Brain Development through Early Learning",
+    heading: "Thrive",
+    description:
+      "Unlocking lifelong success begins with prioritising early brain development. Our program not only significantly enhances academic achievement in higher education but also fosters long-term success and happiness. By nurturing cognitive abilities, emotional intelligence, and social skills early on, we empower children to thrive in various aspects of life, ensuring enduring happiness and achievement. Equipping children with the skills necessary to navigate challenges and seize opportunities with confidence and resilience. ",
+    backgroundColor: "C42797",
+    textcolor: "C42797",
+  },
+  {
+    image: SlideGrow,
+    script: "Early Years Learning Tools ",
+    heading: "Grow",
+    description:
+      "Stay updated on your child's development compared to the national average and monitor their progress effortlessly with our ‘Milestone Tracker’. This invaluable tool empowers adults to identify and bolster areas of strength in children, while also providing guidance where additional support may be needed. With customisable features and insightful analytics, our tracker ensures every child receives the tailored attention they deserve on their developmental journey.",
+    backgroundColor: "019ACF",
+    textcolor: "019ACF",
+  },
+  {
     image: SlideMain,
     script: "The Best Start for your Children",
     heading: (
@@ -67,42 +105,6 @@ const slides = [
     ),
     backgroundColor: "EEBA00", // or any other tailwind background color class
     textcolor: "EEBA00",
-  },
-  {
-    image: SlidePlay,
-    script: "Early Years Learning with Added Fun",
-    heading: "Play",
-    description:
-      "At Kindi, we provide adults with the necessary tools to nurture toddlers effectively, maximising each day of brain growth in early years children, eliminating uncertainty, worry, and time constraints. We've curated a comprehensive programme of activities meticulously designed to stimulate cognitive, social, emotional, and physical development through easy-to-follow expert daily guided play activities, unlocking every child's full potential and providing a strong foundation for lifelong success.",
-    backgroundColor: "FF8E00",
-    textcolor: "FF8E00",
-  },
-  {
-    image: SlideGrow,
-    script: "Early Years Learning Tools ",
-    heading: "Grow",
-    description:
-      "Stay updated on your child's development compared to the national average and monitor their progress effortlessly with our ‘Milestone Tracker’. This invaluable tool empowers adults to identify and bolster areas of strength in children, while also providing guidance where additional support may be needed. With customisable features and insightful analytics, our tracker ensures every child receives the tailored attention they deserve on their developmental journey.",
-    backgroundColor: "019ACF",
-    textcolor: "019ACF",
-  },
-  {
-    image: SlideThrive,
-    script: "Vital Brain Development through Early Learning",
-    heading: "Thrive",
-    description:
-      "Unlocking lifelong success begins with prioritising early brain development. Our program not only significantly enhances academic achievement in higher education but also fosters long-term success and happiness. By nurturing cognitive abilities, emotional intelligence, and social skills early on, we empower children to thrive in various aspects of life, ensuring enduring happiness and achievement. Equipping children with the skills necessary to navigate challenges and seize opportunities with confidence and resilience. ",
-    backgroundColor: "C42797",
-    textcolor: "C42797",
-  },
-  {
-    image: SlideLearn,
-    script: "Education for Everyone",
-    heading: "Learn",
-    description:
-      "We understand that each child is unique, with their own pace and path of learning. That's why our platform goes beyond a one-size-fits-all approach, offering a dynamic and customizable experience for every child. Guided by our platform, carers are empowered to target different learning outcomes for each child, ensuring that every interaction becomes a rich and meaningful learning experience regardless of age and stage. Helping carers navigate the complexities of early childhood development with confidence and ease.",
-    backgroundColor: "F05C5C",
-    textcolor: "F05C5C",
   },
 ];
 
@@ -141,7 +143,7 @@ const Slider = () => {
   return (
     <>
       <section
-        className={`w-full h-auto bg-purple py-12 md:py-16 items-center justify-center flex flex-col  gap-[20px] ${
+        className={`w-full h-auto bg-purple py-12 md:pt-16 md:pb-4 items-center justify-center flex flex-col  gap-[20px] ${
           loaded ? "loaded" : "loading"
         }`}
         style={{

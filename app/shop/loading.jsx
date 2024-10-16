@@ -1,8 +1,8 @@
 export default function Loading() {
   return (
     <>
-      <div className="flex justify-center items-center h-screen bg-[#eaeaf5]">
-        <video autoPlay loop muted className="flex justify-center items-center">
+      <div className="flex w-screen justify-center items-center h-screen bg-[#eaeaf5]">
+      <video autoPlay loop muted className="flex justify-center items-center">
           <source
             src="preloader.mp4"
             type="video/mp4"
