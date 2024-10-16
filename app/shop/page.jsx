@@ -260,7 +260,7 @@ const ProductCard = ({ image, title, price }) => {
           alt={title}
           width={200}
           height={200}
-          className="w-full hover:scale-110 duration-300 h-[120px] md:h-[200px] rounded-t-[24px] object-cover"
+          className="w-full hover:scale-110 duration-300 h-[200px] md:h-[260px] rounded-t-[24px] object-cover"
         />
       </div>
       <div className="claracontainer flex flex-col justify-start items-center w-full gap-2">

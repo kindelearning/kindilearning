@@ -16,7 +16,7 @@ const QuantityControl = () => {
   };
 
   return (
-    <div className="flex w-fit min-w-[124px] items-center border-1 border-gray-200 rounded-full overflow-hidden">
+    <div className="flex border-[#eaeaf5] w-fit min-w-[124px] items-center border-1 shadow-sm lg:shadow-none rounded-full overflow-hidden">
       <button
         className="px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-600 transition duration-200 ease-in-out"
         onClick={handleDecrement}

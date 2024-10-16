@@ -237,21 +237,20 @@ export default async function ProductDetailPage({ params }) {
               </div>
               {/* CTA */}
               <div className="claracontainer flex flex-col w-full gap-1">
-                <div className="claracontainer w-full justify-between items-center flex flex-row gap-4">
+                <div className="claracontainer w-full justify-between items-start flex flex-row gap-4">
                   <QuantityControl />
-                  <Button
-                    onClick={handleAddToCart}
-                    className="bg-red w-full rounded-[16px] border-2 border-[white]"
-                  >
-                    Add to Cart
-                  </Button>
-                  {/* <Link className="w-full" href="/shop/cart"></Link> */}
-                </div>
-                <div className="claracontainer w-full justify-end items-end flex flex-row gap-4">
-                  <div className="w-full flex flex-row justify-center items-center gap-2">
-                    <Image alt="Kindi" src={creditCard} className="w-2 h-2" />
-                    <div className="text-zinc-600 text-sm font-medium font-fredoka leading-[20px]">
-                      100% Secured Payment
+                  <div className="w-full flex flex-col gap-1">
+                    <Button
+                      onClick={handleAddToCart}
+                      className="bg-red w-full rounded-[16px] border-2 border-[white]"
+                    >
+                      Add to Cart
+                    </Button>
+                    <div className="w-full flex flex-row justify-start items-center gap-2">
+                      <Image alt="Kindi" src={creditCard} className="w-4 h-4" />
+                      <div className="text-zinc-600 text-sm text-start font-medium font-fredoka leading-[20px]">
+                        100% Secured Payment
+                      </div>
                     </div>
                   </div>
                 </div>

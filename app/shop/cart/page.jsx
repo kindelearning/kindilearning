@@ -43,11 +43,14 @@ export default function CartPage() {
 
   if (cart.length === 0) {
     return (
-      <>
-        <div className="claracontainer flex justify-center items-center claraheading h-[50vh]">
+      <div className="w-full flex-col h-screen justify-center items-center flex gap-2">
+        <div className="claracontainer flex justify-center items-center claraheading">
           Your cart is empty
         </div>
-      </>
+        <Link href="/shop" target="_blank" className="clarabodyTwo text-red">
+          Explore Shop{" "}
+        </Link>
+      </div>
     );
   }
 
@@ -91,8 +94,7 @@ export default function CartPage() {
                         ${item.price}
                       </div>
                       <div className="w-full gap-[2px] flex justify-end items-center">
-                        {/* <button onClick={handleCheckout}> */}
-                        <button /* onClick={handleCheckout} */>
+                        <button>
                           <Image src={DeleteItem} />
                         </button>
                       </div>
