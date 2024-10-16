@@ -5,6 +5,7 @@ import { NewsletterImg } from "@/public/Images";
 import Head from "next/head";
 import Image from "next/image";
 import React, { useState } from "react";
+import { BottomNavigation, Footer, Header } from "../Sections";
 
 export default function NewsLetter() {
   const [email, setEmail] = useState("");
@@ -40,10 +41,14 @@ export default function NewsLetter() {
   };
   return (
     <>
-     <Head>
+      <Head>
         <title>Subscribe to Our Newsletter - Stay Updated!</title>
-        <meta name="description" content="Subscribe to our newsletter and stay updated with the latest news, tips, and offers." />
+        <meta
+          name="description"
+          content="Subscribe to our newsletter and stay updated with the latest news, tips, and offers."
+        />
       </Head>
+      <Header className="sticky" />
       <section className="w-full h-screen bg-purple py-12 items-center justify-center flex flex-col gap-[20px]">
         <div className="claracontainer px-0 md:px-2 lg:px-0 w-full flex flex-col md:justify-between justify-center items-center gap-4 md:gap-0 lg:gap-12">
           <Image
@@ -121,6 +126,8 @@ export default function NewsLetter() {
           </div>
         </div>
       </section>
+      <BottomNavigation />
+      <Footer />
     </>
   );
 }

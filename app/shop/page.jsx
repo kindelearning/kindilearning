@@ -921,7 +921,7 @@ export default async function ShopPage() {
                 )}
               </div>
             </div>
-          </div>{" "}
+          </div>
         </div>
       </section>
     </>

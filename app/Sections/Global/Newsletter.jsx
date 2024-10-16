@@ -15,7 +15,7 @@ export default function NewsLetter() {
 
     setStatus("loading");
 
-    const res = await fetch("/api/subscribe", {
+    const res = await fetch("/api/subscribeTwo", {
       method: "POST",
       body: JSON.stringify({ email }),
       headers: {
@@ -23,8 +23,8 @@ export default function NewsLetter() {
       },
     });
 
-    const { error } = await res.json();
-    if (error) {
+    const data = await res.json();
+    if (data.error) {
       setStatus("error");
       return;
     }

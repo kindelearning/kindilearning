@@ -141,7 +141,7 @@ export const footerSections = [
   {
     title: "General",
     links: [
-      { label: "Newsletter", href: "/p/newsletter" },
+      { label: "Newsletter", href: "/newsletter" },
       { label: "Community", href: "/p/community" },
       { label: "Themes", href: "/p/our-themes" },
       { label: "Quality Control", href: "/p/quality-control" },
