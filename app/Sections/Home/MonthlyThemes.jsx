@@ -12,11 +12,11 @@ const MonthlyThemes = async () => {
   return (
     <>
       <section className="w-full h-auto bg-[#F3BD40] items-center justify-center py-12 flex transition-all animate-fade-in  duration-300 flex-col md:flex-row gap-[20px]">
-        <div className="claracontainer  w-full flex-col justify-start items-center gap-6 lg:gap-8 inline-flex">
+        <div className="claracontainer w-full flex-col justify-start items-center script inline-flex">
           <div className="w-full claracontainer animate-fade-in px-4 duration-150 text-start  md:text-center text-[#eaeaf5] clarascript">
             Enjoy every Precious Moment with your Children
           </div>
-          <div className="w-auto  flex-col justify-center items-center gap-4 px-4 lg:gap-4 inline-flex">
+          <div className="w-auto  flex-col justify-center items-center px-4 heading inline-flex">
             <div className="w-full text-start md:text-center">
               <span className="text-[#3f3a64] claraheading animate-fade-in  duration-150">
                 This Month&apos;s{" "}

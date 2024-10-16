@@ -310,13 +310,7 @@ export default async function ActivitiesPage() {
               {activities.map((activity) => (
                 <div key={activity.id}>
                   <article className="rounded-lg">
-                    <Link
-                      target="_blank"
-                      href={`/p/activities/${activity.id}`}
-                      // onClick={() =>
-                      //   console.log("Clicked Blog:", LocalActivity)
-                      // }
-                    >
+                    <Link target="_blank" href={`/p/activities/${activity.id}`}>
                       <div className="w-full min-w-[160px] h-auto bg-white items-start justify-start border rounded-3xl flex flex-col md:flex-row gap-4">
                         <div className="claracontainer w-full flex-col justify-start items-center gap-7 inline-flex">
                           <div className="w-full max-w-full h-auto  ">
