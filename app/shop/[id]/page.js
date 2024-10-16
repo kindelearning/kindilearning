@@ -75,53 +75,62 @@ const ReviewForm = () => {
       className="w-full flex flex-col justify-center items-center"
       onSubmit={handleSubmit}
     >
-      <div className="claracontainer w-full py-6 flex flex-row gap-4 justify-between items-start">
-        <Image
-          alt="Kindi"
-          src={ShopImage}
-          className="w-[260px] hidden lg:flex h-[200px]"
-        />
+      <div className="claracontainer w-full py-6 flex flex-col gap-4 justify-between items-start">
+        <Image alt="Kindi" src={ShopImage} className="w-full object-contain overflow-clip flex h-[200px]" />
         <div className="flex w-full flex-col gap-2 justify-start items-start claracontainer">
-          {/* <div className="text-start text-[#3f3a64] text-[20px] lg:text-4xl font-semibold font-fredoka capitalize">
-              Wooden geometrical montessori puzzle
-            </div>
-            <div className="text-[#757575] text-[16px] lg:text-2xl text-start font-light font-fredoka">
-              Lorem ipsum dolor sit amet consectetur. At lectus diam a sit
-              aliquet sollicitudin sagittis volutpat....
-            </div> */}
           <div className="claracontainer w-full flex flex-col gap-2 justify-between items-start">
             <div className="w-full text-[#3f3a64] clarabodyTwo font-fredoka capitalize">
               Add your Comments
             </div>{" "}
             <Textarea
               placeholder="Add your review..."
-              className="w-full p-4 text=[#0f172a] py-4 text-start rounded-lg border-2 border-[#b4b4b4] justify-center items-center gap-2.5 inline-flex"
+              className="w-full p-4 focus-within:ring-0 focus-visible:ring-0 ring-white ring-offset-0 text=[#0f172a] py-4 text-start rounded-lg border-2 border-[#b4b4b4] justify-center items-center gap-2.5 inline-flex"
               value={content}
               onChange={(e) => setContent(e.target.value)}
               required
             />
+            <div className="flex flex-row justify-between items-center w-full">
+              <div className="text-center text-red clarabodyTwo">
+                Give us Rating out of 5-Stars
+              </div>
+              <div className="flex gap-1 items-center">
+                <Image
+                  className="w-2 h-2 lg:w-4 lg:h-4"
+                  src={Ratings}
+                  alt="Rating"
+                />
+                <Image
+                  className="w-2 h-2 lg:w-4 lg:h-4"
+                  src={Ratings}
+                  alt="Rating"
+                />
+                <Image
+                  className="w-2 h-2 lg:w-4 lg:h-4"
+                  src={Ratings}
+                  alt="Rating"
+                />
+                <Image
+                  className="w-2 h-2 lg:w-4 lg:h-4"
+                  src={Ratings}
+                  alt="Rating"
+                />
+                <Image
+                  className="w-2 h-2 lg:w-4 lg:h-4"
+                  src={Ratings}
+                  alt="Rating"
+                />
+              </div>
+            </div>
             <Input
               type="number"
               placeholder="Rating"
               value={rating}
-              className="border-2 border-[#b4b4b4] "
+              className="border-2 focus-within:ring-0 ring-offset-0 focus-visible:ring-0 ring-white border-[#b4b4b4] "
               onChange={(e) => setRating(e.target.value)}
               min="1"
               max="5"
               required
             />
-          </div>
-          <div className="flex flex-col justify-start items-start w-full">
-            <div className="text-center text-red text-[12px] lg:text-[20px] font-bold font-['Montserrat']">
-              Give us Rating out of 5-Stars
-            </div>
-            <div className="flex gap-1">
-              <Image src={Ratings} alt="Rating" />
-              <Image src={Ratings} alt="Rating" />
-              <Image src={Ratings} alt="Rating" />
-              <Image src={Ratings} alt="Rating" />
-              <Image src={Ratings} alt="Rating" />
-            </div>
           </div>
         </div>
       </div>
@@ -270,26 +279,27 @@ export default async function ProductDetailPage({ params }) {
               <div className="text-[#0a1932] text-[20px] lg:text-[28px]  font-semibold font-fredoka text-start w-full leading-loose">
                 Customer Reviews
               </div>
-              <Dialog className="w-full flex flex-col justify-center items-center">
-                <DialogTrigger className="text-red w-full text-end text-xl font-semibold font-fredoka leading-none">
-                  {" "}
-                  Write a Review
+              <Dialog>
+                <DialogTrigger>
+                  <div className="text-center w-[max-content]  text-red clarabodyTwo font-semibold capitalize ">
+                    Write a Review
+                  </div>
                 </DialogTrigger>
-                <DialogContent className="claracontainer w-full rounded-[24px] gap-6 min-h-[600px] justify-start items-start px-4">
-                  <DialogHeader className="w-full">
-                    <DialogTitle className="w-full">
-                      {" "}
-                      <div className="text-center text-red claraheading font-semibold capitalize ">
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>
+                      <div className="text-center text-red lg:text-[32px] lg:font-semibold clarabodyTwo font-semibold capitalize ">
                         Write a Review
                       </div>
                     </DialogTitle>
-                    <DialogDescription className="w-full">
+                    <DialogDescription>
                       <ReviewForm />
                     </DialogDescription>
                   </DialogHeader>
                 </DialogContent>
               </Dialog>
             </div>
+
             <ReviewGrid />
           </div>
           {/* Row 4 */}
@@ -302,7 +312,7 @@ export default async function ProductDetailPage({ params }) {
         </div>
       </section>
       {/* Row 5 - Sticky CTA Mobile */}
-      <div className="flex w-full lg:hidden md:hidden flex-col justify-start items-center">
+      <div className="flex w-full z-20 lg:hidden md:hidden flex-col pb-32 justify-start items-center">
         <div className="claracontainer px-4 py-4 w-full bg-[#ffffff] rounded-t-[24px] shadow-upper sticky bottom-0 z-12 justify-between items-center flex flex-row gap-4">
           <QuantityControl />
           <Link className="w-full" href="/shop/cart">
