@@ -1,37 +1,11 @@
 "use client";
 
-import { ProductImage, ThemeDummy, Themes } from "@/public/Images";
+import { StockImages } from "@/app/constant/profile";
+import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import React, { useState } from "react";
 
-const StockImages = [
-  {
-    id: 1,
-    url: ThemeDummy,
-  },
-  {
-    id: 2,
-    url: Themes,
-  },
-  {
-    id: 3,
-    url: ProductImage,
-  },
-  {
-    id: 4,
-    url: ThemeDummy,
-  },
-  {
-    id: 5,
-    url: Themes,
-  },
-  {
-    id: 6,
-    url: ProductImage,
-  },
-];
-
-const ImageInput = () => {
+export default async function ImageInput() {
   const [selectedImage, setSelectedImage] = useState(null);
   const [uploadedImage, setUploadedImage] = useState(null);
   const [preview, setPreview] = useState(null);
@@ -53,7 +27,7 @@ const ImageInput = () => {
 
   return (
     <>
-      <div className="flex flex-col md:flex-col lg:flex-row w-full gap-[16px] lg:gap-8 justify-between items-center">
+      <div className="flex flex-col md:flex-col lg:flex-row w-full gap-[16px] lg:gap-8 justify-between items-start">
         <div className="flex flex-col gap-4 p-6 justify-center items-center max-w-[360px] w-full bg-white rounded-[12px] relative">
           {selectedImage ? (
             <div className="relative">
@@ -113,20 +87,27 @@ const ImageInput = () => {
             </>
           )}
         </div>
-        <div className="flex flex-wrap w-full justify-start items-start mt-4">
-          {StockImages.map((image) => (
-            <Image
-              key={image.id}
-              src={image.url}
-              alt="Stock Image"
-              className="w-16 h-16 rounded-full cursor-pointer m-2"
-              onClick={() => handleStockImageSelect(image)}
-            />
-          ))}
+
+        <div className="flex w-full flex-col gap-2 justify-between">
+          <div className="flex flex-wrap  w-full justify-start items-start mt-4">
+            {StockImages.map((image) => (
+              <Image
+                key={image.id}
+                src={image.url}
+                alt="Stock Image"
+                className="w-16 h-16 rounded-full cursor-pointer m-2"
+                onClick={() => handleStockImageSelect(image)}
+              />
+            ))}
+          </div>
+          <Button
+            className="text-center text-white text-base bg-red rounded-2xl shadow border-2 border-white font-semibold font-['Fredoka'] leading-tight w-[200px] "
+            type="submit"
+          >
+            Update Image
+          </Button>
         </div>
       </div>
     </>
   );
-};
-
-export default ImageInput;
+}

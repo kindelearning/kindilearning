@@ -76,7 +76,7 @@ export default async function ProfileEdit({ userId }) {
             Profile Edit
           </div>
         </div>
-        <div className="claracontainer bg-[#f5f5f5] md:bg-[#f5f5f5] -mt-4 rounded-t-[12px] z-2 md:m-12 px-4 py-6 rounded-xl md:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-[20px]">
+        <div className="claracontainer bg-[#f5f5f5] md:bg-[#f5f5f5] -mt-4 rounded-t-[12px] z-2 md:m-12 px-4 py-6 rounded-xl md:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-[20px] lg:gap-8">
           {/* Top Heading */}
           <div className="w-full  flex justify-center items-center text-center ">
             <span className="text-[#3f3a64] uppercase claraheading">My </span>
@@ -151,30 +151,7 @@ export default async function ProfileEdit({ userId }) {
                         </label>
                       </div>
                     </div>
-                    {/* <div className="flex flex-col w-full justify-start items-start">
-                      <div className="w-full flex justify-start items-center gap-1">
-                        <select
-                          id="attendingNursery"
-                          name="attendingNursery"
-                          value={formData.attendingNursery ? "Yes" : "No"} // Using "Yes" or "No" values
-                          onChange={handleChange}
-                          className="w-[150px] h-[30px] focus-within:ring-0 shadow-none focus-within:ring-offset-0 bg-white rounded-lg text-[#757575] text-base font-normal font-fredoka leading-normal"
-                        >
-                          <option value="Yes">Yes</option>
-                          <option value="No">No</option>
-                        </select>
-                        <label
-                          htmlFor="attendingNursery"
-                          className="block text-[#757575] text-[10px] lg:text-[14px] px-4 font-normal leading-none font-fredoka"
-                        >
-                          Attending Nursery:
-                        </label>
-                      </div>
-                      <label className="block text-[12px] font-fredoka text-start text-[#878787]">
-                        Select "Yes" if you are studying in Nursery, otherwise
-                        select "No"
-                      </label>
-                    </div> */}
+                    
                   </div>
                   <div className="flex w-full justify-center items-center">
                     <Button
