@@ -147,7 +147,7 @@ export default async function HowItWorks() {
                   <div className="flex-col w-full justify-start items-start gap-5 flex">
                     <div className="w-full gap-3">
                       <span className="text-white claraheading animate-fade-in lg:text-[44px]">
-                        Enjoy
+                        Enjoy{" "}
                       </span>
                       <span className="text-red w-[max-content] animate-fade-in claraheading lg:text-[44px]">
                         Precious Time{" "}

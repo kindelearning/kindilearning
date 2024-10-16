@@ -25,7 +25,7 @@ const PopularActivity = async () => {
     return <NotFound />;
   }
   return (
-    <section className="w-full h-auto bg-[#eaeaf5] py-12 items-center justify-center flex flex-col gap-[20px]">
+    <section className="w-full h-auto bg-[#eaeaf5] pt-12 pb-20 items-center justify-center flex flex-col gap-[20px]">
       {/* Top Heading Section */}
       <div className="claracontainer w-full script p-4 flex-col justify-start items-start md:items-center inline-flex">
         <h2 className="clarascript text-start md:text-center text-red">
