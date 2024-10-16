@@ -22,7 +22,7 @@ const AgeCard = ({ bgImage, image, title, body, link }) => {
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
         }}
-        className="w-full min-h-[390px] min-w-[280px]  flex flex-col bg-[#ffffff00] rounded-[24px] justify-between items-start px-8 py-4"
+        className="w-full min-h-[390px] h-[390px] border-t-2 border-b-2 min-w-[280px]  flex flex-col bg-[#ffffff00] rounded-[24px] justify-between items-start px-8 py-4"
       >
         <div className="flex w-full items-center justify-start flex-col">
           <Image
@@ -57,7 +57,7 @@ const AgeRanges = async () => {
   return (
     <>
       <section className="w-full h-auto bg-[#EAEAF5] items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">
-        <div className="claracontainer p-0 md:px-0 md:py-8 lg:py-8 lg:px-0 xl:p-12 w-full flex flex-col overflow-hidden gap-8">
+        <div className="claracontainer p-0 md:px-0 md:py-8 lg:py-8 lg:px-0 xl:p-12 justify-start items-center lg:justify-center w-full flex flex-col overflow-hidden gap-8">
           {/* Top Heading Section */}
           <div className="claracontainer px-4 w-full py-6 flex-col justify-start items-center gap-1 inline-flex">
             <div className="text-start w-full md:text-center">
@@ -70,22 +70,12 @@ const AgeRanges = async () => {
             </div>
             <div className="flex w-full justify-start items-start flex-col">
               <div className="w-full px-0 md:px-12 lg:px-32 text-start md:text-center text-[#3f3a64] clarbodyTwo">
-                {/* We understand that managing multiple learning activities for
-                children of different ages can be challenging. That&apos;s why
-                we&apos;ve developed a mixed-age approach to educational play.
-                This approach delivers age-appropriate outcomes using the same
-                proven activity, allowing your six-month-old baby to join in
-                with your five-year-old and benefit from the same fun learning
-                experience. Our platform provides guidance for adults on
-                delivering different learning outcomes for each age group. While
-                every activity is focused on a broad age range, there&apos;s
-                always something to learn for every young child taking part! */}
                 <p>{stories[0].ageRanges}</p>
               </div>
             </div>
           </div>
           {/* Row Two */}
-          <div className="w-full px-4 overflow-x-scroll scrollbar-hidden h-full py-6 flex-row justify-start items-center gap-[2px] flex ">
+          <div className="w-full lg:max-w-[1180px] px-4 min-h-[400px] overflow-x-scroll scrollbar-hidden h-full py-6 flex-row justify-start items-center gap-[2px] flex ">
             <AgeCard
               image={AgeCardOne}
               bgImage="/Images/AgeRangeOne.svg"

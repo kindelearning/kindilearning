@@ -26,10 +26,6 @@ const AreasOfLearning = async () => {
           </div>
           <div className="flex w-full justify-start items-start flex-col">
             <div className="w-full px-0 md:px-12 lg:px-32 text-start md:text-center text-[#3f3a64] font-fredoka text-[18px] font-medium leading-[22px]">
-              {/* Unlocking your child&apos;s full potential. Kindi is here to
-              equip you with the tools to make it happen! Discover our early
-              years education activities across eight distinctive categories,
-              all aligned with UK education curriculums. */}
               <p>{stories[0].areasOfLearning}</p>
             </div>
           </div>
