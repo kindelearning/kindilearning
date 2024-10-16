@@ -66,6 +66,19 @@ export const authOptions = {
     }),
   ],
 
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.sub = user.id; // Ensure the userId is set as the subject in the token
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      session.user.id = token.sub;
+      return session;
+    },
+  },
+
   pages: {
     signIn: "/auth/signin",
   },
