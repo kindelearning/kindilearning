@@ -45,7 +45,7 @@ const PopularActivity = async () => {
         </div>
       </div>
       {/* The Activity Carousel */}
-      <div className="flex overflow-x-auto scrollbar-hidden px-4 lg:px-0 w-full claracontainer gap-4 scrollbar-hidden">
+      <div className="flex overflow-x-auto py-2 scrollbar-hidden px-4 lg:px-0 w-full claracontainer gap-4 scrollbar-hidden">
         {/* {[1, 2, 3, 4, 5].map((item, index) => (
           <Activity
             key={index}
@@ -57,12 +57,12 @@ const PopularActivity = async () => {
         ))} */}
         {activities.map((activity) => (
           <div key={activity.id}>
-            <article className="rounded-lg">
+            <article className="rounded-lg ">
               <Link target="_blank" href={`/p/activities/${activity.id}`}>
-                <div className="w-full min-w-[160px] h-auto bg-white items-start justify-start border rounded-3xl flex flex-col md:flex-row gap-4">
+                <div className="md:w-full hover:shadow-md duration-200 min-w-[200px] w-[200px] min-h-[250px] h-full bg-white items-start justify-start border rounded-3xl flex flex-col md:flex-row gap-4">
                   <div className="claracontainer w-full flex-col justify-start items-center gap-7 inline-flex">
-                    <div className="w-full  max-w-[240px]  lg:max-w-full h-auto  ">
-                      <div className="flex max-h-[180px] lg:min-h-[276px] lg:h-full lg:max-h-[276px] md:max-h-[300px]  overflow-clip rounded-t-3xl ">
+                    <div className="w-full max-w-[240px]  lg:max-w-full h-auto  ">
+                      <div className="flex max-h-[180px] min-h-[150px] h-[150px] lg:min-h-[276px] lg:h-full lg:max-h-[276px] md:max-h-[300px]  overflow-clip rounded-t-3xl ">
                         <Image
                           width={280}
                           height={250}
@@ -84,7 +84,7 @@ const PopularActivity = async () => {
                               {activity.skills
                                 .slice(0, 2)
                                 .map((skill, index) => (
-                                  <li key={index}>{skill.slice(0, 10)}</li>
+                                  <li key={index}>{skill.slice(0, 8)}</li>
                                 ))}
                             </ul>
                           </div>
