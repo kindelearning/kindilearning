@@ -5,9 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import React, { useEffect, useState } from "react";
 
-
-
-
 export default async function ProfileEdit({ userId }) {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -114,7 +111,7 @@ export default async function ProfileEdit({ userId }) {
                     />
                   </div>
 
-                  <div className="flex flex-row w-full justify-between items-start gap-4">
+                  <div className="flex flex-col lg:flex-row w-full justify-between items-start gap-4">
                     <div className="w-full flex py-2 bg-white rounded-lg flex-col justify-start items-start gap-1">
                       <label
                         htmlFor="dateOfBirth"
@@ -144,7 +141,7 @@ export default async function ProfileEdit({ userId }) {
                           name="attendingNursery"
                           checked={formData.attendingNursery}
                           onChange={handleChange}
-                          className="w-[20px] h-[20px] text-[black] focus-within:ring-0 shadow-none focus-within:ring-offset-0 bg-white rounded-lg  text-base font-normal font-fredoka leading-normal"
+                          className="w-[20px] rounded-full h-[20px] text-[black] focus-within:ring-0 shadow-none focus-within:ring-offset-0 bg-white text-base font-normal font-fredoka leading-normal"
                         />
                         <label
                           htmlFor="attendingNursery"
@@ -154,7 +151,6 @@ export default async function ProfileEdit({ userId }) {
                         </label>
                       </div>
                     </div>
-                    
                   </div>
                   <div className="flex w-full justify-center items-center">
                     <Button

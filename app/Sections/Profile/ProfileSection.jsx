@@ -209,18 +209,18 @@ const ProfileSection = async () => {
       </div>
       <div className="claracontainer bg-[#F5F5F5] md:bg-[#EAEAF5] -mt-4 rounded-t-[12px] z-2 lg:m-12 px-4 py-6 rounded-xl md:px-2 lg:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-[20px]">
         {/* Top Profile Card */}
-        <div className="w-full flex bg-[white] rounded-[24px] p-2 md:p-4 justify-start gap-[4px] lg:gap-[12px]  items-center">
+        <div className="w-full flex bg-[white] rounded-[24px] p-2 md:p-4 justify-start items-start gap-[4px] lg:gap-[12px] lg:items-center">
           <div className="w-fit lg:max-w-[160px] lg:w-full items-center flex justify-start">
             {profileData ? (
               <>
-                <div className="relative w-36 h-36 p-1 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600">
+                <div className="relative w-20 h-20 lg:w-36 lg:h-36 p-1 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600">
                   <div className="w-full h-full bg-white rounded-full flex items-center justify-center">
                     <Image
                       src={profileData.profilePicture?.url}
                       alt="User DP"
                       width={100}
                       height={100}
-                      className="w-32 h-32 object-cover rounded-full"
+                      className="w-[72px] h-[72px] lg:w-36 lg:h-36 object-cover overflow-clip rounded-full"
                     />
                   </div>
                 </div>
@@ -234,11 +234,11 @@ const ProfileSection = async () => {
             )}
           </div>
           <div className="w-full gap-4 flex flex-col justify-center">
-            <div className="flex flex-row justify-between items-center w-full">
+            <div className="flex flex-row justify-between items-start w-full">
               {profileData ? (
                 <div className="flex flex-col w-full justify-start items-start">
                   <div className="flex gap-1 items-center w-full justify-start">
-                    <h2 className="text-[#029871] text-[24px] md:text-[28px] lg:text-[32px] xl:text-[40px] font-semibold  font-fredoka leading-tight">
+                    <h2 className="text-[#029871] text-[20px] md:text-[28px] lg:text-[32px] xl:text-[40px] font-semibold font-fredoka leading-tight">
                       {profileData.name}
                     </h2>
                     {profileData.isVerified && (
@@ -246,11 +246,17 @@ const ProfileSection = async () => {
                         className="ml-2 text-[#255825]"
                         title="Verified User"
                       >
-                        <Image src={VerifiedIcon} alt="VerifiedIcon" />
+                        <Image
+                          src={VerifiedIcon}
+                          alt="VerifiedIcon"
+                          className="w-[20px] h-[20px] lg:h-[30px] lg:w-[30px]"
+                        />
                       </span>
                     )}
                   </div>
-                  <p className="font-fredoka">Email: {profileData.email}</p>
+                  <p className="font-fredoka text-[12px] lg:text-[20px]">
+                    Email: {profileData.email}
+                  </p>
                 </div>
               ) : (
                 <h2 className="text-[#029871] text-[24px] md:text-[28px] lg:text-[32px] xl:text-[40px] font-semibold  font-fredoka leading-tight">
@@ -258,7 +264,7 @@ const ProfileSection = async () => {
                 </h2>
               )}
               {/* Trigger for the Edit Profile Popup */}
-              <Link href="/profile/update" target="_blank">
+              <Link href="/profile/update" className="hidden lg:flex" target="_blank">
                 <Badge
                   className="text-[10px] md:text-[16px] cursor-pointer"
                   variant="outline"
@@ -269,7 +275,7 @@ const ProfileSection = async () => {
             </div>
             <div className="flex flex-col w-full gap-1 items-start justify-start">
               <div className="flex flex-row w-full justify-start items-center gap-2">
-                <div className="text-[#3f3a64] text-[16px] md:text-[20px] lg:text-[24px] xl:text-[20px] font-medium font-montserrat leading-none">
+                <div className="text-[#3f3a64] clarabodyTwo">
                   Level 1
                 </div>
                 {/* Trigger for the Level Popup */}
@@ -311,8 +317,16 @@ const ProfileSection = async () => {
                     </DialogFooter>
                   </DialogContent>
                 </Dialog>
+                <Link href="/profile/update" className="flex lg:hidden" target="_blank">
+                  <Badge
+                    className="text-[10px] md:text-[16px] cursor-pointer"
+                    variant="outline"
+                  >
+                    Edit
+                  </Badge>
+                </Link>
               </div>
-              <div className="w-full flex flex-row justify-between items-center gap-2">
+              <div className="w-full flex flex-row justify-between items-center clarabodyTwo gap-2">
                 <Slider
                   disabled
                   defaultValue={[33]}
@@ -355,7 +369,7 @@ const ProfileSection = async () => {
 
         {/* The individual Tabs for Profile Page */}
         <div className="flex w-full justify-center items-center gap-4 flex-col">
-          {/* My Activity Model */}
+          {/* My Activity Model
           <Dialog className="bg-[#EAEAF5] w-full  flex justify-center items-center claracontainer">
             <DialogTrigger asChild>
               <MyProfileRoutes
@@ -399,7 +413,7 @@ const ProfileSection = async () => {
                 <PopupFooter PrimaryText="Save and Continue" />
               </DialogFooter>
             </DialogContent>
-          </Dialog>
+          </Dialog> */}
           {/* Kids Profile Model */}
           <Dialog className="bg-[#EAEAF5] w-full  claracontainer">
             <DialogTrigger asChild>
