@@ -814,7 +814,7 @@ export default async function ShopPage() {
 
   // Keyboard shortcut for focusing the search input
   const handleKeyDown = (event) => {
-    if (event.metaKey && event.key === 'j') {
+    if (event.metaKey && event.key === "j") {
       event.preventDefault(); // Prevent the default action
       if (searchInputRef.current) {
         searchInputRef.current.focus(); // Focus the search input
@@ -897,7 +897,6 @@ export default async function ShopPage() {
               )}
 
               {/* Display All Products Below */}
-
               <div className="flex flex-col justify-start items-start gap-2 md:gap-4 w-full">
                 <div className="flex justify-between items-center px-4 lg:px-0 w-full">
                   <span className="w-[max-content] text-[#0A1932] font-fredoka tex-[24px] font-semibold">
