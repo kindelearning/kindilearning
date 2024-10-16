@@ -22,7 +22,7 @@ import Link from "next/link";
 import { getProducts } from "@/lib/hygraph";
 import Image from "next/image";
 import NotFound from "../not-found";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 function SearchInput({ value, onChange }) {
   return (
@@ -785,6 +785,8 @@ export default async function ShopPage() {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
+  const searchInputRef = useRef(null);
+
   useEffect(() => {
     const fetchProducts = async () => {
       const fetchedProducts = await getProducts();
@@ -810,6 +812,25 @@ export default async function ShopPage() {
     setFilteredProducts(filtered);
   };
 
+  // Keyboard shortcut for focusing the search input
+  const handleKeyDown = (event) => {
+    if (event.metaKey && event.key === 'j') {
+      event.preventDefault(); // Prevent the default action
+      if (searchInputRef.current) {
+        searchInputRef.current.focus(); // Focus the search input
+      }
+    }
+  };
+  useEffect(() => {
+    // Set up the keyboard event listener
+    window.addEventListener("keydown", handleKeyDown);
+
+    // Cleanup on component unmount
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
   const shouldShowAllProducts = !searchTerm || searchTerm.trim() === "";
 
   if (!products || products.length === 0) {
@@ -834,6 +855,7 @@ export default async function ShopPage() {
               <div className="flex flex-col w-full gap-2">
                 <div className="flex w-full px-4 lg:px-0">
                   <SearchInput
+                    ref={searchInputRef}
                     value={searchTerm}
                     onChange={handleSearchChange}
                   />
@@ -882,8 +904,8 @@ export default async function ShopPage() {
                     Nature Critical thinking
                   </span>
                 </div>
-                {/* Display All Products Below if no search term or filtered products */}
-                {(shouldShowAllProducts || filteredProducts.length === 0) && (
+                {/* Display All Products Below if test no search term or filtered products */}
+                {(shouldShowAllProducts || filteredProducts.length <= 1) && (
                   <div className="w-full lg:grid lg:grid-cols-3 pl-4 md:pl-2 lg:px-0 flex flex-row overflow-x-scroll scrollbar-hidden gap-2">
                     {products.map((product) => (
                       <div key={product.id} className="border">
