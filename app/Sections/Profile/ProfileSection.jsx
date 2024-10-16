@@ -213,14 +213,14 @@ const ProfileSection = async () => {
           <div className="w-fit lg:max-w-[160px] lg:w-full items-center flex justify-start">
             {profileData ? (
               <>
-                <div className="relative w-36 lg:w-full lg:h-full h-36 p-1 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600">
+                <div className="relative w-36 h-36 p-1 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600">
                   <div className="w-full h-full bg-white rounded-full flex items-center justify-center">
                     <Image
                       src={profileData.profilePicture?.url}
                       alt="User DP"
                       width={100}
                       height={100}
-                      className="w-32 lg:w-full lg:h-full h-32 object-cover rounded-full"
+                      className="w-32 h-32 object-cover rounded-full"
                     />
                   </div>
                 </div>
