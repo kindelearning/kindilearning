@@ -258,7 +258,7 @@ const ProfileSection = async () => {
                 </h2>
               )}
               {/* Trigger for the Edit Profile Popup */}
-              <Link href="/profile/edit">
+              <Link href="/profile/update" target="_blank">
                 <Badge
                   className="text-[10px] md:text-[16px] cursor-pointer"
                   variant="outline"

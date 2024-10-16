@@ -1,15 +1,25 @@
-import React from "react";
+"use lient";
 
-const page = () => {
+import { getServerSession } from "next-auth"; 
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import ProfileEdit from "../edit/page";
+
+export default async function ProfileUpdate() {
+  const session = await getServerSession(authOptions);
+
+  if (!session || !session.user) {
+    redirect("/api/auth/signin");
+    return null;
+  }
+
+  const userId = session.user.id;
+  console.log("User Id: " + userId);
+
   return (
     <>
-      <section className="w-full h-auto bg-[#EAEAF5] items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">
-        <div className="claracontainer p-4 md:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-8">
-            
-        </div>
+      <section className="w-full pb-32 bg-[#EAEAF5] flex flex-col gap-0 justify-center items-start">
+        <ProfileEdit userId={userId} />
       </section>
     </>
   );
-};
-
-export default page;
+}
