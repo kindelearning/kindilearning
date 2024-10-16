@@ -17,7 +17,7 @@ export default async function ProfileUpdate() {
 
   return (
     <>
-      <section className="w-full pb-32 bg-[#EAEAF5] flex flex-col gap-0 justify-center items-start">
+      <section className="w-full pb-32 bg-[#f5f5f5] flex flex-col gap-0 justify-center items-start">
         <ProfileEdit userId={userId} />
       </section>
     </>

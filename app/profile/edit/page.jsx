@@ -70,13 +70,13 @@ export default async function ProfileEdit({ userId }) {
 
   return (
     <>
-      <section className="w-full pb-24 h-auto bg-[#eaeaf5] md:bg-[#EAEAF5] items-center justify-center flex flex-col md:flex-row px-0">
+      <section className="w-full pb-24 h-auto bg-[#f5f5f5] md:bg-[#f5f5f5] items-center justify-center flex flex-col md:flex-row px-0">
         <div className="w-full flex pt-4 pb-7 md:hidden bg-red">
           <div className="text-center w-full text-white text-[20px] font-semibold font-fredoka leading-tight">
             Profile Edit
           </div>
         </div>
-        <div className="claracontainer bg-[#eaeaf5] md:bg-[#EAEAF5] -mt-4 rounded-t-[12px] z-2 md:m-12 px-4 py-6 rounded-xl md:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-[20px]">
+        <div className="claracontainer bg-[#f5f5f5] md:bg-[#f5f5f5] -mt-4 rounded-t-[12px] z-2 md:m-12 px-4 py-6 rounded-xl md:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-[20px]">
           {/* Top Heading */}
           <div className="w-full  flex justify-center items-center text-center ">
             <span className="text-[#3f3a64] uppercase claraheading">My </span>
@@ -89,15 +89,15 @@ export default async function ProfileEdit({ userId }) {
             </div>
             <form
               onSubmit={handleSubmit}
-              className="w-full h-auto bg-[#EAEAF5] items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]"
+              className="w-full h-auto bg-[#f5f5f5] items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]"
             >
               <div className="claracontainer  w-full flex flex-col overflow-hidden">
                 <div className="claracontainer  w-full flex flex-col overflow-hidden gap-2">
-                  <h2 className="text-xl font-fredoka font-semibold">
-                    Edit Profile
-                  </h2>
-                  <div className="mb-4 font-fredoka">
-                    <label htmlFor="name" className="block font-fredoka mb-1">
+                  <div className="mb-4 py-2 bg-white rounded-lg font-fredoka">
+                    <label
+                      htmlFor="name"
+                      className="block text-[#757575] text-[10px] lg:text-[14px] px-4 font-normal leading-none font-fredoka "
+                    >
                       Name:
                     </label>
                     <Input
@@ -107,15 +107,15 @@ export default async function ProfileEdit({ userId }) {
                       value={formData.name}
                       onChange={handleChange}
                       required
-                      className="w-full focus-within:ring-0 focus-within:ring-offset-0 bg-white rounded-lg shadow text-[#757575] text-base font-normal font-fredoka leading-normal"
+                      className="w-full border-0 shadow-none focus-within:ring-0 focus-visible:ring-0 rounded-b-lg ring-[#ffffff] focus:border-0 focus-within:ring-offset-0 bg-white  text-[#000000] text-base font-normal font-fredoka leading-normal"
                     />
                   </div>
 
-                  <div className="flex flex-row w-full justify-between items-center gap-4">
-                    <div className="w-full flex flex-col justify-center items-center gap-1">
+                  <div className="flex flex-row w-full justify-between items-start gap-4">
+                    <div className="w-full flex py-2 bg-white rounded-lg flex-col justify-start items-start gap-1">
                       <label
                         htmlFor="dateOfBirth"
-                        className="w-full justify-start flex"
+                        className="block text-[#757575] text-[10px] lg:text-[14px] px-4 font-normal leading-none font-fredoka "
                       >
                         Date of Birth:
                       </label>
@@ -125,31 +125,56 @@ export default async function ProfileEdit({ userId }) {
                         name="dateOfBirth"
                         value={formData.dateOfBirth}
                         onChange={handleChange}
-                        className="w-full flex justify-between focus-within:ring-0 focus-within:ring-offset-0 ring-0 bg-white rounded-lg shadow text-[#757575] text-base font-normal font-fredoka leading-normal"
+                        className="w-full border-0 shadow-none focus-within:ring-0 focus-visible:ring-0 rounded-b-lg ring-[#ffffff] focus:border-0 focus-within:ring-offset-0 bg-white  text-[#000000] text-base font-normal font-fredoka leading-normal"
                       />
                     </div>
 
-                    <div className="flex flex-col w-full justify-start items-start">
-                      <div className="w-full flex justify-start items-center gap-1">
+                    {/* <div className="flex flex-col w-full justify-start items-start"> */}
+                    <div className="w-full h-full lg:h-[77px] flex py-2 bg-white rounded-lg flex-col justify-start items-start gap-2">
+                      <label className="block text-[#757575] text-[10px] lg:text-[14px] px-3 font-normal leading-none font-fredoka ">
+                        Attending Nursery:
+                      </label>
+                      <div className="w-full flex justify-start items-center px-2 gap-1">
                         <Input
                           type="checkbox"
                           id="attendingNursery"
                           name="attendingNursery"
                           checked={formData.attendingNursery}
                           onChange={handleChange}
-                          className="w-[20px] h-[20px] focus-within:ring-0 shadow-none focus-within:ring-offset-0 bg-white rounded-lg text-[#757575] text-base font-normal font-fredoka leading-normal"
+                          className="w-[20px] h-[20px] text-[black] focus-within:ring-0 shadow-none focus-within:ring-offset-0 bg-white rounded-lg  text-base font-normal font-fredoka leading-normal"
                         />
                         <label
                           htmlFor="attendingNursery"
-                          className="block mb-1"
+                          className="block text-[#757575] text-[10px] lg:text-[12px] px-4 font-normal leading-none font-fredoka "
+                        >
+                          Check if your are studing in Nursery
+                        </label>
+                      </div>
+                    </div>
+                    {/* <div className="flex flex-col w-full justify-start items-start">
+                      <div className="w-full flex justify-start items-center gap-1">
+                        <select
+                          id="attendingNursery"
+                          name="attendingNursery"
+                          value={formData.attendingNursery ? "Yes" : "No"} // Using "Yes" or "No" values
+                          onChange={handleChange}
+                          className="w-[150px] h-[30px] focus-within:ring-0 shadow-none focus-within:ring-offset-0 bg-white rounded-lg text-[#757575] text-base font-normal font-fredoka leading-normal"
+                        >
+                          <option value="Yes">Yes</option>
+                          <option value="No">No</option>
+                        </select>
+                        <label
+                          htmlFor="attendingNursery"
+                          className="block text-[#757575] text-[10px] lg:text-[14px] px-4 font-normal leading-none font-fredoka"
                         >
                           Attending Nursery:
                         </label>
                       </div>
-                      <label className="block  text-[12px] font-fredoka text-start text-[#878787]">
-                        Check if your are studing in Nursery
+                      <label className="block text-[12px] font-fredoka text-start text-[#878787]">
+                        Select "Yes" if you are studying in Nursery, otherwise
+                        select "No"
                       </label>
-                    </div>
+                    </div> */}
                   </div>
                   <div className="flex w-full justify-center items-center">
                     <Button
