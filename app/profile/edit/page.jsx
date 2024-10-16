@@ -1,9 +1,75 @@
-import { EditForm, ImageInput } from "@/app/Sections";
+"use client";
+
+import { ImageInput } from "@/app/Sections";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import React from "react";
+import { updateUserProfile } from "@/lib/hygraph";
+import { useSession } from "next-auth/react";
+import React, { useEffect, useState } from "react";
 
-export default async function ProfileEdit() {
+export default async function ProfileEdit({ userId }) {
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+  const [formData, setFormData] = useState({
+    name: "",
+    dateOfBirth: "",
+    attendingNursery: false,
+  });
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      try {
+        const response = await fetch(`/api/user-profile?userId=${userId}`);
+        const data = await response.json();
+        setFormData({
+          name: data.name,
+          dateOfBirth: data.dateOfBirth ? data.dateOfBirth.split("T")[0] : "",
+          attendingNursery: data.attendingNursery,
+        });
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchProfileData();
+  }, [userId]);
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData({
+      ...formData,
+      [name]: type === "checkbox" ? checked : value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setMessage("");
+
+    try {
+      const response = await fetch("/api/update-profile", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ...formData, userId }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        setMessage("Profile updated successfully!");
+      } else {
+        setMessage(result.message || "Failed to update profile.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      setMessage("Something went wrong. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       <section className="w-full pb-24 h-auto bg-[#eaeaf5] md:bg-[#EAEAF5] items-center justify-center flex flex-col md:flex-row px-0">
@@ -23,7 +89,74 @@ export default async function ProfileEdit() {
             <div className="flex w-full justify-center items-center">
               <ImageInput />
             </div>
-            <div className="flex w-full justify-center items-center">
+            <form
+              onSubmit={handleSubmit}
+              className="p-4 bg-white rounded shadow-md max-w-md mx-auto"
+            >
+              <h2 className="text-xl font-semibold mb-4">Edit Profile</h2>
+
+              <div className="mb-4">
+                <label htmlFor="name" className="block mb-1">
+                  Name:
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-3 py-2 border rounded"
+                />
+              </div>
+
+              <div className="mb-4">
+                <label htmlFor="dateOfBirth" className="block mb-1">
+                  Date of Birth:
+                </label>
+                <input
+                  type="date"
+                  id="dateOfBirth"
+                  name="dateOfBirth"
+                  value={formData.dateOfBirth}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border rounded"
+                />
+              </div>
+
+              <div className="mb-4">
+                <label htmlFor="attendingNursery" className="block mb-1">
+                  Attending Nursery:
+                </label>
+                <input
+                  type="checkbox"
+                  id="attendingNursery"
+                  name="attendingNursery"
+                  checked={formData.attendingNursery}
+                  onChange={handleChange}
+                  className="mr-2"
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                disabled={loading}
+              >
+                {loading ? "Updating..." : "Update Profile"}
+              </button>
+
+              {message && <p className="mt-4 text-green-600">{message}</p>}
+            </form>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
+
+{
+  /* <div className="flex w-full justify-center items-center">
               <section className="w-full h-auto bg-[#EAEAF5] items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">
                 <div className="claracontainer  w-full flex flex-col overflow-hidden gap-8">
                   <div className="w-full flex flex-col justify-center items-center gap-4">
@@ -61,10 +194,5 @@ export default async function ProfileEdit() {
                   </div>
                 </div>
               </section>
-            </div>
-          </div>
-        </div>
-      </section>
-    </>
-  );
+            </div> */
 }

@@ -4,8 +4,11 @@ import Link from "next/link";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import { ProfileSection } from "../Sections";
 import { getServerSession } from "next-auth"; // Updated for NextAuth v5
+import ProfileEdit from "./edit/page";
 
 export default async function ProfilePage() {
+  const userId = "cm2aafavc09k507o7hkvkrntx"; // Replace this with the actual logged-in user ID from session
+
   const session = await getServerSession(authOptions);
   if (!session) {
     return (
@@ -27,7 +30,8 @@ export default async function ProfilePage() {
   return (
     <>
       <section className="w-full pb-32 bg-[#EAEAF5] flex flex-col gap-0 justify-center items-start">
-        <ProfileSection />
+        <ProfileEdit userId={userId} />
+        {/* <ProfileSection /> */}
       </section>
     </>
   );

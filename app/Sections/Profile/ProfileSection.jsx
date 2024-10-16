@@ -250,7 +250,7 @@ const ProfileSection = async () => {
                       </span>
                     )}
                   </div>
-                  <p className="font-fredoka">Email: {profileData.name}</p>
+                  <p className="font-fredoka">Email: {profileData.email}</p>
                 </div>
               ) : (
                 <h2 className="text-[#029871] text-[24px] md:text-[28px] lg:text-[32px] xl:text-[40px] font-semibold  font-fredoka leading-tight">
