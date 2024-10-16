@@ -221,7 +221,7 @@ const Slider = () => {
             <Image
               alt="Kindi"
               src={slides[currentSlide].image}
-              className="w-full md:min-w-[300px] md:w-[300px] lg:w-full max-h-[400px] object-contain"
+              className="w-full md:min-w-[300px] md:w-[300px] lg:w-full lg:h-full lg:min-h-[400px] max-h-[400px] object-contain"
               onLoad={() => setLoaded(true)}
             />
           </div>
