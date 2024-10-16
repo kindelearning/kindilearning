@@ -7,7 +7,7 @@ import { getServerSession } from "next-auth"; // Updated for NextAuth v5
 import ProfileEdit from "./edit/page";
 
 export default async function ProfilePage() {
-  const userId = "cm2aafavc09k507o7hkvkrntx"; // Replace this with the actual logged-in user ID from session
+  const userId = "cm2aafavc09k507o7hkvkrntx"; 
 
   const session = await getServerSession(authOptions);
   if (!session) {

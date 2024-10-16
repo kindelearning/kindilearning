@@ -3,8 +3,6 @@
 import { ImageInput } from "@/app/Sections";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { updateUserProfile } from "@/lib/hygraph";
-import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 
 export default async function ProfileEdit({ userId }) {
@@ -91,108 +89,84 @@ export default async function ProfileEdit({ userId }) {
             </div>
             <form
               onSubmit={handleSubmit}
-              className="p-4 bg-white rounded shadow-md max-w-md mx-auto"
+              className="w-full h-auto bg-[#EAEAF5] items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]"
             >
-              <h2 className="text-xl font-semibold mb-4">Edit Profile</h2>
+              <div className="claracontainer  w-full flex flex-col overflow-hidden">
+                <div className="claracontainer  w-full flex flex-col overflow-hidden gap-2">
+                  <h2 className="text-xl font-fredoka font-semibold">
+                    Edit Profile
+                  </h2>
+                  <div className="mb-4 font-fredoka">
+                    <label htmlFor="name" className="block font-fredoka mb-1">
+                      Name:
+                    </label>
+                    <Input
+                      type="text"
+                      id="name"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      required
+                      className="w-full focus-within:ring-0 focus-within:ring-offset-0 bg-white rounded-lg shadow text-[#757575] text-base font-normal font-fredoka leading-normal"
+                    />
+                  </div>
 
-              <div className="mb-4">
-                <label htmlFor="name" className="block mb-1">
-                  Name:
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-3 py-2 border rounded"
-                />
+                  <div className="flex flex-row w-full justify-between items-center gap-4">
+                    <div className="w-full flex flex-col justify-center items-center gap-1">
+                      <label
+                        htmlFor="dateOfBirth"
+                        className="w-full justify-start flex"
+                      >
+                        Date of Birth:
+                      </label>
+                      <Input
+                        type="date"
+                        id="dateOfBirth"
+                        name="dateOfBirth"
+                        value={formData.dateOfBirth}
+                        onChange={handleChange}
+                        className="w-full flex justify-between focus-within:ring-0 focus-within:ring-offset-0 ring-0 bg-white rounded-lg shadow text-[#757575] text-base font-normal font-fredoka leading-normal"
+                      />
+                    </div>
+
+                    <div className="flex flex-col w-full justify-start items-start">
+                      <div className="w-full flex justify-start items-center gap-1">
+                        <Input
+                          type="checkbox"
+                          id="attendingNursery"
+                          name="attendingNursery"
+                          checked={formData.attendingNursery}
+                          onChange={handleChange}
+                          className="w-[20px] h-[20px] focus-within:ring-0 shadow-none focus-within:ring-offset-0 bg-white rounded-lg text-[#757575] text-base font-normal font-fredoka leading-normal"
+                        />
+                        <label
+                          htmlFor="attendingNursery"
+                          className="block mb-1"
+                        >
+                          Attending Nursery:
+                        </label>
+                      </div>
+                      <label className="block  text-[12px] font-fredoka text-start text-[#878787]">
+                        Check if your are studing in Nursery
+                      </label>
+                    </div>
+                  </div>
+                  <div className="flex w-full justify-center items-center">
+                    <Button
+                      type="submit"
+                      className="text-center text-white text-base bg-red rounded-2xl shadow border-2 border-white font-semibold font-['Fredoka'] leading-tight w-[200px] "
+                      disabled={loading}
+                    >
+                      {loading ? "Updating..." : "Update Profile"}
+                    </Button>
+                  </div>
+                  {message && <p className="mt-4 text-green-600">{message}</p>}
+                </div>
               </div>
-
-              <div className="mb-4">
-                <label htmlFor="dateOfBirth" className="block mb-1">
-                  Date of Birth:
-                </label>
-                <input
-                  type="date"
-                  id="dateOfBirth"
-                  name="dateOfBirth"
-                  value={formData.dateOfBirth}
-                  onChange={handleChange}
-                  className="w-full px-3 py-2 border rounded"
-                />
-              </div>
-
-              <div className="mb-4">
-                <label htmlFor="attendingNursery" className="block mb-1">
-                  Attending Nursery:
-                </label>
-                <input
-                  type="checkbox"
-                  id="attendingNursery"
-                  name="attendingNursery"
-                  checked={formData.attendingNursery}
-                  onChange={handleChange}
-                  className="mr-2"
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-                disabled={loading}
-              >
-                {loading ? "Updating..." : "Update Profile"}
-              </button>
-
-              {message && <p className="mt-4 text-green-600">{message}</p>}
             </form>
           </div>
         </div>
       </section>
     </>
   );
-}
-
-{
-  /* <div className="flex w-full justify-center items-center">
-              <section className="w-full h-auto bg-[#EAEAF5] items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">
-                <div className="claracontainer  w-full flex flex-col overflow-hidden gap-8">
-                  <div className="w-full flex flex-col justify-center items-center gap-4">
-                    <div className="flex w-full">
-                      type="name"
-                      <Input
-                        placeholder="Enter your name"
-                        className="w-full focus-within:ring-0 focus-within:ring-offset-0 bg-white rounded-lg shadow text-[#757575] text-base font-normal font-fredoka leading-normal"
-                      />
-                    </div>
-                    <div className="flex flex-row w-full justify-between items-center gap-4">
-                      <Input
-                        type="text"
-                        placeholder="Enter your name"
-                        className="w-full focus-within:ring-0 focus-within:ring-offset-0 ring-0 bg-white rounded-lg shadow text-[#757575] text-base font-normal font-fredoka leading-normal"
-                      />
-                      <Input
-                        type="date"
-                        placeholder="Date of Birth"
-                        className="w-full focus-within:ring-0 focus-within:ring-offset-0 ring-0 bg-white rounded-lg shadow text-[#757575] text-base font-normal font-fredoka leading-normal"
-                      />
-                    </div>
-                    <div className="flex w-full">
-                      <Input
-                        type="name"
-                        placeholder="Attending Nurury"
-                        className="w-full focus-within:ring-0 focus-within:ring-offset-0 bg-white rounded-lg shadow text-[#757575] text-base font-normal font-fredoka leading-normal"
-                      />
-                    </div>
-                    <div className="flex w-full justify-center items-center">
-                      <Button className="text-center text-white text-base bg-red rounded-2xl shadow border-2 border-white font-semibold font-['Fredoka'] leading-tight w-[200px] ">
-                        Continue
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </section>
-            </div> */
 }
