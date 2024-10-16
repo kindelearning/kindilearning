@@ -24,7 +24,7 @@ import Image from "next/image";
 import NotFound from "../not-found";
 import { useEffect, useState } from "react";
 
-const SearchInput = () => {
+function SearchInput({ value, onChange }) {
   return (
     <div className="flex w-full items-center bg-white rounded-full border border-gray-200">
       <span className="px-3 text-gray-400">
@@ -45,12 +45,14 @@ const SearchInput = () => {
       </span>
       <Input
         type="email"
-        placeholder="Search"
+        placeholder="Search for products..."
+        value={value}
+        onChange={onChange}
         className="w-full border-0 rounded-full focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0   focus:border-0 focus-within:border-0 px-3 py-2"
       />
     </div>
   );
-};
+}
 
 const MobileFilters = () => {
   return (
@@ -778,8 +780,37 @@ const SidebarFilters = () => {
 };
 
 export default async function ShopPage() {
-  const products = await getProducts();
-  
+  // const products = await getProducts();
+  const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const fetchedProducts = await getProducts();
+      setProducts(fetchedProducts);
+      setFilteredProducts(fetchedProducts);
+    };
+
+    fetchProducts();
+  }, []);
+
+  const handleSearchChange = (event) => {
+    const term = event.target.value.toLowerCase();
+    setSearchTerm(term);
+
+    const filtered = products.filter((product) =>
+      product.title.toLowerCase().includes(term)
+    );
+
+    // Log the search term and filtered results
+    console.log("Search Term:", term);
+    console.log("Filtered Products:", filtered);
+
+    setFilteredProducts(filtered);
+  };
+
+  const shouldShowAllProducts = !searchTerm || searchTerm.trim() === "";
 
   if (!products || products.length === 0) {
     return (
@@ -801,31 +832,72 @@ export default async function ShopPage() {
             {/* the product Grid Column */}
             <div className="flex w-full flex-col justift-start items-start gap-[20px] md:gap-[28px]">
               <div className="flex flex-col w-full gap-2">
-                <div className="flex w-full px-4 md:px-2 lg:px-4">
-                  <SearchInput />
+                <div className="flex w-full px-4 lg:px-0">
+                  <SearchInput
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                  />
                 </div>
                 {/* Mobile Filters Button */}
                 <MobileFilters />
               </div>
+
+              {/* Display Filtered Products First */}
+              {filteredProducts.length > 0 && !shouldShowAllProducts && (
+                <>
+                  <div className="flex justify-between items-center lg:px-0 px-4 w-full">
+                    <span className="w-[max-content] text-[#0A1932] font-fredoka tex-[24px] font-semibold">
+                      Search Results
+                    </span>
+                  </div>
+                  <div className="w-full lg:grid lg:grid-cols-3 pl-4 md:pl-2 lg:px-0 flex flex-row overflow-x-scroll scrollbar-hidden gap-2">
+                    {filteredProducts.map((product) => (
+                      <div key={product.id} className="border">
+                        <Link href={`/shop/${product.id}`} target="_blank">
+                          <ProductCard
+                            image={product.thumbnail.url}
+                            title={product.title}
+                            price={product.salePrice}
+                          />
+                        </Link>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {/* Message if no matching products found */}
+              {searchTerm && filteredProducts.length === 0 && (
+                <div className="text-center clarabodyTwo text-red-500 ">
+                  No matching products found. Here are some products you may
+                  like:
+                </div>
+              )}
+
+              {/* Display All Products Below */}
+
               <div className="flex flex-col justify-start items-start gap-2 md:gap-4 w-full">
-                <div className="flex justify-between items-center px-4 w-full">
+                <div className="flex justify-between items-center px-4 lg:px-0 w-full">
                   <span className="w-[max-content] text-[#0A1932] font-fredoka tex-[24px] font-semibold">
                     Nature Critical thinking
                   </span>
                 </div>
-                <div className="w-full lg:grid lg:grid-cols-3 pl-4 md:pl-2 lg:pl-4 flex flex-row overflow-x-scroll scrollbar-hidden gap-2">
-                  {products.map((product) => (
-                    <div key={product.id} className="border">
-                      <Link href={`/shop/${product.id}`} target="_blank">
-                        <ProductCard
-                          image={product.thumbnail.url}
-                          title={product.title}
-                          price={product.salePrice}
-                        />
-                      </Link>
-                    </div>
-                  ))}
-                </div>
+                {/* Display All Products Below if no search term or filtered products */}
+                {(shouldShowAllProducts || filteredProducts.length === 0) && (
+                  <div className="w-full lg:grid lg:grid-cols-3 pl-4 md:pl-2 lg:px-0 flex flex-row overflow-x-scroll scrollbar-hidden gap-2">
+                    {products.map((product) => (
+                      <div key={product.id} className="border">
+                        <Link href={`/shop/${product.id}`} target="_blank">
+                          <ProductCard
+                            image={product.thumbnail.url}
+                            title={product.title}
+                            price={product.salePrice}
+                          />
+                        </Link>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </div>{" "}
