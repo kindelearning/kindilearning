@@ -22,6 +22,7 @@ import Link from "next/link";
 import { getProducts } from "@/lib/hygraph";
 import Image from "next/image";
 import NotFound from "../not-found";
+import { useEffect, useState } from "react";
 
 const SearchInput = () => {
   return (
@@ -235,12 +236,22 @@ const MobileFilters = () => {
   );
 };
 
-const ProductCard = ({ image, title, rating, price }) => {
+const ProductCard = ({ image, title, price }) => {
+  const [rating, setRating] = useState(0);
+  useEffect(() => {
+    // Function to generate a random number between 3 and 4.8, rounded to 1 decimal place
+    const generateRandomRating = () => {
+      const min = 3;
+      const max = 4.8;
+      const randomRating = (Math.random() * (max - min) + min).toFixed(1);
+      return randomRating;
+    };
+
+    setRating(generateRandomRating());
+  }, []);
+
   return (
-    <div
-      // href="/shop/slug"
-      className="flex max-w-[300px] min-w-[240px] w-full flex-col rounded-[24px] items-center gap-4 bg-white  hover:shadow-md"
-    >
+    <div className="flex max-w-[300px] min-w-[240px] w-full flex-col rounded-[24px] items-center gap-4 bg-white  hover:shadow-md">
       <div className="flex rounded-t-[24px] overflow-clip w-full">
         <Image
           src={image}
@@ -261,8 +272,8 @@ const ProductCard = ({ image, title, rating, price }) => {
               src={Ratings}
               className="text-yellow-400 w-4 h-4"
             />
-            <span className="text-right text-[#0a1932] text-[18px] font-normal font-montserrat leading-none">
-              {rating}
+            <span className="text-right text-[#0a1932] clarabodyTwo">
+              {rating}+
             </span>
           </div>
         </div>
@@ -768,6 +779,7 @@ const SidebarFilters = () => {
 
 export default async function ShopPage() {
   const products = await getProducts();
+  
 
   if (!products || products.length === 0) {
     return (
@@ -800,68 +812,8 @@ export default async function ShopPage() {
                   <span className="w-[max-content] text-[#0A1932] font-fredoka tex-[24px] font-semibold">
                     Nature Critical thinking
                   </span>
-                  <span className="w-[max-content] text-red font-fredoka tex-[16px] font-semibold">
-                    View All{" "}
-                  </span>
                 </div>
-                {/* <div className="w-full grid gap-4 grid-col-3"> */}
                 <div className="w-full lg:grid lg:grid-cols-3 pl-4 md:pl-2 lg:pl-4 flex flex-row overflow-x-scroll scrollbar-hidden gap-2">
-                  {products.map((product) => (
-                    <div key={product.id} className="border">
-                      <Link href={`/shop/${product.id}`} target="_blank">
-                        <ProductCard
-                          image={product.thumbnail.url}
-                          title={product.title}
-                          price={product.salePrice}
-                        />
-                      </Link>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div className="flex flex-col justify-start items-start gap-2 md:gap-4 w-full">
-                <div className="flex justify-between px-4 items-center w-full">
-                  <span className="w-[max-content] text-[#0A1932] font-fredoka tex-[24px] font-semibold">
-                    Nature Critical thinking
-                  </span>
-                  <span className="w-[max-content] text-red font-fredoka tex-[16px] font-semibold">
-                    View All{" "}
-                  </span>
-                </div>
-                <div className="w-full lg:grid lg:grid-cols-3 pl-4 flex flex-row overflow-x-scroll scrollbar-hidden gap-2 lg:gap-4">
-                  {products.map((product) => (
-                    <div key={product.id} className="border">
-                      <Link href={`/shop/${product.id}`} target="_blank">
-                        <ProductCard
-                          image={product.thumbnail.url}
-                          title={product.title}
-                          price={product.salePrice}
-                        />
-                      </Link>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div className="flex flex-col justify-start items-start gap-2 md:gap-4 w-full">
-                <div className="flex justify-between px-4 items-center w-full">
-                  <span className="w-[max-content] text-[#0A1932] font-fredoka tex-[24px] font-semibold">
-                    Nature Critical thinking
-                  </span>
-                  <span className="w-[max-content] text-red font-fredoka tex-[16px] font-semibold">
-                    View All{" "}
-                  </span>
-                </div>
-                <div className="w-full lg:grid lg:grid-cols-3 pl-4 flex flex-row overflow-x-scroll scrollbar-hidden gap-2 lg:gap-4">
-                  {/* {productData.map((product) => (
-                    <Link
-                      key={product.id}
-                      target="_blank"
-                      href={`/shop/${slugify(product.title)}`}
-                      onClick={() => console.log("Clicked Blog:", ProductCard)}
-                    >
-                      <ProductCard {...product} />
-                    </Link>
-                  ))} */}
                   {products.map((product) => (
                     <div key={product.id} className="border">
                       <Link href={`/shop/${product.id}`} target="_blank">

@@ -28,7 +28,7 @@ const cardData = [
 
 const CardGroup = () => {
   return (
-    <section className="w-full h-auto bg-[#EAEAF5] pl-4 items-center justify-center  flex flex-col md:flex-row gap-[20px]">
+    <section className="w-full h-auto bg-[#EAEAF5] pl-4 items-center justify-center flex flex-col md:flex-row gap-[20px]">
       <div className="flex claracontainer scrollbar-hidden bg-[#eaeaf5] scrollbar-none py-2 overflow-x-scroll overflow-y-hidden gap-2 md:gap-3 lg:gap-4">
         {cardData.map((data, index) => (
           <FilterCard key={index} data={data} />
