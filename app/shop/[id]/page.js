@@ -76,7 +76,11 @@ const ReviewForm = () => {
       onSubmit={handleSubmit}
     >
       <div className="claracontainer w-full py-6 flex flex-col gap-4 justify-between items-start">
-        <Image alt="Kindi" src={ShopImage} className="w-full object-contain overflow-clip flex h-[200px]" />
+        <Image
+          alt="Kindi"
+          src={ShopImage}
+          className="w-full object-contain overflow-clip flex h-[200px]"
+        />
         <div className="flex w-full flex-col gap-2 justify-start items-start claracontainer">
           <div className="claracontainer w-full flex flex-col gap-2 justify-between items-start">
             <div className="w-full text-[#3f3a64] clarabodyTwo font-fredoka capitalize">
@@ -176,7 +180,7 @@ export default async function ProductDetailPage({ params }) {
 
   return (
     <>
-      <section className="w-full h-auto bg-[#F5F5F5] lg:bg-[#eaeaf5] items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">
+      <section className="w-full h-auto bg-[#F5F5F5] lg:bg-[#eaeaf5] items-center justify-center py-4 plg:pb-32 flex flex-col md:flex-row gap-[20px]">
         <div className="claracontainer p-4 md:p-2 lg:p-4 w-full flex flex-col overflow-hidden gap-8">
           {/* Row 1 */}
           <div className="flex w-full flex-col md:flex-col lg:flex-row xl:flex-row gap-8 justify-between items-start">
@@ -303,7 +307,7 @@ export default async function ProductDetailPage({ params }) {
             <ReviewGrid />
           </div>
           {/* Row 4 */}
-          <div className="flex w-full flex-col justify-start items-center">
+          <div className="flex w-full pb-20 flex-col justify-start items-center">
             <div className="text-[#0a1932] text-[20px] lg:text-[28px]  font-semibold font-fredoka text-start w-full leading-loose">
               You May also like
             </div>
@@ -312,14 +316,17 @@ export default async function ProductDetailPage({ params }) {
         </div>
       </section>
       {/* Row 5 - Sticky CTA Mobile */}
-      <div className="flex w-full z-20 lg:hidden md:hidden flex-col pb-32 justify-start items-center">
+      <div className="flex w-full z-20 lg:hidden md:hidden flex-col pb-20 fixed bottom-0 justify-start items-center">
         <div className="claracontainer px-4 py-4 w-full bg-[#ffffff] rounded-t-[24px] shadow-upper sticky bottom-0 z-12 justify-between items-center flex flex-row gap-4">
           <QuantityControl />
-          <Link className="w-full" href="/shop/cart">
-            <Button className="bg-red w-full rounded-[16px] border-2 border-[white]">
+          <div className="w-full flex flex-col gap-1">
+            <Button
+              onClick={handleAddToCart}
+              className="bg-red w-full rounded-[16px] border-2 border-[white]"
+            >
               Add to Cart
             </Button>
-          </Link>
+          </div>
         </div>
       </div>
     </>
