@@ -141,7 +141,7 @@ const Slider = () => {
   return (
     <>
       <section
-        className={`w-full h-auto bg-purple py-12 md:py-24 items-center justify-center flex flex-col  gap-[20px] ${
+        className={`w-full h-auto bg-purple py-12 md:py-16 items-center justify-center flex flex-col  gap-[20px] ${
           loaded ? "loaded" : "loading"
         }`}
         style={{
@@ -214,7 +214,7 @@ const Slider = () => {
           </div>
           {/* col 2 */}
           <div
-            className={`w-full md:min-w-[300px] md:w-[300px] lg:w-full flex justify-center items-center h-auto ${
+            className={`w-full slide-in-from-left-2 duration-200 md:min-w-[300px] md:w-[300px] lg:w-full flex justify-center items-center h-auto ${
               loaded ? "animate-fade-in" : "opacity-0"
             }`}
           >
