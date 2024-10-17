@@ -19,9 +19,7 @@ import {
   Phone,
   MasterCard,
   ConnectPartner,
-  KindiHeart,
   Milestone,
-  ActivityCard,
   ProfileSettingIcon,
   VerifiedIcon,
 } from "@/public/Images";
@@ -45,109 +43,13 @@ import MyProfileRoutes from "./MyProfileRoutes";
 import ProductCard from "./ProductCard";
 import ProfileCard from "./ProfileCard";
 import Link from "next/link";
-import { activities, data, profilData, questions } from "@/app/constant/menu";
+import { data, profilData } from "@/app/constant/menu";
 import { Textarea } from "@/components/ui/textarea";
-import { getServerSession } from "next-auth";
 import { GraphQLClient, gql } from "graphql-request";
-import { authOptions } from "../../api/auth/[...nextauth]/route";
 import { useSession } from "next-auth/react";
 import Loading from "@/app/loading";
 import SignOutButton from "@/app/auth/signout/page";
 import Head from "next/head";
-// import ContactForm from "@/app/p/contact-us/page";
-
-const IconBadge = ({ icon, backgroundColor = "3F3A64" }) => (
-  <div
-    className={`w-[24px] h-[24px] lg:w-[32px] lg:h-[32px] lg:rounded-[8px] hover:bg-[#eaeaf5] flex justify-center items-center bg-[#${backgroundColor}] rounded-[4px]`}
-    style={{
-      backgroundColor: `#${backgroundColor}`,
-    }}
-  >
-    <Image alt="Kindi" src={icon || KindiHeart} className="p-[4px]" />
-  </div>
-);
-
-const LocalActivity = ({ title, time, tags, icons }) => (
-  <Link
-    href="/p/activities/slug"
-    className="w-full min-w-[160px] h-auto bg-white items-start justify-start border rounded-3xl flex flex-col md:flex-row gap-4"
-  >
-    {/* <section className="w-full min-w-[300px] h-auto bg-white items-start justify-start border rounded-3xl flex flex-col md:flex-row gap-4"> */}
-    <div className="claracontainer w-full flex-col justify-start items-center gap-7 inline-flex">
-      <div className="w-full max-w-full h-auto">
-        <Image
-          alt="Kindi"
-          className="w-full max-h-[180px] md:max-h-[300px] object-cover rounded-tl-3xl rounded-tr-3xl"
-          src={ActivityCard}
-        />
-        <div className="w-full py-4 flex-col justify-start px-4 items-start flex gap-2 md:gap-2 lg:gap-4">
-          <div className="flex-col gap-[6px] justify-start items-start">
-            <div className="text-[#0a1932] text-[16px] md:text-xl font-semibold font-fredoka leading-[20px]">
-              {title || "Autumn Colors Leaf Wheel"}
-            </div>
-            <div className="justify-start w-full items-center gap-2 inline-flex">
-              <div className="text-[#0a1932] w-[max-content] text-[10px] md:text-[20px] font-normal font-fredoka leading-normal">
-                {time || "5 minutes"}
-              </div>
-              {tags?.map((tag, index) => (
-                <React.Fragment key={index}>
-                  <div className="w-1 h-1 bg-[#e3e3e3] rounded-full" />
-                  <div className="text-[#0a1932] w-[max-content] text-[10px] md:text-[20px] font-normal font-fredoka leading-normal">
-                    {tag}
-                  </div>
-                </React.Fragment>
-              ))}
-            </div>
-          </div>
-          <section className="items-center justify-center gap-2 md:gap-4 grid grid-cols-5">
-            {icons?.map((icon, index) => (
-              <IconBadge key={index} icon={icon} />
-            ))}
-          </section>
-        </div>
-      </div>
-    </div>
-  </Link>
-);
-
-const Accordion = ({ questions }) => {
-  return (
-    <div className="w-full claracontainer flex flex-col gap-4 py-4">
-      {questions.map((question, index) => (
-        <div key={index} className="rounded-lg bg-[white] ">
-          <div
-            className="flex justify-between items-center py-2 px-4 bg-gray-100 rounded-lg cursor-pointer"
-            aria-expanded="false"
-            aria-controls={`answer-${index}`}
-          >
-            <h2 className="text-lg font-semibold">{question.title}</h2>
-            <svg
-              id={`chevron-${index}`}
-              className="w-6 h-6 transition-transform duration-300"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M18 12H6"
-              />
-            </svg>
-          </div>
-          <div
-            id={`answer-${index}`}
-            className="hidden py-2 px-4 bg-gray-50 rounded-lg"
-          >
-            <p className="text-gray-600">{question.answer}</p>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-};
 
 const HYGRAPH_ENDPOINT =
   "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";
