@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { ConnectPartner, Referral } from "@/public/Images";
 import Image from "next/image";
@@ -12,8 +14,45 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { PopupFooter } from "..";
+import { useState } from "react";
 
-const ReferralCard = () => {
+export default function ReferralForm() {
+  const [referrerName, setReferrerName] = useState("");
+  const [referrerEmail, setReferrerEmail] = useState("");
+  const [referredName, setReferredName] = useState("");
+  const [referredEmail, setReferredEmail] = useState("");
+  const [status, setStatus] = useState("");
+
+  const submitReferral = async (e) => {
+    e.preventDefault();
+    setStatus("loading");
+
+    const res = await fetch("/api/referral", {
+      method: "POST",
+      body: JSON.stringify({
+        referrerName,
+        referrerEmail,
+        referredName,
+        referredEmail,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await res.json();
+    if (data.error) {
+      setStatus("error");
+      return;
+    }
+
+    setStatus("success");
+    setReferrerName("");
+    setReferrerEmail("");
+    setReferredName("");
+    setReferredEmail("");
+  };
+
   return (
     <>
       <div className="flex flex-col md:flex-row items-center rounded-[22px] border-4 gap-4 border-[#3f3a64] w-full justify-between p-4">
@@ -50,7 +89,7 @@ const ReferralCard = () => {
                 </div>
               </DialogHeader>
               <DialogDescription className="flex w-full scrollbar-hidden px-4 claracontainer flex-col justify-start items-center">
-                <div className="flex flex-col md:flex-row px-2 md:px-6 lg:px-24 max-w-[800px] justify-center items-start claracontainer gap-4">
+                {/* <div className="flex flex-col md:flex-row px-2 md:px-6 lg:px-24 max-w-[800px] justify-center items-start claracontainer gap-4">
                   <div className="flex w-full max-w-[20%]">
                     <Image
                       alt="Kindi"
@@ -81,10 +120,51 @@ const ReferralCard = () => {
                       />
                     </div>
                     <Button className="bg-[#3f3a64]  hover:bg-purple border-purple hover:border-4 hover:border-[#4d3d9738]  rounded-[27px] border-4 border-[#3f3a64]/40 justify-center items-center inline-flex text-white font-semibold">
-                     Refer Now
+                      Refer Now
                     </Button>
                   </div>
-                </div>
+                </div> */}
+                <form onSubmit={submitReferral} className="flex flex-col gap-2">
+                  <Input
+                    type="text"
+                    value={referrerName}
+                    onChange={(e) => setReferrerName(e.target.value)}
+                    placeholder="Your Name"
+                    required
+                  />
+                  <Input
+                    type="email"
+                    value={referrerEmail}
+                    onChange={(e) => setReferrerEmail(e.target.value)}
+                    placeholder="Your Email"
+                    required
+                  />
+                  <Input
+                    type="text"
+                    value={referredName}
+                    onChange={(e) => setReferredName(e.target.value)}
+                    placeholder="Friend's Name"
+                    required
+                  />
+                  <Input
+                    type="email"
+                    value={referredEmail}
+                    onChange={(e) => setReferredEmail(e.target.value)}
+                    placeholder="Friend's Email"
+                    required
+                  />
+                  <Button type="submit">
+                    {status === "loading" ? "Submitting..." : "Refer a Friend"}
+                  </Button>
+                  {status === "success" && (
+                    <p className="text-[green]">Thank you for referring!</p>
+                  )}
+                  {status === "error" && (
+                    <p className="text-red">
+                      Something went wrong. Please try again.
+                    </p>
+                  )}
+                </form>
               </DialogDescription>
               <DialogFooter className="sticky bottom-0 m-0 w-full ">
                 <PopupFooter PrimaryText="Save and Continue" />
@@ -95,5 +175,4 @@ const ReferralCard = () => {
       </div>
     </>
   );
-};
-export default ReferralCard;
+}
