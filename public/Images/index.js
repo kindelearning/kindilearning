@@ -97,7 +97,7 @@ import Referral from "./Referral.svg";
 import Payments from "./Payments.svg";
 import Support from "./Support.svg";
 import User from "./User.svg";
-import LanguageIcon from "./Language.svg";
+import LanguageIcon from "./LanguageIcon.svg";
 import Phone from "./Phone.svg";
 import progressImage01 from "./progressImage01.png";
 import progressImage02 from "./progressImage02.png";

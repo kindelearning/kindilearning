@@ -53,6 +53,7 @@ import { authOptions } from "../../api/auth/[...nextauth]/route";
 import { useSession } from "next-auth/react";
 import Loading from "@/app/loading";
 import SignOutButton from "@/app/auth/signout/page";
+// import ContactForm from "@/app/p/contact-us/page";
 
 const IconBadge = ({ icon, backgroundColor = "3F3A64" }) => (
   <div
@@ -172,6 +173,101 @@ const GET_ACCOUNT_BY_EMAIL = gql`
   }
 `;
 
+const ContactForm = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState("");
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        setSuccessMessage("Message sent successfully!");
+        setFormData({ name: "", email: "", message: "" }); // Reset form
+      } else {
+        setError("Failed to send the message. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error submitting contact form:", error);
+      setError("Error submitting contact form.");
+    } finally {
+      setLoading(false);
+    }
+  };
+  return (
+    <section className="w-full h-auto bg-[#EAEAF5] items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">
+      <div className="flex w-full claracontainer px-2 lg:px-4 flex-col items-center justify-center">
+        {successMessage && <p>{successMessage}</p>}
+        {error && <p>{error}</p>}
+        <form
+          onSubmit={handleSubmit}
+          className="flex justify-center items-center flex-col gap-4 w-full"
+        >
+          <Input
+            type="text"
+            name="name"
+            value={formData.name}
+            className="border ring-0 ring-offset-0 focus-visible:ring-0 p-2"
+            placeholder="Your Name"
+            onChange={handleChange}
+            required
+          />
+
+          <Input
+            type="email"
+            name="email"
+            className="border ring-0 ring-offset-0 focus-visible:ring-0 p-2"
+            value={formData.email}
+            placeholder="Your Email"
+            onChange={handleChange}
+            required
+          />
+          <Textarea
+            name="message"
+            value={formData.message}
+            placeholder="Your Message"
+            onChange={handleChange}
+            className="border ring-0 ring-offset-0 focus-visible:ring-0 p-2"
+            required
+          />
+          <Button
+            type="submit"
+            disabled={loading}
+            className="clarabutton w-[200px] lg:w-[300px] bg-red hover:bg-hoverRed text-white p-2"
+          >
+            {loading ? "Sending..." : "Submit"}
+          </Button>
+        </form>
+      </div>
+    </section>
+  );
+};
+
 const ProfileSection = async () => {
   const { data: session, status } = useSession();
   const [profileData, setProfileData] = useState(null);
@@ -264,7 +360,11 @@ const ProfileSection = async () => {
                 </h2>
               )}
               {/* Trigger for the Edit Profile Popup */}
-              <Link href="/profile/update" className="hidden lg:flex" target="_blank">
+              <Link
+                href="/profile/update"
+                className="hidden lg:flex"
+                target="_blank"
+              >
                 <Badge
                   className="text-[10px] md:text-[16px] cursor-pointer"
                   variant="outline"
@@ -275,9 +375,7 @@ const ProfileSection = async () => {
             </div>
             <div className="flex flex-col w-full gap-1 items-start justify-start">
               <div className="flex flex-row w-full justify-start items-center gap-2">
-                <div className="text-[#3f3a64] clarabodyTwo">
-                  Level 1
-                </div>
+                <div className="text-[#3f3a64] clarabodyTwo">Level 1</div>
                 {/* Trigger for the Level Popup */}
                 <Dialog className="bg-[#EAEAF5] w-full rounded-[28px] claracontainer">
                   <DialogTrigger asChild>
@@ -317,7 +415,11 @@ const ProfileSection = async () => {
                     </DialogFooter>
                   </DialogContent>
                 </Dialog>
-                <Link href="/profile/update" className="flex lg:hidden" target="_blank">
+                <Link
+                  href="/profile/update"
+                  className="flex lg:hidden"
+                  target="_blank"
+                >
                   <Badge
                     className="text-[10px] md:text-[16px] cursor-pointer"
                     variant="outline"
@@ -416,7 +518,7 @@ const ProfileSection = async () => {
           </Dialog> */}
           {/* Kids Profile Model */}
           <Dialog className="bg-[#EAEAF5] w-full  claracontainer">
-            <DialogTrigger asChild>
+            <DialogTrigger className="w-full">
               <MyProfileRoutes
                 image={Kid}
                 iconBackgroundColor="#029871"
@@ -462,7 +564,7 @@ const ProfileSection = async () => {
           </Dialog>
           {/* Orders Model */}
           <Dialog className="bg-[#EAEAF5] w-full rounded-[28px] claracontainer">
-            <DialogTrigger asChild>
+            <DialogTrigger className="w-full">
               <MyProfileRoutes
                 image={Bag}
                 iconBackgroundColor="#3F3A64"
@@ -504,7 +606,7 @@ const ProfileSection = async () => {
           </Dialog>
           {/* Connect a partner Model */}
           <Dialog className="bg-[#EAEAF5] w-full rounded-[28px] claracontainer">
-            <DialogTrigger asChild>
+            <DialogTrigger className="w-full">
               <MyProfileRoutes
                 image={Partner}
                 iconBackgroundColor="#FF8E00"
@@ -570,7 +672,7 @@ const ProfileSection = async () => {
           </Dialog>
           {/* Payment Method Model */}
           <Dialog className="bg-[#EAEAF5] w-full rounded-[28px] claracontainer">
-            <DialogTrigger asChild>
+            <DialogTrigger className="w-full">
               <MyProfileRoutes
                 image={Payments}
                 iconBackgroundColor="#019ACF"
@@ -628,20 +730,23 @@ const ProfileSection = async () => {
           </Dialog>
           {/* Settings Model */}
           <Dialog className="bg-[#EAEAF5] w-full rounded-[28px] claracontainer">
-            <DialogTrigger asChild>
+            <DialogTrigger className="w-full">
               <MyProfileRoutes
                 image={ProfileSettingIcon}
                 iconBackgroundColor="#C42797"
                 title="Settings"
               />
             </DialogTrigger>
-            <DialogContent className="bg-[#EAEAF5] max-w-[96%] max-h-[70%] scrollbar-hidden overflow-scroll p-0 overflow-x-hidden rounded-[16px] w-full claracontainer">
+            <DialogContent className="bg-[#EAEAF5] w-full lg:max-w-[1000px] lg:w-[1000px] max-h-[70%] scrollbar-hidden overflow-scroll p-0 overflow-x-hidden rounded-[16px] claracontainer">
               <DialogHeader className="flex pt-4">
                 <div className="flex flex-row justify-center items-center w-full">
                   <DialogTitle>
-                    <div className="text-center text-[#3f3a64] text-4xl font-semibold font-fredoka capitalize  ">
+                    <span className="text-center text-red text-4xl font-semibold font-fredoka capitalize  ">
+                      My{" "}
+                    </span>
+                    <span className="text-center text-[#3f3a64] text-4xl font-semibold font-fredoka capitalize  ">
                       Settings
-                    </div>
+                    </span>
                   </DialogTitle>
                 </div>
               </DialogHeader>
@@ -650,30 +755,48 @@ const ProfileSection = async () => {
                   <div className="claracontainer w-full flex flex-col overflow-hidden gap-8">
                     <div className="claracontainer w-full flex flex-col overflow-hidden gap-4">
                       {/* Profile Edit */}
-                      <Link href="/profile/edit">
+                      {profileData ? (
+                        <>
+                          <Link href="/profile/edit">
+                            <SettingCard
+                              Value={profileData.name}
+                              image={User}
+                              title="Full Name"
+                            />
+                          </Link>
+                          {/* Email Edit */}
+                          <SettingCard
+                            disabled
+                            Value={profileData.email}
+                            image={Email}
+                            title="Email"
+                          />
+                          <SettingCard
+                            disabled
+                            Value={profileData.isVerified}
+                            image={Phone}
+                            title="Phone Number"
+                          />
+                          {/* Terms & Condition  */}
+                          <Link href="/p/tnc">
+                            <SettingCard
+                              Value="Term & Condition"
+                              image={TnC}
+                              title="Kindi's Learning"
+                            />
+                          </Link>
+                        </>
+                      ) : (
                         <SettingCard
-                          Value="Shravya"
+                          Value="No Name Provided"
                           image={User}
                           title="Full Name"
                         />
-                      </Link>
-                      {/* Email Edit */}
-                      <SettingCard
-                        disabled
-                        Value="abc@gmail.com"
-                        image={Email}
-                        title="Email"
-                      />
-                      {/* Mobile Edit */}
-                      <SettingCard
-                        disabled
-                        Value="09876543"
-                        image={Phone}
-                        title="Phone Number"
-                      />
+                      )}
+
                       {/* Language Edit */}
                       <Dialog className="bg-[#EAEAF5] w-full rounded-[28px] claracontainer">
-                        <DialogTrigger asChild>
+                        <DialogTrigger>
                           <SettingCard
                             Value="English"
                             image={LanguageIcon}
@@ -705,98 +828,52 @@ const ProfileSection = async () => {
                           </DialogFooter>
                         </DialogContent>
                       </Dialog>
-                      {/* Terms & Condition  */}
-                      <Link href="/p/tnc">
-                        <SettingCard
-                          Value="Term & Condition"
-                          image={TnC}
-                          title="Kindi's Learning"
-                        />
-                      </Link>
                     </div>
                   </div>
                 </section>
               </DialogDescription>
-              <DialogFooter className="sticky bottom-0 m-0 w-full">
-                <PopupFooter PrimaryText="Save and Continue" />
-              </DialogFooter>
             </DialogContent>
           </Dialog>
           {/* Help Center Model */}
           <Dialog className="bg-[#EAEAF5] w-full rounded-[28px] claracontainer">
-            <DialogTrigger asChild>
+            <DialogTrigger className="w-full">
               <MyProfileRoutes
                 image={Support}
                 iconBackgroundColor="#3F3D91"
                 title="Help Center"
               />
             </DialogTrigger>
-            <DialogContent className="bg-[#EAEAF5] max-w-[96%] max-h-[70%] overflow-scroll scrollbar-hidden p-0 overflow-x-hidden rounded-[16px] w-full claracontainer">
-              <DialogHeader className="p-4">
-                <div className="flex flex-row justify-center items-center w-full">
-                  <DialogTitle>
-                    <div className="text-center">
-                      <span className="text-[#3f3a64] text-[24px] md:text-[36px] font-semibold font-fredoka capitalize  ">
-                        Help{" "}
-                      </span>
-                      <span className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize  ">
-                        Center
-                      </span>
-                    </div>
-                  </DialogTitle>
-                </div>
-              </DialogHeader>
-              <DialogDescription className="flex w-full px-4 claracontainer flex-col justify-start items-center">
-                <section className="w-full h-auto bg-[#EAEAF5] items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">
-                  <div className="claracontainer w-full flex flex-col overflow-hidden gap-8">
-                    <div className="flex flex-col gap-4 justify-center items-center w-full">
-                      {/* Help Card */}
-                      <div className="items-center w-full justify-center flex flex-col gap-2">
-                        <div className="flex flex-col px-0 md:px-12 lg:px-24 w-full gap-4 justify-center items-center">
-                          <div className="flex w-full gap-2">
-                            <Input
-                              placeholder="First Name"
-                              className="w-full"
-                            />
-                            <Input placeholder="Last Name" className="w-full" />
-                          </div>
-                          <Input
-                            className="w-full"
-                            type="email"
-                            placeholder="Enter your E-Mail"
-                          />
-                          <Input
-                            className="w-full"
-                            type="text"
-                            placeholder="Enter Subject"
-                          />
-                          <Input
-                            className="w-full"
-                            type="tel"
-                            placeholder="Contact Number"
-                          />
-                          <Textarea
-                            className="w-full"
-                            placeholder="Enter your Message...."
-                          />
-                          <Button className="bg-red rounded-2xl shadow border-2 border-white text-center text-white clarabutton">
-                            Send Message
-                          </Button>
-                        </div>
-                      </div>
-                      <div className="text-center text-[#3f3a64] text-4xl font-semibold font-fredoka capitalize  ">
-                        FAQ&apos;s
-                      </div>
-                      <div className="claracontainer w-full flex flex-col overflow-hidden gap-4">
-                        <Accordion questions={questions} />;
-                      </div>
-                    </div>
+            <DialogContent className="bg-[#EAEAF5] w-full lg:max-w-[1000px] lg:w-[1000px] overflow-y-scroll scrollbar-hidden p-0 overflow-x-hidden rounded-[16px] claracontainer">
+              <DialogHeader>
+                <DialogTitle>
+                  <div className="text-center pt-4">
+                    <span className="text-[#3f3a64] text-[24px] md:text-[36px] font-semibold font-fredoka capitalize  ">
+                      Help{" "}
+                    </span>
+                    <span className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize  ">
+                      Center
+                    </span>
                   </div>
-                </section>
-              </DialogDescription>
-              <DialogFooter className="sticky bottom-0 m-0 w-full">
-                <PopupFooter PrimaryText="Save and Continue" />
-              </DialogFooter>
+                </DialogTitle>
+                <DialogDescription>
+                  <section className="w-full bg-[#EAEAF5] items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">
+                    <div className="flex flex-col gap-4 justify-center items-center w-full">
+                      <ContactForm />
+                      <Link
+                        target="_blank"
+                        href="/p/faq"
+                        className="text-center px-4 w-full text-[#3f3a64] clarabodyTwo "
+                      >
+                        <MyProfileRoutes
+                          image={Support}
+                          iconBackgroundColor="#3F3D91"
+                          title="Check FAQ's"
+                        />
+                      </Link>
+                    </div>
+                  </section>
+                </DialogDescription>
+              </DialogHeader>
             </DialogContent>
           </Dialog>
           <SignOutButton />
