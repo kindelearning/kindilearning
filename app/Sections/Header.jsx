@@ -28,6 +28,7 @@ import { useEffect, useState } from "react";
 import { signOut, useSession } from "next-auth/react";
 import Loading from "../loading";
 import { useCart } from "../context/CartContext";
+import { GoogleTranslate } from "./GoogleTranslate";
 
 const LocalNavitem = ({
   Link = "#",
@@ -370,6 +371,7 @@ const Header = () => {
             </a>
           ))}
         </div>
+        
 
         <div className="hidden lg:flex space-x-4">
           {profileData ? (

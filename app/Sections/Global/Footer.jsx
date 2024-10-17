@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/select";
 import { footerSections } from "@/app/constant/menu";
 import Link from "next/link";
+import { GoogleTranslate } from "../GoogleTranslate";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -54,7 +55,7 @@ const Footer = () => {
             <div className="w-auto text-white clarabodyTwo font-medium font-fredoka capitalize mb-8 md:mb-0">
               special offers and latest news about our products directly{" "}
             </div>
-            <Select className="rounded-full px-1">
+            {/* <Select className="rounded-full px-1">
               <SelectTrigger className="max-w-[390px] rounded-full py-3 flex flex-row text-[white] gap-1 justify-start items-center bg-[#000000] w-full mb-8 md:mb-0">
                 <Image alt="Kindi" src={Language} />
                 <SelectValue
@@ -76,7 +77,10 @@ const Footer = () => {
                   <SelectItem value="l4">Language 4</SelectItem>
                 </SelectGroup>
               </SelectContent>
-            </Select>
+            </Select> */}
+            <div className="flex w-full">
+              <GoogleTranslate />
+            </div>
           </div>
         </div>
         <div className="claracontainer w-full py-8 px-2 flex flex-col justify-center items-center gap-1">

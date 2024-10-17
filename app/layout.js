@@ -1,14 +1,10 @@
-/**
- * @ToDo  TO be removed as we dont use this, but need to check it infuture
- */
-
 "use client";
 import { Fredoka as FontSans } from "next/font/google";
-
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { SessionProvider } from "next-auth/react";
 import { CartProvider } from "./context/CartContext";
+
 
 /**
  * @ToDo  TO be removed as we dont use this, but need to check it infuture
@@ -34,6 +30,7 @@ export default function RootLayout({ children }) {
             rel="stylesheet"
           />
         </head>
+
         <body
           className={cn(
             "min-h-screen bg-background font-sans antialiased",
