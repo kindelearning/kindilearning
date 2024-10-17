@@ -28,7 +28,10 @@ export async function POST(request) {
     }
   }
 `;
+
+
   try {
+    // Create referral in Hygraph
     const hygraphResponse = await fetch(GRAPHQL_API, {
       method: "POST",
       headers: {
@@ -44,10 +47,46 @@ export async function POST(request) {
       throw new Error("Failed to create referral");
     }
 
-    return new Response(JSON.stringify({ success: true }), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    });
+    // Send Email via Mailchimp Transactional Email (Mandrill)
+    const MAILCHIMP_TRANSACTIONAL_API_KEY =
+      process.env.MAILCHIMP_TRANSACTIONAL_API_KEY;
+    const mailchimpResponse = await fetch(
+      "https://mandrillapp.com/api/1.0/messages/send.json",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          key: MAILCHIMP_TRANSACTIONAL_API_KEY,
+          message: {
+            from_email: "your-email@example.com",
+            to: [
+              {
+                email: referredEmail,
+                type: "to",
+              },
+            ],
+            subject: `You've been referred by ${referrerName}!`,
+            text: `Hi ${referredName},\n\n${referrerName} has referred you! Use the referral code ${referralCode} when signing up to get started.\n\nThank you!`,
+          },
+        }),
+      }
+    );
+
+    const mailchimpData = await mailchimpResponse.json();
+    if (
+      mailchimpData[0].status === "rejected" ||
+      mailchimpData[0].status === "invalid"
+    ) {
+      console.error("Mailchimp Error:", mailchimpData);
+      throw new Error("Failed to send email");
+    }
+
+    return new Response(
+      JSON.stringify({ success: true, message: "Thank you for referring!" }),
+      { status: 200, headers: { "Content-Type": "application/json" } }
+    );
   } catch (error) {
     console.error("Error:", error);
     return new Response(JSON.stringify({ error: "Internal server error" }), {
