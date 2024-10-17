@@ -92,7 +92,7 @@ export default function Schedule() {
               <KindiCalendar />
             </div>
           </div>
-          {profileData ? (
+          {/* {profileData ? (
             profileData.isVerified ? (
               <>
                 <div className="claracontainer md:p-0 p-0 py-4 w-full flex flex-col overflow-hidden gap-8">
@@ -143,7 +143,7 @@ export default function Schedule() {
                 </p>
               </Link>
             </>
-          )}
+          )} */}
         </div>
       </section>
     </>
