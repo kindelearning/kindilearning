@@ -78,7 +78,7 @@ const Footer = () => {
                 </SelectGroup>
               </SelectContent>
             </Select> */}
-            <div className="flex w-full">
+            <div className="hidden lg:flex w-full">
               <GoogleTranslate />
             </div>
           </div>

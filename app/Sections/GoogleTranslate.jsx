@@ -82,10 +82,10 @@ function LanguageSelector({ onChange, value }) {
     <select
       onChange={(e) => onChange(e.target.value)}
       value={value}
-      className="border w-full rounded-full border-gray-300 flex justify-between  py-2 px-4 bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
+      className="border w-full rounded-full border-gray-300 flex justify-between  py-2 px-4 bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple transition duration-200"
     >
       {languages.map((it) => (
-        <option value={it.value} key={it.value}>
+        <option value={it.value} key={it.value} className="mx-2">
           {it.label}
         </option>
       ))}

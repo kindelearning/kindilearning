@@ -286,51 +286,56 @@ const Header = () => {
                       </div>
                     </div>
                   </div>
-                  {profileData ? (
-                    <div className="flex w-full gap-2 justify-start items-center">
-                      <div className="flex">
-                        <Link
-                          target="_blank"
-                          className="flex flex-col justify-end items-end"
-                          href="/shop/cart"
+                  <div className="flex w-full flex-col gap-2">
+                    <div className="flex w-full">
+                      <GoogleTranslate />
+                    </div>
+                    {profileData ? (
+                      <div className="flex w-full gap-2 justify-start items-center">
+                        <div className="flex">
+                          <Link
+                            target="_blank"
+                            className="flex flex-col justify-end items-end"
+                            href="/shop/cart"
+                          >
+                            <p className="bg-[eaeaf5] border -mb-[8px] border-red text-red flex justify-center items-center text-[12px] z-12 w-[16px] h-[16px] font-fredoka rounded-full">
+                              {cart.length}
+                            </p>
+                            <ShoppingBag className="text-red w-[28px] h-[28px]" />
+                          </Link>
+                        </div>
+                        <Button
+                          onClick={handleSignOut}
+                          className="bg-red hover:bg-hoverRed text-white clarabutton w-full"
                         >
-                          <p className="bg-[eaeaf5] border -mb-[8px] border-red text-red flex justify-center items-center text-[12px] z-12 w-[16px] h-[16px] font-fredoka rounded-full">
-                            {cart.length}
-                          </p>
-                          <ShoppingBag className="text-red w-[28px] h-[28px]" />
+                          Sign Out
+                        </Button>
+                      </div>
+                    ) : (
+                      <div className="flex w-full flex-col gap-1 justify-start items-start">
+                        <Link
+                          href="/auth/sign-in"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-full"
+                        >
+                          <div className="bg-[#ffffff] py-2 w-full text-[12px] font-fredoka border-[black] text-[black] hover:bg-[#ffffff] hover:border-[#2b2b2b] hover:text-dark-blue-100 px-[40px] border-2 rounded-[10px] transition duration-300 ease-in-out">
+                            Log in
+                          </div>
+                        </Link>
+                        <Link
+                          href="/auth/sign-up"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-full"
+                        >
+                          <div className="bg-red hover:bg-hoverRed text-[12px] font-fredoka text-white w-full py-2 px-[40px]  hover:text-white border-2 border-red rounded-[10px] transition duration-300 ease-in-out">
+                            Get Started
+                          </div>
                         </Link>
                       </div>
-                      <Button
-                        onClick={handleSignOut}
-                        className="bg-red hover:bg-hoverRed text-white clarabutton w-full"
-                      >
-                        Sign Out
-                      </Button>
-                    </div>
-                  ) : (
-                    <div className="flex w-full flex-col gap-1 justify-start items-start">
-                      <Link
-                        href="/auth/sign-in"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-full"
-                      >
-                        <div className="bg-[#ffffff] py-2 w-full text-[12px] font-fredoka border-[black] text-[black] hover:bg-[#ffffff] hover:border-[#2b2b2b] hover:text-dark-blue-100 px-[40px] border-2 rounded-[10px] transition duration-300 ease-in-out">
-                          Log in
-                        </div>
-                      </Link>
-                      <Link
-                        href="/auth/sign-up"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-full"
-                      >
-                        <div className="bg-red hover:bg-hoverRed text-[12px] font-fredoka text-white w-full py-2 px-[40px]  hover:text-white border-2 border-red rounded-[10px] transition duration-300 ease-in-out">
-                          Get Started
-                        </div>
-                      </Link>
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </section>
                 <SheetDescription>#KindiLearning</SheetDescription>
               </SheetHeader>
@@ -371,7 +376,6 @@ const Header = () => {
             </a>
           ))}
         </div>
-        
 
         <div className="hidden lg:flex space-x-4">
           {profileData ? (
