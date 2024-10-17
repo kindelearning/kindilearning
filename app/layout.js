@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { SessionProvider } from "next-auth/react";
 import { CartProvider } from "./context/CartContext";
 import Head from "next/head";
+import PWAPrompt from "./Sections/PWAPrompt";
 
 /**
  * @ToDo  TO be removed as we dont use this, but need to check it infuture
@@ -52,7 +53,10 @@ export default function RootLayout({ children }) {
           )}
         >
           <SessionProvider>
-            <CartProvider>{children}</CartProvider>
+            <CartProvider>
+              <PWAPrompt />
+              {children}
+            </CartProvider>
           </SessionProvider>
         </body>
       </html>
