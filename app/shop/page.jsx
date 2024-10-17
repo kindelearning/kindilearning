@@ -260,7 +260,7 @@ const ProductCard = ({ image, title, price }) => {
           alt={title}
           width={200}
           height={200}
-          className="w-full hover:scale-110 duration-300 h-[200px] md:h-[260px] rounded-t-[24px] object-cover"
+          className="w-full hover:scale-110 duration-300 h-[200px] md:h-[220px] rounded-t-[24px] object-cover"
         />
       </div>
       <div className="claracontainer flex flex-col justify-start items-center w-full gap-2">
@@ -280,7 +280,6 @@ const ProductCard = ({ image, title, price }) => {
           </div>
         </div>
         <h3 className="text-start text-[#0a1932] text-[10px] font-fredoka w-full px-4 pb-4 pt-2 text-base font-medium leading-[20px]">
-          {/* {title.length > 50 ? `${title.substring(0, 47)}...` : title} */}
           {title}
         </h3>
       </div>
