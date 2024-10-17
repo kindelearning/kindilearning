@@ -1,11 +1,12 @@
 import fetch from "node-fetch";
 
 export async function POST(request) {
-  const { email } = await request.json();
+  const { email } = await request.json(); // Use 'request' instead of 'req'
   const API_KEY = process.env.MAILCHIMP_API_KEY;
   const AUDIENCE_ID = process.env.MAILCHIMP_AUDIENCE_ID;
   const SERVER_PREFIX = process.env.MAILCHIMP_SERVER_PREFIX;
 
+  // Check if email is provided
   if (!email) {
     return new Response(JSON.stringify({ error: "Email is required" }), {
       status: 400,
@@ -32,6 +33,7 @@ export async function POST(request) {
       body: JSON.stringify(data),
     });
 
+    // Check if the response is OK
     if (!response.ok) {
       const errorData = await response.json();
       console.error("Mailchimp Error:", errorData);

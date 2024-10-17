@@ -10,27 +10,30 @@ export default function NewsLetter() {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState("");
 
-  const subscribe = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setStatus("Submitting...");
 
-    setStatus("loading");
+    try {
+      const res = await fetch("/api/subscribeTwo", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
 
-    const res = await fetch("/api/subscribeTwo", {
-      method: "POST",
-      body: JSON.stringify({ email }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+      const data = await res.json();
 
-    const data = await res.json();
-    if (data.error) {
-      setStatus("error");
-      return;
+      if (res.ok) {
+        setStatus("Thank you for subscribing!");
+        setEmail("");
+      } else {
+        setStatus(data.error || "Something went wrong.");
+      }
+    } catch (error) {
+      setStatus("Something went wrong.");
     }
-
-    setStatus("success");
-    setEmail("");
   };
 
   return (
@@ -54,33 +57,27 @@ export default function NewsLetter() {
             </p>
           </div>
           <form
-            onSubmit={subscribe}
-            className="flex w-full flex-col md:flex-row gap-2 md:gap-0 items-center justify-center md:justify-start"
+            onSubmit={handleSubmit}
+            className="flex w-full flex-col gap-2 items-center justify-start"
           >
-            <Input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter Your email"
-              required
-              className="rounded-l-[12px] rounded-full md:rounded-r-[0px] ring-offset-0 focus:ring-0 border-0 w-full md:w-[300px]"
-            />
-            <Button
-              type="submit"
-              className="px-12 text-center rounded-full md:rounded-l-[0px] text-white hover:border-2 uppercase font-bold text-[16px] hover:border-[#ffffff8a] border-[#ffffff] hover:bg-[#3f3a64] md:px-8 xl:px-12 border-2 bg-red w-full md:w-auto"
-            >
-              {status === "loading" ? "Subscribing..." : "Subscribe"}
-            </Button>
-            {status === "success" && (
-              <p className="text-white clarabodyTwo">
-                Thank you for subscribing!
-              </p>
-            )}
-            {status === "error" && (
-              <p className="text-red clarabodyTwo">
-                Something went wrong. Please try again.
-              </p>
-            )}
+            <div className="flex w-full flex-col md:flex-row gap-2 md:gap-0 items-center justify-center md:justify-start">
+              <Input
+                type="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="rounded-l-[12px] focus-visible:ring-0 focus-visible:ring-offset-0 rounded-full md:rounded-r-[0px] ring-offset-0 focus:ring-0 border-0 w-full md:w-[300px]"
+              />
+              <Button
+                type="submit"
+                className="px-12 text-center rounded-full md:rounded-l-[0px] text-white hover:border-2 uppercase font-bold text-[16px] hover:border-[#ffffff8a] border-[#ffffff] hover:bg-[#3f3a64] md:px-8 xl:px-12 border-2 bg-red w-full md:w-auto"
+              >
+                {status === "loading" ? "Subscribing..." : "Subscribe"}
+              </Button>
+            </div>
+
+            {status && <p className="clarabodyTwo text-white">{status}</p>}
           </form>
         </div>
       </div>
