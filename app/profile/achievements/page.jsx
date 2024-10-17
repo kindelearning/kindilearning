@@ -24,7 +24,6 @@ import Loading from "../loading";
 import { useSession } from "next-auth/react";
 import { gql, GraphQLClient } from "graphql-request";
 
-
 const HYGRAPH_ENDPOINT =
   "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";
 const HYGRAPH_TOKEN =
@@ -86,7 +85,7 @@ const Achievement = async () => {
               {profileData ? (
                 <>
                   <div className="relative w-36 h-36 p-1 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600">
-                    <div className="w-full h-full bg-white rounded-full flex items-center justify-center">
+                    <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
                       <Image
                         src={profileData.profilePicture?.url}
                         alt="User DP"

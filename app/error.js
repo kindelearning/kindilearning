@@ -31,9 +31,9 @@ export default function Error({ error, reset }) {
                 </span>
               </div>
             </div>
-            <div className="w-[460px] h-[203px]">
+            <div className="w-full ">
               <span className="text-[#696969] text-lg font-semibold font-fredoka leading-[21px]">
-                This page isn’t quite ready to play right now. While you’re
+                This page isn&apos;t quite ready to play right now. While you&apos;re
                 here:
                 <br />
               </span>
@@ -54,7 +54,7 @@ export default function Error({ error, reset }) {
               </span>
             </div>
             <p>Could not find requested resource</p>
-            <div className="w-[387px]">
+            <div className="w-full">
               <Link href="/">
                 <span className="text-[#3f3a64] hover:font-semibold duration-200 hover:underline text-lg font-medium font-fredoka leading-[21px]">
                   Return Home
