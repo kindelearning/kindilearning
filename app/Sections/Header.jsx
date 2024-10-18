@@ -203,7 +203,6 @@ const GET_ACCOUNT_BY_EMAIL = gql`
 
 const Header = () => {
   const { cart } = useCart();
-
   const pathname = usePathname();
   const { data: session, status } = useSession();
   const [profileData, setProfileData] = useState(null);
