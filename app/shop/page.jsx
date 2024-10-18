@@ -267,6 +267,7 @@ const ProductCard = ({ image, title, price }) => {
     </div>
   );
 };
+
 const MobileProductCard = ({ image, title, price }) => {
   const [rating, setRating] = useState(0);
   useEffect(() => {
@@ -316,6 +317,7 @@ const MobileProductCard = ({ image, title, price }) => {
     </div>
   );
 };
+
 const SidebarFilters = ({ onFilterChange }) => {
   const [selectedPriceRange, setSelectedPriceRange] = useState([]);
 
@@ -819,6 +821,7 @@ const OtherSideBarFIlter = () => {
     </>
   );
 };
+
 export default async function ShopPage() {
   const [products, setProducts] = useState([]);
   const [sortOption, setSortOption] = useState("priceLowToHigh");
@@ -892,12 +895,6 @@ export default async function ShopPage() {
     sortProducts(value);
   };
 
-  // //Effect Function to show/update the produts based on Sort COndition
-  // useEffect(() => {
-  //   const sortedProducts = sortProducts([...products], sortOption);
-  //   setProducts(sortedProducts);
-  // }, [sortOption]);
-
   // Function to handle Search Operation
   const handleSearchChange = (event) => {
     const term = event.target.value.toLowerCase();
@@ -913,22 +910,6 @@ export default async function ShopPage() {
 
     setFilteredProducts(filtered);
   };
-
-  // const handleKeyDown = (event) => {
-  //   if (event.metaKey && event.key === "j") {
-  //     event.preventDefault(); // Prevent the default action
-  //     if (searchInputRef.current) {
-  //       searchInputRef.current.focus(); // Focus the search input
-  //     }
-  //   }
-  // };
-  // useEffect(() => {
-  //   window.addEventListener("keydown", handleKeyDown);
-
-  //   return () => {
-  //     window.removeEventListener("keydown", handleKeyDown);
-  //   };
-  // }, []);
 
   const shouldShowAllProducts = !searchTerm || searchTerm.trim() === "";
 
@@ -1046,6 +1027,7 @@ export default async function ShopPage() {
                     ))}
                   </div>
                 </div>
+                <OtherSideBarFIlter />
               </div>
             </div>
             {/* the product Grid Column */}
