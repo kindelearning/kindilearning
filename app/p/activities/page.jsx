@@ -69,23 +69,13 @@ const filters = [
   },
 ];
 
-const developmentAreas = [
-  "Emotional & Social Strength",
-  "Physical Agility",
-  "Creativity & Imagination",
-  "Confidence & Independence",
-  "Reading & Writing",
-  "Speech & Language",
-  "Discovering our world",
-  "Experiments & Math",
-];
-
 export default async function ActivitiesPage() {
   const [date, setDate] = useState(new Date());
   const [activities, setActivities] = useState([]);
   const [filteredActivities, setFilteredActivities] = useState([]);
   const [selectedDays, setSelectedDays] = useState([]); // State for selected weekdays
   const [selectedFeatures, setSelectedFeatures] = useState([]); // State for selected features
+  const [selectedSkilCategory, setSelectedSkilCategory] = useState([]); // State for selected features
   const [loading, setLoading] = useState(true);
 
   // List of features options
@@ -98,6 +88,21 @@ export default async function ActivitiesPage() {
     "Discovering Our World",
     "Creativity & Imagination",
     "Experiments & Math",
+  ];
+  // List of Skill Category options
+  const skillCategoryOptions = [
+    "Sensory Development",
+    "Mastering Feelings",
+    "Listening & Talking",
+    "Problem-solving & Independence",
+    "Social Play",
+    "Fine Motor",
+    "GROSS MOTOR",
+    "Pretend Play",
+    "Crafts",
+    "Exploring the Seasons",
+    "Outdoors & Nature",
+    "Rainy Day Play",
   ];
 
   // Effect to filter activities based on selected features
@@ -120,6 +125,27 @@ export default async function ActivitiesPage() {
         : [...prev, feature]
     );
   };
+  // Handle Skill Option filter change
+  const handleSkillChange = (skill) => {
+    setSelectedSkilCategory((prev) =>
+      prev.includes(skill) ? prev.filter((s) => s !== skill) : [...prev, skill]
+    );
+  };
+
+  // Effect to filter activities based on selected Skill Option
+  useEffect(() => {
+    if (selectedSkilCategory.length > 0) {
+      const filtered = activities.filter((activity) =>
+        activity.keywords.some((keyword) =>
+          selectedSkilCategory.includes(keyword)
+        )
+      );
+      setFilteredActivities(filtered);
+    } else {
+      setFilteredActivities([]); // Reset if no features are selected
+    }
+  }, [selectedSkilCategory, activities]);
+
   // Fetching all the activities form GraphCMS
   useEffect(() => {
     const fetchActivities = async () => {
@@ -268,62 +294,120 @@ export default async function ActivitiesPage() {
                       <div className="text-red text-2xl font-semibold text-start font-fredoka capitalize leading-[28px]">
                         Adjust your Filters
                       </div>
-                      <div className="flex flex-col gap-4 justify-start items-center">
+                      <div className="flex flex-col w-full gap-4 justify-start items-center">
                         <div className="flex flex-col justify-start items-start gap-2 w-full">
-                          <div className="text-[#0a1932] text-sm font-semibold font-fredoka leading-tight">
+                          <div className="text-[#0a1932]  text-sm font-semibold font-fredoka leading-tight">
                             Learning Areas
                           </div>
-                          {/* Badge */}
-                          {/* <div className="flex gap-2 flex-wrap">
-                            {developmentAreas.map((area, index) => (
-                              <Badge
-                                key={index}
-                                variant={index === 0 ? "filled" : "outline"}
-                                className={`text-sm font-normal font-fredoka leading-tight ${
-                                  index === 0 ? "bg-[#3f3a64] text-white" : ""
-                                }`}
-                              >
-                                {area}
-                              </Badge>
+                          <select
+                            id="feature-select"
+                            value={selectedFeatures}
+                            onChange={(e) =>
+                              handleFeatureChange(e.target.value)
+                            }
+                            className="border-2 w-full pr-2 rounded-full border-[#3f3a64] text-[#3f3a64] bg-white text-base font-fredoka leading-[13px] font-medium p-2"
+                          >
+                            <option value="" disabled>
+                              Select features
+                            </option>
+                            {featuresOptions.map((feature) => (
+                              <option key={feature} value={feature}>
+                                {feature}
+                              </option>
+                            ))}
+                          </select>
+                          {/* <div className="grid grid-cols-2 justify-between gap-2 items-center w-full">
+                            {featuresOptions.map((feature) => (
+                              <>
+                                <div
+                                  key={feature}
+                                  className="flex items-center space-x-2"
+                                >
+                                  <input
+                                    type="checkbox"
+                                    id={`feature-${feature}`}
+                                    checked={selectedFeatures.includes(feature)}
+                                    onChange={() =>
+                                      handleFeatureChange(feature)
+                                    }
+                                    className="text-red border-2 bg-[white] border-red w-[24px] h-[24px]"
+                                  />
+                                  <label
+                                    htmlFor={`feature-${feature}`}
+                                    className="w-full text-[#3f3a64] text-base font-fredoka leading-[13px] font-medium peer-disabled:cursor-not-allowed text-start peer-disabled:opacity-70"
+                                  >
+                                    {feature}
+                                  </label>
+                                </div>
+                              </>
                             ))}
                           </div> */}
-                          <div className="grid grid-cols-2 justify-between gap-2 items-center w-full">
-                            {featuresOptions.map((feature) => (
-                              <div
-                                key={feature}
-                                className="flex items-center space-x-2"
-                              >
-                                <input
-                                  type="checkbox"
-                                  id={`feature-${feature}`}
-                                  checked={selectedFeatures.includes(feature)}
-                                  onChange={() => handleFeatureChange(feature)}
-                                  className="text-red border-2 bg-[white] border-red w-[24px] h-[24px]"
-                                />
-                                <label
-                                  htmlFor={`feature-${feature}`}
-                                  className="w-full text-[#3f3a64] text-base font-fredoka leading-[13px] font-medium peer-disabled:cursor-not-allowed text-start peer-disabled:opacity-70"
-                                >
-                                  {feature}
-                                </label>
-                              </div>
-                            ))}
-                          </div>
                         </div>
                         <div className="flex flex-col justify-start items-start gap-2 w-full">
-                          <div className="text-[#0a1932] text-sm font-semibold font-fredoka leading-tight">
-                            Type of Toy
+                          <div className="text-purple clarabodyTwo">
+                            Select Skill Options
                           </div>
+                          <select
+                            id="feature-select"
+                            value={selectedSkilCategory}
+                            onChange={(e) =>
+                              handleFeatureChange(e.target.value)
+                            }
+                            className="border-2 w-full pr-2 rounded-full border-[#3f3a64] text-[#3f3a64] bg-white text-base font-fredoka leading-[13px] font-medium p-2"
+                          >
+                            <option value="" disabled>
+                              Select features
+                            </option>
+                            {skillCategoryOptions.map((skill) => (
+                              <option key={skill} value={skill}>
+                                {skill}
+                              </option>
+                            ))}
+                          </select>
                         </div>
                         <div className="flex flex-col justify-start items-start gap-2 w-full">
                           <div className="text-[#0a1932] text-sm font-semibold font-fredoka leading-tight">
                             Skills
                           </div>
+                          {/* <select
+                            id="feature-select"
+                            value={selectedFeatures}
+                            onChange={(e) =>
+                              handleFeatureChange(e.target.value)
+                            }
+                            className="border-2 w-full pr-2 rounded-full border-[#3f3a64] text-[#3f3a64] bg-white text-base font-fredoka leading-[13px] font-medium p-2"
+                          >
+                            <option value="" disabled>
+                              Select features
+                            </option>
+                            {featuresOptions.map((feature) => (
+                              <option key={feature} value={feature}>
+                                {feature}
+                              </option>
+                            ))}
+                          </select> */}
                         </div>
                         <div className="flex flex-col justify-start items-start gap-2 w-full">
                           <div className="text-[#0a1932] text-sm font-semibold font-fredoka leading-tight">
                             Learning Areas
                           </div>
+                          {/* <select
+                            id="feature-select"
+                            value={selectedFeatures}
+                            onChange={(e) =>
+                              handleFeatureChange(e.target.value)
+                            }
+                            className="border-2 w-full pr-2 rounded-full border-[#3f3a64] text-[#3f3a64] bg-white text-base font-fredoka leading-[13px] font-medium p-2"
+                          >
+                            <option value="" disabled>
+                              Select features
+                            </option>
+                            {featuresOptions.map((feature) => (
+                              <option key={feature} value={feature}>
+                                {feature}
+                              </option>
+                            ))}
+                          </select> */}
                         </div>
                       </div>
                     </DrawerDescription>
@@ -360,7 +444,7 @@ export default async function ActivitiesPage() {
                               target="_blank"
                               href={`/p/activities/${activity.id}`}
                             >
-                              <div className="md:w-full hover:shadow-md duration-200 min-w-[180px] w-[180px] min-h-[250px] h-full bg-white items-start justify-start border rounded-3xl flex flex-col md:flex-row gap-4">
+                              <div className="md:w-full hover:shadow-md duration-200 min-w-[170px] w-[170px] min-h-[250px] h-full bg-white items-start justify-start border rounded-3xl flex flex-col md:flex-row gap-4">
                                 <div className="claracontainer w-full flex-col justify-start items-center gap-7 inline-flex">
                                   <div className="w-full max-w-[180px] lg:max-w-full h-auto">
                                     <div className="flex max-h-[180px] min-h-[150px] h-[150px] lg:min-h-[276px] lg:h-full lg:max-h-[276px] md:max-h-[300px] overflow-clip rounded-t-3xl">
@@ -381,7 +465,7 @@ export default async function ActivitiesPage() {
                                           <div className="text-[#0a1932] min-w-[max-content] p-0 lg:pl-2 md:text-[18px] md:leading-[22px] font-[500] font-fredoka text-[10px] lg:text-[16px] leading-none">
                                             {activity.setUpTime}
                                           </div>
-                                          <ul className="text-[#0a1932] justify-between items-center gap-6 flex px-4 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
+                                          <ul className="text-[#0a1932] justify-between items-center gap-4 flex px-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
                                             {activity.skills
                                               .slice(0, 2)
                                               .map((skill, index) => (
@@ -439,7 +523,7 @@ export default async function ActivitiesPage() {
                               target="_blank"
                               href={`/p/activities/${activity.id}`}
                             >
-                              <div className="md:w-full hover:shadow-md duration-200 min-w-[180px] w-[180px] min-h-[250px] h-full bg-white items-start justify-start border rounded-3xl flex flex-col md:flex-row gap-4">
+                              <div className="md:w-full hover:shadow-md duration-200 min-w-[170px] w-[170px] min-h-[250px] h-full bg-white items-start justify-start border rounded-3xl flex flex-col md:flex-row gap-4">
                                 <div className="claracontainer w-full flex-col justify-start items-center gap-7 inline-flex">
                                   <div className="w-full max-w-[180px] lg:max-w-full h-auto">
                                     <div className="flex max-h-[180px] min-h-[150px] h-[150px] lg:min-h-[276px] lg:h-full lg:max-h-[276px] md:max-h-[300px] overflow-clip rounded-t-3xl">
@@ -460,7 +544,7 @@ export default async function ActivitiesPage() {
                                           <div className="text-[#0a1932] min-w-[max-content] p-0 lg:pl-2 md:text-[18px] md:leading-[22px] font-[500] font-fredoka text-[10px] lg:text-[16px] leading-none">
                                             {activity.setUpTime}
                                           </div>
-                                          <ul className="text-[#0a1932] justify-between items-center gap-6 flex px-4 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
+                                          <ul className="text-[#0a1932] justify-between items-center gap-4 flex px-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
                                             {activity.skills
                                               .slice(0, 2)
                                               .map((skill, index) => (
@@ -511,7 +595,7 @@ export default async function ActivitiesPage() {
                         <p className="text-red">
                           No activities found for the selected days.
                         </p>
-                        <div className="grid grid-cols-2 lg:grid-cols-1 w-full gap-2 md:gap-4 justify-between items-start">
+                        <div className="flex flex-row lg:grid lg:grid-cols-1 overflow-x-scroll scrollbar-hidden w-full gap-2 md:gap-4 justify-between items-start">
                           {activities.map((activity) => (
                             <div key={activity.id}>
                               <article className="rounded-lg ">
@@ -519,7 +603,7 @@ export default async function ActivitiesPage() {
                                   target="_blank"
                                   href={`/p/activities/${activity.id}`}
                                 >
-                                  <div className="md:w-full hover:shadow-md duration-200 min-w-[180px] w-[180px] min-h-[250px] h-full bg-white items-start justify-start border rounded-3xl flex flex-col md:flex-row gap-4">
+                                  <div className="md:w-full hover:shadow-md duration-200 min-w-[170px] w-[170px] min-h-[250px] h-full bg-white items-start justify-start border rounded-3xl flex flex-col md:flex-row gap-4">
                                     <div className="claracontainer w-full flex-col justify-start items-center gap-7 inline-flex">
                                       <div className="w-full max-w-[180px] lg:max-w-full h-auto  ">
                                         <div className="flex max-h-[180px] min-h-[150px] h-[150px] lg:min-h-[276px] lg:h-full lg:max-h-[276px] md:max-h-[300px] overflow-clip rounded-t-3xl ">
@@ -540,7 +624,7 @@ export default async function ActivitiesPage() {
                                               <div className="text-[#0a1932] min-w-[max-content] p-0 lg:pl-2 md:text-[18px] md:leading-[22px] font-[500] font-fredoka text-[10px] lg:text-[16px] leading-none">
                                                 {activity.setUpTime}
                                               </div>
-                                              <ul className="text-[#0a1932] justify-between items-center gap-6 flex px-4 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
+                                              <ul className="text-[#0a1932] justify-between items-center gap-4 flex px-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
                                                 {activity.skills
                                                   .slice(0, 2)
                                                   .map((skill, index) => (
@@ -604,7 +688,7 @@ export default async function ActivitiesPage() {
                           target="_blank"
                           href={`/p/activities/${activity.id}`}
                         >
-                          <div className="md:w-full hover:shadow-md duration-200 min-w-[180px] w-[180px] min-h-[250px] h-full bg-white items-start justify-start border rounded-3xl flex flex-col md:flex-row gap-4">
+                          <div className="md:w-full hover:shadow-md duration-200 min-w-[170px] w-[170px] min-h-[250px] h-full bg-white items-start justify-start border rounded-3xl flex flex-col md:flex-row gap-4">
                             <div className="claracontainer w-full flex-col justify-start items-center gap-7 inline-flex">
                               <div className="w-full max-w-[180px] lg:max-w-full h-auto  ">
                                 <div className="flex max-h-[180px] min-h-[150px] h-[150px] lg:min-h-[276px] lg:h-full lg:max-h-[276px] md:max-h-[300px] overflow-clip rounded-t-3xl ">
@@ -625,7 +709,7 @@ export default async function ActivitiesPage() {
                                       <div className="text-[#0a1932] min-w-[max-content] p-0 lg:pl-2 md:text-[18px] md:leading-[22px] font-[500] font-fredoka text-[10px] lg:text-[16px] leading-none">
                                         {activity.setUpTime}
                                       </div>
-                                      <ul className="text-[#0a1932] justify-between items-center gap-6 flex px-4 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
+                                      <ul className="text-[#0a1932] justify-between items-center gap-4 flex px-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
                                         {activity.skills
                                           .slice(0, 2)
                                           .map((skill, index) => (
@@ -679,10 +763,10 @@ export default async function ActivitiesPage() {
                   FILTER ACTIVITIES BY FEATURE
                 </div>
                 <div className="flex flex-col gap-2 items-center justify-center w-full">
-                  <div className="flex flex-col w-full">
+                  <div className="flex flex-col gap-2 w-full">
                     <label
                       htmlFor="feature-select"
-                      className="text-[#3f3a64] hidden text-2xl font-semibold text-start font-fredoka uppercase leading-[28px] mb-2"
+                      className="text-[#3f3a64] hidden text-2xl font-semibold text-start font-fredoka uppercase leading-[28px]"
                     >
                       FILTER ACTIVITIES BY Features
                     </label>
@@ -698,6 +782,21 @@ export default async function ActivitiesPage() {
                       {featuresOptions.map((feature) => (
                         <option key={feature} value={feature}>
                           {feature}
+                        </option>
+                      ))}
+                    </select>
+                    <select
+                      id="feature-select"
+                      value={selectedSkilCategory}
+                      onChange={(e) => handleFeatureChange(e.target.value)}
+                      className="border-2 w-full pr-2 rounded-full border-[#3f3a64] text-[#3f3a64] bg-white text-base font-fredoka leading-[13px] font-medium p-2"
+                    >
+                      <option value="" disabled>
+                        Select features
+                      </option>
+                      {skillCategoryOptions.map((skill) => (
+                        <option key={skill} value={skill}>
+                          {skill}
                         </option>
                       ))}
                     </select>
