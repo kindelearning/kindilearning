@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 
 // Updated languages array with additional languages
 const languages = [
-  { label: "English (US)", value: "en", src: "https://flagcdn.com/h60/us.png" },
+  { label: "English ", value: "en", src: "https://flagcdn.com/h60/us.png" },
   { label: "French", value: "fr", src: "https://flagcdn.com/h60/fr.png" },
   { label: "German", value: "de", src: "https://flagcdn.com/h60/de.png" },
   { label: "Italian", value: "it", src: "https://flagcdn.com/h60/it.png" },
@@ -36,12 +36,12 @@ export function GoogleTranslate() {
       const iframe = document.querySelector("iframe.skiptranslate");
       if (iframe) {
         // Style the iframe to move it to the bottom
-        iframe.style.position = "fixed"; // Fixed position
+        iframe.style.position = "block"; // Fixed position
         iframe.style.left = "0"; // Align to left
         iframe.style.bottom = "0"; // Position at the bottom
         iframe.style.width = "0"; // Full width
         iframe.style.height = "0"; // Set height to 0
-        iframe.style.overflow = "hidden"; // Hide overflow
+        iframe.style.overflow = "flex"; // Hide overflow
         iframe.style.zIndex = "-1"; // Send behind other elements
       }
     });
