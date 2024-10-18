@@ -53,171 +53,6 @@ function SearchInput({ value, onChange }) {
     </div>
   );
 }
-
-const MobileFilters = () => {
-  return (
-    <>
-      <div className="claracontainer px-4 md:px-2 lg:px-4 w-full flex flex-col lg:hidden overflow-hidden gap-2">
-        <div className="flex w-full justify-between items-center gap-1">
-          {/* sort */}
-          <Drawer className="w-full flex justify-center items-center">
-            <DrawerTrigger className="w-full">
-              <Button className="bg-[#f8f8f8] w-full hover:bg-white rounded-[100px] border-2 border-red flex-col justify-center items-center gap-2 inline-flex text-red text-sm font-medium font-fredoka leading-tight">
-                Sort
-              </Button>
-            </DrawerTrigger>
-            <DrawerContent className=" w-full justify-center overflow-clip h-[40vh] md:h-[40vh] items-center flex">
-              <DrawerHeader className="w-full h-full md:h-fit">
-                <DrawerDescription className="flex h-fit flex-col py-6 overflow-y-scroll justify-start items-start w-full gap-2">
-                  <div className="text-[#3f3a64] text-2xl font-semibold text-start font-fredoka capitalize leading-[28px]">
-                    Sort By
-                  </div>
-                  <div className="flex flex-col gap-4 justify-start items-start">
-                    {sortingOptions.map((option) => (
-                      <div
-                        className="flex items-center space-x-2"
-                        key={option.id}
-                      >
-                        <Checkbox
-                          id={option.id}
-                          checked={sortOption === option.value}
-                          onChange={() => handleSortChange(option.value)}
-                        />
-                        <label
-                          htmlFor={option.id}
-                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          {option.label}
-                        </label>
-                      </div>
-                    ))}
-                  </div>
-                </DrawerDescription>
-              </DrawerHeader>
-              <DrawerFooter className="shadow-upper w-full h-full md:h-fit rounded-t-[12px]">
-                <DrawerClose className="flex w-full justify-between items-center gap-2">
-                  <Button className="bg-[#3f3a64] w-full rounded-2xl shadow border-2 border-white text-center text-white text-xs font-semibold font-fredoka leading-none">
-                    Submit
-                  </Button>
-                  <Button className="bg-red w-full rounded-2xl shadow border-2 border-white text-center text-white text-xs font-semibold font-fredoka leading-none">
-                    Cancel
-                  </Button>
-                </DrawerClose>
-              </DrawerFooter>
-            </DrawerContent>
-          </Drawer>
-          {/* filter */}
-          <Drawer className="w-full flex justify-center items-center">
-            <DrawerTrigger className="w-full">
-              <Button className="bg-[#f8f8f8] w-full hover:bg-white rounded-[100px] border-2 border-red flex-col justify-center items-center gap-2 inline-flex text-red text-sm font-medium font-fredoka leading-tight">
-                Filter
-              </Button>
-            </DrawerTrigger>
-            <DrawerContent className="w-full justify-center overflow-clip h-[90vh] md:h-[60vh] items-center flex">
-              <DrawerHeader className="w-full h-full md:h-fit">
-                <DrawerDescription className="flex h-full md:h-fit flex-col py-6 overflow-y-scroll  justify-start items-start w-full gap-2">
-                  <div className="text-[#3f3a64] text-2xl font-semibold text-start font-fredoka capitalize leading-[28px]">
-                    Price
-                  </div>
-                  <Slider />
-                  <div className="flex flex-col gap-4 justify-start items-center">
-                    <div className="flex flex-col justify-start items-start gap-2 w-full">
-                      <div className="text-[#0a1932] text-sm font-semibold font-fredoka leading-tight">
-                        Learning Areas
-                      </div>
-                      {/* Badge */}
-                      <div className="flex gap-2 flex-wrap">
-                        {developmentAreas.map((area, index) => (
-                          <Badge
-                            key={index}
-                            variant={index === 0 ? "filled" : "outline"}
-                            className={`text-sm font-normal font-fredoka leading-tight ${
-                              index === 0 ? "bg-[#3f3a64] text-white" : ""
-                            }`}
-                          >
-                            {area}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                    <div className="flex flex-col justify-start items-start gap-2 w-full">
-                      <div className="text-[#0a1932] text-sm font-semibold font-fredoka leading-tight">
-                        Type of Toy
-                      </div>
-                      {/* Badge */}
-                      <div className="flex gap-2 flex-wrap">
-                        {developmentAreas.map((area, index) => (
-                          <Badge
-                            key={index}
-                            variant={index === 0 ? "filled" : "outline"}
-                            className={`text-sm font-normal font-fredoka leading-tight ${
-                              index === 0 ? "bg-[#3f3a64] text-white" : ""
-                            }`}
-                          >
-                            {area}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                    <div className="flex flex-col justify-start items-start gap-2 w-full">
-                      <div className="text-[#0a1932] text-sm font-semibold font-fredoka leading-tight">
-                        Skills
-                      </div>
-                      {/* Badge */}
-                      <div className="flex gap-2 flex-wrap">
-                        {developmentAreas.map((area, index) => (
-                          <Badge
-                            key={index}
-                            variant={index === 0 ? "filled" : "outline"}
-                            className={`text-sm font-normal font-fredoka leading-tight ${
-                              index === 0 ? "bg-[#3f3a64] text-white" : ""
-                            }`}
-                          >
-                            {area}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                    <div className="flex flex-col justify-start items-start gap-2 w-full">
-                      <div className="text-[#0a1932] text-sm font-semibold font-fredoka leading-tight">
-                        Learning Areas
-                      </div>
-                      {/* Badge */}
-                      <div className="flex gap-2 flex-wrap">
-                        {developmentAreas.map((area, index) => (
-                          <Badge
-                            key={index}
-                            variant={index === 0 ? "filled" : "outline"}
-                            className={`text-sm font-normal font-fredoka leading-tight ${
-                              index === 0 ? "bg-[#3f3a64] text-white" : ""
-                            }`}
-                          >
-                            {area}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </DrawerDescription>
-              </DrawerHeader>
-              <DrawerFooter className="shadow-upper w-full h-full md:h-fit rounded-t-[12px]">
-                <DrawerClose className="flex w-full justify-between items-center gap-2">
-                  <Button className="bg-[#3f3a64] w-full rounded-2xl shadow border-2 border-white text-center text-white text-xs font-semibold font-fredoka leading-none">
-                    Submit
-                  </Button>
-                  <Button className="bg-red w-full rounded-2xl shadow border-2 border-white text-center text-white text-xs font-semibold font-fredoka leading-none">
-                    Cancel
-                  </Button>
-                </DrawerClose>
-              </DrawerFooter>
-            </DrawerContent>
-          </Drawer>
-        </div>
-      </div>
-    </>
-  );
-};
-
 const ProductCard = ({ image, title, price }) => {
   const [rating, setRating] = useState(0);
   useEffect(() => {
@@ -267,7 +102,6 @@ const ProductCard = ({ image, title, price }) => {
     </div>
   );
 };
-
 const MobileProductCard = ({ image, title, price }) => {
   const [rating, setRating] = useState(0);
   useEffect(() => {
@@ -318,518 +152,17 @@ const MobileProductCard = ({ image, title, price }) => {
   );
 };
 
-const SidebarFilters = ({ onFilterChange }) => {
-  const [selectedPriceRange, setSelectedPriceRange] = useState([]);
-
-  const handleCheckboxChange = (priceRange) => {
-    const newSelection = selectedPriceRange.includes(priceRange)
-      ? selectedPriceRange.filter((range) => range !== priceRange)
-      : [...selectedPriceRange, priceRange];
-    setSelectedPriceRange(newSelection);
-    onFilterChange(newSelection);
-  };
-
-  return (
-    <div className="md:hidden lg:flex h-fit xl:flex hidden sticky top-0 max-w-[26%] flex-col px-4 py-6 gap-4 w-full items-start justify-start bg-[#ffffff] rounded-[24px] z-10">
-      <div className="text-red text-[32px] font-semibold font-fredoka leading-[25px] tracking-wide">
-        Filters
-      </div>
-      <div className="claracontainer flex flex-col justify-start items-start gap-6 w-full">
-        <div className="claracontainer flex flex-col justify-start items-start gap-2 w-full">
-          <div className="text-[#252c32] text-xl font-semibold font-fredoka leading-[25px]">
-            Price Filter
-          </div>
-          <div className="claracontainer flex flex-col justify-start items-start gap-2">
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="under10"
-                className="border-red"
-                onChange={() => handleCheckboxChange("under10")}
-              />
-              <label
-                htmlFor="under10"
-                className="text-sm font-medium font-fredoka"
-              >
-                Under $10
-              </label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="10to20"
-                className="border-red"
-                onChange={() => handleCheckboxChange("10to20")}
-              />
-              <label
-                htmlFor="10to20"
-                className="text-sm font-medium font-fredoka"
-              >
-                $10 - $20
-              </label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="20to50"
-                className="border-red"
-                onChange={() => handleCheckboxChange("20to50")}
-              />
-              <label
-                htmlFor="20to50"
-                className="text-sm font-medium font-fredoka"
-              >
-                $20 - $50
-              </label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="above50"
-                className="border-red"
-                onChange={() => handleCheckboxChange("above50")}
-              />
-              <label
-                htmlFor="above50"
-                className="text-sm font-medium font-fredoka"
-              >
-                Above $50
-              </label>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const OtherSideBarFIlter = () => {
-  return (
-    <>
-      <div className="claracontainer flex flex-col justify-start items-start gap-2 w-full">
-        <div className="text-[#252c32] text-xl font-semibold font-fredoka leading-[25px]">
-          Material
-        </div>
-        <div className="claracontainer flex flex-col justify-start items-start gap-2">
-          <div className="flex">
-            <div className="flex items-center space-x-2">
-              <Checkbox id="terms" className="border-red" />
-              <label
-                htmlFor="terms"
-                className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Wood
-              </label>
-            </div>
-          </div>
-          <div className="flex">
-            <div className="flex items-center space-x-2">
-              <Checkbox id="terms" className="border-red" />
-              <label
-                htmlFor="terms"
-                className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Plastic
-              </label>
-            </div>
-          </div>
-          <div className="flex">
-            <div className="flex items-center space-x-2">
-              <Checkbox id="terms" className="border-red" />
-              <label
-                htmlFor="terms"
-                className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Fabric
-              </label>
-            </div>
-          </div>
-          <div className="flex">
-            <div className="flex items-center space-x-2">
-              <Checkbox id="terms" className="border-red" />
-              <label
-                htmlFor="terms"
-                className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Metal
-              </label>
-            </div>
-          </div>
-          <div className="flex">
-            <div className="flex items-center space-x-2">
-              <Checkbox id="terms" className="border-red" />
-              <label
-                htmlFor="terms"
-                className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Mixed
-              </label>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="claracontainer flex flex-col justify-start items-start gap-2 w-full">
-        <div className="text-[#252c32] text-xl font-semibold font-fredoka leading-[25px]">
-          Type of Toy
-        </div>
-        <div className="claracontainer flex flex-col justify-start items-start gap-2">
-          <div className="flex">
-            <div className="flex items-center space-x-2">
-              <Checkbox id="terms" className="border-red" />
-              <label
-                htmlFor="terms"
-                className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Educational
-              </label>
-            </div>
-          </div>
-          <div className="flex">
-            <div className="flex items-center space-x-2">
-              <Checkbox id="terms" className="border-red" />
-              <label
-                htmlFor="terms"
-                className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Musical
-              </label>
-            </div>
-          </div>
-          <div className="flex">
-            <div className="flex items-center space-x-2">
-              <Checkbox id="terms" className="border-red" />
-              <label
-                htmlFor="terms"
-                className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Puzzles
-              </label>
-            </div>
-          </div>
-          <div className="flex">
-            <div className="flex items-center space-x-2">
-              <Checkbox id="terms" className="border-red" />
-              <label
-                htmlFor="terms"
-                className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Building Blocks
-              </label>
-            </div>
-          </div>
-          <div className="flex">
-            <div className="flex items-center space-x-2">
-              <Checkbox id="terms" className="border-red" />
-              <label
-                htmlFor="terms"
-                className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Soft Toy
-              </label>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="claracontainer flex flex-col justify-start items-start gap-2 w-full">
-        <div className="text-[#252c32] text-xl font-semibold font-fredoka leading-[25px]">
-          Color
-        </div>
-        <div className="claracontainer flex flex-col justify-start items-start gap-2">
-          <div className="flex">
-            <div className="flex items-center space-x-2">
-              <Checkbox id="terms" className="border-red" />
-              <label
-                htmlFor="terms"
-                className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Multicolor
-              </label>
-            </div>
-          </div>
-          <div className="flex">
-            <div className="flex items-center space-x-2">
-              <Checkbox id="terms" className="border-red" />
-              <label
-                htmlFor="terms"
-                className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Primary Color
-              </label>
-            </div>
-          </div>
-          <div className="flex">
-            <div className="flex items-center space-x-2">
-              <Checkbox id="terms" className="border-red" />
-              <label
-                htmlFor="terms"
-                className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Pastel Color
-              </label>
-            </div>
-          </div>
-          <div className="flex">
-            <div className="flex items-center space-x-2">
-              <Checkbox id="terms" className="border-red" />
-              <label
-                htmlFor="terms"
-                className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Monochrome
-              </label>
-            </div>
-          </div>
-          <div className="flex">
-            <div className="flex items-center space-x-2">
-              <Checkbox id="terms" className="border-red" />
-              <label
-                htmlFor="terms"
-                className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Soft Toy
-              </label>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="claracontainer flex flex-col justify-start items-start gap-2 w-full">
-        <div className="text-[#252c32] text-xl font-semibold font-fredoka leading-[25px]">
-          Educational Focus
-        </div>
-        <div className="claracontainer flex flex-col justify-start items-start gap-2">
-          <div className="flex">
-            <div className="flex items-center space-x-2">
-              <Checkbox id="terms" className="border-red" />
-              <label
-                htmlFor="terms"
-                className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Emotional & Social Strength
-              </label>
-            </div>
-          </div>
-          <div className="flex">
-            <div className="flex items-center space-x-2">
-              <Checkbox id="terms" className="border-red" />
-              <label
-                htmlFor="terms"
-                className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Confidence & Independence
-              </label>
-            </div>
-          </div>
-          <div className="flex">
-            <div className="flex items-center space-x-2">
-              <Checkbox id="terms" className="border-red" />
-              <label
-                htmlFor="terms"
-                className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Speech & Language
-              </label>
-            </div>
-          </div>
-          <div className="flex">
-            <div className="flex items-center space-x-2">
-              <Checkbox id="terms" className="border-red" />
-              <label
-                htmlFor="terms"
-                className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Physical Agility
-              </label>
-            </div>
-          </div>
-          <div className="flex">
-            <div className="flex items-center space-x-2">
-              <Checkbox id="terms" className="border-red" />
-              <label
-                htmlFor="terms"
-                className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Reading & Writing
-              </label>
-            </div>
-          </div>
-          <div className="flex">
-            <div className="flex items-center space-x-2">
-              <Checkbox id="terms" className="border-red" />
-              <label
-                htmlFor="terms"
-                className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Discovering our World
-              </label>
-            </div>
-          </div>
-          <div className="flex">
-            <div className="flex items-center space-x-2">
-              <Checkbox id="terms" className="border-red" />
-              <label
-                htmlFor="terms"
-                className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Creativity & Imagination
-              </label>
-            </div>
-          </div>
-          <div className="flex">
-            <div className="flex items-center space-x-2">
-              <Checkbox id="terms" className="border-red" />
-              <label
-                htmlFor="terms"
-                className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Experiments & Math
-              </label>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="claracontainer flex flex-col justify-start items-start gap-2 w-full">
-        <div className="text-[#252c32] text-xl font-semibold font-fredoka leading-[25px]">
-          Skills{" "}
-        </div>
-        <div className="claracontainer flex flex-col justify-start items-start gap-2">
-          <div className="flex">
-            <div className="flex items-center space-x-2">
-              <Checkbox id="terms" className="border-red" />
-              <label
-                htmlFor="terms"
-                className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Exploring the Seasons{" "}
-              </label>
-            </div>
-          </div>
-          <div className="flex">
-            <div className="flex items-center space-x-2">
-              <Checkbox id="terms" className="border-red" />
-              <label
-                htmlFor="terms"
-                className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Sensory Development{" "}
-              </label>
-            </div>
-          </div>
-          <div className="flex">
-            <div className="flex items-center space-x-2">
-              <Checkbox id="terms" className="border-red" />
-              <label
-                htmlFor="terms"
-                className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Mastering Feelings{" "}
-              </label>
-            </div>
-          </div>
-          <div className="flex">
-            <div className="flex items-center space-x-2">
-              <Checkbox id="terms" className="border-red" />
-              <label
-                htmlFor="terms"
-                className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Gross Motor{" "}
-              </label>
-            </div>
-          </div>
-          <div className="flex">
-            <div className="flex items-center space-x-2">
-              <Checkbox id="terms" className="border-red" />
-              <label
-                htmlFor="terms"
-                className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Social Play{" "}
-              </label>
-            </div>
-          </div>
-          <div className="flex">
-            <div className="flex items-center space-x-2">
-              <Checkbox id="terms" className="border-red" />
-              <label
-                htmlFor="terms"
-                className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Problem-solving & Independence{" "}
-              </label>
-            </div>
-          </div>
-          <div className="flex">
-            <div className="flex items-center space-x-2">
-              <Checkbox id="terms" className="border-red" />
-              <label
-                htmlFor="terms"
-                className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Creativity & Imagination
-              </label>
-            </div>
-          </div>
-          <div className="flex">
-            <div className="flex items-center space-x-2">
-              <Checkbox id="terms" className="border-red" />
-              <label
-                htmlFor="terms"
-                className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Gross Motor{" "}
-              </label>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="claracontainer flex flex-col justify-start items-start gap-2 w-full">
-        <div className="text-[#252c32] text-xl font-semibold font-fredoka leading-[25px]">
-          Discounts and Offers{" "}
-        </div>
-        <div className="claracontainer flex flex-col justify-start items-start gap-2">
-          <div className="flex">
-            <div className="flex items-center space-x-2">
-              <Checkbox id="terms" className="border-red" />
-              <label
-                htmlFor="terms"
-                className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                On Sale{" "}
-              </label>
-            </div>
-          </div>
-          <div className="flex">
-            <div className="flex items-center space-x-2">
-              <Checkbox id="terms" className="border-red" />
-              <label
-                htmlFor="terms"
-                className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Clearance{" "}
-              </label>
-            </div>
-          </div>
-          <div className="flex">
-            <div className="flex items-center space-x-2">
-              <Checkbox id="terms" className="border-red" />
-              <label
-                htmlFor="terms"
-                className="text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Bundle Offers{" "}
-              </label>
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
-  );
-};
-
 export default async function ShopPage() {
   const [products, setProducts] = useState([]);
   const [sortOption, setSortOption] = useState("priceLowToHigh");
   const [sortedProducts, setSortedProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
-  const [selectedSkilCategory, setSelectedSkilCategory] = useState([]); // State for selected features
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedMaterial, setSelectedMaterial] = useState("");
+  const [selectedFeature, setSelectedFeature] = useState("");
+  const [selectedDiscount, setSelectedDiscount] = useState("");
+  const [selectedToyType, setSelectedToyType] = useState("");
   const searchInputRef = useRef(null);
 
   // Hook to fetch All products from Hygraph CMS
@@ -928,6 +261,18 @@ export default async function ShopPage() {
     "Rainy Day Play",
   ];
 
+  // Effect to filter based on selected Skill category Option
+  useEffect(() => {
+    if (selectedCategory.length > 0) {
+      const filtered = products.filter((product) =>
+        product.keywords.some((keyword) => selectedCategory.includes(keyword))
+      );
+      setFilteredProducts(filtered);
+    } else {
+      setFilteredProducts([]); // Reset if no features are selected
+    }
+  }, [selectedCategory, products]);
+
   // Handle Skill Option filter change
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
@@ -938,6 +283,141 @@ export default async function ShopPage() {
       // Filter products based on the selected category
       const filtered = products.filter((product) =>
         product.keywords.includes(category)
+      );
+      setFilteredProducts(filtered);
+    }
+  };
+
+  // List of Material Options Based Filters options
+  const materialOptions = ["Wood", "Plastic", "Fabric", "Metal", "Mixed"];
+
+  // Effect to filter based on selected Material Option
+  useEffect(() => {
+    if (selectedMaterial.length > 0) {
+      const filtered = products.filter((product) =>
+        product.keywords.some((keyword) => selectedMaterial.includes(keyword))
+      );
+      setFilteredProducts(filtered);
+    } else {
+      setFilteredProducts([]); // Reset if no features are selected
+    }
+  }, [selectedMaterial, products]);
+
+  // Handle SelectedMaterial Option filter change
+  const handleMaterialChange = (material) => {
+    setSelectedMaterial(material);
+    if (material === "") {
+      // Show all products if no category is selected
+      setFilteredProducts(products);
+    } else {
+      // Filter products based on the selected category
+      const filtered = products.filter((product) =>
+        product.keywords.includes(material)
+      );
+      setFilteredProducts(filtered);
+    }
+  };
+
+  // List of ToyType Options Based Filters options
+  const typeOfToyOptions = [
+    "Educational",
+    "Musical",
+    "Puzzles",
+    "Building Blocks",
+    "Soft Toy",
+  ];
+
+  // Effect to filter based on selected ToyType Option
+  useEffect(() => {
+    if (selectedToyType.length > 0) {
+      const filtered = products.filter((product) =>
+        product.keywords.some((keyword) => selectedToyType.includes(keyword))
+      );
+      setFilteredProducts(filtered);
+    } else {
+      setFilteredProducts([]); // Reset if no features are selected
+    }
+  }, [selectedToyType, products]);
+
+  // Handle SelectedToyType Option filter change
+  const handleToyTypeChange = (toy) => {
+    setSelectedToyType(toy);
+    if (toy === "") {
+      // Show all products if no category is selected
+      setFilteredProducts(products);
+    } else {
+      // Filter products based on the selected category
+      const filtered = products.filter((product) =>
+        product.keywords.includes(toy)
+      );
+      setFilteredProducts(filtered);
+    }
+  };
+
+  // List of featuresOptions  Based Filters options
+  const featuresOptions = [
+    "Emotional & Social Strength",
+    "Confidence & Independence",
+    "Speech & Language",
+    "Physical Agility",
+    "Reading & Writing",
+    "Discovering Our World",
+    "Creativity & Imagination",
+    "Experiments & Math",
+  ];
+
+  // Effect to filter based on selected ToyType Option
+  useEffect(() => {
+    if (selectedFeature.length > 0) {
+      const filtered = products.filter((product) =>
+        product.keywords.some((keyword) => selectedFeature.includes(keyword))
+      );
+      setFilteredProducts(filtered);
+    } else {
+      setFilteredProducts([]); // Reset if no features are selected
+    }
+  }, [selectedFeature, products]);
+
+  // Handle SelectedToyType Option filter change
+  const handlefeatureChange = (feature) => {
+    setSelectedFeature(feature);
+    if (feature === "") {
+      // Show all products if no category is selected
+      setFilteredProducts(products);
+    } else {
+      // Filter products based on the selected category
+      const filtered = products.filter((product) =>
+        product.keywords.includes(feature)
+      );
+      setFilteredProducts(filtered);
+    }
+  };
+
+  // List of Discount  Based Filters options
+  const disscountOptions = ["On Sale", "Clearance", "Bundle Offers"];
+
+  // Effect to filter based on selected ToyType Option
+  useEffect(() => {
+    if (selectedDiscount.length > 0) {
+      const filtered = products.filter((product) =>
+        product.keywords.some((keyword) => selectedDiscount.includes(keyword))
+      );
+      setFilteredProducts(filtered);
+    } else {
+      setFilteredProducts([]); // Reset if no features are selected
+    }
+  }, [selectedDiscount, products]);
+
+  // Handle SelectedToyType Option filter change
+  const handlediscountChange = (discount) => {
+    setSelectedDiscount(discount);
+    if (discount === "") {
+      // Show all products if no category is selected
+      setFilteredProducts(products);
+    } else {
+      // Filter products based on the selected category
+      const filtered = products.filter((product) =>
+        product.keywords.includes(discount)
       );
       setFilteredProducts(filtered);
     }
@@ -957,7 +437,6 @@ export default async function ShopPage() {
       <section className="w-full pb-32 bg-[#EAEAF5] flex flex-col gap-0 justify-center items-start">
         <Banner />
         <CardGroup />
-        {/* <MainFrame  /> */}
         <div className="w-full h-auto bg-[#eaeaf5] items-center justify-center py-2  flex flex-col md:flex-row gap-[20px]">
           <div className="claracontainer py-4 w-full bg-[#eaeaf5] flex flex-row overflow-hidden gap-8">
             {/* Filter Column For Larger Screens*/}
@@ -967,7 +446,7 @@ export default async function ShopPage() {
               </div>
               <div className="claracontainer flex flex-col justify-start items-start gap-6 w-full">
                 {/* Filteration based on Price Limits */}
-                <div className="claracontainer flex flex-col justify-start items-start gap-2 w-full">
+                {/* <div className="claracontainer flex flex-col justify-start items-start gap-2 w-full">
                   <div className="text-[#252c32] text-xl font-semibold font-fredoka leading-[25px]">
                     Price Filter
                   </div>
@@ -1025,7 +504,7 @@ export default async function ShopPage() {
                       </label>
                     </div>
                   </div>
-                </div>
+                </div> */}
                 {/* Sorting Based on Various Options */}
                 <div className="claracontainer flex flex-col justify-start items-start gap-2 w-full">
                   <div className="text-[#252c32] text-xl font-semibold font-fredoka leading-[25px]">
@@ -1069,7 +548,7 @@ export default async function ShopPage() {
                       key={category}
                       className={`block cursor-pointer text-sm font-medium font-fredoka leading-none ${
                         selectedCategory === category
-                          ? "text-purple"
+                          ? "text-red"
                           : "text-[#252c32]"
                       }`}
                     >
@@ -1079,9 +558,9 @@ export default async function ShopPage() {
                         value={category}
                         checked={selectedCategory === category}
                         onChange={() => handleCategoryChange(category)}
-                        className={`mr-2 text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${
+                        className={`mr-2 text-sm text-red font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${
                           selectedCategory === category
-                            ? "border-purple"
+                            ? "border-purple text-red"
                             : "border-purple"
                         }`}
                       />
@@ -1089,12 +568,130 @@ export default async function ShopPage() {
                     </label>
                   ))}
                 </div>
-                <OtherSideBarFIlter />
+                {/* FIlters Based on Material Options */}
+                <div className="flex flex-col justify-start items-start gap-2 w-full">
+                  <div className="text-[#252c32] text-xl font-semibold font-fredoka leading-[25px]">
+                    Select Material Options
+                  </div>
+                  {materialOptions.map((material) => (
+                    <label
+                      key={material}
+                      className={`block cursor-pointer text-sm font-medium font-fredoka leading-none ${
+                        selectedMaterial === material
+                          ? "text-red"
+                          : "text-[#252c32]"
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        name="skillCategory"
+                        value={material}
+                        checked={selectedMaterial === material}
+                        onChange={() => handleMaterialChange(material)}
+                        className={`mr-2 text-sm text-red font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${
+                          selectedMaterial === material
+                            ? "border-purple text-red"
+                            : "border-purple"
+                        }`}
+                      />
+                      {material}
+                    </label>
+                  ))}
+                </div>
+                {/* FIlters Based on ToyType Options */}
+                <div className="flex flex-col justify-start items-start gap-2 w-full">
+                  <div className="text-[#252c32] text-xl font-semibold font-fredoka leading-[25px]">
+                    Select Type of Toy
+                  </div>
+                  {typeOfToyOptions.map((toy) => (
+                    <label
+                      key={toy}
+                      className={`block cursor-pointer text-sm font-medium font-fredoka leading-none ${
+                        selectedToyType === toy ? "text-red" : "text-[#252c32]"
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        name="skillCategory"
+                        value={toy}
+                        checked={selectedToyType === toy}
+                        onChange={() => handleToyTypeChange(toy)}
+                        className={`mr-2 text-sm text-red font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${
+                          selectedToyType === toy
+                            ? "border-purple text-red"
+                            : "border-purple"
+                        }`}
+                      />
+                      {toy}
+                    </label>
+                  ))}
+                </div>
+                {/* FIlters Based on feature Options */}
+                <div className="flex flex-col justify-start items-start gap-2 w-full">
+                  <div className="text-[#252c32] text-xl font-semibold font-fredoka leading-[25px]">
+                    Select Educational Features
+                  </div>
+                  {featuresOptions.map((feature) => (
+                    <label
+                      key={feature}
+                      className={`block cursor-pointer text-sm font-medium font-fredoka leading-none ${
+                        selectedFeature === feature
+                          ? "text-red"
+                          : "text-[#252c32]"
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        name="skillCategory"
+                        value={feature}
+                        checked={selectedFeature === feature}
+                        onChange={() => handlefeatureChange(feature)}
+                        className={`mr-2 text-sm text-red font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${
+                          selectedFeature === feature
+                            ? "border-purple text-red"
+                            : "border-purple"
+                        }`}
+                      />
+                      {feature}
+                    </label>
+                  ))}
+                </div>
+                {/* FIlters Based on Discounts Options */}
+                <div className="flex flex-col justify-start items-start gap-2 w-full">
+                  <div className="text-[#252c32] text-xl font-semibold font-fredoka leading-[25px]">
+                    Select Discount Type
+                  </div>
+                  {disscountOptions.map((discount) => (
+                    <label
+                      key={discount}
+                      className={`block cursor-pointer text-sm font-medium font-fredoka leading-none ${
+                        selectedDiscount === discount
+                          ? "text-red"
+                          : "text-[#252c32]"
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        name="skillCategory"
+                        value={discount}
+                        checked={selectedDiscount === discount}
+                        onChange={() => handlediscountChange(discount)}
+                        className={`mr-2 text-sm text-red font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${
+                          selectedDiscount === discount
+                            ? "border-purple text-red"
+                            : "border-purple"
+                        }`}
+                      />
+                      {discount}
+                    </label>
+                  ))}
+                </div>
               </div>
             </div>
             {/* the product Grid Column */}
             <div className="flex w-full flex-col justift-start items-start gap-[20px] md:gap-[28px]">
               <div className="flex flex-col w-full gap-2">
+                {/* Search Input Row */}
                 <div className="flex w-full px-4 lg:px-0">
                   <SearchInput
                     ref={searchInputRef}
@@ -1115,7 +712,7 @@ export default async function ShopPage() {
                       <DrawerContent className=" w-full justify-center overflow-clip h-[40vh] md:h-[40vh] items-center flex">
                         <DrawerHeader className="w-full h-full md:h-fit">
                           <DrawerDescription className="flex h-fit flex-col py-6 overflow-y-scroll justify-start items-start w-full gap-2">
-                            <div className="text-[#3f3a64] text-2xl font-semibold text-start font-fredoka capitalize leading-[28px]">
+                            <div className="text-red sticky underline  text-2xl font-semibold text-center w-full font-fredoka capitalize leading-[28px]">
                               Sort By
                             </div>
                             <div className="flex flex-col gap-4 justify-start items-start">
@@ -1162,41 +759,178 @@ export default async function ShopPage() {
                       </DrawerContent>
                     </Drawer>
                     {/* Filters */}
-                    <Drawer className="w-full flex justify-center items-center">
+                    <Drawer className="w-full flex justify-center items-start">
                       <DrawerTrigger className="w-full">
                         <Button className="bg-[#f8f8f8] w-full hover:bg-white rounded-[100px] border-2 border-red flex-col justify-center items-center gap-2 inline-flex text-red text-sm font-medium font-fredoka leading-tight">
                           Filters
                         </Button>
                       </DrawerTrigger>
-                      <DrawerContent className=" w-full justify-center overflow-clip h-[40vh] md:h-[40vh] items-center flex">
-                        <DrawerHeader className="w-full h-full md:h-fit">
-                          <DrawerDescription className="flex h-fit flex-col py-6 overflow-y-scroll justify-start items-start w-full gap-2">
-                            <div className="text-[#3f3a64] text-2xl font-semibold text-start font-fredoka capitalize leading-[28px]">
-                              Sort By
+                      <DrawerContent className="w-full justify-center max-h-[80vh] h-fit items-start overflow-y-scroll flex">
+                        <DrawerHeader className="w-full h-fit flex flex-col justify-start overflow-y-scroll  items-start">
+                          <DrawerDescription className="flex h-fit flex-col overflow-y-scroll justify-start items-start w-full gap-2">
+                            <div className="text-red sticky underline  text-2xl font-semibold text-center w-full font-fredoka capitalize leading-[28px]">
+                              Filters
                             </div>
                             <div className="flex flex-col gap-4 justify-start items-start">
-                              {sortingOptions.map((option) => (
-                                <div
-                                  className="flex items-center space-x-2"
-                                  key={option.id}
-                                >
-                                  <input
-                                    id={option.id}
-                                    type="radio"
-                                    name="sortOption"
-                                    checked={sortOption === option.value}
-                                    onChange={() =>
-                                      handleSortChange(option.value)
-                                    }
-                                  />
-                                  <label
-                                    htmlFor={option.id}
-                                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                  >
-                                    {option.label}
-                                  </label>
+                              {/* FIlters Based on Skill Category Options */}
+                              <div className="flex flex-col justify-start items-start gap-2 w-full">
+                                {/* <div className="text-[#252c32] text-xl font-semibold font-fredoka leading-[25px]"> */}
+                                <div className="text-[#252c32] font-bold text-[20px] font-fredoka">
+                                  Select Skill Options
                                 </div>
-                              ))}
+                                {skillCategoryOptions.map((category) => (
+                                  <label
+                                    key={category}
+                                    className={`block cursor-pointer text-sm font-medium font-fredoka leading-none ${
+                                      selectedCategory === category
+                                        ? "text-red"
+                                        : "text-[#252c32]"
+                                    }`}
+                                  >
+                                    <input
+                                      type="radio"
+                                      name="skillCategory"
+                                      value={category}
+                                      checked={selectedCategory === category}
+                                      onChange={() =>
+                                        handleCategoryChange(category)
+                                      }
+                                      className={`mr-2 text-sm text-red font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${
+                                        selectedCategory === category
+                                          ? "border-purple text-red"
+                                          : "border-purple"
+                                      }`}
+                                    />
+                                    {category}
+                                  </label>
+                                ))}
+                              </div>
+                              {/* FIlters Based on Material Options */}
+                              <div className="flex flex-col justify-start items-start gap-2 w-full">
+                                <div className="text-[#252c32] font-bold text-[20px] font-fredoka">
+                                  Select Material Options
+                                </div>
+                                {materialOptions.map((material) => (
+                                  <label
+                                    key={material}
+                                    className={`block cursor-pointer text-sm font-medium font-fredoka leading-none ${
+                                      selectedMaterial === material
+                                        ? "text-red"
+                                        : "text-[#252c32]"
+                                    }`}
+                                  >
+                                    <input
+                                      type="radio"
+                                      name="skillCategory"
+                                      value={material}
+                                      checked={selectedMaterial === material}
+                                      onChange={() =>
+                                        handleMaterialChange(material)
+                                      }
+                                      className={`mr-2 text-sm text-red font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${
+                                        selectedMaterial === material
+                                          ? "border-purple text-red"
+                                          : "border-purple"
+                                      }`}
+                                    />
+                                    {material}
+                                  </label>
+                                ))}
+                              </div>
+                              {/* FIlters Based on ToyType Options */}
+                              <div className="flex flex-col justify-start items-start gap-2 w-full">
+                                <div className="text-[#252c32] font-bold text-[20px] font-fredoka">
+                                  Select Type of Toy
+                                </div>
+                                {typeOfToyOptions.map((toy) => (
+                                  <label
+                                    key={toy}
+                                    className={`block cursor-pointer text-sm font-medium font-fredoka leading-none ${
+                                      selectedToyType === toy
+                                        ? "text-red"
+                                        : "text-[#252c32]"
+                                    }`}
+                                  >
+                                    <input
+                                      type="radio"
+                                      name="skillCategory"
+                                      value={toy}
+                                      checked={selectedToyType === toy}
+                                      onChange={() => handleToyTypeChange(toy)}
+                                      className={`mr-2 text-sm text-red font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${
+                                        selectedToyType === toy
+                                          ? "border-purple text-red"
+                                          : "border-purple"
+                                      }`}
+                                    />
+                                    {toy}
+                                  </label>
+                                ))}
+                              </div>
+                              {/* FIlters Based on feature Options */}
+                              <div className="flex flex-col justify-start items-start gap-2 w-full">
+                                <div className="text-[#252c32] font-bold text-[20px] font-fredoka">
+                                  Select Educational Features
+                                </div>
+                                {featuresOptions.map((feature) => (
+                                  <label
+                                    key={feature}
+                                    className={`block cursor-pointer text-sm font-medium font-fredoka leading-none ${
+                                      selectedFeature === feature
+                                        ? "text-red"
+                                        : "text-[#252c32]"
+                                    }`}
+                                  >
+                                    <input
+                                      type="radio"
+                                      name="skillCategory"
+                                      value={feature}
+                                      checked={selectedFeature === feature}
+                                      onChange={() =>
+                                        handlefeatureChange(feature)
+                                      }
+                                      className={`mr-2 text-sm text-red font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${
+                                        selectedFeature === feature
+                                          ? "border-purple text-red"
+                                          : "border-purple"
+                                      }`}
+                                    />
+                                    {feature}
+                                  </label>
+                                ))}
+                              </div>
+                              {/* FIlters Based on Discounts Options */}
+                              <div className="flex flex-col justify-start items-start gap-2 w-full">
+                                <div className="text-[#252c32] font-bold text-[20px] font-fredoka">
+                                  Select Discount Type
+                                </div>
+                                {disscountOptions.map((discount) => (
+                                  <label
+                                    key={discount}
+                                    className={`block cursor-pointer text-sm font-medium font-fredoka leading-none ${
+                                      selectedDiscount === discount
+                                        ? "text-red"
+                                        : "text-[#252c32]"
+                                    }`}
+                                  >
+                                    <input
+                                      type="radio"
+                                      name="skillCategory"
+                                      value={discount}
+                                      checked={selectedDiscount === discount}
+                                      onChange={() =>
+                                        handlediscountChange(discount)
+                                      }
+                                      className={`mr-2 text-sm text-red font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${
+                                        selectedDiscount === discount
+                                          ? "border-purple text-red"
+                                          : "border-purple"
+                                      }`}
+                                    />
+                                    {discount}
+                                  </label>
+                                ))}
+                              </div>
                             </div>
                           </DrawerDescription>
                         </DrawerHeader>
@@ -1216,28 +950,35 @@ export default async function ShopPage() {
                 </div>
               </div>
               {/* Display Filtered Products First */}
-              {filteredProducts.length > 0 || !shouldShowAllProducts && (
-                <>
-                  <div className="flex justify-between items-center lg:px-0 px-4 w-full">
-                    <span className="w-[max-content] text-[#0A1932] font-fredoka tex-[24px] font-semibold">
-                      Search Results
-                    </span>
-                  </div>
-                  <div className="w-full lg:grid lg:grid-cols-3 pl-4 md:pl-2 lg:px-0 flex flex-row overflow-x-scroll scrollbar-hidden gap-2">
-                    {filteredProducts.map((product) => (
-                      <div key={product.id} className="border">
-                        <Link href={`/shop/${product.id}`} target="_blank">
-                          <ProductCard
-                            image={product.thumbnail.url}
-                            title={product.title}
-                            price={product.salePrice}
-                          />
-                        </Link>
-                      </div>
-                    ))}
-                  </div>
-                </>
-              )}
+
+              {(selectedCategory &&
+                selectedMaterial &&
+                selectedFeature &&
+                selectedDiscount &&
+                selectedToyType &&
+                filteredProducts.length > 0) ||
+                (!shouldShowAllProducts && (
+                  <>
+                    <div className="flex justify-between items-center lg:px-0 px-4 w-full">
+                      <span className="w-[max-content] text-[#0A1932] font-fredoka tex-[24px] font-semibold">
+                        Search Results
+                      </span>
+                    </div>
+                    <div className="w-full lg:grid lg:grid-cols-3 pl-4 md:pl-2 lg:px-0 flex flex-row overflow-x-scroll scrollbar-hidden gap-2">
+                      {filteredProducts.map((product) => (
+                        <div key={product.id} className="border">
+                          <Link href={`/shop/${product.id}`} target="_blank">
+                            <ProductCard
+                              image={product.thumbnail.url}
+                              title={product.title}
+                              price={product.salePrice}
+                            />
+                          </Link>
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                ))}
               {/* Message if no matching products found */}
               {searchTerm && filteredProducts.length === 0 && (
                 <div className="text-center clarabodyTwo text-red-500 ">
