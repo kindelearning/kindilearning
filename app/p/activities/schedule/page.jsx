@@ -110,8 +110,9 @@ export default function Schedule() {
                       Please Login to Access Schedular
                     </span>
                   </div>
-                  <div className="flex w-full gap-4 flex-col lg:flex-row text-white text-center">
+                  <div className="flex w-full justify-center items-center gap-4 flex-col lg:flex-row text-white text-center">
                     <Link
+                      target="_blank"
                       href="/auth/sign-in"
                       className="clarabutton w-full lg:max-w-[240px] py-2 bg-purple hover:bg-hoverPurple"
                     >
@@ -120,6 +121,7 @@ export default function Schedule() {
                     <Link
                       href="/auth/sign-up"
                       className="clarabutton py-2 w-full lg:max-w-[240px] bg-red hover:bg-hoverRed"
+                      target="_blank"
                     >
                       Sign Up
                     </Link>
