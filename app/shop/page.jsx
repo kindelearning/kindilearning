@@ -1021,13 +1021,18 @@ export default async function ShopPage() {
                   <div className="flex flex-col gap-4 justify-start items-start">
                     {sortingOptions.map((option) => (
                       <div
-                        className="flex items-center space-x-2"
+                        className="flex cursor-pointer items-center space-x-2"
                         key={option.id}
                       >
                         <input
                           id={option.id}
                           type="radio"
                           name="sortOption"
+                          className={`${
+                            sortOption === option.value
+                              ? "border-red text-red"
+                              : "border-purple text-purple"
+                          }`}
                           checked={sortOption === option.value}
                           onChange={() => handleSortChange(option.value)}
                         />
@@ -1072,13 +1077,18 @@ export default async function ShopPage() {
                             <div className="flex flex-col gap-4 justify-start items-start">
                               {sortingOptions.map((option) => (
                                 <div
-                                  className="flex items-center space-x-2"
+                                  className="flex cursor-pointer items-center space-x-2"
                                   key={option.id}
                                 >
                                   <input
                                     id={option.id}
                                     type="radio"
                                     name="sortOption"
+                                    className={`${
+                                      sortOption === option.value
+                                        ? "border-red text-red"
+                                        : "border-purple text-purple"
+                                    }`}
                                     checked={sortOption === option.value}
                                     onChange={() =>
                                       handleSortChange(option.value)
