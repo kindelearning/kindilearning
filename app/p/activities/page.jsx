@@ -24,57 +24,15 @@ import { getAllActivities } from "@/lib/hygraph";
 import Head from "next/head";
 import Loading from "@/app/loading";
 
-const filters = [
-  {
-    label: "Select Learning Area",
-    options: [
-      "Emotional & Social Strength",
-      "Confidence & Independence",
-      "Speech & Language",
-      "Physical Agility",
-      "Reading & Writing",
-      "Discovering Our World",
-      "Creativity & Imagination",
-      "Experiments & Math",
-    ],
-  },
-  {
-    label: "Select Skill Category",
-    options: [
-      "Sensory Development",
-      "Mastering Feelings",
-      "Listening & Talking",
-      "Problem-solving & Independence",
-      "Social Play",
-      "Fine Motor",
-      "GROSS MOTOR",
-      "Pretend Play",
-      "Crafts",
-      "Exploring the Seasons",
-      "Outdoors & Nature",
-      "Rainy Day Play",
-    ],
-  },
-  {
-    label: "Select Theme",
-    options: ["Option 1", "Option 2", "Option 3"],
-  },
-  {
-    label: "Select Age Focus",
-    options: ["BABY", "TODDLER", "PRE-SCHOOLER", "KINDI"],
-  },
-  {
-    label: "Select Prep Time",
-    options: ["5 Minutes", "10 Minutes", "10+ Minutes"],
-  },
-];
-
 export default async function ActivitiesPage() {
   const [date, setDate] = useState(new Date());
   const [activities, setActivities] = useState([]);
   const [filteredActivities, setFilteredActivities] = useState([]);
   const [selectedDays, setSelectedDays] = useState([]); // State for selected weekdays
   const [selectedFeatures, setSelectedFeatures] = useState([]); // State for selected features
+  const [selectedAgeFocus, setSelectedAgeFocus] = useState([]); // State for selected features
+  const [selectedPrepTime, setSelectedPrepTime] = useState([]); // State for selected features
+  const [selectedTheme, setSelectedTheme] = useState([]); // State for selected features
   const [selectedSkilCategory, setSelectedSkilCategory] = useState([]); // State for selected features
   const [loading, setLoading] = useState(true);
 
@@ -104,6 +62,18 @@ export default async function ActivitiesPage() {
     "Outdoors & Nature",
     "Rainy Day Play",
   ];
+  // List of Select Themes options
+  const selectTheme = [
+    "Winter Magic",
+    "Exploring Harvest",
+    "Environmental Care",
+    "Farmyard Adventures",
+    "Springtime",
+  ];
+  // List of Select Age Focus options
+  const selectAgeFocusOptions = ["BABY", "TODDLER", "PRE-SCHOOLER", "KINDI"];
+  // List of Select Prep Time options
+  const selectPrepTime = ["5 Minutes", "10 Minutes", "10+ Minutes"];
 
   // Effect to filter activities based on selected features
   useEffect(() => {
@@ -125,12 +95,6 @@ export default async function ActivitiesPage() {
         : [...prev, feature]
     );
   };
-  // Handle Skill Option filter change
-  const handleSkillChange = (skill) => {
-    setSelectedSkilCategory((prev) =>
-      prev.includes(skill) ? prev.filter((s) => s !== skill) : [...prev, skill]
-    );
-  };
 
   // Effect to filter activities based on selected Skill Option
   useEffect(() => {
@@ -145,6 +109,70 @@ export default async function ActivitiesPage() {
       setFilteredActivities([]); // Reset if no features are selected
     }
   }, [selectedSkilCategory, activities]);
+
+  // Handle Skill Option filter change
+  const handleSkillChange = (skill) => {
+    setSelectedSkilCategory((prev) =>
+      prev.includes(skill) ? prev.filter((s) => s !== skill) : [...prev, skill]
+    );
+  };
+
+  // Effect to filter activities based on selected Theme Option
+  useEffect(() => {
+    if (selectedTheme.length > 0) {
+      const filtered = activities.filter((activity) =>
+        activity.keywords.some((keyword) => selectedTheme.includes(keyword))
+      );
+      setFilteredActivities(filtered);
+    } else {
+      setFilteredActivities([]); // Reset if no features are selected
+    }
+  }, [selectedTheme, activities]);
+
+  // Handle Theme filter change
+  const handleThemeChange = (theme) => {
+    setSelectedTheme((prev) =>
+      prev.includes(theme) ? prev.filter((t) => t !== theme) : [...prev, theme]
+    );
+  };
+
+  // Effect to filter activities based on selected Age Focus Option
+  useEffect(() => {
+    if (selectedAgeFocus.length > 0) {
+      const filtered = activities.filter((activity) =>
+        activity.keywords.some((keyword) => selectedAgeFocus.includes(keyword))
+      );
+      setFilteredActivities(filtered);
+    } else {
+      setFilteredActivities([]); // Reset if no features are selected
+    }
+  }, [selectedAgeFocus, activities]);
+
+  // Handle Age Focus filter change
+  const handleAgeFocusChange = (age) => {
+    setSelectedAgeFocus((prev) =>
+      prev.includes(age) ? prev.filter((a) => a !== age) : [...prev, age]
+    );
+  };
+
+  // Effect to filter activities based on selected Prep Time Option
+  useEffect(() => {
+    if (selectedPrepTime.length > 0) {
+      const filtered = activities.filter((activity) =>
+        activity.keywords.some((keyword) => selectedPrepTime.includes(keyword))
+      );
+      setFilteredActivities(filtered);
+    } else {
+      setFilteredActivities([]); // Reset if no features are selected
+    }
+  }, [selectedPrepTime, activities]);
+
+  // Handle Prep Time filter change
+  const handlePrepTimeChange = (time) => {
+    setSelectedPrepTime((prev) =>
+      prev.includes(time) ? prev.filter((b) => b !== time) : [...prev, time]
+    );
+  };
 
   // Fetching all the activities form GraphCMS
   useEffect(() => {
@@ -296,7 +324,7 @@ export default async function ActivitiesPage() {
                       </div>
                       <div className="flex flex-col w-full gap-4 justify-start items-center">
                         <div className="flex flex-col justify-start items-start gap-2 w-full">
-                          <div className="text-[#0a1932]  text-sm font-semibold font-fredoka leading-tight">
+                          <div className="text-purple clarabodyTwo">
                             Learning Areas
                           </div>
                           <select
@@ -350,13 +378,11 @@ export default async function ActivitiesPage() {
                           <select
                             id="feature-select"
                             value={selectedSkilCategory}
-                            onChange={(e) =>
-                              handleFeatureChange(e.target.value)
-                            }
+                            onChange={(e) => handleSkillChange(e.target.value)}
                             className="border-2 w-full pr-2 rounded-full border-[#3f3a64] text-[#3f3a64] bg-white text-base font-fredoka leading-[13px] font-medium p-2"
                           >
                             <option value="" disabled>
-                              Select features
+                              Select Skills
                             </option>
                             {skillCategoryOptions.map((skill) => (
                               <option key={skill} value={skill}>
@@ -366,48 +392,68 @@ export default async function ActivitiesPage() {
                           </select>
                         </div>
                         <div className="flex flex-col justify-start items-start gap-2 w-full">
-                          <div className="text-[#0a1932] text-sm font-semibold font-fredoka leading-tight">
-                            Skills
+                          <div className="text-purple clarabodyTwo">
+                            Select From Themes
                           </div>
-                          {/* <select
+                          <select
                             id="feature-select"
-                            value={selectedFeatures}
-                            onChange={(e) =>
-                              handleFeatureChange(e.target.value)
-                            }
+                            value={selectedTheme}
+                            onChange={(e) => handleThemeChange(e.target.value)}
                             className="border-2 w-full pr-2 rounded-full border-[#3f3a64] text-[#3f3a64] bg-white text-base font-fredoka leading-[13px] font-medium p-2"
                           >
                             <option value="" disabled>
-                              Select features
+                              Select Themes
                             </option>
-                            {featuresOptions.map((feature) => (
-                              <option key={feature} value={feature}>
-                                {feature}
+                            {selectTheme.map((theme) => (
+                              <option key={theme} value={theme}>
+                                {theme}
                               </option>
                             ))}
-                          </select> */}
+                          </select>
                         </div>
                         <div className="flex flex-col justify-start items-start gap-2 w-full">
-                          <div className="text-[#0a1932] text-sm font-semibold font-fredoka leading-tight">
-                            Learning Areas
+                          <div className="text-purple clarabodyTwo">
+                            Select From Age Focus
                           </div>
-                          {/* <select
+                          <select
                             id="feature-select"
-                            value={selectedFeatures}
+                            value={selectedAgeFocus}
                             onChange={(e) =>
-                              handleFeatureChange(e.target.value)
+                              handleAgeFocusChange(e.target.value)
                             }
                             className="border-2 w-full pr-2 rounded-full border-[#3f3a64] text-[#3f3a64] bg-white text-base font-fredoka leading-[13px] font-medium p-2"
                           >
                             <option value="" disabled>
-                              Select features
+                              Select Skills
                             </option>
-                            {featuresOptions.map((feature) => (
-                              <option key={feature} value={feature}>
-                                {feature}
+                            {selectAgeFocusOptions.map((age) => (
+                              <option key={age} value={age}>
+                                {age}
                               </option>
                             ))}
-                          </select> */}
+                          </select>
+                        </div>
+                        <div className="flex flex-col justify-start items-start gap-2 w-full">
+                          <div className="text-purple clarabodyTwo">
+                            Select based on Preperation Time
+                          </div>
+                          <select
+                            id="feature-select"
+                            value={selectedPrepTime}
+                            onChange={(e) =>
+                              handlePrepTimeChange(e.target.value)
+                            }
+                            className="border-2 w-full pr-2 rounded-full border-[#3f3a64] text-[#3f3a64] bg-white text-base font-fredoka leading-[13px] font-medium p-2"
+                          >
+                            <option value="" disabled>
+                              Select Preperation Time
+                            </option>
+                            {selectPrepTime.map((time) => (
+                              <option key={time} value={time}>
+                                {time}
+                              </option>
+                            ))}
+                          </select>
                         </div>
                       </div>
                     </DrawerDescription>
@@ -593,7 +639,9 @@ export default async function ActivitiesPage() {
                     <>
                       <div className="flex flex-col w-full gap-2">
                         <p className="text-red">
-                          No activities found for the selected days.
+                          No activities found for the selected Options.
+                          <br />
+                          Try Exploring other Options
                         </p>
                         <div className="flex flex-row lg:grid lg:grid-cols-1 overflow-x-scroll scrollbar-hidden w-full gap-2 md:gap-4 justify-between items-start">
                           {activities.map((activity) => (
@@ -777,7 +825,7 @@ export default async function ActivitiesPage() {
                       className="border-2 w-full rounded-full border-[#3f3a64] text-[#3f3a64] bg-white text-base font-fredoka leading-[13px] font-medium p-2"
                     >
                       <option value="" disabled>
-                        Select features
+                        Select Features
                       </option>
                       {featuresOptions.map((feature) => (
                         <option key={feature} value={feature}>
@@ -792,11 +840,56 @@ export default async function ActivitiesPage() {
                       className="border-2 w-full pr-2 rounded-full border-[#3f3a64] text-[#3f3a64] bg-white text-base font-fredoka leading-[13px] font-medium p-2"
                     >
                       <option value="" disabled>
-                        Select features
+                        Select Skills
                       </option>
                       {skillCategoryOptions.map((skill) => (
                         <option key={skill} value={skill}>
                           {skill}
+                        </option>
+                      ))}
+                    </select>
+                    <select
+                      id="feature-select"
+                      value={selectedTheme}
+                      onChange={(e) => handleThemeChange(e.target.value)}
+                      className="border-2 w-full pr-2 rounded-full border-[#3f3a64] text-[#3f3a64] bg-white text-base font-fredoka leading-[13px] font-medium p-2"
+                    >
+                      <option value="" disabled>
+                        Select Themes
+                      </option>
+                      {selectTheme.map((theme) => (
+                        <option key={theme} value={theme}>
+                          {theme}
+                        </option>
+                      ))}
+                    </select>
+                    <select
+                      id="feature-select"
+                      value={selectedAgeFocus}
+                      onChange={(e) => handleAgeFocusChange(e.target.value)}
+                      className="border-2 w-full pr-2 rounded-full border-[#3f3a64] text-[#3f3a64] bg-white text-base font-fredoka leading-[13px] font-medium p-2"
+                    >
+                      <option value="" disabled>
+                        Select Skills
+                      </option>
+                      {selectAgeFocusOptions.map((age) => (
+                        <option key={age} value={age}>
+                          {age}
+                        </option>
+                      ))}
+                    </select>
+                    <select
+                      id="feature-select"
+                      value={selectedPrepTime}
+                      onChange={(e) => handlePrepTimeChange(e.target.value)}
+                      className="border-2 w-full pr-2 rounded-full border-[#3f3a64] text-[#3f3a64] bg-white text-base font-fredoka leading-[13px] font-medium p-2"
+                    >
+                      <option value="" disabled>
+                        Select based on Prep Time
+                      </option>
+                      {selectPrepTime.map((time) => (
+                        <option key={time} value={time}>
+                          {time}
                         </option>
                       ))}
                     </select>
