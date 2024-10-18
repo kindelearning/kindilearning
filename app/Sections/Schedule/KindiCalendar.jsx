@@ -2,8 +2,7 @@
 import { Confidence } from "@/public/Icons";
 import { KindiHeart, ScheduleEvent } from "@/public/Images";
 import Image from "next/image";
-import { useState } from "react";
-const initialValue = [];
+import { useEffect, useState } from "react";
 
 const icons = [
   {
@@ -23,38 +22,85 @@ const icons = [
     color: "#ff8e00",
   },
 ];
+
+const getAllActivities = async () => {
+  const HYGRAPH_ENDPOINT =
+    "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";
+  const HYGRAPH_TOKEN =
+    "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImdjbXMtbWFpbi1wcm9kdWN0aW9uIn0.eyJ2ZXJzaW9uIjozLCJpYXQiOjE3MjcwNjQxNzcsImF1ZCI6WyJodHRwczovL2FwaS1hcC1zb3V0aC0xLmh5Z3JhcGguY29tL3YyL2NtMWRvbTFoaDAzeTEwN3V3d3hydXRwbXovbWFzdGVyIiwibWFuYWdlbWVudC1uZXh0LmdyYXBoY21zLmNvbSJdLCJpc3MiOiJodHRwczovL21hbmFnZW1lbnQtYXAtc291dGgtMS5oeWdyYXBoLmNvbS8iLCJzdWIiOiI2Yzg4NjI5YS1jMmU5LTQyYjctYmJjOC04OTI2YmJlN2YyNDkiLCJqdGkiOiJjbTFlaGYzdzYwcmZuMDdwaWdwcmpieXhyIn0.YMoI_XTrCZI-C7v_FX-oKL5VVtx95tPmOFReCdUcP50nIpE3tTjUtYdApDqSRPegOQai6wbyT0H8UbTTUYsZUnBbvaMd-Io3ru3dqT1WdIJMhSx6007fl_aD6gQcxb-gHxODfz5LmJdwZbdaaNnyKIPVQsOEb-uVHiDJP3Zag2Ec2opK-SkPKKWq-gfDv5JIZxwE_8x7kwhCrfQxCZyUHvIHrJb9VBPrCIq1XE-suyA03bGfh8_5PuCfKCAof7TbH1dtvaKjUuYY1Gd54uRgp8ELZTf13i073I9ZFRUU3PVjUKEOUoCdzNLksKc-mc-MF8tgLxSQ946AfwleAVkFCXduIAO7ASaWU3coX7CsXmZLGRT_a82wOORD8zihfJa4LG8bB-FKm2LVIu_QfqIHJKq-ytuycpeKMV_MTvsbsWeikH0tGPQxvAA902mMrYJr9wohOw0gru7mg_U6tLOwG2smcwuXBPnpty0oGuGwXWt_D6ryLwdNubLJpIWV0dOWF8N5D6VubNytNZlIbyFQKnGcPDw6hGRLMw2B7-1V2RpR6F3RibLFJf9GekI60UYdsXthAFE6Xzrlw03Gv5BOKImBoDPyMr0DCzneyAj9KDq4cbNNcihbHl1iA6lUCTNY3vkCBXmyujXZEcLu_Q0gvrAW3OvZMHeHY__CtXN6JFA";
+
+  const query = `
+    query {
+      activities {
+        id
+        title
+        activityDate
+        content {
+          html
+        }
+        thumbnail {
+          url
+        }
+      }
+    }
+  `;
+
+  try {
+    const res = await fetch(HYGRAPH_ENDPOINT, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${HYGRAPH_TOKEN}`,
+      },
+      body: JSON.stringify({ query }),
+    });
+
+    if (!res.ok) {
+      throw new Error(`Error fetching data from Hygraph: ${res.statusText}`);
+    }
+
+    const jsonData = await res.json();
+
+    if (jsonData.errors) {
+      console.error("GraphQL Errors:", jsonData.errors);
+      throw new Error("Failed to fetch activities due to GraphQL errors.");
+    }
+
+    // Transform the data to match the event format
+    const activities = jsonData.data?.activities.map((activity) => ({
+      id: activity.id,
+      date: new Date(activity.activityDate), // Ensure to parse the date correctly
+      title: activity.title,
+      description: activity.content.html, // Assuming you want the HTML content
+      thumbnail: activity.thumbnail
+        ? {
+            url: activity.thumbnail.url,
+          }
+        : null,
+    }));
+    console.log("Activity Data:", activities);
+
+    return activities || [];
+  } catch (error) {
+    console.error("Error fetching activities:", error);
+    return [];
+  }
+};
+
 const Calendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [data, setData] = useState(initialValue);
-  const [events, setEvents] = useState([
-    {
-      id: "1",
-      date: new Date(2024, 9, 12), // Event on Oct 12, 2024
-      title: "Nature meets Imagination: Leaf Hedgehog House Hedgehog House",
-      description: "Discuss salon website updates in detail",
-    },
-    {
-      id: "2",
-      date: new Date(2024, 9, 20), // Event on Oct 20, 2024
-      title: "Marketing Campaign",
-      description: "Launch the new holiday campaign",
-    },
-    {
-      id: "3",
-      date: new Date(2024, 9, 20), // Another event on Oct 20, 2024
-      title: "Team Lunch Two",
-      description:
-        "Celebrate the successful campaign launch with the team at a nice restaurant",
-    },
-    {
-      id: "4",
-      date: new Date(2024, 9, 20), // Another event on Oct 20, 2024
-      title: "Team Lunch",
-      description:
-        "Celebrate the successful campaign launch with the team at a nice restaurant",
-    },
-  ]);
+  const [events, setEvents] = useState([]);
   const today = new Date();
+
+  useEffect(() => {
+    const fetchActivities = async () => {
+      const activitiesFromHygraph = await getAllActivities();
+      console.log(activitiesFromHygraph); // Log the activities
+      setEvents(activitiesFromHygraph);
+    };
+
+    fetchActivities();
+  }, []);
 
   const handlePrevMonth = () => {
     const newDate = new Date(
@@ -74,6 +120,7 @@ const Calendar = () => {
     setCurrentDate(newDate);
   };
 
+  // Generating the Monthly Calendar Widget
   const generateCalendar = () => {
     const startOfMonth = new Date(
       currentDate.getFullYear(),
@@ -88,7 +135,7 @@ const Calendar = () => {
     const daysInMonth = endOfMonth.getDate();
     const firstDayOfWeek = startOfMonth.getDay();
 
-    const totalDaysToShow = firstDayOfWeek + daysInMonth > 35 ? 42 : 35; // 5 or 6 rows (35 or 42 days)
+    const totalDaysToShow = firstDayOfWeek + daysInMonth > 35 ? 42 : 35;
 
     const totalDays = Array.from({ length: totalDaysToShow }, (_, i) => {
       if (i < firstDayOfWeek) {
@@ -117,16 +164,6 @@ const Calendar = () => {
     return totalDays;
   };
 
-  // Touch event handlers
-  const handleTouchStart = (e, eventId) => {
-    e.preventDefault();
-    handleDragStart(e, eventId); // Use the existing drag start logic
-  };
-
-  const handleTouchEnd = (e, dayObj) => {
-    e.preventDefault();
-    handleDrop(e, dayObj); // Use the existing drop logic
-  };
   const checkEventForDate = (day) => {
     return events.filter((event) => {
       return (
@@ -145,19 +182,18 @@ const Calendar = () => {
   // Handle drop (update event date)
   const handleDrop = (e, dayObj) => {
     const eventId = e.dataTransfer.getData("eventId");
-
     // Prevent dropping on disabled dates or past dates
     const targetDate = new Date(
       currentDate.getFullYear(),
       currentDate.getMonth(),
       dayObj.day
     );
-    // if (!dayObj.isCurrentMonth || targetDate < today) {
+    // Allow drop events in today
     if (
       !dayObj.isCurrentMonth ||
       (targetDate < today && targetDate.getDate() !== today.getDate())
     ) {
-      return; // Do nothing if the date is in the past or not part of the current month
+      return;
     }
 
     setEvents((prevEvents) =>
@@ -193,16 +229,9 @@ const Calendar = () => {
 
   const days = generateCalendar();
 
-  // Utility function to truncate text
-  const truncateText = (text, maxLength) => {
-    if (text.length > maxLength) {
-      return text.slice(0, maxLength) + "...";
-    }
-    return text;
-  };
-
   return (
     <div className="max-w-full flex flex-col gap-4 justify-center items-center w-full mx-auto p-0">
+      {/* Calendar Top Navigation */}
       <div className="flex justify-center gap-4 w-full items-center">
         <button onClick={handlePrevMonth}>
           <svg
@@ -244,6 +273,7 @@ const Calendar = () => {
         </button>
       </div>
 
+      {/* Calendar Top Weekdays  */}
       <div className="flex-col flex lg:grid font-fredoka p-0 lg:p-4 bg-[#eaeaf5] lg:bg-[#DCDCE8] rounded-[20px] w-full grid-cols-7 gap-0 text-center">
         {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
           <div
@@ -254,6 +284,7 @@ const Calendar = () => {
           </div>
         ))}
 
+        {/* Monthly Calendar Date View  */}
         {days.map((dayObj, index) => {
           const isToday =
             dayObj.isCurrentMonth &&
@@ -269,8 +300,6 @@ const Calendar = () => {
               key={index}
               onDrop={(e) => handleDrop(e, dayObj)}
               onDragOver={(e) => handleDragOver(e, dayObj)}
-              onTouchEnd={(e) => handleTouchEnd(e, dayObj)} // Added touch end
-              onTouchStart={(e) => handleTouchStart(e, eventsForDay[0]?.id)} // Added touch start
               className={`p-2 gap-[2px] flex flex-col font-fredoka justify-start items-start border-[1.2px] border-[white] w-full min-h-[40px] h-fit lg:h-[140px] ${
                 !dayObj.isCurrentMonth
                   ? "bg-[#EFEFEF] text-[#8C8C8C] cursor-not-allowed"
@@ -284,47 +313,38 @@ const Calendar = () => {
             >
               <div className="flex w-full justify-between">
                 <span className="text-right">{dayObj.day}</span>
-                {/* Show +X for additional events */}
+                {/* Show +X for additional events - Used for showing Number of event having more than one in same date */}
                 {eventCount > 1 && (
                   <div className="mt-1 text-sm text-gray-600">
                     +{eventCount - 1} more
                   </div>
                 )}
               </div>
+
+
               {/* Show events if they exist */}
               {eventsForDay.map((event, index) => (
                 <div
                   key={event.id}
                   draggable
-                  onTouchStart={(e) => handleTouchStart(e, event.id)} // Added touch start
                   className="w-full bg-white shadow-md rounded-lg p-2 text-sm"
                   onDragStart={(e) => handleDragStart(e, event.id)}
                 >
-                  {/* <div className="flex">
-
-                  </div> */}
-
                   {/* Show only the title if there are multiple events, otherwise show title and description */}
                   {eventCount > 1 ? (
-                    <p className="font-semibold text-[14px] leading-[16px] lg:leading-[10px] lg:text-[9px] text-start">
-                      {/* {truncateText(event.title, 16)}{" "} */}
+                    <p className="font-semibold text-[14px] leading-[16px] lg:leading-[12px] lg:text-[12px] text-start">
                       {event.title}
-
-                      {/* Truncate title to 16 chars */}
                     </p>
                   ) : (
                     <>
                       <div className="flex flex-col w-full gap-1 justify-between items-start">
                         <div className="flex w-full justify-between gap-1 lg:gap-0 items-start">
-                          <p className="font-semibold  text-[14px] leading-[16px] lg:text-[9px] lg:leading-[10px] text-start">
-                            {/* {truncateText(event.title, 16)} */}
+                          <p className="font-semibold  text-[14px] leading-[16px] lg:text-[12px] lg:leading-[12px] text-start">
                             {event.title}
-                            {/* Truncate title to 16 chars */}
                           </p>
                           {/* Drag icon */}
                           <div className="cursor-grab text-gray-500 items-start">
                             <span className="text-xl flex items-start">⋮⋮</span>{" "}
-                            {/* Drag handle */}
                           </div>
                         </div>
                         <div className="flex w-full gap-2 justify-between items-start">
