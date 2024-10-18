@@ -26,14 +26,14 @@ import Loading from "@/app/loading";
 
 export default async function ActivitiesPage() {
   const [date, setDate] = useState(new Date());
-  const [activities, setActivities] = useState([]);
+  const [activities, setActivities] = useState([]); //Getting all the activities from Hygraph
   const [filteredActivities, setFilteredActivities] = useState([]);
   const [selectedDays, setSelectedDays] = useState([]); // State for selected weekdays
   const [selectedFeatures, setSelectedFeatures] = useState([]); // State for selected features
-  const [selectedAgeFocus, setSelectedAgeFocus] = useState([]); // State for selected features
-  const [selectedPrepTime, setSelectedPrepTime] = useState([]); // State for selected features
-  const [selectedTheme, setSelectedTheme] = useState([]); // State for selected features
-  const [selectedSkilCategory, setSelectedSkilCategory] = useState([]); // State for selected features
+  const [selectedAgeFocus, setSelectedAgeFocus] = useState([]); // State for selected AgeFocus
+  const [selectedPrepTime, setSelectedPrepTime] = useState([]); // State for selected PrepTime
+  const [selectedTheme, setSelectedTheme] = useState([]); // State for selected Theme
+  const [selectedSkilCategory, setSelectedSkilCategory] = useState([]); // State for selected SkillCategory
   const [loading, setLoading] = useState(true);
 
   // List of features options
@@ -47,34 +47,6 @@ export default async function ActivitiesPage() {
     "Creativity & Imagination",
     "Experiments & Math",
   ];
-  // List of Skill Category options
-  const skillCategoryOptions = [
-    "Sensory Development",
-    "Mastering Feelings",
-    "Listening & Talking",
-    "Problem-solving & Independence",
-    "Social Play",
-    "Fine Motor",
-    "GROSS MOTOR",
-    "Pretend Play",
-    "Crafts",
-    "Exploring the Seasons",
-    "Outdoors & Nature",
-    "Rainy Day Play",
-  ];
-  // List of Select Themes options
-  const selectTheme = [
-    "Winter Magic",
-    "Exploring Harvest",
-    "Environmental Care",
-    "Farmyard Adventures",
-    "Springtime",
-  ];
-  // List of Select Age Focus options
-  const selectAgeFocusOptions = ["BABY", "TODDLER", "PRE-SCHOOLER", "KINDI"];
-  // List of Select Prep Time options
-  const selectPrepTime = ["5 Minutes", "10 Minutes", "10+ Minutes"];
-
   // Effect to filter activities based on selected features
   useEffect(() => {
     if (selectedFeatures.length > 0) {
@@ -95,6 +67,22 @@ export default async function ActivitiesPage() {
         : [...prev, feature]
     );
   };
+
+  // List of Skill Category options
+  const skillCategoryOptions = [
+    "Sensory Development",
+    "Mastering Feelings",
+    "Listening & Talking",
+    "Problem-solving & Independence",
+    "Social Play",
+    "Fine Motor",
+    "GROSS MOTOR",
+    "Pretend Play",
+    "Crafts",
+    "Exploring the Seasons",
+    "Outdoors & Nature",
+    "Rainy Day Play",
+  ];
 
   // Effect to filter activities based on selected Skill Option
   useEffect(() => {
@@ -117,6 +105,14 @@ export default async function ActivitiesPage() {
     );
   };
 
+  // List of Select Themes options
+  const selectTheme = [
+    "Winter Magic",
+    "Exploring Harvest",
+    "Environmental Care",
+    "Farmyard Adventures",
+    "Springtime",
+  ];
   // Effect to filter activities based on selected Theme Option
   useEffect(() => {
     if (selectedTheme.length > 0) {
@@ -136,6 +132,8 @@ export default async function ActivitiesPage() {
     );
   };
 
+  // List of Select Age Focus options
+  const selectAgeFocusOptions = ["BABY", "TODDLER", "PRE-SCHOOLER", "KINDI"];
   // Effect to filter activities based on selected Age Focus Option
   useEffect(() => {
     if (selectedAgeFocus.length > 0) {
@@ -155,6 +153,8 @@ export default async function ActivitiesPage() {
     );
   };
 
+  // List of Select Prep Time options
+  const selectPrepTime = ["5 Minutes", "10 Minutes", "10+ Minutes"];
   // Effect to filter activities based on selected Prep Time Option
   useEffect(() => {
     if (selectedPrepTime.length > 0) {

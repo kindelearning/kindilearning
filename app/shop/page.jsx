@@ -827,7 +827,9 @@ export default async function ShopPage() {
   const [sortOption, setSortOption] = useState("priceLowToHigh");
   const [sortedProducts, setSortedProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const [selectedSkilCategory, setSelectedSkilCategory] = useState([]); // State for selected features
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
   const searchInputRef = useRef(null);
 
   // Hook to fetch All products from Hygraph CMS
@@ -836,7 +838,6 @@ export default async function ShopPage() {
       const fetchedProducts = await getProducts();
       setProducts(fetchedProducts);
       setFilteredProducts(fetchedProducts);
-      setSortedProducts(fetchedProducts); // Initialize with unsorted products
     };
 
     fetchProducts();
@@ -909,6 +910,37 @@ export default async function ShopPage() {
     console.log("Filtered Products:", filtered);
 
     setFilteredProducts(filtered);
+  };
+
+  // List of Skills Options Based Filters options
+  const skillCategoryOptions = [
+    "Sensory Development",
+    "Mastering Feelings",
+    "Listening & Talking",
+    "Problem-solving & Independence",
+    "Social Play",
+    "Fine Motor",
+    "GROSS MOTOR",
+    "Pretend Play",
+    "Crafts",
+    "Exploring the Seasons",
+    "Outdoors & Nature",
+    "Rainy Day Play",
+  ];
+
+  // Handle Skill Option filter change
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category);
+    if (category === "") {
+      // Show all products if no category is selected
+      setFilteredProducts(products);
+    } else {
+      // Filter products based on the selected category
+      const filtered = products.filter((product) =>
+        product.keywords.includes(category)
+      );
+      setFilteredProducts(filtered);
+    }
   };
 
   const shouldShowAllProducts = !searchTerm || searchTerm.trim() === "";
@@ -1019,13 +1051,43 @@ export default async function ShopPage() {
                         />
                         <label
                           htmlFor={option.id}
-                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                          className="text-sm font-medium cursor-pointer leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                         >
                           {option.label}
                         </label>
                       </div>
                     ))}
                   </div>
+                </div>
+                {/* FIlters Based on Skill Category Options */}
+                <div className="flex flex-col justify-start items-start gap-2 w-full">
+                  <div className="text-[#252c32] text-xl font-semibold font-fredoka leading-[25px]">
+                    Select Skill Options
+                  </div>
+                  {skillCategoryOptions.map((category) => (
+                    <label
+                      key={category}
+                      className={`block cursor-pointer text-sm font-medium font-fredoka leading-none ${
+                        selectedCategory === category
+                          ? "text-purple"
+                          : "text-[#252c32]"
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        name="skillCategory"
+                        value={category}
+                        checked={selectedCategory === category}
+                        onChange={() => handleCategoryChange(category)}
+                        className={`mr-2 text-sm font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${
+                          selectedCategory === category
+                            ? "border-purple"
+                            : "border-purple"
+                        }`}
+                      />
+                      {category}
+                    </label>
+                  ))}
                 </div>
                 <OtherSideBarFIlter />
               </div>
@@ -1154,7 +1216,7 @@ export default async function ShopPage() {
                 </div>
               </div>
               {/* Display Filtered Products First */}
-              {filteredProducts.length > 0 && !shouldShowAllProducts && (
+              {filteredProducts.length > 0 || !shouldShowAllProducts && (
                 <>
                   <div className="flex justify-between items-center lg:px-0 px-4 w-full">
                     <span className="w-[max-content] text-[#0A1932] font-fredoka tex-[24px] font-semibold">
@@ -1215,7 +1277,8 @@ export default async function ShopPage() {
                   </span>
                 </div>
                 <div className="w-full lg:grid lg:grid-cols-3 px-4 md:px-2 lg:px-0 grid grid-cols-2 overflow-hidden gap-2">
-                  {sortedProducts.map((product) => (
+                  {/* {sortedProducts.map((product) => ( */}
+                  {products.map((product) => (
                     <div key={product.id} className="border">
                       <Link href={`/shop/${product.id}`} target="_blank">
                         <MobileProductCard
