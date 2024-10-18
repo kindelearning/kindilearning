@@ -23,6 +23,7 @@ import { getProducts } from "@/lib/hygraph";
 import Image from "next/image";
 import NotFound from "../not-found";
 import { useEffect, useRef, useState } from "react";
+import { BottomNavigation, Newsletter } from "../Sections";
 
 function SearchInput({ value, onChange }) {
   return (
@@ -445,66 +446,6 @@ export default async function ShopPage() {
                 Filters
               </div>
               <div className="claracontainer flex flex-col justify-start items-start gap-6 w-full">
-                {/* Filteration based on Price Limits */}
-                {/* <div className="claracontainer flex flex-col justify-start items-start gap-2 w-full">
-                  <div className="text-[#252c32] text-xl font-semibold font-fredoka leading-[25px]">
-                    Price Filter
-                  </div>
-                  <div className="claracontainer flex flex-col justify-start items-start gap-2">
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id="under10"
-                        className="border-red"
-                        onChange={() => handleCheckboxChange("under10")}
-                      />
-                      <label
-                        htmlFor="under10"
-                        className="text-sm font-medium font-fredoka"
-                      >
-                        Under $10
-                      </label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id="10to20"
-                        className="border-red"
-                        onChange={() => handleCheckboxChange("10to20")}
-                      />
-                      <label
-                        htmlFor="10to20"
-                        className="text-sm font-medium font-fredoka"
-                      >
-                        $10 - $20
-                      </label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id="20to50"
-                        className="border-red"
-                        onChange={() => handleCheckboxChange("20to50")}
-                      />
-                      <label
-                        htmlFor="20to50"
-                        className="text-sm font-medium font-fredoka"
-                      >
-                        $20 - $50
-                      </label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id="above50"
-                        className="border-red"
-                        onChange={() => handleCheckboxChange("above50")}
-                      />
-                      <label
-                        htmlFor="above50"
-                        className="text-sm font-medium font-fredoka"
-                      >
-                        Above $50
-                      </label>
-                    </div>
-                  </div>
-                </div> */}
                 {/* Sorting Based on Various Options */}
                 <div className="claracontainer flex flex-col justify-start items-start gap-2 w-full">
                   <div className="text-[#252c32] text-xl font-semibold font-fredoka leading-[25px]">
@@ -1036,6 +977,8 @@ export default async function ShopPage() {
           </div>
         </div>
       </section>
+      <Newsletter />
+      <BottomNavigation />
     </>
   );
 }

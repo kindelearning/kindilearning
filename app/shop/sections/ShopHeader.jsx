@@ -1,17 +1,8 @@
 "use client";
 
-import {
-  Achievement,
-  BlogThumb,
-  Logo,
-  Milestone,
-  ProfessionalThumb,
-  ProfileDP,
-  progressImage02,
-  User,
-} from "@/public/Images";
+import { Achievement, Logo, Milestone, progressImage02 } from "@/public/Images";
 import Image from "next/image";
-import { NavMenu } from "../constant/menu";
+import { NavMenu } from "../../constant/menu";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { GraphQLClient, gql } from "graphql-request";
@@ -26,9 +17,9 @@ import { ChevronRight, Menu, ShoppingBag } from "lucide-react";
 import { HomeLight } from "@/public/Icons";
 import { useEffect, useState } from "react";
 import { signOut, useSession } from "next-auth/react";
-import Loading from "../loading";
-import { useCart } from "../context/CartContext";
-import { GoogleTranslate } from "./GoogleTranslate";
+import { GoogleTranslate } from "@/app/Sections/GoogleTranslate";
+import Loading from "@/app/loading";
+import { useCart } from "@/app/context/CartContext";
 
 const LocalNavitem = ({
   Link = "#",
@@ -99,72 +90,6 @@ const Achievements = () => {
   );
 };
 
-const SideBar = () => {
-  return (
-    <>
-      <section className="lg:hidden h-full flex flex-col gap-2 items-start justify-between space-y-2 mt-4">
-        <div className="flex w-full flex-col gap-2">
-          <div className="flex w-full flex-col gap-1 justify-start items-start">
-            <div className="text-[#0a1932] text-sm font-medium font-fredoka leading-tight">
-              Quick Access
-            </div>
-            <div className="flex w-full flex-col gap-1 justify-normal items-center">
-              {NavMenu?.map((menuItem, index) => (
-                <LocalNavitem
-                  key={index}
-                  IconSrc={menuItem.icon}
-                  Link={menuItem.link}
-                  Title={menuItem.title}
-                />
-              ))}
-            </div>
-          </div>
-          <div className="flex w-full flex-col gap-1 justify-start items-start">
-            <div className="text-[#0a1932] text-sm font-medium font-fredoka leading-tight">
-              My Progress
-            </div>
-            <div className="grid grid-cols-3 w-full gap-1">
-              <MileStone />
-              <Progress />
-              <Achievements />
-            </div>
-          </div>
-        </div>
-        <div className="flex w-full flex-col gap-1">
-          <div className="flex w-full flex- col gap-1 justify-start items-start">
-            <Link
-              href="/auth/sign-in"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full"
-            >
-              <div className="bg-[#ffffff] py-2 w-full text-[12px] font-fredoka border-[black] text-[black] hover:bg-[#ffffff] hover:border-[#2b2b2b] hover:text-dark-blue-100 px-[40px] border-2 rounded-[10px] transition duration-300 ease-in-out">
-                Log in
-              </div>
-            </Link>
-            <Link
-              href="/auth/sign-up"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full"
-            >
-              <div className="bg-red hover:bg-hoverRed  text-[12px] font-fredoka text-white  w-[max-content] py-2 px-[40px]  hover:text-white border-2 border-red rounded-[10px] transition duration-300 ease-in-out">
-                Get Started
-              </div>
-            </Link>
-          </div>
-          {/* <SignOutButton /> */}
-          <Button
-            className="bg-red clarabutton"
-            onClick={() => signOut({ callbackUrl: "/auth/sign-in" })}
-          >
-            Sign Out
-          </Button>{" "}
-        </div>
-      </section>
-    </>
-  );
-};
 
 const usePathname = () => {
   const [pathname, setPathname] = useState("");
@@ -201,9 +126,8 @@ const GET_ACCOUNT_BY_EMAIL = gql`
   }
 `;
 
-const Header = () => {
+const ShopHeader = () => {
   const { cart } = useCart();
-
   const pathname = usePathname();
   const { data: session, status } = useSession();
   const [profileData, setProfileData] = useState(null);
@@ -250,7 +174,7 @@ const Header = () => {
           </div>
         </Link>
         {/* Hamburger icon for small screens */}
-        <div className="lg:hidden clara flex items-center">
+        <div className="lg:hidden flex items-center">
           <Sheet>
             <SheetTrigger>
               <Menu />
@@ -430,4 +354,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default ShopHeader;

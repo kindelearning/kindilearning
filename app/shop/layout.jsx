@@ -5,7 +5,8 @@ import { Fredoka as FontSans } from "next/font/google";
 
 import "../globals.css";
 import { cn } from "@/lib/utils";
-import { BottomNavigation, Footer, Header, Newsletter } from "../Sections";
+import { Footer, Newsletter } from "../Sections";
+import ShopHeader from "./sections/ShopHeader";
 
 /**
  * @ToDo  TO be removed as we dont use this, but need to check it infuture
@@ -37,8 +38,9 @@ export default function RootLayout({ children }) {
             fontSans.variable
           )}
         >
-          <Header className="sticky" />
+          <ShopHeader className="sticky" />
           {children}
+          
           <Footer />
         </body>
       </html>

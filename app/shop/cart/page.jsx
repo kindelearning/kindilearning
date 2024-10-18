@@ -62,7 +62,7 @@ export default function CartPage() {
             Cart
           </div>
         </div>
-        <div className="claracontainer -mt-4 rounded-t-[12px] z-2 md:m-12 p-2 rounded-xl bg-[#eaeaf5] md:bg-[white] w-full flex flex-col overflow-hidden gap-4">
+        <div className="claracontainer h-screen -mt-4 rounded-t-[12px] z-2 md:m-12 p-2 rounded-xl bg-[#eaeaf5] md:bg-[white] w-full flex flex-col overflow-hidden gap-4">
           <div className="flex flex-col justify-start items-start gap-4 w-full">
             <div className="text-red hidden justify-center items-center md:flex text-[32px] md:text-[44px] w-full text-center font-semibold font-fredoka capitalize leading-10">
               Cart
@@ -74,28 +74,29 @@ export default function CartPage() {
           </div>
           <div className="w-full flex min-h-[50vh] px-2 overflow-y-scroll scrollbar-hidden flex-col gap-2">
             {cart.map((item) => (
-              <div key={item.id}>
-                <div className="flex gap-4 px-2 py-2 bg-white rounded-xl items-center shadow w-full border-gray-200">
-                  <Image
-                    alt={item.title}
-                    src={item.image}
-                    width={120}
-                    height={90}
-                    className="w-[80px] h-[76px] md:w-[100px] lg:h-[80px] rounded-[10px]"
-                  />
-                  <div className="flex w-full justify-between items-start">
-                    <div className="flex flex-col w-full gap-1 md:gap-2">
-                      <h5 className="text-black clarabodyTwo">{item.title}</h5>
+              <div
+                key={item.id}
+                className="flex gap-4 px-2 py-2 bg-white rounded-xl items-center shadow w-full border-gray-200"
+              >
+                <Image
+                  alt={item.title}
+                  src={item.image}
+                  width={120}
+                  height={90}
+                  className="w-[80px] h-[76px] md:w-[100px] lg:h-[80px] rounded-[10px]"
+                />
+                <div className="flex w-full justify-between items-start">
+                  <div className="flex flex-col w-full gap-1 md:gap-2">
+                    <h5 className="text-black clarabodyTwo">{item.title}</h5>
+                  </div>
+                  <div className="flex flex-col justify-end items-end w-full gap-2">
+                    <div className="w-full text-red text-3xl text-end font-semibold font-fredoka capitalize leading-10">
+                      ${item.price}
                     </div>
-                    <div className="flex flex-col justify-end items-end w-full gap-2">
-                      <div className="w-full text-red text-3xl text-end font-semibold font-fredoka capitalize leading-10">
-                        ${item.price}
-                      </div>
-                      <div className="w-full gap-[2px] flex justify-end items-center">
-                        <button>
-                          <Image src={DeleteItem} />
-                        </button>
-                      </div>
+                    <div className="w-full gap-[2px] flex justify-end items-center">
+                      <button>
+                        <Image src={DeleteItem} />
+                      </button>
                     </div>
                   </div>
                 </div>
