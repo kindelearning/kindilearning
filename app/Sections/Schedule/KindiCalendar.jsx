@@ -34,6 +34,10 @@ const getAllActivities = async () => {
       activities {
         id
         title
+        setUpTime
+        themeName
+        skills
+        focusAge
         activityDate
         content {
           html
@@ -87,7 +91,7 @@ const getAllActivities = async () => {
   }
 };
 
-const Calendar = () => {
+export default function Calendar() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [events, setEvents] = useState([]);
   const today = new Date();
@@ -321,7 +325,6 @@ const Calendar = () => {
                 )}
               </div>
 
-
               {/* Show events if they exist */}
               {eventsForDay.map((event, index) => (
                 <div
@@ -347,28 +350,27 @@ const Calendar = () => {
                             <span className="text-xl flex items-start">⋮⋮</span>{" "}
                           </div>
                         </div>
-                        <div className="flex w-full gap-2 justify-between items-start">
-                          <div className="flex w-full h-[40px] overflow-clip">
+                        <div className="flex w-full gap-2 justify-between items-end">
+                          <div className="flex w-full  rounded-[4px]  max-w-[40px] object-cover h-[40px] overflow-clip">
                             <Image
-                              src={ScheduleEvent}
+                              src={event.thumbnail.url} // Make sure this matches the actual property name
                               alt="ScheduleEvent"
-                              className="w-[40px] object-cover h-[40px]"
+                              className="w-[40px] rounded-[4px] object-cover h-[40px]"
+                              width={40}
+                              height={40}
                             />
                           </div>
 
                           <div className="flex w-full justify-between flex-col items-start">
                             <div className="flex gap-1 items-center ">
                               <div className="text-[#0a1932] text-[12px] leading-[14px] lg:text-[9px] lg:leading-[10px] font-semibold font-fredoka">
+                                {/* {event.focusAge} */}
                                 Tag 1
                               </div>
                               <span className="flex items-center">•</span>
                               <div className="text-[#0a1932] text-[12px] leading-[14px] lg:text-[9px] lg:leading-[10px] font-semibold font-fredoka">
+                                {/* {event.themeName} */}
                                 Tag 2
-                              </div>
-                              <span className="flex items-center">•</span>
-
-                              <div className="text-[#0a1932] text-[12px] leading-[14px]  lg:text-[9px] lg:leading-[10px] font-semibold font-fredoka">
-                                Tag 3
                               </div>
                             </div>
                             <div className="flex flex-row justify-start items-center  w-full gap-[4px]">
@@ -399,6 +401,4 @@ const Calendar = () => {
       </div>
     </div>
   );
-};
-
-export default Calendar;
+}
