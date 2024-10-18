@@ -42,20 +42,21 @@ export default function Schedule() {
   const { data: session, status } = useSession();
   const [profileData, setProfileData] = useState(null);
 
-  useEffect(() => {
-    if (session && session.user) {
-      fetchUserData(session.user.email);
-    }
-  }, [session]);
-
   const fetchUserData = async (email) => {
     try {
       const data = await client.request(GET_ACCOUNT_BY_EMAIL, { email });
+      console.log("User data", data);
       setProfileData(data.account);
     } catch (error) {
       console.error("Error fetching profile data:", error);
     }
   };
+
+  useEffect(() => {
+    if (session && session.user) {
+      fetchUserData(session.user.email);
+    }
+  }, [session]);
 
   if (status === "loading") {
     return (
@@ -88,14 +89,52 @@ export default function Schedule() {
                   experience.
                 </div>
               </div>
-              <div className="claracontainer md:p-0 p-0 py-4 w-full flex flex-col overflow-hidden gap-8">
-                <div className="flex lg:hidden">
-                  <NewCalendar />
+
+              {profileData ? (
+                <>
+                  <div className="w-full text-center text-[#3f3a64] clarabodyTwo">
+                    Welcome, {profileData.name}! <br />
+                    {profileData.isVerified ? "Yes" : "No"}!
+                    <p className="font-semibold">
+                      {profileData.isVerified
+                        ? "You are Verified"
+                        : "You are Not Verified"}
+                    </p>
+                  </div>
+                  {profileData.isVerified ? (
+                    <div className="claracontainer md:p-0 p-0 py-4 w-full flex flex-col overflow-hidden gap-8">
+                      <div className="flex lg:hidden">
+                        <NewCalendar />
+                      </div>
+                      <div className="lg:flex hidden">
+                        <KindiCalendar />
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="claracontainer md:p-0 p-0 py-4 w-full flex flex-col overflow-hidden gap-8">
+                      <Link
+                        href="/#pricing_Section"
+                        className="claracontainer gap-2 flex-col h-[50vh] flex justify-center items-center"
+                        title="User Not Subscribed"
+                      >
+                        <span className="clarabodyTwo text-purple">
+                          Please upgrade to access the Activity Scheduler
+                        </span>
+                        <Button className="clarabutton bg-red hover:bg-hoverRed">
+                          Click here to Upgrade
+                        </Button>
+                        <p className="font-fredoka w-full justify-center flex items-center">
+                          Curruntly Logged in as: {profileData.email}
+                        </p>
+                      </Link>
+                    </div>
+                  )}
+                </>
+              ) : (
+                <div className="w-full text-center text-[#3f3a64] clarabodyTwo">
+                  Please verify your email to access your schedule.
                 </div>
-                <div className="lg:flex hidden">
-                  <KindiCalendar />
-                </div>
-              </div>
+              )}
             </>
           ) : (
             <>
@@ -130,59 +169,6 @@ export default function Schedule() {
               </section>
             </>
           )}
-
-          {/* {profileData ? (
-            profileData.isVerified ? (
-              <>
-                <div className="claracontainer md:p-0 p-0 py-4 w-full flex flex-col overflow-hidden gap-8">
-                  <div className="flex lg:hidden">
-                    <NewCalendar />
-                  </div>
-                  <div className="lg:flex hidden">
-                    <KindiCalendar />
-                  </div>
-                </div>
-              </>
-            ) : (
-              <Link
-                href="/#pricing_Section"
-                className="claracontainer gap-2 flex-col h-[50vh] flex justify-center items-center"
-                title="User Not Subscribed"
-              >
-                <span className="clarabodyTwo text-purple">
-                  Please upgrade to access the Activity Scheduler
-                </span>
-                <Button className="clarabutton bg-red hover:bg-hoverRed">
-                  Click here to Upgrade
-                </Button>
-                <p className="font-fredoka">
-                  Curruntly Logged in as: {profileData.email}
-                </p>
-              </Link>
-            )
-          ) : (
-            <>
-              Loading user data...
-              <Link
-                href="/#pricing_Section"
-                className="claracontainer gap-2 flex-col h-[50vh] flex justify-center items-center"
-                title="User Not Subscribed"
-              >
-                <span className="clarabodyTwo text-purple">
-                  Please upgrade to access the Activity Scheduler
-                </span>
-                <Link href="/#pricing_section" target="_blank">
-                  <Button className="clarabutton bg-red hover:bg-hoverRed">
-                    Click here to Upgrade
-                  </Button>
-                </Link>
-                <p className="font-fredoka">
-                  Curruntly Logged in as:
-                  <p className="text-red">{profileData.name}</p>
-                </p>
-              </Link>
-            </>
-          )} */}
         </div>
       </section>
     </>
