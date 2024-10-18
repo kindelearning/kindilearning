@@ -56,13 +56,13 @@ export default function CartPage() {
 
   return (
     <>
-      <section className="w-full h-screen bg-[#eaeaf5] items-center justify-between p-0 flex flex-col">
+      <section className="w-full h-screen bg-[#eaeaf5] items-center justify-start p-0 flex flex-col">
         <div className="w-full flex pt-4 pb-7 md:hidden bg-red">
           <div className="text-center w-full text-white text-[20px] font-semibold font-fredoka leading-tight">
             Cart
           </div>
         </div>
-        <div className="claracontainer -mt-4 rounded-t-[12px] z-2 md:m-12  p-6 rounded-xl bg-[#eaeaf5] md:bg-[white] w-full flex flex-col overflow-hidden gap-4">
+        <div className="claracontainer -mt-4 rounded-t-[12px] z-2 md:m-12 p-2 rounded-xl bg-[#eaeaf5] md:bg-[white] w-full flex flex-col overflow-hidden gap-4">
           <div className="flex flex-col justify-start items-start gap-4 w-full">
             <div className="text-red hidden justify-center items-center md:flex text-[32px] md:text-[44px] w-full text-center font-semibold font-fredoka capitalize leading-10">
               Cart
@@ -81,13 +81,11 @@ export default function CartPage() {
                     src={item.image}
                     width={120}
                     height={90}
-                    className="w-[80px] h-[76px] md:w-[100px] lg:h-[80px] rounded-[12px]"
+                    className="w-[80px] h-[76px] md:w-[100px] lg:h-[80px] rounded-[10px]"
                   />
                   <div className="flex w-full justify-between items-start">
                     <div className="flex flex-col w-full gap-1 md:gap-2">
-                      <h5 className="text-black text-lg font-fredoka font-medium leading-relaxed ">
-                        {item.title}
-                      </h5>
+                      <h5 className="text-black clarabodyTwo">{item.title}</h5>
                     </div>
                     <div className="flex flex-col justify-end items-end w-full gap-2">
                       <div className="w-full text-red text-3xl text-end font-semibold font-fredoka capitalize leading-10">
@@ -105,11 +103,13 @@ export default function CartPage() {
             ))}
           </div>
         </div>
+
+        {/* Local BottomNav */}
         <div className="shadow-upper rounded-t-[12px] bottom-0 z-24  sticky bg-[white] shadow py-4 flex flex-row justify-center w-full items-center gap-4">
           <div className="claracontainer px-4 w-full justify-between items-center flex">
             <Button
               onClick={clearCart}
-              className="px-4 py-2 bg-white hover:bg-white text-[#3f3a64] text-2xl font-semibold font-fredoka leading-none rounded-2xl border-2 border-[#3f3a64] justify-center items-center gap-1 inline-flex"
+              className="px-4 py-2 bg-white hover:bg-white text-[#3f3a64] text-xl font-semibold font-fredoka leading-none rounded-2xl border-2 border-[#3f3a64] justify-center items-center gap-1 inline-flex"
             >
               Clear Cart
             </Button>

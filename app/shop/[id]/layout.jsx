@@ -3,9 +3,9 @@
  */
 import { Fredoka as FontSans } from "next/font/google";
 
-import "../globals.css";
+import "../../globals.css";
 import { cn } from "@/lib/utils";
-import { BottomNavigation, Footer, Header, Newsletter } from "../Sections";
+import { BottomNavigation, Footer, Header, Newsletter } from "@/app/Sections";
 
 /**
  * @ToDo  TO be removed as we dont use this, but need to check it infuture
@@ -39,6 +39,8 @@ export default function RootLayout({ children }) {
         >
           <Header className="sticky" />
           {children}
+          <Newsletter />
+          <BottomNavigation />
           <Footer />
         </body>
       </html>

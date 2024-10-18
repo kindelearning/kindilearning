@@ -3,35 +3,6 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 const CartContext = createContext();
 
-// export const CartProvider = ({ children }) => {
-//   const [cart, setCart] = useState([]);
-
-//   console.log("Cart:", cart);
-
-//   const addToCart = (product) => {
-//     console.log("Current Cart State Before Adding:", cart);
-//     setCart((prevCart) => [...prevCart, product]);
-//     console.log("Product Added:", product);
-//     console.log("Updated Cart State After Adding:", cart);
-//   };
-//   const removeFromCart = (id) => {
-//     setCart(cart.filter((item) => item.id !== id));
-//   };
-
-//   const clearCart = () => {
-//     setCart([]);
-//     localStorage.removeItem('cart');
-//   };
-
-//   return (
-//     <CartContext.Provider
-//       value={{ cart, addToCart, removeFromCart, clearCart }}
-//     >
-//       {children}
-//     </CartContext.Provider>
-//   );
-// };
-
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState(() => {
     if (typeof window !== "undefined") {
