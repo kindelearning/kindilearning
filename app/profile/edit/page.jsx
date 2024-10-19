@@ -120,7 +120,7 @@ const AvailableDaysForm = ({ userId }) => {
         <Button
           type="submit"
           className={`transition w-fit duration-300 ease-in-out font-fredoka font-bold hover:border-2 hover:border-[#ffffff] px-2 p-2 md:px-4 border-2 rounded-[32px] flex flex-row gap-1 text-[12px] lg:text-[16px] items-center justify-center bg-[#029871] ${
-            isLoading ? "animate-spin" : ""
+            isLoading ? "" : ""
           }`}
         >
           <RefreshCcw
