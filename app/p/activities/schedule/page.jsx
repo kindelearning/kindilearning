@@ -104,7 +104,9 @@ export default function Schedule() {
                   {profileData.isVerified ? (
                     <div className="claracontainer md:p-0 p-0 py-4 w-full flex flex-col overflow-hidden gap-8">
                       <div className="flex lg:hidden">
-                        <NewCalendar />
+                      <KindiCalendar />
+
+                        {/* <NewCalendar /> */}
                       </div>
                       <div className="lg:flex hidden">
                         <KindiCalendar />
