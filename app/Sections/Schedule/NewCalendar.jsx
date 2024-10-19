@@ -1,8 +1,11 @@
 "use client";
+import { GET_ACCOUNT_BY_EMAIL } from "@/lib/hygraph";
 import { Confidence } from "@/public/Icons";
+import { GraphQLClient, gql } from "graphql-request";
 import { KindiHeart, ScheduleEvent } from "@/public/Images";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const icons = [
   {
@@ -23,37 +26,111 @@ const icons = [
   },
 ];
 
-const NewCalendar = ({ backgroundColor }) => {
+const HYGRAPH_ENDPOINT =
+  "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";
+const HYGRAPH_TOKEN =
+  "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImdjbXMtbWFpbi1wcm9kdWN0aW9uIn0.eyJ2ZXJzaW9uIjozLCJpYXQiOjE3MjcwNjQxNzcsImF1ZCI6WyJodHRwczovL2FwaS1hcC1zb3V0aC0xLmh5Z3JhcGguY29tL3YyL2NtMWRvbTFoaDAzeTEwN3V3d3hydXRwbXovbWFzdGVyIiwibWFuYWdlbWVudC1uZXh0LmdyYXBoY21zLmNvbSJdLCJpc3MiOiJodHRwczovL21hbmFnZW1lbnQtYXAtc291dGgtMS5oeWdyYXBoLmNvbS8iLCJzdWIiOiI2Yzg4NjI5YS1jMmU5LTQyYjctYmJjOC04OTI2YmJlN2YyNDkiLCJqdGkiOiJjbTFlaGYzdzYwcmZuMDdwaWdwcmpieXhyIn0.YMoI_XTrCZI-C7v_FX-oKL5VVtx95tPmOFReCdUcP50nIpE3tTjUtYdApDqSRPegOQai6wbyT0H8UbTTUYsZUnBbvaMd-Io3ru3dqT1WdIJMhSx6007fl_aD6gQcxb-gHxODfz5LmJdwZbdaaNnyKIPVQsOEb-uVHiDJP3Zag2Ec2opK-SkPKKWq-gfDv5JIZxwE_8x7kwhCrfQxCZyUHvIHrJb9VBPrCIq1XE-suyA03bGfh8_5PuCfKCAof7TbH1dtvaKjUuYY1Gd54uRgp8ELZTf13i073I9ZFRUU3PVjUKEOUoCdzNLksKc-mc-MF8tgLxSQ946AfwleAVkFCXduIAO7ASaWU3coX7CsXmZLGRT_a82wOORD8zihfJa4LG8bB-FKm2LVIu_QfqIHJKq-ytuycpeKMV_MTvsbsWeikH0tGPQxvAA902mMrYJr9wohOw0gru7mg_U6tLOwG2smcwuXBPnpty0oGuGwXWt_D6ryLwdNubLJpIWV0dOWF8N5D6VubNytNZlIbyFQKnGcPDw6hGRLMw2B7-1V2RpR6F3RibLFJf9GekI60UYdsXthAFE6Xzrlw03Gv5BOKImBoDPyMr0DCzneyAj9KDq4cbNNcihbHl1iA6lUCTNY3vkCBXmyujXZEcLu_Q0gvrAW3OvZMHeHY__CtXN6JFA";
+const client = new GraphQLClient(HYGRAPH_ENDPOINT, {
+  headers: {
+    Authorization: `Bearer ${HYGRAPH_TOKEN}`,
+  },
+});
+
+const getAllActivities = async () => {
+  const query = `
+    query {
+      activities {
+        id
+        title
+        setUpTime
+        themeName
+        skills
+        focusAge
+        activityDate
+        content {
+          html
+        }
+        thumbnail {
+          url
+        }
+      }
+    }
+  `;
+
+  try {
+    const res = await fetch(HYGRAPH_ENDPOINT, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${HYGRAPH_TOKEN}`,
+      },
+      body: JSON.stringify({ query }),
+    });
+
+    if (!res.ok) {
+      throw new Error(`Error fetching data from Hygraph: ${res.statusText}`);
+    }
+
+    const jsonData = await res.json();
+
+    if (jsonData.errors) {
+      console.error("GraphQL Errors:", jsonData.errors);
+      throw new Error("Failed to fetch activities due to GraphQL errors.");
+    }
+
+    // Transform the data to match the event format
+    const activities = jsonData.data?.activities.map((activity) => ({
+      id: activity.id,
+      date: new Date(activity.activityDate), // Ensure to parse the date correctly
+      title: activity.title,
+      description: activity.content.html, // Assuming you want the HTML content
+      thumbnail: activity.thumbnail
+        ? {
+            url: activity.thumbnail.url,
+          }
+        : null,
+    }));
+    console.log("Activity Data:", activities);
+
+    return activities || [];
+  } catch (error) {
+    console.error("Error fetching activities:", error);
+    return [];
+  }
+};
+
+export default function Calendar() {
+  const { data: session, status } = useSession();
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [events, setEvents] = useState([]);
   const today = new Date();
-  const [events, setEvents] = useState([
-    {
-      id: "1",
-      date: new Date(2024, 9, 12),
-      title: "Nature meets Imagination: Leaf Hedgehog House",
-      description: "Discuss salon website updates in detail",
-    },
-    {
-      id: "2",
-      date: new Date(2024, 9, 20),
-      title: "Marketing Campaign",
-      description: "Launch the new holiday campaign",
-    },
-    {
-      id: "3",
-      date: new Date(2024, 9, 20),
-      title: "Team Lunch Two",
-      description:
-        "Celebrate the successful campaign launch with the team at a nice restaurant",
-    },
-    {
-      id: "4",
-      date: new Date(2024, 9, 20),
-      title: "Team Lunch",
-      description:
-        "Celebrate the successful campaign launch with the team at a nice restaurant",
-    },
-  ]);
+
+  useEffect(() => {
+    const fetchActivities = async () => {
+      const activitiesFromHygraph = await getAllActivities();
+      console.log(activitiesFromHygraph); // Log the activities
+      setEvents(activitiesFromHygraph);
+    };
+
+    fetchActivities();
+  }, []);
+
+  // Fetched User Data
+  useEffect(() => {
+    if (session && session.user) {
+      fetchUserData(session.user.email);
+    }
+  }, [session]);
+
+  const fetchUserData = async (email) => {
+    try {
+      const data = await client.request(GET_ACCOUNT_BY_EMAIL, { email });
+      setProfileData(data.account);
+      console.log("User Data", data);
+    } catch (error) {
+      console.error("Error fetching profile data:", error);
+    }
+  };
 
   const handlePrevMonth = () => {
     const newDate = new Date(
@@ -73,9 +150,7 @@ const NewCalendar = ({ backgroundColor }) => {
     setCurrentDate(newDate);
   };
 
-
-  
-
+  // Generating the Monthly Calendar Widget
   const generateCalendar = () => {
     const startOfMonth = new Date(
       currentDate.getFullYear(),
@@ -94,6 +169,7 @@ const NewCalendar = ({ backgroundColor }) => {
 
     const totalDays = Array.from({ length: totalDaysToShow }, (_, i) => {
       if (i < firstDayOfWeek) {
+        // Days from the previous month
         const prevMonthEnd = new Date(
           currentDate.getFullYear(),
           currentDate.getMonth(),
@@ -128,15 +204,64 @@ const NewCalendar = ({ backgroundColor }) => {
     });
   };
 
-  const truncateText = (text, maxLength) => {
-    return text.length > maxLength ? `${text.slice(0, maxLength)}...` : text;
+  // Handle drag start (store event ID in dataTransfer object)
+  const handleDragStart = (e, eventId) => {
+    e.dataTransfer.setData("eventId", eventId);
   };
 
-  // Generate calendar days for the current month
+  // Handle drop (update event date)
+  const handleDrop = (e, dayObj) => {
+    const eventId = e.dataTransfer.getData("eventId");
+    // Prevent dropping on disabled dates or past dates
+    const targetDate = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      dayObj.day
+    );
+    // Allow drop events in today
+    if (
+      !dayObj.isCurrentMonth ||
+      (targetDate < today && targetDate.getDate() !== today.getDate())
+    ) {
+      return;
+    }
+
+    setEvents((prevEvents) =>
+      prevEvents.map((event) =>
+        event.id === eventId
+          ? {
+              ...event,
+              date: targetDate,
+            }
+          : event
+      )
+    );
+    console.log(`Event dropped on: ${targetDate}`);
+  };
+
+  // Allow drag over (necessary to allow dropping)
+  const handleDragOver = (e, dayObj) => {
+    const targetDate = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      dayObj.day
+    );
+    // Prevent drag over on disabled dates or past dates
+    if (
+      !dayObj.isCurrentMonth ||
+      (targetDate < today && targetDate.getDate() !== today.getDate())
+    ) {
+      e.preventDefault(); // Prevent default action (disallows dragging)
+    } else {
+      e.preventDefault(); // Allows dragging if date is valid
+    }
+  };
+
   const days = generateCalendar();
 
   return (
     <div className="max-w-full flex flex-col gap-4 justify-center items-center w-full mx-auto p-0">
+      {/* Calendar Top Navigation */}
       <div className="flex justify-center gap-4 w-full items-center">
         <button onClick={handlePrevMonth}>
           <svg
@@ -178,7 +303,8 @@ const NewCalendar = ({ backgroundColor }) => {
         </button>
       </div>
 
-      <div className="flex-col flex lg:grid font-fredoka p-0 lg:p-4 bg-[#eaeaf5] gap-1 lg:bg-[#DCDCE8] rounded-[20px] w-full grid-cols-7 text-center">
+      {/* Calendar Top Weekdays  */}
+      <div className="flex-col flex lg:grid font-fredoka p-0 lg:p-4 bg-[#eaeaf5] lg:bg-[#DCDCE8] rounded-[20px] w-full grid-cols-7 gap-0 text-center">
         {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
           <div
             key={day}
@@ -188,7 +314,7 @@ const NewCalendar = ({ backgroundColor }) => {
           </div>
         ))}
 
-        {/* Render all days of the month */}
+        {/* Monthly Calendar Date View  */}
         {days.map((dayObj, index) => {
           const isToday =
             dayObj.isCurrentMonth &&
@@ -202,47 +328,75 @@ const NewCalendar = ({ backgroundColor }) => {
           return (
             <div
               key={index}
-              className={`border rounded-lg flex flex-col p-2 gap-1 relative bg-[#f5f5f5] ${
-                isToday ? "border-red-400" : "border-[#dcdce8]"
-              } ${dayObj.isCurrentMonth ? "" : "bg-[#DCDCE8]"}`}
+              onDrop={(e) => handleDrop(e, dayObj)}
+              onDragOver={(e) => handleDragOver(e, dayObj)}
+              className={`p-2 gap-[2px] flex flex-col font-fredoka justify-start items-start border-[1.2px] border-[white] w-full min-h-[40px] h-fit lg:h-[140px] ${
+                !dayObj.isCurrentMonth
+                  ? "bg-[#EFEFEF] text-[#8C8C8C] cursor-not-allowed"
+                  : isToday
+                  ? "bg-[#ffd9d9] text-[#000000] "
+                  : dayObj.day < today.getDate() &&
+                    currentDate.getMonth() === today.getMonth()
+                  ? "bg-[#DCDCE8] text-[#999] cursor-not-allowed" // Past dates in the current month
+                  : "bg-[#eaeaf5] lg:bg-[#DCDCE8] cursor-pointer"
+              }`}
             >
-              <div
-                className={`text-[12px] w-full text-start  font-fredoka flex justify-start items-start ${
-                  !dayObj.isCurrentMonth ? "text-[#a1a1a1]" : ""
-                }`}
-              >
-                {dayObj.day}
+              <div className="flex w-full justify-between">
+                <span className="text-right">{dayObj.day}</span>
+                {/* Show +X for additional events - Used for showing Number of event having more than one in same date */}
+                {eventCount > 1 && (
+                  <div className="mt-1 text-sm text-gray-600">
+                    +{eventCount - 1} more
+                  </div>
+                )}
               </div>
-              <div className="flex flex-col justify-start items-start bg-[#eaeaf5]">
-                {eventCount > 0 ? (
-                  <div className="flex w-full h-full flex-col gap-2 bg-[#f5f5f5]">
-                    {eventsForDay.slice(0, 2).map((event, i) => (
-                      <div
-                        key={event.id}
-                        className="flex justify-between p-2 rounded-[4px] bg-[#eaeaf5] w-full items-center gap-2 cursor-grab"
-                      >
-                        <div className="flex w-full flex-col gap-1">
-                          <div className="flex justify-start w-full items-center gap-1">
-                            <span className="text-[14px] w-full text-start font-fredoka">
-                              {event.title}
-                            </span>
-                            {/* <div className="flex w-full justify-start gap-1"></div> */}
-                            <span className="text-xl">⋮⋮</span>{" "}
+
+              {/* Show events if they exist */}
+              {eventsForDay.map((event, index) => (
+                <div
+                  key={event.id}
+                  draggable
+                  className="w-full bg-white shadow-md rounded-lg p-2 text-sm"
+                  onDragStart={(e) => handleDragStart(e, event.id)}
+                >
+                  {/* Show only the title if there are multiple events, otherwise show title and description */}
+                  {eventCount > 1 ? (
+                    <p className="font-semibold text-[14px] leading-[16px] lg:leading-[12px] lg:text-[12px] text-start">
+                      {event.title}
+                    </p>
+                  ) : (
+                    <>
+                      <div className="flex flex-col w-full gap-1 justify-between items-start">
+                        <div className="flex w-full justify-between gap-1 lg:gap-0 items-start">
+                          <p className="font-semibold  text-[14px] leading-[16px] lg:text-[12px] lg:leading-[12px] text-start">
+                            {event.title}
+                          </p>
+                          {/* Drag icon */}
+                          <div className="cursor-grab text-gray-500 items-start">
+                            <span className="text-xl flex items-start">⋮⋮</span>{" "}
                           </div>
-                          {/* Drag Icon Next to Event */}
+                        </div>
+                        <div className="flex w-full gap-2 justify-between items-end">
+                          <div className="flex w-full  rounded-[4px]  max-w-[40px] object-cover h-[40px] overflow-clip">
+                            <Image
+                              src={event.thumbnail.url} // Make sure this matches the actual property name
+                              alt="ScheduleEvent"
+                              className="w-[40px] rounded-[4px] object-cover h-[40px]"
+                              width={40}
+                              height={40}
+                            />
+                          </div>
+
                           <div className="flex w-full justify-between flex-col items-start">
-                            <div className="flex gap-1 items-center">
+                            <div className="flex gap-1 items-center ">
                               <div className="text-[#0a1932] text-[12px] leading-[14px] lg:text-[9px] lg:leading-[10px] font-semibold font-fredoka">
+                                {/* {event.focusAge} */}
                                 Tag 1
                               </div>
                               <span className="flex items-center">•</span>
                               <div className="text-[#0a1932] text-[12px] leading-[14px] lg:text-[9px] lg:leading-[10px] font-semibold font-fredoka">
+                                {/* {event.themeName} */}
                                 Tag 2
-                              </div>
-                              <span className="flex items-center">•</span>
-
-                              <div className="text-[#0a1932] text-[12px] leading-[14px]  lg:text-[9px] lg:leading-[10px] font-semibold font-fredoka">
-                                Tag 3
                               </div>
                             </div>
                             <div className="flex flex-row justify-start items-center  w-full gap-[4px]">
@@ -263,25 +417,14 @@ const NewCalendar = ({ backgroundColor }) => {
                           </div>
                         </div>
                       </div>
-                    ))}
-                    {eventCount > 2 && (
-                      <span className="text-[12px] text-[#6d6d6d] font-fredoka">
-                        +{eventCount - 2} more
-                      </span>
-                    )}
-                  </div>
-                ) : (
-                  <span className="text-[12px] bg-[#f5f5f5] w-full flex justify-start text-[#6d6d6d] font-fredoka">
-                    No Activity Found
-                  </span>
-                )}
-              </div>
+                    </>
+                  )}
+                </div>
+              ))}
             </div>
           );
         })}
       </div>
     </div>
   );
-};
-
-export default NewCalendar;
+}
