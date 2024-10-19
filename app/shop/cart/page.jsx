@@ -19,26 +19,46 @@ export default function CartPage() {
     }
 
     console.log("Proceeding to checkout with cart items:", cart);
-    try {
-      const response = await fetch("/api/checkout-session", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ cart }),
-      });
 
-      if (!response.ok) {
-        throw new Error("Failed to create checkout session");
-      }
+    const response = await fetch("/api/checkout-session", {
+      method: "POST",
+    });
 
-      const { id } = await response.json();
-      const stripe = await stripePromise;
-      await stripe.redirectToCheckout({ sessionId: id });
-    } catch (error) {
-      console.error("Checkout error:", error);
-      alert("An error occurred while processing the checkout.");
+    const session = await response.json();
+
+    if (response.ok) {
+      // Redirect to Stripe Checkout
+      window.location.href = session.url;
+    } else {
+      console.error("Failed to create checkout session:", session);
     }
+    // try {
+    //   const response = await fetch("/api/checkout-session", {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify({ cart }),
+    //   });
+
+    //   if (!response.ok) {
+    //     throw new Error("Failed to create checkout session");
+    //   }
+    //   if (response.ok) {
+    //     // Redirect to Stripe Checkout
+    //     window.location.href = session.url; // Ensure session.url is correct
+    //   } else {
+    //     console.error("Failed to create checkout session:", session);
+    //     // Handle error (show a message to the user)
+    //   }
+
+    //   const { id } = await response.json();
+    //   const stripe = await stripePromise;
+    //   await stripe.redirectToCheckout({ sessionId: id });
+    // } catch (error) {
+    //   console.error("Checkout error:", error);
+    //   alert("An error occurred while processing the checkout.");
+    // }
   };
 
   if (cart.length === 0) {
@@ -63,7 +83,7 @@ export default function CartPage() {
           </div>
         </div>
         <div className="claracontainer h-screen -mt-4 rounded-t-[12px] z-2 md:m-12 p-2 rounded-xl bg-[#eaeaf5] md:bg-[white] w-full flex flex-col overflow-hidden gap-4">
-          <div className="flex flex-col justify-start items-start gap-4 w-full">
+          <div className="flex flex-col justify-start pt-4 items-start gap-4 w-full">
             <div className="text-red hidden justify-center items-center md:flex text-[32px] md:text-[44px] w-full text-center font-semibold font-fredoka capitalize leading-10">
               Cart
             </div>
@@ -94,8 +114,8 @@ export default function CartPage() {
                       ${item.price}
                     </div>
                     <div className="w-full gap-[2px] flex justify-end items-center">
-                      <button>
-                        <Image src={DeleteItem} />
+                      <button onClick={() => removeFromCart(item.id)}>
+                        <Image src={DeleteItem} alt="Remove Item" />
                       </button>
                     </div>
                   </div>
@@ -107,21 +127,19 @@ export default function CartPage() {
 
         {/* Local BottomNav */}
         <div className="shadow-upper rounded-t-[12px] bottom-0 z-24  sticky bg-[white] shadow py-4 flex flex-row justify-center w-full items-center gap-4">
-          <div className="claracontainer px-4 w-full justify-between items-center flex">
+          <div className="claracontainer px-4 lg:px-0 w-full justify-between items-center flex">
             <Button
               onClick={clearCart}
-              className="px-4 py-2 bg-white hover:bg-white text-[#3f3a64] text-xl font-semibold font-fredoka leading-none rounded-2xl border-2 border-[#3f3a64] justify-center items-center gap-1 inline-flex"
+              className="px-4 py-2 bg-white hover:bg-white text-[#3f3a64]clarabodyTwo rounded-2xl border-2 border-[#3f3a64] justify-center items-center gap-1 inline-flex"
             >
               Clear Cart
             </Button>
-            <Link target="_blank" href="/shop/cart/checkout">
-              <Button
-                onClick={handleCheckout}
-                className="bg-red hover:bg-red rounded-2xl font-fredoka text-white shadow border-2 border-white"
-              >
-                Proceed to Checkout
-              </Button>
-            </Link>
+            <Button
+              onClick={handleCheckout}
+              className="bg-red hover:bg-red rounded-2xl font-fredoka text-white shadow border-2 border-white"
+            >
+              Proceed to Checkout
+            </Button>
           </div>
         </div>
       </section>

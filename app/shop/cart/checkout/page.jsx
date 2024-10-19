@@ -8,15 +8,15 @@ import { DeleteItem } from "@/public/Images";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 
-const stripePromise = loadStripe(
-  "pk_live_51NcT49CjBezv2y8r9rE0b8L5W37kGyDZ4ER8m3gCrcFJW0pA1C7P7goLmUx2yaAftCibKGcvwRuhEkDq6Mlymz7b00oBy7wN5m"
-);
+const stripePromise = loadStripe(process.env.STRIPE_SECRET_KEY); // Use secret key here
+// const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY); // Use public key here
 
 const CheckoutPage = () => {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
+  const { cart } = useCart();
 
-  const { cart, clearCart } = useCart();
   const completeCheckout = async () => {
+    console.log("Proceeding to checkout with cart items:", cart);
     try {
       const response = await fetch("/api/checkout-session", {
         method: "POST",
@@ -26,38 +26,29 @@ const CheckoutPage = () => {
         body: JSON.stringify({ cart }),
       });
 
-      // Check if the response is successful
-      if (!response.ok) {
-        console.error(
-          "Failed to create checkout session:",
-          response.statusText
-        );
-        alert("Failed to create checkout session. Please try again.");
-        return;
+      // if (!response.ok) {
+      //   const errorMessage = await response.json();
+      //   console.error("Failed to create checkout session:", errorMessage);
+      //   alert("Failed to create checkout session. Please try again.");
+      //   return;
+      // }
+      if (response.ok) {
+        // Redirect to Stripe Checkout
+        window.location.href = session.url;
+      } else {
+        console.error("Failed to create checkout session:", session);
+        // Handle error (show a message to the user)
       }
 
-      const session = await response.json();
-      console.log("Stripe Session:", session);
+      const sessionData = await response.json();
+      const stripe = await stripePromise;
 
-      if (session.id) {
-        const stripe = await stripePromise;
-        if (!stripe) {
-          console.error("Stripe instance not loaded");
-          alert("Stripe is not initialized. Please refresh and try again.");
-          return;
-        }
+      const result = await stripe.redirectToCheckout({
+        sessionId: sessionData.url,
+      });
 
-        const result = await stripe.redirectToCheckout({
-          sessionId: session.id,
-        });
-
-        if (result.error) {
-          console.error("Stripe redirect error:", result.error.message);
-          alert(result.error.message);
-        }
-      } else {
-        console.error("Error creating session:", session.error);
-        alert(`Error: ${session.error || "Failed to initiate checkout."}`);
+      if (result.error) {
+        console.error("Stripe redirect error:", result.error.message);
       }
     } catch (error) {
       console.error("Error during checkout:", error);
@@ -74,7 +65,7 @@ const CheckoutPage = () => {
           </div>
         </div>
         <div className="claracontainer h-screen -mt-4 rounded-t-[12px] z-2 md:m-12 p-2 rounded-xl bg-[#eaeaf5] md:bg-[white] w-full flex flex-col overflow-hidden gap-4">
-          <div className="flex flex-col justify-start items-start gap-4 w-full">
+          <div className="flex flex-col justify-start items-start py-4 gap-4 w-full">
             <div className="text-red hidden justify-center items-center md:flex text-[32px] md:text-[44px] w-full text-center font-semibold font-fredoka capitalize leading-10">
               Checkout
             </div>
@@ -92,9 +83,7 @@ const CheckoutPage = () => {
                   />
                   <div className="flex w-full justify-between items-start">
                     <div className="flex flex-col w-full gap-1 md:gap-2">
-                      <h5 className="text-black clarabodyTwo ">
-                        {item.title}
-                      </h5>
+                      <h5 className="text-black clarabodyTwo ">{item.title}</h5>
                     </div>
                     <div className="flex flex-col justify-end items-end w-full gap-2">
                       <div className="w-full text-red text-3xl text-end font-semibold font-fredoka capitalize leading-10">
@@ -109,10 +98,12 @@ const CheckoutPage = () => {
         </div>
         {/* Local BottomNav */}
         <div className="shadow-upper rounded-t-[12px] bottom-0 z-24  sticky bg-[white] shadow py-4 flex flex-row justify-center w-full items-center gap-4">
-          <div className="claracontainer px-4 w-full justify-between items-center flex">
-            <Button className="px-4 py-2 bg-white hover:bg-white text-[#3f3a64] text-xl font-semibold font-fredoka leading-none rounded-2xl border-2 border-[#3f3a64] justify-center items-center gap-1 inline-flex">
-              Back
-            </Button>
+          <div className="claracontainer px-4 lg:px-0 w-full justify-between items-center flex">
+            <Link href="/shop/cart">
+              <Button className="px-4 py-2 bg-white hover:bg-white text-[#3f3a64]clarabodyTwo rounded-2xl border-2 border-[#3f3a64] justify-center items-center gap-1 inline-flex">
+                Back to Cart
+              </Button>
+            </Link>
             {session ? (
               <>
                 <Button

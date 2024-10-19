@@ -83,36 +83,57 @@ export const CartProvider = ({ children }) => {
     localStorage.removeItem("cart");
   };
 
+  // const handleCheckout = async () => {
+  //   try {
+  //     const response = await fetch("/api/checkout-session", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         items: cart.map((item) => ({
+  //           name: item.name,
+  //           description: item.description,
+  //           image: item.image,
+  //           price: item.price,
+  //           quantity: item.quantity,
+  //         })),
+  //       }),
+  //     });
+
+  //     const data = await response.json();
+
+  //     if (data?.url) {
+  //       window.location.href = data.url; // Redirect to Stripe checkout
+  //     } else {
+  //       console.error("Failed to create checkout session");
+  //     }
+  //   } catch (error) {
+  //     console.error("Checkout error:", error);
+  //   }
+  // };
+
   const handleCheckout = async () => {
     try {
-      const response = await fetch("/api/checkout-session", {
-        method: "POST",
+      const response = await fetch('/api/checkout-session', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          items: cart.map((item) => ({
-            name: item.name,
-            description: item.description,
-            image: item.image,
-            price: item.price,
-            quantity: item.quantity,
-          })),
-        }),
       });
-
-      const data = await response.json();
-      
-      if (data?.url) {
-        window.location.href = data.url; // Redirect to Stripe checkout
+  
+      const session = await response.json();
+  
+      // Instead of using stripe.redirectToCheckout, redirect directly using the URL
+      if (session.url) {
+        window.location.href = session.url;
       } else {
-        console.error("Failed to create checkout session");
+        console.error("No URL received.");
       }
     } catch (error) {
-      console.error("Checkout error:", error);
+      console.error("Error during checkout:", error);
     }
   };
-
   return (
     <CartContext.Provider
       value={{ cart, addToCart, removeFromCart, clearCart, handleCheckout }}
