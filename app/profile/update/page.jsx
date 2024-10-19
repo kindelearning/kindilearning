@@ -1,6 +1,6 @@
 "use lient";
 
-import { getServerSession } from "next-auth"; 
+import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import ProfileEdit from "../edit/page";
 

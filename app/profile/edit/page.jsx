@@ -12,27 +12,25 @@ const HYGRAPH_TOKEN =
 const HYGRAPH_ENDPOINT =
   "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";
 
-const AvailableDaysForm = () => {
-  // Define an array for the days of the week
-  const weekdays = ["S", "M", "T", "W", "T", "F", "S"];
-
-  // State to hold selected days and success message
+const AvailableDaysForm = ({ userId }) => {
+  // Ensure userId is passed as a prop
+  const weekdays = ["S", "M", "T", "W", "Th", "F", "Sa"];
   const [selectedDays, setSelectedDays] = useState([]);
-  const [successMessage, setSuccessMessage] = useState(""); // State for success message
+  const [successMessage, setSuccessMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false); // State to track loading status
 
-  // Function to update available days in Hygraph
   const updateAvailableDays = async (userId, availableDays) => {
     const mutation = `
-        mutation UpdateAvailableDays($id: ID!, $availableDays: [String!]) {
-          updateAccount(
-            where: { id: $id }
-            data: { availableDays: $availableDays }
-          ) {
-            id
-            availableDays
+          mutation UpdateAvailableDays($id: ID!, $availableDays: [String!]) {
+            updateAccount(
+              where: { id: $id }
+              data: { availableDays: $availableDays }
+            ) {
+              id
+              availableDays
+            }
           }
-        }
-      `;
+        `;
 
     const variables = {
       id: userId,
@@ -43,7 +41,7 @@ const AvailableDaysForm = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${HYGRAPH_TOKEN}`, // Replace with your Hygraph access token
+        Authorization: `Bearer ${HYGRAPH_TOKEN}`,
       },
       body: JSON.stringify({ query: mutation, variables }),
     });
@@ -58,18 +56,16 @@ const AvailableDaysForm = () => {
     return data.data.updateAccount; // Adjust based on your needs
   };
 
-  // Handle the toggle of a weekday
   const handleToggleDay = (day) => {
     setSelectedDays((prev) => {
       if (prev.includes(day)) {
-        return prev.filter((d) => d !== day); // Remove the day if it's already selected
+        return prev.filter((d) => d !== day);
       } else {
-        return [...prev, day]; // Add the day if it's not selected
+        return [...prev, day];
       }
     });
   };
 
-  // Load selected days from local storage on component mount
   useEffect(() => {
     const storedDays = localStorage.getItem("selectedDays");
     if (storedDays) {
@@ -85,16 +81,22 @@ const AvailableDaysForm = () => {
         // Store selected days in local storage
         localStorage.setItem("selectedDays", JSON.stringify(selectedDays));
 
+        // Set loading state to true
+        setIsLoading(true);
+
         // Call the mutation to update the user profile
-        await updateAvailableDays(userId, selectedDays); // Define this function to update the account
+        await updateAvailableDays(userId, selectedDays);
 
         // Set success message
         setSuccessMessage("Successfully updated available days!");
 
         // Optionally, you can clear the message after a few seconds
-        setTimeout(() => setSuccessMessage(""), 3000); // Clear message after 3 seconds
+        setTimeout(() => setSuccessMessage(""), 3000);
       } catch (error) {
         console.error("Failed to update available days:", error);
+      } finally {
+        // Reset loading state
+        setIsLoading(false);
       }
     } else {
       alert("Please select at least one day.");
@@ -117,9 +119,15 @@ const AvailableDaysForm = () => {
         </div>
         <Button
           type="submit"
-          className="transition duration-300 ease-in-out font-fredoka font-bold hover:border-2 hover:border-[#ffffff] px-2 p-2 md:px-4 border-2 rounded-[32px] flex flex-row gap-1 text-[12px] lg:text-[16px] items-center justify-center bg-[#029871]"
+          className={`transition w-fit duration-300 ease-in-out font-fredoka font-bold hover:border-2 hover:border-[#ffffff] px-2 p-2 md:px-4 border-2 rounded-[32px] flex flex-row gap-1 text-[12px] lg:text-[16px] items-center justify-center bg-[#029871] ${
+            isLoading ? "animate-spin" : ""
+          }`}
         >
-          <RefreshCcw className="w-2 h-2 lg:w-5 lg:h-5" />
+          <RefreshCcw
+            className={`w-2 h-2 lg:w-5 lg:h-5 ${
+              isLoading ? "animate-spin" : ""
+            }`}
+          />
           Sync Nursery
         </Button>
       </div>
