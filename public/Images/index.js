@@ -6,6 +6,7 @@ import HIWThree from "./HIWThree.svg";
 import Curve from "./Curve.svg";
 import CurveTwo from "./CurveTwo.svg";
 import ThemeCoverArc from "./ThemeCoverArc.svg";
+import ProfilePlaceHolderOne from "./ProfilePlaceHolderOne.svg";
 import ParentwithKindi from "./ParentwithKindi.png";
 import ProfessionalThumb from "./ProfessionalThumb.svg";
 import FamilyPlusThumb from "./FamilyPlusThumb.svg";
@@ -49,7 +50,7 @@ import Clock from "./Clock.svg";
 import Milestone from "./Milestone.svg";
 import Progress from "./Progress.svg";
 import Achievement from "./Achievement.svg";
-import VerifiedIcon from './VerifiedIcon.svg'
+import VerifiedIcon from "./VerifiedIcon.svg";
 
 // Import HIW icons for Area of Learning
 import CreativityImagination from "./CreativityImagination.svg";
@@ -207,10 +208,12 @@ export {
   DiscoveringWorld,
   ReadingWriting,
   Experiments,
-  ScheduleEvent,VerifiedIcon,
+  ScheduleEvent,
+  VerifiedIcon,
   FineMotor,
   MasteringFeelings,
   ListeningTalking,
+  ProfilePlaceHolderOne,
   SensoryDevelopment,
   ProblemsolvingIndependence,
   SocialPlay,
