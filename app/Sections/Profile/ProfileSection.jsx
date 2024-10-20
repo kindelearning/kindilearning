@@ -171,6 +171,86 @@ const ContactForm = () => {
   );
 };
 
+/**
+ * @Main_Account
+ * @returns Logic for Connecting Child and Parent Account
+ */
+// ConnectAccountForm.js
+export const ConnectAccountForm = () => {
+  const [parentEmail, setParentEmail] = useState("");
+  const [childEmail, setChildEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setMessage(""); // Clear previous messages
+    try {
+      const response = await fetch("/api/connect-account", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ parentEmail, childEmail }),
+      });
+
+      if (response.ok) {
+        setMessage("Accounts connected successfully!");
+        console.log("Accounts connected successfully");
+      } else {
+        setMessage(
+          responseData.error || "Failed to connect accounts. Please try again."
+        );
+        console.error("Failed to connect accounts");
+      }
+    } catch (error) {
+      console.error("Error connecting accounts:", error);
+      alert("Error connecting accounts:", error);
+      setMessage(
+        "Error connecting accounts. Please check the emails and try again."
+      );
+    } finally {
+      setLoading(false); // Hide connecting state
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="w-full flex flex-col gap-2">
+      <Input
+        type="email"
+        placeholder="Parent Account Email"
+        value={parentEmail}
+        onChange={(e) => setParentEmail(e.target.value)}
+        className=" bg-white w-full rounded-lg focus-within:border-0 focus-within:border-[#ffffff00]  shadow border border-[#383838]"
+      />
+      <Input
+        type="email"
+        placeholder="Child Account Email"
+        value={childEmail}
+        onChange={(e) => setChildEmail(e.target.value)}
+        className=" bg-white w-full rounded-lg focus-within:border-0 focus-within:border-[#ffffff00]  shadow border border-[#383838]"
+      />
+      <button
+        disabled={loading}
+        type="submit"
+        className="bg-red clarabutton text-white py-4"
+      >
+        {loading ? "Connecting..." : "Connect Accounts"}
+      </button>
+      {message && (
+        <p
+          className={`p-2 m-2 ${
+            message.includes("successfully") ? "text-green-500" : "text-red-500"
+          }`}
+        >
+          {message}
+        </p>
+      )}
+    </form>
+  );
+};
+
 export default async function ProfileSection() {
   const { data: session, status } = useSession();
   const [profileData, setProfileData] = useState(null);
@@ -227,6 +307,7 @@ export default async function ProfileSection() {
           </div>
         </div>
         <div className="claracontainer bg-[#F5F5F5] md:bg-[#EAEAF5] -mt-4 rounded-t-[12px] z-2 lg:m-12 px-4 py-6 rounded-xl md:px-2 lg:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-[20px]">
+          <ConnectAccountForm />
           {/* Top Profile Card */}
           <div className="w-full flex bg-[white] rounded-[24px] p-2 md:p-4 justify-start items-start gap-[4px] lg:gap-[12px] lg:items-center">
             <div className="w-fit lg:max-w-[160px] lg:w-full items-center flex justify-start">
@@ -525,7 +606,9 @@ export default async function ProfileSection() {
                         Every time someone books and visits a new dentist
                         through your link, you both get $20.
                       </div>
-                      <div className="flex w-full flex-col justify-start items-start gap-4">
+                      {/* Form to Invite the Partner */}
+                      <ConnectAccountForm />
+                      {/* <div className="flex w-full flex-col justify-start items-start gap-4">
                         <Input
                           type="text"
                           className=" bg-white w-full rounded-lg focus-within:border-0 focus-within:border-[#ffffff00]  shadow border border-[#383838]"
@@ -536,10 +619,10 @@ export default async function ProfileSection() {
                           className=" bg-white w-full rounded-lg focus-within:border-0 focus-within:border-[#ffffff00] shadow border border-[#383838]"
                           placeholder="Partners Email"
                         />
-                      </div>
+                      </div> 
                       <Button className="bg-[#3f3a64]  hover:bg-purple border-purple hover:border-4 hover:border-[#4d3d9738]  rounded-[27px] border-4 border-[#3f3a64]/40 justify-center items-center inline-flex text-white font-semibold">
                         Send an Invite
-                      </Button>
+                      </Button> */}
                     </div>
                   </div>
                 </DialogDescription>

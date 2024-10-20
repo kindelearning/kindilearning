@@ -2,6 +2,8 @@
 
 import { ProfileSection } from "../Sections";
 
+
+
 export default async function ProfilePage() {
   return (
     <>
