@@ -532,19 +532,19 @@ export default async function ActivitiesPage() {
                                       </div>
                                     </div>
                                     <div className="items-center justify-center gap-2 md:gap-4 grid grid-cols-5">
-                                      <Image
+                                      <Image alt="Kindi" 
                                         className="w-[20px] h-[24px] lg:w-[48px] lg:h-[48px]"
                                         src={SpeechLanguageActivity}
                                       />
-                                      <Image
+                                      <Image alt="Kindi" 
                                         className="w-[20px] h-[24px] lg:w-[48px] lg:h-[48px]"
                                         src={DiscoveringOurWorldActivity}
                                       />
-                                      <Image
+                                      <Image alt="Kindi" 
                                         className="w-[20px] h-[24px] lg:w-[48px] lg:h-[48px]"
                                         src={ReadingWritingActivity}
                                       />
-                                      <Image
+                                      <Image alt="Kindi" 
                                         className="w-[20px] h-[24px] lg:w-[48px] lg:h-[48px]"
                                         src={ExperimentsMathActivity}
                                       />
@@ -619,19 +619,19 @@ export default async function ActivitiesPage() {
                                             </div>
                                           </div>
                                           <div className="items-center justify-center gap-2 md:gap-4 grid grid-cols-5">
-                                            <Image
+                                            <Image alt="Kindi" 
                                               className="w-[20px] h-[24px] lg:w-[48px] lg:h-[48px]"
                                               src={SpeechLanguageActivity}
                                             />
-                                            <Image
+                                            <Image alt="Kindi" 
                                               className="w-[20px] h-[24px] lg:w-[48px] lg:h-[48px]"
                                               src={DiscoveringOurWorldActivity}
                                             />
-                                            <Image
+                                            <Image alt="Kindi" 
                                               className="w-[20px] h-[24px] lg:w-[48px] lg:h-[48px]"
                                               src={ReadingWritingActivity}
                                             />
-                                            <Image
+                                            <Image alt="Kindi" 
                                               className="w-[20px] h-[24px] lg:w-[48px] lg:h-[48px]"
                                               src={ExperimentsMathActivity}
                                             />
@@ -707,19 +707,19 @@ export default async function ActivitiesPage() {
                                     </div>
                                   </div>
                                   <div className="items-center justify-center gap-2 md:gap-4 grid grid-cols-5">
-                                    <Image
+                                    <Image alt="Kindi" 
                                       className="w-[20px] h-[24px] lg:w-[48px] lg:h-[48px]"
                                       src={SpeechLanguageActivity}
                                     />
-                                    <Image
+                                    <Image alt="Kindi" 
                                       className="w-[20px] h-[24px] lg:w-[48px] lg:h-[48px]"
                                       src={DiscoveringOurWorldActivity}
                                     />
-                                    <Image
+                                    <Image alt="Kindi" 
                                       className="w-[20px] h-[24px] lg:w-[48px] lg:h-[48px]"
                                       src={ReadingWritingActivity}
                                     />
-                                    <Image
+                                    <Image alt="Kindi" 
                                       className="w-[20px] h-[24px] lg:w-[48px] lg:h-[48px]"
                                       src={ExperimentsMathActivity}
                                     />
