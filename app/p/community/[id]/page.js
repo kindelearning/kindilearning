@@ -78,6 +78,57 @@ const ProfilePictureComponent = () => {
   );
 };
 
+const LikeButton = () => {
+  const [isLiked, setIsLiked] = useState(false);
+  const [animate, setAnimate] = useState(false);
+  const randomLikes = Math.floor(Math.random() * 100); // Example for random likes count
+
+  // Load the like state from local storage on component mount
+  useEffect(() => {
+    const liked = localStorage.getItem("isLiked");
+    if (liked === "true") {
+      setIsLiked(true);
+    }
+  }, []);
+
+  const handleLikeClick = () => {
+    setIsLiked(true); // Change to true when clicked
+    setAnimate(true); // Start the animation
+
+    // Save the like state to local storage
+    localStorage.setItem("isLiked", "true");
+
+    // Stop the animation after 1.5 seconds
+    setTimeout(() => {
+      setAnimate(false);
+    }, 1500);
+  };
+
+  return (
+    <div className="w-full cursor-pointer items-center flex flex-row justify-start gap-2">
+      <div
+        className={`text-[#f05c5c] text-[10px] font-semibold font-fredoka leading-none 
+                    ${animate ? "animate-bounce" : ""}`} // Add bounce animation on like
+        onClick={handleLikeClick}
+      >
+        {isLiked ? "Liked" : "Like"}
+      </div>
+      {!isLiked && (
+        <div className="text-[#0a1932] text-[10px] font-semibold font-fredoka leading-none">
+          {randomLikes}+
+        </div>
+      )}
+
+      <Image
+        src={LikeIcon}
+        alt="CommentLikeIcon"
+        className="w-3 h-3 cursor-pointer" // Add cursor-pointer for better UX
+        onClick={handleLikeClick} // Make icon clickable too
+      />
+    </div>
+  );
+};
+
 export default async function BlogDetailPage({ params }) {
   const { id } = params;
   const [blog, setBlog] = useState(null);
@@ -215,19 +266,7 @@ export default async function BlogDetailPage({ params }) {
                     <div className="w-[max-content] text-[#0a1932] text-xs font-normal font-fredoka leading-none">
                       {comment.content}
                     </div>
-                    <div className="w-full items-center flex flex-row justify-start gap-2">
-                      <div className="text-[#f05c5c] text-[10px] font-semibold font-fredoka leading-none">
-                        Like
-                      </div>
-                      <div className="text-[#0a1932] text-[10px] font-semibold font-fredoka leading-none">
-                        {randomLikes}
-                      </div>
-                      <Image
-                        src={LikeIcon}
-                        alt="CommentLikeIcon"
-                        className="w-3 h-3"
-                      />
-                    </div>
+                    <LikeButton />
                   </div>
                 ))}
               </div>

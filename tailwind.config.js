@@ -80,6 +80,7 @@ module.exports = {
         sm: "calc(var(--radius) - 4px)",
       },
       animation: {
+        bounce: "bounce 0.5s",
         fadeIn: "fadeIn 1s ease-in-out",
         slideUp: "slideUp 1s ease-out",
         "accordion-down": "accordion-down 0.2s ease-out",
