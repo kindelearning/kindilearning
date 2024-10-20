@@ -234,7 +234,7 @@ export const ConnectAccountForm = () => {
       <button
         disabled={loading}
         type="submit"
-        className="bg-red clarabutton text-white py-4"
+        className="bg-red font-fredoka tracking-wider uppercase font-bold text-[16px] hover:border-2 hover:border-[#ffffff] hover:bg-hoverRed px-6 md:px-8 xl:px-12 border-2 rounded-[12px]  text-white py-4"
       >
         {loading ? "Connecting..." : "Connect Accounts"}
       </button>
@@ -307,7 +307,6 @@ export default async function ProfileSection() {
           </div>
         </div>
         <div className="claracontainer bg-[#F5F5F5] md:bg-[#EAEAF5] -mt-4 rounded-t-[12px] z-2 lg:m-12 px-4 py-6 rounded-xl md:px-2 lg:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-[20px]">
-          <ConnectAccountForm />
           {/* Top Profile Card */}
           <div className="w-full flex bg-[white] rounded-[24px] p-2 md:p-4 justify-start items-start gap-[4px] lg:gap-[12px] lg:items-center">
             <div className="w-fit lg:max-w-[160px] lg:w-full items-center flex justify-start">
@@ -608,21 +607,6 @@ export default async function ProfileSection() {
                       </div>
                       {/* Form to Invite the Partner */}
                       <ConnectAccountForm />
-                      {/* <div className="flex w-full flex-col justify-start items-start gap-4">
-                        <Input
-                          type="text"
-                          className=" bg-white w-full rounded-lg focus-within:border-0 focus-within:border-[#ffffff00]  shadow border border-[#383838]"
-                          placeholder="Partners Name"
-                        />
-                        <Input
-                          type="email"
-                          className=" bg-white w-full rounded-lg focus-within:border-0 focus-within:border-[#ffffff00] shadow border border-[#383838]"
-                          placeholder="Partners Email"
-                        />
-                      </div> 
-                      <Button className="bg-[#3f3a64]  hover:bg-purple border-purple hover:border-4 hover:border-[#4d3d9738]  rounded-[27px] border-4 border-[#3f3a64]/40 justify-center items-center inline-flex text-white font-semibold">
-                        Send an Invite
-                      </Button> */}
                     </div>
                   </div>
                 </DialogDescription>

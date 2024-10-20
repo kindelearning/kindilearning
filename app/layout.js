@@ -24,7 +24,7 @@ export default function RootLayout({ children }) {
   return (
     <>
       <html lang="en">
-        <head>
+        <Head>
           <link
             rel="icon"
             type="image/png"
@@ -44,7 +44,7 @@ export default function RootLayout({ children }) {
             href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&family=Gloria+Hallelujah&family=Montserrat:wght@400;700&display=swap"
             rel="stylesheet"
           />
-        </head>
+        </Head>
 
         <body
           className={cn(

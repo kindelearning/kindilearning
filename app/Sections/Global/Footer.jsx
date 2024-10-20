@@ -4,20 +4,11 @@ import {
   Facebook,
   Instagram,
   KindiVector,
-  Language,
   Telegram,
   WhatsApp,
 } from "@/public/Images";
 import Image from "next/image";
 
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { footerSections } from "@/app/constant/menu";
 import Link from "next/link";
 import { GoogleTranslate } from "../GoogleTranslate";
@@ -55,29 +46,7 @@ const Footer = () => {
             <div className="w-auto text-white clarabodyTwo font-medium font-fredoka capitalize mb-8 md:mb-0">
               special offers and latest news about our products directly{" "}
             </div>
-            {/* <Select className="rounded-full px-1">
-              <SelectTrigger className="max-w-[390px] rounded-full py-3 flex flex-row text-[white] gap-1 justify-start items-center bg-[#000000] w-full mb-8 md:mb-0">
-                <Image alt="Kindi" src={Language} />
-                <SelectValue
-                  placeholder="Select Language"
-                  className="text-[white] text-[14px] md:text-[16px] font-fredoka"
-                />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup className="flex flex-col font-fredoka justify-between">
-                  <SelectItem value="est">English</SelectItem>
-                </SelectGroup>
-                <SelectGroup className="flex flex-col font-fredoka justify-between">
-                  <SelectItem value="gmt">German</SelectItem>
-                </SelectGroup>
-                <SelectGroup className="flex flex-col font-fredoka justify-between">
-                  <SelectItem value="l3">Language 3</SelectItem>
-                </SelectGroup>
-                <SelectGroup className="flex flex-col font-fredoka justify-between">
-                  <SelectItem value="l4">Language 4</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select> */}
+
             <div className="hidden lg:flex w-full">
               <GoogleTranslate />
             </div>
@@ -98,18 +67,22 @@ const Footer = () => {
           </div>
           <Link href="#" className="flex w-full justify-end items-end gap-2">
             <Image
+              alt="Kindi"
               src={Facebook}
               className="w-6 h-6 justify-center items-center p-1 border-[1px] rounded-[4px] border-white flex"
             />
             <Image
+              alt="Kindi"
               src={Instagram}
               className="w-6 h-6 justify-center items-center p-1 border-[1px] rounded-[4px] border-white flex"
             />
             <Image
+              alt="Kindi"
               src={Telegram}
               className="w-6 h-6 justify-center items-center p-1 border-[1px] rounded-[4px] border-white flex"
             />
             <Image
+              alt="Kindi"
               src={WhatsApp}
               className="w-6 h-6 justify-center items-center p-1 border-[1px] rounded-[4px] border-white flex"
             />
