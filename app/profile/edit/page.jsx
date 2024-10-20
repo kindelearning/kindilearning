@@ -234,10 +234,6 @@ export default async function ProfileEdit({ userId }) {
         />
         <link rel="stylesheet" href="/styles.css" />
         <link rel="stylesheet" href="/profile.css" />
-        <script
-          src="https://kit.fontawesome.com/a076d05399.js"
-          crossorigin="anonymous"
-        ></script>
       </Head>
       <section className="w-full pb-24 h-auto bg-[#f5f5f5] md:bg-[#f5f5f5] items-center justify-center flex flex-col md:flex-row px-0">
         <div className="w-full flex pt-4 pb-7 md:hidden bg-red">
