@@ -140,7 +140,7 @@ export default async function BlogDetailPage({ params }) {
   useEffect(() => {
     async function fetchData() {
       const blogData = await getBlogById(id);
-      // console.log("Blog Data Id:", blogData.id);
+      console.log("Blog Data Id:", id);
       setBlog(blogData);
       // setLikeCount(blogData.likeCount); // Set the initial like count
     }
@@ -274,8 +274,12 @@ export default async function BlogDetailPage({ params }) {
               <p>No comments yet.</p>
             )}
           </div>
+          {/* <CommentForm
+            id="comment_Section"
+            blogId="cm1re5m4z0mya07poomrphmmx"
+          /> */}
+          <CommentForm className="pt-6" id="comment_Section" blogId={id} />
         </div>
-        <CommentForm id="comment_Section" blogId="cm1re5m4z0mya07poomrphmmx" />
       </section>
     </>
   );
