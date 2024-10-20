@@ -83,13 +83,7 @@ const CurvePath = () => {
 
     // Add node to nodes array
     nodes.push(
-      // <div
-      //   key={i}
-      //   className="absolute w-8 h-8 flex items-center justify-center bg-[#bebef7] rounded-full"
-      //   style={{ top: `${top}px`, left: `${left}%` }}
-      // >
-      //   <button className="text-[#242b61]">{i + 1}</button>
-      // </div>
+
       <MNode
         key={i}
         mName={`Node ${i + 1}`}
@@ -143,79 +137,6 @@ const CurvePath = () => {
   );
 };
 
-// const CurvePath = () => {
-//   // Number of nodes
-//   const numberOfNodes = 10;
-//   const containerHeight = 800;
-//   const containerWidth = 1102;
-//   const curveHeight = containerHeight / (numberOfNodes / 2);
-
-//   // Generate nodes and paths
-//   const nodes = [];
-//   const paths = [];
-
-//   for (let i = 0; i < numberOfNodes / 2; i++) {
-//     // Node positions
-//     const top1 = i * curveHeight * 2;
-//     const left1 = 0;
-//     const top2 = top1 + curveHeight;
-//     const left2 = containerWidth;
-
-//     // Add nodes to nodes array
-//     nodes.push(
-//       <MNode
-//         key={`node-${i * 2}`}
-//         mName={`Node ${i * 2 + 1}`}
-//         bgColor="pink-500"
-//         textColor="white"
-//         borderColor="pink-700"
-//         style={{ position: "absolute", top: `${top1}px`, left: `${left1}px` }}
-//       />
-//     );
-//     nodes.push(
-//       <MNode
-//         key={`node-${i * 2 + 1}`}
-//         mName={`Node ${i * 2 + 2}`}
-//         bgColor="pink-500"
-//         textColor="white"
-//         borderColor="pink-700"
-//         style={{ position: "absolute", top: `${top2}px`, left: `${left2}px` }}
-//       />
-//     );
-
-//     // Create a cubic Bezier curve using the 'C' command
-//     const pathD = `M ${left1} ${top1} C ${left1} ${
-//       top1 + curveHeight / 2
-//     } ${left2} ${top2 - curveHeight / 2} ${left2} ${top2}`;
-
-//     paths.push(
-//       <path
-//         key={`path-${i}`}
-//         d={pathD}
-//         fill="none"
-//         stroke="#f05c5c"
-//         stroke-width="3"
-//         strokeDasharray="6,6"
-//       />
-//     );
-//   }
-
-//   return (
-//     <div className="relative w-full h-full pb-24 min-h-[1000px] bg-gray-100 overflow-hidden">
-//       {/* SVG for drawing paths */}
-//       <svg
-//         className="absolute bg-[#eaeaf5] top-0 left-0 w-full h-full"
-//         viewBox={`0 0 ${containerWidth} ${containerHeight}`}
-//         preserveAspectRatio="none"
-//       >
-//         {paths}
-//       </svg>
-
-//       {/* Render nodes */}
-//       {nodes}
-//     </div>
-//   );
-// };
 const UserImages = () => {
   return (
     <div className="flex w-full flex-col justify-center items-center">
@@ -316,15 +237,3 @@ const MileStone = () => {
 };
 
 export default MileStone;
-
-// {
-//   milestones.map((milestone, index) => (
-//     <div key={index} className="relative">
-//       <MNode
-//         mName={milestone.name}
-//         bgColor={milestone.bgColor}
-//         textColor={milestone.textColor}
-//       />
-//     </div>
-//   ));
-// }

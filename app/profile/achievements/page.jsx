@@ -16,7 +16,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Slider } from "@/components/ui/slider";
-import { ProfileDP } from "@/public/Images";
+import { ProfileDP, VerifiedIcon } from "@/public/Images";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
@@ -80,34 +80,54 @@ const Achievement = async () => {
       <section className="w-full h-auto pb-24 bg-[#EAEAF5] items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">
         <div className="claracontainer p-4 md:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-8">
           {/* Top Profile Card */}
-          <div className="w-full flex bg-[white] rounded-[24px] p-2 md:p-4 justify-start gap-[4px] lg:gap-[12px]  items-center">
+          <div className="w-full flex bg-[white] rounded-[24px] p-2 md:p-4 justify-start items-start gap-[4px] lg:gap-[12px] lg:items-center">
             <div className="w-fit lg:max-w-[160px] lg:w-full items-center flex justify-start">
               {profileData ? (
                 <>
-                  <div className="relative w-36 h-36 p-1 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600">
+                  <div className="relative w-20 h-20 lg:w-36 lg:h-36 p-1 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600">
                     <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
                       <Image
                         src={profileData.profilePicture?.url}
                         alt="User DP"
                         width={100}
                         height={100}
-                        className="w-32 h-32 object-cover rounded-full"
+                        className="w-[72px] h-[72px] lg:w-36 lg:h-36 object-cover overflow-clip rounded-full"
                       />
                     </div>
                   </div>
                 </>
               ) : (
-                <p>No profile data found</p>
+                <Image
+                  src={ProfileDP}
+                  alt="Logo"
+                  className="rounded-full border-2 lg:w-full lg:h-full border-red w-[48px] h-[48px]"
+                />
               )}
             </div>
             <div className="w-full gap-4 flex flex-col justify-center">
-              <div className="flex flex-row justify-between items-center w-full">
+              <div className="flex flex-row justify-between items-start w-full">
                 {profileData ? (
                   <div className="flex flex-col w-full justify-start items-start">
-                    <h2 className="text-[#029871] text-[24px] md:text-[28px] lg:text-[32px] xl:text-[40px] font-semibold  font-fredoka leading-tight">
-                      {profileData.name}
-                    </h2>
-                    <p className="font-fredoka">Email: {profileData.email}</p>
+                    <div className="flex gap-1 items-center w-full justify-start">
+                      <h2 className="text-[#029871] text-[20px] md:text-[28px] lg:text-[32px] xl:text-[40px] font-semibold font-fredoka leading-tight">
+                        {profileData.name}
+                      </h2>
+                      {profileData.isVerified && (
+                        <span
+                          className="ml-2 text-[#255825]"
+                          title="Verified User"
+                        >
+                          <Image
+                            src={VerifiedIcon}
+                            alt="VerifiedIcon"
+                            className="w-[20px] h-[20px] lg:h-[30px] lg:w-[30px]"
+                          />
+                        </span>
+                      )}
+                    </div>
+                    <p className="font-fredoka text-[12px] lg:text-[20px]">
+                      Email: {profileData.email}
+                    </p>
                   </div>
                 ) : (
                   <h2 className="text-[#029871] text-[24px] md:text-[28px] lg:text-[32px] xl:text-[40px] font-semibold  font-fredoka leading-tight">
@@ -115,7 +135,11 @@ const Achievement = async () => {
                   </h2>
                 )}
                 {/* Trigger for the Edit Profile Popup */}
-                <Link href="/profile/edit">
+                <Link
+                  href="/profile/update"
+                  className="hidden lg:flex"
+                  target="_blank"
+                >
                   <Badge
                     className="text-[10px] md:text-[16px] cursor-pointer"
                     variant="outline"
@@ -126,9 +150,7 @@ const Achievement = async () => {
               </div>
               <div className="flex flex-col w-full gap-1 items-start justify-start">
                 <div className="flex flex-row w-full justify-start items-center gap-2">
-                  <div className="text-[#3f3a64] text-[16px] md:text-[20px] lg:text-[24px] xl:text-[20px] font-medium font-montserrat leading-none">
-                    Level 1
-                  </div>
+                  <div className="text-[#3f3a64] clarabodyTwo">Level 1</div>
                   {/* Trigger for the Level Popup */}
                   <Dialog className="bg-[#EAEAF5] w-full rounded-[28px] claracontainer">
                     <DialogTrigger asChild>
@@ -168,9 +190,22 @@ const Achievement = async () => {
                       </DialogFooter>
                     </DialogContent>
                   </Dialog>
+                  <Link
+                    href="/profile/update"
+                    className="flex lg:hidden"
+                    target="_blank"
+                  >
+                    <Badge
+                      className="text-[10px] md:text-[16px] cursor-pointer"
+                      variant="outline"
+                    >
+                      Edit
+                    </Badge>
+                  </Link>
                 </div>
-                <div className="w-full flex flex-row justify-between items-center gap-2">
+                <div className="w-full flex flex-row justify-between items-center clarabodyTwo gap-2">
                   <Slider
+                    disabled
                     defaultValue={[33]}
                     max={100}
                     className="h-[8px] text-[#3a3a89]"

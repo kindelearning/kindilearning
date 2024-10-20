@@ -394,51 +394,6 @@ export default async function ProfileSection() {
 
           {/* The individual Tabs for Profile Page */}
           <div className="flex w-full justify-center items-center gap-4 flex-col">
-            {/* My Activity Model
-          <Dialog className="bg-[#EAEAF5] w-full  flex justify-center items-center claracontainer">
-            <DialogTrigger asChild>
-              <MyProfileRoutes
-                image={KindiHeart}
-                iconBackgroundColor="#f05c5c"
-                title="My activity"
-              />
-            </DialogTrigger>
-            <DialogContent className="bg-[#EAEAF5] max-w-[96%] max-h-[70%] scrollbar-hidden overflow-scroll p-0 overflow-x-hidden rounded-[16px] w-full claracontainer">
-              <DialogHeader className="p-4">
-                <div className="flex flex-row justify-center items-center w-full">
-                  <DialogTitle>
-                    <div className="text-center">
-                      <span className="text-[#3f3a64] text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
-                        My{" "}
-                      </span>
-                      <span className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
-                        Activity
-                      </span>
-                    </div>
-                  </DialogTitle>
-                </div>
-              </DialogHeader>
-              <DialogDescription className="flex w-full px-4 gap-4 claracontainer flex-col justify-start items-center">
-                <div className="text-black text-[20px] md:text-[28px] w-full text-start font-semibold font-fredoka  ">
-                  Completed
-                </div>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 w-full claracontainer gap-2">
-                  {activities.map((activity, index) => (
-                    <LocalActivity
-                      key={index}
-                      title={activity.title}
-                      time={activity.time}
-                      tags={activity.tags}
-                      icons={activity.icons}
-                    />
-                  ))}
-                </div>
-              </DialogDescription>
-              <DialogFooter className="sticky rounded-t-[16px] shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] bottom-0 m-0 w-full  bg-[#ffffff]">
-                <PopupFooter PrimaryText="Save and Continue" />
-              </DialogFooter>
-            </DialogContent>
-          </Dialog> */}
             {/* Kids Profile Model */}
             <Dialog className="bg-[#EAEAF5] w-full  claracontainer">
               <DialogTrigger className="w-full">
@@ -694,12 +649,12 @@ export default async function ProfileSection() {
                               image={Email}
                               title="Email"
                             />
-                            <SettingCard
+                            {/* <SettingCard
                               disabled
                               Value={profileData.isVerified}
                               image={Phone}
                               title="Phone Number"
-                            />
+                            /> */}
                             {/* Terms & Condition  */}
                             <Link href="/p/tnc">
                               <SettingCard
