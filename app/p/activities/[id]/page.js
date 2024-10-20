@@ -239,11 +239,11 @@ export default async function ActivityDetailPage({ params }) {
               onClick={handlePrint}
               className="flex bg-[#3f3a64] gap-[4px] py-2 text-center text-white text-xs font-semibold font-fredoka rounded-2xl shadow border-2 border-white flex-row justify-center items-center w-full"
             >
-              <Image  alt="Kindi" src={Print} />
+              <Image src={Print} />
               Print
             </Button>
             <Button className="flex bg-red gap-[4px] py-2 text-center text-white text-xs font-semibold font-fredoka rounded-2xl shadow border-2 border-white flex-row justify-center items-center w-full">
-              <Image  alt="Kindi" src={CompletedMark} />
+              <Image src={CompletedMark} />
               Mark as Complete
             </Button>
           </div>

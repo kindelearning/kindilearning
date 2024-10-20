@@ -88,7 +88,7 @@ const Page = () => {
                     </div>
                     <Link href="/auth/sign-up" className="w-full px-4 justify-end items-start text-center">
                       <Button className="w-full flex  gap-2 bg-red hover:bg-red clarabutton rounded-2xl shadow border-2 border-white">
-                        <Image  alt="Kindi" src={EmailIcons} />
+                        <Image src={EmailIcons} />
                         Continue with Email
                       </Button>
                       <div className="flex w-full flex-col justify-center py-4 items-center gap-4">
@@ -148,7 +148,7 @@ const Page = () => {
                     </div>
                     <Link href="/auth/sign-in" className="w-full px-4 justify-end items-start text-center">
                       <Button className="w-full flex  gap-2 bg-red hover:bg-red clarabutton rounded-2xl shadow border-2 border-white">
-                        <Image alt="Kindi"  src={EmailIcons} />
+                        <Image src={EmailIcons} />
                         Continue with Email
                       </Button>
                       <div className="flex w-full flex-col justify-center py-4 items-center gap-4">

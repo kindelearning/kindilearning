@@ -202,7 +202,7 @@ export default async function BlogDetailPage({ params }) {
                       }`}
                       onClick={handleLikeClick}
                     >
-                      <Image src={LikeIcon}  alt="Kindi" />
+                      <Image src={LikeIcon} />
                     </button>
                     <span className="ml-2 text-[#0a1932] font-medium">
                       {/* {blog.likeCount} */}
@@ -214,7 +214,7 @@ export default async function BlogDetailPage({ params }) {
                       onClick={scrollToCommentSection}
                       className="text-[#0a1932] bg-[#f8f8f8] rounded-full p-2 hover:text-[#0a1932]"
                     >
-                      <Image src={CommentIcon || "129"}  alt="Kindi" />
+                      <Image src={CommentIcon || "129"} />
                     </button>
                   </button>
                 </div>
@@ -274,6 +274,10 @@ export default async function BlogDetailPage({ params }) {
               <p>No comments yet.</p>
             )}
           </div>
+          {/* <CommentForm
+            id="comment_Section"
+            blogId="cm1re5m4z0mya07poomrphmmx"
+          /> */}
           <CommentForm className="pt-6" id="comment_Section" blogId={id} />
         </div>
       </section>

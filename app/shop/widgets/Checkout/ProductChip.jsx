@@ -34,7 +34,7 @@ const ProductChip = ({
               ${price}
             </div>
             <div className="w-full gap-[2px] flex">
-              <Image alt="Kindi" src={DeleteItem} />
+              <Image src={DeleteItem} />
               <QuantityControl />
             </div>
           </div>

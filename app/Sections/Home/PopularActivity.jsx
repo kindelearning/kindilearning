@@ -90,19 +90,19 @@ const PopularActivity = async () => {
                           </div>
                         </div>
                         <div className="items-center justify-center gap-2 md:gap-4 grid grid-cols-5">
-                          <Image alt="kindi" 
+                          <Image
                             className="w-[20px] h-[24px] lg:w-[48px] lg:h-[48px]"
                             src={SpeechLanguageActivity}
                           />
-                          <Image alt="kindi" 
+                          <Image
                             className="w-[20px] h-[24px] lg:w-[48px] lg:h-[48px]"
                             src={DiscoveringOurWorldActivity}
                           />
-                          <Image alt="kindi" 
+                          <Image
                             className="w-[20px] h-[24px] lg:w-[48px] lg:h-[48px]"
                             src={ReadingWritingActivity}
                           />
-                          <Image alt="kindi" 
+                          <Image
                             className="w-[20px] h-[24px] lg:w-[48px] lg:h-[48px]"
                             src={ExperimentsMathActivity}
                           />
