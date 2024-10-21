@@ -18,9 +18,11 @@ export default function Signup() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const router = useRouter();
+  const [loading, setLoading] = useState(false); // New state for loading
 
   const handleSignup = async (e) => {
     e.preventDefault();
+    setLoading(true); // Set loading to true when submitting starts
 
     try {
       const variables = { email, password };
@@ -34,6 +36,8 @@ export default function Signup() {
         router.push("/auth/signin"); // Redirect to signin after signup
       }
     } catch (error) {
+      setLoading(false); // Set loading to false if there's an error
+
       console.error("GraphQL error:", error.response?.errors || error.message);
       setError("Signup failed. Try again.");
     }
@@ -57,7 +61,13 @@ export default function Signup() {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <button type="submit">Sign Up</button>
+          <button
+            disabled={loading}
+            className="clarabutton hover:bg-hoverRed w-full bg-red"
+            type="submit"
+          >
+            {loading ? "Registering..." : "Sign Up"}{" "}
+          </button>
           {error && <p style={{ color: "red" }}>{error}</p>}
         </form>
       </div>

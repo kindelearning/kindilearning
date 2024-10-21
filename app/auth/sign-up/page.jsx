@@ -25,10 +25,14 @@ export default function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false); // New state for loading
+
   const router = useRouter();
 
   const handleSignup = async (e) => {
     e.preventDefault();
+    setLoading(true); // Set loading to true when submitting starts
+    
 
     try {
       const variables = { email, password };
@@ -42,6 +46,8 @@ export default function Signup() {
         router.push("/auth/sign-in"); // Redirect to signin after signup
       }
     } catch (error) {
+      setLoading(false); // Set loading to false if there's an error
+
       console.error("GraphQL error:", error.response?.errors || error.message);
       setError("Signup failed. Try again.");
     }
@@ -77,10 +83,11 @@ export default function Signup() {
                 required
               />
               <Button
+                disabled={loading}
                 className="clarabutton hover:bg-hoverRed w-full bg-red"
                 type="submit"
               >
-                Sign Up
+                {loading ? "Registering..." : "Sign Up"}{" "}
               </Button>
               {error && <p style={{ color: "red" }}>{error}</p>}
             </form>
@@ -141,11 +148,12 @@ export default function Signup() {
               required
             />
             <Button
-              className="clarabutton hover:bg-hoverRed w-full bg-red"
-              type="submit"
-            >
-              Sign Up
-            </Button>
+                disabled={loading}
+                className="clarabutton hover:bg-hoverRed w-full bg-red"
+                type="submit"
+              >
+                {loading ? "Registering..." : "Sign Up"}{" "}
+              </Button>
             {error && <p style={{ color: "red" }}>{error}</p>}
           </form>
         </div>

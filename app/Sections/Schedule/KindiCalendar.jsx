@@ -396,13 +396,13 @@ export default function Calendar() {
                         </div>
                         <div className="flex w-full gap-2 justify-between items-end">
                           <div className="flex w-full  rounded-[4px]  max-w-[40px] object-cover h-[40px] overflow-clip">
-                            <Image
+                            {/* <Image
                               src={event.thumbnail.url} // Make sure this matches the actual property name
                               alt="ScheduleEvent"
                               className="w-[40px] rounded-[4px] object-cover h-[40px]"
                               width={40}
                               height={40}
-                            />
+                            /> */}
                           </div>
 
                           <div className="flex w-full justify-between flex-col items-start">

@@ -15,10 +15,13 @@ export default function Signin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false); // New state for loading
   const router = useRouter();
 
   const handleSignin = async (e) => {
     e.preventDefault();
+    setLoading(true); // Set loading to true when submitting starts
+
     const res = await signIn("credentials", {
       email,
       password,
@@ -27,9 +30,11 @@ export default function Signin() {
 
     console.log("Sign In Response:", res);
     if (res?.ok) {
+      setLoading(false); // Set loading to false if there's an error
       router.push("/p/activities");
     } else {
       setError("Invalid email or password.");
+      setLoading(false); // Set loading to false if there's an error
       console.log("Signin failed", res);
     }
   };
@@ -63,10 +68,11 @@ export default function Signin() {
                 required
               />
               <Button
+                disabled={loading}
                 className="clarabutton hover:bg-hoverRed w-full bg-red"
                 type="submit"
               >
-                Sign In
+                {loading ? "Signing In..." : "Sign In"}{" "}
               </Button>
               {error && <p style={{ color: "red" }}>{error}</p>}
             </form>
@@ -127,10 +133,11 @@ export default function Signin() {
               required
             />
             <Button
+              disabled={loading}
               className="clarabutton hover:bg-hoverRed w-full bg-red"
               type="submit"
             >
-              Sign In
+              {loading ? "Signing In..." : "Sign In"}{" "}
             </Button>
             {error && <p style={{ color: "red" }}>{error}</p>}
           </form>
@@ -139,114 +146,4 @@ export default function Signin() {
       </section>
     </>
   );
-}
-
-{
-  /* <Dialog className="p-0 w-full rounded-[24px]">
-  <DialogTrigger className="w-full p-0">
-    <div className="flex w-full px-0 py-8">
-      <Button className="w-full bg-red hover:bg-red clarabutton rounded-2xl shadow border-2 border-white">
-        Login
-      </Button>
-    </div>
-  </DialogTrigger>
-  <DialogContent className="w-full p-0 rounded-[24px] flex items-center justify-center">
-    <DialogHeader className="p-0">
-      <DialogDescription className="flex flex-row  gap-0 h-[50vh] items-center justify-between w-full">
-        <div className="w-full flex gap-8 flex-col justify-center items-center bg-[url('/Images/BGVectors.svg')] h-full">
-          <div className="text-[#0a1932] text-[32px] font-semibold flex flex-col justify-center items-center font-fredoka leading-10">
-            Verify Your Email
-          </div>
-          <div className="w-full px-4 justify-end items-start text-center">
-            <span className="text-[#0a1932] text-sm font-medium font-fredoka leading-tight">
-              Please check your email Tom@example.com. We sent you the
-              verification code.
-            </span>{" "}
-            <Link
-              href="/auth/sign-in"
-              className="text-red text-sm font-semibold font-fredoka leading-tight"
-            >
-              Resend
-            </Link>
-          </div>
-          <div className="flex">
-            <InputOTP maxLength={6} pattern={REGEXP_ONLY_DIGITS_AND_CHARS}>
-              <InputOTPGroup>
-                <InputOTPSlot index={0} />
-                <InputOTPSlot index={1} />
-                <InputOTPSlot index={2} />
-                <InputOTPSlot index={3} />
-                <InputOTPSlot index={4} />
-                <InputOTPSlot index={5} />
-              </InputOTPGroup>
-            </InputOTP>
-          </div>
-          <div className="flex w-full px-8">
-            <Link href="/" className="w-full">
-              <Button className="w-full bg-red hover:bg-red clarabutton rounded-2xl shadow border-2 border-white">
-                Submit
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </DialogDescription>
-    </DialogHeader>
-  </DialogContent>
-</Dialog>; */
-}
-
-// laptop Verification
-{
-  /* <Dialog className="p-0 w-full rounded-[24px]">
-  <DialogTrigger className="w-full p-0">
-    <div className="flex w-full px-8">
-      <Button className="w-full bg-red hover:bg-red clarabutton rounded-2xl shadow border-2 border-white">
-        Login
-      </Button>
-    </div>
-  </DialogTrigger>
-  <DialogContent className="w-full p-0 rounded-[24px] max-w-[1000px] flex items-center justify-center">
-    <DialogHeader className="p-0">
-      <DialogDescription className="flex flex-row  gap-0 h-[70vh] items-center justify-between w-full">
-        <div className="w-full flex gap-8 flex-col justify-center items-center bg-[url('/Images/BGVectors.svg')] h-full min-w-[500px]">
-          <div className="text-[#0a1932] text-[50px] font-semibold flex flex-col justify-center items-center font-fredoka leading-10">
-            Verify Your Email
-          </div>
-          <div className="w-full px-4 justify-end items-start text-center">
-            <span className="text-[#0a1932] text-sm font-medium font-fredoka leading-tight">
-              Please check your email Tom@example.com. We sent you the
-              verification code.
-            </span>{" "}
-            <Link
-              href="/auth/sign-in"
-              className="text-red text-sm font-semibold font-fredoka leading-tight"
-            >
-              Resend
-            </Link>
-          </div>
-          <div className="flex">
-            <InputOTP maxLength={6} pattern={REGEXP_ONLY_DIGITS_AND_CHARS}>
-              <InputOTPGroup>
-                <InputOTPSlot index={0} />
-                <InputOTPSlot index={1} />
-                <InputOTPSlot index={2} />
-                <InputOTPSlot index={3} />
-                <InputOTPSlot index={4} />
-                <InputOTPSlot index={5} />
-              </InputOTPGroup>
-            </InputOTP>
-          </div>
-          <div className="flex w-full px-8">
-            <Link href="/" className="w-full">
-              <Button className="w-full bg-red hover:bg-red clarabutton rounded-2xl shadow border-2 border-white">
-                Submit
-              </Button>
-            </Link>
-          </div>
-        </div>
-        <DynamicCard />
-      </DialogDescription>
-    </DialogHeader>
-  </DialogContent>
-</Dialog>; */
 }
