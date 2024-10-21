@@ -30,6 +30,8 @@ const ReviewForm = () => {
   const [content, setContent] = useState("");
   const [rating, setRating] = useState(0);
   const [message, setMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false); // Add loading state
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -40,6 +42,8 @@ const ReviewForm = () => {
       content,
       rating: parseInt(rating, 10),
     };
+
+    setIsLoading(true); // Start loading
 
     try {
       const response = await fetch("/api/reviews", {
@@ -56,6 +60,8 @@ const ReviewForm = () => {
         setMessage(
           `Failed to submit review: ${data.message || "Unknown error"}`
         );
+        setIsLoading(false); // Stop loading on error
+
         return;
       }
 
@@ -68,6 +74,8 @@ const ReviewForm = () => {
       console.error("Error submitting review:", error);
       setMessage("Failed to submit review. Please try again.");
     }
+    setIsLoading(false); // Stop loading after submission
+
   };
 
   return (
@@ -76,16 +84,34 @@ const ReviewForm = () => {
       onSubmit={handleSubmit}
     >
       <div className="claracontainer w-full py-6 flex flex-col gap-4 justify-between items-start">
-        <Image
-          alt="Kindi"
-          src={ShopImage}
-          className="w-full object-contain overflow-clip flex h-[200px]"
-        />
+        <div className="w-full object-contain overflow-clip">
+          <Image
+            alt="Kindi"
+            src={ShopImage}
+            className="w-full rounded-[8px] object-cover overflow-clip flex h-[200px]"
+          />
+        </div>
         <div className="flex w-full flex-col gap-2 justify-start items-start claracontainer">
           <div className="claracontainer w-full flex flex-col gap-2 justify-between items-start">
             <div className="w-full text-[#3f3a64] clarabodyTwo font-fredoka capitalize">
               Add your Comments
             </div>{" "}
+            <div className="w-full flex lg:flex-row flex-col gap-2 justify-between items-center">
+              <Input
+                type="text"
+                placeholder="Name..."
+                value={name}
+                className="border-2 focus:border-black focus-within:ring-0 ring-offset-0 focus-visible:ring-0 ring-white border-[#b4b4b4] "
+                onChange={(e) => setName(e.target.value)}
+              />
+              <Input
+                type="email"
+                placeholder="Email"
+                value={email}
+                className="border-2 focus:border-black focus-within:ring-0 ring-offset-0 focus-visible:ring-0 ring-white border-[#b4b4b4] "
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
             <Textarea
               placeholder="Add your review..."
               className="w-full p-4 focus-within:ring-0 focus-visible:ring-0 ring-white ring-offset-0 text=[#0f172a] py-4 text-start rounded-lg border-2 border-[#b4b4b4] justify-center items-center gap-2.5 inline-flex"
@@ -139,8 +165,10 @@ const ReviewForm = () => {
         </div>
       </div>
 
-      <Button className="clarabutton bg-red hover:bg-hoverRed" type="submit">
-        Submit Review
+      <Button disabled={isLoading}  className="clarabutton bg-red hover:bg-hoverRed" type="submit">
+        {/* Submit Review */}
+        {isLoading ? "Submitting..." : "Submit Review"} {/* Change text based on loading */}
+
       </Button>
       {message && <p>{message}</p>}
     </form>
@@ -283,7 +311,7 @@ export default async function ProductDetailPage({ params }) {
               <div className="text-[#0a1932] text-[20px] lg:text-[28px]  font-semibold font-fredoka text-start w-full leading-loose">
                 Customer Reviews
               </div>
-              <Dialog>
+              <Dialog className="p-2 lg:p-4">
                 <DialogTrigger>
                   <div className="text-center w-[max-content]  text-red clarabodyTwo font-semibold capitalize ">
                     Write a Review
