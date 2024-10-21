@@ -99,6 +99,10 @@
   .claracontainer {
     width: 100%;
   }
+  .dragging {
+    background-color: #d1d5db; /* light gray */
+    border: 2px dashed #6b7280; /* gray border */
+  }
   .skiptranslate {
     position: fixed !important; /* Ensure it’s fixed */
     left: 0 !important; /* Align to left */
