@@ -129,6 +129,12 @@ const LikeButton = () => {
   );
 };
 
+// Helper function to generate random numbers within a range
+const getRandomNumber = (min, max) => {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+};
+
+
 export default async function BlogDetailPage({ params }) {
   const { id } = params;
   const [blog, setBlog] = useState(null);
@@ -136,6 +142,8 @@ export default async function BlogDetailPage({ params }) {
   const [isLiking, setIsLiking] = useState(false);
   const randomDate = getRandomPastDate();
   const randomLikes = getRandomLikes(0, 100); // Set your desired range
+  const randomComments = getRandomNumber(10, 100); // Adjust range as needed
+  const randomViews = getRandomNumber(1000, 10000); // Adjust range as needed
 
   useEffect(() => {
     async function fetchData() {
@@ -204,9 +212,9 @@ export default async function BlogDetailPage({ params }) {
                     >
                       <Image src={LikeIcon} />
                     </button>
-                    <span className="ml-2 text-[#0a1932] font-medium">
+                    <span className="ml-2 text-[#0a1932] font-fredoka font-medium">
                       {/* {blog.likeCount} */}
-                      {likeCount}
+                      {randomLikes}
                     </span>
                   </div>
                   <button href="#comment_Section" className="flex items-center">
@@ -216,6 +224,7 @@ export default async function BlogDetailPage({ params }) {
                     >
                       <Image src={CommentIcon || "129"} />
                     </button>
+                    {randomComments}+
                   </button>
                 </div>
 

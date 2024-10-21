@@ -36,6 +36,7 @@ function SearchInput({ value, onChange }) {
   );
 }
 
+
 export default function Community() {
   const [blogs, setBlogs] = useState([]); // Initialize as an empty array
   const [searchTerm, setSearchTerm] = useState("");
@@ -91,7 +92,7 @@ export default function Community() {
           </div>
 
           {/* Search Input */}
-          <div className="w-full px-4 md:px-2 lg:px-0">
+          <div className="w-full px-0 md:px-2 lg:px-0">
             <SearchInput
               value={searchTerm}
               onChange={handleSearchChange}
