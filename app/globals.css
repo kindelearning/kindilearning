@@ -99,9 +99,21 @@
   .claracontainer {
     width: 100%;
   }
-  .dragging {
-    background-color: #d1d5db; /* light gray */
-    border: 2px dashed #6b7280; /* gray border */
+  /* .dragging {
+    background-color: #d1d5db;
+    border: 2px dashed #6b7280; 
+  } */
+  .milestone-dot {
+    width: 16px;
+    height: 16px;
+    background-color: #029871;
+    border: 3px solid #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  }
+
+  svg path {
+    transition: stroke-dashoffset 0.3s ease-in-out;
   }
   .skiptranslate {
     position: fixed !important; /* Ensure it’s fixed */

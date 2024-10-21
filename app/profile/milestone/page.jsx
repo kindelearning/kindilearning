@@ -11,7 +11,7 @@ import {
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import { GraphQLClient, gql } from "graphql-request";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSession } from "next-auth/react";
 
 /**
@@ -112,6 +112,141 @@ const MNode = ({
     </>
   );
 };
+
+const milestoneData = [
+  {
+    id: 1,
+    title: "Kickoff Meeting",
+    description:
+      "Initial meeting to understand project scope and requirements.",
+    isCompleted: false,
+  },
+  {
+    id: 2,
+    title: "Design Phase",
+    description: "Create wireframes and design mockups for the project.",
+    isCompleted: false,
+  },
+  {
+    id: 3,
+    title: "Development Phase",
+    description: "Start coding the project based on the approved designs.",
+    isCompleted: false,
+  },
+  {
+    id: 4,
+    title: "Testing & QA",
+    description: "Conduct thorough testing to ensure project stability.",
+    isCompleted: false,
+  },
+  {
+    id: 5,
+    title: "Project Launch",
+    description: "Deploy the project to production and perform final checks.",
+    isCompleted: false,
+  },
+];
+
+const Milestone = ({ title, description, isCompleted, position }) => {
+  return (
+    <div
+      className={`flex gap-2 ${
+        position === "left" ? "flex-row" : "flex-row-reverse"
+      } items-center`}
+    >
+      {/* Line connecting to the next milestone */}
+      <div className="w-4 h-4 bg-blue-500 rounded-full flex justify-center items-center">
+        <div
+          className={`w-2 h-2 m-2 rounded-full ${
+            isCompleted ? "bg-green-500" : "bg-red-500"
+          }`}
+        ></div>
+      </div>
+      <div
+        className={`p-4 mb-4 border rounded-lg w-[300px] ${
+          isCompleted
+            ? "bg-green-100 border-green-400"
+            : "bg-gray-100 border-gray-400"
+        }`}
+      >
+        <h3 className="text-lg font-semibold text-gray-800">{title}</h3>
+        <p className="text-sm text-gray-600">{description}</p>
+        <div
+          className={`mt-2 text-sm font-medium ${
+            isCompleted ? "text-green-600" : "text-red-600"
+          }`}
+        >
+          {isCompleted ? "Completed" : "In Progress"}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const MilestoneList = () => {
+  const pathRef = useRef(null);
+
+  // Calculate a single continuous path
+  useEffect(() => {
+    const path = pathRef.current;
+    if (path) {
+      let d = "M 50 50 "; // Starting point
+      milestoneData.forEach((_, index) => {
+        // Calculate path coordinates based on index
+        const x = index % 2 === 0 ? 80 : 20; // Alternate x-axis values for zig-zag
+        const y = 150 * (index + 1); // Increment y-axis for each milestone
+        d += `Q 50 ${y - 75}, ${x} ${y} `;
+      });
+      path.setAttribute("d", d);
+    }
+  }, []);
+
+  return (
+    <div className="p-6 max- w-full mx-auto relative">
+      <h2 className="text-2xl font-bold text-gray-800 mb-8 text-center">
+        Project Milestones
+      </h2>
+      <div className="relative flex flex-col items-center">
+        {/* SVG Path for the zig-zag path */}
+        <svg
+          className="absolute w-full h-full"
+          style={{ top: 0, left: 0, zIndex: -1 }}
+        >
+          <path
+            ref={pathRef}
+            stroke="#888"
+            strokeWidth="3"
+            strokeDasharray="6,4"
+            fill="none"
+          />
+        </svg>
+
+        {milestoneData.map((milestone, index) => (
+          <div
+            key={milestone.id}
+            className={`relative mb-8 w-full flex ${
+              index % 2 === 0 ? "justify-start" : "justify-end"
+            }`}
+            style={{ top: `${index * 150}px` }} // Vertical positioning
+          >
+            {/* Render each milestone */}
+            <Milestone
+              title={milestone.title}
+              description={milestone.description}
+              isCompleted={milestone.isCompleted}
+              position={index % 2 === 0 ? "left" : "right"}
+            />
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-6 text-center">
+      </div>
+    </div>
+  );
+};
+
+
 
 const CurvePath = () => {
   // Number of nodes
@@ -221,25 +356,7 @@ export default function MileStone() {
     }
   };
 
-  const milestones = [
-    {
-      name: "Milestone 1",
-      bgColor: "green-500",
-      textColor: "white",
-    },
-    {
-      name: "Milestone 2",
-      bgColor: "blue-500",
-      textColor: "white",
-    },
-    {
-      name: "Milestone 3",
-      bgColor: "purple-500",
-      textColor: "white",
-    },
-  ];
   const [selectedOption, setSelectedOption] = useState(options[0]);
-
   const handleOptionChange = (option) => {
     setSelectedOption(option);
   };
@@ -289,6 +406,25 @@ export default function MileStone() {
             )}
           </div>
           <ProfileRoute />
+          {/* <div className="flex w-full flex-col gap-4">
+            {milestoneData.map((milestone, index) => (
+              <div
+                key={milestone.id}
+                className={`relative mb-8 ${
+                  index % 2 === 0 ? "text-left" : "text-right"
+                }`}
+              >
+                <Milestone
+                  title={milestone.title}
+                  description={milestone.description}
+                  isCompleted={milestone.isCompleted}
+                  position={index % 2 === 0 ? "left" : "right"}
+                />
+              </div>
+            ))}
+          </div> */}
+          <MilestoneList />
+
           <GroupChip
             options={options}
             selectedOption={selectedOption}
