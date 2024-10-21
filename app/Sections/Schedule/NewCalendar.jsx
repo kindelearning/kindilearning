@@ -99,15 +99,18 @@ const getAllActivities = async () => {
   }
 };
 
-
-
 export default function NewCalendar() {
   const { data: session } = useSession();
   const [currentDate, setCurrentDate] = useState(new Date());
   const today = new Date();
+  const [draggedEvent, setDraggedEvent] = useState(null);
+  const [touchStartPosition, setTouchStartPosition] = useState({ x: 0, y: 0 });
+
+  const isBrowser = typeof window !== "undefined";
 
   // Initial loading of events from localStorage
   const [events, setEvents] = useState(() => {
+    if (!isBrowser) return [];
     try {
       const savedEvents = localStorage.getItem("events");
       return savedEvents ? JSON.parse(savedEvents) : [];
@@ -231,6 +234,63 @@ export default function NewCalendar() {
       return eventDate === currentDay;
     });
   };
+
+  const onDragStart = (e, event) => {
+    // Support for mouse dragging
+    e.dataTransfer.setData("text/plain", event.id);
+    setDraggedEvent(event);
+  };
+
+  const onTouchStart = (e, event) => {
+    // Prevent default to avoid conflicts
+    e.preventDefault();
+    setDraggedEvent(event);
+    setTouchStartPosition({ x: e.touches[0].clientX, y: e.touches[0].clientY });
+  };
+
+  const onTouchMove = (e) => {
+    e.preventDefault();
+    const touch = e.touches[0];
+    const draggedElement = document.getElementById(`event-${draggedEvent.id}`);
+
+    if (draggedElement) {
+      // Update the position of the element based on touch movement
+      draggedElement.style.position = "absolute";
+      draggedElement.style.top = `${touch.clientY - touchStartPosition.y}px`;
+      draggedElement.style.left = `${touch.clientX - touchStartPosition.x}px`;
+    }
+  };
+
+  const onTouchEnd = (e) => {
+    e.preventDefault();
+    // Logic to drop event to a new day
+    const touch = e.changedTouches[0];
+    const dropTarget = document.elementFromPoint(touch.clientX, touch.clientY);
+    if (dropTarget && dropTarget.classList.contains("calendar-day")) {
+      // Handle moving the event to the new day
+      const newDay = dropTarget.getAttribute("data-day");
+      moveEventToNewDay(draggedEvent, newDay);
+    }
+    setDraggedEvent(null);
+  };
+
+  const onDrop = (e, day) => {
+    e.preventDefault();
+    const eventId = e.dataTransfer.getData("text");
+    // Move the event to a new day
+    moveEventToNewDay(eventId, day);
+    setDraggedEvent(null);
+  };
+
+  const onDragOver = (e) => {
+    e.preventDefault();
+  };
+
+  const moveEventToNewDay = (event, newDay) => {
+    // Logic to update event date
+    console.log(`Moving event ${event.id} to ${newDay}`);
+  };
+
   const days = generateCalendar();
 
   return (
@@ -277,6 +337,28 @@ export default function NewCalendar() {
         </button>
       </div>
 
+      {/* {["Day 1", "Day 2", "Day 3"].map((day) => (
+        <div
+          key={day}
+          className="calendar-day"
+          data-day={day}
+          onDragOver={onDragOver}
+          onDrop={(e) => onDrop(e, day)}
+        >
+          <div
+            id={`event-1`}
+            draggable="true"
+            onDragStart={(e) => onDragStart(e, { id: 1 })}
+            onTouchStart={(e) => onTouchStart(e, { id: 1 })}
+            onTouchMove={onTouchMove}
+            onTouchEnd={onTouchEnd}
+            className="event"
+          >
+            Event 1
+          </div>
+        </div>
+      ))} */}
+
       {/* Calendar Top Weekdays  */}
       <div className="flex-col flex lg:grid font-fredoka p-0 lg:p-4 bg-[#eaeaf5] lg:bg-[#DCDCE8] rounded-[20px] w-full grid-cols-7 gap-0 text-center">
         {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
@@ -302,8 +384,9 @@ export default function NewCalendar() {
           return (
             <div
               key={index}
-              // onDrop={(e) => handleDrop(e, dayObj)}
-              // onTouchOver={(e) => handleTouchOver(e, dayObj)}
+              data-day={dayObj.day}
+              onDragOver={onDragOver}
+              onDrop={(e) => onDrop(e, dayObj.day)}
               className={`p-2 gap-[2px] flex flex-col font-fredoka justify-start items-start border-[1.2px] border-[white] w-full min-h-[40px] h-fit lg:h-[140px] ${
                 !dayObj.isCurrentMonth
                   ? "bg-[#EFEFEF] text-[#8C8C8C] cursor-not-allowed"
@@ -331,7 +414,10 @@ export default function NewCalendar() {
                   key={event.id}
                   draggable
                   className="w-full bg-white shadow-md rounded-lg p-2 text-sm"
-                  // onTouchStart={(e) => handleDragStart(e, event.id)}
+                  onDragStart={(e) => onDragStart(e, event)}
+                  onTouchStart={(e) => onTouchStart(e, event)}
+                  onTouchMove={onTouchMove}
+                  onTouchEnd={onTouchEnd}
                 >
                   {/* Show only the title if there are multiple events, otherwise show title and description */}
                   {eventCount > 1 ? (
