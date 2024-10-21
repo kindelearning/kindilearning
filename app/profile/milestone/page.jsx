@@ -1,7 +1,6 @@
 "use client";
 
-import { options } from "@/app/constant/menu";
-import { GroupChip } from "@/app/shop";
+import { cardData, options, progressData } from "@/app/constant/menu";
 import { Button } from "@/components/ui/button";
 import {
   KindiHeart,
@@ -11,33 +10,82 @@ import {
 } from "@/public/Images";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
-import React, { useState } from "react";
+import { GraphQLClient, gql } from "graphql-request";
+import React, { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 
-const ProfileRoute = ({ image, iconBackgroundColor = "#F05C5C", title }) => {
+/**
+ * @Main_account_Credentials
+ */
+const HYGRAPH_ENDPOINT =
+  "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";
+const HYGRAPH_TOKEN =
+  "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImdjbXMtbWFpbi1wcm9kdWN0aW9uIn0.eyJ2ZXJzaW9uIjozLCJpYXQiOjE3MjcwNjQxNzcsImF1ZCI6WyJodHRwczovL2FwaS1hcC1zb3V0aC0xLmh5Z3JhcGguY29tL3YyL2NtMWRvbTFoaDAzeTEwN3V3d3hydXRwbXovbWFzdGVyIiwibWFuYWdlbWVudC1uZXh0LmdyYXBoY21zLmNvbSJdLCJpc3MiOiJodHRwczovL21hbmFnZW1lbnQtYXAtc291dGgtMS5oeWdyYXBoLmNvbS8iLCJzdWIiOiI2Yzg4NjI5YS1jMmU5LTQyYjctYmJjOC04OTI2YmJlN2YyNDkiLCJqdGkiOiJjbTFlaGYzdzYwcmZuMDdwaWdwcmpieXhyIn0.YMoI_XTrCZI-C7v_FX-oKL5VVtx95tPmOFReCdUcP50nIpE3tTjUtYdApDqSRPegOQai6wbyT0H8UbTTUYsZUnBbvaMd-Io3ru3dqT1WdIJMhSx6007fl_aD6gQcxb-gHxODfz5LmJdwZbdaaNnyKIPVQsOEb-uVHiDJP3Zag2Ec2opK-SkPKKWq-gfDv5JIZxwE_8x7kwhCrfQxCZyUHvIHrJb9VBPrCIq1XE-suyA03bGfh8_5PuCfKCAof7TbH1dtvaKjUuYY1Gd54uRgp8ELZTf13i073I9ZFRUU3PVjUKEOUoCdzNLksKc-mc-MF8tgLxSQ946AfwleAVkFCXduIAO7ASaWU3coX7CsXmZLGRT_a82wOORD8zihfJa4LG8bB-FKm2LVIu_QfqIHJKq-ytuycpeKMV_MTvsbsWeikH0tGPQxvAA902mMrYJr9wohOw0gru7mg_U6tLOwG2smcwuXBPnpty0oGuGwXWt_D6ryLwdNubLJpIWV0dOWF8N5D6VubNytNZlIbyFQKnGcPDw6hGRLMw2B7-1V2RpR6F3RibLFJf9GekI60UYdsXthAFE6Xzrlw03Gv5BOKImBoDPyMr0DCzneyAj9KDq4cbNNcihbHl1iA6lUCTNY3vkCBXmyujXZEcLu_Q0gvrAW3OvZMHeHY__CtXN6JFA";
+
+const client = new GraphQLClient(HYGRAPH_ENDPOINT, {
+  headers: {
+    Authorization: `Bearer ${HYGRAPH_TOKEN}`,
+  },
+});
+
+const GET_ACCOUNT_BY_EMAIL = gql`
+  query GetAccountByEmail($email: String!) {
+    account(where: { email: $email }) {
+      name
+      username
+      email
+      profilePicture {
+        url
+      }
+      isVerified
+    }
+  }
+`;
+
+const ProfileRoute = () => {
+  const [currentIndex, setCurrentIndex] = useState(0); // State to track the current index
+
+  // Function to go to the previous item
+  const handlePrevious = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? progressData.length - 1 : prevIndex - 1
+    );
+  };
+
+  // Function to go to the next item
+  const handleNext = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === progressData.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
+  const { id, icon, title, backgroundColor } = progressData[currentIndex]; // Get current data
+
   return (
-    <>
-      <div className="w-full  lg:max-w-[340px] cursor-pointer px-4 py-3 gap-2 bg-white rounded-[12px] justify-between items-center inline-flex">
-        <ChevronLeft className="w-[20px] h-[20px] text-red" />
-        <div className="justify-start items-center w-full gap-[12px] flex">
-          <div
-            className="w-[24px] flex justify-center items-center h-[24px] rounded-[4px]"
-            style={{ backgroundColor: iconBackgroundColor }}
-          >
-            <Image
-              alt="Kindi"
-              src={image || KindiHeart}
-              className="w-[16px] h-[16px] p-[1px]"
-            />
-          </div>
-          <div className="text-[#0a1932] text-[14px] font-semibold font-fredoka leading-tight">
-            {title || "Emotional & Social Strength"}
-          </div>
+    <div className="w-full lg:max-w-[340px] cursor-pointer px-4 py-3 gap-2 bg-white rounded-[12px] justify-between items-center inline-flex">
+      <ChevronLeft
+        className="w-[20px] hover:bg-red hover:text-white rounded-full h-[20px] text-red"
+        onClick={handlePrevious}
+      />
+      <div className="flex w-[max-content] items-center gap-[12px]">
+        <div
+          className="w-[24px] flex justify-center items-center h-[24px] rounded-[4px]"
+          style={{ backgroundColor: `#${backgroundColor}` }}
+        >
+          <Image alt={title} src={icon} className="w-[16px] h-[16px] p-[1px]" />
         </div>
-        <ChevronRight className="w-[20px] h-[20px] text-red" />
+        <div className="text-[#0a1932] w-[max-content] text-[14px] font-semibold font-fredoka leading-tight">
+          {title || "Emotional & Social Strength"}
+        </div>
       </div>
-    </>
+      <ChevronRight
+        className="w-[20px] hover:bg-red hover:text-white rounded-full h-[20px] text-red"
+        onClick={handleNext}
+      />
+    </div>
   );
 };
+
 const MNode = ({
   mName = "Name",
   bgColor = "#029871",
@@ -83,14 +131,12 @@ const CurvePath = () => {
 
     // Add node to nodes array
     nodes.push(
-
       <MNode
         key={i}
         mName={`Node ${i + 1}`}
         bgColor="pink-500"
         textColor="white"
         borderColor="pink-700"
-
       />
     );
 
@@ -137,34 +183,44 @@ const CurvePath = () => {
   );
 };
 
-const UserImages = () => {
+const GroupChip = ({ options, selectedOption, onChange }) => {
   return (
-    <div className="flex w-full flex-col justify-center items-center">
-      <div className="flex w-full h-[160px] flex-row justify-center gap-0 items-center relative">
-        <Image
-          alt="Kindi"
-          src={progressImage01}
-          className="cursor-pointer w-20 -mr-[32px] h-20"
-        />
-        <Image
-          alt="Kindi"
-          src={progressImage02}
-          className="cursor-pointer w-30 z-10 h-30"
-        />
-        <Image
-          alt="Kindi"
-          src={progressImage03}
-          className="cursor-pointer w-20 -ml-[32px] h-20"
-        />
+    <>
+      <div className="flex w-full  overflow-x-scroll scrollbar-hidden justify-start items-center space-x-2">
+        {options.map((option, index) => (
+          <div
+            className={`bg-red text-white px-4 py-1 rounded-full min-w-[max-content] cursor-pointer`}
+            key={index}
+            active={option === selectedOption}
+            onClick={() => onChange(option)}
+          >
+            {option}
+          </div>
+        ))}
       </div>
-      <div className="w-full text-center text-[#0a1932] text-[40px] font-semibold font-fredoka leading-normal">
-        Jacob
-      </div>
-    </div>
+    </>
   );
 };
 
-const MileStone = () => {
+export default function MileStone() {
+  const { data: session, status } = useSession();
+  const [profileData, setProfileData] = useState(null);
+
+  useEffect(() => {
+    if (session && session.user) {
+      fetchUserData(session.user.email);
+    }
+  }, [session]);
+
+  const fetchUserData = async (email) => {
+    try {
+      const data = await client.request(GET_ACCOUNT_BY_EMAIL, { email });
+      setProfileData(data.account);
+    } catch (error) {
+      console.error("Error fetching profile data:", error);
+    }
+  };
+
   const milestones = [
     {
       name: "Milestone 1",
@@ -191,7 +247,47 @@ const MileStone = () => {
     <>
       <section className="w-full pb-24 h-auto bg-[#EAEAF5] items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">
         <div className="claracontainer items-center justify-center p-4 md:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-8">
-          <UserImages />
+          {/* <UserImages /> */}
+          <div className="flex w-full flex-col justify-center items-center">
+            <div className="flex w-full h-[160px] flex-row justify-center gap-0 items-center relative">
+              <Image
+                alt="Kindi"
+                src={progressImage01}
+                className="cursor-pointer w-20 object-cover rounded-full border-2 border-white -mr-[32px] h-20"
+              />
+              {profileData ? (
+                <Image
+                  alt="Kindi"
+                  src={profileData.profilePicture?.url}
+                  width={100}
+                  height={100}
+                  className="cursor-pointer w-30 h-30 border-gradient-to-r from-pink-500 to-yellow-500 border-2 border-red rounded-full z-10"
+                />
+              ) : (
+                <Image
+                  alt="Kindi"
+                  src={progressImage02}
+                  width={100}
+                  height={100}
+                  className="cursor-pointer w-30 rounded-full border-2 border-white z-10 h-30"
+                />
+              )}
+              <Image
+                alt="Kindi"
+                src={progressImage03}
+                className="cursor-pointer w-20 -ml-[32px] h-20"
+              />
+            </div>
+            {profileData ? (
+              <div className="w-full text-center text-[#0a1932] text-[40px] font-semibold font-fredoka leading-normal">
+                {profileData.name}
+              </div>
+            ) : (
+              <div className="w-full text-center text-[#0a1932] text-[40px] font-semibold font-fredoka leading-normal">
+                Jacob
+              </div>
+            )}
+          </div>
           <ProfileRoute />
           <GroupChip
             options={options}
@@ -200,40 +296,10 @@ const MileStone = () => {
           />
           {/* Curved Path */}
           <div className="flex flex-col w-full px-4 rounded-md justify-center items-center">
-            {/* <svg
-              width="1332"
-              height="232"
-              viewBox="0 0 1332 232"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M2.91629 225C-6.00759 164.333 46.4811 57 327.827 113"
-                stroke="#F05C5C"
-                stroke-width="3"
-                stroke-linejoin="round"
-                strokeDasharray="2 8"
-              />
-              <circle cx="327.827" cy="113" r="10" fill="#F05C5C" />
-            </svg>
-
-            <MNode
-              mName="Node 5"
-              bgColor="pink-500"
-              textColor="white"
-              borderColor="pink-700"
-              style={{
-                position: "absolute",
-                top: "109.471px",
-                left: "227.691px",
-              }}
-            /> */}
             <CurvePath />
           </div>
         </div>
       </section>
     </>
   );
-};
-
-export default MileStone;
+}

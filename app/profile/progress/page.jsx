@@ -51,7 +51,7 @@ const SubProfileRoutes = ({
   );
 };
 
-const Page = () => {
+export default function Progress() {
   return (
     <>
       <section className="w-full h-auto bg-[#EAEAF5] items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">
@@ -114,7 +114,7 @@ const Page = () => {
               iconBackgroundColor="#019ACF"
               title="Physical Agility"
             />
-            <SubProfileRoutes
+            <SubProfileRoutes 
               iconBackgroundColor="#029871"
               title="Discovering our world"
             />
@@ -136,4 +136,3 @@ const Page = () => {
   );
 };
 
-export default Page;

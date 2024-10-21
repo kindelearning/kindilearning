@@ -306,6 +306,64 @@ export const developmentAreas = [
   "Experiments & Math",
 ];
 
+export const progressData = [
+  {
+    id: 1,
+    icon: KindiHeart,
+    title: "Emotional & Social Strength",
+    backgroundColor: "f05c5c",
+  },
+  {
+    id: 2,
+
+    icon: ConfidenceIndependence,
+    title: "Confidence & Independence",
+
+    backgroundColor: "19262d",
+  },
+  {
+    id: 3,
+    icon: SpeechLanguage,
+    title: "Speech & Language",
+
+    backgroundColor: "036e9a",
+  },
+  {
+    id: 4,
+    icon: PhysicalAgility,
+    title: "Physical Agility",
+    backgroundColor: "b05282",
+  },
+  {
+    id: 5,
+    icon: ReadingWriting,
+    title: "Reading & Writing",
+
+    backgroundColor: "a7b568",
+  },
+  {
+    id: 6,
+    icon: DiscoveringWorld,
+    title: "Discovering Our World",
+
+    backgroundColor: "0aab84",
+  },
+  {
+    id: 7,
+    icon: CreativityImagination,
+    title: "Creativity & Imagination",
+
+    backgroundColor: "f0c84a",
+  },
+  {
+    id: 8,
+    icon: Experiments,
+    title: "Experiments & Math",
+
+    backgroundColor: "0f172a",
+  },
+];
+
 export const cardData = [
   {
     icon: KindiHeart,
@@ -320,7 +378,6 @@ export const cardData = [
       </ul>
     ),
     backgroundColor: "f05c5c",
-    // Replace with your icon component
   },
   {
     icon: ConfidenceIndependence,

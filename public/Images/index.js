@@ -12,6 +12,7 @@ import ProfessionalThumb from "./ProfessionalThumb.svg";
 import FamilyPlusThumb from "./FamilyPlusThumb.svg";
 import SlideLearn from "./SlideLearn.svg";
 import SlideGrow from "./SlideGrow.svg";
+
 import SlideThrive from "./SlideThrive.svg";
 import SlideMain from "./SlideMain.svg";
 import SlidePlay from "./SlidePlay.svg";
@@ -48,7 +49,7 @@ import ActivityBlack from "./ActivityBlack.svg";
 import TimerBlack from "./TimerBlack.svg";
 import Clock from "./Clock.svg";
 import Milestone from "./Milestone.svg";
-import Progress from "./Progress.svg";
+import ProfileProgress from "./ProfileProgress.svg";
 import Achievement from "./Achievement.svg";
 import VerifiedIcon from "./VerifiedIcon.svg";
 
@@ -334,7 +335,7 @@ export {
   Payments,
   Support,
   BlogThumbTwo,
-  Progress,
+  ProfileProgress,
   Achievement,
   BlogThumbThree,
   ActivityImage,

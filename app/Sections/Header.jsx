@@ -7,6 +7,7 @@ import {
   Milestone,
   ProfessionalThumb,
   ProfileDP,
+  ProfileProgress,
   progressImage02,
   User,
 } from "@/public/Images";
@@ -55,12 +56,12 @@ const MileStone = () => {
   return (
     <>
       <Link
-        href="/"
+        href="/profile/milestone"
         className="w-full h-[80px] bg-[#3f3d91] justify-center items-center gap-1 flex flex-col rounded-xl border-3 border-[#85829c]"
       >
         <Image src={Milestone} width={40} height={40} />
         <div className="text-center w-full text-white text-xs font-normal font-fredoka leading-none">
-          Milestones
+          MileStone
         </div>{" "}
       </Link>
     </>
@@ -71,12 +72,12 @@ const Progress = () => {
   return (
     <>
       <Link
-        href="/"
+        href="/profile/progress"
         className="w-full h-[80px] bg-[#FF8E00] justify-center items-center gap-1 flex flex-col rounded-xl border-3 border-[#f9d09b]"
       >
-        <Image src={progressImage02} width={40} height={40} />
+        <Image src={ProfileProgress} width={40} height={40} />
         <div className="text-center w-full text-white text-xs font-normal font-fredoka leading-none">
-          Milestones
+          Progress
         </div>{" "}
       </Link>
     </>
@@ -87,81 +88,14 @@ const Achievements = () => {
   return (
     <>
       <Link
-        href="/"
+        href="/profile/achievements"
         className="w-full h-[80px] bg-[#C42797] justify-center items-center gap-1 flex flex-col rounded-xl border-3 border-[#e4a9d3]"
       >
         <Image src={Achievement} width={40} height={40} />
         <div className="text-center w-full text-white text-xs font-normal font-fredoka leading-none">
-          Milestones
+          Achievements
         </div>{" "}
       </Link>
-    </>
-  );
-};
-
-const SideBar = () => {
-  return (
-    <>
-      <section className="lg:hidden h-full flex flex-col gap-2 items-start justify-between space-y-2 mt-4">
-        <div className="flex w-full flex-col gap-2">
-          <div className="flex w-full flex-col gap-1 justify-start items-start">
-            <div className="text-[#0a1932] text-sm font-medium font-fredoka leading-tight">
-              Quick Access
-            </div>
-            <div className="flex w-full flex-col gap-1 justify-normal items-center">
-              {NavMenu?.map((menuItem, index) => (
-                <LocalNavitem
-                  key={index}
-                  IconSrc={menuItem.icon}
-                  Link={menuItem.link}
-                  Title={menuItem.title}
-                />
-              ))}
-            </div>
-          </div>
-          <div className="flex w-full flex-col gap-1 justify-start items-start">
-            <div className="text-[#0a1932] text-sm font-medium font-fredoka leading-tight">
-              My Progress
-            </div>
-            <div className="grid grid-cols-3 w-full gap-1">
-              <MileStone />
-              <Progress />
-              <Achievements />
-            </div>
-          </div>
-        </div>
-        <div className="flex w-full flex-col gap-1">
-          <div className="flex w-full flex- col gap-1 justify-start items-start">
-            <Link
-              href="/auth/sign-in"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full"
-            >
-              <div className="bg-[#ffffff] py-2 w-full text-[12px] font-fredoka border-[black] text-[black] hover:bg-[#ffffff] hover:border-[#2b2b2b] hover:text-dark-blue-100 px-[40px] border-2 rounded-[10px] transition duration-300 ease-in-out">
-                Log in
-              </div>
-            </Link>
-            <Link
-              href="/auth/sign-up"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full"
-            >
-              <div className="bg-red hover:bg-hoverRed  text-[12px] font-fredoka text-white  w-[max-content] py-2 px-[40px]  hover:text-white border-2 border-red rounded-[10px] transition duration-300 ease-in-out">
-                Get Started
-              </div>
-            </Link>
-          </div>
-          {/* <SignOutButton /> */}
-          <Button
-            className="bg-red clarabutton"
-            onClick={() => signOut({ callbackUrl: "/auth/sign-in" })}
-          >
-            Sign Out
-          </Button>{" "}
-        </div>
-      </section>
     </>
   );
 };
@@ -176,6 +110,9 @@ const usePathname = () => {
   return pathname;
 };
 
+/**
+ * @Main_account_Credentials
+ */
 const HYGRAPH_ENDPOINT =
   "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";
 const HYGRAPH_TOKEN =

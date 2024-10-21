@@ -12,7 +12,6 @@ import {
   Partner,
   Payments,
   ProfileDP,
-  Progress,
   Support,
   TnC,
   User,
@@ -22,6 +21,7 @@ import {
   Milestone,
   ProfileSettingIcon,
   VerifiedIcon,
+  ProfileProgress,
 } from "@/public/Images";
 import {
   Dialog,
@@ -307,7 +307,7 @@ export default async function ProfileSection() {
           </div>
         </div>
         <div className="claracontainer bg-[#F5F5F5] md:bg-[#EAEAF5] -mt-4 rounded-t-[12px] z-2 lg:m-12 px-4 py-6 rounded-xl md:px-2 lg:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-[20px]">
-          <ConnectAccountForm />
+          {/* <ConnectAccountForm /> */}
           {/* Top Profile Card */}
           <div className="w-full flex bg-[white] rounded-[24px] p-2 md:p-4 justify-start items-start gap-[4px] lg:gap-[12px] lg:items-center">
             <div className="w-fit lg:max-w-[160px] lg:w-full items-center flex justify-start">
@@ -457,7 +457,7 @@ export default async function ProfileSection() {
             </Link>
             <Link target="_blank" href="/profile/progress">
               <BadgeSection
-                icon={Progress}
+                icon={ProfileProgress}
                 title="Progress"
                 backgroundColor="#FF8E00"
                 borderColor="#f2c99b"
