@@ -273,12 +273,9 @@ export default async function BlogDetailPage({ params }) {
             ) : (
               <p>No comments yet.</p>
             )}
+
+            <CommentForm className="pt-6" id="comment_Section" blogId={id} />
           </div>
-          {/* <CommentForm
-            id="comment_Section"
-            blogId="cm1re5m4z0mya07poomrphmmx"
-          /> */}
-          <CommentForm className="pt-6" id="comment_Section" blogId={id} />
         </div>
       </section>
     </>
