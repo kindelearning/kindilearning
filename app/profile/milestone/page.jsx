@@ -318,24 +318,24 @@ const CurvePath = () => {
   );
 };
 
-const GroupChip = ({ options, selectedOption, onChange }) => {
-  return (
-    <>
-      <div className="flex w-full  overflow-x-scroll scrollbar-hidden justify-start items-center space-x-2">
-        {options.map((option, index) => (
-          <div
-            className={`bg-red text-white px-4 py-1 rounded-full min-w-[max-content] cursor-pointer`}
-            key={index}
-            active={option === selectedOption}
-            onClick={() => onChange(option)}
-          >
-            {option}
-          </div>
-        ))}
-      </div>
-    </>
-  );
-};
+// const GroupChip = ({ options, selectedOption, onChange }) => {
+//   return (
+//     <>
+//       <div className="flex w-full  overflow-x-scroll scrollbar-hidden justify-start items-center space-x-2">
+//         {options.map((option, index) => (
+//           <div
+//             className={`bg-red text-white px-4 py-1 rounded-full min-w-[max-content] cursor-pointer`}
+//             key={index}
+//             active={option === selectedOption}
+//             onClick={() => onChange(option)}
+//           >
+//             {option}
+//           </div>
+//         ))}
+//       </div>
+//     </>
+//   );
+// };
 
 export default function MileStone() {
   const { data: session, status } = useSession();
@@ -425,11 +425,11 @@ export default function MileStone() {
           </div> */}
           <MilestoneList />
 
-          <GroupChip
+          {/* <GroupChip
             options={options}
             selectedOption={selectedOption}
             onChange={handleOptionChange}
-          />
+          /> */}
           {/* Curved Path */}
           <div className="flex flex-col w-full px-4 rounded-md justify-center items-center">
             <CurvePath />
