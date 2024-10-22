@@ -65,6 +65,7 @@ const client = new GraphQLClient(HYGRAPH_ENDPOINT, {
 const GET_ACCOUNT_BY_EMAIL = gql`
   query GetAccountByEmail($email: String!) {
     account(where: { email: $email }) {
+      id
       name
       username
       email
@@ -176,75 +177,66 @@ const ContactForm = () => {
  * @returns Logic for Connecting Child and Parent Account
  */
 // ConnectAccountForm.js
-export const ConnectAccountForm = () => {
-  const [parentEmail, setParentEmail] = useState("");
-  const [childEmail, setChildEmail] = useState("");
-  const [loading, setLoading] = useState(false);
+export const ConnectAccountForm = ({ accountId }) => {
+  const [partnerEmail, setPartnerEmail] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [message, setMessage] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    setMessage(""); // Clear previous messages
+    setMessage(""); // Reset message
+
     try {
-      const response = await fetch("/api/connect-account", {
+      const response = await fetch("/api/invite-partner", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ parentEmail, childEmail }),
+        body: JSON.stringify({ accountId, partnerEmail }),
       });
 
+      const data = await response.json();
+
       if (response.ok) {
-        setMessage("Accounts connected successfully!");
-        console.log("Accounts connected successfully");
+        console.log("Response from server", response);
+        setMessage("Invitation sent successfully!");
       } else {
-        setMessage(
-          responseData.error || "Failed to connect accounts. Please try again."
-        );
-        console.error("Failed to connect accounts");
+        setMessage(`Error: ${data.message}`);
       }
     } catch (error) {
-      console.error("Error connecting accounts:", error);
-      alert("Error connecting accounts:", error);
-      setMessage(
-        "Error connecting accounts. Please check the emails and try again."
-      );
-    } finally {
-      setLoading(false); // Hide connecting state
+      setMessage("An error occurred while sending the invitation.");
     }
   };
 
   return (
     <form onSubmit={handleSubmit} className="w-full flex flex-col gap-2">
-      <Input
-        type="email"
-        placeholder="Parent Account Email"
-        value={parentEmail}
-        onChange={(e) => setParentEmail(e.target.value)}
-        className=" bg-white w-full rounded-lg focus-within:border-0 focus-within:border-[#ffffff00]  shadow border border-[#383838]"
-      />
-      <Input
+      {/* <Input
         type="email"
         placeholder="Child Account Email"
         value={childEmail}
         onChange={(e) => setChildEmail(e.target.value)}
         className=" bg-white w-full rounded-lg focus-within:border-0 focus-within:border-[#ffffff00]  shadow border border-[#383838]"
+      /> */}
+      <input
+        className=" bg-white w-full rounded-lg focus-within:border-0 focus-within:border-[#ffffff00]  shadow border border-[#383838]"
+        type="email"
+        id="partnerEmail"
+        value={partnerEmail}
+        onChange={(e) => setPartnerEmail(e.target.value)}
+        placeholder="Partner's Email"
+        required
       />
-      <button
-        disabled={loading}
-        type="submit"
-        className="bg-red clarabutton text-white py-4"
-      >
-        {loading ? "Connecting..." : "Connect Accounts"}
-      </button>
-      {message && (
+      <button type="submit">Invite Partner</button>
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      {/* {success && <p style={{ color: 'green' }}>{success}</p>} */}
+      {success && (
         <p
           className={`p-2 m-2 ${
-            message.includes("successfully") ? "text-green-500" : "text-red-500"
+            success.includes("successfully") ? "text-green-500" : "text-red-500"
           }`}
         >
-          {message}
+          {success}
         </p>
       )}
     </form>
@@ -307,7 +299,15 @@ export default async function ProfileSection() {
           </div>
         </div>
         <div className="claracontainer bg-[#F5F5F5] md:bg-[#EAEAF5] -mt-4 rounded-t-[12px] z-2 lg:m-12 px-4 py-6 rounded-xl md:px-2 lg:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-[20px]">
-          {/* <ConnectAccountForm /> */}
+          id: cm25lil0t0zvz07pfuuizj473
+          {profileData ? (
+            <>
+              {/* <p className="">{profileData.id}</p> */}
+              <ConnectAccountForm accountId={profileData.id} />
+            </>
+          ) : (
+            <ConnectAccountForm accountId="cm25lil0t0zvz07pfuuizj473" />
+          )}
           {/* Top Profile Card */}
           <div className="w-full flex bg-[white] rounded-[24px] p-2 md:p-4 justify-start items-start gap-[4px] lg:gap-[12px] lg:items-center">
             <div className="w-fit lg:max-w-[160px] lg:w-full items-center flex justify-start">
@@ -472,7 +472,6 @@ export default async function ProfileSection() {
               />
             </Link>
           </div>
-
           {/* The individual Tabs for Profile Page */}
           <div className="flex w-full justify-center items-center gap-4 flex-col">
             {/* Kids Profile Model */}
@@ -839,7 +838,6 @@ export default async function ProfileSection() {
             </Dialog>
             <SignOutButton />
           </div>
-
           {/* Reffereal Card Section */}
           <div className="claracontainer px-0 w-full flex flex-col justify-start items-start overflow-hidden gap-8">
             <ReferralCard />
