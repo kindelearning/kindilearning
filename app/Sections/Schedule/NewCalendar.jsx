@@ -236,13 +236,11 @@ export default function NewCalendar() {
   };
 
   const onDragStart = (e, event) => {
-    // Support for mouse dragging
     e.dataTransfer.setData("text/plain", event.id);
     setDraggedEvent(event);
   };
 
   const onTouchStart = (e, event) => {
-    // Prevent default to avoid conflicts
     e.preventDefault();
     setDraggedEvent(event);
     setTouchStartPosition({ x: e.touches[0].clientX, y: e.touches[0].clientY });
@@ -254,7 +252,6 @@ export default function NewCalendar() {
     const draggedElement = document.getElementById(`event-${draggedEvent.id}`);
 
     if (draggedElement) {
-      // Update the position of the element based on touch movement
       draggedElement.style.position = "absolute";
       draggedElement.style.top = `${touch.clientY - touchStartPosition.y}px`;
       draggedElement.style.left = `${touch.clientX - touchStartPosition.x}px`;
@@ -263,11 +260,9 @@ export default function NewCalendar() {
 
   const onTouchEnd = (e) => {
     e.preventDefault();
-    // Logic to drop event to a new day
     const touch = e.changedTouches[0];
     const dropTarget = document.elementFromPoint(touch.clientX, touch.clientY);
     if (dropTarget && dropTarget.classList.contains("calendar-day")) {
-      // Handle moving the event to the new day
       const newDay = dropTarget.getAttribute("data-day");
       moveEventToNewDay(draggedEvent, newDay);
     }
@@ -277,7 +272,10 @@ export default function NewCalendar() {
   const onDrop = (e, day) => {
     e.preventDefault();
     const eventId = e.dataTransfer.getData("text");
-    moveEventToNewDay(eventId, day);
+    const event = events.find((ev) => ev.id === eventId);
+    if (event) {
+      moveEventToNewDay(event, day);
+    }
     setDraggedEvent(null);
   };
 
@@ -347,7 +345,6 @@ export default function NewCalendar() {
         </button>
       </div>
 
-     
       {/* Calendar Top Weekdays  */}
       <div className="flex-col flex lg:grid font-fredoka p-0 lg:p-4 bg-[#eaeaf5] lg:bg-[#DCDCE8] rounded-[20px] w-full grid-cols-7 gap-0 text-center">
         {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
@@ -398,7 +395,9 @@ export default function NewCalendar() {
               </div>
 
               {/* Show events if they exist */}
-              {eventsForDay.map((event, index) => (
+              {/* {checkEventForDate(dayObj.day).map((event) => ( */}
+              {/* {eventsForDay.map((event, index) => ( */}
+              {checkEventForDate(dayObj.day).map((event) => (
                 <div
                   key={event.id}
                   draggable
