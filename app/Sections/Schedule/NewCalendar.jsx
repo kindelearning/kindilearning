@@ -277,7 +277,6 @@ export default function NewCalendar() {
   const onDrop = (e, day) => {
     e.preventDefault();
     const eventId = e.dataTransfer.getData("text");
-    // Move the event to a new day
     moveEventToNewDay(eventId, day);
     setDraggedEvent(null);
   };
@@ -287,8 +286,19 @@ export default function NewCalendar() {
   };
 
   const moveEventToNewDay = (event, newDay) => {
-    // Logic to update event date
     console.log(`Moving event ${event.id} to ${newDay}`);
+    setEvents((prevEvents) =>
+      prevEvents.map((ev) =>
+        ev.id === event.id
+          ? {
+              ...ev,
+              date: `${currentDate.getFullYear()}-${
+                currentDate.getMonth() + 1
+              }-${newDay}`,
+            }
+          : ev
+      )
+    );
   };
 
   const days = generateCalendar();
@@ -337,28 +347,7 @@ export default function NewCalendar() {
         </button>
       </div>
 
-      {/* {["Day 1", "Day 2", "Day 3"].map((day) => (
-        <div
-          key={day}
-          className="calendar-day"
-          data-day={day}
-          onDragOver={onDragOver}
-          onDrop={(e) => onDrop(e, day)}
-        >
-          <div
-            id={`event-1`}
-            draggable="true"
-            onDragStart={(e) => onDragStart(e, { id: 1 })}
-            onTouchStart={(e) => onTouchStart(e, { id: 1 })}
-            onTouchMove={onTouchMove}
-            onTouchEnd={onTouchEnd}
-            className="event"
-          >
-            Event 1
-          </div>
-        </div>
-      ))} */}
-
+     
       {/* Calendar Top Weekdays  */}
       <div className="flex-col flex lg:grid font-fredoka p-0 lg:p-4 bg-[#eaeaf5] lg:bg-[#DCDCE8] rounded-[20px] w-full grid-cols-7 gap-0 text-center">
         {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
