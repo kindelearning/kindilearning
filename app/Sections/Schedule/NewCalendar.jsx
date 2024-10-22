@@ -284,6 +284,21 @@ export default function NewCalendar() {
   };
 
   const moveEventToNewDay = (event, newDay) => {
+    const newDate = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      newDay
+    );
+
+    // Check if the new date is in the past
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Set the time to midnight for accurate comparison
+
+    if (newDate < today) {
+      alert("You cannot drop an event in the past."); // Notify the user
+      return; // Prevent the drop action
+    }
+
     console.log(`Moving event ${event.id} to ${newDay}`);
     setEvents((prevEvents) =>
       prevEvents.map((ev) =>
@@ -427,7 +442,7 @@ export default function NewCalendar() {
                         <div className="flex w-full gap-2 justify-between items-end">
                           <div className="flex w-full  rounded-[4px]  max-w-[40px] object-cover h-[40px] overflow-clip">
                             <Image
-                              src={event.thumbnail.url} 
+                              src={event.thumbnail.url}
                               alt="ScheduleEvent"
                               className="w-[40px] rounded-[4px] object-cover h-[40px]"
                               width={40}
