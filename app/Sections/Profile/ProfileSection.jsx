@@ -181,10 +181,12 @@ export const ConnectAccountForm = ({ accountId }) => {
   const [partnerEmail, setPartnerEmail] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     setMessage(""); // Reset message
 
     try {
@@ -206,6 +208,8 @@ export const ConnectAccountForm = ({ accountId }) => {
       }
     } catch (error) {
       setMessage("An error occurred while sending the invitation.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -227,7 +231,9 @@ export const ConnectAccountForm = ({ accountId }) => {
         placeholder="Partner's Email"
         required
       />
-      <button type="submit">Invite Partner</button>
+      <button type="submit" disabled={loading}>
+        {loading ? "Sending..." : "Send Invitation"}
+      </button>
       {error && <p style={{ color: "red" }}>{error}</p>}
       {/* {success && <p style={{ color: 'green' }}>{success}</p>} */}
       {success && (
