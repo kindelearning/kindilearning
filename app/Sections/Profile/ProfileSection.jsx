@@ -1,4 +1,5 @@
 "use client";
+
 import { Slider } from "@/components/ui/slider";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
@@ -176,78 +177,187 @@ const ContactForm = () => {
  * @Main_Account
  * @returns Logic for Connecting Child and Parent Account
  */
-// ConnectAccountForm.js
-export const ConnectAccountForm = ({ accountId }) => {
-  const [partnerEmail, setPartnerEmail] = useState("");
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
 
-  const handleSubmit = async (e) => {
+export const ConnectAccountForm = ({ userId }) => {
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const { data: session, status } = useSession();
+  const [profileData, setProfileData] = useState(null);
+  const [isLoading, setIsLoading] = useState(false); // Added loading state
+
+  useEffect(() => {
+    if (session && session.user) {
+      fetchUserData(session.user.email);
+    }
+  }, [session]);
+
+  const fetchUserData = async (email) => {
+    try {
+      const data = await client.request(GET_ACCOUNT_BY_EMAIL, { email });
+      setProfileData(data.account);
+    } catch (error) {
+      console.error("Error fetching profile data:", error);
+    }
+  };
+
+  const handleConnect = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    setMessage(""); // Reset message
+
+    if (!session || !session.user) {
+      setMessage("Please log in to connect a partner.");
+      return;
+    }
+
+    const accountEmail = session.user.email; // Get the logged-in user's email
+
+    const query = `
+    mutation AddPartner($accountEmail: String!, $partnerEmail: String!) {
+      updateAccount(
+        where: { email: $accountEmail },
+        data: {
+          partner: {
+            connect: { where: { email: $partnerEmail } }
+          }
+        }
+      ) {
+        id
+        email
+        username
+        partner {
+          id
+          email
+          username
+        }
+      }
+    }
+  `;
+
+    // Variables for the mutation
+    const variables = {
+      // accountEmail: "ac.dravya44409@gmail.com", // Replace with the actual account email
+      accountEmail,
+      partnerEmail: email.trim(), // Use the partner's email from the input
+    };
 
     try {
-      const response = await fetch("/api/invite-partner", {
+      const response = await fetch(HYGRAPH_ENDPOINT, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${HYGRAPH_TOKEN}`,
         },
-        body: JSON.stringify({ accountId, partnerEmail }),
+        body: JSON.stringify({
+          query,
+          variables,
+        }),
       });
 
-      const data = await response.json();
+      const result = await response.json();
+      console.log("Result Line", result);
 
-      if (response.ok) {
-        console.log("Response from server", response);
-        setMessage("Invitation sent successfully!");
+      if (result.errors) {
+        setIsLoading(true); // Set loading to true when the request starts
+        setMessage("Error connecting partner: " + result.errors[0].message);
       } else {
-        setMessage(`Error: ${data.message}`);
+        setMessage("Partner connected successfully!");
+        setEmail(""); // Clear the input after success
       }
     } catch (error) {
-      setMessage("An error occurred while sending the invitation.");
+      setMessage("Error: " + error.message);
     } finally {
-      setLoading(false);
+      setIsLoading(false); // Reset loading state after request completes
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full flex flex-col gap-2">
-      {/* <Input
+    <form
+      onSubmit={handleConnect}
+      className="flex w-full flex-col justify-start items-start gap-4"
+    >
+      <Input
         type="email"
-        placeholder="Child Account Email"
-        value={childEmail}
-        onChange={(e) => setChildEmail(e.target.value)}
-        className=" bg-white w-full rounded-lg focus-within:border-0 focus-within:border-[#ffffff00]  shadow border border-[#383838]"
-      /> */}
-      <input
-        className=" bg-white w-full rounded-lg focus-within:border-0 focus-within:border-[#ffffff00]  shadow border border-[#383838]"
-        type="email"
-        id="partnerEmail"
-        value={partnerEmail}
-        onChange={(e) => setPartnerEmail(e.target.value)}
-        placeholder="Partner's Email"
+        className="bg-white w-full rounded-lg focus-within:border-0 focus-within:border-[#ffffff00]  shadow border border-[#383838]"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="Enter partner's email"
         required
       />
-      <button type="submit" disabled={loading}>
-        {loading ? "Sending..." : "Send Invitation"}
-      </button>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      {/* {success && <p style={{ color: 'green' }}>{success}</p>} */}
-      {success && (
-        <p
-          className={`p-2 m-2 ${
-            success.includes("successfully") ? "text-green-500" : "text-red-500"
-          }`}
-        >
-          {success}
-        </p>
-      )}
+      {/* <Button type="submit">Connect Partner</Button> */}
+      <Button type="submit" disabled={isLoading}>
+        {isLoading ? "Submitting..." : "Connect Partner"}
+      </Button>
+      {message && <p>{message}</p>}
     </form>
   );
 };
+
+// const PartnerList = ({ userId }) => {
+//   const [partners, setPartners] = useState([]);
+//   const [loading, setLoading] = useState(true);
+//   const [error, setError] = useState("");
+
+//   const fetchPartners = async () => {
+//     const query = `
+//       query($where: AccountWhereUniqueInput!) {
+//         account(where: $where) {
+//           id
+//           partner {
+//             id
+//             email
+//             username
+//           }
+//         }
+//       }
+//     `;
+
+//     const variables = {
+//       where: { id: userId }, // User ID of the current user
+//     };
+
+//     try {
+//       const response = await fetch(HYGRAPH_ENDPOINT, {
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json",
+//           Authorization: `Bearer ${HYGRAPH_TOKEN}`,
+//         },
+//         body: JSON.stringify({ query, variables }),
+//       });
+
+//       const result = await response.json();
+
+//       if (result.errors) {
+//         throw new Error(result.errors[0].message);
+//       } else {
+//         setPartners(result.data.account.partner);
+//       }
+//     } catch (error) {
+//       setError("Error fetching partners: " + error.message);
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   useEffect(() => {
+//     fetchPartners();
+//   }, [userId]);
+
+//   if (loading) return <p>Loading...</p>;
+//   if (error) return <p>{error}</p>;
+
+//   return (
+//     <div>
+//       <h2>Connected Partners</h2>
+//       <ul>
+//         {partners.map((partner) => (
+//           <li key={partner.id}>
+//             {partner.username ? partner.username : partner.email}
+//           </li>
+//         ))}
+//       </ul>
+//     </div>
+//   );
+// };
 
 export default async function ProfileSection() {
   const { data: session, status } = useSession();
@@ -305,15 +415,6 @@ export default async function ProfileSection() {
           </div>
         </div>
         <div className="claracontainer bg-[#F5F5F5] md:bg-[#EAEAF5] -mt-4 rounded-t-[12px] z-2 lg:m-12 px-4 py-6 rounded-xl md:px-2 lg:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-[20px]">
-          id: cm25lil0t0zvz07pfuuizj473
-          {profileData ? (
-            <>
-              {/* <p className="">{profileData.id}</p> */}
-              <ConnectAccountForm accountId={profileData.id} />
-            </>
-          ) : (
-            <ConnectAccountForm accountId="cm25lil0t0zvz07pfuuizj473" />
-          )}
           {/* Top Profile Card */}
           <div className="w-full flex bg-[white] rounded-[24px] p-2 md:p-4 justify-start items-start gap-[4px] lg:gap-[12px] lg:items-center">
             <div className="w-fit lg:max-w-[160px] lg:w-full items-center flex justify-start">
@@ -611,29 +712,13 @@ export default async function ProfileSection() {
                         Every time someone books and visits a new dentist
                         through your link, you both get $20.
                       </div>
-                      {/* Form to Invite the Partner */}
                       <ConnectAccountForm />
-                      {/* <div className="flex w-full flex-col justify-start items-start gap-4">
-                        <Input
-                          type="text"
-                          className=" bg-white w-full rounded-lg focus-within:border-0 focus-within:border-[#ffffff00]  shadow border border-[#383838]"
-                          placeholder="Partners Name"
-                        />
-                        <Input
-                          type="email"
-                          className=" bg-white w-full rounded-lg focus-within:border-0 focus-within:border-[#ffffff00] shadow border border-[#383838]"
-                          placeholder="Partners Email"
-                        />
-                      </div> 
-                      <Button className="bg-[#3f3a64]  hover:bg-purple border-purple hover:border-4 hover:border-[#4d3d9738]  rounded-[27px] border-4 border-[#3f3a64]/40 justify-center items-center inline-flex text-white font-semibold">
-                        Send an Invite
-                      </Button> */}
                     </div>
                   </div>
                 </DialogDescription>
-                <DialogFooter className="sticky bottom-0 m-0 w-full ">
+                {/* <DialogFooter className="sticky bottom-0 m-0 w-full ">
                   <PopupFooter PrimaryText="Save and Continue" />
-                </DialogFooter>
+                </DialogFooter> */}
               </DialogContent>
             </Dialog>
             {/* Payment Method Model */}

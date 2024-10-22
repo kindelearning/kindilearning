@@ -1,6 +1,5 @@
-import { NextResponse } from "next/server";
-import { gql } from "graphql-request";
-import { GraphQLClient } from "graphql-request";
+import { gql, GraphQLClient } from "graphql-request";
+import { getServerSession } from "next-auth";
 
 /**
  * @Main_Account
@@ -17,68 +16,83 @@ const graphQLClient = new GraphQLClient(HYGRAPH_ENDPOINT, {
   },
 });
 
-const INVITE_PARTNER_MUTATION = gql`
-  mutation InvitePartner($accountId: ID!, $partnerId: ID!) {
-    updateAccount(
-      where: { id: $accountId }
-      data: { partners: { connect: { id: $partnerId } } }
-    ) {
-      id
-      partners {
+
+export async function getUserByEmail(email) {
+  const query = gql`
+    query ($email: String!) {
+      account(where: { email: $email }) {
         id
+        email
+        username
+        partners {
+          id
+        }
       }
     }
-  }
-`;
+  `;
 
-const GET_ACCOUNT_BY_EMAIL = gql`
-  query ($email: String!) {
-    account(where: { email: $email }) {
-      id
-    }
-  }
-`;
+  const data = await graphQLClient.request(query, { email });
+  return data.account;
+}
+
+// Function to update user's partners
+export async function updateUserPartners(userId, partnerId) {
+  const mutation = gql`
+      mutation($userId: ID!, $partnerId: ID!) {
+          updateAccount(
+              where: { id: $userId }
+              data: {
+                  partners: {
+                      connect: { id: $partnerId } // Connect to partner
+                  }
+              }
+          ) {
+              id
+              partners {
+                  id
+              }
+          }
+      }
+  `;
+
+  await graphQLClient.request(mutation, { userId, partnerId });
+}
 
 export async function POST(req) {
-  const { accountId, partnerEmail } = await req.json(); // Get data from the request body
+  const session = await getServerSession(req); // Get session information
 
-  try {
-    // Step 1: Get the partner's account ID by email
-    const partnerResponse = await graphQLClient.request(GET_ACCOUNT_BY_EMAIL, {
-      email: partnerEmail,
-    });
-
-    console.log("partnerResponse: " + partnerResponse);
-    const partner = partnerResponse.account;
-    console.log("Partner: " + partner);
-
-    if (!partner) {
-      return new Response(JSON.stringify({ message: "Partner not found" }), {
-        status: 404,
-        headers: { "Content-Type": "application/json" },
-      });
-    }
-
-    const partnerId = partner.id;
-    console.log("Partner: " + partnerId);
-
-    // Step 2: Update the account to include the partner
-    const updateResponse = await graphQLClient.request(
-      INVITE_PARTNER_MUTATION,
-      {
-        accountId,
-        partnerId,
-      }
-    );
-    console.log("updateResponse: " + updateResponse);
-
-    return new Response(JSON.stringify(updateResponse), {
-      status: 200,
+  // Check if the user is authenticated
+  if (!session) {
+    return new Response(JSON.stringify({ message: "Unauthorized" }), {
+      status: 401,
       headers: { "Content-Type": "application/json" },
     });
+  }
+
+  const { email } = await req.json();
+
+  // Check if the user with the given email exists
+  const partnerUser = await getUserByEmail(email);
+  console.log("partner", partnerUser);
+  if (!partnerUser) {
+    return new Response(JSON.stringify({ message: "User not found" }), {
+      status: 404,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+
+  // Add partner for both users
+  try {
+    await updateUserPartners(session.user.id, partnerUser.id);
+    await updateUserPartners(partnerUser.id, session.user.id);
+
+    return new Response(
+      JSON.stringify({ message: "Partner added successfully" }),
+      { status: 200, headers: { "Content-Type": "application/json" } }
+    );
   } catch (error) {
-    console.error("Error inviting partner:", error);
-    return new Response(JSON.stringify({ message: "Internal Server Error" }), {
+    console.error("Error adding partner:", error);
+    return new Response(JSON.stringify({ message: "Error adding partner" }), {
       status: 500,
       headers: { "Content-Type": "application/json" },
     });
