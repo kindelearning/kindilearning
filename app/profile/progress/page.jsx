@@ -14,6 +14,7 @@ import { useSession } from "next-auth/react";
 import Loading from "@/app/loading";
 import Head from "next/head";
 import { progressData } from "@/app/constant/menu";
+import { getAllActivities } from "@/lib/hygraph";
 
 const HYGRAPH_ENDPOINT =
   "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";
@@ -90,7 +91,7 @@ const SubProfileRoutes = ({
 
 /**
  *
- * @param {Activity completed by User} param0
+ * @param {MyActivity completed by User} param0
  * @returns
  */
 const MyActivity = ({ userID }) => {
@@ -153,40 +154,34 @@ const MyActivity = ({ userID }) => {
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
-
+  const CompletedActivity = activities.length;
   return (
-    <div>
-      <div className="flex gap-2 px-4 lg:px-0 overflow-x-scroll scrollbar-hidden w-full">
-        <SubBagde
-          number="4"
-          title="Total Activities"
-          backgroundColor="#019acf"
-          borderColor="#a4d2ea"
-        />
-        <SubBagde
-          number="23"
-          title={
-            <>
-              Pending <br />
-              /Missed
-            </>
-          }
-          backgroundColor="#f05c5c"
-          borderColor="#ecc0c8"
-        />
-        <SubBagde
-          number={activities.length}
-          title="Complete"
-          backgroundColor="#029871"
-          borderColor="#a5d2ce"
-        />
-      </div>
-    </div>
+    <>
+      <SubBagde
+        number={CompletedActivity}
+        title="Complete"
+        backgroundColor="#029871"
+        borderColor="#a5d2ce"
+      />
+    </>
   );
 };
+
 export default async function ProfileSection() {
   const { data: session, status } = useSession();
   const [profileData, setProfileData] = useState(null);
+  const [activities, setActivities] = useState([]); //Getting all the activities from Hygraph
+
+  // Fetching all the activities form GraphCMS
+  useEffect(() => {
+    const fetchActivities = async () => {
+      const data = await getAllActivities();
+      console.log("Total Activity", data); // Log the activities
+      setActivities(data);
+    };
+
+    fetchActivities();
+  }, []);
 
   useEffect(() => {
     if (session && session.user) {
@@ -264,11 +259,33 @@ export default async function ProfileSection() {
               className="cursor-pointer w-20 -ml-[32px] h-20"
             />
           </div>
-          {profileData ? (
-            <MyActivity userID={profileData.id} />
-          ) : (
-            <p>User Not Found...</p>
-          )}
+          {/* completedActivities {completedActivities} */}
+          <>
+            <div className="flex gap-2 px-4 lg:px-0 overflow-x-scroll scrollbar-hidden w-full">
+              <SubBagde
+                number={activities.length || "20"}
+                title="Total Activities"
+                backgroundColor="#019acf"
+                borderColor="#a4d2ea"
+              />
+              <SubBagde
+                number="3"
+                title={
+                  <>
+                    Pending <br />
+                    /Missed
+                  </>
+                }
+                backgroundColor="#f05c5c"
+                borderColor="#ecc0c8"
+              />
+              {profileData ? (
+                <MyActivity userID={profileData.id} />
+              ) : (
+                <p>Not Found...</p>
+              )}
+            </div>
+          </>
           <div className="flex w-full px-2 lg:px-0 justify-start items-center gap-2 flex-wrap">
             {progressData.map((card, index) => (
               <SubProfileRoutes
