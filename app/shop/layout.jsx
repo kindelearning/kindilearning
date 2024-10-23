@@ -38,7 +38,7 @@ export default function RootLayout({ children }) {
             fontSans.variable
           )}
         >
-          <ShopHeader className="sticky" />
+          {/* <ShopHeader className="sticky" /> */}
           {children}
           
           <Footer />

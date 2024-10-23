@@ -3,7 +3,7 @@
 import { Input } from "@/components/ui/input";
 import Banner from "./sections/Banner";
 import CardGroup from "./widgets/CardGroup";
-import { Ratings } from "@/public/Images";
+import { ProductImage, Ratings } from "@/public/Images";
 import { Slider } from "@/components/ui/slider";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -23,7 +23,7 @@ import { getProducts } from "@/lib/hygraph";
 import Image from "next/image";
 import NotFound from "../not-found";
 import { useEffect, useRef, useState } from "react";
-import { BottomNavigation, Newsletter } from "../Sections";
+import { BottomNavigation, Header, Newsletter } from "../Sections";
 
 function SearchInput({ value, onChange }) {
   return (
@@ -103,6 +103,7 @@ const ProductCard = ({ image, title, price }) => {
     </div>
   );
 };
+
 const MobileProductCard = ({ image, title, price }) => {
   const [rating, setRating] = useState(0);
   useEffect(() => {
@@ -435,6 +436,7 @@ export default async function ShopPage() {
   }
   return (
     <>
+      <Header className="sticky" />
       <section className="w-full pb-32 bg-[#EAEAF5] flex flex-col gap-0 justify-center items-start">
         <Banner />
         <CardGroup />
@@ -964,7 +966,7 @@ export default async function ShopPage() {
                     <div key={product.id} className="border">
                       <Link href={`/shop/${product.id}`} target="_blank">
                         <MobileProductCard
-                          image={product.thumbnail.url}
+                          image={product.thumbnail.url || ProductImage}
                           title={product.title}
                           price={product.salePrice}
                         />
