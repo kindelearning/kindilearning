@@ -13,7 +13,7 @@ import { GraphQLClient, gql } from "graphql-request";
 import { useSession } from "next-auth/react";
 import Loading from "@/app/loading";
 import Head from "next/head";
-import { activities, cardData, progressData } from "@/app/constant/menu";
+import { progressData } from "@/app/constant/menu";
 
 const HYGRAPH_ENDPOINT =
   "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";
@@ -40,94 +40,6 @@ const GET_ACCOUNT_BY_EMAIL = gql`
     }
   }
 `;
-
-/**
- *
- * @param {Activity completed by User} param0
- * @returns
- */
-const MyProgressActivity = ({ userId }) => {
-  const [activities, setActivities] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-
-  const fetchActivities = async () => {
-    const query = `
-      query GetUserActivities($relationalFirst: Int, $where: AccountWhereUniqueInput!) {
-        values: account(where: $where) {
-          id
-          username
-          myActivity(first: $relationalFirst) {
-            id
-            title
-            documentInStages(includeCurrent: true) {
-              id
-              stage
-              updatedAt
-              publishedAt
-            }
-          }
-        }
-      }
-    `;
-
-    const variables = {
-      relationalFirst: 10, // Number of activities you want to fetch
-      where: { id: userId }, // Replace with the current user's ID
-    };
-
-    try {
-      const response = await fetch(HYGRAPH_ENDPOINT, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${HYGRAPH_TOKEN}`,
-        },
-        body: JSON.stringify({ query, variables }),
-      });
-
-      const result = await response.json();
-
-      if (result.errors) {
-        throw new Error(result.errors[0].message);
-      } else {
-        setActivities(result.data.values.myActivity);
-      }
-    } catch (error) {
-      setError("Error fetching activities: " + error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchActivities();
-  }, [userId]);
-
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>{error}</p>;
-
-  // Calculate the counts
-
-  return (
-    <div>
-      <h2>My Activities</h2>
-      <ul>
-        {activities.map((activity) => (
-          <li key={activity.id}>
-            <h3>{activity.title}</h3>
-            <p>
-              Last Updated:{" "}
-              {new Date(
-                activity.documentInStages[0].updatedAt
-              ).toLocaleDateString()}
-            </p>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-};
 
 const SubBagde = ({
   title = "title",
@@ -176,6 +88,102 @@ const SubProfileRoutes = ({
   );
 };
 
+/**
+ *
+ * @param {Activity completed by User} param0
+ * @returns
+ */
+const MyActivity = ({ userID }) => {
+  const [activities, setActivities] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  const fetchActivities = async () => {
+    const query = `
+      query GetUserActivities($relationalFirst: Int, $where: AccountWhereUniqueInput!) {
+        values: account(where: $where) {
+          id
+          username
+          myActivity(first: $relationalFirst) {
+            id
+            title
+            documentInStages(includeCurrent: true) {
+              id
+              stage
+              updatedAt
+              publishedAt
+            }
+          }
+        }
+      }
+    `;
+
+    const variables = {
+      relationalFirst: 10, // Adjust this value based on your needs
+      where: { id: userID }, // Replace with the current user's ID
+    };
+
+    try {
+      const response = await fetch(HYGRAPH_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${HYGRAPH_TOKEN}`,
+        },
+        body: JSON.stringify({ query, variables }),
+      });
+
+      const result = await response.json();
+
+      if (result.errors) {
+        throw new Error(result.errors[0].message);
+      } else {
+        setActivities(result.data.values.myActivity);
+      }
+    } catch (error) {
+      setError("Error fetching activities: " + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchActivities();
+  }, [userID]);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>{error}</p>;
+
+  return (
+    <div>
+      <div className="flex gap-2 px-4 lg:px-0 overflow-x-scroll scrollbar-hidden w-full">
+        <SubBagde
+          number="4"
+          title="Total Activities"
+          backgroundColor="#019acf"
+          borderColor="#a4d2ea"
+        />
+        <SubBagde
+          number="23"
+          title={
+            <>
+              Pending <br />
+              /Missed
+            </>
+          }
+          backgroundColor="#f05c5c"
+          borderColor="#ecc0c8"
+        />
+        <SubBagde
+          number={activities.length}
+          title="Complete"
+          backgroundColor="#029871"
+          borderColor="#a5d2ce"
+        />
+      </div>
+    </div>
+  );
+};
 export default async function ProfileSection() {
   const { data: session, status } = useSession();
   const [profileData, setProfileData] = useState(null);
@@ -256,33 +264,12 @@ export default async function ProfileSection() {
               className="cursor-pointer w-20 -ml-[32px] h-20"
             />
           </div>
-          {/* {profileData ? <MyActivity userId={profileData.id} /> : <>None</>} */}
-          <div className="flex gap-2 px-4 overflow-x-scroll scrollbar-hidden w-full">
-            <SubBagde
-              number="4"
-              title="Total Activities"
-              backgroundColor="#019acf"
-              borderColor="#a4d2ea"
-            />
-            <SubBagde
-              number="23"
-              title={
-                <>
-                  Pending <br />
-                  /Missed
-                </>
-              }
-              backgroundColor="#f05c5c"
-              borderColor="#ecc0c8"
-            />
-            <SubBagde
-              number={activities.length}
-              title="Complete"
-              backgroundColor="#029871"
-              borderColor="#a5d2ce"
-            />
-          </div>
-          <div className="flex w-full px-2 justify-center items-center gap-2 flex-wrap">
+          {profileData ? (
+            <MyActivity userID={profileData.id} />
+          ) : (
+            <p>User Not Found...</p>
+          )}
+          <div className="flex w-full px-2 lg:px-0 justify-start items-center gap-2 flex-wrap">
             {progressData.map((card, index) => (
               <SubProfileRoutes
                 key={card.id}

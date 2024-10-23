@@ -258,7 +258,7 @@ export default async function ProfileSection() {
             />
           </div>
           {/* {profileData ? <MyActivity userId={profileData.id} /> : <>None</>} */}
-          <div className="flex gap-2 px-4 overflow-x-scroll scrollbar-hidden w-full">
+          <div className="flex gap-2 px-4 lg:px-0 overflow-x-scroll scrollbar-hidden w-full">
             <SubBagde
               number="4"
               title="Total Activities"
@@ -283,7 +283,7 @@ export default async function ProfileSection() {
               borderColor="#a5d2ce"
             />
           </div>
-          <div className="flex w-full px-2 justify-center items-center gap-2 flex-wrap">
+          <div className="flex w-full px-2 lg:px-0 justify-center items-center gap-2 flex-wrap">
             {progressData.map((card, index) => (
               <SubProfileRoutes
                 key={card.id}
