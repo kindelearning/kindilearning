@@ -7,12 +7,10 @@ export async function POST(req) {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: [
         "card",
-        "alipay",
-        "ideal",
         "paypal",
         "us_bank_account",
       ],
-      
+
       billing_address_collection: "required", // Capture billing address
       line_items: [
         {
