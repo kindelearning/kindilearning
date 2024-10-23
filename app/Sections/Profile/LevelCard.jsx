@@ -8,7 +8,7 @@ const LevelCard = ({ level, activities, className }) => {
       <div className="text-[#0a1932] text-[20px] font-semibold font-fredoka leading-normal">
         {level}
       </div>
-      <div className="text-[#0a1932] text-xs font-normal font-fredoka leading-none">
+      <div className="text-[#0a1932] clarabodyTwo">
         {activities} Activities
       </div>
     </div>

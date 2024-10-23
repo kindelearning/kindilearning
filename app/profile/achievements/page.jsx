@@ -1,11 +1,9 @@
 "use client";
 
-import { AcheievemnetData } from "@/app/constant/menu";
-import { PopupFooter } from "@/app/Sections";
-import AchievementBadge from "@/app/Sections/Profile/AchievementBadge";
-import LevelCard from "@/app/Sections/Profile/LevelCard";
-import ReferralCard from "@/app/Sections/Profile/ReferralCard";
+import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
+import React, { useEffect, useState } from "react";
+import { VerifiedIcon, ProfileDP } from "@/public/Images";
 import {
   Dialog,
   DialogContent,
@@ -15,15 +13,21 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Slider } from "@/components/ui/slider";
-import { ProfileDP, VerifiedIcon } from "@/public/Images";
-import Image from "next/image";
+import { PopupFooter } from "@/app/Sections";
+import ReferralCard from "@/app/Sections/Profile/ReferralCard";
+import LevelCard from "@/app/Sections/Profile/LevelCard";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
-import Loading from "../loading";
+import { GraphQLClient, gql } from "graphql-request";
 import { useSession } from "next-auth/react";
-import { gql, GraphQLClient } from "graphql-request";
+import Loading from "@/app/loading";
+import Head from "next/head";
+import AchievementBadge from "@/app/Sections/Profile/AchievementBadge";
+import { AcheievemnetData } from "@/app/constant/menu";
 
+
+/**
+ * @Main_account
+ */
 const HYGRAPH_ENDPOINT =
   "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";
 const HYGRAPH_TOKEN =
@@ -38,6 +42,7 @@ const client = new GraphQLClient(HYGRAPH_ENDPOINT, {
 const GET_ACCOUNT_BY_EMAIL = gql`
   query GetAccountByEmail($email: String!) {
     account(where: { email: $email }) {
+      id
       name
       username
       email
@@ -49,7 +54,170 @@ const GET_ACCOUNT_BY_EMAIL = gql`
   }
 `;
 
-const Achievement = async () => {
+/**
+ *
+ * @param {MyActivity completed by User} param0
+ * @returns
+ */
+const MyLevel = ({ userID }) => {
+  const [activities, setActivities] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  const fetchActivities = async () => {
+    const query = `
+      query GetUserActivities($relationalFirst: Int, $where: AccountWhereUniqueInput!) {
+        values: account(where: $where) {
+          id
+          username
+          myActivity(first: $relationalFirst) {
+            id
+            title
+            documentInStages(includeCurrent: true) {
+              id
+              stage
+              updatedAt
+              publishedAt
+            }
+          }
+        }
+      }
+    `;
+
+    const variables = {
+      relationalFirst: 10,
+      where: { id: userID },
+    };
+
+    try {
+      const response = await fetch(HYGRAPH_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${HYGRAPH_TOKEN}`,
+        },
+        body: JSON.stringify({ query, variables }),
+      });
+
+      const result = await response.json();
+
+      if (result.errors) {
+        throw new Error(result.errors[0].message);
+      } else {
+        setActivities(result.data.values.myActivity);
+      }
+    } catch (error) {
+      setError("Error fetching activities: " + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchActivities();
+  }, [userID]);
+
+  const getUserLevel = (activityCount) => {
+    if (activityCount >= 0 && activityCount <= 5) {
+      return 1; // Level 1
+    } else if (activityCount > 5 && activityCount <= 10) {
+      return 2; // Level 2
+    } else if (activityCount > 10 && activityCount <= 15) {
+      return 3; // Level 3
+    } else if (activityCount > 15 && activityCount <= 20) {
+      return 4; // Level 4
+    } else if (activityCount > 20 && activityCount <= 25) {
+      return 5; // Level 5
+    } else {
+      return "Max Level"; // More than 25
+    }
+  };
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>{error}</p>;
+
+  const userLevel = getUserLevel(activities.length);
+  const progressPercentage = (activities.length / 25) * 100;
+
+  return (
+    <div className="flex w-full flex-col justify-start items-center gap-2">
+      <div className="w-full claracontainer flex flex-row gap-2 justify-start items-center">
+        <div className="text-[#3f3a64] clarabodyTwo">
+          User Level: {userLevel}
+        </div>
+        <Dialog className="bg-[#EAEAF5] w-full rounded-[28px] claracontainer">
+          <DialogTrigger asChild>
+            <Badge
+              className="text-[10px] md:text-[16px] cursor-pointer"
+              variant="outline"
+            >
+              Check Now
+            </Badge>
+          </DialogTrigger>
+          <DialogContent className="bg-[#EAEAF5] max-h-[70%] overflow-scroll p-0 overflow-x-hidden rounded-[28px] w-full claracontainer">
+            <DialogHeader className="p-4">
+              <div className="flex flex-row justify-center items-center w-full">
+                <DialogTitle>
+                  <div className="text-center">
+                    <span className="text-[#3f3a64] text-[24px] md:text-[36px] font-semibold font-fredoka capitalize  ">
+                      My{" "}
+                    </span>
+                    <span className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize  ">
+                      Level
+                    </span>
+                  </div>
+                </DialogTitle>
+              </div>
+            </DialogHeader>
+            <DialogDescription className="flex w-full px-4 claracontainer flex-col justify-start items-center">
+              <div className="flex flex-col justify-center items-center w-full claracontainer gap-4">
+                <LevelCard level="Level 1" activities="5" />
+                <LevelCard level="Level 2" activities="10" />
+                <LevelCard level="Level 3" activities="15" />
+                <LevelCard level="Level 4" activities="20" />
+                <LevelCard level="Level 5" activities="25" />
+              </div>
+            </DialogDescription>
+            <DialogFooter className="sticky  rounded-t-[16px] shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] bottom-0 m-0 w-full px-4 bg-[#ffffff]">
+              <PopupFooter PrimaryText="Save and Continue" />
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </div>
+      <div className="flex w-full gap-1 items-center">
+        <div
+          className="progress-bar-container"
+          style={{
+            width: "100%",
+            backgroundColor: "#e0e0e0",
+            borderRadius: "5px",
+            // marginTop: "10px",
+            // color:'#f15c57'
+          }}
+        >
+          <div
+            className="progress-bar"
+            style={{
+              width: `${progressPercentage}%`,
+              backgroundColor: "#f15c57",
+              height: "10px",
+              borderRadius: "5px",
+              // color:'#f15c57'
+            }}
+          ></div>
+        </div>
+        <p className="clarabodyTwo w-[max-content] min-w-[120px]">
+          Activities: {activities.length}
+        </p>
+      </div>
+      {/* <p style={{ marginTop: "5px", color: "#555" }}>
+        {Math.round(progressPercentage)}% completed
+      </p> */}
+    </div>
+  );
+};
+
+export default async function Achievement() {
   const { data: session, status } = useSession();
   const [profileData, setProfileData] = useState(null);
 
@@ -75,10 +243,36 @@ const Achievement = async () => {
       </div>
     );
   }
+
   return (
     <>
-      <section className="w-full h-auto pb-24 bg-[#EAEAF5] items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">
-        <div className="claracontainer p-4 md:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-8">
+      <Head>
+        <title>Profile - Kindilearning</title>
+        <meta name="description" content="Your profile page on Kindilearning" />
+        <meta property="og:title" content="Profile - Kindilearning" />
+        <meta
+          property="og:description"
+          content="Your profile page on Kindilearning"
+        />
+        <meta property="og:image" content="/images/logo.png" />
+        <meta property="og:url" content="https://kindilearning.com/profile" />
+        <meta property="og:site_name" content="Kindilearning" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Profile - Kindilearning" />
+        <meta
+          name="twitter:description"
+          content="Your profile page on Kindilearning"
+        />
+        <meta name="twitter:image" content="/images/logo.png" />
+      </Head>
+      <section className="w-full h-auto bg-[#F5F5F5] md:bg-[#EAEAF5] items-center justify-center flex flex-col md:flex-row px-0">
+        {/* Topbar */}
+        <div className="w-full flex pt-4 pb-7 md:hidden bg-red">
+          <div className="text-center w-full text-white text-[20px] font-semibold font-fredoka leading-tight">
+            Profile Acheievemnet
+          </div>
+        </div>
+        <div className="claracontainer bg-[#F5F5F5] md:bg-[#EAEAF5] -mt-4 rounded-t-[12px] z-2 lg:m-12 px-4 py-6 rounded-xl md:px-2 lg:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-[20px]">
           {/* Top Profile Card */}
           <div className="w-full flex bg-[white] rounded-[24px] p-2 md:p-4 justify-start items-start gap-[4px] lg:gap-[12px] lg:items-center">
             <div className="w-fit lg:max-w-[160px] lg:w-full items-center flex justify-start">
@@ -150,46 +344,8 @@ const Achievement = async () => {
               </div>
               <div className="flex flex-col w-full gap-1 items-start justify-start">
                 <div className="flex flex-row w-full justify-start items-center gap-2">
-                  <div className="text-[#3f3a64] clarabodyTwo">Level 1</div>
                   {/* Trigger for the Level Popup */}
-                  <Dialog className="bg-[#EAEAF5] w-full rounded-[28px] claracontainer">
-                    <DialogTrigger asChild>
-                      <Badge
-                        className="text-[10px] md:text-[16px] cursor-pointer"
-                        variant="outline"
-                      >
-                        Check Now
-                      </Badge>
-                    </DialogTrigger>
-                    <DialogContent className="bg-[#EAEAF5] max-h-[70%] overflow-scroll p-0 overflow-x-hidden rounded-[28px] w-full claracontainer">
-                      <DialogHeader className="p-4">
-                        <div className="flex flex-row justify-center items-center w-full">
-                          <DialogTitle>
-                            <div className="text-center">
-                              <span className="text-[#3f3a64] text-[24px] md:text-[36px] font-semibold font-fredoka capitalize  ">
-                                My{" "}
-                              </span>
-                              <span className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize  ">
-                                Level
-                              </span>
-                            </div>
-                          </DialogTitle>
-                        </div>
-                      </DialogHeader>
-                      <DialogDescription className="flex w-full px-4 claracontainer flex-col justify-start items-center">
-                        <div className="flex flex-col justify-center items-center w-full claracontainer gap-4">
-                          <LevelCard level="Level 1" activities="5" />
-                          <LevelCard level="Level 2" activities="10" />
-                          <LevelCard level="Level 3" activities="15" />
-                          <LevelCard level="Level 4" activities="20" />
-                          <LevelCard level="Level 5" activities="25" />
-                        </div>
-                      </DialogDescription>
-                      <DialogFooter className="sticky  rounded-t-[16px] shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] bottom-0 m-0 w-full px-4 bg-[#ffffff]">
-                        <PopupFooter PrimaryText="Save and Continue" />
-                      </DialogFooter>
-                    </DialogContent>
-                  </Dialog>
+                  {profileData ? <MyLevel userID={profileData.id} /> : null}
                   <Link
                     href="/profile/update"
                     className="flex lg:hidden"
@@ -203,25 +359,15 @@ const Achievement = async () => {
                     </Badge>
                   </Link>
                 </div>
-                <div className="w-full flex flex-row justify-between items-center clarabodyTwo gap-2">
-                  <Slider
-                    disabled
-                    defaultValue={[33]}
-                    max={100}
-                    className="h-[8px] text-[#3a3a89]"
-                    step={10}
-                  />{" "}
-                  Activities
-                </div>
               </div>
             </div>
           </div>
 
-          {/* Achievement Section */}
+          {/* AcheievemnetData Section */}
           <div className="flex flex-col w-full">
             <div className="flex flex-col w-full gap-2">
               <div className="text-[#0a1932] text-2xl lg:text-4xl font-medium font-fredoka w-full">
-                Your achievements
+                Your acievements
               </div>
               <div className="flex w-full overflow-x-scroll scrollbar-hidden gap-1">
                 {AcheievemnetData.map((achievement, index) => (
@@ -252,8 +398,7 @@ const Achievement = async () => {
               </div>
             </div>
           </div>
-
-          {/* Referral Card */}
+          {/* Reffereal Card Section */}
           <div className="claracontainer px-0 w-full flex flex-col justify-start items-start overflow-hidden gap-8">
             <ReferralCard />
           </div>
@@ -261,6 +406,4 @@ const Achievement = async () => {
       </section>
     </>
   );
-};
-
-export default Achievement;
+}
