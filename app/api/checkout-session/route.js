@@ -6,8 +6,8 @@ export async function POST(req) {
   try {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
-
       billing_address_collection: "required", // Capture billing address
+      allow_promotion_codes: true,
       line_items: [
         {
           price_data: {
@@ -15,7 +15,7 @@ export async function POST(req) {
             product_data: {
               name: "Your Product Name",
             },
-            unit_amount: 9900, // Amount in cents
+            unit_amount: 9900, 
           },
           quantity: 1,
         },
