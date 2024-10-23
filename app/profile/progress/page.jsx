@@ -167,7 +167,7 @@ const MyActivity = ({ userID }) => {
   );
 };
 
-export default async function ProfileSection() {
+export default async function ProgressSection() {
   const { data: session, status } = useSession();
   const [profileData, setProfileData] = useState(null);
   const [activities, setActivities] = useState([]); //Getting all the activities from Hygraph

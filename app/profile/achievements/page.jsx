@@ -24,7 +24,6 @@ import Head from "next/head";
 import AchievementBadge from "@/app/Sections/Profile/AchievementBadge";
 import { AcheievemnetData } from "@/app/constant/menu";
 
-
 /**
  * @Main_account
  */
@@ -178,9 +177,9 @@ const MyLevel = ({ userID }) => {
                 <LevelCard level="Level 5" activities="25" />
               </div>
             </DialogDescription>
-            <DialogFooter className="sticky  rounded-t-[16px] shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] bottom-0 m-0 w-full px-4 bg-[#ffffff]">
+            {/* <DialogFooter className="sticky  rounded-t-[16px] shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] bottom-0 m-0 w-full px-4 bg-[#ffffff]">
               <PopupFooter PrimaryText="Save and Continue" />
-            </DialogFooter>
+            </DialogFooter> */}
           </DialogContent>
         </Dialog>
       </div>
@@ -213,6 +212,91 @@ const MyLevel = ({ userID }) => {
       {/* <p style={{ marginTop: "5px", color: "#555" }}>
         {Math.round(progressPercentage)}% completed
       </p> */}
+    </div>
+  );
+};
+
+/**
+ *
+ * @returns Badge Data
+ */
+
+const badges = [
+  {
+    name: "Five-day Stretch",
+    description:
+      "Looks like someone has been busy. You’ve completed at least 7 activities in over 5 days. Look at you go!",
+    condition: (activities) => {
+      const daysCount = new Set(
+        activities.map((activity) => activity.date.split("T")[0])
+      ); // Assuming activity has a date property
+      const completedActivities = activities.filter(
+        (activity) => activity.completed
+      );
+      return completedActivities.length >= 7 && daysCount.size > 5;
+    },
+  },
+  {
+    name: "Witching Hour Hero",
+    description:
+      "Phew! Those hours of twilight before bedtime can be tough. Keep going. You’ve completed at least 3 activities between 5pm and 7pm. What a hero!",
+    condition: (activities) => {
+      const eveningActivities = activities.filter((activity) => {
+        const hour = new Date(activity.date).getHours();
+        return hour >= 17 && hour < 19 && activity.completed; // Assuming activity has a completed property
+      });
+      return eveningActivities.length >= 3;
+    },
+  },
+  {
+    name: "Sleep Thief Warrior",
+    description:
+      "Sleep is overrated anyway! You have completed at least 5 activities in the dead of night. You growth gladiator!",
+    condition: (activities) => {
+      const nightActivities = activities.filter((activity) => {
+        const hour = new Date(activity.date).getHours();
+        return hour >= 0 && hour < 6 && activity.completed; // Assuming activity has a completed property
+      });
+      return nightActivities.length >= 5;
+    },
+  },
+  // Add other badges in a similar way...
+];
+
+const BadgeDisplay = ({ userID }) => {
+  const [activities, setActivities] = useState([]);
+  const [earnedBadges, setEarnedBadges] = useState([]);
+
+  const fetchActivities = async () => {
+    // Your existing fetch logic to get user activities...
+  };
+
+  useEffect(() => {
+    fetchActivities();
+  }, [userID]);
+
+  useEffect(() => {
+    if (activities.length) {
+      const badges = getEarnedBadges(activities);
+      setEarnedBadges(badges);
+    }
+  }, [activities]);
+
+  return (
+    <div>
+      <h2>Earned Badges</h2>
+      <div>
+        {earnedBadges.length ? (
+          earnedBadges.map((badge) => (
+            <div key={badge.name}>
+              <h3>{badge.name}</h3>
+              <p>{badge.description}</p>
+            </div>
+          ))
+        ) : (
+          <p>No badges earned yet!</p>
+        )}
+      </div>
     </div>
   );
 };
@@ -362,6 +446,11 @@ export default async function Achievement() {
               </div>
             </div>
           </div>
+          {profileData ? (
+            <BadgeDisplay userID={profileData.id} />
+          ) : (
+            <p className="clarabodyTwo">not found</p>
+          )}
 
           {/* AcheievemnetData Section */}
           <div className="flex flex-col w-full">
