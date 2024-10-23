@@ -229,6 +229,7 @@ export default async function ProgressSection() {
       </Head>
       <section className="w-full h-auto bg-[#F5F5F5] md:bg-[#EAEAF5] items-center justify-center flex flex-col px-0">
         {/* Topbar */}
+        
         <div className="claracontainer py-4 md:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-8">
           <div className="flex w-full px-4 h-[160px] flex-row justify-center gap-0 items-center relative">
             <Image
