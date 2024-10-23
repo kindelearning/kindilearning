@@ -4,6 +4,7 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import {
   KindiHeart,
+  ProfileDP,
   progressImage01,
   progressImage02,
   progressImage03,
@@ -291,10 +292,86 @@ export default async function ProfileSection() {
                 title={card.title}
               />
             ))}
+            {/* <SubProfileRoutes
+              iconBackgroundColor="#F05C5C"
+              title="Emotional & Social Strength"
+            />
+            <SubProfileRoutes
+              iconBackgroundColor="#3F3A64"
+              title="Confidence & Independence"
+            />
+            <SubProfileRoutes
+              iconBackgroundColor="#FF8E00"
+              title="Speech & Language"
+            />
+            <SubProfileRoutes
+              iconBackgroundColor="#FF8E00"
+              title="Reading & Writing"
+            />
+            <SubProfileRoutes
+              iconBackgroundColor="#019ACF"
+              title="Physical Agility"
+            />
+            <SubProfileRoutes
+              iconBackgroundColor="#029871"
+              title="Discovering our world"
+            />
+            <SubProfileRoutes
+              iconBackgroundColor="#EEBA00"
+              title="Creativity & Imagination"
+            />
+            <SubProfileRoutes
+              iconBackgroundColor="#0A1932"
+              title="Experiments & Math"
+            /> */}
           </div>
           <div className="claracontainer px-0 w-full flex flex-col justify-start items-start overflow-hidden gap-8">
             <ReferralCard />
           </div>
+        </div>
+        <div className="claracontainer bg-[#F5F5F5] md:bg-[#EAEAF5] -mt-4 rounded-t-[12px] z-2 lg:m-12 px-4 py-6 rounded-xl md:px-2 lg:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-[20px]">
+          {/* Top Profile Card */}
+          {profileData ? <MyProgressActivity userId={profileData.id} /> : <></>}
+          {/* The individual Tabs for Profile Page */}
+          <div className="flex w-full justify-center items-center gap-4 flex-col">
+            {/* Kids Profile Model */}
+            {/* <Dialog className="bg-[#EAEAF5] w-full items-start claracontainer">
+              <DialogTrigger className="w-full">
+                <MyProfileRoutes
+                  image={Kid}
+                  iconBackgroundColor="#029871"
+                  title="Kids Profile"
+                />
+              </DialogTrigger>
+              <DialogContent className="bg-[#EAEAF5] max-w-[96%] items-start max-h-[70%] scrollbar-hidden overflow-scroll p-0 overflow-x-hidden  rounded-[16px] w-full claracontainer">
+                <DialogHeader className="p-4">
+                  <div className="flex flex-row justify-center items-center w-full">
+                    <DialogTitle>
+                      <div className="text-center">
+                        <span className="text-[#3f3a64] text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
+                          My{" "}
+                        </span>
+                        <span className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
+                          Profile
+                        </span>
+                      </div>
+                    </DialogTitle>
+                  </div>
+                </DialogHeader>
+                <DialogDescription className="flex w-full min-h-[300px] pb-24 px-4 claracontainer gap-4 flex-col justify-center items-start">
+                  {profileData ? (
+                    <PartnerList userId={profileData.id} />
+                  ) : (
+                    <></>
+                  )}
+                </DialogDescription>
+                <DialogFooter className="sticky rounded-t-[16px] bottom-0 m-0 w-full ">
+                  <PopupFooter PrimaryText="Save and Continue" />
+                </DialogFooter>
+              </DialogContent>
+            </Dialog> */}
+          </div>
+          {/* Reffereal Card Section */}
         </div>
       </section>
     </>

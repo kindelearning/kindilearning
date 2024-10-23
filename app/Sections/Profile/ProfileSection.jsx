@@ -179,7 +179,6 @@ const ContactForm = () => {
  * @Main_Account
  * @returns Logic for Connecting Child and Parent Account
  */
-
 export const ConnectAccountForm = ({ userId }) => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
@@ -293,6 +292,11 @@ export const ConnectAccountForm = ({ userId }) => {
   );
 };
 
+/**
+ *
+ * @param {List of Partner of the User} param0
+ * @returns
+ */
 const PartnerList = ({ userId }) => {
   const [partners, setPartners] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -402,9 +406,6 @@ const PartnerList = ({ userId }) => {
                         ? partner.username
                         : partner.email.split("@")[0]}
                     </div>
-                    {/* <div className="text-[#757575] w-full text-xl font-normal font-fredoka leading-none">
-                      {partner.email}
-                    </div> */}
                     <div className="text-[#757575] w-full clarabodyTwo">
                       {partner.dateOfBirth
                         ? `Age: ${calculateAge(partner.dateOfBirth)}`
@@ -481,6 +482,92 @@ const PartnerList = ({ userId }) => {
   );
 };
 
+/**
+ *
+ * @param {Activity completed by User} param0
+ * @returns
+ */
+const MyProgressActivity = ({ userId }) => {
+  const [activities, setActivities] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  const fetchActivities = async () => {
+    const query = `
+      query GetUserActivities($relationalFirst: Int, $where: AccountWhereUniqueInput!) {
+        values: account(where: $where) {
+          id
+          username
+          myActivity(first: $relationalFirst) {
+            id
+            title
+            documentInStages(includeCurrent: true) {
+              id
+              stage
+              updatedAt
+              publishedAt
+            }
+          }
+        }
+      }
+    `;
+
+    const variables = {
+      relationalFirst: 10, // Number of activities you want to fetch
+      where: { id: userId }, // Replace with the current user's ID
+    };
+
+    try {
+      const response = await fetch(HYGRAPH_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${HYGRAPH_TOKEN}`,
+        },
+        body: JSON.stringify({ query, variables }),
+      });
+
+      const result = await response.json();
+
+      if (result.errors) {
+        throw new Error(result.errors[0].message);
+      } else {
+        setActivities(result.data.values.myActivity);
+      }
+    } catch (error) {
+      setError("Error fetching activities: " + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchActivities();
+  }, [userId]);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>{error}</p>;
+
+  return (
+    <div>
+      <h2>My Activities</h2>
+      <ul>
+        {activities.map((activity) => (
+          <li key={activity.id}>
+            <h3>{activity.title}</h3>
+            <p>
+              Last Updated:{" "}
+              {new Date(
+                activity.documentInStages[0].updatedAt
+              ).toLocaleDateString()}
+            </p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
 export default async function ProfileSection() {
   const { data: session, status } = useSession();
   const [profileData, setProfileData] = useState(null);
@@ -538,6 +625,7 @@ export default async function ProfileSection() {
         </div>
         <div className="claracontainer bg-[#F5F5F5] md:bg-[#EAEAF5] -mt-4 rounded-t-[12px] z-2 lg:m-12 px-4 py-6 rounded-xl md:px-2 lg:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-[20px]">
           {/* Top Profile Card */}
+          {/* {profileData ? <MyProgressActivity userId={profileData.id} /> : <></>} */}
           <div className="w-full flex bg-[white] rounded-[24px] p-2 md:p-4 justify-start items-start gap-[4px] lg:gap-[12px] lg:items-center">
             <div className="w-fit lg:max-w-[160px] lg:w-full items-center flex justify-start">
               {profileData ? (
