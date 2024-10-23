@@ -5,11 +5,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 export async function POST(req) {
   try {
     const session = await stripe.checkout.sessions.create({
-      payment_method_types: [
-        "card",
-        "paypal",
-        "us_bank_account",
-      ],
+      payment_method_types: ["card"],
 
       billing_address_collection: "required", // Capture billing address
       line_items: [
