@@ -182,6 +182,7 @@ import AchievementImage10 from "./AchievementImage10.svg";
 
 // Our Mission
 import PWKOne from "./PWKOne.svg";
+import PartnerBulb from "./PartnerBulb.png";
 import PWKTwo from "./PWKTwo.svg";
 import EmailIcons from "./EmailIcons.svg";
 import ProfileSettingIcon from "./ProfileSettingIcon.svg";
@@ -346,6 +347,7 @@ export {
   Clock,
   ThemeThumb,
   Apple,
+  PartnerBulb,
   Thomas,
   ProfileDP,
   AppStore,

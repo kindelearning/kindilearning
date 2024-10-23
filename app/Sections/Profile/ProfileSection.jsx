@@ -16,13 +16,14 @@ import {
   Support,
   TnC,
   User,
-  Phone,
   MasterCard,
   ConnectPartner,
   Milestone,
   ProfileSettingIcon,
   VerifiedIcon,
   ProfileProgress,
+  ProfilePlaceHolderOne,
+  PartnerBulb,
 } from "@/public/Images";
 import {
   Dialog,
@@ -51,6 +52,7 @@ import { useSession } from "next-auth/react";
 import Loading from "@/app/loading";
 import SignOutButton from "@/app/auth/signout/page";
 import Head from "next/head";
+import { Plus } from "lucide-react";
 
 const HYGRAPH_ENDPOINT =
   "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";
@@ -291,73 +293,193 @@ export const ConnectAccountForm = ({ userId }) => {
   );
 };
 
-// const PartnerList = ({ userId }) => {
-//   const [partners, setPartners] = useState([]);
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState("");
+const PartnerList = ({ userId }) => {
+  const [partners, setPartners] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-//   const fetchPartners = async () => {
-//     const query = `
-//       query($where: AccountWhereUniqueInput!) {
-//         account(where: $where) {
-//           id
-//           partner {
-//             id
-//             email
-//             username
-//           }
-//         }
-//       }
-//     `;
+  const fetchPartners = async () => {
+    const query = `
+      query($where: AccountWhereUniqueInput!) {
+        account(where: $where) {
+          id
+          partner {
+            id
+            email
+            username
+             profilePicture {
+                url
+              }
+            dateOfBirth
+          }
+        }
+      }
+    `;
 
-//     const variables = {
-//       where: { id: userId }, // User ID of the current user
-//     };
+    const variables = {
+      where: { id: userId }, // User ID of the current user
+    };
 
-//     try {
-//       const response = await fetch(HYGRAPH_ENDPOINT, {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//           Authorization: `Bearer ${HYGRAPH_TOKEN}`,
-//         },
-//         body: JSON.stringify({ query, variables }),
-//       });
+    try {
+      const response = await fetch(HYGRAPH_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${HYGRAPH_TOKEN}`,
+        },
+        body: JSON.stringify({ query, variables }),
+      });
 
-//       const result = await response.json();
+      const result = await response.json();
 
-//       if (result.errors) {
-//         throw new Error(result.errors[0].message);
-//       } else {
-//         setPartners(result.data.account.partner);
-//       }
-//     } catch (error) {
-//       setError("Error fetching partners: " + error.message);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
+      if (result.errors) {
+        throw new Error(result.errors[0].message);
+      } else {
+        setPartners(result.data.account.partner);
+      }
+    } catch (error) {
+      setError("Error fetching partners: " + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+  const calculateAge = (dateOfBirth) => {
+    const birthDate = new Date(dateOfBirth);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
 
-//   useEffect(() => {
-//     fetchPartners();
-//   }, [userId]);
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && today.getDate() < birthDate.getDate())
+    ) {
+      age--;
+    }
 
-//   if (loading) return <p>Loading...</p>;
-//   if (error) return <p>{error}</p>;
+    return age;
+  };
 
-//   return (
-//     <div>
-//       <h2>Connected Partners</h2>
-//       <ul>
-//         {partners.map((partner) => (
-//           <li key={partner.id}>
-//             {partner.username ? partner.username : partner.email}
-//           </li>
-//         ))}
-//       </ul>
-//     </div>
-//   );
-// };
+  useEffect(() => {
+    fetchPartners();
+  }, [userId]);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>{error}</p>;
+
+  return (
+    <>
+      <div className="flex w-full claracontainer gap-4 flex-col justify-start items-start">
+        <div className="flex justify-between w-full items-center">
+          <div className="text-black text-start text-[20px] md:text-[28px] font-semibold font-fredoka">
+            Profiles
+          </div>
+          <div className="text-black text-start text-[20px] md:text-[28px] font-semibold font-fredoka ">
+            {`${partners.length}/5`}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 w-full claracontainer gap-4">
+          {partners.map((partner) => (
+            <>
+              <div
+                key={partner.id}
+                className="w-full flex flex-row justify-between items-center p-2 bg-white rounded-xl"
+              >
+                <div className="flex flex-row gap-2 w-full justify-start items-center">
+                  <div className="w-16 h-16 overflow-clip flex justify-center items-center">
+                    <Image
+                      src={partner.profilePicture?.url || ProfilePlaceHolderOne} // Default image if not available
+                      alt="Profile Image"
+                      width={64}
+                      height={64}
+                      className="min-w-16 min-h-16 object-cover rounded-full"
+                    />
+                  </div>
+                  <div className="w-full flex-col justify-start items-start inline-flex">
+                    <div className="text-[#0a1932] w-full text-[28px] font-semibold font-fredoka leading-tight">
+                      {/* {partner.username} */}
+                      {partner.username
+                        ? partner.username
+                        : partner.email.split("@")[0]}
+                    </div>
+                    {/* <div className="text-[#757575] w-full text-xl font-normal font-fredoka leading-none">
+                      {partner.email}
+                    </div> */}
+                    <div className="text-[#757575] w-full clarabodyTwo">
+                      {partner.dateOfBirth
+                        ? `Age: ${calculateAge(partner.dateOfBirth)}`
+                        : "DOB not provided"}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </>
+          ))}
+
+          <Dialog className="bg-[#EAEAF5] w-full rounded-[28px] claracontainer">
+            <DialogTrigger className="w-full">
+              <div
+                className={`w-full min-h-[90px] flex flex-row justify-center items-center p-2 bg-white rounded-xl 
+                ${
+                  partners.length >= 5
+                    ? "opacity-50 cursor-not-allowed text-black pointer-events-none"
+                    : "cursor-pointer  text-red "
+                }`}
+              >
+                <Plus className="text-red" /> New Profile
+              </div>
+            </DialogTrigger>
+            <DialogContent className="bg-[#EAEAF5] min-h-[300px] pb-24 items-start scrollbar-hidden  max-w-[96%] max-h-[70%] overflow-scroll p-0 overflow-x-hidden rounded-[16px] w-full claracontainer">
+              <DialogHeader className="p-4">
+                <div className="flex flex-row justify-center items-center w-full">
+                  <DialogTitle>
+                    <div className="text-center">
+                      <span className="text-[#3f3a64] text-[24px] md:text-[36px] font-semibold font-fredoka capitalize  ">
+                        Connect{" "}
+                      </span>
+                      <span className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize  ">
+                        A Partner
+                      </span>
+                    </div>
+                  </DialogTitle>
+                </div>
+              </DialogHeader>
+              <DialogDescription className="flex w-full px-4 claracontainer flex-col justify-start items-center">
+                <div className="flex flex-col md:flex-row px-2 md:px-6 lg:px-24 max-w-[800px] justify-center items-start claracontainer gap-4">
+                  <div className="flex w-full max-w-[20%]">
+                    <Image
+                      alt="Kindi"
+                      src={ConnectPartner}
+                      className="w-full h-auto"
+                    />
+                  </div>
+                  <div className="flex w-full flex-col justify-start items-start gap-4">
+                    <div className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize  ">
+                      Get $20
+                    </div>{" "}
+                    <div className="text-[#757575] text-[16px] md:text-2xl font-medium font-fredoka ">
+                      Invite a Partner or friends, family, coworkers,
+                      neighbours, and your favourite barista to Brushlink. Every
+                      time someone books and visits a new dentist through your
+                      link, you both get $20.
+                    </div>
+                    <ConnectAccountForm />
+                  </div>
+                </div>
+              </DialogDescription>
+            </DialogContent>
+          </Dialog>
+        </div>
+        <div className="flex flex-row justify-center w-full items-center">
+          <Image alt="Kindi" src={PartnerBulb} className="w-[24px] h-[24px]" />
+          <div className="text-black text-start clarabodyTwo">
+            You can add {5 - partners.length} more profiles{" "}
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
 
 export default async function ProfileSection() {
   const { data: session, status } = useSession();
@@ -582,7 +704,7 @@ export default async function ProfileSection() {
           {/* The individual Tabs for Profile Page */}
           <div className="flex w-full justify-center items-center gap-4 flex-col">
             {/* Kids Profile Model */}
-            <Dialog className="bg-[#EAEAF5] w-full  claracontainer">
+            <Dialog className="bg-[#EAEAF5] w-full items-start claracontainer">
               <DialogTrigger className="w-full">
                 <MyProfileRoutes
                   image={Kid}
@@ -590,7 +712,7 @@ export default async function ProfileSection() {
                   title="Kids Profile"
                 />
               </DialogTrigger>
-              <DialogContent className="bg-[#EAEAF5] max-w-[96%] max-h-[70%] scrollbar-hidden overflow-scroll p-0 overflow-x-hidden rounded-[16px] w-full claracontainer">
+              <DialogContent className="bg-[#EAEAF5] max-w-[96%] items-start max-h-[70%] scrollbar-hidden overflow-scroll p-0 overflow-x-hidden  rounded-[16px] w-full claracontainer">
                 <DialogHeader className="p-4">
                   <div className="flex flex-row justify-center items-center w-full">
                     <DialogTitle>
@@ -605,22 +727,12 @@ export default async function ProfileSection() {
                     </DialogTitle>
                   </div>
                 </DialogHeader>
-                <DialogDescription className="flex w-full px-4 claracontainer gap-4 flex-col justify-start items-center">
-                  <div className="flex justify-between w-full items-center">
-                    <div className="text-black text-start text-[20px] md:text-[28px] font-semibold font-fredoka">
-                      Profiles
-                    </div>
-                    <div className="text-black text-start  text-[20px] md:text-[28px] font-semibold font-fredoka ">
-                      3/5
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-1 lg:grid-cols-2 w-full claracontainer gap-4">
-                    <ProfileCard ProfilData={profilData} />
-                    <ProfileCard ProfilData={profilData} />
-                    <ProfileCard ProfilData={profilData} />
-                    <ProfileCard ProfilData={profilData} />
-                    <ProfileCard ProfilData={profilData} />
-                  </div>
+                <DialogDescription className="flex w-full min-h-[300px] pb-24 px-4 claracontainer gap-4 flex-col justify-center items-start">
+                  {profileData ? (
+                    <PartnerList userId={profileData.id} />
+                  ) : (
+                    <></>
+                  )}
                 </DialogDescription>
                 <DialogFooter className="sticky rounded-t-[16px] bottom-0 m-0 w-full ">
                   <PopupFooter PrimaryText="Save and Continue" />
