@@ -12,7 +12,6 @@ import {
 } from "@/public/Images";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import Link from "next/link";
 import { useState, useEffect } from "react";
 
 const HeroImageGif = [
@@ -52,9 +51,13 @@ const ImageSlider = () => {
   );
 };
 
-export default function Hero({ homeData }) {
+export default async function Hero() {
   const { data: session, status } = useSession();
-
+  const homeData = await getHomeData();
+  console.log("Home Page Data (in component):", homeData);
+  if (!homeData || !homeData[0]?.hero) {
+    return <NotFound />;
+  }
 
   return (
     <section className="w-full h-screen lg:h-auto bg-purple py-12 md:py-24 lg:py-28 items-center justify-center flex flex-col md:flex-row gap-[20px]">
