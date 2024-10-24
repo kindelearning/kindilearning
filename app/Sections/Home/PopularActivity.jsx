@@ -46,15 +46,6 @@ const PopularActivity = async () => {
       </div>
       {/* The Activity Carousel */}
       <div className="flex overflow-x-auto py-2 scrollbar-hidden px-4 lg:px-0 w-full claracontainer gap-4 scrollbar-hidden">
-        {/* {[1, 2, 3, 4, 5].map((item, index) => (
-          <Activity
-            key={index}
-            title="Custom Title"
-            time="10 minutes"
-            tags={["Tag 1", "Tag 2", "Tag 3"]}
-            icons={[KindiHeart, Confidence]}
-          />
-        ))} */}
         {activities.map((activity) => (
           <div key={activity.id}>
             <article className="rounded-lg ">
@@ -91,18 +82,22 @@ const PopularActivity = async () => {
                         </div>
                         <div className="items-center justify-center gap-2 md:gap-4 grid grid-cols-5">
                           <Image
+                            alt="Kindi"
                             className="w-[20px] h-[24px] lg:w-[48px] lg:h-[48px]"
                             src={SpeechLanguageActivity}
                           />
                           <Image
+                            alt="Kindi"
                             className="w-[20px] h-[24px] lg:w-[48px] lg:h-[48px]"
                             src={DiscoveringOurWorldActivity}
                           />
                           <Image
+                            alt="Kindi"
                             className="w-[20px] h-[24px] lg:w-[48px] lg:h-[48px]"
                             src={ReadingWritingActivity}
                           />
                           <Image
+                            alt="Kindi"
                             className="w-[20px] h-[24px] lg:w-[48px] lg:h-[48px]"
                             src={ExperimentsMathActivity}
                           />

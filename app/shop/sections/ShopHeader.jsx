@@ -33,7 +33,7 @@ const LocalNavitem = ({
     >
       <div className="flex items-center gap-2">
         <div className="icon-container w-5 h-5">
-          <Image src={IconSrc} width={20} height={20} />
+          <Image alt="Kindi"  src={IconSrc} width={20} height={20} />
         </div>
         <span className="text-lg font-medium font-fredoka">{Title}</span>
       </div>
@@ -49,7 +49,7 @@ const MileStone = () => {
         href="/"
         className="w-full h-[80px] bg-[#3f3d91] justify-center items-center gap-1 flex flex-col rounded-xl border-3 border-[#85829c]"
       >
-        <Image src={Milestone} width={40} height={40} />
+        <Image alt="Kindi"  src={Milestone} width={40} height={40} />
         <div className="text-center w-full text-white text-xs font-normal font-fredoka leading-none">
           Milestones
         </div>{" "}
@@ -65,7 +65,7 @@ const Progress = () => {
         href="/"
         className="w-full h-[80px] bg-[#FF8E00] justify-center items-center gap-1 flex flex-col rounded-xl border-3 border-[#f9d09b]"
       >
-        <Image src={progressImage02} width={40} height={40} />
+        <Image alt="Kindi"  src={progressImage02} width={40} height={40} />
         <div className="text-center w-full text-white text-xs font-normal font-fredoka leading-none">
           Milestones
         </div>{" "}
@@ -81,7 +81,7 @@ const Achievements = () => {
         href="/"
         className="w-full h-[80px] bg-[#C42797] justify-center items-center gap-1 flex flex-col rounded-xl border-3 border-[#e4a9d3]"
       >
-        <Image src={Achievement} width={40} height={40} />
+        <Image alt="Kindi"  src={Achievement} width={40} height={40} />
         <div className="text-center w-full text-white text-xs font-normal font-fredoka leading-none">
           Milestones
         </div>{" "}

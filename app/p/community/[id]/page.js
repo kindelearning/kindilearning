@@ -210,7 +210,7 @@ export default async function BlogDetailPage({ params }) {
                       }`}
                       onClick={handleLikeClick}
                     >
-                      <Image src={LikeIcon} />
+                      <Image alt="Kindi"  src={LikeIcon} />
                     </button>
                     <span className="ml-2 text-[#0a1932] font-fredoka font-medium">
                       {/* {blog.likeCount} */}
@@ -222,7 +222,7 @@ export default async function BlogDetailPage({ params }) {
                       onClick={scrollToCommentSection}
                       className="text-[#0a1932] bg-[#f8f8f8] rounded-full p-2 hover:text-[#0a1932]"
                     >
-                      <Image src={CommentIcon || "129"} />
+                      <Image alt="Kindi"  src={CommentIcon || "129"} />
                     </button>
                     {randomComments}+
                   </button>

@@ -26,7 +26,7 @@ const AgeCard = ({ bgImage, image, title, body, link }) => {
       >
         <div className="flex w-full items-center justify-start flex-col">
           <Image
-            alt="Kinfi"
+            alt="Kindi"
             src={image || User}
             className="w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24"
           />
@@ -82,21 +82,21 @@ const AgeRanges = async () => {
               title="BABY (0+ YEARS)"
               body="Sensory play activities tailored for very young little ones, but appeal to all young children."
             />
-            <Image src={AgeRangeArrow} className="w-[50px] h-[50px] -mx-3" />
+            <Image src={AgeRangeArrow} alt="Kindi"  className="w-[50px] h-[50px] -mx-3" />
             <AgeCard
               image={AgeCardTwo}
               bgImage="/Images/AgeRangeTwo.svg"
               body="Our learning activities help toddlers develop essential language, social, motor and cognitive skills — but babies and pre-schoolers can enjoy the fun, too!"
               title="TODDLER (18+ MONTHS)"
             />
-            <Image src={AgeRangeArrow} className="w-[50px] h-[50px] -mx-3" />
+            <Image src={AgeRangeArrow}  alt="Kindi" className="w-[50px] h-[50px] -mx-3" />
             <AgeCard
               image={AgeCardThree}
               bgImage="/Images/AgeRangeThree.svg"
               body="Fun learning activities for children approaching the beginning of their school careers; these activities will also appeal to toddlers and babies."
               title="PRE-SCHOOLER (2.5+ YEARS)"
             />
-            <Image src={AgeRangeArrow} className="w-[50px] h-[50px] -mx-3" />
+            <Image src={AgeRangeArrow} alt="Kindi"  className="w-[50px] h-[50px] -mx-3" />
             <AgeCard
               image={AgeCardFour}
               bgImage="/Images/AgeRangeFour.svg"

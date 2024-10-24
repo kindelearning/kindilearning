@@ -91,7 +91,7 @@ const Achievements = () => {
         href="/profile/achievements"
         className="w-full h-[80px] bg-[#C42797] justify-center items-center gap-1 flex flex-col rounded-xl border-3 border-[#e4a9d3]"
       >
-        <Image src={Achievement} width={40} height={40} />
+        <Image src={Achievement} alt="Kindi"  width={40} height={40} />
         <div className="text-center w-full text-white text-xs font-normal font-fredoka leading-none">
           Achievements
         </div>{" "}
