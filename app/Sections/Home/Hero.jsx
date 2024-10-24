@@ -52,13 +52,9 @@ const ImageSlider = () => {
   );
 };
 
-const Hero = async () => {
+export default function Hero({ homeData }) {
   const { data: session, status } = useSession();
-  const homeData = await getHomeData();
-  console.log("Home Page Data (in component):", homeData);
-  if (!homeData || !homeData[0]?.hero) {
-    return <NotFound />;
-  }
+
 
   return (
     <section className="w-full h-screen lg:h-auto bg-purple py-12 md:py-24 lg:py-28 items-center justify-center flex flex-col md:flex-row gap-[20px]">
@@ -101,5 +97,4 @@ const Hero = async () => {
       </div>
     </section>
   );
-};
-export default Hero;
+}
