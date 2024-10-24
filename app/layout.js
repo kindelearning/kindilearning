@@ -6,6 +6,7 @@ import { SessionProvider } from "next-auth/react";
 import { CartProvider } from "./context/CartContext";
 import Head from "next/head";
 import PWAPrompt from "./Sections/PWAPrompt";
+import { Analytics } from "@vercel/analytics/react"
 
 /**
  * @ToDo  TO be removed as we dont use this, but need to check it infuture
