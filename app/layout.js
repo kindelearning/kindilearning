@@ -6,17 +6,33 @@ import { SessionProvider } from "next-auth/react";
 import { CartProvider } from "./context/CartContext";
 import Head from "next/head";
 import PWAPrompt from "./Sections/PWAPrompt";
-import { Analytics } from "@vercel/analytics/react"
-import { SpeedInsights } from '@vercel/speed-insights/next';
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import localFont from "next/font/local";
+import { Fredoka, Montserrat } from "next/font/google";
 
-
-/**
- * @ToDo  TO be removed as we dont use this, but need to check it infuture
- */
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
 });
+
+const fredoka = Fredoka({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"], // Specify weights you want to include
+  display: "swap", // Optional: helps with font loading behavior
+});
+
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"], // Specify weights and styles
+  display: "swap",
+  style: ["normal", "italic"], // Include italic if needed
+});
+
+// const myFont = localFont({
+//   src: "./path-to-your-font/font-file.ttf",
+//   display: "swap",
+// });
 
 // export const metadata = {
 //   title: "Kindi Education",
@@ -52,7 +68,9 @@ export default function RootLayout({ children }) {
         <body
           className={cn(
             "min-h-screen bg-background font-sans antialiased",
-            fontSans.variable
+            fontSans.variable,
+            fredoka.className,
+            montserrat.className
           )}
         >
           <SessionProvider>

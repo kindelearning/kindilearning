@@ -224,14 +224,6 @@ export default async function ProfileEdit({ userId }) {
         <title>Profile Edit | Kindilearning</title>
         <meta name="description" content="Edit your profile in Kindilearning" />
         <link rel="icon" href="/favicon.ico" />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins:wght@400;500&display=swap"
-        />
-        <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.12/tailwind.min.css"
-        />
         <link rel="stylesheet" href="/styles.css" />
         <link rel="stylesheet" href="/profile.css" />
       </Head>
