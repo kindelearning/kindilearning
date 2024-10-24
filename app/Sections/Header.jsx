@@ -43,7 +43,7 @@ const LocalNavitem = ({
     >
       <div className="flex items-center gap-2">
         <div className="icon-container w-5 h-5">
-          <Image src={IconSrc} width={20} height={20} />
+          <Image src={IconSrc} alt="Kindi" width={20} height={20} />
         </div>
         <span className="text-lg font-medium font-fredoka">{Title}</span>
       </div>
@@ -59,7 +59,7 @@ const MileStone = () => {
         href="/profile/milestone"
         className="w-full h-[80px] bg-[#3f3d91] justify-center items-center gap-1 flex flex-col rounded-xl border-3 border-[#85829c]"
       >
-        <Image src={Milestone} width={40} height={40} />
+        <Image src={Milestone} alt="Kindi" width={40} height={40} />
         <div className="text-center w-full text-white text-xs font-normal font-fredoka leading-none">
           MileStone
         </div>{" "}
@@ -75,7 +75,7 @@ const Progress = () => {
         href="/profile/progress"
         className="w-full h-[80px] bg-[#FF8E00] justify-center items-center gap-1 flex flex-col rounded-xl border-3 border-[#f9d09b]"
       >
-        <Image src={ProfileProgress} width={40} height={40} />
+        <Image src={ProfileProgress} alt="Kindi" width={40} height={40} />
         <div className="text-center w-full text-white text-xs font-normal font-fredoka leading-none">
           Progress
         </div>{" "}
