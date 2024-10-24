@@ -7,6 +7,8 @@ import { CartProvider } from "./context/CartContext";
 import Head from "next/head";
 import PWAPrompt from "./Sections/PWAPrompt";
 import { Analytics } from "@vercel/analytics/react"
+import { SpeedInsights } from '@vercel/speed-insights/next';
+
 
 /**
  * @ToDo  TO be removed as we dont use this, but need to check it infuture
@@ -57,6 +59,7 @@ export default function RootLayout({ children }) {
             <CartProvider>
               <PWAPrompt />
               {children}
+              <SpeedInsights />
             </CartProvider>
           </SessionProvider>
         </body>
