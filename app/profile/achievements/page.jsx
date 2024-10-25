@@ -3,7 +3,13 @@
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import React, { useEffect, useState } from "react";
-import { VerifiedIcon, ProfileDP } from "@/public/Images";
+import {
+  VerifiedIcon,
+  ProfileDP,
+  LevelTwo,
+  LevelOne,
+  LevelThree,
+} from "@/public/Images";
 import {
   Dialog,
   DialogContent,
@@ -23,6 +29,7 @@ import Loading from "@/app/loading";
 import Head from "next/head";
 import AchievementBadge from "@/app/Sections/Profile/AchievementBadge";
 import { AcheievemnetData } from "@/app/constant/menu";
+import { fetchBadges, getPublishedBadge } from "@/lib/hygraph";
 
 /**
  * @Main_account
@@ -53,11 +60,6 @@ const GET_ACCOUNT_BY_EMAIL = gql`
   }
 `;
 
-/**
- *
- * @param {MyActivity completed by User} param0
- * @returns
- */
 const MyLevel = ({ userID }) => {
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -182,6 +184,14 @@ const MyLevel = ({ userID }) => {
             </DialogFooter> */}
           </DialogContent>
         </Dialog>
+        <Link href="/profile/update" className="flex lg:hidden" target="_blank">
+          <Badge
+            className="text-[10px] md:text-[16px] cursor-pointer"
+            variant="outline"
+          >
+            Edit
+          </Badge>
+        </Link>
       </div>
       <div className="flex w-full gap-1 items-center">
         <div
@@ -190,8 +200,6 @@ const MyLevel = ({ userID }) => {
             width: "100%",
             backgroundColor: "#e0e0e0",
             borderRadius: "5px",
-            // marginTop: "10px",
-            // color:'#f15c57'
           }}
         >
           <div
@@ -201,12 +209,14 @@ const MyLevel = ({ userID }) => {
               backgroundColor: "#f15c57",
               height: "10px",
               borderRadius: "5px",
-              // color:'#f15c57'
             }}
           ></div>
         </div>
-        <p className="clarabodyTwo w-[max-content] min-w-[120px]">
-          Activities: {activities.length}
+        <p className="clarabodyTwo flex gap-1 w-[max-content] lg:min-w-[120px] ">
+          <p className="clarabodyTwo hidden w-[max-content] lg:flex">
+            Activities:
+          </p>{" "}
+          {activities.length}
         </p>
       </div>
       {/* <p style={{ marginTop: "5px", color: "#555" }}>
@@ -216,88 +226,174 @@ const MyLevel = ({ userID }) => {
   );
 };
 
-/**
- *
- * @returns Badge Data
- */
-
-const badges = [
+const badgeLevels = [
   {
-    name: "Five-day Stretch",
-    description:
-      "Looks like someone has been busy. You’ve completed at least 7 activities in over 5 days. Look at you go!",
-    condition: (activities) => {
-      const daysCount = new Set(
-        activities.map((activity) => activity.date.split("T")[0])
-      ); // Assuming activity has a date property
-      const completedActivities = activities.filter(
-        (activity) => activity.completed
-      );
-      return completedActivities.length >= 7 && daysCount.size > 5;
-    },
+    image: LevelOne,
+    condition: (level) => level === 1,
   },
   {
-    name: "Witching Hour Hero",
-    description:
-      "Phew! Those hours of twilight before bedtime can be tough. Keep going. You’ve completed at least 3 activities between 5pm and 7pm. What a hero!",
-    condition: (activities) => {
-      const eveningActivities = activities.filter((activity) => {
-        const hour = new Date(activity.date).getHours();
-        return hour >= 17 && hour < 19 && activity.completed; // Assuming activity has a completed property
-      });
-      return eveningActivities.length >= 3;
-    },
+    image: LevelTwo,
+    condition: (level) => level === 2,
   },
   {
-    name: "Sleep Thief Warrior",
-    description:
-      "Sleep is overrated anyway! You have completed at least 5 activities in the dead of night. You growth gladiator!",
-    condition: (activities) => {
-      const nightActivities = activities.filter((activity) => {
-        const hour = new Date(activity.date).getHours();
-        return hour >= 0 && hour < 6 && activity.completed; // Assuming activity has a completed property
-      });
-      return nightActivities.length >= 5;
-    },
+    image: LevelThree,
+    condition: (level) => level >= 3,
   },
-  // Add other badges in a similar way...
 ];
 
-const BadgeDisplay = ({ userID }) => {
-  const [activities, setActivities] = useState([]);
-  const [earnedBadges, setEarnedBadges] = useState([]);
-
-  const fetchActivities = async () => {
-    // Your existing fetch logic to get user activities...
-  };
+const BadgesDisplay = ({ userId }) => {
+  const [badges, setBadges] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetchActivities();
-  }, [userID]);
+    const fetchBadges = async () => {
+      try {
+        const response = await fetch(HYGRAPH_ENDPOINT, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${HYGRAPH_TOKEN}`, // Use your token here
+          },
+          body: JSON.stringify({
+            query: `
+              query GetUserWithBadges($userId: ID!) {
+                account(where: { id: $userId }) {
+                  myBadge {
+                    id
+                    name
+                    description
+                    icon {
+                      url
+                    }
+                  }
+                }
+              }
+            `,
+            variables: { userId },
+          }),
+        });
 
-  useEffect(() => {
-    if (activities.length) {
-      const badges = getEarnedBadges(activities);
-      setEarnedBadges(badges);
-    }
-  }, [activities]);
+        const { data, errors } = await response.json();
+
+        if (errors) {
+          throw new Error(errors[0].message);
+        }
+
+        setBadges(data.account.myBadge);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBadges();
+  }, [userId]);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
 
   return (
     <div>
-      <h2>Earned Badges</h2>
-      <div>
-        {earnedBadges.length ? (
-          earnedBadges.map((badge) => (
-            <div key={badge.name}>
-              <h3>{badge.name}</h3>
-              <p>{badge.description}</p>
+      <div className="flex w-full overflow-x-scroll scrollbar-hidden gap-1">
+        {badges.map((badge) => {
+          // Select a random badge level based on your badgeLevels array
+          const randomLevelIndex = Math.floor(
+            Math.random() * badgeLevels.length
+          );
+          const selectedBadgeLevel = badgeLevels[randomLevelIndex];
+
+          return (
+            <div
+              key={badge.id}
+              className="flex flex-col justify-start items-center w-fit max-w-[100px] min-w-[80px] gap-0 cursor-pointer"
+            >
+              {badge.icon && (
+                <img
+                  src={badge.icon.url}
+                  alt={badge.name}
+                  className="w-[60px] h-[60px] object-cover flex"
+                />
+              )}
+
+              {selectedBadgeLevel && (
+                <div className="flex w-full justify-end items-end">
+                  <Image
+                    src={selectedBadgeLevel?.image}
+                    alt={`Badge Level ${randomLevelIndex + 1}`}
+                    className="-mt-[20px] lg:-mt-[22px] w-[24px] h-[24px] md:w-[32px] md:h-[32px] mr-0 lg:mr-[10px]"
+                  />
+                </div>
+              )}
+              <h2 className="w-full text-center text-sm text-[#000000] font-normal font-fredoka leading-tight">
+                {badge.name.length > 16
+                  ? badge.name.slice(0, 16) + "..."
+                  : badge.name}
+              </h2>
             </div>
-          ))
-        ) : (
-          <p>No badges earned yet!</p>
-        )}
+          );
+        })}
       </div>
     </div>
+  );
+};
+
+const DisplayAllBadges = () => {
+  const [allBadges, setAllBadges] = useState([]);
+  useEffect(() => {
+    const fetchBadges = async () => {
+      const data = await getPublishedBadge();
+      console.log("allBadges Data", data);
+      setAllBadges(data);
+    };
+
+    fetchBadges();
+  }, []);
+  if (!allBadges || allBadges.length === 0) {
+    return <div>No Badges found!</div>;
+  }
+
+  return (
+    <>
+      <div className="flex w-full flex-col gap-1">
+        {allBadges.length > 0 ? (
+          <div className="flex w-full overflow-x-scroll scrollbar-hidden gap-2">
+            {allBadges.map((badge) => {
+              const randomWidth = Math.floor(Math.random() * 46) + 10; // Random number between 10 and 100
+              return (
+                <div
+                  className="flex cursor-pointer flex-col justify-start items-center w-fit max-w-[160px] min-w-[120px] gap-2"
+                  key={badge.id}
+                >
+                  <Image
+                    width={80}
+                    height={80}
+                    className="min-w-[80px] min-h-[80px] object-cover"
+                    src={badge.icon.url}
+                    alt={badge.icon.fileName}
+                  />
+                  {/* Progress Bar */}
+                  <div className="w-full h-1 bg-[#bfbfbf]  rounded">
+                    <div
+                      className="h-full bg-red rounded"
+                      style={{ width: `${randomWidth}%` }} // Set random width
+                    />
+                  </div>
+                  <h2 className="w-full text-center text-sm text-[#000000] font-normal font-fredoka leading-tight">
+                    {badge.name.length > 16
+                      ? badge.name.slice(0, 16) + "..."
+                      : badge.name}
+                  </h2>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <p>No badges found.</p>
+        )}
+      </div>
+    </>
   );
 };
 
@@ -427,63 +523,35 @@ export default async function Achievement() {
                 </Link>
               </div>
               <div className="flex flex-col w-full gap-1 items-start justify-start">
-                <div className="flex flex-row w-full justify-start items-center gap-2">
+                <div className="flex flex-row w-full justify-start items-start gap-2">
                   {/* Trigger for the Level Popup */}
                   {profileData ? <MyLevel userID={profileData.id} /> : null}
-                  <Link
-                    href="/profile/update"
-                    className="flex lg:hidden"
-                    target="_blank"
-                  >
-                    <Badge
-                      className="text-[10px] md:text-[16px] cursor-pointer"
-                      variant="outline"
-                    >
-                      Edit
-                    </Badge>
-                  </Link>
                 </div>
               </div>
             </div>
           </div>
-          {profileData ? (
-            <BadgeDisplay userID={profileData.id} />
-          ) : (
-            <p className="clarabodyTwo">not found</p>
-          )}
 
           {/* AcheievemnetData Section */}
-          <div className="flex flex-col w-full">
+          <div className="flex flex-col w-full gap-12">
             <div className="flex flex-col w-full gap-2">
-              <div className="text-[#0a1932] text-2xl lg:text-4xl font-medium font-fredoka w-full">
+              <div className="text-[#0a1932] text-2xl font-medium font-fredoka w-full">
                 Your acievements
               </div>
               <div className="flex w-full overflow-x-scroll scrollbar-hidden gap-1">
-                {AcheievemnetData.map((achievement, index) => (
-                  <AchievementBadge
-                    key={index}
-                    image={achievement.image}
-                    title={achievement.title}
-                    level={achievement.level}
-                    backgroundColor={achievement.backgroundColor}
-                  />
-                ))}
+                {profileData ? (
+                  <BadgesDisplay userId={profileData.id} />
+                ) : (
+                  // v
+                  <p className="clarabodyTwo">not found</p>
+                )}
               </div>
             </div>
             <div className="flex flex-col w-full gap-2">
-              <div className="text-[#0a1932] text-2xl lg:text-4xl font-medium font-fredoka w-full">
+              <div className="text-[#0a1932] text-2xl font-medium font-fredoka w-full">
                 To Be Completed
               </div>
-              <div className="flex w-full overflow-x-scroll scrollbar-hidden gap-1">
-                {AcheievemnetData.map((achievement, index) => (
-                  <AchievementBadge
-                    key={index}
-                    image={achievement.image}
-                    title={achievement.title}
-                    level={achievement.level}
-                    backgroundColor={achievement.backgroundColor}
-                  />
-                ))}
+              <div className="flex flex-wrap gap-1">
+                <DisplayAllBadges />
               </div>
             </div>
           </div>
