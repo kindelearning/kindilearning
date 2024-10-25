@@ -86,68 +86,57 @@ const ProfileRoute = () => {
   );
 };
 
-const MNode = ({
-  mName = "Name",
-  bgColor = "#029871",
-  textColor = "#ffffff",
-}) => {
-  return (
-    <>
-      <div className="flex items-center">
-        <div
-          className={`w-4 h-4 rounded-full mr-2`}
-          style={{
-            backgroundColor: bgColor,
-          }}
-        />
-        <Button
-          className={`px-4 py-2 text-${textColor} rounded-lg`}
-          style={{
-            backgroundColor: bgColor,
-          }}
-        >
-          {mName}
-        </Button>
-      </div>
-    </>
-  );
-};
+// const MNode = ({
+//   mName = "Name",
+//   bgColor = "#029871",
+//   textColor = "#ffffff",
+// }) => {
+//   return (
+//     <>
+//       <div className="flex items-center">
+//         <div
+//           className={`w-4 h-4 rounded-full mr-2`}
+//           style={{
+//             backgroundColor: bgColor,
+//           }}
+//         />
+//         <Button
+//           className={`px-4 py-2 text-${textColor} rounded-lg`}
+//           style={{
+//             backgroundColor: bgColor,
+//           }}
+//         >
+//           {mName}
+//         </Button>
+//       </div>
+//     </>
+//   );
+// };
 
 const milestoneData = [
   {
     id: 1,
     title: "Kickoff Meeting",
-    description:
-      "Initial meeting to understand project scope and requirements.",
-    isCompleted: false,
   },
   {
     id: 2,
     title: "Design Phase",
-    description: "Create wireframes and design mockups for the project.",
-    isCompleted: false,
   },
   {
     id: 3,
     title: "Development Phase",
-    description: "Start coding the project based on the approved designs.",
-    isCompleted: false,
   },
   {
     id: 4,
     title: "Testing & QA",
-    description: "Conduct thorough testing to ensure project stability.",
-    isCompleted: false,
   },
   {
     id: 5,
     title: "Project Launch",
-    description: "Deploy the project to production and perform final checks.",
-    isCompleted: false,
   },
 ];
 
-const Milestone = ({ title, description, isCompleted, position }) => {
+const Milestone = ({ title, isCompleted, position }) => {
   return (
     <div
       className={`flex gap-2 ${
@@ -162,23 +151,15 @@ const Milestone = ({ title, description, isCompleted, position }) => {
           }`}
         ></div>
       </div>
-      <div
-        className={`p-4 mb-4 border rounded-lg w-[300px] ${
+      <Button
+        className={`p-1 hover:text-black hover:bg-white border rounded-lg min-w-[100px] ${
           isCompleted
             ? "bg-green-100 border-green-400"
             : "bg-gray-100 border-gray-400"
         }`}
       >
-        <h3 className="text-lg font-semibold text-gray-800">{title}</h3>
-        <p className="text-sm text-gray-600">{description}</p>
-        <div
-          className={`mt-2 text-sm font-medium ${
-            isCompleted ? "text-green-600" : "text-red-600"
-          }`}
-        >
-          {isCompleted ? "Completed" : "In Progress"}
-        </div>
-      </div>
+        <h3 className="clarabodyTwo text-gray-800">{title}</h3>
+      </Button>
     </div>
   );
 };
@@ -202,73 +183,248 @@ const MilestoneList = () => {
   }, []);
 
   return (
-    <div className="p-6 max- w-full mx-auto relative">
+    <div className="p-6 max- w-full relative">
       <h2 className="text-2xl font-bold text-gray-800 mb-8 text-center">
         Project Milestones
       </h2>
-      <div className="relative flex flex-col items-center">
-        {/* SVG Path for the zig-zag path */}
-        <svg
-          className="absolute w-full h-full"
-          style={{ top: 0, left: 0, zIndex: -1 }}
-        >
-          <path
-            ref={pathRef}
-            stroke="#888"
-            strokeWidth="3"
-            strokeDasharray="6,4"
-            fill="none"
-          />
-        </svg>
-
+      {/* <div className="max-w-full p-8 bg-white rounded-lg shadow-md">
         {milestoneData.map((milestone, index) => (
           <div
             key={milestone.id}
-            className={`relative mb-8 w-full flex ${
+            className={`relative w-full flex ${
               index % 2 === 0 ? "justify-start" : "justify-end"
             }`}
             style={{ top: `${index * 150}px` }} // Vertical positioning
           >
-            {/* Render each milestone */}
             <Milestone
               title={milestone.title}
-              description={milestone.description}
-              isCompleted={milestone.isCompleted}
               position={index % 2 === 0 ? "left" : "right"}
             />
+            {index < milestoneData.length - 1 && (
+              <div className="h-12 border-l-2 border-dotted border-gray-300 relative">
+                <div className="w-4 h-4 bg-red absolute -left-2 top-1/2 rounded-full"></div>
+              </div>
+            )}
+          </div>
+        ))}
+      </div> */}
+      <div className="max-w-full p-8 bg-white  min-h-[700px] h-full items-start rounded-lg shadow-md">
+        {milestoneData.map((milestone, index) => (
+          <div key={milestone.id}>
+            <div
+              className="absolute"
+              style={{
+                top: `${index * 80}px`,
+                left: index % 2 === 0 ? "50%" : "0%",
+                transform: index % 2 === 0 ? "translateX(50%)" : "",
+              }}
+            >
+              <Milestone
+                title={milestone.title}
+                description={milestone.description}
+                isCompleted={milestone.isCompleted}
+              />
+            </div>
+          </div>
+        ))}
+        {milestoneData.map((milestone, index) => (
+          <div key={milestone.id}>
+            {index < milestoneData.length - 1 && (
+              <div
+                className="absolute border-l-2 border-dotted border-gray-300"
+                style={{
+                  top: `${index * 80 + 40}px`,
+                  left: index % 2 === 0 ? "50%" : "0%",
+                  height: "80px",
+                  transform: index % 2 === 0 ? "translateX(50%)" : "",
+                  zIndex: -1,
+                }}
+              />
+            )}
+            {index < milestoneData.length - 1 && (
+              <div
+                className="absolute border-t-2 border-dotted border-gray-300"
+                style={{
+                  top: `${index * 80 + 80}px`,
+                  left: index % 2 === 0 ? "50%" : "0%",
+                  width: index % 2 === 0 ? "50%" : "100%",
+                  transform: index % 2 === 0 ? "translateX(50%)" : "",
+                  zIndex: -1,
+                }}
+              />
+            )}
           </div>
         ))}
       </div>
 
-      <div className="mt-6 text-center">
-      </div>
+      <div className="mt-6 text-center"></div>
     </div>
   );
 };
 
+// const NiceCurvePath = () => {
+//   // Number of nodes
+//   const numberOfNodes = 10;
+//   const containerHeight = 800; // Height of the container
+//   const nodeSpacing = containerHeight / (numberOfNodes - 1);
+//   const baseAmplitude = 20; // Base amplitude for the wave
+//   const frequency = 0.2; // Frequency of the wave
 
+//   // State for container width
+//   const [containerWidth, setContainerWidth] = useState(0);
+
+//   useEffect(() => {
+//     // Set the container width after the component mounts
+//     setContainerWidth(window.innerWidth);
+
+//     // Optionally handle resizing
+//     const handleResize = () => {
+//       setContainerWidth(window.innerWidth);
+//     };
+
+//     window.addEventListener("resize", handleResize);
+
+//     // Cleanup the event listener on component unmount
+//     return () => {
+//       window.removeEventListener("resize", handleResize);
+//     };
+//   }, []); // Empty dependency array ensures this runs only once after mount
+
+//   // Generate nodes and paths
+//   const nodes = [];
+//   const paths = [];
+
+//   for (let i = 0; i < numberOfNodes; i++) {
+//     // First node starts from the top center, rest alternate sides
+//     const top = i * nodeSpacing;
+//     const left =
+//       i === 0
+//         ? containerWidth / 2
+//         : i % 2 === 0
+//         ? containerWidth * 0.3
+//         : containerWidth * 0.7; // First node at center, rest alternate
+
+//     // Add node to nodes array
+//     nodes.push(
+//       <Milestone
+//         key={i}
+//         title={`Node ${i + 1}`}
+//         bgColor="pink-500"
+//         textColor="white"
+//         borderColor="pink-700"
+//       />
+//     );
+
+//     // Add path to paths array, skip the first node
+//     if (i > 0) {
+//       const previousTop = (i - 1) * nodeSpacing;
+//       const previousLeft =
+//         i === 1
+//           ? containerWidth / 2
+//           : i % 2 === 0
+//           ? containerWidth * 0.7
+//           : containerWidth * 0.3; // Opposite side of the current node
+
+//       // Control points to make the curve bend at the nodes
+//       const controlPointX1 =
+//         previousLeft +
+//         Math.sin(i * frequency) * (baseAmplitude + Math.random() * 10); // Adding randomness to the amplitude
+//       const controlPointY1 =
+//         previousTop + (top - previousTop) / 2 + Math.sin(i * frequency) * 10; // Slight vertical variation
+//       const controlPointX2 =
+//         left - Math.sin(i * frequency) * (baseAmplitude + Math.random() * 10); // Adding randomness to the amplitude
+//       const controlPointY2 =
+//         previousTop + (top - previousTop) / 2 - Math.sin(i * frequency) * 10; // Slight vertical variation
+
+//       // Create a cubic Bezier curve using the 'C' command
+//       const pathD = `M ${previousLeft} ${previousTop} C ${controlPointX1} ${controlPointY1}, ${controlPointX2} ${controlPointY2}, ${left} ${top}`;
+
+//       // Create a wider path by duplicating the path and applying a blur filter
+//       paths.push(
+//         <>
+//           <path
+//             key={`path-bg-${i}`} // Background path for width effect
+//             d={pathD}
+//             fill="none"
+//             stroke="#f05c5c" // Set the stroke color to the preferred color
+//             strokeWidth="10" // Wider stroke for background effect
+//             opacity="0.5" // Slightly transparent for blending effect
+//           />
+//           <path
+//             key={`path-${i}`}
+//             d={pathD}
+//             fill="none"
+//             stroke="#f05c5c" // Set the stroke color to the preferred color
+//             strokeWidth="4" // Standard stroke width for visibility
+//             strokeDasharray="5,5" // Makes the path dotted
+//           />
+//         </>
+//       );
+//     }
+//   }
+
+//   return (
+//     <div className="relative w-full h-full pb-24 min-h-[1000px] bg-gray-100 overflow-hidden">
+//       {/* SVG for drawing paths */}
+//       <svg
+//         className="absolute bg-[#eaeaf5] top-0 left-0 w-full h-full"
+//         viewBox={`0 0 ${containerWidth} ${containerHeight}`} // Set viewBox to full width of the viewport
+//         preserveAspectRatio="none"
+//       >
+//         {paths}
+//       </svg>
+//       {nodes}
+//     </div>
+//   );
+// };
 
 const CurvePath = () => {
   // Number of nodes
   const numberOfNodes = 10;
   const containerHeight = 800; // Height of the container
   const nodeSpacing = containerHeight / (numberOfNodes - 1);
-  const containerWidth = 100; // Relative width for calculations (percentage)
+  const baseAmplitude = 20; // Base amplitude for the wave
+  const frequency = 0.2; // Frequency of the wave
+
+  // State for container width
+  const [containerWidth, setContainerWidth] = useState(0);
+
+  useEffect(() => {
+    // Set the container width after the component mounts
+    setContainerWidth(window.innerWidth);
+
+    // Optionally handle resizing
+    const handleResize = () => {
+      setContainerWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []); // Empty dependency array ensures this runs only once after mount
 
   // Generate nodes and paths
   const nodes = [];
   const paths = [];
 
   for (let i = 0; i < numberOfNodes; i++) {
-    // First node starts from top center, rest alternate sides
+    // First node starts from the top center, rest alternate sides
     const top = i * nodeSpacing;
-    const left = i === 0 ? 50 : i % 2 === 0 ? 30 : 70; // First node at 50%, rest alternate
+    const left =
+      i === 0
+        ? containerWidth / 2
+        : i % 2 === 0
+        ? containerWidth * 0.3
+        : containerWidth * 0.7; // First node at center, rest alternate
 
     // Add node to nodes array
     nodes.push(
-      <MNode
+      <Milestone
         key={i}
-        mName={`Node ${i + 1}`}
+        title={`Node ${i + 1}`}
         bgColor="pink-500"
         textColor="white"
         borderColor="pink-700"
@@ -278,13 +434,23 @@ const CurvePath = () => {
     // Add path to paths array, skip the first node
     if (i > 0) {
       const previousTop = (i - 1) * nodeSpacing;
-      const previousLeft = i === 1 ? 50 : i % 2 === 0 ? 70 : 30; // Opposite side of the current node
+      const previousLeft =
+        i === 1
+          ? containerWidth / 2
+          : i % 2 === 0
+          ? containerWidth * 0.7
+          : containerWidth * 0.3; // Opposite side of the current node
 
       // Control points to make the curve bend at the nodes
-      const controlPointX1 = previousLeft; // Control point close to the previous node
-      const controlPointY1 = previousTop + (top - previousTop) / 2; // Midway vertically
-      const controlPointX2 = left; // Control point close to the current node
-      const controlPointY2 = previousTop + (top - previousTop) / 2; // Midway vertically
+      const controlPointX1 =
+        previousLeft +
+        Math.sin(i * frequency) * (baseAmplitude + Math.random() * 10); // Adding randomness to the amplitude
+      const controlPointY1 =
+        previousTop + (top - previousTop) / 2 + Math.sin(i * frequency) * 10; // Slight vertical variation
+      const controlPointX2 =
+        left - Math.sin(i * frequency) * (baseAmplitude + Math.random() * 10); // Adding randomness to the amplitude
+      const controlPointY2 =
+        previousTop + (top - previousTop) / 2 - Math.sin(i * frequency) * 10; // Slight vertical variation
 
       // Create a cubic Bezier curve using the 'C' command
       const pathD = `M ${previousLeft} ${previousTop} C ${controlPointX1} ${controlPointY1}, ${controlPointX2} ${controlPointY2}, ${left} ${top}`;
@@ -294,7 +460,8 @@ const CurvePath = () => {
           key={`path-${i}`}
           d={pathD}
           fill="none"
-          stroke="#f05c5c"
+          stroke="#f05c5c" // Set the stroke color to the preferred color
+          strokeWidth="4" // Slightly thicker stroke for visibility
           strokeDasharray="5,5" // Makes the path dotted
         />
       );
@@ -306,36 +473,15 @@ const CurvePath = () => {
       {/* SVG for drawing paths */}
       <svg
         className="absolute bg-[#eaeaf5] top-0 left-0 w-full h-full"
-        viewBox={`0 0 ${containerWidth} ${containerHeight}`}
+        viewBox={`0 0 ${containerWidth} ${containerHeight}`} // Set viewBox to full width of the viewport
         preserveAspectRatio="none"
       >
         {paths}
       </svg>
-
-      {/* Render nodes */}
       {nodes}
     </div>
   );
 };
-
-// const GroupChip = ({ options, selectedOption, onChange }) => {
-//   return (
-//     <>
-//       <div className="flex w-full  overflow-x-scroll scrollbar-hidden justify-start items-center space-x-2">
-//         {options.map((option, index) => (
-//           <div
-//             className={`bg-red text-white px-4 py-1 rounded-full min-w-[max-content] cursor-pointer`}
-//             key={index}
-//             active={option === selectedOption}
-//             onClick={() => onChange(option)}
-//           >
-//             {option}
-//           </div>
-//         ))}
-//       </div>
-//     </>
-//   );
-// };
 
 export default function MileStone() {
   const { data: session, status } = useSession();
@@ -356,13 +502,9 @@ export default function MileStone() {
     }
   };
 
-  const [selectedOption, setSelectedOption] = useState(options[0]);
-  const handleOptionChange = (option) => {
-    setSelectedOption(option);
-  };
   return (
     <>
-      <section className="w-full pb-24 h-auto bg-[#EAEAF5] items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">
+      <section className="w-full pb-24 h-full bg-[#EAEAF5] items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">
         <div className="claracontainer items-center justify-center p-4 md:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-8">
           {/* <UserImages /> */}
           <div className="flex w-full flex-col justify-center items-center">
@@ -378,7 +520,7 @@ export default function MileStone() {
                   src={profileData.profilePicture?.url}
                   width={100}
                   height={100}
-                  className="cursor-pointer w-30 h-30 border-gradient-to-r from-pink-500 to-yellow-500 border-2 border-red rounded-full z-10"
+                  className="cursor-pointer w-28 h-28 min-w-[100px] min-h-[100px] border-gradient-to-r from-pink-500 to-yellow-500 border-2 border-red rounded-full z-10"
                 />
               ) : (
                 <Image
@@ -406,31 +548,6 @@ export default function MileStone() {
             )}
           </div>
           <ProfileRoute />
-          {/* <div className="flex w-full flex-col gap-4">
-            {milestoneData.map((milestone, index) => (
-              <div
-                key={milestone.id}
-                className={`relative mb-8 ${
-                  index % 2 === 0 ? "text-left" : "text-right"
-                }`}
-              >
-                <Milestone
-                  title={milestone.title}
-                  description={milestone.description}
-                  isCompleted={milestone.isCompleted}
-                  position={index % 2 === 0 ? "left" : "right"}
-                />
-              </div>
-            ))}
-          </div> */}
-          <MilestoneList />
-
-          {/* <GroupChip
-            options={options}
-            selectedOption={selectedOption}
-            onChange={handleOptionChange}
-          /> */}
-          {/* Curved Path */}
           <div className="flex flex-col w-full px-4 rounded-md justify-center items-center">
             <CurvePath />
           </div>
