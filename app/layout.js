@@ -4,11 +4,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { SessionProvider } from "next-auth/react";
 import { CartProvider } from "./context/CartContext";
-import Head from "next/head";
-import PWAPrompt from "./Sections/PWAPrompt";
-import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import localFont from "next/font/local";
 import { Fredoka, Montserrat } from "next/font/google";
 
 const fontSans = FontSans({
@@ -75,7 +71,6 @@ export default function RootLayout({ children }) {
         >
           <SessionProvider>
             <CartProvider>
-              <PWAPrompt />
               {children}
               <SpeedInsights />
             </CartProvider>
