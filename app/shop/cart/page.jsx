@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/app/context/CartContext";
 import { DeleteItem } from "@/public/Images";
@@ -9,6 +9,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function CartPage() {
+  const [loading, setLoading] = useState(false);
   const { cart, removeFromCart, clearCart } = useCart();
   console.log("CartPage:", cart);
 
@@ -17,6 +18,7 @@ export default function CartPage() {
       alert("Your cart is empty!");
       return;
     }
+    setLoading(true);
 
     console.log("Proceeding to checkout with cart items:", cart);
 
@@ -32,6 +34,8 @@ export default function CartPage() {
     } else {
       console.error("Failed to create checkout session:", session);
     }
+    setLoading(false);
+
     // try {
     //   const response = await fetch("/api/checkout-session", {
     //     method: "POST",
@@ -135,10 +139,11 @@ export default function CartPage() {
               Clear Cart
             </Button>
             <Button
+              disabled={loading}
               onClick={handleCheckout}
               className="bg-red hover:bg-red rounded-2xl font-fredoka text-white shadow border-2 border-white"
             >
-              Proceed to Checkout
+              {loading ? "Processing..." : "Proceed to Checkout"}
             </Button>
           </div>
         </div>

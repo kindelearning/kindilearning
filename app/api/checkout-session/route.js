@@ -13,9 +13,9 @@ export async function POST(req) {
           price_data: {
             currency: "usd",
             product_data: {
-              name: "Your Product Name",
+              name: "Test Product Shop ",
             },
-            unit_amount: 9900, 
+            unit_amount: 99 * 100,
           },
           quantity: 1,
         },
