@@ -86,182 +86,6 @@ const ProfileRoute = () => {
   );
 };
 
-// const MNode = ({
-//   mName = "Name",
-//   bgColor = "#029871",
-//   textColor = "#ffffff",
-// }) => {
-//   return (
-//     <>
-//       <div className="flex items-center">
-//         <div
-//           className={`w-4 h-4 rounded-full mr-2`}
-//           style={{
-//             backgroundColor: bgColor,
-//           }}
-//         />
-//         <Button
-//           className={`px-4 py-2 text-${textColor} rounded-lg`}
-//           style={{
-//             backgroundColor: bgColor,
-//           }}
-//         >
-//           {mName}
-//         </Button>
-//       </div>
-//     </>
-//   );
-// };
-
-const milestoneData = [
-  {
-    id: 1,
-    title: "Kickoff Meeting",
-  },
-  {
-    id: 2,
-    title: "Design Phase",
-  },
-  {
-    id: 3,
-    title: "Development Phase",
-  },
-  {
-    id: 4,
-    title: "Testing & QA",
-  },
-  {
-    id: 5,
-    title: "Project Launch",
-  },
-];
-
-const Milestone = ({ title, isCompleted, position }) => {
-  return (
-    <div
-      className={`flex gap-2 ${
-        position === "left" ? "flex-row" : "flex-row-reverse"
-      } items-center`}
-    >
-      {/* Line connecting to the next milestone */}
-      <div className="w-4 h-4 bg-blue-500 rounded-full flex justify-center items-center">
-        <div
-          className={`w-2 h-2 m-2 rounded-full ${
-            isCompleted ? "bg-green-500" : "bg-red-500"
-          }`}
-        ></div>
-      </div>
-      <Button
-        className={`p-1 hover:text-black hover:bg-white border rounded-lg min-w-[100px] ${
-          isCompleted
-            ? "bg-green-100 border-green-400"
-            : "bg-gray-100 border-gray-400"
-        }`}
-      >
-        <h3 className="clarabodyTwo text-gray-800">{title}</h3>
-      </Button>
-    </div>
-  );
-};
-
-const MilestoneList = () => {
-  const pathRef = useRef(null);
-
-  // Calculate a single continuous path
-  useEffect(() => {
-    const path = pathRef.current;
-    if (path) {
-      let d = "M 50 50 "; // Starting point
-      milestoneData.forEach((_, index) => {
-        // Calculate path coordinates based on index
-        const x = index % 2 === 0 ? 80 : 20; // Alternate x-axis values for zig-zag
-        const y = 150 * (index + 1); // Increment y-axis for each milestone
-        d += `Q 50 ${y - 75}, ${x} ${y} `;
-      });
-      path.setAttribute("d", d);
-    }
-  }, []);
-
-  return (
-    <div className="p-6 max- w-full relative">
-      <h2 className="text-2xl font-bold text-gray-800 mb-8 text-center">
-        Project Milestones
-      </h2>
-      {/* <div className="max-w-full p-8 bg-white rounded-lg shadow-md">
-        {milestoneData.map((milestone, index) => (
-          <div
-            key={milestone.id}
-            className={`relative w-full flex ${
-              index % 2 === 0 ? "justify-start" : "justify-end"
-            }`}
-            style={{ top: `${index * 150}px` }} // Vertical positioning
-          >
-            <Milestone
-              title={milestone.title}
-              position={index % 2 === 0 ? "left" : "right"}
-            />
-            {index < milestoneData.length - 1 && (
-              <div className="h-12 border-l-2 border-dotted border-gray-300 relative">
-                <div className="w-4 h-4 bg-red absolute -left-2 top-1/2 rounded-full"></div>
-              </div>
-            )}
-          </div>
-        ))}
-      </div> */}
-      <div className="max-w-full p-8 bg-white  min-h-[700px] h-full items-start rounded-lg shadow-md">
-        {milestoneData.map((milestone, index) => (
-          <div key={milestone.id}>
-            <div
-              className="absolute"
-              style={{
-                top: `${index * 80}px`,
-                left: index % 2 === 0 ? "50%" : "0%",
-                transform: index % 2 === 0 ? "translateX(50%)" : "",
-              }}
-            >
-              <Milestone
-                title={milestone.title}
-                description={milestone.description}
-                isCompleted={milestone.isCompleted}
-              />
-            </div>
-          </div>
-        ))}
-        {milestoneData.map((milestone, index) => (
-          <div key={milestone.id}>
-            {index < milestoneData.length - 1 && (
-              <div
-                className="absolute border-l-2 border-dotted border-gray-300"
-                style={{
-                  top: `${index * 80 + 40}px`,
-                  left: index % 2 === 0 ? "50%" : "0%",
-                  height: "80px",
-                  transform: index % 2 === 0 ? "translateX(50%)" : "",
-                  zIndex: -1,
-                }}
-              />
-            )}
-            {index < milestoneData.length - 1 && (
-              <div
-                className="absolute border-t-2 border-dotted border-gray-300"
-                style={{
-                  top: `${index * 80 + 80}px`,
-                  left: index % 2 === 0 ? "50%" : "0%",
-                  width: index % 2 === 0 ? "50%" : "100%",
-                  transform: index % 2 === 0 ? "translateX(50%)" : "",
-                  zIndex: -1,
-                }}
-              />
-            )}
-          </div>
-        ))}
-      </div>
-
-      <div className="mt-6 text-center"></div>
-    </div>
-  );
-};
-
 // const NiceCurvePath = () => {
 //   // Number of nodes
 //   const numberOfNodes = 10;
@@ -379,11 +203,149 @@ const MilestoneList = () => {
 // };
 
 const CurvePath = () => {
+  // Milestone data
+  const milestoneData = [
+    { id: 1, title: "Kickoff Meeting" },
+    { id: 2, title: "Design Phase" },
+    { id: 3, title: "Development Phase" },
+    { id: 4, title: "Testing & QA" },
+    { id: 5, title: "Project Launch" },
+    { id: 6, title: "Development Phase" },
+    { id: 7, title: "Testing & QA" },
+    { id: 8, title: "Project Launch" },
+  ];
+
+  // Dynamically set container height based on the number of nodes
+  const nodeSpacing = 200; // Define the desired spacing between nodes
+  const containerHeight = (milestoneData.length - 1) * nodeSpacing + 300; // Increased padding for better layout
+  const baseAmplitude = 40; // Double the base amplitude for a larger curve
+  const frequency = 0.2; // Frequency of the wave
+
+  // State for container width
+  const [containerWidth, setContainerWidth] = useState(0);
+
+  useEffect(() => {
+    // Set the container width after the component mounts
+    setContainerWidth(window.innerWidth);
+
+    // Optionally handle resizing
+    const handleResize = () => {
+      setContainerWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []); // Empty dependency array ensures this runs only once after mount
+
+  // Generate nodes and paths
+  const nodes = [];
+  const paths = [];
+
+  // Loop through milestoneData
+  for (let i = 1; i < milestoneData.length; i++) {
+    const milestone = milestoneData[i];
+
+    // Position calculation:
+    // - Center the first and last nodes
+    // - Alternate the others to the left and right
+    const top = i * nodeSpacing;
+    const left =
+      i === 0 || i === milestoneData.length - 1
+        ? containerWidth / 2 // Center for first and last nodes
+        : i % 2 === 0
+        ? containerWidth * 0.3 // Left for even
+        : containerWidth * 0.7; // Right for odd
+
+    // Calculate button positioning adjustments
+    const buttonTop = top + 60; // Adjust top spacing
+    const buttonLeft = left - 110; // Adjust left spacing
+
+    // Add node to nodes array
+    nodes.push(
+      <div
+        key={milestone.id}
+        style={{
+          position: "absolute",
+          top: `${buttonTop}px`,
+          left: `${buttonLeft}px`,
+          transform: "translate(-50%, -50%)",
+        }}
+      >
+        <button
+          className="px-4 py-2 bg-pink-500 text-white rounded hover:bg-pink-600"
+          onClick={() => alert(`Button for ${milestone.title} clicked!`)}
+        >
+          {milestone.title}
+        </button>
+      </div>
+    );
+
+    // Add path to paths array, skip the first node
+    if (i > 0) {
+      const previousTop = (i - 1) * nodeSpacing;
+      const previousLeft =
+        i - 1 === 0 || i - 1 === milestoneData.length - 1
+          ? containerWidth / 2
+          : (i - 1) % 2 === 0
+          ? containerWidth * 0.3
+          : containerWidth * 0.7; // Alternate positions
+
+      // Control points to make the curve bend at the nodes
+      const controlPointX1 =
+        previousLeft +
+        Math.sin(i * frequency) * (baseAmplitude * 2 + Math.random() * 20);
+      const controlPointY1 =
+        previousTop + (top - previousTop) / 2 + Math.sin(i * frequency) * 20;
+      const controlPointX2 =
+        left -
+        Math.sin(i * frequency) * (baseAmplitude * 2 + Math.random() * 20);
+      const controlPointY2 =
+        previousTop + (top - previousTop) / 2 - Math.sin(i * frequency) * 20;
+
+      // Create a cubic Bezier curve using the 'C' command
+      const pathD = `M ${previousLeft} ${previousTop} C ${controlPointX1} ${controlPointY1}, ${controlPointX2} ${controlPointY2}, ${left} ${top}`;
+
+      paths.push(
+        <path
+          key={`path-${milestone.id}`}
+          d={pathD}
+          fill="none"
+          stroke="#f05c5c"
+          strokeWidth="4"
+          strokeDasharray="5,5" // Dotted line
+        />
+      );
+    }
+  }
+
+  return (
+    <div
+      className="relative w-full h-full pb-24 bg-gray-100 overflow-hidden"
+      style={{ minHeight: `${containerHeight}px` }}
+    >
+      {/* SVG for drawing paths */}
+      <svg
+        className="absolute bg-[#eaeaf5] top-0 left-0 w-full h-full"
+        viewBox={`0 0 ${containerWidth} ${containerHeight}`}
+        preserveAspectRatio="none"
+      >
+        {paths}
+      </svg>
+      {nodes}
+    </div>
+  );
+};
+
+const MobileCurvePath = () => {
   // Number of nodes
   const numberOfNodes = 10;
   const containerHeight = 800; // Height of the container
   const nodeSpacing = containerHeight / (numberOfNodes - 1);
-  const baseAmplitude = 20; // Base amplitude for the wave
+  const baseAmplitude = 40; // Double the base amplitude for a larger curve
   const frequency = 0.2; // Frequency of the wave
 
   // State for container width
@@ -422,13 +384,22 @@ const CurvePath = () => {
 
     // Add node to nodes array
     nodes.push(
-      <Milestone
+      <div
         key={i}
-        title={`Node ${i + 1}`}
-        bgColor="pink-500"
-        textColor="white"
-        borderColor="pink-700"
-      />
+        style={{
+          position: "absolute",
+          top: `${top}px`,
+          left: `${left}px`,
+          transform: "translate(-50%, -50%)",
+        }}
+      >
+        <button
+          className="mt-2 px-4 py-2 bg-pink-500 text-white rounded hover:bg-pink-600"
+          onClick={() => alert(`Button on Node ${i + 1} clicked!`)}
+        >
+          Click Me
+        </button>
+      </div>
     );
 
     // Add path to paths array, skip the first node
@@ -444,13 +415,14 @@ const CurvePath = () => {
       // Control points to make the curve bend at the nodes
       const controlPointX1 =
         previousLeft +
-        Math.sin(i * frequency) * (baseAmplitude + Math.random() * 10); // Adding randomness to the amplitude
+        Math.sin(i * frequency) * (baseAmplitude * 2 + Math.random() * 20); // Increased amplitude and added randomness
       const controlPointY1 =
-        previousTop + (top - previousTop) / 2 + Math.sin(i * frequency) * 10; // Slight vertical variation
+        previousTop + (top - previousTop) / 2 + Math.sin(i * frequency) * 20; // Slightly larger vertical variation
       const controlPointX2 =
-        left - Math.sin(i * frequency) * (baseAmplitude + Math.random() * 10); // Adding randomness to the amplitude
+        left -
+        Math.sin(i * frequency) * (baseAmplitude * 2 + Math.random() * 20); // Increased amplitude and added randomness
       const controlPointY2 =
-        previousTop + (top - previousTop) / 2 - Math.sin(i * frequency) * 10; // Slight vertical variation
+        previousTop + (top - previousTop) / 2 - Math.sin(i * frequency) * 20; // Slightly larger vertical variation
 
       // Create a cubic Bezier curve using the 'C' command
       const pathD = `M ${previousLeft} ${previousTop} C ${controlPointX1} ${controlPointY1}, ${controlPointX2} ${controlPointY2}, ${left} ${top}`;
@@ -482,6 +454,88 @@ const CurvePath = () => {
     </div>
   );
 };
+
+// const SineWaveWithButtons = () => {
+//   const [containerWidth, setContainerWidth] = useState(0);
+//   const amplitude = 100; // Controls the height of the wave
+//   const frequency = 0.01; // Controls the frequency of the wave
+//   const numPoints = 30; // Number of buttons/nodes to display
+//   const waveLength = 800; // Width to generate the wave over
+
+//   useEffect(() => {
+//     setContainerWidth(window.innerWidth);
+
+//     const handleResize = () => {
+//       setContainerWidth(window.innerWidth);
+//     };
+
+//     window.addEventListener("resize", handleResize);
+
+//     return () => {
+//       window.removeEventListener("resize", handleResize);
+//     };
+//   }, []);
+
+//   const generateWavePoints = () => {
+//     const points = [];
+//     const spacing = waveLength / (numPoints - 1);
+
+//     for (let i = 0; i < numPoints; i++) {
+//       const x = i * spacing;
+//       const y = amplitude * Math.sin(frequency * x); // Adjust frequency & amplitude
+//       points.push({ x, y: y }); // Use negative y to reflect wave on -y axis
+//     }
+
+//     return points;
+//   };
+
+//   const points = generateWavePoints();
+
+//   return (
+//     <div className="relative w-full h-[400px] bg-gray-100">
+//       <svg
+//         className="absolute w-full h-full"
+//         viewBox={`0 -150 ${waveLength} 300`}
+//         preserveAspectRatio="none"
+//       >
+//         {/* Drawing the sine wave */}
+//         <path
+//           d={`
+//             M ${points[0].x} ${points[0].y}
+//             ${points
+//               .slice(1)
+//               .map((point) => `L ${point.x} ${point.y}`)
+//               .join(" ")}
+//           `}
+//           fill="none"
+//           stroke="#f05c5c"
+//           strokeWidth="4"
+//         />
+//       </svg>
+
+//       {/* Adding buttons at the sine wave nodes */}
+//       {points.map((point, index) => (
+//         <div
+//           key={index}
+//           style={{
+//             position: "absolute",
+//             top: `calc(50% + ${point.y}px)`, // Centered vertically, then offset by sine y-value
+//             left: `${point.x}px`,
+//             transform: "translate(-50%, -50%)",
+//           }}
+//         >
+//           <button
+//             className="px-3 py-1 bg-pink-500 text-white rounded hover:bg-pink-600"
+//             onClick={() => alert(`Button ${index + 1} clicked!`)}
+//           >
+//             Node {index + 1}
+//           </button>
+//         </div>
+//       ))}
+//     </div>
+//   );
+// };
+
 
 export default function MileStone() {
   const { data: session, status } = useSession();
@@ -548,8 +602,11 @@ export default function MileStone() {
             )}
           </div>
           <ProfileRoute />
-          <div className="flex flex-col w-full px-4 rounded-md justify-center items-center">
-            <CurvePath />
+          {/* <SineWaveWithButtons /> */}
+          <CurvePath />
+          <div className="hidden lg:flex"></div>
+          <div className="flex lg:hidden">
+            <MobileCurvePath />
           </div>
         </div>
       </section>
