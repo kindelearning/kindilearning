@@ -374,7 +374,7 @@ const DisplayAllBadges = () => {
                     alt={badge.icon.fileName}
                   />
                   {/* Progress Bar */}
-                  <div className="w-full h-1 bg-[#bfbfbf]  rounded">
+                  <div className="w-full max-w-[80px] h-1 bg-[#bfbfbf]  rounded">
                     <div
                       className="h-full bg-red rounded"
                       style={{ width: `${randomWidth}%` }} // Set random width
