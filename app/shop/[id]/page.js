@@ -32,7 +32,6 @@ const ReviewForm = () => {
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false); // Add loading state
 
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -75,7 +74,6 @@ const ReviewForm = () => {
       setMessage("Failed to submit review. Please try again.");
     }
     setIsLoading(false); // Stop loading after submission
-
   };
 
   return (
@@ -165,10 +163,14 @@ const ReviewForm = () => {
         </div>
       </div>
 
-      <Button disabled={isLoading}  className="clarabutton bg-red hover:bg-hoverRed" type="submit">
+      <Button
+        disabled={isLoading}
+        className="clarabutton bg-red hover:bg-hoverRed"
+        type="submit"
+      >
         {/* Submit Review */}
-        {isLoading ? "Submitting..." : "Submit Review"} {/* Change text based on loading */}
-
+        {isLoading ? "Submitting..." : "Submit Review"}{" "}
+        {/* Change text based on loading */}
       </Button>
       {message && <p>{message}</p>}
     </form>
@@ -180,6 +182,8 @@ import NotFound from "@/app/not-found";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { useCart } from "@/app/context/CartContext";
+import { loadStripe } from "@stripe/stripe-js";
+const stripePromise = loadStripe(process.env.STRIPE_PUBLIC_KEY);
 
 export default async function ProductDetailPage({ params }) {
   const { id } = params;
@@ -196,6 +200,35 @@ export default async function ProductDetailPage({ params }) {
       image: product.productImages[0]?.url,
       quantity: 1,
     });
+  };
+
+  const handleCheckout = async () => {
+    const stripe = await stripePromise;
+
+    const response = await fetch("/api/checkout", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        cartItems: [
+          {
+            id: product.id,
+            title: product.title,
+            price: product.salePrice,
+            image: product.productImages[0]?.url,
+            quantity: 1,
+          },
+        ],
+      }),
+    });
+
+    const session = await response.json();
+
+    if (session.error) {
+      console.error(session.error);
+      return;
+    }
+
+    await stripe.redirectToCheckout({ sessionId: session.id });
   };
 
   if (!product) {
@@ -251,7 +284,7 @@ export default async function ProductDetailPage({ params }) {
                   157 Reviews
                 </div>
               </div>
-              {/* COntent */}
+              {/* Content */}
               <div className="claracontainer">
                 <div className="w-[max-content] text-[#0a1932] text-[32px] font-semibold font-fredoka leading-tight">
                   Description
@@ -264,29 +297,26 @@ export default async function ProductDetailPage({ params }) {
                   />
                 </div>
               </div>
-              {/* variants */}
-              <div className="claracontainer flex flex-col gap-1">
-                <div className="w-[max-content] text-[#0a1932] text-[32px] font-semibold font-fredoka leading-tight">
-                  Select Variant
-                </div>
-                {/* <GroupChip
-                  options={options}
-                  selectedOption={selectedOption}
-                  onChange={handleOptionChange}
-                /> */}
-                To be added soon
-              </div>
+
               {/* CTA */}
               <div className="claracontainer flex flex-col w-full gap-1">
                 <div className="claracontainer w-full justify-between items-start flex flex-row gap-4">
-                  <QuantityControl />
+                  {/* <QuantityControl /> */}
                   <div className="w-full flex flex-col gap-1">
-                    <Button
-                      onClick={handleAddToCart}
-                      className="bg-red w-full rounded-[16px] border-2 border-[white]"
-                    >
-                      Add to Cart
-                    </Button>
+                    <div className="flex w-full items-center justify-between gap-2">
+                      <Button
+                        onClick={handleAddToCart}
+                        className="bg-red hover:bg-hoverRed w-full  rounded-[16px] border-2 border-[white]"
+                      >
+                        Add to Cart
+                      </Button>
+                      <Button
+                        onClick={handleCheckout}
+                        className="bg-purple hover:bg-[#3f3a64] w-full rounded-[16px] border-2 border-[white]"
+                      >
+                        Buy Now
+                      </Button>
+                    </div>
                     <div className="w-full flex flex-row justify-start items-center gap-2">
                       <Image alt="Kindi" src={creditCard} className="w-4 h-4" />
                       <div className="text-zinc-600 text-sm text-start font-medium font-fredoka leading-[20px]">
@@ -305,7 +335,7 @@ export default async function ProductDetailPage({ params }) {
             </div>
             <ProductGrid />
           </div>
-          {/* Row 3 - Reviews */}
+          {/* Row- 3 */}
           <div className="flex w-full flex-col justify-start items-center">
             <div className="flex justify-between w-full items-center">
               <div className="text-[#0a1932] text-[20px] lg:text-[28px]  font-semibold font-fredoka text-start w-full leading-loose">
@@ -334,29 +364,43 @@ export default async function ProductDetailPage({ params }) {
 
             <ReviewGrid />
           </div>
-          {/* Row 4 */}
+          {/* Row- 4 */}
           <div className="flex w-full pb-20 flex-col justify-start items-center">
             <div className="text-[#0a1932] text-[20px] lg:text-[28px]  font-semibold font-fredoka text-start w-full leading-loose">
               You May also like
             </div>
             <ProductGrid />
           </div>
-        </div>
-      </section>
-      {/* Row 5 - Sticky CTA Mobile */}
-      <div className="flex w-full z-20 lg:hidden md:hidden flex-col pb-20 fixed bottom-0 justify-start items-center">
-        <div className="claracontainer px-4 py-4 w-full bg-[#ffffff] rounded-t-[24px] shadow-upper sticky bottom-0 z-12 justify-between items-center flex flex-row gap-4">
-          <QuantityControl />
-          <div className="w-full flex flex-col gap-1">
-            <Button
-              onClick={handleAddToCart}
-              className="bg-red w-full rounded-[16px] border-2 border-[white]"
-            >
-              Add to Cart
-            </Button>
+          {/* Row- 5 */}
+          <div className="flex w-full z-20 lg:hidden md:hidden flex-col pb-20 fixed bottom-0 justify-start items-center">
+            <div className="claracontainer px-4 py-4 w-full bg-[#ffffff] rounded-t-[24px] shadow-upper sticky bottom-0 z-12 justify-between items-center flex flex-row gap-4">
+              <QuantityControl />
+              <div className="w-full flex flex-col gap-1">
+                <Button
+                  onClick={handleAddToCart}
+                  className="bg-red w-full rounded-[16px] border-2 border-[white]"
+                >
+                  Add to Cart
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      </section>
     </>
   );
+}
+
+{
+  /* <div className="claracontainer flex flex-col gap-1">
+  <div className="w-[max-content] text-[#0a1932] text-[32px] font-semibold font-fredoka leading-tight">
+    Select Variant
+  </div>
+  <GroupChip
+    options={options}
+    selectedOption={selectedOption}
+    onChange={handleOptionChange}
+  />
+  To be added soon
+</div> */
 }

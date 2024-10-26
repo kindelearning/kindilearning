@@ -7,62 +7,58 @@ import { DeleteItem } from "@/public/Images";
 import { QuantityControl } from "..";
 import Image from "next/image";
 import Link from "next/link";
+import { loadStripe } from "@stripe/stripe-js";
+
+const stripePromise = loadStripe(
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+);
 
 export default function CartPage() {
   const [loading, setLoading] = useState(false);
   const { cart, removeFromCart, clearCart } = useCart();
   console.log("CartPage:", cart);
 
-  const handleCheckout = async () => {
-    if (cart.length === 0) {
-      alert("Your cart is empty!");
-      return;
-    }
-    setLoading(true);
+  // const handleCheckout = async () => {
+  //   if (cart.length === 0) {
+  //     alert("Your cart is empty!");
+  //     return;
+  //   }
+  //   setLoading(true);
+  //   console.log("Proceeding to checkout with cart items:", cart);
+  //   const response = await fetch("/api/checkout-session", {
+  //     method: "POST",
+  //   });
+  //   const session = await response.json();
+  //   if (response.ok) {
+  //     // Redirect to Stripe Checkout
+  //     window.location.href = session.url;
+  //   } else {
+  //     console.error("Failed to create checkout session:", session);
+  //   }
+  //   setLoading(false);
+  // };
 
+  const handleCheckout = async () => {
+    const stripe = await stripePromise;
+    setLoading(true);
     console.log("Proceeding to checkout with cart items:", cart);
 
-    const response = await fetch("/api/checkout-session", {
+    const res = await fetch("/api/checkout-session", {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ cart }),
     });
 
-    const session = await response.json();
+    const data = await res.json();
 
-    if (response.ok) {
-      // Redirect to Stripe Checkout
-      window.location.href = session.url;
+    if (data.sessionId) {
+      stripe.redirectToCheckout({ sessionId: data.sessionId });
     } else {
-      console.error("Failed to create checkout session:", session);
+      console.error(data.error);
     }
     setLoading(false);
-
-    // try {
-    //   const response = await fetch("/api/checkout-session", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({ cart }),
-    //   });
-
-    //   if (!response.ok) {
-    //     throw new Error("Failed to create checkout session");
-    //   }
-    //   if (response.ok) {
-    //     // Redirect to Stripe Checkout
-    //     window.location.href = session.url; // Ensure session.url is correct
-    //   } else {
-    //     console.error("Failed to create checkout session:", session);
-    //     // Handle error (show a message to the user)
-    //   }
-
-    //   const { id } = await response.json();
-    //   const stripe = await stripePromise;
-    //   await stripe.redirectToCheckout({ sessionId: id });
-    // } catch (error) {
-    //   console.error("Checkout error:", error);
-    //   alert("An error occurred while processing the checkout.");
-    // }
   };
 
   if (cart.length === 0) {
