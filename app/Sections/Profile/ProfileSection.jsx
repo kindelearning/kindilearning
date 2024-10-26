@@ -420,11 +420,17 @@ const PartnerList = ({ userId }) => {
             <DialogTrigger className="w-full">
               <div
                 className={`w-full min-h-[90px] flex flex-row justify-center items-center p-2 bg-white rounded-xl 
-                ${
-                  partners.length >= 5
-                    ? "opacity-50 cursor-not-allowed text-black pointer-events-none"
-                    : "cursor-pointer  text-red "
-                }`}
+                  ${
+                    partners.length >= 5
+                      ? "opacity-50 cursor-none pointer text-black pointer-events-none"
+                      : "cursor-pointer text-red"
+                  }`}
+                onClick={() => {
+                  if (partners.length < 5) {
+                    // Your click handler code here
+                    console.log("New Profile Clicked");
+                  }
+                }}
               >
                 <Plus className="text-red" /> New Profile
               </div>

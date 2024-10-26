@@ -311,14 +311,14 @@ export default async function ProductDetailPage({ params }) {
               </div>
             </div>
           </div>
-          {/* Row 2 */}
+          {/* Row 2 | Recent product */}
           <div className="flex w-full flex-col justify-start items-center">
             <div className="text-[#0a1932] text-[20px] lg:text-[28px] font-semibold font-fredoka text-start w-full ">
               Recently Viewed
             </div>
             <ProductGrid />
           </div>
-          {/* Row- 3 */}
+          {/* Row- 3 | Add Review */}
           <div className="flex w-full flex-col justify-start items-center">
             <div className="flex justify-between w-full items-center">
               <div className="text-[#0a1932] text-[20px] lg:text-[28px]  font-semibold font-fredoka text-start w-full leading-loose">
@@ -347,7 +347,7 @@ export default async function ProductDetailPage({ params }) {
 
             <ReviewGrid />
           </div>
-          {/* Row- 4 */}
+          {/* Row- 4 | Similar Product*/}
           <div className="flex w-full pb-20 flex-col justify-start items-center">
             <div className="text-[#0a1932] text-[20px] lg:text-[28px]  font-semibold font-fredoka text-start w-full leading-loose">
               You May also like

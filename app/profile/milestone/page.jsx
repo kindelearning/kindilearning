@@ -6,6 +6,7 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -21,6 +22,9 @@ import { GraphQLClient, gql } from "graphql-request";
 import React, { useEffect, useRef, useState } from "react";
 import { useSession } from "next-auth/react";
 import { getPublishedMileStone } from "@/lib/hygraph";
+import { PopupFooter } from "@/app/Sections";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
 /**
  * @Main_account_Credentials
@@ -261,6 +265,34 @@ const DisplayAllMileStone = () => {
 };
 
 const CurvePath = ({ milestones = [] }) => {
+  const [currentDate, setCurrentDate] = useState("");
+  const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    const today = new Date();
+    const formattedDate = today.toLocaleDateString("en-US", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+    setCurrentDate(formattedDate);
+    const savedMessage = localStorage.getItem("milestoneMessage");
+    if (savedMessage) {
+      setMessage(savedMessage);
+    }
+  }, []);
+
+  const handleTextareaChange = (e) => {
+    setMessage(e.target.value);
+  };
+
+  const handleSave = () => {
+    // Save the message to local storage
+    localStorage.setItem("milestoneMessage", message);
+    alert("Message saved successfully!");
+  };
+
   // Dynamically set container height based on the number of nodes
   const nodeSpacing = 200; // Define the desired spacing between nodes
   const containerHeight = (milestones.length - 1) * nodeSpacing + 300; // Increased padding for better layout
@@ -321,20 +353,44 @@ const CurvePath = ({ milestones = [] }) => {
           transform: "translate(-50%, -50%)",
         }}
       >
-        <Dialog>
+        <Dialog className="p-2 lg:p-4">
           <DialogTrigger>
             <button className="clarabutton bg-red px-4 py-2 hover:shadow text-white rounded hover:bg-hoverRed">
               {milestone.title}
             </button>
           </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Are you absolutely sure?</DialogTitle>
-              <DialogDescription>
-                This action cannot be undone. This will permanently delete your
-                account and remove your data from our servers.
+          <DialogContent className="w-full bg-[#eaeaf5] p-0 lg:min-w-[800px] ">
+            <DialogHeader className="p-4">
+              <DialogDescription className="w-full p-4 flex flex-col gap-4 justify-start items-start">
+                <div className="text-[#0a1932] claraheading">
+                  {milestone.title}
+                </div>
+                <div className="w-full text-[#4a4a4a] clarabodyTwo justify-center items-center">
+                  {milestone.description}
+                </div>
+                <div className="w-full p-2 flex flex-col gap-2 bg-white rounded-lg shadow">
+                  <div className="text-[#757575] clarabodyTwo ">Date</div>
+                  <div className="text-[#0a1932] text-[20px] font-normal font-fredoka leading-[20px]">
+                    {currentDate}
+                  </div>
+                </div>
               </DialogDescription>
             </DialogHeader>
+            <DialogFooter>
+              <section className="w-full h-auto shadow-upper bg-[#ffffff] -top-2 sticky bottom-0 z-10 rounded-t-[16px] items-center justify-between py-4 flex flex-row">
+                <div className="w-fit flex flex-row justify-between items-center gap-4 px-4">
+                  <Button className="px-4 py-2 bg-white hover:bg-white text-[#3f3a64] text-[20px] md:text-[24px] font-medium font-fredoka leading-none rounded-2xl border-2 border-[#3f3a64] justify-center items-center gap-1 inline-flex">
+                    <ChevronLeft className="w-[24px] h-[24px]" />
+                    Back
+                  </Button>
+                </div>
+                <div className="w-fit flex flex-row justify-between items-center gap-4 px-4">
+                  <Button className="bg-red hover:bg-red rounded-2xl font-fredoka text-white shadow border-2 border-white">
+                    Mark as Complete{" "}
+                  </Button>
+                </div>
+              </section>
+            </DialogFooter>
           </DialogContent>
         </Dialog>
       </div>
