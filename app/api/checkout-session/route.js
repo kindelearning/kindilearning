@@ -68,13 +68,13 @@ export async function POST(req) {
     }));
 
     const session = await stripe.checkout.sessions.create({
-      payment_method_types: ["card","paypal"],
+      payment_method_types: ["card", "paypal"],
       billing_address_collection: "required", // Capture billing address
       allow_promotion_codes: true,
       line_items: lineItems,
       mode: "payment",
-      success_url: `${process.env.VERCEL_URL}/shop/success`,
-      cancel_url: `${process.env.VERCEL_URL}/shop/cart`,
+      success_url: `${process.env.NEXT_PUBLIC_URL}/shop/success`,
+      cancel_url: `${process.env.NEXT_PUBLIC_URL}/shop/cart`,
     });
 
     return new Response(JSON.stringify({ sessionId: session.id }), {

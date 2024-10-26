@@ -22,8 +22,8 @@ export async function POST(request) {
       payment_method_types: ["card"],
       line_items: lineItems,
       mode: "payment",
-      success_url: `${process.env.NEXT_PUBLIC_URL}/success`,
-      cancel_url: `${process.env.NEXT_PUBLIC_URL}/cancel`,
+      success_url: `${process.env.VERCEL_URL}/success`,
+      cancel_url: `${process.env.VERCEL_URL}/cancel`,
     });
 
     return new Response(JSON.stringify({ id: session.id }), { status: 200 });

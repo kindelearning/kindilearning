@@ -196,6 +196,7 @@ export default async function ProductDetailPage({ params }) {
     addToCart({
       id: product.id,
       title: product.title,
+      description: product.description,
       price: product.salePrice,
       image: product.productImages[0]?.url,
       quantity: 1,
@@ -204,7 +205,6 @@ export default async function ProductDetailPage({ params }) {
 
   const handleCheckout = async () => {
     const stripe = await stripePromise;
-
     const response = await fetch("/api/checkout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
