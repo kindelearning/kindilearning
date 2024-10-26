@@ -52,6 +52,7 @@ import Loading from "@/app/loading";
 import SignOutButton from "@/app/auth/signout/page";
 import Head from "next/head";
 import { Plus } from "lucide-react";
+import { addPaymentMethodToUser, createPaymentMethod } from "@/lib/hygraph";
 
 const HYGRAPH_ENDPOINT =
   "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";
@@ -178,7 +179,7 @@ const ContactForm = () => {
  * @Main_Account
  * @returns Logic for Connecting Child and Parent Account
  */
-export const ConnectAccountForm = ({ userId }) => {
+const ConnectAccountForm = ({ userId }) => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const { data: session, status } = useSession();
@@ -288,6 +289,85 @@ export const ConnectAccountForm = ({ userId }) => {
       </Button>
       {message && <p>{message}</p>}
     </form>
+  );
+};
+
+/**
+ * @Main_Account
+ * @returns Logic for Pref Payment Method and Form for adding more payment method
+ */
+const AddPaymentMethodForm = ({ onSave }) => {
+  const [name, setName] = useState("");
+  const [number, setNumber] = useState("");
+  const [expiryDate, setExpiryDate] = useState("");
+  const [cvv, setCvv] = useState("");
+  const [accountId, setAccountId] = useState("");
+  const [message, setMessage] = useState("");
+
+  const handleAddPaymentMethod = async () => {
+    try {
+      // Create the payment method in Hygraph
+      const newPaymentMethod = await createPaymentMethod(
+        name,
+        number,
+        expiryDate,
+        cvv
+      );
+
+      // Get the ID of the created payment method
+      const paymentMethodId = newPaymentMethod.id;
+
+      // Connect it to the user account
+      await addPaymentMethodToUser(accountId, paymentMethodId);
+
+      setMessage("Payment method added successfully!");
+
+      // Reset fields
+      setName("");
+      setNumber("");
+      setExpiryDate("");
+      setCvv("");
+    } catch (error) {
+      console.error("Error:", error);
+      setMessage("Failed to add payment method");
+    }
+  };
+
+  return (
+    <div>
+      <input
+        type="text"
+        placeholder="Card Name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
+      <input
+        type="text"
+        placeholder="Card Number"
+        value={number}
+        onChange={(e) => setNumber(e.target.value)}
+      />
+      <input
+        type="date"
+        placeholder="Expiry Date"
+        value={expiryDate}
+        onChange={(e) => setExpiryDate(e.target.value)}
+      />
+      <input
+        type="text"
+        placeholder="CVV"
+        value={cvv}
+        onChange={(e) => setCvv(e.target.value)}
+      />
+      <input
+        type="text"
+        placeholder="Account ID"
+        value={accountId}
+        onChange={(e) => setAccountId(e.target.value)}
+      />
+      <button onClick={handleAddPaymentMethod}>Add Payment Method</button>
+      {message && <p>{message}</p>}
+    </div>
   );
 };
 
@@ -912,7 +992,7 @@ export default async function ProfileSection() {
                   title="Connect a Partner"
                 />
               </DialogTrigger>
-              <DialogContent className="bg-[#EAEAF5]  scrollbar-hidden  max-w-[96%] max-h-[70%] overflow-scroll p-0 overflow-x-hidden rounded-[16px] w-full claracontainer">
+              <DialogContent className="bg-[#EAEAF5] scrollbar-hidden max-w-[96%] lg:max-w-[800px] lg:pb-12 max-h-[70%] overflow-scroll p-0 overflow-x-hidden rounded-[16px] w-full claracontainer">
                 <DialogHeader className="p-4">
                   <div className="flex flex-row justify-center items-center w-full">
                     <DialogTitle>
@@ -1007,6 +1087,9 @@ export default async function ProfileSection() {
                       className="w-full cursor-pointer hover:scale-[1.05] transition-transform duration-300 ease-in-out h-auto"
                     />
                   </div>
+                  {/* <div className="flex">
+                    <AddPaymentMethodForm />
+                  </div> */}
                 </DialogDescription>
                 <DialogFooter className="sticky bottom-0 m-0 w-full bg-[#ffffff]">
                   <PopupFooter PrimaryText="Save and Continue" />

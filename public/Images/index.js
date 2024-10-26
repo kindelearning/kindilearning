@@ -186,6 +186,7 @@ import PartnerBulb from "./PartnerBulb.png";
 import PWKTwo from "./PWKTwo.svg";
 import EmailIcons from "./EmailIcons.svg";
 import ProfileSettingIcon from "./ProfileSettingIcon.svg";
+import DebitCardBackground from "./DebitCardBackground.svg";
 
 // Community Icons
 import CommentIcon from "./Community/CommentsIcon.svg";
@@ -229,6 +230,7 @@ export {
   Crafts,
   OutdoorsNature,
   RainyPlay,
+  DebitCardBackground,
   // Community Icons export
   CommentIcon,
   LikeIcon,
