@@ -3,14 +3,7 @@
 import { cardData, options, progressData } from "@/app/constant/menu";
 import { Button } from "@/components/ui/button";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import {
+  KindiHeart,
   progressImage01,
   progressImage02,
   progressImage03,
@@ -241,7 +234,7 @@ const DisplayAllMileStone = () => {
 
   return (
     <>
-      {/* <div>
+      <div>
         {milestones.length === 0 && <p>No milestones found.</p>}
         <div className="flex flex-wrap gap-4">
           {milestones.map((milestone) => (
@@ -254,16 +247,27 @@ const DisplayAllMileStone = () => {
             </div>
           ))}
         </div>
-      </div> */}
-      <CurvePath milestones={milestones} />
+      </div>
     </>
   );
 };
 
-const CurvePath = ({ milestones = [] }) => {
+const CurvePath = () => {
+  // Milestone data
+  const milestoneData = [
+    { id: 1, description: " DescriptionDescription", title: "Kickoff Meeting" },
+    { id: 2, description: " DescriptionDescription", title: "Design Phase" },
+    { id: 3, description: " DescriptionDescription", title: "Development Phase" },
+    { id: 4, description: " DescriptionDescription", title: "Testing & QA" },
+    { id: 5, description: " DescriptionDescription", title: "Project Launch" },
+    { id: 6, description: " DescriptionDescription", title: "Development Phase" },
+    { id: 7, description: " DescriptionDescription", title: "Testing & QA" },
+    { id: 8, description: " DescriptionDescription", title: "Project Launch" },
+  ];
+
   // Dynamically set container height based on the number of nodes
   const nodeSpacing = 200; // Define the desired spacing between nodes
-  const containerHeight = (milestones.length - 1) * nodeSpacing + 300; // Increased padding for better layout
+  const containerHeight = (milestoneData.length - 1) * nodeSpacing + 300; // Increased padding for better layout
   const baseAmplitude = 40; // Double the base amplitude for a larger curve
   const frequency = 0.2; // Frequency of the wave
 
@@ -291,16 +295,16 @@ const CurvePath = ({ milestones = [] }) => {
   const nodes = [];
   const paths = [];
 
-  // Loop through milestones data
-  for (let i = 0; i < milestones.length; i++) {
-    const milestone = milestones[i];
+  // Loop through milestoneData
+  for (let i = 1; i < milestoneData.length; i++) {
+    const milestone = milestoneData[i];
 
     // Position calculation:
     // - Center the first and last nodes
     // - Alternate the others to the left and right
     const top = i * nodeSpacing;
     const left =
-      i === 0 || i === milestones.length - 1
+      i === 0 || i === milestoneData.length - 1
         ? containerWidth / 2 // Center for first and last nodes
         : i % 2 === 0
         ? containerWidth * 0.3 // Left for even
@@ -321,22 +325,13 @@ const CurvePath = ({ milestones = [] }) => {
           transform: "translate(-50%, -50%)",
         }}
       >
-        <Dialog>
-          <DialogTrigger>
-            <button className="clarabutton bg-red px-4 py-2 hover:shadow text-white rounded hover:bg-hoverRed">
-              {milestone.title}
-            </button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Are you absolutely sure?</DialogTitle>
-              <DialogDescription>
-                This action cannot be undone. This will permanently delete your
-                account and remove your data from our servers.
-              </DialogDescription>
-            </DialogHeader>
-          </DialogContent>
-        </Dialog>
+        <button
+          className="px-4 py-2 bg-pink-500 text-white rounded hover:bg-pink-600"
+          onClick={() => alert(`Button for ${milestone.title} clicked!`)}
+        >
+          {milestone.title}
+          {milestone.description}
+        </button>
       </div>
     );
 
@@ -344,7 +339,7 @@ const CurvePath = ({ milestones = [] }) => {
     if (i > 0) {
       const previousTop = (i - 1) * nodeSpacing;
       const previousLeft =
-        i - 1 === 0 || i - 1 === milestones.length - 1
+        i - 1 === 0 || i - 1 === milestoneData.length - 1
           ? containerWidth / 2
           : (i - 1) % 2 === 0
           ? containerWidth * 0.3
@@ -396,9 +391,9 @@ const CurvePath = ({ milestones = [] }) => {
   );
 };
 
-const MobileCurvePath = ({ milestones }) => {
-  // Number of nodes is now based on the milestones length
-  const numberOfNodes = milestones.length;
+const MobileCurvePath = () => {
+  // Number of nodes
+  const numberOfNodes = 10;
   const containerHeight = 800; // Height of the container
   const nodeSpacing = containerHeight / (numberOfNodes - 1);
   const baseAmplitude = 40; // Double the base amplitude for a larger curve
@@ -429,8 +424,6 @@ const MobileCurvePath = ({ milestones }) => {
   const paths = [];
 
   for (let i = 0; i < numberOfNodes; i++) {
-    const milestone = milestones[i]; // Use milestone data
-
     // First node starts from the top center, rest alternate sides
     const top = i * nodeSpacing;
     const left =
@@ -443,7 +436,7 @@ const MobileCurvePath = ({ milestones }) => {
     // Add node to nodes array
     nodes.push(
       <div
-        key={milestone.id}
+        key={i}
         style={{
           position: "absolute",
           top: `${top}px`,
@@ -453,9 +446,9 @@ const MobileCurvePath = ({ milestones }) => {
       >
         <button
           className="mt-2 px-4 py-2 bg-pink-500 text-white rounded hover:bg-pink-600"
-          onClick={() => alert(`Button for ${milestone.title} clicked!`)}
+          onClick={() => alert(`Button on Node ${i + 1} clicked!`)}
         >
-          {milestone.title}
+          Click Me
         </button>
       </div>
     );
@@ -487,7 +480,7 @@ const MobileCurvePath = ({ milestones }) => {
 
       paths.push(
         <path
-          key={`path-${milestone.id}`}
+          key={`path-${i}`}
           d={pathD}
           fill="none"
           stroke="#f05c5c" // Set the stroke color to the preferred color
@@ -660,6 +653,11 @@ export default function MileStone() {
           </div>
           <ProfileRoute />
           <DisplayAllMileStone />
+          <CurvePath />
+          <div className="hidden lg:flex"></div>
+          <div className="flex lg:hidden">
+            <MobileCurvePath />
+          </div>
         </div>
       </section>
     </>
