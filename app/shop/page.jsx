@@ -910,7 +910,7 @@ export default async function ShopPage() {
                     <div className="w-full lg:grid lg:grid-cols-3 pl-4 md:pl-2 lg:px-0 flex flex-row overflow-x-scroll scrollbar-hidden gap-2">
                       {filteredProducts.map((product) => (
                         <div key={product.id} className="border">
-                          <Link href={`/shop/${product.id}`} target="_blank">
+                          <Link href={`/shop/${product.id}`} >
                             <ProductCard
                               image={product.thumbnail.url}
                               title={product.title}
@@ -942,7 +942,7 @@ export default async function ShopPage() {
                   <div className="w-full lg:grid lg:grid-cols-3 pl-4 md:pl-2 lg:px-0 flex flex-row overflow-x-scroll scrollbar-hidden gap-2">
                     {sortedProducts.map((product) => (
                       <div key={product.id} className="border">
-                        <Link href={`/shop/${product.id}`} target="_blank">
+                        <Link href={`/shop/${product.id}`} >
                           <ProductCard
                             image={product.thumbnail.url}
                             title={product.title}
@@ -964,7 +964,7 @@ export default async function ShopPage() {
                   {/* {sortedProducts.map((product) => ( */}
                   {products.map((product) => (
                     <div key={product.id} className="border">
-                      <Link href={`/shop/${product.id}`} target="_blank">
+                      <Link href={`/shop/${product.id}`} >
                         <MobileProductCard
                           image={product.thumbnail.url || ProductImage}
                           title={product.title}
