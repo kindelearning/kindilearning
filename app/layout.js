@@ -6,6 +6,7 @@ import { SessionProvider } from "next-auth/react";
 import { CartProvider } from "./context/CartContext";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Fredoka, Montserrat } from "next/font/google";
+import { UserProvider } from "./context/UserContext";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -69,12 +70,14 @@ export default function RootLayout({ children }) {
             montserrat.className
           )}
         >
-          <SessionProvider>
-            <CartProvider>
-              {children}
-              <SpeedInsights />
-            </CartProvider>
-          </SessionProvider>
+          <UserProvider>
+            <SessionProvider>
+              <CartProvider>
+                {children}
+                <SpeedInsights />
+              </CartProvider>
+            </SessionProvider>
+          </UserProvider>
         </body>
       </html>
     </>

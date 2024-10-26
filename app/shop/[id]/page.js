@@ -214,70 +214,6 @@ export default async function ProductDetailPage({ params }) {
     router.push("/shop/cart"); // Navigate to cart page
   };
 
-  // Handle Buy Now from product Page
-  // const handleBuyNow = async () => {
-  //   try {
-  //     const response = await fetch("/api/buy-now", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         product: {
-  //           id: product.id,
-  //           title: product.title,
-  //           price: product.salePrice,
-  //           image: product.productImages[0]?.url,
-  //           description: product.description.text, // Product description
-  //         },
-  //       }),
-  //     });
-
-  //     const { sessionId, error } = await response.json();
-  //     if (error) {
-  //       console.error("Error with Buy Now:", error);
-  //       return;
-  //     }
-
-  //     const stripe = await stripePromise;
-  //     await stripe.redirectToCheckout({ sessionId });
-  //   } catch (error) {
-  //     console.error("Error with Buy Now:", error);
-  //   }
-  // };
-  const handleBuyNow = async (e) => {
-    e.preventDefault(); // Prevent the default form submission
-    setLoading(true); // Set loading to true
-
-    // Directly create a checkout session
-    const response = await fetch("/api/buy-now", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        items: [
-          {
-            id: product.id,
-            quantity, // Use the current quantity
-          },
-        ],
-      }),
-    });
-
-    const data = await response.json();
-
-    if (data.url) {
-      // Redirect to checkout page
-      window.location.href = data.url;
-    } else {
-      console.error("Checkout session creation failed:", data.error);
-      // Optionally handle error display
-    }
-
-    setLoading(false); // Set loading to false after creating the session
-  };
-
   if (!product) {
     return (
       <div>
@@ -363,13 +299,6 @@ export default async function ProductDetailPage({ params }) {
                       >
                         {loading ? "Adding..." : "Add to Cart"}
                       </Button>
-                      {/* <Button
-                        type="button"
-                        onClick={handleBuyNow}
-                        className="bg-purple hover:bg-[#3f3a64] w-full rounded-[16px] border-2 border-[white]"
-                      >
-                        Buy Now
-                      </Button> */}
                     </div>
                     <div className="w-full flex flex-row justify-start items-center gap-2">
                       <Image alt="Kindi" src={creditCard} className="w-4 h-4" />
@@ -434,14 +363,6 @@ export default async function ProductDetailPage({ params }) {
             initialQuantity={quantity}
             onQuantityChange={setQuantity}
           />{" "}
-          {/* Pass quantity state to QuantityControl */}
-          {/* <Button
-            onClick={handleBuyNow}
-            className="bg-purple hover:bg-[#3f3a64] w-full rounded-[16px] border-2 border-[white]"
-            type="button"
-          >
-            Buy Now
-          </Button> */}
           <Button
             type="button"
             onClick={handleAddToCart}
@@ -450,7 +371,6 @@ export default async function ProductDetailPage({ params }) {
           >
             {loading ? "Adding..." : "Add to Cart"}
           </Button>
-          {/* <div className="w-full flex flex-col gap-1"></div> */}
         </div>
       </div>
     </>

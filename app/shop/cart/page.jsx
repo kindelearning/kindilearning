@@ -8,35 +8,17 @@ import { QuantityControl } from "..";
 import Image from "next/image";
 import Link from "next/link";
 import { loadStripe } from "@stripe/stripe-js";
+import { useUser } from "@/app/context/UserContext";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 );
 
 export default function CartPage() {
+  const { user } = useUser(); // Retrieve user data from context
   const [loading, setLoading] = useState(false);
   const { cart, removeFromCart, clearCart } = useCart();
   console.log("CartPage:", cart);
-
-  // const handleCheckout = async () => {
-  //   if (cart.length === 0) {
-  //     alert("Your cart is empty!");
-  //     return;
-  //   }
-  //   setLoading(true);
-  //   console.log("Proceeding to checkout with cart items:", cart);
-  //   const response = await fetch("/api/checkout-session", {
-  //     method: "POST",
-  //   });
-  //   const session = await response.json();
-  //   if (response.ok) {
-  //     // Redirect to Stripe Checkout
-  //     window.location.href = session.url;
-  //   } else {
-  //     console.error("Failed to create checkout session:", session);
-  //   }
-  //   setLoading(false);
-  // };
 
   const handleCheckout = async () => {
     const stripe = await stripePromise;
@@ -54,6 +36,31 @@ export default function CartPage() {
     const data = await res.json();
 
     if (data.sessionId) {
+
+       // Use dynamic user data
+       const userId = user.id; // Get user ID from context
+       const userAddress = user.address; // Get user address from context
+       const paymentDetails = user.paymentMethod; // Get payment method from context
+
+       
+      // Format ordered products data
+      const orderedProducts = cart.map((item) => ({
+        title: item.title,
+        price: item.price,
+      }));
+      // Call the API route to store data
+      await fetch("/api/save-order", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: userId,
+          address: userAddress,
+          orderedProducts: orderedProducts,
+          paymentDetails: paymentDetails,
+        }),
+      });
       stripe.redirectToCheckout({ sessionId: data.sessionId });
     } else {
       console.error(data.error);
