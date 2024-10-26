@@ -183,52 +183,99 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { useCart } from "@/app/context/CartContext";
 import { loadStripe } from "@stripe/stripe-js";
+import { useRouter } from "next/navigation";
 const stripePromise = loadStripe(process.env.STRIPE_PUBLIC_KEY);
 
 export default async function ProductDetailPage({ params }) {
   const { id } = params;
+  const [loading, setLoading] = useState(false); // State to manage loading
   const { addToCart } = useCart();
+  const router = useRouter();
+  const [quantity, setQuantity] = useState(1); // Manage quantity state
 
   const product = await getProductById(id);
 
-  const handleAddToCart = () => {
+  // Handling add to cart request
+  const handleAddToCart = async (e) => {
+    e.preventDefault(); // Prevent the page refresh
     console.log("Adding to cart:", product);
+    setLoading(true); // Set loading to true
+    await new Promise((resolve) => setTimeout(resolve, 500)); // Simulate delay
+
     addToCart({
       id: product.id,
       title: product.title,
       description: product.description,
       price: product.salePrice,
       image: product.productImages[0]?.url,
-      quantity: 1,
+      quantity,
     });
+    setLoading(false); // Set loading to false after adding to cart
+    router.push("/shop/cart"); // Navigate to cart page
   };
 
-  const handleCheckout = async () => {
-    const stripe = await stripePromise;
-    const response = await fetch("/api/checkout", {
+  // Handle Buy Now from product Page
+  // const handleBuyNow = async () => {
+  //   try {
+  //     const response = await fetch("/api/buy-now", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         product: {
+  //           id: product.id,
+  //           title: product.title,
+  //           price: product.salePrice,
+  //           image: product.productImages[0]?.url,
+  //           description: product.description.text, // Product description
+  //         },
+  //       }),
+  //     });
+
+  //     const { sessionId, error } = await response.json();
+  //     if (error) {
+  //       console.error("Error with Buy Now:", error);
+  //       return;
+  //     }
+
+  //     const stripe = await stripePromise;
+  //     await stripe.redirectToCheckout({ sessionId });
+  //   } catch (error) {
+  //     console.error("Error with Buy Now:", error);
+  //   }
+  // };
+  const handleBuyNow = async (e) => {
+    e.preventDefault(); // Prevent the default form submission
+    setLoading(true); // Set loading to true
+
+    // Directly create a checkout session
+    const response = await fetch("/api/buy-now", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({
-        cartItems: [
+        items: [
           {
             id: product.id,
-            title: product.title,
-            price: product.salePrice,
-            image: product.productImages[0]?.url,
-            quantity: 1,
+            quantity, // Use the current quantity
           },
         ],
       }),
     });
 
-    const session = await response.json();
+    const data = await response.json();
 
-    if (session.error) {
-      console.error(session.error);
-      return;
+    if (data.url) {
+      // Redirect to checkout page
+      window.location.href = data.url;
+    } else {
+      console.error("Checkout session creation failed:", data.error);
+      // Optionally handle error display
     }
 
-    await stripe.redirectToCheckout({ sessionId: session.id });
+    setLoading(false); // Set loading to false after creating the session
   };
 
   if (!product) {
@@ -297,25 +344,32 @@ export default async function ProductDetailPage({ params }) {
                   />
                 </div>
               </div>
-
               {/* CTA */}
               <div className="claracontainer flex flex-col w-full gap-1">
                 <div className="claracontainer w-full justify-between items-start flex flex-row gap-4">
                   {/* <QuantityControl /> */}
+                  <QuantityControl
+                    initialQuantity={quantity}
+                    onQuantityChange={setQuantity}
+                  />{" "}
+                  {/* Pass quantity state to QuantityControl */}
                   <div className="w-full flex flex-col gap-1">
                     <div className="flex w-full items-center justify-between gap-2">
                       <Button
+                        type="button"
                         onClick={handleAddToCart}
+                        disabled={loading}
                         className="bg-red hover:bg-hoverRed w-full  rounded-[16px] border-2 border-[white]"
                       >
-                        Add to Cart
+                        {loading ? "Adding..." : "Add to Cart"}
                       </Button>
-                      <Button
-                        onClick={handleCheckout}
+                      {/* <Button
+                        type="button"
+                        onClick={handleBuyNow}
                         className="bg-purple hover:bg-[#3f3a64] w-full rounded-[16px] border-2 border-[white]"
                       >
                         Buy Now
-                      </Button>
+                      </Button> */}
                     </div>
                     <div className="w-full flex flex-row justify-start items-center gap-2">
                       <Image alt="Kindi" src={creditCard} className="w-4 h-4" />
@@ -371,22 +425,34 @@ export default async function ProductDetailPage({ params }) {
             </div>
             <ProductGrid />
           </div>
-          {/* Row- 5 */}
-          <div className="flex w-full z-20 lg:hidden md:hidden flex-col pb-20 fixed bottom-0 justify-start items-center">
-            <div className="claracontainer px-4 py-4 w-full bg-[#ffffff] rounded-t-[24px] shadow-upper sticky bottom-0 z-12 justify-between items-center flex flex-row gap-4">
-              <QuantityControl />
-              <div className="w-full flex flex-col gap-1">
-                <Button
-                  onClick={handleAddToCart}
-                  className="bg-red w-full rounded-[16px] border-2 border-[white]"
-                >
-                  Add to Cart
-                </Button>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
+      {/* Row- 5 (Mobile CTA's) */}
+      <div className="flex w-full z-20 lg:hidden md:hidden flex-col pb-20 fixed bottom-0 justify-start items-center">
+        <div className="claracontainer px-4 py-4 w-full bg-[#ffffff] rounded-t-[24px] shadow-upper sticky bottom-0 z-12 justify-between items-center flex flex-row gap-4">
+          <QuantityControl
+            initialQuantity={quantity}
+            onQuantityChange={setQuantity}
+          />{" "}
+          {/* Pass quantity state to QuantityControl */}
+          {/* <Button
+            onClick={handleBuyNow}
+            className="bg-purple hover:bg-[#3f3a64] w-full rounded-[16px] border-2 border-[white]"
+            type="button"
+          >
+            Buy Now
+          </Button> */}
+          <Button
+            type="button"
+            onClick={handleAddToCart}
+            disabled={loading} // Disable button when loading
+            className="bg-red w-full rounded-[16px] border-2 border-[white]"
+          >
+            {loading ? "Adding..." : "Add to Cart"}
+          </Button>
+          {/* <div className="w-full flex flex-col gap-1"></div> */}
+        </div>
+      </div>
     </>
   );
 }
