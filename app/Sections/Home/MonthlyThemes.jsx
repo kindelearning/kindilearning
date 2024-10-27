@@ -4,7 +4,7 @@ import { getHomeData } from "@/lib/hygraph";
 
 const MonthlyThemes = async () => {
   const homeData = await getHomeData();
-  console.log("Home Page Data (in component):", homeData);
+  // console.log("Home Page Data (in component):", homeData);
   if (!homeData || !homeData[0]?.monthlyTheme) {
     return <NotFound />;
   }

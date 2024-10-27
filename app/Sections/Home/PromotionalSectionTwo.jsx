@@ -11,9 +11,9 @@ const PromotionalSectionTwo = async () => {
   const { data: session, status } = useSession();
 
   const standardPages = await getStandardPagesContent();
-  console.log("Standard Pages Content: ", standardPages);
+  // console.log("Standard Pages Content: ", standardPages);
   const homeData = await getHomeData();
-  console.log("Home Page Data (in component):", homeData);
+  // console.log("Home Page Data (in component):", homeData);
   if (!homeData || !homeData[0]?.earlyLearningExperts) {
     return <NotFound />;
   }

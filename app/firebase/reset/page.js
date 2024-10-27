@@ -45,7 +45,7 @@ const ResetPassword = ({ oobCode }) => {
 };
 
 // export default ResetPassword;
-export default function resetPassword() {
+export default function ResetPassword() {
   const router = useRouter();
   const { oobCode } = router.query; // Get the oobCode from the URL
   return (
