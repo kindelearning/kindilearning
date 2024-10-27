@@ -7,7 +7,7 @@ export default function GlobalError({ error, reset }) {
   return (
     <html>
       <body>
-        <section className="w-full h-screen bg-[#EAEAF5] items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">
+        <section className="w-full min-h-screen bg-[#EAEAF5] items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">
           <div className="claracontainer p-4 md:p-8 xl:p-12 justify-between items-center w-full flex flex-col lg:flex-row overflow-hidden gap-8">
             <Image alt="Kindi" src={NotFoundImg} />
             <div className="flex flex-col w-full justify-start items-start gap-4">
