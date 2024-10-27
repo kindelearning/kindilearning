@@ -16,7 +16,7 @@ const ResetPassword = ({ oobCode }) => {
     try {
       await confirmPasswordReset(auth, oobCode, newPassword);
       setMessage("Password has been reset successfully!");
-      setError(""); // Clear error if successful
+      setError("");
     } catch (error) {
       setError(error.message);
       console.error("Error resetting password:", error.message);
@@ -45,7 +45,7 @@ const ResetPassword = ({ oobCode }) => {
 };
 
 // export default ResetPassword;
-export default function ResetPassword() {
+export default function ResetPasswordPage() {
   const router = useRouter();
   const { oobCode } = router.query; // Get the oobCode from the URL
   return (
