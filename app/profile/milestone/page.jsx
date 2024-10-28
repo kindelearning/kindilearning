@@ -36,9 +36,23 @@ const client = new GraphQLClient(HYGRAPH_ENDPOINT, {
   },
 });
 
+// const GET_ACCOUNT_BY_EMAIL = gql`
+//   query GetAccountByEmail($email: String!) {
+//     account(where: { email: $email }) {
+//       name
+//       username
+//       email
+//       profilePicture {
+//         url
+//       }
+//       isVerified
+//     }
+//   }
+// `;
 const GET_ACCOUNT_BY_EMAIL = gql`
   query GetAccountByEmail($email: String!) {
     account(where: { email: $email }) {
+      id
       name
       username
       email
@@ -202,12 +216,26 @@ const DisplayAllMileStone = () => {
 };
 
 const CurvePath = ({ milestones = [] }) => {
-  // const { data: session } = useSession();
+  const { data: session, status } = useSession();
+  const [profileData, setProfileData] = useState(null);
   const [currentDate, setCurrentDate] = useState("");
   const [message, setMessage] = useState("");
 
-  // const myUserId = session?.user?.id;
-  // console.log("myUserId", myUserId);
+  // console.log("profileData", profileData);
+  useEffect(() => {
+    if (session && session.user) {
+      fetchUserData(session.user.email);
+    }
+  }, [session]);
+
+  const fetchUserData = async (email) => {
+    try {
+      const data = await client.request(GET_ACCOUNT_BY_EMAIL, { email });
+      setProfileData(data.account);
+    } catch (error) {
+      console.error("Error fetching profile data:", error);
+    }
+  };
 
   useEffect(() => {
     const today = new Date();
@@ -316,11 +344,15 @@ const CurvePath = ({ milestones = [] }) => {
                   </Button>
                 </div>
                 <div className="w-fit flex flex-row justify-between items-center gap-4 px-4">
-                  <MilestoneCompleteButton
-                    milestoneId={milestone.id}
-                    // userId={myUserId}
-                    // userId="cm25lil0t0zvz07pfuuizj473"
-                  />
+                  {profileData ? (
+                    <MilestoneCompleteButton
+                      milestoneId={milestone.id}
+                      userId={profileData.id}
+                      // userId="cm25lil0t0zvz07pfuuizj473"
+                    />
+                  ) : (
+                    <p>Id not found</p>
+                  )}
                 </div>
               </section>
             </DialogFooter>
