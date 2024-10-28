@@ -12,7 +12,9 @@
 # next.js
 /.next/
 /out/
-/app/firebase
+
+# Ignore app/firebase folder
+app/firebase
 
 # production
 /build
