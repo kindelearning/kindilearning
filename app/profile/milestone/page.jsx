@@ -214,6 +214,85 @@ const ProfileRoute = () => {
 //   );
 // };
 
+const MilestoneCompleteButton = ({ userId, milestoneId }) => {
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+
+  const handleMilestoneCompletion = async () => {
+    setLoading(true);
+
+    try {
+      const response = await fetch("/api/mark-milestone-completed", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId, milestoneId }),
+      });
+
+      if (response.ok) {
+        setSuccess(true);
+      }
+    } catch (error) {
+      console.error("Error completing milestone:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <Button
+      className="bg-red hover:bg-red rounded-2xl font-fredoka text-white shadow border-2 border-white"
+      onClick={handleMilestoneCompletion}
+      disabled={loading || success}
+    >
+      {success ? "Milestone Completed" : "Mark as Completed"}
+    </Button>
+  );
+};
+
+async function getUserCompletedMilestones(userId) {
+  const query = gql`
+    query GetUserCompletedMilestones($userId: ID!) {
+      account(where: { id: $userId }) {
+        name
+        milestoneCompleted {
+          id
+          title
+          description
+          thumbnail {
+            url
+          }
+        }
+      }
+    }
+  `;
+
+  const data = await request(HYGRAPH_ENDPOINT, query, { userId });
+  return data.account;
+}
+
+const UserProfile = async ({ params }) => {
+  const user = await getUserCompletedMilestones(params.userId);
+
+  return (
+    <div>
+      <h1>{user.name}'s Completed Milestones</h1>
+      <ul>
+        {user.milestoneCompleted.map((milestone) => (
+          <li key={milestone.id}>
+            <h3>{milestone.title}</h3>
+            <p>{milestone.description}</p>
+            {milestone.thumbnail && (
+              <img src={milestone.thumbnail.url} alt={milestone.title} />
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
 const DisplayAllMileStone = () => {
   const [milestones, setMilestones] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -385,9 +464,10 @@ const CurvePath = ({ milestones = [] }) => {
                   </Button>
                 </div>
                 <div className="w-fit flex flex-row justify-between items-center gap-4 px-4">
-                  <Button className="bg-red hover:bg-red rounded-2xl font-fredoka text-white shadow border-2 border-white">
-                    Mark as Complete{" "}
-                  </Button>
+                  <MilestoneCompleteButton
+                    milestoneId={milestone.id}
+                    userId="cm25lil0t0zvz07pfuuizj473"
+                  />
                 </div>
               </section>
             </DialogFooter>
@@ -714,6 +794,7 @@ export default function MileStone() {
               </div>
             )}
           </div>
+          {/* <UserProfile /> */}
           <ProfileRoute />
           <DisplayAllMileStone />
         </div>
