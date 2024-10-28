@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/lib/firebaseConfig";
+import { signInWithGoogle } from "@/lib/auth";
 
 export default function Signin() {
   const [email, setEmail] = useState("");
@@ -34,6 +35,17 @@ export default function Signin() {
     }
     setLoading(false);
   };
+
+    // Signup with Google
+    const handleGoogleSignIn = async () => {
+      setError(""); // Reset error state
+      try {
+        await signInWithGoogle();
+        router.push("/p/activities"); // Redirect to home or desired page
+      } catch (err) {
+        setError("Failed to sign in with Google: " + err.message);
+      }
+    };
 
   return (
     <>
@@ -91,8 +103,10 @@ export default function Signin() {
               </div>
               <div className="flex gap-2 items-center justify-center w-full">
                 <Image alt="Kindi" className="cursor-pointer" src={WithApple} />
-                <Image alt="Kindi" className="cursor-pointer" src={Google} />
-                <Image alt="Kindi" className="cursor-pointer" src={Facebook} />
+                <button onClick={handleGoogleSignIn}>
+                  <Image alt="Kindi" className="cursor-pointer" src={Google} />
+                </button>
+                {/* <Image alt="Kindi" className="cursor-pointer" src={Facebook} /> */}
               </div>
             </div>
             <div className="w-[max-content] justify-end items-start text-center">

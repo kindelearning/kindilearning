@@ -110,9 +110,9 @@ export default function Signup() {
               </div>
               <div className="flex gap-2 items-center justify-center w-full">
                 <Image alt="Kindi" className="cursor-pointer" src={WithApple} />
-                <Button onClick={handleGoogleSignIn}>
+                <button onClick={handleGoogleSignIn}>
                   <Image alt="Kindi" className="cursor-pointer" src={Google} />
-                </Button>
+                </button>
               </div>
             </div>
             <div className="w-[max-content] justify-end items-start text-center">
