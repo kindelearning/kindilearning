@@ -20,7 +20,7 @@ const SignUp = () => {
     try {
       await signUpWithEmail(email, password, name, username);
       // Redirect or show success message
-      router.push("/p/activity");
+      // router.push("/p/activity");
     } catch (error) {
       setError(error.message);
     }
@@ -31,7 +31,6 @@ const SignUp = () => {
     setError(""); // Reset error state
     try {
       await signInWithGoogle();
-      router.push("/dashboard"); // Redirect to home or desired page
     } catch (err) {
       setError("Failed to sign in with Google: " + err.message);
     }
@@ -48,7 +47,6 @@ const SignUp = () => {
             placeholder="Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            
             className="border p-2 m-2"
           />
           <input
@@ -56,7 +54,6 @@ const SignUp = () => {
             placeholder="Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            
             className="border p-2 m-2"
           />
           <input
