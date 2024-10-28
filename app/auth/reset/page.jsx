@@ -5,26 +5,38 @@ import { Facebook, Google, WithApple } from "@/public/Images";
 import DynamicCard from "@/app/Sections/Global/DynamicCard";
 import { Input } from "@/components/ui/input";
 import { BottomNavigation, Header } from "@/app/Sections";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { confirmPasswordReset, sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "@/lib/firebaseConfig";
 
-export default function ResetPassword({ oobCode }) {
+export default function ResetPassword() {
   const [newPassword, setNewPassword] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false); // New state for loading
+  const [loading, setLoading] = useState(false);
+  const [code, setCode] = useState(null);
   const router = useRouter();
+  const { oobCode } = router.query;
+
+  useEffect(() => {
+    if (oobCode) {
+      setCode(oobCode);
+    }
+  }, [oobCode]);
+
+  if (!code) {
+    return <p>Loading...</p>; // Consider adding a timeout or redirection if the code is not present
+  }
 
   const handleResetPassword = async (e) => {
     e.preventDefault();
     const auth = getAuth();
     setLoading(true);
     try {
-      await confirmPasswordReset(auth, oobCode, newPassword);
+      await confirmPasswordReset(auth, code, newPassword);
       setMessage("Password has been reset successfully!");
       setError("");
     } catch (error) {
