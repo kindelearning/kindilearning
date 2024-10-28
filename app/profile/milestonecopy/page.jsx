@@ -3,7 +3,15 @@
 import { cardData, options, progressData } from "@/app/constant/menu";
 import { Button } from "@/components/ui/button";
 import {
-  KindiHeart,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
   progressImage01,
   progressImage02,
   progressImage03,
@@ -14,6 +22,9 @@ import { GraphQLClient, gql } from "graphql-request";
 import React, { useEffect, useRef, useState } from "react";
 import { useSession } from "next-auth/react";
 import { getPublishedMileStone } from "@/lib/hygraph";
+import { PopupFooter } from "@/app/Sections";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
 /**
  * @Main_account_Credentials
@@ -203,6 +214,98 @@ const ProfileRoute = () => {
 //   );
 // };
 
+const MilestoneCompleteButton = ({ userId, milestoneId }) => {
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+
+  const handleMilestoneCompletion = async () => {
+    setLoading(true);
+
+    try {
+      const response = await fetch("/api/mark-milestone-completed", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId, milestoneId }),
+      });
+
+      if (response.ok) {
+        setSuccess(true);
+      }
+    } catch (error) {
+      console.error("Error completing milestone:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <button
+      className={`rounded-2xl font-fredoka text-white shadow border-2 border-white ${
+        loading
+          ? "opacity-50 cursor-not-allowed bg-red"
+          : success
+          ? "bg-purple hover:bg-purple"
+          : "bg-red hover:bg-red-600"
+      }`}
+      onClick={handleMilestoneCompletion}
+      disabled={loading || success}
+    >
+      {loading ? (
+        <span className="flex items-center">
+          <svg
+            className="animate-spin h-5 w-5 mr-2 text-white"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            />
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8v2a6 6 0 00-6 6H4z"
+            />
+          </svg>
+          Loading...
+        </span>
+      ) : success ? (
+        "Milestone Completed"
+      ) : (
+        "Mark as Completed"
+      )}
+    </button>
+  );
+};
+
+async function getUserCompletedMilestones(userId) {
+  const query = gql`
+    query GetUserCompletedMilestones($userId: ID!) {
+      account(where: { id: $userId }) {
+        name
+        milestoneCompleted {
+          id
+          title
+          description
+          thumbnail {
+            url
+          }
+        }
+      }
+    }
+  `;
+
+  const data = await request(HYGRAPH_ENDPOINT, query, { userId });
+  return data.account;
+}
+
 const DisplayAllMileStone = () => {
   const [milestones, setMilestones] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -234,7 +337,7 @@ const DisplayAllMileStone = () => {
 
   return (
     <>
-      <div>
+      {/* <div>
         {milestones.length === 0 && <p>No milestones found.</p>}
         <div className="flex flex-wrap gap-4">
           {milestones.map((milestone) => (
@@ -247,27 +350,44 @@ const DisplayAllMileStone = () => {
             </div>
           ))}
         </div>
-      </div>
+      </div> */}
+      <CurvePath milestones={milestones} />
     </>
   );
 };
 
-const CurvePath = () => {
-  // Milestone data
-  const milestoneData = [
-    { id: 1, description: " DescriptionDescription", title: "Kickoff Meeting" },
-    { id: 2, description: " DescriptionDescription", title: "Design Phase" },
-    { id: 3, description: " DescriptionDescription", title: "Development Phase" },
-    { id: 4, description: " DescriptionDescription", title: "Testing & QA" },
-    { id: 5, description: " DescriptionDescription", title: "Project Launch" },
-    { id: 6, description: " DescriptionDescription", title: "Development Phase" },
-    { id: 7, description: " DescriptionDescription", title: "Testing & QA" },
-    { id: 8, description: " DescriptionDescription", title: "Project Launch" },
-  ];
+const CurvePath = ({ milestones = [] }) => {
+  const [currentDate, setCurrentDate] = useState("");
+  const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    const today = new Date();
+    const formattedDate = today.toLocaleDateString("en-US", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+    setCurrentDate(formattedDate);
+    const savedMessage = localStorage.getItem("milestoneMessage");
+    if (savedMessage) {
+      setMessage(savedMessage);
+    }
+  }, []);
+
+  const handleTextareaChange = (e) => {
+    setMessage(e.target.value);
+  };
+
+  const handleSave = () => {
+    // Save the message to local storage
+    localStorage.setItem("milestoneMessage", message);
+    alert("Message saved successfully!");
+  };
 
   // Dynamically set container height based on the number of nodes
   const nodeSpacing = 200; // Define the desired spacing between nodes
-  const containerHeight = (milestoneData.length - 1) * nodeSpacing + 300; // Increased padding for better layout
+  const containerHeight = (milestones.length - 1) * nodeSpacing + 300; // Increased padding for better layout
   const baseAmplitude = 40; // Double the base amplitude for a larger curve
   const frequency = 0.2; // Frequency of the wave
 
@@ -295,16 +415,16 @@ const CurvePath = () => {
   const nodes = [];
   const paths = [];
 
-  // Loop through milestoneData
-  for (let i = 1; i < milestoneData.length; i++) {
-    const milestone = milestoneData[i];
+  // Loop through milestones data
+  for (let i = 0; i < milestones.length; i++) {
+    const milestone = milestones[i];
 
     // Position calculation:
     // - Center the first and last nodes
     // - Alternate the others to the left and right
     const top = i * nodeSpacing;
     const left =
-      i === 0 || i === milestoneData.length - 1
+      i === 0 || i === milestones.length - 1
         ? containerWidth / 2 // Center for first and last nodes
         : i % 2 === 0
         ? containerWidth * 0.3 // Left for even
@@ -325,13 +445,47 @@ const CurvePath = () => {
           transform: "translate(-50%, -50%)",
         }}
       >
-        <button
-          className="px-4 py-2 bg-pink-500 text-white rounded hover:bg-pink-600"
-          onClick={() => alert(`Button for ${milestone.title} clicked!`)}
-        >
-          {milestone.title}
-          {milestone.description}
-        </button>
+        <Dialog className="p-2 lg:p-4">
+          <DialogTrigger>
+            <button className="clarabutton bg-red px-4 py-2 hover:shadow text-white rounded hover:bg-hoverRed">
+              {milestone.title}
+            </button>
+          </DialogTrigger>
+          <DialogContent className="w-full bg-[#eaeaf5] p-0 lg:min-w-[800px] ">
+            <DialogHeader className="p-4">
+              <DialogDescription className="w-full p-4 flex flex-col gap-4 justify-start items-start">
+                <div className="text-[#0a1932] claraheading">
+                  {milestone.title}
+                </div>
+                <div className="w-full text-[#4a4a4a] clarabodyTwo justify-center items-center">
+                  {milestone.description}
+                </div>
+                <div className="w-full p-2 flex flex-col gap-2 bg-white rounded-lg shadow">
+                  <div className="text-[#757575] clarabodyTwo ">Date</div>
+                  <div className="text-[#0a1932] text-[20px] font-normal font-fredoka leading-[20px]">
+                    {currentDate}
+                  </div>
+                </div>
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+              <section className="w-full h-auto shadow-upper bg-[#ffffff] -top-2 sticky bottom-0 z-10 rounded-t-[16px] items-center justify-between py-4 flex flex-row">
+                <div className="w-fit flex flex-row justify-between items-center gap-4 px-4">
+                  <Button className="px-4 py-2 bg-white hover:bg-white text-[#3f3a64] text-[20px] md:text-[24px] font-medium font-fredoka leading-none rounded-2xl border-2 border-[#3f3a64] justify-center items-center gap-1 inline-flex">
+                    <ChevronLeft className="w-[24px] h-[24px]" />
+                    Back
+                  </Button>
+                </div>
+                <div className="w-fit flex flex-row justify-between items-center gap-4 px-4">
+                  <MilestoneCompleteButton
+                    milestoneId={milestone.id}
+                    userId="cm25lil0t0zvz07pfuuizj473"
+                  />
+                </div>
+              </section>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     );
 
@@ -339,7 +493,7 @@ const CurvePath = () => {
     if (i > 0) {
       const previousTop = (i - 1) * nodeSpacing;
       const previousLeft =
-        i - 1 === 0 || i - 1 === milestoneData.length - 1
+        i - 1 === 0 || i - 1 === milestones.length - 1
           ? containerWidth / 2
           : (i - 1) % 2 === 0
           ? containerWidth * 0.3
@@ -391,9 +545,9 @@ const CurvePath = () => {
   );
 };
 
-const MobileCurvePath = () => {
-  // Number of nodes
-  const numberOfNodes = 10;
+const MobileCurvePath = ({ milestones }) => {
+  // Number of nodes is now based on the milestones length
+  const numberOfNodes = milestones.length;
   const containerHeight = 800; // Height of the container
   const nodeSpacing = containerHeight / (numberOfNodes - 1);
   const baseAmplitude = 40; // Double the base amplitude for a larger curve
@@ -424,6 +578,8 @@ const MobileCurvePath = () => {
   const paths = [];
 
   for (let i = 0; i < numberOfNodes; i++) {
+    const milestone = milestones[i]; // Use milestone data
+
     // First node starts from the top center, rest alternate sides
     const top = i * nodeSpacing;
     const left =
@@ -436,7 +592,7 @@ const MobileCurvePath = () => {
     // Add node to nodes array
     nodes.push(
       <div
-        key={i}
+        key={milestone.id}
         style={{
           position: "absolute",
           top: `${top}px`,
@@ -446,9 +602,9 @@ const MobileCurvePath = () => {
       >
         <button
           className="mt-2 px-4 py-2 bg-pink-500 text-white rounded hover:bg-pink-600"
-          onClick={() => alert(`Button on Node ${i + 1} clicked!`)}
+          onClick={() => alert(`Button for ${milestone.title} clicked!`)}
         >
-          Click Me
+          {milestone.title}
         </button>
       </div>
     );
@@ -480,7 +636,7 @@ const MobileCurvePath = () => {
 
       paths.push(
         <path
-          key={`path-${i}`}
+          key={`path-${milestone.id}`}
           d={pathD}
           fill="none"
           stroke="#f05c5c" // Set the stroke color to the preferred color
@@ -651,13 +807,9 @@ export default function MileStone() {
               </div>
             )}
           </div>
+          {/* <UserProfile /> */}
           <ProfileRoute />
           <DisplayAllMileStone />
-          <CurvePath />
-          <div className="hidden lg:flex"></div>
-          <div className="flex lg:hidden">
-            <MobileCurvePath />
-          </div>
         </div>
       </section>
     </>

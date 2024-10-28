@@ -1,6 +1,6 @@
 "use client";
 
-import { cardData, options, progressData } from "@/app/constant/menu";
+import { progressData } from "@/app/constant/menu";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -8,7 +8,6 @@ import {
   DialogDescription,
   DialogFooter,
   DialogHeader,
-  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import {
@@ -19,12 +18,9 @@ import {
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import { GraphQLClient, gql } from "graphql-request";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { getPublishedMileStone } from "@/lib/hygraph";
-import { PopupFooter } from "@/app/Sections";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 
 /**
  * @Main_account_Credentials
@@ -98,122 +94,6 @@ const ProfileRoute = () => {
   );
 };
 
-// const NiceCurvePath = () => {
-//   // Number of nodes
-//   const numberOfNodes = 10;
-//   const containerHeight = 800; // Height of the container
-//   const nodeSpacing = containerHeight / (numberOfNodes - 1);
-//   const baseAmplitude = 20; // Base amplitude for the wave
-//   const frequency = 0.2; // Frequency of the wave
-
-//   // State for container width
-//   const [containerWidth, setContainerWidth] = useState(0);
-
-//   useEffect(() => {
-//     // Set the container width after the component mounts
-//     setContainerWidth(window.innerWidth);
-
-//     // Optionally handle resizing
-//     const handleResize = () => {
-//       setContainerWidth(window.innerWidth);
-//     };
-
-//     window.addEventListener("resize", handleResize);
-
-//     // Cleanup the event listener on component unmount
-//     return () => {
-//       window.removeEventListener("resize", handleResize);
-//     };
-//   }, []); // Empty dependency array ensures this runs only once after mount
-
-//   // Generate nodes and paths
-//   const nodes = [];
-//   const paths = [];
-
-//   for (let i = 0; i < numberOfNodes; i++) {
-//     // First node starts from the top center, rest alternate sides
-//     const top = i * nodeSpacing;
-//     const left =
-//       i === 0
-//         ? containerWidth / 2
-//         : i % 2 === 0
-//         ? containerWidth * 0.3
-//         : containerWidth * 0.7; // First node at center, rest alternate
-
-//     // Add node to nodes array
-//     nodes.push(
-//       <Milestone
-//         key={i}
-//         title={`Node ${i + 1}`}
-//         bgColor="pink-500"
-//         textColor="white"
-//         borderColor="pink-700"
-//       />
-//     );
-
-//     // Add path to paths array, skip the first node
-//     if (i > 0) {
-//       const previousTop = (i - 1) * nodeSpacing;
-//       const previousLeft =
-//         i === 1
-//           ? containerWidth / 2
-//           : i % 2 === 0
-//           ? containerWidth * 0.7
-//           : containerWidth * 0.3; // Opposite side of the current node
-
-//       // Control points to make the curve bend at the nodes
-//       const controlPointX1 =
-//         previousLeft +
-//         Math.sin(i * frequency) * (baseAmplitude + Math.random() * 10); // Adding randomness to the amplitude
-//       const controlPointY1 =
-//         previousTop + (top - previousTop) / 2 + Math.sin(i * frequency) * 10; // Slight vertical variation
-//       const controlPointX2 =
-//         left - Math.sin(i * frequency) * (baseAmplitude + Math.random() * 10); // Adding randomness to the amplitude
-//       const controlPointY2 =
-//         previousTop + (top - previousTop) / 2 - Math.sin(i * frequency) * 10; // Slight vertical variation
-
-//       // Create a cubic Bezier curve using the 'C' command
-//       const pathD = `M ${previousLeft} ${previousTop} C ${controlPointX1} ${controlPointY1}, ${controlPointX2} ${controlPointY2}, ${left} ${top}`;
-
-//       // Create a wider path by duplicating the path and applying a blur filter
-//       paths.push(
-//         <>
-//           <path
-//             key={`path-bg-${i}`} // Background path for width effect
-//             d={pathD}
-//             fill="none"
-//             stroke="#f05c5c" // Set the stroke color to the preferred color
-//             strokeWidth="10" // Wider stroke for background effect
-//             opacity="0.5" // Slightly transparent for blending effect
-//           />
-//           <path
-//             key={`path-${i}`}
-//             d={pathD}
-//             fill="none"
-//             stroke="#f05c5c" // Set the stroke color to the preferred color
-//             strokeWidth="4" // Standard stroke width for visibility
-//             strokeDasharray="5,5" // Makes the path dotted
-//           />
-//         </>
-//       );
-//     }
-//   }
-
-//   return (
-//     <div className="relative w-full h-full pb-24 min-h-[1000px] bg-gray-100 overflow-hidden">
-//       {/* SVG for drawing paths */}
-//       <svg
-//         className="absolute bg-[#eaeaf5] top-0 left-0 w-full h-full"
-//         viewBox={`0 0 ${containerWidth} ${containerHeight}`} // Set viewBox to full width of the viewport
-//         preserveAspectRatio="none"
-//       >
-//         {paths}
-//       </svg>
-//       {nodes}
-//     </div>
-//   );
-// };
-
 const MilestoneCompleteButton = ({ userId, milestoneId }) => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -242,54 +122,46 @@ const MilestoneCompleteButton = ({ userId, milestoneId }) => {
 
   return (
     <Button
-      className="bg-red hover:bg-red rounded-2xl font-fredoka text-white shadow border-2 border-white"
+      className={`rounded-2xl font-fredoka text-white shadow border-2 border-white ${
+        loading
+          ? "opacity-50 cursor-not-allowed bg-red"
+          : success
+          ? "bg-purple hover:bg-purple"
+          : "bg-red hover:bg-red-600"
+      }`}
       onClick={handleMilestoneCompletion}
       disabled={loading || success}
     >
-      {success ? "Milestone Completed" : "Mark as Completed"}
+      {loading ? (
+        <span className="flex items-center">
+          <svg
+            className="animate-spin h-5 w-5 mr-2 text-white"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            />
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8v2a6 6 0 00-6 6H4z"
+            />
+          </svg>
+          Loading...
+        </span>
+      ) : success ? (
+        "Milestone Completed"
+      ) : (
+        "Mark as Completed"
+      )}
     </Button>
-  );
-};
-
-async function getUserCompletedMilestones(userId) {
-  const query = gql`
-    query GetUserCompletedMilestones($userId: ID!) {
-      account(where: { id: $userId }) {
-        name
-        milestoneCompleted {
-          id
-          title
-          description
-          thumbnail {
-            url
-          }
-        }
-      }
-    }
-  `;
-
-  const data = await request(HYGRAPH_ENDPOINT, query, { userId });
-  return data.account;
-}
-
-const UserProfile = async ({ params }) => {
-  const user = await getUserCompletedMilestones(params.userId);
-
-  return (
-    <div>
-      <h1>{user.name}'s Completed Milestones</h1>
-      <ul>
-        {user.milestoneCompleted.map((milestone) => (
-          <li key={milestone.id}>
-            <h3>{milestone.title}</h3>
-            <p>{milestone.description}</p>
-            {milestone.thumbnail && (
-              <img src={milestone.thumbnail.url} alt={milestone.title} />
-            )}
-          </li>
-        ))}
-      </ul>
-    </div>
   );
 };
 
@@ -324,28 +196,18 @@ const DisplayAllMileStone = () => {
 
   return (
     <>
-      {/* <div>
-        {milestones.length === 0 && <p>No milestones found.</p>}
-        <div className="flex flex-wrap gap-4">
-          {milestones.map((milestone) => (
-            <div key={milestone.id} className="flex flex-col items-center">
-              {milestone.thumbnail && (
-                <img src={milestone.thumbnail.url} alt={milestone.title} />
-              )}
-              <h2 className="text-center">{milestone.title}</h2>
-              <p>{milestone.description}</p>
-            </div>
-          ))}
-        </div>
-      </div> */}
       <CurvePath milestones={milestones} />
     </>
   );
 };
 
 const CurvePath = ({ milestones = [] }) => {
+  // const { data: session } = useSession();
   const [currentDate, setCurrentDate] = useState("");
   const [message, setMessage] = useState("");
+
+  // const myUserId = session?.user?.id;
+  // console.log("myUserId", myUserId);
 
   useEffect(() => {
     const today = new Date();
@@ -361,16 +223,6 @@ const CurvePath = ({ milestones = [] }) => {
       setMessage(savedMessage);
     }
   }, []);
-
-  const handleTextareaChange = (e) => {
-    setMessage(e.target.value);
-  };
-
-  const handleSave = () => {
-    // Save the message to local storage
-    localStorage.setItem("milestoneMessage", message);
-    alert("Message saved successfully!");
-  };
 
   // Dynamically set container height based on the number of nodes
   const nodeSpacing = 200; // Define the desired spacing between nodes
@@ -466,7 +318,8 @@ const CurvePath = ({ milestones = [] }) => {
                 <div className="w-fit flex flex-row justify-between items-center gap-4 px-4">
                   <MilestoneCompleteButton
                     milestoneId={milestone.id}
-                    userId="cm25lil0t0zvz07pfuuizj473"
+                    // userId={myUserId}
+                    // userId="cm25lil0t0zvz07pfuuizj473"
                   />
                 </div>
               </section>
@@ -531,204 +384,6 @@ const CurvePath = ({ milestones = [] }) => {
     </div>
   );
 };
-
-const MobileCurvePath = ({ milestones }) => {
-  // Number of nodes is now based on the milestones length
-  const numberOfNodes = milestones.length;
-  const containerHeight = 800; // Height of the container
-  const nodeSpacing = containerHeight / (numberOfNodes - 1);
-  const baseAmplitude = 40; // Double the base amplitude for a larger curve
-  const frequency = 0.2; // Frequency of the wave
-
-  // State for container width
-  const [containerWidth, setContainerWidth] = useState(0);
-
-  useEffect(() => {
-    // Set the container width after the component mounts
-    setContainerWidth(window.innerWidth);
-
-    // Optionally handle resizing
-    const handleResize = () => {
-      setContainerWidth(window.innerWidth);
-    };
-
-    window.addEventListener("resize", handleResize);
-
-    // Cleanup the event listener on component unmount
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []); // Empty dependency array ensures this runs only once after mount
-
-  // Generate nodes and paths
-  const nodes = [];
-  const paths = [];
-
-  for (let i = 0; i < numberOfNodes; i++) {
-    const milestone = milestones[i]; // Use milestone data
-
-    // First node starts from the top center, rest alternate sides
-    const top = i * nodeSpacing;
-    const left =
-      i === 0
-        ? containerWidth / 2
-        : i % 2 === 0
-        ? containerWidth * 0.3
-        : containerWidth * 0.7; // First node at center, rest alternate
-
-    // Add node to nodes array
-    nodes.push(
-      <div
-        key={milestone.id}
-        style={{
-          position: "absolute",
-          top: `${top}px`,
-          left: `${left}px`,
-          transform: "translate(-50%, -50%)",
-        }}
-      >
-        <button
-          className="mt-2 px-4 py-2 bg-pink-500 text-white rounded hover:bg-pink-600"
-          onClick={() => alert(`Button for ${milestone.title} clicked!`)}
-        >
-          {milestone.title}
-        </button>
-      </div>
-    );
-
-    // Add path to paths array, skip the first node
-    if (i > 0) {
-      const previousTop = (i - 1) * nodeSpacing;
-      const previousLeft =
-        i === 1
-          ? containerWidth / 2
-          : i % 2 === 0
-          ? containerWidth * 0.7
-          : containerWidth * 0.3; // Opposite side of the current node
-
-      // Control points to make the curve bend at the nodes
-      const controlPointX1 =
-        previousLeft +
-        Math.sin(i * frequency) * (baseAmplitude * 2 + Math.random() * 20); // Increased amplitude and added randomness
-      const controlPointY1 =
-        previousTop + (top - previousTop) / 2 + Math.sin(i * frequency) * 20; // Slightly larger vertical variation
-      const controlPointX2 =
-        left -
-        Math.sin(i * frequency) * (baseAmplitude * 2 + Math.random() * 20); // Increased amplitude and added randomness
-      const controlPointY2 =
-        previousTop + (top - previousTop) / 2 - Math.sin(i * frequency) * 20; // Slightly larger vertical variation
-
-      // Create a cubic Bezier curve using the 'C' command
-      const pathD = `M ${previousLeft} ${previousTop} C ${controlPointX1} ${controlPointY1}, ${controlPointX2} ${controlPointY2}, ${left} ${top}`;
-
-      paths.push(
-        <path
-          key={`path-${milestone.id}`}
-          d={pathD}
-          fill="none"
-          stroke="#f05c5c" // Set the stroke color to the preferred color
-          strokeWidth="4" // Slightly thicker stroke for visibility
-          strokeDasharray="5,5" // Makes the path dotted
-        />
-      );
-    }
-  }
-
-  return (
-    <div className="relative w-full h-full pb-24 min-h-[1000px] bg-gray-100 overflow-hidden">
-      {/* SVG for drawing paths */}
-      <svg
-        className="absolute bg-[#eaeaf5] top-0 left-0 w-full h-full"
-        viewBox={`0 0 ${containerWidth} ${containerHeight}`} // Set viewBox to full width of the viewport
-        preserveAspectRatio="none"
-      >
-        {paths}
-      </svg>
-      {nodes}
-    </div>
-  );
-};
-
-// const SineWaveWithButtons = () => {
-//   const [containerWidth, setContainerWidth] = useState(0);
-//   const amplitude = 100; // Controls the height of the wave
-//   const frequency = 0.01; // Controls the frequency of the wave
-//   const numPoints = 30; // Number of buttons/nodes to display
-//   const waveLength = 800; // Width to generate the wave over
-
-//   useEffect(() => {
-//     setContainerWidth(window.innerWidth);
-
-//     const handleResize = () => {
-//       setContainerWidth(window.innerWidth);
-//     };
-
-//     window.addEventListener("resize", handleResize);
-
-//     return () => {
-//       window.removeEventListener("resize", handleResize);
-//     };
-//   }, []);
-
-//   const generateWavePoints = () => {
-//     const points = [];
-//     const spacing = waveLength / (numPoints - 1);
-
-//     for (let i = 0; i < numPoints; i++) {
-//       const x = i * spacing;
-//       const y = amplitude * Math.sin(frequency * x); // Adjust frequency & amplitude
-//       points.push({ x, y: y }); // Use negative y to reflect wave on -y axis
-//     }
-
-//     return points;
-//   };
-
-//   const points = generateWavePoints();
-
-//   return (
-//     <div className="relative w-full h-[400px] bg-gray-100">
-//       <svg
-//         className="absolute w-full h-full"
-//         viewBox={`0 -150 ${waveLength} 300`}
-//         preserveAspectRatio="none"
-//       >
-//         {/* Drawing the sine wave */}
-//         <path
-//           d={`
-//             M ${points[0].x} ${points[0].y}
-//             ${points
-//               .slice(1)
-//               .map((point) => `L ${point.x} ${point.y}`)
-//               .join(" ")}
-//           `}
-//           fill="none"
-//           stroke="#f05c5c"
-//           strokeWidth="4"
-//         />
-//       </svg>
-
-//       {/* Adding buttons at the sine wave nodes */}
-//       {points.map((point, index) => (
-//         <div
-//           key={index}
-//           style={{
-//             position: "absolute",
-//             top: `calc(50% + ${point.y}px)`, // Centered vertically, then offset by sine y-value
-//             left: `${point.x}px`,
-//             transform: "translate(-50%, -50%)",
-//           }}
-//         >
-//           <button
-//             className="px-3 py-1 bg-pink-500 text-white rounded hover:bg-pink-600"
-//             onClick={() => alert(`Button ${index + 1} clicked!`)}
-//           >
-//             Node {index + 1}
-//           </button>
-//         </div>
-//       ))}
-//     </div>
-//   );
-// };
 
 export default function MileStone() {
   const { data: session, status } = useSession();
