@@ -1,7 +1,6 @@
 "use client";
 import { Accordian } from "@/app/Widgets";
 import { Button } from "@/components/ui/button";
-import { GraphQLClient, gql } from "graphql-request";
 import {
   ActivityBlack,
   CompletedMark,
@@ -18,13 +17,14 @@ import {
   Themes,
   TimerBlack,
 } from "@/public/Images";
+import { GraphQLClient, gql } from "graphql-request";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import NotFound from "@/app/not-found";
 import { ProductImages } from "@/app/shop";
 import { getActivityById } from "@/lib/hygraph";
-import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 
 /**
  * @Main_account_Credentials
@@ -55,7 +55,7 @@ const GET_ACCOUNT_BY_EMAIL = gql`
   }
 `;
 
-const ActivityCompleteButton = ({ activityId, userId }) => {
+const ActivityCompleteButton = ({ activityId, newUserId }) => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
@@ -67,10 +67,9 @@ const ActivityCompleteButton = ({ activityId, userId }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ userId, activityId }),
+        body: JSON.stringify({ newUserId, activityId }),
       });
 
-      console.log("esponse: ", response);
       if (response.ok) {
         setSuccess(true);
       } else {
@@ -84,7 +83,7 @@ const ActivityCompleteButton = ({ activityId, userId }) => {
   };
   return (
     <Button
-      className={`rounded-2xl w-full flex flex-row gap-1 font-fredoka text-white shadow border-2 border-white ${
+      className={`rounded-2xl w-full font-fredoka text-white shadow border-2 border-white ${
         loading
           ? "opacity-50 cursor-not-allowed bg-red"
           : success
@@ -94,8 +93,6 @@ const ActivityCompleteButton = ({ activityId, userId }) => {
       onClick={handleActivityCompletion}
       disabled={loading || success}
     >
-      <Image alt="Kindi" className="flex lg:hidden" src={CompletedMark} />
-
       {loading ? (
         <span className="flex items-center">
           <svg
@@ -180,24 +177,24 @@ const activityIcons = [
 
 export default async function ActivityDetailPage({ params }) {
   const { id } = params;
+  // console.log("Activity ID:", id);
   const { data: session, status } = useSession();
   const [profileData, setProfileData] = useState(null);
 
-  // useEffect(() => {
-  //   if (session && session.user) {
-  //     fetchUserData(session.user.email);
-  //   }
-  // }, [session]);
-
-  // const fetchUserData = async (email) => {
-  //   try {
-  //     const data = await client.request(GET_ACCOUNT_BY_EMAIL, { email });
-  //     setProfileData(data.account);
-  //   } catch (error) {
-  //     console.error("Error fetching profile data:", error);
-  //   }
-  // };
-  // console.log("profileData", profileData);
+  const fetchUserData = async (email) => {
+    try {
+      const data = await client.request(GET_ACCOUNT_BY_EMAIL, { email });
+      setProfileData(data.account);
+    } catch (error) {
+      console.error("Error fetching profile data:", error);
+    }
+  };
+  useEffect(() => {
+    if (session && session.user) {
+      fetchUserData(session.user.email);
+    }
+  }, [session]);
+  console.log("My ProfileData:", profileData);
 
   const activity = await getActivityById(id);
 
@@ -350,10 +347,14 @@ export default async function ActivityDetailPage({ params }) {
                   Mark Activity as Complete{" "}
                 </div>
                 <ActivityCompleteButton
-                  // activityId="cm1u8ao560foe07pnbs7wy1xz"
-                  activityId={id}
-                  userId="cm25lil0t0zvz07pfuuizj473"
+                  activityId="cm1u8ao560foe07pnbs7wy1xz"
+                  // activityId={id}
+                  newUserId="cm25lil0t0zvz07pfuuizj473"
                 />
+                {profileData ? <p>test</p> : <p> UserId not find</p>}
+                {/* <Button className="w-full bg-red text-white text-sm font-normal font-fredoka uppercase leading-[18px] tracking-wide rounded-2xl shadow border-2 border-white">
+                  Completed
+                </Button> */}
               </div>
             </div>
           </div>
@@ -368,14 +369,10 @@ export default async function ActivityDetailPage({ params }) {
               <Image alt="Kindi" src={Print} />
               Print
             </Button>
-            <ActivityCompleteButton
-              activityId={id}
-              userId="cm25lil0t0zvz07pfuuizj473"
-            />
-            {/* <Button className="flex bg-red gap-[4px] py-2 text-center text-white text-xs font-semibold font-fredoka rounded-2xl shadow border-2 border-white flex-row justify-center items-center w-full">
+            <Button className="flex bg-red gap-[4px] py-2 text-center text-white text-xs font-semibold font-fredoka rounded-2xl shadow border-2 border-white flex-row justify-center items-center w-full">
               <Image alt="Kindi" src={CompletedMark} />
               Mark as Complete
-            </Button> */}
+            </Button>
           </div>
         </div>{" "}
       </section>

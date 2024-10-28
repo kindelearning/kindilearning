@@ -316,3 +316,64 @@ const page = () => {
 };
 
 export default page;
+
+{
+  /* <div className="items-center scrollbar-hidden w-full justify-start flex flex-row gap-1">
+  {activity.speechLanguage ? (
+    <>
+      <IconBadge icon={SpeechLanguageActivity} />
+    </>
+  ) : (
+    <></>
+  )}
+  {activity.emotionalSocialStrength ? (
+    <>
+      <IconBadge icon={EmotionalSocialStrengthActivity} />
+    </>
+  ) : (
+    <></>
+  )}
+  {activity.confidenceIndependence ? (
+    <>
+      <IconBadge icon={ConfidenceIndependenceActivity} />
+    </>
+  ) : (
+    <></>
+  )}
+  {activity.physicalAgility ? (
+    <>
+      <IconBadge icon={PhysicalAgilityActivity} />
+    </>
+  ) : (
+    <></>
+  )}
+  {activity.readingWriting ? (
+    <>
+      <IconBadge icon={ReadingWritingActivity} />
+    </>
+  ) : (
+    <></>
+  )}
+  {activity.discoveringOurWorld ? (
+    <>
+      <IconBadge icon={DiscoveringOurWorldActivity} />
+    </>
+  ) : (
+    <></>
+  )}
+  {activity.creativityImagination ? (
+    <>
+      <IconBadge icon={CreativityImaginationActivity} />
+    </>
+  ) : (
+    <></>
+  )}
+  {activity.experimentsMath ? (
+    <>
+      <IconBadge icon={ExperimentsMathActivity} />
+    </>
+  ) : (
+    <></>
+  )}
+</div>; */
+}
