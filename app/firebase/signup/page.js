@@ -7,6 +7,8 @@ import { signInWithGoogle } from "@/lib/auth";
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
 
@@ -16,8 +18,9 @@ const SignUp = () => {
     setError("");
 
     try {
-      await signUpWithEmail(email, password);
-      // Handle successful sign-up (e.g., redirect or show success message)
+      await signUpWithEmail(email, password, name, username);
+      // Redirect or show success message
+      router.push("/p/activity");
     } catch (error) {
       setError(error.message);
     }
@@ -28,7 +31,7 @@ const SignUp = () => {
     setError(""); // Reset error state
     try {
       await signInWithGoogle();
-      router.push("/"); // Redirect to home or desired page
+      router.push("/dashboard"); // Redirect to home or desired page
     } catch (err) {
       setError("Failed to sign in with Google: " + err.message);
     }
@@ -40,6 +43,22 @@ const SignUp = () => {
       <div className="flex flex-col items-center">
         <h1 className="text-2xl font-bold">Sign Up</h1>
         <form onSubmit={handleSignUp} className="flex flex-col">
+          <input
+            type="text"
+            placeholder="Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            
+            className="border p-2 m-2"
+          />
+          <input
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            
+            className="border p-2 m-2"
+          />
           <input
             type="email"
             placeholder="Email"

@@ -3,6 +3,7 @@
 import { auth } from "@/lib/firebaseConfig";
 import { useUser } from "@/lib/UserContext";
 import { onAuthStateChanged } from "firebase/auth";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const Profile = () => {
@@ -22,7 +23,12 @@ const Profile = () => {
     return () => unsubscribe();
   }, []);
   if (!user) {
-    return <p>Please log in to see your profile.</p>;
+    return (
+      <p>
+        Please
+        <Link href="/firebase/login"> log in</Link> to see your profile.
+      </p>
+    );
   }
 
   return (
