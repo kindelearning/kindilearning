@@ -51,9 +51,9 @@ const PopularActivity = async () => {
             <article className="rounded-lg ">
               <Link target="_blank" href={`/p/activities/${activity.id}`}>
                 <div className="md:w-full hover:shadow-md duration-200 min-w-[200px] w-[200px] min-h-[250px] h-full bg-white items-start justify-start border rounded-3xl flex flex-col md:flex-row gap-4">
-                  <div className="claracontainer w-full flex-col justify-start items-center gap-7 inline-flex">
+                  <div className="claracontainer w-full flex-col justify-start items-center gap-7 inline-flex lg:min-w-[300px]">
                     <div className="w-full max-w-[240px]  lg:max-w-full h-auto  ">
-                      <div className="flex max-h-[180px] min-h-[150px] h-[150px] lg:min-h-[276px] lg:h-full lg:max-h-[276px] md:max-h-[300px]  overflow-clip rounded-t-3xl ">
+                      <div className="flex max-h-[180px] min-h-[150px] h-[150px] lg:min-h-[260px] lg:h-full lg:max-h-[260px] md:max-h-[300px]  overflow-clip rounded-t-3xl ">
                         <Image
                           width={280}
                           height={250}
@@ -65,7 +65,9 @@ const PopularActivity = async () => {
                       <div className="w-full p-2 flex-col justify-start lg:p-4 items-start flex gap-2 md:gap-2 lg:gap-4">
                         <div className="flex-col w-full gap-[6px] justify-start items-start">
                           <div className="text-[#0a1932] text-[16px] md:text-xl font-semibold font-fredoka leading-[20px]">
-                            {activity.title}
+                            {activity.title.length > 25
+                              ? `${activity.title.slice(0, 20)}...`
+                              : activity.title}
                           </div>
                           <div className="justify-start w-full items-center gap-1 lg:gap-2 inline-flex">
                             <div className="text-[#0a1932] min-w-[max-content] p-0 lg:pl-2 md:text-[18px] md:leading-[22px] font-[500] font-fredoka text-[10px] lg:text-[16px] leading-none">
@@ -102,7 +104,7 @@ const PopularActivity = async () => {
                             src={ExperimentsMathActivity}
                           />
                           <div
-                            className={`w-[20px] lg:w-[48px] lg:h-[48px] h-[20px] flex lg:rounded-[12px] justify-center items-center bg-[#F6BEBF] rounded-[4px]`}
+                            className={`w-[20px] lg:w-[36px] lg:h-[40px] h-[20px] flex lg:rounded-[12px] justify-center items-center bg-[#F6BEBF] rounded-[4px]`}
                           >
                             <span className="text-red p-[2px] text-[12px] lg:text-[20px] font-medium font-fredoka">
                               +1
