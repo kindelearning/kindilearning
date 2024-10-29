@@ -748,6 +748,8 @@ export default async function ProfileSection() {
       console.error("Error fetching profile data:", error);
     }
   };
+  console.log("Profile Data before:", profileData);
+  
 
   if (status === "loading") {
     return (

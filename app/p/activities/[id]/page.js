@@ -179,27 +179,92 @@ const activityIcons = [
   { key: "experimentsMath", icon: ExperimentsMathActivity },
 ];
 
-export default async function ActivityDetailPage({ params }) {
-  const { id } = params;
+const DynamicMarkActivityCompleteComponent = ({ activityId }) => {
   const { data: session, status } = useSession();
   const [profileData, setProfileData] = useState(null);
-
-  useEffect(() => {
-    if (session && session.user) {
-      fetchUserData(session.user.email);
-    }
-  }, [session]);
 
   const fetchUserData = async (email) => {
     try {
       const data = await client.request(GET_ACCOUNT_BY_EMAIL, { email });
       setProfileData(data.account);
+      console.log("Fetched profile data:", data.account);
     } catch (error) {
       console.error("Error fetching profile data:", error);
     }
   };
-  console.log("profileData", profileData);
 
+  useEffect(() => {
+    if (session && session.user) {
+      console.log("Session email:", session.user.email);
+      fetchUserData(session.user.email);
+    }
+  }, [session]);
+
+  if (status === "loading") return null;
+
+  return (
+    <>
+      {profileData ? (
+        <ActivityCompleteButton
+          activityId={activityId}
+          userId={profileData.id}
+        />
+      ) : (
+        <Link
+          href="/auth/sign-up"
+          className="clarabutton bg-red flex gap-[4px] py-2 text-center text-white text-xs font-semibold font-fredoka rounded-2xl shadow border-2 border-white flex-row justify-center items-center w-full"
+          target="_blank"
+        >
+          Login to complete this activity
+        </Link>
+      )}
+    </>
+  );
+};
+
+// const DynamicMarkActivityCompleteComponent = () => {
+//   const { data: session, status } = useSession();
+//   const [profileData, setProfileData] = useState('');
+
+//   const fetchUserData = async (email) => {
+//     try {
+//       const data = await client.request(GET_ACCOUNT_BY_EMAIL, { email });
+//       setProfileData(data.account);
+//     } catch (error) {
+//       console.error("Error fetching profile data:", error);
+//     }
+//   };
+//   useEffect(() => {
+//     if (session && session.user) {
+//       fetchUserData(session.user.email);
+//     }
+//   }, [session]);
+
+//   console.log("Profile Data before:", profileData);
+
+//   return (
+//     <>
+//       {profileData ? (
+//         <ActivityCompleteButton
+//           activityId={id}
+//           // userId="cm25lil0t0zvz07pfuuizj473"
+//           userId={profileData.id}
+//         />
+//       ) : (
+//         <Link
+//           href="/auth/sign-up"
+//           className="clarabutton bg-red flex gap-[4px] py-2 text-center text-white text-xs font-semibold font-fredoka rounded-2xl shadow border-2 border-white flex-row justify-center items-center w-full"
+//           target="_blank"
+//         >
+//           Login to complete this activity
+//         </Link>
+//       )}
+//     </>
+//   );
+// };
+
+export default async function ActivityDetailPage({ params }) {
+  const { id } = params;
   const activity = await getActivityById(id);
 
   if (!activity) {
@@ -350,21 +415,7 @@ export default async function ActivityDetailPage({ params }) {
                 <div className="text-[#3f3a64] text-base font-semibold font-montserrat uppercase leading-[19px]">
                   Mark Activity as Complete{" "}
                 </div>
-                {profileData ? (
-                  <ActivityCompleteButton
-                    activityId={id}
-                    // userId="cm25lil0t0zvz07pfuuizj473"
-                    userId={profileData.id}
-                  />
-                ) : (
-                  <Link
-                    href="/auth/sign-up"
-                    className="clarabutton bg-red flex gap-[4px] py-2 text-center text-white text-xs font-semibold font-fredoka rounded-2xl shadow border-2 border-white flex-row justify-center items-center w-full"
-                    target="_blank"
-                  >
-                    Login to complete this activity
-                  </Link>
-                )}
+                <DynamicMarkActivityCompleteComponent activityId={id} />
               </div>
             </div>
           </div>
@@ -379,21 +430,7 @@ export default async function ActivityDetailPage({ params }) {
               <Image alt="Kindi" src={Print} />
               Print
             </Button>
-            {profileData ? (
-              <ActivityCompleteButton
-                activityId={id}
-                // userId="cm25lil0t0zvz07pfuuizj473"
-                userId={profileData.id}
-              />
-            ) : (
-              <Link
-                href="/auth/sign-up"
-                className="clarabutton bg-red flex gap-[4px] py-2 text-center text-white text-xs font-semibold font-fredoka rounded-2xl shadow border-2 border-white flex-row justify-center items-center w-full"
-                target="_blank"
-              >
-                Login to complete this activity
-              </Link>
-            )}
+            {/* <DynamicMarkActivityCompleteComponent /> */}
           </div>
         </div>{" "}
       </section>
