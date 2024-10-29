@@ -25,6 +25,7 @@ import { ProductImages } from "@/app/shop";
 import { getActivityById } from "@/lib/hygraph";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 
 /**
  * @Main_account_Credentials
@@ -355,7 +356,15 @@ export default async function ActivityDetailPage({ params }) {
                     // userId="cm25lil0t0zvz07pfuuizj473"
                     userId={profileData.id}
                   />
-                ) : null}
+                ) : (
+                  <Link
+                    href="/auth/sign-up"
+                    className="clarabutton bg-red flex gap-[4px] py-2 text-center text-white text-xs font-semibold font-fredoka rounded-2xl shadow border-2 border-white flex-row justify-center items-center w-full"
+                    target="_blank"
+                  >
+                    Login to complete this activity
+                  </Link>
+                )}
               </div>
             </div>
           </div>
@@ -370,14 +379,21 @@ export default async function ActivityDetailPage({ params }) {
               <Image alt="Kindi" src={Print} />
               Print
             </Button>
-            <ActivityCompleteButton
-              activityId={id}
-              userId="cm25lil0t0zvz07pfuuizj473"
-            />
-            {/* <Button className="flex bg-red gap-[4px] py-2 text-center text-white text-xs font-semibold font-fredoka rounded-2xl shadow border-2 border-white flex-row justify-center items-center w-full">
-              <Image alt="Kindi" src={CompletedMark} />
-              Mark as Complete
-            </Button> */}
+            {profileData ? (
+              <ActivityCompleteButton
+                activityId={id}
+                // userId="cm25lil0t0zvz07pfuuizj473"
+                userId={profileData.id}
+              />
+            ) : (
+              <Link
+                href="/auth/sign-up"
+                className="clarabutton bg-red flex gap-[4px] py-2 text-center text-white text-xs font-semibold font-fredoka rounded-2xl shadow border-2 border-white flex-row justify-center items-center w-full"
+                target="_blank"
+              >
+                Login to complete this activity
+              </Link>
+            )}
           </div>
         </div>{" "}
       </section>
