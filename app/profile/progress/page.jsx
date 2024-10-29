@@ -4,6 +4,7 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import {
   KindiHeart,
+  ProfilePlaceHolderOne,
   progressImage01,
   progressImage02,
   progressImage03,
@@ -240,7 +241,7 @@ export default async function ProgressSection() {
             {profileData ? (
               <Image
                 alt="Kindi"
-                src={profileData.profilePicture?.url}
+                src={profileData.profilePicture?.url || ProfilePlaceHolderOne}
                 width={100}
                 height={100}
                 className="cursor-pointer w-30 h-30 border-gradient-to-r from-pink-500 to-yellow-500 border-2 border-red rounded-full z-10"

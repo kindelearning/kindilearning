@@ -11,6 +11,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import {
+  ProfilePlaceHolderOne,
   progressImage01,
   progressImage02,
   progressImage03,
@@ -451,7 +452,7 @@ export default function MileStone() {
               {profileData ? (
                 <Image
                   alt="Kindi"
-                  src={profileData.profilePicture?.url}
+                  src={profileData.profilePicture?.url || ProfilePlaceHolderOne}
                   width={100}
                   height={100}
                   className="cursor-pointer w-28 h-28 min-w-[100px] min-h-[100px] border-gradient-to-r from-pink-500 to-yellow-500 border-2 border-red rounded-full z-10"
