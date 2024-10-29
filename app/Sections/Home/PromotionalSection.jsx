@@ -10,7 +10,7 @@ const PromotionalSection = async () => {
   const { data: session, status } = useSession();
 
   const homeData = await getHomeData();
-  console.log("Home Page Data (in component):", homeData);
+  // console.log("Home Page Data (in component):", homeData);
   if (!homeData || !homeData[0]?.hero) {
     return <NotFound />;
   }

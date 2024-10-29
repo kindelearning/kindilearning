@@ -9,7 +9,7 @@ const OurStory = async () => {
   const { data: session, status } = useSession();
 
   const standardPages = await getStandardPagesContent();
-  console.log("Standard Pages Content: ", standardPages);
+  // console.log("Standard Pages Content: ", standardPages);
 
   if (
     !standardPages ||

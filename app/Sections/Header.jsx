@@ -331,7 +331,7 @@ const Header = () => {
               </div>
               <Link
                 href="/profile"
-                target="_blank"
+                // target="_blank"
                 className="flex -mt-[6px] -z-12 cursor-pointer w-full justify-start items-center"
               >
                 <div className="relative w-full flex justify-center items-center p-[2px] border-2 border-red hover:border-hoverRed rounded-full">

@@ -173,7 +173,7 @@ const OurPricing = async () => {
   };
 
   const homeData = await getHomeData();
-  console.log("Home Page Data (in component):", homeData);
+  // console.log("Home Page Data (in component):", homeData);
   if (!homeData || !homeData[0]?.ourPricing) {
     return <NotFound />;
   }
