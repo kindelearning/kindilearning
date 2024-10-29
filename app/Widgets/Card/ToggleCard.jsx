@@ -1,3 +1,5 @@
+"use client";
+
 import { KindiHeart } from "@/public/Images";
 import { Minus, Plus } from "lucide-react";
 import Image from "next/image";
