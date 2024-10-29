@@ -31,10 +31,14 @@ const AreasOfLearning = async () => {
           </div>
         </div>
 
-        <div className="claracontainer px-4 md:pl-0  flex flex-row overflow-x-scroll scrollbar-hidden md:grid md:grid-cols-3 lg:grid lg:grid-cols-4 xl:grid xl:grid-cols-4 gap-4 justify-between">
+        <div
+          id="area_of_learning"
+          className="claracontainer px-4 md:pl-0  flex flex-row overflow-x-scroll scrollbar-hidden md:grid md:grid-cols-3 lg:grid lg:grid-cols-4 xl:grid xl:grid-cols-4 gap-4 justify-between"
+        >
           {cardData.map((card, index) => (
             <MyToggleCard
               key={index}
+              color={card.color || "white"}
               isOpen={isOpen}
               setIsOpen={setIsOpen}
               title={card.title}

@@ -1,6 +1,8 @@
 import { KindiHeart } from "@/public/Images";
 import { Minus, Plus } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const ToggleCard = ({
   title,
@@ -8,10 +10,15 @@ const ToggleCard = ({
   icon,
   backgroundColor,
   isOpen,
+  color = "white",
   setIsOpen,
-  link = "#",
+  link = "/p/community",
   linkText = "Read More",
 }) => {
+  const router = useRouter();
+  const handleNavigation = () => {
+    router.push("#area_of_learning");
+  };
   return (
     <div
       className={`w-full min-w-[320px] md:min-w-[200px] max-w-md p-4 rounded-[16px] shadow-md`}
@@ -20,7 +27,10 @@ const ToggleCard = ({
       <div className="flex justify-between h-full flex-col items-center">
         <div className="flex w-full h-full justify-between flex-col items-center">
           <div className="flex w-full flex-row justify-between min-h-[50px] items-start">
-            <h5 className="text-white font-bold text-[24px] font-fredoka leading-[28px]">
+            <h5
+              style={{ color: `#${color}` }}
+              className={`font-bold text-[${color}] text-[24px] font-fredoka leading-[28px]`}
+            >
               {title}
             </h5>
             <Image
@@ -34,21 +44,27 @@ const ToggleCard = ({
               isOpen ? "max-h-screen" : "max-h-0"
             }`}
           >
-            <p className="text-white text-base font-medium font-montserrat leading-[20px]">
+            <p
+              style={{ color: `#${color}` }}
+              className="text-base font-medium font-montserrat leading-[20px]"
+            >
               {description}
             </p>
-            <a
+            <Link
               href={link}
               className="text-center text-white text-lg font-bold font-fredoka uppercase leading-relaxed mt-2 relative inline-block"
             >
               <span className="transition-all duration-300">{linkText}</span>
               <span className="absolute bottom-0 left-0 w-0 bg-white h-[2px] transition-all duration-300 group-hover:w-full" />
-            </a>
+            </Link>
           </div>
         </div>
 
         <button
-          onClick={() => setIsOpen(!isOpen)}
+          onClick={() => {
+            handleNavigation();
+            setIsOpen(!isOpen);
+          }}
           className="bg-black rounded-full p-[2px] items-end"
         >
           {isOpen ? (
@@ -57,6 +73,7 @@ const ToggleCard = ({
             <Plus className="w-4 h-4 text-[white]" />
           )}
         </button>
+        {/* area_of_learning */}
       </div>
     </div>
   );

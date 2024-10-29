@@ -37,7 +37,10 @@ const AgeCard = ({ bgImage, image, title, body, link }) => {
             {body || "Description"}
           </p>
         </div>
-        <Link href={link || "#"} className="w-full justify-start items-start">
+        <Link
+          href={link || "/p/community"}
+          className="w-full justify-start items-start"
+        >
           <div className="w-full bg-[#ada5a500] border-[#ffffff00] text-center text-red hover:underline hover:bg-[#f05c5c00] clarabutton mt-8">
             Read More
           </div>
@@ -82,21 +85,33 @@ const AgeRanges = async () => {
               title="BABY (0+ YEARS)"
               body="Sensory play activities tailored for very young little ones, but appeal to all young children."
             />
-            <Image src={AgeRangeArrow} alt="Kindi"  className="w-[50px] h-[50px] -mx-3" />
+            <Image
+              src={AgeRangeArrow}
+              alt="Kindi"
+              className="w-[50px] h-[50px] -mx-3"
+            />
             <AgeCard
               image={AgeCardTwo}
               bgImage="/Images/AgeRangeTwo.svg"
               body="Our learning activities help toddlers develop essential language, social, motor and cognitive skills — but babies and pre-schoolers can enjoy the fun, too!"
               title="TODDLER (18+ MONTHS)"
             />
-            <Image src={AgeRangeArrow}  alt="Kindi" className="w-[50px] h-[50px] -mx-3" />
+            <Image
+              src={AgeRangeArrow}
+              alt="Kindi"
+              className="w-[50px] h-[50px] -mx-3"
+            />
             <AgeCard
               image={AgeCardThree}
               bgImage="/Images/AgeRangeThree.svg"
               body="Fun learning activities for children approaching the beginning of their school careers; these activities will also appeal to toddlers and babies."
               title="PRE-SCHOOLER (2.5+ YEARS)"
             />
-            <Image src={AgeRangeArrow} alt="Kindi"  className="w-[50px] h-[50px] -mx-3" />
+            <Image
+              src={AgeRangeArrow}
+              alt="Kindi"
+              className="w-[50px] h-[50px] -mx-3"
+            />
             <AgeCard
               image={AgeCardFour}
               bgImage="/Images/AgeRangeFour.svg"

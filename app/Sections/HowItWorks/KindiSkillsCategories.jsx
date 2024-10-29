@@ -104,7 +104,7 @@ const cardData = [
     backgroundColor: "019C9E",
   },
   {
-    title: "GROSS MOTOR",
+    title: "Gross Motor",
     icon: GrossMotor,
     description: (
       <ul className="w-auto text-white clarabodyTwo list-disc ">

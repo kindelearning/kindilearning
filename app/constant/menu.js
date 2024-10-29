@@ -456,6 +456,7 @@ export const cardData = [
         <li>Using different medias and colours to express oneself</li>
       </ul>
     ),
+    textColor:'black',
     backgroundColor: "f0c84a",
   },
   {
