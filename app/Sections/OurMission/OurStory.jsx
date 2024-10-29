@@ -31,7 +31,7 @@ const OurStory = async () => {
     <>
       <section className="w-full h-auto bg-[#EEBA00] items-center justify-center py-4 flex flex-col gap-[20px] md:flex-row">
         <div className="claracontainer px-4 md:px-0 lg:px-4 py-8 md:py-8 xl:py-12 w-full flex flex-col md:flex-col lg:flex-row xl:flex-row overflow-hidden gap-8">
-          <div className="w-full flex justify-center items-center h-auto">
+          <div className="w-full flex justify-center items-start h-auto">
             <div className="w-full lg:w-[400px] xl:w-[500px] h-auto animate-fadeIn animate-delay-500">
               {/* <Image alt="Kindi" src={HowItWorkVideo} className="w-full" /> */}
               <video

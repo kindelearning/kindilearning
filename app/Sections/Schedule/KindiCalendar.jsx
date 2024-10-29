@@ -270,6 +270,8 @@ export default function Calendar() {
       !dayObj.isCurrentMonth ||
       (targetDate < today && targetDate.getDate() !== today.getDate())
     ) {
+      // alert("You cannot drop the event on this date. Please choose a valid date.");
+
       e.preventDefault();
     } else {
       e.preventDefault();
@@ -414,7 +416,7 @@ export default function Calendar() {
                               </div>
                               <span className="flex items-center">•</span>
                               <div className="text-[#0a1932] text-[12px] leading-[14px] lg:text-[9px] lg:leading-[10px] font-semibold font-fredoka">
-                                {event.themeName}
+                                {/* {event.themeName} */}
                                 Tag 2
                               </div>
                             </div>

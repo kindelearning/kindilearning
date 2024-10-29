@@ -40,7 +40,7 @@ const Footer = () => {
                       <a
                         key={linkIndex}
                         href={link.href}
-                        className="text-[#BABABA] w-[max-content] text-[18px] font-normal font-fredoka "
+                        className="text-[#BABABA] hover:text-white w-[max-content] text-[18px] font-normal font-fredoka "
                       >
                         {link.label}
                       </a>
