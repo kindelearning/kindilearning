@@ -7,7 +7,6 @@ import {
   Milestone,
   ProfessionalThumb,
   ProfileDP,
-  ProfilePlaceHolderOne,
   ProfileProgress,
   progressImage02,
   User,
@@ -337,7 +336,7 @@ const Header = () => {
                 <div className="relative w-full flex justify-center items-center p-[2px] border-2 border-red hover:border-hoverRed rounded-full">
                   <div className="w-full h-full bg-white rounded-full  flex items-center justify-center">
                     <Image
-                      src={profileData.profilePicture?.url || ProfilePlaceHolderOne}
+                      src={profileData.profilePicture?.url}
                       alt="User DP"
                       width={40}
                       height={40}

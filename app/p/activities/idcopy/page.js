@@ -178,23 +178,23 @@ const activityIcons = [
 export default async function ActivityDetailPage({ params }) {
   const { id } = params;
   // console.log("Activity ID:", id);
-  // const { data: session, status } = useSession();
-  // const [profileData, setProfileData] = useState(null);
+  const { data: session, status } = useSession();
+  const [profileData, setProfileData] = useState(null);
 
-  // const fetchUserData = async (email) => {
-  //   try {
-  //     const data = await client.request(GET_ACCOUNT_BY_EMAIL, { email });
-  //     setProfileData(data.account);
-  //   } catch (error) {
-  //     console.error("Error fetching profile data:", error);
-  //   }
-  // };
-  // useEffect(() => {
-  //   if (session && session.user) {
-  //     fetchUserData(session.user.email);
-  //   }
-  // }, [session]);
-  // console.log("My ProfileData:", profileData);
+  const fetchUserData = async (email) => {
+    try {
+      const data = await client.request(GET_ACCOUNT_BY_EMAIL, { email });
+      setProfileData(data.account);
+    } catch (error) {
+      console.error("Error fetching profile data:", error);
+    }
+  };
+  useEffect(() => {
+    if (session && session.user) {
+      fetchUserData(session.user.email);
+    }
+  }, [session]);
+  console.log("My ProfileData:", profileData);
 
   const activity = await getActivityById(id);
 

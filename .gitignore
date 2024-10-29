@@ -13,9 +13,6 @@
 /.next/
 /out/
 
-# Ignore app/firebase folder
-firebase
-
 # production
 /build
 

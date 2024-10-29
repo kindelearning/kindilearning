@@ -20,7 +20,7 @@ const PopularActivity = async () => {
     return <div>No activities found!</div>;
   }
 
-  // console.log("Home Page Data (in component):", homeData);
+  console.log("Home Page Data (in component):", homeData);
   if (!homeData || !homeData[0]?.popularLearningActivities) {
     return <NotFound />;
   }

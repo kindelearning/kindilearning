@@ -28,6 +28,7 @@ export default function Home() {
         <Header className="sticky" />
         <div className="w-full flex flex-col overflow-hidden gap-0">
           <Hero />
+          {/* <HeroContainer /> */}
           <Slider />
           <PromotionalSection />
           <PromotionalSectionTwo />

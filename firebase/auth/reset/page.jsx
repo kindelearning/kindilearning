@@ -5,37 +5,42 @@ import { Facebook, Google, WithApple } from "@/public/Images";
 import DynamicCard from "@/app/Sections/Global/DynamicCard";
 import { Input } from "@/components/ui/input";
 import { BottomNavigation, Header } from "@/app/Sections";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { sendPasswordResetEmail } from "firebase/auth";
-import { auth } from "@/lib/firebaseConfig";
+import { confirmPasswordReset, getAuth, sendPasswordResetEmail } from "firebase/auth";
 
-export default function ForgotPassword() {
-  const [email, setEmail] = useState("");
+export default function ResetPassword() {
+  const [newPassword, setNewPassword] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false); // New state for loading
+  const [loading, setLoading] = useState(false);
+  const [code, setCode] = useState(null);
   const router = useRouter();
+  const { oobCode } = router.query;
+
+  useEffect(() => {
+    if (oobCode) {
+      setCode(oobCode);
+    }
+  }, [oobCode]);
+
+  if (!code) {
+    return <p>Loading...</p>; // Consider adding a timeout or redirection if the code is not present
+  }
 
   const handleResetPassword = async (e) => {
     e.preventDefault();
-    const actionCodeSettings = {
-      // URL you want to redirect back to after password reset
-      url: "http://localhost:3000/auth/reset",
-      handleCodeInApp: true, // This must be true for the continue URL to work
-    };
+    const auth = getAuth();
     setLoading(true);
-
     try {
-      await sendPasswordResetEmail(auth, email, actionCodeSettings);
-      setMessage("Password reset email sent! Check your inbox.");
-      setError(""); // Clear error if successful
+      await confirmPasswordReset(auth, code, newPassword);
+      setMessage("Password has been reset successfully!");
+      setError("");
     } catch (error) {
       setError(error.message);
-      console.error("Error sending password reset email:", error.message);
+      console.error("Error resetting password:", error.message);
     }
     setLoading(false);
   };
@@ -46,7 +51,7 @@ export default function ForgotPassword() {
       <section className="w-full h-screen bg-[url('/Images/SignUpBG.svg')] bg-[#EAEAF5] items-center justify-center py-0 md:py-4 hidden md:flex md:flex-col  gap-[20px]">
         <div className="claracontainer p-0 w-full bg-[#ffffff] rounded-[20px] flex flex-col md:flex-row md:justify-between items-center justify-center overflow-hidden gap-8">
           {/* column 1 - The Animated Section */}
-          <div className="md:flex md:flex-col lg:w-[50%] hidden gap-4 justify-center items-center px-4 w-full">
+          <div className="md:flex md:flex-col hidden gap-4 justify-center items-center px-4 w-full">
             <div className="text-[#0a1932] clarabodyTwo text-center ">
               Reset your Password
             </div>
@@ -55,18 +60,18 @@ export default function ForgotPassword() {
               className="flex flex-col w-full px-8 justify-center items-center gap-4"
             >
               <Input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Email"
+                type="password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
                 required
+                placeholder="Enter New Password"
               />
               <Button
                 disabled={loading}
                 className="clarabutton hover:bg-hoverRed w-full bg-red"
                 type="submit"
               >
-                {loading ? "Submitting Request..." : "Reset Now"}{" "}
+                {loading ? "Submitting Request..." : "Reset Password"}{" "}
               </Button>
               {error && <p style={{ color: "red" }}>{error}</p>}
               {message && <p style={{ color: "green" }}>{message}</p>}
@@ -117,8 +122,8 @@ export default function ForgotPassword() {
       {/* Mobile Screen */}
       <section className="flex flex-col bg-[#f5f5f5] w-full overflow-y-hidden md:hidden">
         <Header />
-        <div className="flex claracontainer px-4 w-full flex-col h-[90vh]  py-12">
-          <div className="text-[#0a1932] text-2xl font-semibold font-fredoka leading-loose">
+        <div className="flex claracontainer px-4 w-full flex-col h-[90vh] py-12">
+          <div className="text-[#0a1932] clarabodyTwo font-semibold font-fredoka leading-loose">
             Reset your Password
           </div>
           <form
@@ -126,18 +131,18 @@ export default function ForgotPassword() {
             className="flex flex-col w-full justify-center items-center gap-4"
           >
             <Input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Email"
+              type="password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
               required
+              placeholder="Enter New Password"
             />
             <Button
               disabled={loading}
               className="clarabutton hover:bg-hoverRed w-full bg-red"
               type="submit"
             >
-              {loading ? "Submitting Request..." : "Reset Now"}{" "}
+              {loading ? "Submitting Request..." : "Reset Password"}{" "}
             </Button>
             {error && <p style={{ color: "red" }}>{error}</p>}
             {message && <p style={{ color: "green" }}>{message}</p>}

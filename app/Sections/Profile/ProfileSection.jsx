@@ -878,7 +878,7 @@ export default async function ProfileSection() {
           </div>
           {/* Quick Navigation for the Page */}
           <div className="claracontainer px-0 w-full flex flex-row justify-start overflow-x-scroll scrollbar-hidden items-start overflow-hidden gap-2">
-            <Link href="/profile/milestone">
+            <Link target="_blank" href="/profile/milestone">
               <BadgeSection
                 icon={Milestone}
                 backgroundColor="#3F3D91"
@@ -886,7 +886,7 @@ export default async function ProfileSection() {
                 title="Milestone"
               />
             </Link>
-            <Link href="/profile/progress">
+            <Link target="_blank" href="/profile/progress">
               <BadgeSection
                 icon={ProfileProgress}
                 title="Progress"
@@ -894,7 +894,7 @@ export default async function ProfileSection() {
                 borderColor="#f2c99b"
               />
             </Link>
-            <Link href="/profile/achievements">
+            <Link target="_blank" href="/profile/achievements">
               <BadgeSection
                 icon={Achievement}
                 title="Achievement"

@@ -36,6 +36,19 @@ const client = new GraphQLClient(HYGRAPH_ENDPOINT, {
   },
 });
 
+// const GET_ACCOUNT_BY_EMAIL = gql`
+//   query GetAccountByEmail($email: String!) {
+//     account(where: { email: $email }) {
+//       name
+//       username
+//       email
+//       profilePicture {
+//         url
+//       }
+//       isVerified
+//     }
+//   }
+// `;
 const GET_ACCOUNT_BY_EMAIL = gql`
   query GetAccountByEmail($email: String!) {
     account(where: { email: $email }) {
@@ -50,7 +63,6 @@ const GET_ACCOUNT_BY_EMAIL = gql`
     }
   }
 `;
-
 
 const ProfileRoute = () => {
   const [currentIndex, setCurrentIndex] = useState(0); // State to track the current index
@@ -428,6 +440,7 @@ export default function MileStone() {
     <>
       <section className="w-full pb-24 h-full bg-[#EAEAF5] items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">
         <div className="claracontainer items-center justify-center p-4 md:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-8">
+          {/* <UserImages /> */}
           <div className="flex w-full flex-col justify-center items-center">
             <div className="flex w-full h-[160px] flex-row justify-center gap-0 items-center relative">
               <Image
@@ -468,12 +481,7 @@ export default function MileStone() {
               </div>
             )}
           </div>
-
-          {/* {profileData ? (
-            <CompletedMilestones completedUserId={profileData.id} />
-          ) : (
-            <p>Id Not Found</p>
-          )} */}
+          {/* <UserProfile /> */}
           <ProfileRoute />
           <DisplayAllMileStone />
         </div>

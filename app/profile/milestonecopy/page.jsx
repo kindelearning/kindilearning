@@ -43,7 +43,6 @@ const client = new GraphQLClient(HYGRAPH_ENDPOINT, {
 const GET_ACCOUNT_BY_EMAIL = gql`
   query GetAccountByEmail($email: String!) {
     account(where: { email: $email }) {
-      id
       name
       username
       email
@@ -54,63 +53,6 @@ const GET_ACCOUNT_BY_EMAIL = gql`
     }
   }
 `;
-
-
-// const GET_COMPLETED_MILESTONES = gql`
-//   query GetCompletedMilestones($userId: ID!) {
-//   account(where: { id: $userId }) {
-//     id
-//     name
-//     milestoneCompleted {
-//       id
-//       title
-//       description
-//       thumbnail {
-//         url
-//       }
-//     }
-//   }
-// }
-
-// `;
-
-// const CompletedMilestones = ({ completedUserId }) => {
-//   const [milestones, setMilestones] = useState([]);
-
-//   console.log("Completed Milestones:", milestones);
-
-//   useEffect(() => {
-//     const fetchMilestones = async () => {
-//       try {
-//         const data = await client.request(GET_COMPLETED_MILESTONES, { userId });
-//         setMilestones(data.account.milestoneCompleted);
-//         console.log('Milestone Data:', data);
-//       } catch (error) {
-//         console.error("Error fetching completed milestones:", error);
-//       }
-//     };
-
-//     fetchMilestones();
-//   }, [completedUserId]);
-
-//   if (loading) {
-//     return <p>Loading milestones...</p>;
-//   }
-
-//   if (error) {
-//     return <p>{error}</p>;
-//   }
-
-//   return (
-//     <div className="completed-milestones">
-//       {milestones.map((milestone) => (
-//         <div key={milestone.id} className="milestone-item">
-//           <h3>{milestone.id}</h3>
-//         </div>
-//       ))}
-//     </div>
-//   );
-// };
 
 const ProfileRoute = () => {
   const [currentIndex, setCurrentIndex] = useState(0); // State to track the current index

@@ -2,15 +2,14 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Google, WithApple } from "@/public/Images";
+import { Facebook, Google, WithApple } from "@/public/Images";
 import DynamicCard from "@/app/Sections/Global/DynamicCard";
 import { Input } from "@/components/ui/input";
 import { BottomNavigation, Header } from "@/app/Sections";
 import { useState } from "react";
+import { hygraphClient } from "@/lib/hygraph";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { signUpWithEmail } from "@/lib/auth";
-import { signInWithGoogle } from "@/lib/auth";
 
 // queries/createUser.js
 export const CREATE_USER_MUTATION = `
@@ -25,36 +24,32 @@ export const CREATE_USER_MUTATION = `
 export default function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
-  const [username, setUsername] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false); // New state for loading
+
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
 
-  // Signup with Email
-  const handleSignUp = async (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    setError("");
+    setLoading(true); // Set loading to true when submitting starts
+    
 
     try {
-      await signUpWithEmail(email, password, name, username);
-      // Redirect or show success message
-      router.push("/auth/sign-in");
+      const variables = { email, password };
+      const { createAccount } = await hygraphClient.request(
+        CREATE_USER_MUTATION,
+        variables
+      );
+
+      if (createAccount) {
+        // If signup is successful, redirect to login page or homepage
+        router.push("/auth/sign-in"); // Redirect to signin after signup
+      }
     } catch (error) {
-      setError(error.message);
-    }
-    setLoading(false);
-  };
+      setLoading(false); // Set loading to false if there's an error
 
-  // Signup with Google
-  const handleGoogleSignIn = async () => {
-    setError(""); // Reset error state
-    try {
-      await signInWithGoogle();
-      router.push("/auth/sign-in"); // Redirect to home or desired page
-    } catch (err) {
-      setError("Failed to sign in with Google: " + err.message);
+      console.error("GraphQL error:", error.response?.errors || error.message);
+      setError("Signup failed. Try again.");
     }
   };
 
@@ -69,29 +64,22 @@ export default function Signup() {
               Sign up
             </div>
             <form
-              onSubmit={handleSignUp}
+              onSubmit={handleSignup}
               className="flex flex-col w-full px-8 justify-center items-center gap-4"
             >
               <Input
-                type="text"
-                placeholder="Name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-              />
-              <Input
                 type="email"
-                placeholder="Email"
                 value={email}
                 required
                 onChange={(e) => setEmail(e.target.value)}
+                placeholder="Email"
               />
 
               <Input
                 type="password"
-                placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                placeholder="Password"
                 required
               />
               <Button
@@ -110,9 +98,8 @@ export default function Signup() {
               </div>
               <div className="flex gap-2 items-center justify-center w-full">
                 <Image alt="Kindi" className="cursor-pointer" src={WithApple} />
-                <button onClick={handleGoogleSignIn}>
-                  <Image alt="Kindi" className="cursor-pointer" src={Google} />
-                </button>
+                <Image alt="Kindi" className="cursor-pointer" src={Google} />
+                <Image alt="Kindi" className="cursor-pointer" src={Facebook} />
               </div>
             </div>
             <div className="w-[max-content] justify-end items-start text-center">
@@ -143,37 +130,30 @@ export default function Signup() {
             Sign up
           </div>
           <form
-            onSubmit={handleSignUp}
+            onSubmit={handleSignup}
             className="flex flex-col w-full justify-center items-center gap-4"
           >
             <Input
-              type="text"
-              placeholder="Name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
-            <Input
               type="email"
-              placeholder="Email"
               value={email}
-              required
               onChange={(e) => setEmail(e.target.value)}
+              placeholder="Email"
+              required
             />
             <Input
               type="password"
-              placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              placeholder="Password"
               required
             />
             <Button
-              disabled={loading}
-              className="clarabutton hover:bg-hoverRed w-full bg-red"
-              type="submit"
-            >
-              {loading ? "Registering..." : "Sign Up"}{" "}
-            </Button>
+                disabled={loading}
+                className="clarabutton hover:bg-hoverRed w-full bg-red"
+                type="submit"
+              >
+                {loading ? "Registering..." : "Sign Up"}{" "}
+              </Button>
             {error && <p style={{ color: "red" }}>{error}</p>}
           </form>
         </div>

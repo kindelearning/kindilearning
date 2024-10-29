@@ -1,9 +1,10 @@
 "use client";
 import { Accordian } from "@/app/Widgets";
 import { Button } from "@/components/ui/button";
-import { GraphQLClient,  gql } from "graphql-request";
+import { GraphQLClient, gql } from "graphql-request";
 import {
   ActivityBlack,
+  CompletedMark,
   KidBlack,
   Print,
   SpeechLanguageActivity,
@@ -22,11 +23,12 @@ import Image from "next/image";
 import NotFound from "@/app/not-found";
 import { ProductImages } from "@/app/shop";
 import { getActivityById } from "@/lib/hygraph";
-
-import ActivityCompleteButton from "../ActivityCompleteButton";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 
+/**
+ * @Main_account_Credentials
+ */
 const HYGRAPH_ENDPOINT =
   "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";
 const HYGRAPH_TOKEN =
@@ -42,10 +44,90 @@ const GET_ACCOUNT_BY_EMAIL = gql`
   query GetAccountByEmail($email: String!) {
     account(where: { email: $email }) {
       id
+      name
+      username
       email
+      profilePicture {
+        url
+      }
+      isVerified
     }
   }
 `;
+
+const ActivityCompleteButton = ({ activityId, userId }) => {
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+
+  const handleActivityCompletion = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch("/api/mark-activity-completed", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId, activityId }),
+      });
+
+      console.log("esponse: ", response);
+      if (response.ok) {
+        setSuccess(true);
+      } else {
+        console.error("Failed to mark activity as complete");
+      }
+    } catch (error) {
+      console.error("Error completing activity:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  return (
+    <Button
+      className={`rounded-2xl w-full flex flex-row gap-1 font-fredoka text-white shadow border-2 border-white ${
+        loading
+          ? "opacity-50 cursor-not-allowed bg-red"
+          : success
+          ? "bg-purple hover:bg-purple"
+          : "bg-red hover:bg-red-600"
+      }`}
+      onClick={handleActivityCompletion}
+      disabled={loading || success}
+    >
+      <Image alt="Kindi" className="flex lg:hidden" src={CompletedMark} />
+
+      {loading ? (
+        <span className="flex items-center">
+          <svg
+            className="animate-spin h-5 w-5 mr-2 text-white"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            />
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8v2a6 6 0 00-6 6H4z"
+            />
+          </svg>
+          Loading...
+        </span>
+      ) : success ? (
+        "Activity Completed"
+      ) : (
+        "Mark as Completed"
+      )}
+    </Button>
+  );
+};
 
 const ActivityAttribute = ({
   title = " Event Timeline",
@@ -97,21 +179,9 @@ const activityIcons = [
 ];
 
 export default async function ActivityDetailPage({ params }) {
-  const { data: session, status } = useSession();
-  const [activity, setActivity] = useState(null);
-  const [profileData, setProfileData] = useState(null);
   const { id } = params;
-
-  // console.log(profileData);
-  useEffect(() => {
-    // Fetch activity data
-    const fetchActivity = async () => {
-      const data = await getActivityById(id);
-      setActivity(data);
-    };
-
-    fetchActivity();
-  }, [id]);
+  const { data: session, status } = useSession();
+  const [profileData, setProfileData] = useState(null);
 
   useEffect(() => {
     if (session && session.user) {
@@ -122,19 +192,14 @@ export default async function ActivityDetailPage({ params }) {
   const fetchUserData = async (email) => {
     try {
       const data = await client.request(GET_ACCOUNT_BY_EMAIL, { email });
-      console.log("GraphQL response:", data);
-      if (data && data.account) {
-        setProfileData(data.account);
-      } else {
-        console.warn("No account data found for this email:", email);
-        setProfileData(null);
-      }
+      setProfileData(data.account);
     } catch (error) {
       console.error("Error fetching profile data:", error);
-      setProfileData(null);
     }
   };
-  
+  console.log("profileData", profileData);
+
+  const activity = await getActivityById(id);
 
   if (!activity) {
     return (
@@ -284,14 +349,13 @@ export default async function ActivityDetailPage({ params }) {
                 <div className="text-[#3f3a64] text-base font-semibold font-montserrat uppercase leading-[19px]">
                   Mark Activity as Complete{" "}
                 </div>
-                <ActivityCompleteButton
-                  activityId={id}
-                  userId="cm25lil0t0zvz07pfuuizj473"
-                />
-                {/* {profileData ? (
-                ) : (
-                  <p>Null</p>
-                )} */}
+                {profileData ? (
+                  <ActivityCompleteButton
+                    activityId={id}
+                    // userId="cm25lil0t0zvz07pfuuizj473"
+                    userId={profileData.id}
+                  />
+                ) : null}
               </div>
             </div>
           </div>
@@ -310,6 +374,10 @@ export default async function ActivityDetailPage({ params }) {
               activityId={id}
               userId="cm25lil0t0zvz07pfuuizj473"
             />
+            {/* <Button className="flex bg-red gap-[4px] py-2 text-center text-white text-xs font-semibold font-fredoka rounded-2xl shadow border-2 border-white flex-row justify-center items-center w-full">
+              <Image alt="Kindi" src={CompletedMark} />
+              Mark as Complete
+            </Button> */}
           </div>
         </div>{" "}
       </section>

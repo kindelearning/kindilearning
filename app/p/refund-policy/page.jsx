@@ -4,7 +4,7 @@ import React from "react";
 
 const Page = async () => {
   const standardPages = await getStandardPagesContent();
-  // console.log("Standard Pages Content: ", standardPages);
+  console.log("Standard Pages Content: ", standardPages);
   if (
     !standardPages ||
     !standardPages.refundPolicy ||

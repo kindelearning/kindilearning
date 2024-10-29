@@ -1,5 +1,5 @@
 // pages/api/mark-milestone-completed.js
-import { gql,GraphQLClient, request as graphqlRequest } from "graphql-request";
+import { gql, GraphQLClient, request as graphqlRequest } from "graphql-request";
 
 const HYGRAPH_ENDPOINT =
   "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";

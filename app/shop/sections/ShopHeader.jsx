@@ -1,6 +1,6 @@
 "use client";
 
-import { Achievement, Logo, Milestone, ProfilePlaceHolderOne, progressImage02 } from "@/public/Images";
+import { Achievement, Logo, Milestone, progressImage02 } from "@/public/Images";
 import Image from "next/image";
 import { NavMenu } from "../../constant/menu";
 import { Button } from "@/components/ui/button";
@@ -324,7 +324,7 @@ const ShopHeader = () => {
                 <div className="relative w-full flex justify-center items-center p-[2px] border-2 border-red hover:border-hoverRed rounded-full">
                   <div className="w-full h-full bg-white rounded-full  flex items-center justify-center">
                     <Image
-                      src={profileData.profilePicture?.url || ProfilePlaceHolderOne}
+                      src={profileData.profilePicture?.url}
                       alt="User DP"
                       width={40}
                       height={40}
