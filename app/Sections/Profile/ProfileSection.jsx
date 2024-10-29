@@ -284,7 +284,7 @@ const ConnectAccountForm = ({ userId }) => {
         required
       />
       {/* <Button type="submit">Connect Partner</Button> */}
-      <Button type="submit" disabled={isLoading}>
+      <Button className="clarabutton bg-red hover:bg-hoverRed" type="submit" disabled={isLoading}>
         {isLoading ? "Submitting..." : "Connect Partner"}
       </Button>
       {message && <p>{message}</p>}
@@ -531,7 +531,7 @@ const PartnerList = ({ userId }) => {
                 </div>
               </DialogHeader>
               <DialogDescription className="flex w-full px-4 claracontainer flex-col justify-start items-center">
-                <div className="flex flex-col md:flex-row px-2 md:px-6 lg:px-24 max-w-[800px] justify-center items-start claracontainer gap-4">
+                <div className="flex flex-col md:flex-row px-2 md:px-6 max-w-[1000px] justify-center items-start claracontainer gap-4">
                   <div className="flex w-full max-w-[20%]">
                     <Image
                       alt="Kindi"
@@ -1010,7 +1010,7 @@ export default async function ProfileSection() {
                   </div>
                 </DialogHeader>
                 <DialogDescription className="flex w-full px-4 claracontainer flex-col justify-start items-center">
-                  <div className="flex flex-col md:flex-row px-2 md:px-6 lg:px-24 max-w-[800px] justify-center items-start claracontainer gap-4">
+                  <div className="flex flex-col md:flex-row px-2 md:px-6  max-w-[1000px] justify-center items-start claracontainer gap-4">
                     <div className="flex w-full max-w-[20%]">
                       <Image
                         alt="Kindi"
