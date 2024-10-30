@@ -12,6 +12,7 @@ import {
 } from "@/public/Images";
 import Image from "next/image";
 import { useRef, useState } from "react";
+import { ThreeDGallery } from ".";
 
 const InternalChip = ({
   image,
@@ -30,6 +31,7 @@ const InternalChip = ({
     </div>
   );
 };
+
 
 const Gallery = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -204,6 +206,7 @@ export default async function ParentWithKindi() {
               />
             </div>
           </div>
+          {/* <ThreeDGallery /> */}
           <Gallery />
         </div>
       </section>
