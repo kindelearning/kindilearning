@@ -52,7 +52,11 @@ import Loading from "@/app/loading";
 import SignOutButton from "@/app/auth/signout/page";
 import Head from "next/head";
 import { Plus } from "lucide-react";
-import { addPaymentMethodToUser, createPaymentMethod } from "@/lib/hygraph";
+import {
+  addPaymentMethodToUser,
+  createPaymentMethod,
+  linkPaymentMethodToAccount,
+} from "@/lib/hygraph";
 
 const HYGRAPH_ENDPOINT =
   "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";
@@ -284,7 +288,11 @@ const ConnectAccountForm = ({ userId }) => {
         required
       />
       {/* <Button type="submit">Connect Partner</Button> */}
-      <Button className="clarabutton bg-red hover:bg-hoverRed" type="submit" disabled={isLoading}>
+      <Button
+        className="clarabutton bg-red hover:bg-hoverRed"
+        type="submit"
+        disabled={isLoading}
+      >
         {isLoading ? "Submitting..." : "Connect Partner"}
       </Button>
       {message && <p>{message}</p>}
@@ -296,78 +304,95 @@ const ConnectAccountForm = ({ userId }) => {
  * @Main_Account
  * @returns Logic for Pref Payment Method and Form for adding more payment method
  */
-const AddPaymentMethodForm = ({ onSave }) => {
-  const [name, setName] = useState("");
-  const [number, setNumber] = useState("");
-  const [expiryDate, setExpiryDate] = useState("");
-  const [cvv, setCvv] = useState("");
-  const [accountId, setAccountId] = useState("");
-  const [message, setMessage] = useState("");
+const AddPaymentMethodForm = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    cvv: "",
+    number: "",
+    expiryDate: "",
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState("");
 
-  const handleAddPaymentMethod = async () => {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Prevent the default form submission
+    setLoading(true);
+    setError(null);
+
     try {
-      // Create the payment method in Hygraph
-      const newPaymentMethod = await createPaymentMethod(
-        name,
-        number,
-        expiryDate,
-        cvv
-      );
+      const response = await fetch("/api/pymentsmethod", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
-      // Get the ID of the created payment method
-      const paymentMethodId = newPaymentMethod.id;
-
-      // Connect it to the user account
-      await addPaymentMethodToUser(accountId, paymentMethodId);
-
-      setMessage("Payment method added successfully!");
-
-      // Reset fields
-      setName("");
-      setNumber("");
-      setExpiryDate("");
-      setCvv("");
+      const data = await response.json();
+      if (data.success) {
+        setSuccessMessage("Payment method added successfully!");
+        setFormData({ name: "", number: "", cvv: "", expiryDate: "" }); // Reset form
+      } else {
+        setError("Failed to add payment method. Please try again.");
+      }
     } catch (error) {
-      console.error("Error:", error);
-      setMessage("Failed to add payment method");
+      console.error("Error submitting payment method form:", error);
+      setError("Error submitting payment method form.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div>
-      <input
-        type="text"
-        placeholder="Card Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="Card Number"
-        value={number}
-        onChange={(e) => setNumber(e.target.value)}
-      />
-      <input
-        type="date"
-        placeholder="Expiry Date"
-        value={expiryDate}
-        onChange={(e) => setExpiryDate(e.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="CVV"
-        value={cvv}
-        onChange={(e) => setCvv(e.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="Account ID"
-        value={accountId}
-        onChange={(e) => setAccountId(e.target.value)}
-      />
-      <button onClick={handleAddPaymentMethod}>Add Payment Method</button>
-      {message && <p>{message}</p>}
-    </div>
+    <>
+      {successMessage && <p>{successMessage}</p>}
+      {error && <p>{error}</p>}
+      <form
+        onSubmit={handleSubmit}
+        className="flex justify-center items-center flex-col gap-4 w-full"
+      >
+        <input
+          type="text"
+          name="name" // Added name attribute for binding
+          placeholder="Card Name"
+          value={formData.name}
+          onChange={handleChange}
+        />
+        <input
+          type="text"
+          name="number" // Added name attribute for binding
+          placeholder="Card Number"
+          value={formData.number}
+          onChange={handleChange}
+        />
+        <input
+          type="date"
+          name="expiryDate" // Added name attribute for binding
+          placeholder="Expiry Date"
+          value={formData.expiryDate}
+          onChange={handleChange}
+        />
+        <input
+          type="text"
+          name="cvv" // Added name attribute for binding
+          placeholder="CVV"
+          value={formData.cvv}
+          onChange={handleChange}
+        />
+        <button type="submit" disabled={loading}>
+          {loading ? "Saving..." : "Save Payment Method"}
+        </button>
+      </form>
+    </>
   );
 };
 
@@ -749,7 +774,6 @@ export default async function ProfileSection() {
     }
   };
   console.log("Profile Data before:", profileData);
-  
 
   if (status === "loading") {
     return (
@@ -788,6 +812,12 @@ export default async function ProfileSection() {
           </div>
         </div>
         <div className="claracontainer bg-[#F5F5F5] md:bg-[#EAEAF5] -mt-4 rounded-t-[12px] z-2 lg:m-12 px-4 py-6 rounded-xl md:px-2 lg:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-[20px]">
+          {/* Payment Form */}
+          {/* {profileData ? (
+            <AddPaymentMethodForm />
+          ) : (
+            <p>user id not find</p>
+          )} */}
           {/* Top Profile Card */}
           <div className="w-full flex bg-[white] rounded-[24px] p-2 md:p-4 justify-start items-start gap-[4px] lg:gap-[12px] lg:items-center">
             <div className="w-fit lg:max-w-[160px] lg:w-full items-center flex justify-start">
@@ -796,7 +826,10 @@ export default async function ProfileSection() {
                   <div className="relative w-20 h-20 lg:w-36 lg:h-36 p-1 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600">
                     <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
                       <Image
-                        src={profileData.profilePicture?.url || ProfilePlaceHolderOne}
+                        src={
+                          profileData.profilePicture?.url ||
+                          ProfilePlaceHolderOne
+                        }
                         alt="User DP"
                         width={100}
                         height={100}
@@ -813,6 +846,7 @@ export default async function ProfileSection() {
                 />
               )}
             </div>
+
             <div className="w-full gap-4 flex flex-col justify-center">
               <div className="flex flex-row justify-between items-start w-full">
                 {profileData ? (
