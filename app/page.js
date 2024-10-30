@@ -13,17 +13,14 @@ import {
   PromotionalSectionTwo,
   Slider,
 } from "./Sections";
-import { homeData } from "./data/Home/page";
 
 export default async function Home() {
-  const data = await homeData;
-
   return (
     <>
       <section className="w-full flex flex-col gap-0 justify-center items-center">
         <Header className="sticky" />
         <div className="w-full flex flex-col overflow-hidden gap-0">
-          <Hero homeData={data} />
+          <Hero />
           {/* <HeroContainer /> */}
           <Slider />
           <PromotionalSection />
