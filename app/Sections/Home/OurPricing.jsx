@@ -87,7 +87,7 @@ const PricingCard = ({
   toggleAccordion, // Receive the toggle function
 }) => {
   return (
-    <div className="w-full min-w-[300px] max-w-[360px] h-auto bg-[#ffffff] rounded-[32px] items-start justify-center flex flex-col gap-[20px] ">
+    <div className="w-full min-w-[300px] md:min-w-[340px] lg:min-w-[300px] max-w-[360px] h-auto bg-[#ffffff] rounded-[32px] items-start justify-center flex flex-col gap-[20px] ">
       <div className="flex w-full rounded-t-[32px] h-full min-h-[260px] max-h-[260px] object-cover overflow-clip">
         <Image
           src={image || PricingThumb}
@@ -254,7 +254,7 @@ const OurPricing = async () => {
         </div>
 
         <div
-          className="scrollable-pricing px-2 lg:px-4 md:px-4 w-full claracontainer gap-4"
+          className="scrollable-pricing px-2 lg:px-4 md:px-2 w-full claracontainer gap-4"
           style={{
             animation: "fadeIn 1s ease-in-out 2.5s",
             animationFillMode: "forwards",

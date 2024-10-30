@@ -30,7 +30,7 @@ const PromotionalSectionTwo = async () => {
   return (
     <>
       <section className="w-full h-auto bg-[#eaeaf5] items-center justify-center py-4 flex flex-col md:flex-row gap-4 transition-all duration-300 animate-fade-in">
-        <div className="claracontainer p-4 py-8 md:py-12 lg:py-20 w-full flex flex-col md:justify-center md:items-center lg:flex-row xl:flex-row overflow-hidden gap-9 animate-slide-up">
+        <div className="claracontainer p-4 py-8 md:px-2 md:py-12 lg:py-20 w-full flex flex-col md:justify-center md:items-center lg:flex-row xl:flex-row overflow-hidden gap-9 animate-slide-up">
           <div className="w-full md:w-[100%] lg:w-[540px] flex justify-start items-start h-auto animate-fade-in">
             <div className="w-full md:w-full flex items-start justify-start flex-col lg:w-[540px] h-auto">
               <video
@@ -38,7 +38,7 @@ const PromotionalSectionTwo = async () => {
                 autoPlay
                 loop
                 muted
-                className="object-cover max-h-[260px] lg:h-[360px] lg:max-h-[400px] rounded-[24px] w-full md:w-full lg:w-[540px] h-full"
+                className="object-cover max-h-[260px] md:min-h-[400px] md:h-[400px] lg:h-[360px] lg:max-h-[400px] rounded-[24px] w-full md:w-full lg:w-[540px] h-full"
               >
                 <source src={videoUrl} type="video/mp4" /> Your browser does not
                 support the video tag.

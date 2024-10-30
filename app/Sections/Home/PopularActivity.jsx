@@ -64,13 +64,13 @@ const PopularActivity = async () => {
                       </div>
                       <div className="w-full p-2 flex-col justify-start lg:p-4 items-start flex gap-2 md:gap-2 lg:gap-4">
                         <div className="flex-col w-full gap-[6px] justify-start items-start">
-                          <div className="text-[#0a1932] text-[16px] md:text-xl font-semibold font-fredoka leading-[20px]">
+                          <div className="text-[#0a1932] text-[16px] lg:text-xl font-semibold font-fredoka leading-[20px]">
                             {activity.title.length > 25
                               ? `${activity.title.slice(0, 20)}...`
                               : activity.title}
                           </div>
                           <div className="justify-start w-full items-center gap-1 lg:gap-2 inline-flex">
-                            <div className="text-[#0a1932] min-w-[max-content] p-0 lg:pl-2 md:text-[18px] md:leading-[22px] font-[500] font-fredoka text-[10px] lg:text-[16px] leading-none">
+                            <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-6 flex px-4 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
                               {activity.setUpTime}
                             </div>
                             <ul className="text-[#0a1932] justify-between items-center gap-6 flex px-4 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">

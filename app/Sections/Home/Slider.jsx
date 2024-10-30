@@ -159,7 +159,7 @@ const Slider = () => {
         >
           {/* col 1 */}
           <div
-            className={`h-auto w-full flex-col px-4  justify-start items-start gap-6 md:gap-8 lg:gap-10 xl:gap-12 inline-flex ${
+            className={`h-auto w-full flex-col px-4 md:px-2 lg:px-4 justify-start items-start gap-6 md:gap-8 lg:gap-10 xl:gap-12 inline-flex ${
               loaded ? "animate-slide-up" : ""
             }`}
           >
