@@ -68,7 +68,7 @@ export default function Schedule() {
   return (
     <>
       <section className="w-full h-auto bg-[#EAEAF5] pb-24 items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">
-        <div className="claracontainer p-4  w-full flex flex-col overflow-hidden gap-8">
+        <div className="claracontainer p-4 md:px-0 md:py-4 lg:p-4 w-full flex flex-col overflow-hidden gap-8">
           {session ? (
             <>
               <div className="claracontainer w-full flex flex-col overflow-hidden gap-2">
