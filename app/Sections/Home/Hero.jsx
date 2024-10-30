@@ -2,6 +2,7 @@
 
 import NotFound from "@/app/not-found";
 import { Button } from "@/components/ui/button";
+import { getHomeData } from "@/lib/hygraph";
 import {
   HomeHero,
   HomeHeroFour,
@@ -50,9 +51,9 @@ const ImageSlider = () => {
   );
 };
 
-export default function Hero({ homeData }) {
+export default async function Hero() {
   const { data: session, status } = useSession();
-  // const homeData = await getHomeData();
+  const homeData = await getHomeData();
   if (!homeData || !homeData[0]?.hero) {
     return <NotFound />;
   }
