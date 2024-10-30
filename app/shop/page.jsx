@@ -69,14 +69,15 @@ const ProductCard = ({ image, title, price }) => {
   }, []);
 
   return (
-    <div className="flex max-w-[300px] min-w-[240px] w-full flex-col rounded-[24px] items-center gap-4 bg-white  hover:shadow-md">
+    // <div className="flex max-w-[300px] min-w-[240px] w-full flex-col rounded-[24px] items-center gap-4 bg-white  hover:shadow-md">
+    <div className="flex min-w-[170px] max-w-[176px] md:min-w-full lg:min-w-full lg:w-full w-full flex-col rounded-[12px] items-center gap-2 lg:gap-4 bg-white hover:shadow-md">
       <div className="flex rounded-t-[24px] overflow-clip w-full">
         <Image
           src={image}
           alt={title}
           width={200}
           height={200}
-          className="w-full hover:scale-110 duration-300 h-[200px] md:h-[220px] rounded-t-[24px] object-cover"
+          className="w-full hover:scale-110 duration-300 h-[160px] md:h-[260px] lg:h-[260px] rounded-t-[12px] object-cover"
         />
       </div>
       <div className="claracontainer flex flex-col justify-start items-center w-full gap-2">
@@ -119,14 +120,14 @@ const MobileProductCard = ({ image, title, price }) => {
   }, []);
 
   return (
-    <div className="flex lg:max-w-[300px] min-w-[170px] max-w-[176px] lg:min-w-[240px] w-full flex-col rounded-[12px] items-center gap-2 lg:gap-4 bg-white hover:shadow-md">
+    <div className="flex min-w-[170px] max-w-[176px] md:min-w-full lg:min-w-full lg:w-full w-full flex-col rounded-[12px] items-center gap-2 lg:gap-4 bg-white hover:shadow-md">
       <div className="flex rounded-t-[12px] overflow-clip w-full">
         <Image
           src={image}
           alt={title}
           width={200}
           height={200}
-          className="w-full hover:scale-110 duration-300 h-[160px] md:h-[220px] rounded-t-[12px] object-cover"
+          className="w-full hover:scale-110 duration-300 h-[160px] md:h-[260px] lg:h-[260px] rounded-t-[12px] object-cover"
         />
       </div>
       <div className="claracontainer flex flex-col justify-start min-h-[100px] items-start  w-full gap-2">
@@ -910,7 +911,7 @@ export default async function ShopPage() {
                     <div className="w-full lg:grid lg:grid-cols-3 pl-4 md:pl-2 lg:px-0 flex flex-row overflow-x-scroll scrollbar-hidden gap-2">
                       {filteredProducts.map((product) => (
                         <div key={product.id} className="border">
-                          <Link href={`/shop/${product.id}`} >
+                          <Link href={`/shop/${product.id}`}>
                             <ProductCard
                               image={product.thumbnail.url}
                               title={product.title}
@@ -942,7 +943,7 @@ export default async function ShopPage() {
                   <div className="w-full lg:grid lg:grid-cols-3 pl-4 md:pl-2 lg:px-0 flex flex-row overflow-x-scroll scrollbar-hidden gap-2">
                     {sortedProducts.map((product) => (
                       <div key={product.id} className="border">
-                        <Link href={`/shop/${product.id}`} >
+                        <Link href={`/shop/${product.id}`}>
                           <ProductCard
                             image={product.thumbnail.url}
                             title={product.title}
@@ -960,11 +961,11 @@ export default async function ShopPage() {
                     All Products
                   </span>
                 </div>
-                <div className="w-full lg:grid lg:grid-cols-3 px-4 md:px-2 lg:px-0 grid grid-cols-2 overflow-hidden gap-2">
+                <div className="w-full lg:grid lg:grid-cols-3 px-4 md:px-0 lg:px-0 grid grid-cols-2 overflow-hidden gap-2">
                   {/* {sortedProducts.map((product) => ( */}
                   {products.map((product) => (
                     <div key={product.id} className="border">
-                      <Link href={`/shop/${product.id}`} >
+                      <Link href={`/shop/${product.id}`}>
                         <MobileProductCard
                           image={product.thumbnail.url || ProductImage}
                           title={product.title}
