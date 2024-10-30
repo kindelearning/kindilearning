@@ -498,8 +498,8 @@ export default async function ActivitiesPage() {
                           >
                             <div className="md:w-full hover:shadow-md duration-200 min-w-[170px] w-[170px] min-h-[250px] h-full bg-white items-start justify-start border rounded-3xl flex flex-col md:flex-row gap-4">
                               <div className="claracontainer w-full flex-col justify-start items-center gap-7 inline-flex">
-                                <div className="w-full max-w-[180px] lg:max-w-full h-auto">
-                                  <div className="flex max-h-[180px] min-h-[150px] h-[150px] lg:min-h-[276px] lg:h-full lg:max-h-[276px] md:max-h-[300px] overflow-clip rounded-t-3xl">
+                                <div className="w-full max-w-[180px] md:min-w-full lg:max-w-full h-auto">
+                                  <div className="flex max-h-[180px] min-h-[150px] h-[150px] md:min-h-[200px] md:h-full lg:min-h-[276px] lg:h-full lg:max-h-[276px] md:max-h-[300px] overflow-clip rounded-t-3xl">
                                     <Image
                                       width={280}
                                       height={250}
@@ -508,7 +508,7 @@ export default async function ActivitiesPage() {
                                       src={activity.thumbnail.url}
                                     />
                                   </div>
-                                  <div className="w-full p-2 flex-col justify-start lg:p-4 items-start flex gap-2 md:gap-2 lg:gap-4">
+                                  <div className="w-full p-2 md:p-4  flex-col justify-start lg:p-4 items-start flex gap-2 md:gap-2 lg:gap-4">
                                     <div className="flex-col w-full gap-[6px] justify-start items-start">
                                       <div className="text-[#0a1932] text-[16px] md:text-xl font-semibold font-fredoka leading-[20px]">
                                         {/* {activity.title} */}
@@ -517,7 +517,7 @@ export default async function ActivitiesPage() {
                                           : activity.title}
                                       </div>
                                       <div className="justify-start w-full items-center gap-1 lg:gap-2 inline-flex">
-                                        <div className="text-[#0a1932] min-w-[max-content] p-0 lg:pl-2 md:text-[18px] md:leading-[22px] font-[500] font-fredoka text-[10px] lg:text-[16px] leading-none">
+                                        <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-4 flex px-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
                                           {activity.setUpTime}
                                         </div>
                                         <ul className="text-[#0a1932] justify-between items-center gap-4 flex px-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
@@ -532,24 +532,28 @@ export default async function ActivitiesPage() {
                                       </div>
                                     </div>
                                     <div className="items-center justify-center gap-2 md:gap-4 grid grid-cols-5">
-                                      <Image alt="Kindi" 
-                                        className="w-[20px] h-[24px] lg:w-[48px] lg:h-[48px]"
+                                      <Image
+                                        alt="Kindi"
+                                        className="w-[20px] h-[24px] md:w-[36px] md:h-[36px] lg:w-[48px] lg:h-[48px]"
                                         src={SpeechLanguageActivity}
                                       />
-                                      <Image alt="Kindi" 
-                                        className="w-[20px] h-[24px] lg:w-[48px] lg:h-[48px]"
+                                      <Image
+                                        alt="Kindi"
+                                        className="w-[20px] h-[24px] md:w-[36px] md:h-[36px] lg:w-[48px] lg:h-[48px]"
                                         src={DiscoveringOurWorldActivity}
                                       />
-                                      <Image alt="Kindi" 
-                                        className="w-[20px] h-[24px] lg:w-[48px] lg:h-[48px]"
+                                      <Image
+                                        alt="Kindi"
+                                        className="w-[20px] h-[24px] md:w-[36px] md:h-[36px] lg:w-[48px] lg:h-[48px]"
                                         src={ReadingWritingActivity}
                                       />
-                                      <Image alt="Kindi" 
-                                        className="w-[20px] h-[24px] lg:w-[48px] lg:h-[48px]"
+                                      <Image
+                                        alt="Kindi"
+                                        className="w-[20px] h-[24px] md:w-[36px] md:h-[36px] lg:w-[48px] lg:h-[48px]"
                                         src={ExperimentsMathActivity}
                                       />
                                       <div
-                                        className={`w-[20px] lg:w-[48px] lg:h-[48px] h-[20px] flex lg:rounded-[12px] justify-center items-center bg-[#F6BEBF] rounded-[4px]`}
+                                        className={`w-[20px] lg:w-[48px]  md:w-[36px] md:h-[36px] md:rounded-xl lg:h-[48px] h-[20px] flex lg:rounded-[12px] justify-center items-center bg-[#F6BEBF] rounded-[4px]`}
                                       >
                                         <span className="text-red p-[2px] text-[12px] lg:text-[20px] font-medium font-fredoka">
                                           +1
@@ -582,8 +586,8 @@ export default async function ActivitiesPage() {
                                 >
                                   <div className="md:w-full hover:shadow-md duration-200 min-w-[170px] w-[170px] min-h-[250px] h-full bg-white items-start justify-start border rounded-3xl flex flex-col md:flex-row gap-4">
                                     <div className="claracontainer w-full flex-col justify-start items-center gap-7 inline-flex">
-                                      <div className="w-full max-w-[180px] lg:max-w-full h-auto  ">
-                                        <div className="flex max-h-[180px] min-h-[150px] h-[150px] lg:min-h-[276px] lg:h-full lg:max-h-[276px] md:max-h-[300px] overflow-clip rounded-t-3xl ">
+                                      <div className="w-full max-w-[180px] md:min-w-full lg:max-w-full h-auto">
+                                        <div className="flex max-h-[180px] min-h-[150px] h-[150px] md:min-h-[200px] md:h-full lg:min-h-[276px] lg:h-full lg:max-h-[276px] md:max-h-[300px] overflow-clip rounded-t-3xl">
                                           <Image
                                             width={280}
                                             height={250}
@@ -592,7 +596,7 @@ export default async function ActivitiesPage() {
                                             src={activity.thumbnail.url}
                                           />
                                         </div>
-                                        <div className="w-full p-2 flex-col justify-start lg:p-4 items-start flex gap-2 md:gap-2 lg:gap-4">
+                                        <div className="w-full p-2 md:p-4  flex-col justify-start lg:p-4 items-start flex gap-2 md:gap-2 lg:gap-4">
                                           <div className="flex-col w-full gap-[6px] justify-start items-start">
                                             <div className="text-[#0a1932] text-[16px] md:text-xl font-semibold font-fredoka leading-[20px]">
                                               {/* {activity.title} */}
@@ -604,7 +608,7 @@ export default async function ActivitiesPage() {
                                                 : activity.title}
                                             </div>
                                             <div className="justify-start w-full items-center gap-1 lg:gap-2 inline-flex">
-                                              <div className="text-[#0a1932] min-w-[max-content] p-0 lg:pl-2 md:text-[18px] md:leading-[22px] font-[500] font-fredoka text-[10px] lg:text-[16px] leading-none">
+                                              <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-4 flex px-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
                                                 {activity.setUpTime}
                                               </div>
                                               <ul className="text-[#0a1932] justify-between items-center gap-4 flex px-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
@@ -619,24 +623,28 @@ export default async function ActivitiesPage() {
                                             </div>
                                           </div>
                                           <div className="items-center justify-center gap-2 md:gap-4 grid grid-cols-5">
-                                            <Image alt="Kindi" 
-                                              className="w-[20px] h-[24px] lg:w-[48px] lg:h-[48px]"
+                                            <Image
+                                              alt="Kindi"
+                                              className="w-[20px] h-[24px] md:w-[36px] md:h-[36px] lg:w-[48px] lg:h-[48px]"
                                               src={SpeechLanguageActivity}
                                             />
-                                            <Image alt="Kindi" 
-                                              className="w-[20px] h-[24px] lg:w-[48px] lg:h-[48px]"
+                                            <Image
+                                              alt="Kindi"
+                                              className="w-[20px] h-[24px] md:w-[36px] md:h-[36px] lg:w-[48px] lg:h-[48px]"
                                               src={DiscoveringOurWorldActivity}
                                             />
-                                            <Image alt="Kindi" 
-                                              className="w-[20px] h-[24px] lg:w-[48px] lg:h-[48px]"
+                                            <Image
+                                              alt="Kindi"
+                                              className="w-[20px] h-[24px] md:w-[36px] md:h-[36px] lg:w-[48px] lg:h-[48px]"
                                               src={ReadingWritingActivity}
                                             />
-                                            <Image alt="Kindi" 
-                                              className="w-[20px] h-[24px] lg:w-[48px] lg:h-[48px]"
+                                            <Image
+                                              alt="Kindi"
+                                              className="w-[20px] h-[24px] md:w-[36px] md:h-[36px] lg:w-[48px] lg:h-[48px]"
                                               src={ExperimentsMathActivity}
                                             />
                                             <div
-                                              className={`w-[20px] lg:w-[48px] lg:h-[48px] h-[20px] flex lg:rounded-[12px] justify-center items-center bg-[#F6BEBF] rounded-[4px]`}
+                                              className={`w-[20px] lg:w-[48px]  md:w-[36px] md:h-[36px] md:rounded-xl lg:h-[48px] h-[20px] flex lg:rounded-[12px] justify-center items-center bg-[#F6BEBF] rounded-[4px]`}
                                             >
                                               <span className="text-red p-[2px] text-[12px] lg:text-[20px] font-medium font-fredoka">
                                                 +1
@@ -673,8 +681,8 @@ export default async function ActivitiesPage() {
                         >
                           <div className="md:w-full hover:shadow-md duration-200 min-w-[170px] w-[170px] min-h-[250px] h-full bg-white items-start justify-start border rounded-3xl flex flex-col md:flex-row gap-4">
                             <div className="claracontainer w-full flex-col justify-start items-center gap-7 inline-flex">
-                              <div className="w-full max-w-[180px] lg:max-w-full h-auto  ">
-                                <div className="flex max-h-[180px] min-h-[150px] h-[150px] lg:min-h-[276px] lg:h-full lg:max-h-[276px] md:max-h-[300px] overflow-clip rounded-t-3xl ">
+                              <div className="w-full max-w-[180px] md:min-w-full lg:max-w-full h-auto">
+                                <div className="flex max-h-[180px] min-h-[150px] h-[150px] md:min-h-[200px] md:h-full lg:min-h-[276px] lg:h-full lg:max-h-[276px] md:max-h-[300px] overflow-clip rounded-t-3xl">
                                   <Image
                                     width={280}
                                     height={250}
@@ -683,7 +691,7 @@ export default async function ActivitiesPage() {
                                     src={activity.thumbnail.url}
                                   />
                                 </div>
-                                <div className="w-full p-2 flex-col justify-start lg:p-4 items-start flex gap-2 md:gap-2 lg:gap-4">
+                                <div className="w-full p-2 md:p-4 flex-col justify-start lg:p-4 items-start flex gap-2 md:gap-2 lg:gap-4">
                                   <div className="flex-col w-full gap-[6px] justify-start items-start">
                                     <div className="text-[#0a1932] text-[16px] md:text-xl font-semibold font-fredoka leading-[20px]">
                                       {/* {activity.title} */}
@@ -707,24 +715,28 @@ export default async function ActivitiesPage() {
                                     </div>
                                   </div>
                                   <div className="items-center justify-center gap-2 md:gap-4 grid grid-cols-5">
-                                    <Image alt="Kindi" 
-                                      className="w-[20px] h-[24px] lg:w-[48px] lg:h-[48px]"
+                                    <Image
+                                      alt="Kindi"
+                                      className="w-[20px] h-[24px] md:w-[36px] md:h-[36px] lg:w-[48px] lg:h-[48px]"
                                       src={SpeechLanguageActivity}
                                     />
-                                    <Image alt="Kindi" 
-                                      className="w-[20px] h-[24px] lg:w-[48px] lg:h-[48px]"
+                                    <Image
+                                      alt="Kindi"
+                                      className="w-[20px] h-[24px] md:w-[36px] md:h-[36px] lg:w-[48px] lg:h-[48px]"
                                       src={DiscoveringOurWorldActivity}
                                     />
-                                    <Image alt="Kindi" 
-                                      className="w-[20px] h-[24px] lg:w-[48px] lg:h-[48px]"
+                                    <Image
+                                      alt="Kindi"
+                                      className="w-[20px] h-[24px] md:w-[36px] md:h-[36px] lg:w-[48px] lg:h-[48px]"
                                       src={ReadingWritingActivity}
                                     />
-                                    <Image alt="Kindi" 
-                                      className="w-[20px] h-[24px] lg:w-[48px] lg:h-[48px]"
+                                    <Image
+                                      alt="Kindi"
+                                      className="w-[20px] h-[24px] md:w-[36px] md:h-[36px] lg:w-[48px] lg:h-[48px]"
                                       src={ExperimentsMathActivity}
                                     />
                                     <div
-                                      className={`w-[20px] lg:w-[48px] lg:h-[48px] h-[20px] flex lg:rounded-[12px] justify-center items-center bg-[#F6BEBF] rounded-[4px]`}
+                                      className={`w-[20px] lg:w-[48px]  md:w-[36px] md:h-[36px] md:rounded-xl lg:h-[48px] h-[20px] flex lg:rounded-[12px] justify-center items-center bg-[#F6BEBF] rounded-[4px]`}
                                     >
                                       <span className="text-red p-[2px] text-[12px] lg:text-[20px] font-medium font-fredoka">
                                         +1
