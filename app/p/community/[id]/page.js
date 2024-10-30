@@ -198,7 +198,7 @@ export default async function BlogDetailPage({ params }) {
             className="w-full hover:scale-105 duration-300 lg:max-w-[960px] lg:rounded-xl h-60 md:h-[400px] lg:h-[400px] object-cover"
           />
         </div>
-        <div className="claracontainer p-4 w-full flex flex-col overflow-hidden gap-8">
+        <div className="claracontainer p-4 md:p-2 lg:p-4 w-full flex flex-col overflow-hidden gap-8">
           <div className="w-full mx-auto flex flex-col gap-4 justify-center items-center">
             <div className="flex max-w-4xl w-full mx-auto justify-start items-start">
               <div className="flex w-full justify-between gap-4 items-center">
@@ -249,7 +249,7 @@ export default async function BlogDetailPage({ params }) {
         </div>
         <hr className="border-1 my-3 rounded-full w-full h-[2px] border-[#c7c7c7]" />
 
-        <div className="w-full claracontainer flex flex-col justify-start items-start py-5 px-4 ">
+        <div className="w-full claracontainer  md:p-2 lg:p-4 flex flex-col justify-start items-start py-5 px-4 ">
           <div className="flex flex-col max-w-4xl w-full mx-auto justify-start items-start gap-4">
             <div className="text-[#0a1932] leading-[46px] text-[44px] font-semibold font-fredoka">
               Comments
