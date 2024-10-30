@@ -21,7 +21,7 @@ const Page = () => {
   return (
     <>
       {/* Larger Screens */}
-      <section className="w-full h-screen bg-[url('/Images/SignUpBG.svg')] bg-[#EAEAF5] items-center justify-center py-4 hidden md:flex md:flex-col  gap-[20px]">
+      <section className="w-full h-screen bg-[url('/Images/SignUpBG.svg')] bg-[#EAEAF5] items-center justify-center py-4 hidden lg:flex lg:flex-col  gap-[20px]">
         <div className="claracontainer p-4 md:p-8 xl:p-12 w-full flex flex-col items-center justify-center overflow-hidden gap-8">
           <Image alt="Kindi" src={Logo} className="w-[200px] h-[100px]" />
         </div>
@@ -65,7 +65,7 @@ const Page = () => {
       </section>
 
       {/* Mobile Screen */}
-      <section className="flex flex-col h-screen w-full md:hidden">
+      <section className="flex flex-col h-screen w-full lg:hidden">
         <DynamicCardMobile />
 
         <div className="flex justify-between bottom-0 py-4 gap-2 px-4 h-fit fixed w-full ">

@@ -42,8 +42,8 @@ export default function Signin() {
   return (
     <>
       {/* Larger Screens */}
-      <section className="w-full h-screen bg-[url('/Images/SignUpBG.svg')] bg-[#EAEAF5] items-center justify-center py-0 md:py-4 hidden md:flex md:flex-col  gap-[20px]">
-        <div className="claracontainer p-0 w-full bg-[#ffffff] rounded-[20px] flex flex-col md:flex-row md:justify-between items-center justify-center overflow-hidden gap-8">
+      <section className="w-full h-screen bg-[url('/Images/SignUpBG.svg')] bg-[#EAEAF5] items-center justify-center py-0 md:py-4 hidden lg:flex lg:flex-col  gap-[20px]">
+        <div className="claracontainer p-0 w-full bg-[#ffffff] rounded-[20px] flex flex-col md:hidden lg:flex-row md:justify-between items-center justify-center overflow-hidden gap-8">
           {/* column 1 - The Animated Section */}
           <div className="md:flex md:flex-col hidden gap-4 justify-center items-center px-4 w-full md:w-[50%]">
             <div className="text-[#0a1932] w-[50%] claraheading font-semibold flex flex-col justify-center items-center font-fredoka leading-10">
@@ -108,9 +108,9 @@ export default function Signin() {
       </section>
 
       {/* Mobile Screen */}
-      <section className="flex flex-col bg-[#f5f5f5] w-full overflow-y-hidden md:hidden">
+      <section className="flex flex-col bg-[#f5f5f5] w-full overflow-y-hidden lg:hidden">
         <Header />
-        <div className="flex claracontainer px-4 w-full flex-col h-[90vh]  py-12">
+        <div className="flex claracontainer px-4 w-full flex-col h-[90vh] gap-6 py-12">
           <div className="text-[#0a1932] text-2xl font-semibold font-fredoka leading-loose">
             Login
           </div>
@@ -141,6 +141,17 @@ export default function Signin() {
             </Button>
             {error && <p style={{ color: "red" }}>{error}</p>}
           </form>
+          <div className="w-[max-content] justify-end items-start text-center">
+            <span className="text-[#0a1932] text-sm font-medium font-fredoka leading-tight">
+              Don&apos;t have an account.{" "}
+            </span>
+            <Link
+              href="/auth/sign-up"
+              className="text-red text-sm font-medium font-fredoka leading-tight"
+            >
+              Sign Up
+            </Link>
+          </div>
         </div>
         <BottomNavigation />
       </section>

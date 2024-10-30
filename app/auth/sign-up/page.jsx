@@ -56,7 +56,7 @@ export default function Signup() {
   return (
     <>
       {/* Larger Screens */}
-      <section className="w-full h-screen bg-[url('/Images/SignUpBG.svg')] bg-[#EAEAF5] items-center justify-center py-0 md:py-4 hidden md:flex md:flex-col  gap-[20px]">
+      <section className="w-full h-screen bg-[url('/Images/SignUpBG.svg')] bg-[#EAEAF5] items-center justify-center py-0 md:py-4 hidden lg:flex lg:flex-col  gap-[20px]">
         <div className="claracontainer h-screen md:h-full p-0 w-full bg-[#ffffff] rounded-[20px] flex flex-col md:flex-col lg:flex-row md:justify-between items-center justify-center overflow-hidden gap-8">
           {/* column 1 */}
           <div className="md:flex md:flex-col hidden gap-4 justify-center items-center px-4 w-full md:w-[50%]">
@@ -123,7 +123,7 @@ export default function Signup() {
       </section>
 
       {/* Mobile Screen */}
-      <section className="flex flex-col bg-[#f5f5f5] w-full overflow-y-hidden md:hidden">
+      <section className="flex flex-col bg-[#f5f5f5] w-full overflow-y-hidden lg:hidden">
         <Header />
         <div className="flex claracontainer px-4 w-full flex-col h-[90vh] gap-6 py-12">
           <div className="text-[#0a1932] text-2xl font-semibold font-fredoka leading-loose">
@@ -156,6 +156,17 @@ export default function Signup() {
               </Button>
             {error && <p style={{ color: "red" }}>{error}</p>}
           </form>
+          <div className="w-[max-content] justify-end items-start text-center">
+              <span className="text-[#0a1932] text-sm font-medium font-fredoka leading-tight">
+                Already have an account.{" "}
+              </span>
+              <Link
+                href="/auth/sign-in"
+                className="text-red text-sm font-medium font-fredoka leading-tight"
+              >
+                Login
+              </Link>
+            </div>
         </div>
         <BottomNavigation />
       </section>
