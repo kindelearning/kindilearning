@@ -880,7 +880,7 @@ export default async function ProfileSection() {
                 {/* Trigger for the Edit Profile Popup */}
                 <Link
                   href="/profile/update"
-                  className="hidden lg:flex"
+                  className="hidden md:flex"
                   target="_blank"
                 >
                   <Badge
@@ -898,7 +898,7 @@ export default async function ProfileSection() {
                   {profileData ? <MyLevel userID={profileData.id} /> : null}
                   <Link
                     href="/profile/update"
-                    className="flex lg:hidden"
+                    className="flex md:hidden"
                     target="_blank"
                   >
                     <Badge

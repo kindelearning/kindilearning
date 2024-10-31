@@ -18,7 +18,7 @@ const ProductImages = ({ images = [] }) => {
             width={100}
             height={100}
             src={mainImage}
-            className="lg:rounded-[16px] rounded-none lg:min-w-[600px] md:h-full lg:full lg:h-[500px] object-cover lg:max-h-[500px] max-h-[320px] h-[300px] min-h-[300px] w-full"
+            className="lg:rounded-[16px] rounded-none lg:min-w-[600px] md:min-h-[400px] md:h-full lg:full lg:h-[500px] object-cover lg:max-h-[500px] max-h-[320px] h-[300px] min-h-[300px] w-full"
             alt="Product Image"
           />
         </div>
