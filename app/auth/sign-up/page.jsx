@@ -10,6 +10,7 @@ import { useState } from "react";
 import { hygraphClient } from "@/lib/hygraph";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { signUpWithEmail, signUpWithGoogle } from "@/app/firebase/auth";
 
 // queries/createUser.js
 export const CREATE_USER_MUTATION = `
@@ -24,34 +25,68 @@ export const CREATE_USER_MUTATION = `
 export default function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false); // New state for loading
-
   const router = useRouter();
 
-  const handleSignup = async (e) => {
-    e.preventDefault();
-    setLoading(true); // Set loading to true when submitting starts
-    
-
+  const handleGoogleSignUp = async () => {
     try {
-      const variables = { email, password };
-      const { createAccount } = await hygraphClient.request(
-        CREATE_USER_MUTATION,
-        variables
-      );
-
-      if (createAccount) {
-        // If signup is successful, redirect to login page or homepage
-        router.push("/auth/sign-in"); // Redirect to signin after signup
-      }
+      const user = await signUpWithGoogle();
+      setLoading(true); // Set loading to true when submitting starts
+      console.log("Google Sign-Up Successful:", user);
+      // Optional: Redirect user to dashboard or desired page
     } catch (error) {
-      setLoading(false); // Set loading to false if there's an error
-
-      console.error("GraphQL error:", error.response?.errors || error.message);
-      setError("Signup failed. Try again.");
+      console.error("Google Sign-Up Failed:", error);
+      setLoading(false); // Set loading to true when submitting starts
     }
   };
+
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+
+    const response = await signUpWithEmail(email, password);
+
+    if (response.success) {
+      setLoading(true); // Set loading to true when submitting starts
+
+      setMessage("User created successfully!");
+      setError("");
+    } else {
+      setError(response.message);
+      setMessage("");
+      setLoading(false); // Set loading to true when submitting starts
+    }
+  };
+  // const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("");
+  // const [error, setError] = useState(null);
+  // const [loading, setLoading] = useState(false); // New state for loading
+
+  // const router = useRouter();
+
+  // const handleSignup = async (e) => {
+  //   e.preventDefault();
+  //   setLoading(true); // Set loading to true when submitting starts
+
+  //   try {
+  //     const variables = { email, password };
+  //     const { createAccount } = await hygraphClient.request(
+  //       CREATE_USER_MUTATION,
+  //       variables
+  //     );
+
+  //     if (createAccount) {
+  //       // If signup is successful, redirect to login page or homepage
+  //       router.push("/auth/sign-in"); // Redirect to signin after signup
+  //     }
+  //   } catch (error) {
+  //     setLoading(false); // Set loading to false if there's an error
+
+  //     console.error("GraphQL error:", error.response?.errors || error.message);
+  //     setError("Signup failed. Try again.");
+  //   }
+  // };
 
   return (
     <>
@@ -64,18 +99,18 @@ export default function Signup() {
               Sign up
             </div>
             <form
-              onSubmit={handleSignup}
+              onSubmit={handleSignUp}
               className="flex flex-col w-full px-8 justify-center items-center gap-4"
             >
-              <Input
+              <input
                 type="email"
                 value={email}
-                required
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Email"
+                required
               />
 
-              <Input
+              <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -90,6 +125,7 @@ export default function Signup() {
                 {loading ? "Registering..." : "Sign Up"}{" "}
               </Button>
               {error && <p style={{ color: "red" }}>{error}</p>}
+              {message && <p style={{ color: "green" }}>{message}</p>}
             </form>
 
             <div className="flex w-full flex-col justify-center py-4 items-center gap-4">
@@ -98,7 +134,9 @@ export default function Signup() {
               </div>
               <div className="flex gap-2 items-center justify-center w-full">
                 <Image alt="Kindi" className="cursor-pointer" src={WithApple} />
-                <Image alt="Kindi" className="cursor-pointer" src={Google} />
+                <button onClick={handleGoogleSignUp}>
+                  <Image alt="Kindi" className="cursor-pointer" src={Google} />
+                </button>
                 <Image alt="Kindi" className="cursor-pointer" src={Facebook} />
               </div>
             </div>
@@ -130,7 +168,7 @@ export default function Signup() {
             Sign up
           </div>
           <form
-            onSubmit={handleSignup}
+            onSubmit={handleSignUp}
             className="flex flex-col w-full justify-center items-center gap-4"
           >
             <Input
@@ -148,25 +186,26 @@ export default function Signup() {
               required
             />
             <Button
-                disabled={loading}
-                className="clarabutton hover:bg-hoverRed w-full bg-red"
-                type="submit"
-              >
-                {loading ? "Registering..." : "Sign Up"}{" "}
-              </Button>
+              disabled={loading}
+              className="clarabutton hover:bg-hoverRed w-full bg-red"
+              type="submit"
+            >
+              {loading ? "Registering..." : "Sign Up"}{" "}
+            </Button>
             {error && <p style={{ color: "red" }}>{error}</p>}
+            {message && <p style={{ color: "green" }}>{message}</p>}
           </form>
           <div className="w-[max-content] justify-end items-start text-center">
-              <span className="text-[#0a1932] text-sm font-medium font-fredoka leading-tight">
-                Already have an account.{" "}
-              </span>
-              <Link
-                href="/auth/sign-in"
-                className="text-red text-sm font-medium font-fredoka leading-tight"
-              >
-                Login
-              </Link>
-            </div>
+            <span className="text-[#0a1932] text-sm font-medium font-fredoka leading-tight">
+              Already have an account.{" "}
+            </span>
+            <Link
+              href="/auth/sign-in"
+              className="text-red text-sm font-medium font-fredoka leading-tight"
+            >
+              Login
+            </Link>
+          </div>
         </div>
         <BottomNavigation />
       </section>

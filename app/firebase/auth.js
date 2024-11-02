@@ -3,6 +3,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithPopup,
   GoogleAuthProvider,
+  signInWithEmailAndPassword, // Import the signIn function here
 } from "firebase/auth";
 import { GraphQLClient } from "graphql-request";
 import app from "./firebaseConfig";
@@ -45,7 +46,7 @@ export const signUpWithEmail = async (email, password, name) => {
     // Step 2: Prepare data for Hygraph
     const variables = {
       email: userCredential.user.email,
-      name: name || userCredential.user.displayName || "Unknown",
+      name: name || userCredential.user.displayName || "Kindi User",
       password: password, // Use the same password used for Firebase
     };
 
@@ -81,7 +82,7 @@ export const signUpWithGoogle = async () => {
     // Step 2: Prepare data for Hygraph
     const variables = {
       email: user.email,
-      name: user.displayName || "Unknown",
+      name: user.displayName || "Kindi User",
       password: "GoogleSignIn", // Use a placeholder as you can't retrieve Google password
     };
 
@@ -105,18 +106,17 @@ export const signUpWithGoogle = async () => {
   }
 };
 
-// Function to Login with Google
+// Function to Login with Email and Password
 export const loginWithEmail = async (email, password) => {
   try {
     const userCredential = await signInWithEmailAndPassword(
       auth,
       email,
       password
-    );
-    console.log("User logged in:", userCredential.user);
+    ); // Correct usage
     return { success: true, user: userCredential.user };
   } catch (error) {
-    console.error("Error during email login:", error);
+    console.error("Error during login:", error);
     return { success: false, message: error.message };
   }
 };
