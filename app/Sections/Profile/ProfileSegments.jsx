@@ -35,6 +35,7 @@ import ReferralForm from "./ReferralCard";
 import ProductCard from "./ProductCard";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -50,6 +51,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import SettingCard from "./SettingCard";
 import { Plus } from "lucide-react";
+import LevelCard from "./LevelCard";
+import { useSession } from "next-auth/react";
 
 const HYGRAPH_ENDPOINT =
   "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";
@@ -80,30 +83,33 @@ const GET_ACCOUNT_BY_EMAIL = gql`
 /**
  * @level_badge_popup_content
  */
+
 const MyLevel = ({ userID }) => {
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   const fetchActivities = async () => {
+    if (!userID) return; // Check if userID is valid
+
     const query = `
-          query GetUserActivities($relationalFirst: Int, $where: AccountWhereUniqueInput!) {
-            values: account(where: $where) {
+        query GetUserActivities($relationalFirst: Int, $where: AccountWhereUniqueInput!) {
+          values: account(where: $where) {
+            id
+            username
+            myActivity(first: $relationalFirst) {
               id
-              username
-              myActivity(first: $relationalFirst) {
+              title
+              documentInStages(includeCurrent: true) {
                 id
-                title
-                documentInStages(includeCurrent: true) {
-                  id
-                  stage
-                  updatedAt
-                  publishedAt
-                }
+                stage
+                updatedAt
+                publishedAt
               }
             }
           }
-        `;
+        }
+      `;
 
     const variables = {
       relationalFirst: 10,
@@ -121,11 +127,10 @@ const MyLevel = ({ userID }) => {
       });
 
       const result = await response.json();
-
       if (result.errors) {
         throw new Error(result.errors[0].message);
       } else {
-        setActivities(result.data.values.myActivity);
+        setActivities(result.data.values.myActivity || []);
       }
     } catch (error) {
       setError("Error fetching activities: " + error.message);
@@ -138,20 +143,14 @@ const MyLevel = ({ userID }) => {
     fetchActivities();
   }, [userID]);
 
+  // Function to determine the user level
   const getUserLevel = (activityCount) => {
-    if (activityCount >= 0 && activityCount <= 5) {
-      return 1; // Level 1
-    } else if (activityCount > 5 && activityCount <= 10) {
-      return 2; // Level 2
-    } else if (activityCount > 10 && activityCount <= 15) {
-      return 3; // Level 3
-    } else if (activityCount > 15 && activityCount <= 20) {
-      return 4; // Level 4
-    } else if (activityCount > 20 && activityCount <= 25) {
-      return 5; // Level 5
-    } else {
-      return "Max Level"; // More than 25
-    }
+    if (activityCount >= 0 && activityCount <= 5) return 1;
+    if (activityCount > 5 && activityCount <= 10) return 2;
+    if (activityCount > 10 && activityCount <= 15) return 3;
+    if (activityCount > 15 && activityCount <= 20) return 4;
+    if (activityCount > 20 && activityCount <= 25) return 5;
+    return "Max Level"; // More than 25
   };
 
   if (loading) return <p>Loading...</p>;
@@ -166,6 +165,7 @@ const MyLevel = ({ userID }) => {
         <div className="text-[#3f3a64] clarabodyTwo">
           User Level: {userLevel}
         </div>
+
         <Dialog className="bg-[#EAEAF5] w-full rounded-[28px] claracontainer">
           <DialogTrigger asChild>
             <Badge
@@ -180,10 +180,10 @@ const MyLevel = ({ userID }) => {
               <div className="flex flex-row justify-center items-center w-full">
                 <DialogTitle>
                   <div className="text-center">
-                    <span className="text-[#3f3a64] text-[24px] md:text-[36px] font-semibold font-fredoka capitalize  ">
+                    <span className="text-[#3f3a64] text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
                       My{" "}
                     </span>
-                    <span className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize  ">
+                    <span className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
                       Level
                     </span>
                   </div>
@@ -192,19 +192,24 @@ const MyLevel = ({ userID }) => {
             </DialogHeader>
             <DialogDescription className="flex w-full px-4 claracontainer flex-col justify-start items-center">
               <div className="flex flex-col justify-center items-center w-full claracontainer gap-4">
-                <LevelCard level="Level 1" activities="5" />
-                <LevelCard level="Level 2" activities="10" />
-                <LevelCard level="Level 3" activities="15" />
-                <LevelCard level="Level 4" activities="20" />
-                <LevelCard level="Level 5" activities="25" />
+                {[5, 10, 15, 20, 25].map((activityGoal, index) => (
+                  <LevelCard
+                    key={index}
+                    level={`Level ${index + 1}`}
+                    activities={activityGoal.toString()}
+                  />
+                ))}
               </div>
             </DialogDescription>
-            <DialogFooter className="sticky  rounded-t-[16px] shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] bottom-0 m-0 w-full px-4 bg-[#ffffff]">
-              <PopupFooter PrimaryText="Save and Continue" />
+            <DialogFooter className="sticky rounded-t-[16px] shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] bottom-0 m-0 w-full  bg-[#ffffff]">
+              <DialogClose className="w-full">
+                <PopupFooter PrimaryText="Save and Continue" />
+              </DialogClose>
             </DialogFooter>
           </DialogContent>
         </Dialog>
       </div>
+
       <div className="flex w-full gap-1 items-center">
         <div
           className="progress-bar-container"
@@ -212,8 +217,6 @@ const MyLevel = ({ userID }) => {
             width: "100%",
             backgroundColor: "#e0e0e0",
             borderRadius: "5px",
-            // marginTop: "10px",
-            // color:'#f15c57'
           }}
         >
           <div
@@ -223,7 +226,6 @@ const MyLevel = ({ userID }) => {
               backgroundColor: "#f15c57",
               height: "10px",
               borderRadius: "5px",
-              // color:'#f15c57'
             }}
           ></div>
         </div>
@@ -231,9 +233,6 @@ const MyLevel = ({ userID }) => {
           Activities: {activities.length}
         </p>
       </div>
-      {/* <p style={{ marginTop: "5px", color: "#555" }}>
-            {Math.round(progressPercentage)}% completed
-          </p> */}
     </div>
   );
 };
@@ -333,8 +332,6 @@ const ContactForm = () => {
   );
 };
 
-
-
 // GraphQL query to fetch partners for a specific account by ID
 
 const FETCH_PARTNERS_QUERY = gql`
@@ -364,11 +361,22 @@ const getHygraphPartners = async (userId) => {
     return [];
   }
 };
-
 const PartnerList = ({ userId }) => {
   const [partners, setPartners] = useState([]);
+  const { user, loading } = useAuth();
+  const router = useRouter();
+  const [hygraphUser, setHygraphUser] = useState(null);
 
   useEffect(() => {
+    if (!loading && !user) {
+      router.push("/login"); // Redirect to login if not authenticated
+    }
+    if (user && user.email) {
+      getUserDataByEmail(user.email).then((data) => {
+        setHygraphUser(data);
+      });
+    }
+
     // Fetch partners data for the current user
     const fetchPartners = async () => {
       const partnerData = await getHygraphPartners(userId);
@@ -376,7 +384,7 @@ const PartnerList = ({ userId }) => {
     };
 
     if (userId) fetchPartners();
-  }, [userId]);
+  }, [userId, user, loading, router]);
 
   const calculateAge = (dateOfBirth) => {
     const birthDate = new Date(dateOfBirth);
@@ -418,11 +426,17 @@ const PartnerList = ({ userId }) => {
                 >
                   <div className="flex flex-row gap-2 w-full justify-start items-center">
                     <div className="w-16 h-16 overflow-clip flex justify-center items-center">
-                      {partner.profilePicture && (
+                      {partner.profilePicture ? (
                         <Image
-                          src={
-                            partner.profilePicture?.url || ProfilePlaceHolderOne
-                          }
+                          src={partner.profilePicture?.url}
+                          alt="Profile Image"
+                          width={64}
+                          height={64}
+                          className="min-w-16 min-h-16 object-cover rounded-full"
+                        />
+                      ) : (
+                        <Image
+                          src={ProfilePlaceHolderOne}
                           alt="Profile Image"
                           width={64}
                           height={64}
@@ -449,23 +463,9 @@ const PartnerList = ({ userId }) => {
           ) : (
             <p>No partner information available.</p>
           )}
-          <Dialog className="bg-[#EAEAF5] w-full rounded-[28px] claracontainer">
+          {/* <Dialog className="bg-[#EAEAF5] w-full rounded-[28px] claracontainer">
             <DialogTrigger className="w-full">
-              <div
-                className={`w-full min-h-[90px] flex flex-row justify-center items-center p-2 bg-white rounded-xl
-                    ${
-                      partners.length >= 5
-                        ? "opacity-50 cursor-none pointer text-black pointer-events-none"
-                        : "cursor-pointer text-red"
-                    }`}
-                onClick={() => {
-                  if (partners.length < 5) {
-                    console.log("New Profile Clicked");
-                  }
-                }}
-              >
-                <Plus className="text-red" /> New Profile
-              </div>
+             
             </DialogTrigger>
             <DialogContent className="bg-[#EAEAF5] min-h-[300px] pb-24 items-start scrollbar-hidden  max-w-[96%] max-h-[70%] overflow-scroll p-0 overflow-x-hidden rounded-[16px] w-full claracontainer">
               <DialogHeader className="p-4">
@@ -506,6 +506,68 @@ const PartnerList = ({ userId }) => {
                 </div>
               </DialogDescription>
             </DialogContent>
+          </Dialog> */}
+          <Dialog className="bg-[#EAEAF5] w-full rounded-[28px] claracontainer">
+            <DialogTrigger className="w-full">
+              <div
+                className={`w-full min-h-[90px] flex flex-row justify-center items-center p-2 bg-white rounded-xl
+                    ${
+                      partners.length >= 5
+                        ? "opacity-50 cursor-none pointer text-black pointer-events-none"
+                        : "cursor-pointer text-red"
+                    }`}
+                onClick={() => {
+                  if (partners.length < 5) {
+                    console.log("New Profile Clicked");
+                  }
+                }}
+              >
+                <Plus className="text-red" /> New Profile
+              </div>
+            </DialogTrigger>
+            <DialogContent className="bg-[#EAEAF5] scrollbar-hidden max-w-[96%] lg:max-w-[800px] lg:pb-12 max-h-[70%] overflow-scroll p-0 overflow-x-hidden rounded-[16px] w-full claracontainer">
+              <DialogHeader className="p-4">
+                <div className="flex flex-row justify-center items-center w-full">
+                  <DialogTitle>
+                    <div className="text-center">
+                      <span className="text-[#3f3a64] text-[24px] md:text-[36px] font-semibold font-fredoka capitalize  ">
+                        Connect{" "}
+                      </span>
+                      <span className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize  ">
+                        A Partner
+                      </span>
+                    </div>
+                  </DialogTitle>
+                </div>
+              </DialogHeader>
+              <DialogDescription className="flex w-full px-4 claracontainer flex-col justify-start items-center">
+                <div className="flex flex-col md:flex-row px-2 md:px-6  max-w-[1000px] justify-center items-start claracontainer gap-4">
+                  <div className="flex w-full max-w-[20%]">
+                    <Image
+                      alt="Kindi"
+                      src={ConnectPartner}
+                      className="w-full h-auto"
+                    />
+                  </div>
+                  <div className="flex w-full flex-col justify-start items-start gap-4">
+                    <div className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize  ">
+                      Get $20
+                    </div>{" "}
+                    <div className="text-[#757575] text-[16px] md:text-2xl font-medium font-fredoka ">
+                      Invite a Partner or friends, family, coworkers,
+                      neighbours, and your favourite barista to Brushlink. Every
+                      time someone books and visits a new dentist through your
+                      link, you both get $20.
+                    </div>
+                    {user && hygraphUser ? (
+                      <ConnectAccountForm userId={hygraphUser.id} />
+                    ) : (
+                      <>id Not found</>
+                    )}
+                  </div>
+                </div>
+              </DialogDescription>
+            </DialogContent>
           </Dialog>
         </div>
         <div className="flex flex-row justify-center w-full items-center">
@@ -524,7 +586,7 @@ const ConnectAccountForm = ({ userId }) => {
   const [message, setMessage] = useState("");
   const { data: session, status } = useSession();
   const [profileData, setProfileData] = useState(null);
-  const [isLoading, setIsLoading] = useState(false); // Added loading state
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (session && session.user) {
@@ -549,64 +611,57 @@ const ConnectAccountForm = ({ userId }) => {
       return;
     }
 
-    const accountEmail = session.user.email; // Get the logged-in user's email
-
     const query = `
-      mutation AddPartner($accountEmail: String!, $partnerEmail: String!) {
-        updateAccount(
-          where: { email: $accountEmail },
-          data: {
-            partner: {
-              connect: { where: { email: $partnerEmail } }
+        mutation AddPartner($userId: ID!, $partnerEmail: String!) {
+          updateAccount(
+            where: { id: $userId },
+            data: {
+              partner: {
+                connect: { where: { email: $partnerEmail } }
+              }
             }
-          }
-        ) {
-          id
-          email
-          username
-          partner {
+          ) {
             id
             email
             username
+            partner {
+              id
+              email
+              username
+            }
           }
         }
-      }
-    `;
+      `;
 
-    // Variables for the mutation
     const variables = {
-      // accountEmail: "ac.dravya44409@gmail.com", // Replace with the actual account email
-      accountEmail,
-      partnerEmail: email.trim(), // Use the partner's email from the input
+      userId, // Use the userId prop directly for the logged-in user's ID
+      partnerEmail: email.trim(),
     };
 
     try {
+      setIsLoading(true);
       const response = await fetch(HYGRAPH_ENDPOINT, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${HYGRAPH_TOKEN}`,
         },
-        body: JSON.stringify({
-          query,
-          variables,
-        }),
+        body: JSON.stringify({ query, variables }),
       });
 
       const result = await response.json();
-      console.log("Result Line", result);
 
       if (result.errors) {
-        setIsLoading(true); // Set loading to true when the request starts
         setMessage("Error connecting partner: " + result.errors[0].message);
       } else {
         setMessage("Partner connected successfully!");
-        setEmail(""); // Clear the input after success
+        setEmail("");
       }
     } catch (error) {
       setMessage("Error: " + error.message);
+      console.error("Error during partner connection:", error);
     } finally {
-      setIsLoading(false); // Reset loading state after request completes
+      setIsLoading(false);
     }
   };
 
@@ -617,13 +672,12 @@ const ConnectAccountForm = ({ userId }) => {
     >
       <Input
         type="email"
-        className="bg-white w-full rounded-lg focus-within:border-0 focus-within:border-[#ffffff00]  shadow border border-[#383838]"
+        className="bg-white w-full rounded-lg focus-within:border-0 focus-within:border-[#ffffff00] shadow border border-[#383838]"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder="Enter partner's email"
         required
       />
-      {/* <Button type="submit">Connect Partner</Button> */}
       <Button
         className="clarabutton bg-red hover:bg-hoverRed"
         type="submit"
@@ -761,9 +815,9 @@ export default function ProfileSegments() {
               <div className="flex flex-col w-full gap-1 items-start justify-start">
                 <div className="flex flex-row w-full justify-start items-center gap-2">
                   {/* Trigger for the Level Popup */}
-                  {/* {user && hygraphUser ? (
+                  {user && hygraphUser ? (
                     <MyLevel userID={hygraphUser.id} />
-                  ) : null} */}
+                  ) : null}
                   <Link
                     href="/profile/update"
                     className="flex md:hidden"
@@ -841,7 +895,9 @@ export default function ProfileSegments() {
                   )}
                 </DialogDescription>
                 <DialogFooter className="sticky rounded-t-[16px] bottom-0 m-0 w-full ">
-                  <PopupFooter PrimaryText="Save and Continue" />
+                  <DialogClose className="w-full">
+                    <PopupFooter PrimaryText="Save and Continue" />
+                  </DialogClose>
                 </DialogFooter>
               </DialogContent>
             </Dialog>
@@ -930,7 +986,11 @@ export default function ProfileSegments() {
                         Every time someone books and visits a new dentist
                         through your link, you both get $20.
                       </div>
-                      <ConnectAccountForm />
+                      {user && hygraphUser ? (
+                        <ConnectAccountForm userId={hygraphUser.id} />
+                      ) : (
+                        <>id Not found</>
+                      )}
                     </div>
                   </div>
                 </DialogDescription>
@@ -993,7 +1053,9 @@ export default function ProfileSegments() {
                   </div> */}
                 </DialogDescription>
                 <DialogFooter className="sticky bottom-0 m-0 w-full bg-[#ffffff]">
-                  <PopupFooter PrimaryText="Save and Continue" />
+                  <DialogClose className="w-full">
+                    <PopupFooter PrimaryText="Save and Continue" />
+                  </DialogClose>
                 </DialogFooter>
               </DialogContent>
             </Dialog>
@@ -1110,99 +1172,6 @@ export default function ProfileSegments() {
             <ReferralForm />
           </div>
         </div>
-
-        {/* <div className="p-4">
-          {user && hygraphUser ? (
-            <>
-              <h1>Welcome, {hygraphUser.name || "User"}!</h1>
-              <p>Email: {hygraphUser.email}</p>
-              <p>Username: {hygraphUser.username || "Not set"}</p>
-              <p>Hygraph ID: {hygraphUser.id}</p>
-              <p>Verified: {hygraphUser.isVerified ? "Yes" : "No"}</p>
-              <p>Date of Birth: {hygraphUser.dateOfBirth || "Not provided"}</p>
-              <p>
-                Attending Nursery: {hygraphUser.attendingNursery ? "Yes" : "No"}
-              </p>
-
-              {hygraphUser.profilePicture?.url && (
-                <img
-                  src={hygraphUser.profilePicture.url}
-                  alt="Profile Picture"
-                  className="w-20 h-20 rounded-full"
-                />
-              )}
-
-              <h2>Partner</h2>
-              {hygraphUser.partner ? (
-                <p>
-                  Name: {hygraphUser.partner.name},
-                  <br />
-                  Email: {hygraphUser.partner.email}
-                </p>
-              ) : (
-                <p>No partner information available.</p>
-              )}
-
-              <h2>Badges</h2>
-              {hygraphUser.myBadge?.length > 0 ? (
-                hygraphUser.myBadge.map((badge) => (
-                  <div key={badge.name}>
-                    <p>{badge.name}</p>
-                    <p>{badge.description}</p>
-                    {badge.icon?.url && (
-                      <img
-                        src={badge.icon.url}
-                        alt={badge.name}
-                        className="w-10 h-10"
-                      />
-                    )}
-                  </div>
-                ))
-              ) : (
-                <p>No badges earned yet.</p>
-              )}
-
-              <h2>Activities</h2>
-              {hygraphUser.myActivity?.length > 0 ? (
-                hygraphUser.myActivity.map((activity) => (
-                  <div key={activity.title}>
-                    <p>{activity.title}</p>
-                    <p>{activity.description}</p>
-                  </div>
-                ))
-              ) : (
-                <p>No activities available.</p>
-              )}
-
-              <h2>Milestones Completed</h2>
-              {hygraphUser.milestoneCompleted?.length > 0 ? (
-                hygraphUser.milestoneCompleted.map((milestone) => (
-                  <div key={milestone.title}>
-                    <p>{milestone.title}</p>
-                    <p>Date Achieved: {milestone.dateAchieved}</p>
-                  </div>
-                ))
-              ) : (
-                <p>No milestones completed yet.</p>
-              )}
-
-              <h2>Payment Methods</h2>
-              {hygraphUser.myPaymentMethod?.length > 0 ? (
-                hygraphUser.myPaymentMethod.map((payment, index) => (
-                  <div key={index}>
-                    <p>Card Type: {payment.cardType}</p>
-                    <p>Last Four Digits: {payment.lastFourDigits}</p>
-                    <p>Expiry Date: {payment.expiryDate}</p>
-                  </div>
-                ))
-              ) : (
-                <p>No payment methods added.</p>
-              )}
-            </>
-          ) : (
-            <p>You are not logged in.</p>
-          )}
-        </div> */}
       </section>
     </>
   );
