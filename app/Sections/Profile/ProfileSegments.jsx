@@ -361,6 +361,7 @@ const getHygraphPartners = async (userId) => {
     return [];
   }
 };
+
 const PartnerList = ({ userId }) => {
   const [partners, setPartners] = useState([]);
   const { user, loading } = useAuth();
@@ -687,6 +688,498 @@ const ConnectAccountForm = ({ userId }) => {
       </Button>
       {message && <p>{message}</p>}
     </form>
+  );
+};
+
+const ADD_PAYMENT_METHOD_MUTATION = `
+  mutation AddPaymentMethod(
+    $name: String!,
+    $number: Int!,
+    $expiryDate: Date!,
+    $cvv: Int!
+  ) {
+    createPaymentMethod(data: {
+      name: $name,
+      number: $number,
+      expiryDate: $expiryDate,
+      cvv: $cvv
+    }) {
+      id
+    }
+  }
+`;
+
+const CONNECT_PAYMENT_METHOD_TO_USER_MUTATION = `
+  mutation ConnectPaymentMethodToUser($userId: ID!, $paymentMethodId: ID!) {
+  updateAccount(
+    where: { id: $userId }
+    data: {
+      myPaymentMethod: {
+        connect: { where: { id: $paymentMethodId } }
+      }
+    }
+  ) {
+    id
+  }
+}
+`;
+
+const GET_PAYMENT_METHODS_QUERY = `
+  query GetUserPaymentMethods($userId: ID!) {
+    account(where: { id: $userId }) {
+      myPaymentMethod {
+        id
+        name
+        number
+        expiryDate
+      }
+    }
+  }
+`;
+
+// const PaymentMethodFormB = ({ userId }) => {
+//   const [name, setName] = useState("");
+//   const [number, setNumber] = useState("");
+//   const [expiryDate, setExpiryDate] = useState("");
+//   const [cvv, setCvv] = useState("");
+//   const [message, setMessage] = useState("");
+//   const [isLoading, setIsLoading] = useState(false);
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     setIsLoading(true);
+
+//     try {
+//       // Step 1: Create a new Payment Method
+//       const response = await fetch(HYGRAPH_ENDPOINT, {
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json",
+//           Authorization: `Bearer ${HYGRAPH_TOKEN}`,
+//         },
+//         body: JSON.stringify({
+//           query: ADD_PAYMENT_METHOD_MUTATION,
+//           variables: {
+//             name,
+//             number: parseInt(number, 10),
+//             expiryDate,
+//             cvv: parseInt(cvv, 10),
+//           },
+//         }),
+//       });
+
+//       const { data, errors } = await response.json();
+
+//       if (errors) {
+//         setMessage("Error creating payment method: " + errors[0].message);
+//         setIsLoading(false);
+//         return;
+//       }
+
+//       const paymentMethodId = data.createPaymentMethod.id;
+
+//   // Step 2: Connect the created Payment Method to the user's account
+//   const connectResponse = await fetch(HYGRAPH_ENDPOINT, {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//       Authorization: `Bearer ${HYGRAPH_TOKEN}`,
+//     },
+//     body: JSON.stringify({
+//       query: CONNECT_PAYMENT_METHOD_TO_USER_MUTATION,
+//       variables: {
+//         userId,
+//         paymentMethodId,
+//       },
+//     }),
+//   });
+
+//   const connectResult = await connectResponse.json();
+
+//       if (connectResult.errors) {
+//         setMessage(
+//           "Error connecting payment method: " + connectResult.errors[0].message
+//         );
+//       } else {
+//         setMessage("Payment method added successfully!");
+//         setName("");
+//         setNumber("");
+//         setExpiryDate("");
+//         setCvv("");
+//       }
+//     } catch (error) {
+//       setMessage("Error: " + error.message);
+//     } finally {
+//       setIsLoading(false);
+//     }
+//   };
+
+//   return (
+//     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+//       <input
+//         type="text"
+//         value={name}
+//         onChange={(e) => setName(e.target.value)}
+//         placeholder="Name on Card"
+//         required
+//       />
+//       <input
+//         type="number"
+//         value={number}
+//         onChange={(e) => setNumber(e.target.value)}
+//         placeholder="Card Number"
+//       />
+//       <input
+//         type="date"
+//         value={expiryDate}
+//         onChange={(e) => setExpiryDate(e.target.value)}
+//         placeholder="Expiry Date"
+//       />
+//       <input
+//         type="number"
+//         value={cvv}
+//         onChange={(e) => setCvv(e.target.value)}
+//         placeholder="CVV"
+//       />
+//       <button type="submit" disabled={isLoading}>
+//         {isLoading ? "Adding..." : "Add Payment Method"}
+//       </button>
+//       {message && <p>{message}</p>}
+//     </form>
+//   );
+// };
+
+const PaymentMethodForm = ({ userId }) => {
+  const [name, setName] = useState("");
+  const [number, setNumber] = useState("");
+  const [expiryDate, setExpiryDate] = useState("");
+  const [cvv, setCvv] = useState("");
+  const [message, setMessage] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const data = {
+      name,
+      number: parseInt(number), // Ensure the number is an integer
+      expiryDate,
+      cvv: parseInt(cvv), // Ensure CVV is an integer
+    };
+
+    await createAndPublishPaymentMethod(data);
+  };
+
+  const createAndPublishPaymentMethod = async (data) => {
+    try {
+      // Step 1: Create PaymentMethod
+      const createResponse = await fetch(HYGRAPH_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${HYGRAPH_TOKEN}`,
+        },
+        body: JSON.stringify({
+          query: `
+              mutation CreatePaymentMethod($data: PaymentMethodCreateInput!) {
+                createPaymentMethod(data: $data) {
+                  id
+                }
+              }
+            `,
+          variables: { data },
+        }),
+      });
+      const createResult = await createResponse.json();
+      const paymentMethodId = createResult.data.createPaymentMethod.id;
+
+      // Step 2: Publish PaymentMethod
+      const publishResponse = await fetch(HYGRAPH_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${HYGRAPH_TOKEN}`,
+        },
+        body: JSON.stringify({
+          query: `
+              mutation PublishPaymentMethod($id: ID!) {
+                publishPaymentMethod(where: { id: $id }, to: PUBLISHED) {
+                  id
+                }
+              }
+            `,
+          variables: { id: paymentMethodId },
+        }),
+      });
+      const publishResult = await publishResponse.json();
+
+      // Step 3: Connect the created Payment Method to the user's account
+      const connectResponse = await fetch(HYGRAPH_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${HYGRAPH_TOKEN}`,
+        },
+        body: JSON.stringify({
+          query: CONNECT_PAYMENT_METHOD_TO_USER_MUTATION,
+          variables: {
+            userId,
+            paymentMethodId,
+          },
+        }),
+      });
+      const connectResult = await connectResponse.json();
+
+      if (publishResult.errors) {
+        throw new Error("Error publishing payment method");
+      }
+
+      setMessage("Payment method added and published successfully!");
+    } catch (error) {
+      console.error("Error creating or publishing payment method:", error);
+      setMessage("Error adding payment method.");
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        placeholder="Name"
+        required
+      />
+      <input
+        type="text"
+        value={number}
+        onChange={(e) => setNumber(e.target.value)}
+        placeholder="Card Number"
+        required
+      />
+      <input
+        type="date"
+        value={expiryDate}
+        onChange={(e) => setExpiryDate(e.target.value)}
+        required
+      />
+      <input
+        type="text"
+        value={cvv}
+        onChange={(e) => setCvv(e.target.value)}
+        placeholder="CVV"
+        required
+      />
+      <button type="submit">Submit Payment Method</button>
+      {message && <p>{message}</p>}
+    </form>
+  );
+};
+
+// const PaymentMethodForm = () => {
+//   const { data: session } = useSession();
+//   const [name, setName] = useState("");
+//   const [number, setNumber] = useState("");
+//   const [expiryDate, setExpiryDate] = useState("");
+//   const [cvv, setCvv] = useState("");
+//   const [message, setMessage] = useState("");
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     const data = {
+//       name,
+//       number: parseInt(number), // Ensure the number is an integer
+//       expiryDate,
+//       cvv: parseInt(cvv), // Ensure CVV is an integer
+//     };
+
+//     await createAndPublishPaymentMethod(data);
+//   };
+
+//   const createAndPublishPaymentMethod = async (data) => {
+//     try {
+//       // Step 1: Create PaymentMethod
+//       const createResponse = await fetch(HYGRAPH_ENDPOINT, {
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json",
+//           Authorization: `Bearer ${HYGRAPH_TOKEN}`,
+//         },
+//         body: JSON.stringify({
+//           query: `
+//               mutation CreatePaymentMethod($data: PaymentMethodCreateInput!) {
+//                 createPaymentMethod(data: $data) {
+//                   id
+//                 }
+//               }
+//             `,
+//           variables: { data },
+//         }),
+//       });
+
+//       const createResult = await createResponse.json();
+//       const paymentMethodId = createResult.data.createPaymentMethod.id;
+
+//       // Step 2: Publish PaymentMethod
+//       const publishResponse = await fetch(HYGRAPH_ENDPOINT, {
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json",
+//           Authorization: `Bearer ${HYGRAPH_TOKEN}`,
+//         },
+//         body: JSON.stringify({
+//           query: `
+//               mutation PublishPaymentMethod($id: ID!) {
+//                 publishPaymentMethod(where: { id: $id }, to: PUBLISHED) {
+//                   id
+//                 }
+//               }
+//             `,
+//           variables: { id: paymentMethodId },
+//         }),
+//       });
+
+//       const publishResult = await publishResponse.json();
+//       if (publishResult.errors) {
+//         throw new Error("Error publishing payment method");
+//       }
+
+//       // Step 3: Update User Account with the new PaymentMethod
+//       const updateResponse = await fetch(HYGRAPH_ENDPOINT, {
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json",
+//           Authorization: `Bearer ${HYGRAPH_TOKEN}`,
+//         },
+//         body: JSON.stringify({
+//           query: `
+//               mutation UpdateAccountWithPaymentMethod($accountId: ID!, $paymentMethodId: ID!) {
+//                 updateAccount(
+//                   where: { id: $accountId },
+//                   data: {
+//                     myPaymentMethod: {
+//                       connect: { id: $paymentMethodId }
+//                     }
+//                   }
+//                 ) {
+//                   id
+//                   myPaymentMethod {
+//                     id
+//                     name
+//                   }
+//                 }
+//               }
+//             `,
+//           variables: { accountId: session.user.id, paymentMethodId },
+//         }),
+//       });
+
+//       const updateResult = await updateResponse.json();
+//       if (updateResult.errors) {
+//         throw new Error("Error updating account with payment method");
+//       }
+
+//       setMessage("Payment method added and associated successfully!");
+//     } catch (error) {
+//       console.error("Error creating or associating payment method:", error);
+//       setMessage("Error adding payment method.");
+//     }
+//   };
+
+//   return (
+//     <form onSubmit={handleSubmit}>
+//       <input
+//         type="text"
+//         value={name}
+//         onChange={(e) => setName(e.target.value)}
+//         placeholder="Name"
+//         required
+//       />
+//       <input
+//         type="text"
+//         value={number}
+//         onChange={(e) => setNumber(e.target.value)}
+//         placeholder="Card Number"
+//         required
+//       />
+//       <input
+//         type="date"
+//         value={expiryDate}
+//         onChange={(e) => setExpiryDate(e.target.value)}
+//         required
+//       />
+//       <input
+//         type="text"
+//         value={cvv}
+//         onChange={(e) => setCvv(e.target.value)}
+//         placeholder="CVV"
+//         required
+//       />
+//       <button type="submit">Submit Payment Method</button>
+//       {message && <p>{message}</p>}
+//     </form>
+//   );
+// };
+
+const PaymentMethodsList = ({ userId }) => {
+  const [paymentMethods, setPaymentMethods] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchPaymentMethods = async () => {
+      setIsLoading(true);
+
+      try {
+        const response = await fetch(HYGRAPH_ENDPOINT, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${HYGRAPH_TOKEN}`,
+          },
+          body: JSON.stringify({
+            query: GET_PAYMENT_METHODS_QUERY,
+            variables: { userId },
+          }),
+        });
+
+        const { data, errors } = await response.json();
+
+        if (errors) {
+          setError("Error fetching payment methods: " + errors[0].message);
+        } else {
+          setPaymentMethods(data.account.myPaymentMethod);
+        }
+      } catch (error) {
+        setError("Error: " + error.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchPaymentMethods();
+  }, [userId]);
+
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>{error}</p>;
+
+  return (
+    <div>
+      <h2>My Payment Methods</h2>
+      {paymentMethods.length > 0 ? (
+        <ul>
+          {paymentMethods.map((method) => (
+            <li key={method.id}>
+              <p>Name on Card: {method.name}</p>
+              <p>
+                Card Number: **** **** **** {method.number.toString().slice(-4)}
+              </p>
+              <p>Expiry Date: {method.expiryDate}</p>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>No payment methods saved.</p>
+      )}
+    </div>
   );
 };
 
@@ -1022,35 +1515,24 @@ export default function ProfileSegments() {
                 </DialogHeader>
                 <DialogDescription className="flex w-full px-4 claracontainer flex-col justify-start items-center">
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 px-2 md:px-4 lg:px-6 py-6 w-full claracontainer gap-4">
-                    <Image
+                    {/* <Image
                       alt="Kindi"
                       src={MasterCard}
                       className="w-full cursor-pointer hover:scale-[1.05] transition-transform duration-300 ease-in-out h-auto"
-                    />
-                    <Image
-                      alt="Kindi"
-                      src={MasterCard}
-                      className="w-full cursor-pointer hover:scale-[1.05] transition-transform duration-300 ease-in-out h-auto"
-                    />
-                    <Image
-                      alt="Kindi"
-                      src={MasterCard}
-                      className="w-full cursor-pointer hover:scale-[1.05] transition-transform duration-300 ease-in-out h-auto"
-                    />
-                    <Image
-                      alt="Kindi"
-                      src={MasterCard}
-                      className="w-full cursor-pointer hover:scale-[1.05] transition-transform duration-300 ease-in-out h-auto"
-                    />
-                    <Image
-                      alt="Kindi"
-                      src={MasterCard}
-                      className="w-full cursor-pointer hover:scale-[1.05] transition-transform duration-300 ease-in-out h-auto"
-                    />
+                    /> */}
+                    {user && hygraphUser ? (
+                      <PaymentMethodsList userId={hygraphUser.id} />
+                    ) : (
+                      <p>id not found</p>
+                    )}
                   </div>
-                  {/* <div className="flex">
-                    <AddPaymentMethodForm />
-                  </div> */}
+                  <div className="flex">
+                    {user && hygraphUser ? (
+                      <PaymentMethodForm userId={hygraphUser.id} />
+                    ) : (
+                      <p>id not found</p>
+                    )}
+                  </div>
                 </DialogDescription>
                 <DialogFooter className="sticky bottom-0 m-0 w-full bg-[#ffffff]">
                   <DialogClose className="w-full">
