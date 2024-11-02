@@ -162,7 +162,7 @@ const Header = () => {
 
   useEffect(() => {
     if (!loading && !user) {
-      router.push("/login"); // Redirect to login if not authenticated
+      // router.push("/login"); // Redirect to login if not authenticated
     }
 
     if (user && user.email) {
