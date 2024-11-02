@@ -49,6 +49,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import SettingCard from "./SettingCard";
+import { Plus } from "lucide-react";
 
 const HYGRAPH_ENDPOINT =
   "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";
@@ -332,111 +333,105 @@ const ContactForm = () => {
   );
 };
 
+
+
+// GraphQL query to fetch partners for a specific account by ID
+
+const FETCH_PARTNERS_QUERY = gql`
+  query ($where: AccountWhereUniqueInput!) {
+    account(where: $where) {
+      id
+      partner {
+        id
+        email
+        username
+        profilePicture {
+          url
+        }
+        dateOfBirth
+      }
+    }
+  }
+`;
+const getHygraphPartners = async (userId) => {
+  try {
+    const data = await client.request(FETCH_PARTNERS_QUERY, {
+      where: { id: userId },
+    });
+    return data.account.partner || [];
+  } catch (error) {
+    console.error("Error fetching partners:", error);
+    return [];
+  }
+};
+
 const PartnerList = ({ userId }) => {
-    const [partners, setPartners] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState("");
-  
+  const [partners, setPartners] = useState([]);
+
+  useEffect(() => {
+    // Fetch partners data for the current user
     const fetchPartners = async () => {
-      const query = `
-        query($where: AccountWhereUniqueInput!) {
-          account(where: $where) {
-            id
-            partner {
-              id
-              email
-              username
-               profilePicture {
-                  url
-                }
-              dateOfBirth
-            }
-          }
-        }
-      `;
-  
-      const variables = {
-        where: { id: userId }, // User ID of the current user
-      };
-  
-      try {
-        const response = await fetch(HYGRAPH_ENDPOINT, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${HYGRAPH_TOKEN}`,
-          },
-          body: JSON.stringify({ query, variables }),
-        });
-  
-        const result = await response.json();
-  
-        if (result.errors) {
-          throw new Error(result.errors[0].message);
-        } else {
-          setPartners(result.data.account.partner);
-        }
-      } catch (error) {
-        setError("Error fetching partners: " + error.message);
-      } finally {
-        setLoading(false);
-      }
+      const partnerData = await getHygraphPartners(userId);
+      setPartners(partnerData);
     };
-    const calculateAge = (dateOfBirth) => {
-      const birthDate = new Date(dateOfBirth);
-      const today = new Date();
-      let age = today.getFullYear() - birthDate.getFullYear();
-      const monthDiff = today.getMonth() - birthDate.getMonth();
-  
-      if (
-        monthDiff < 0 ||
-        (monthDiff === 0 && today.getDate() < birthDate.getDate())
-      ) {
-        age--;
-      }
-  
-      return age;
-    };
-  
-    useEffect(() => {
-      fetchPartners();
-    }, [userId]);
-  
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>{error}</p>;
-  
-    return (
-      <>
-        <div className="flex w-full claracontainer gap-4 flex-col justify-start items-start">
-          <div className="flex justify-between w-full items-center">
-            <div className="text-black text-start text-[20px] md:text-[28px] font-semibold font-fredoka">
-              Profiles
-            </div>
-            <div className="text-black text-start text-[20px] md:text-[28px] font-semibold font-fredoka ">
-              {`${partners.length}/5`}
-            </div>
+
+    if (userId) fetchPartners();
+  }, [userId]);
+
+  const calculateAge = (dateOfBirth) => {
+    const birthDate = new Date(dateOfBirth);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && today.getDate() < birthDate.getDate())
+    ) {
+      age--;
+    }
+
+    return age;
+  };
+
+  return (
+    <>
+      <div className="flex w-full claracontainer gap-4 flex-col justify-start items-start">
+        {/* Partner Popup header */}
+        <div className="flex justify-between w-full items-center">
+          <div className="text-black text-start text-[20px] md:text-[28px] font-semibold font-fredoka">
+            Profiles
           </div>
-  
-          <div className="grid grid-cols-1 lg:grid-cols-2 w-full claracontainer gap-4">
-            {partners.map((partner) => (
-              <>
+          <div className="text-black text-start text-[20px] md:text-[28px] font-semibold font-fredoka ">
+            {partners.length}/5
+          </div>
+        </div>
+        {/* Partners Popup Cards */}
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 w-full claracontainer gap-4">
+          {partners.length > 0 ? (
+            <>
+              {partners.map((partner) => (
                 <div
-                  key={partner.id}
                   className="w-full flex flex-row justify-between items-center p-2 bg-white rounded-xl"
+                  key={partner.id}
                 >
                   <div className="flex flex-row gap-2 w-full justify-start items-center">
                     <div className="w-16 h-16 overflow-clip flex justify-center items-center">
-                      <Image
-                        src={partner.profilePicture?.url || ProfilePlaceHolderOne} // Default image if not available
-                        alt="Profile Image"
-                        width={64}
-                        height={64}
-                        className="min-w-16 min-h-16 object-cover rounded-full"
-                      />
+                      {partner.profilePicture && (
+                        <Image
+                          src={
+                            partner.profilePicture?.url || ProfilePlaceHolderOne
+                          }
+                          alt="Profile Image"
+                          width={64}
+                          height={64}
+                          className="min-w-16 min-h-16 object-cover rounded-full"
+                        />
+                      )}
                     </div>
                     <div className="w-full flex-col justify-start items-start inline-flex">
                       <div className="text-[#0a1932] w-full text-[28px] font-semibold font-fredoka leading-tight">
-                        {/* {partner.username} */}
                         {partner.username
                           ? partner.username
                           : partner.email.split("@")[0]}
@@ -449,79 +444,80 @@ const PartnerList = ({ userId }) => {
                     </div>
                   </div>
                 </div>
-              </>
-            ))}
-  
-            <Dialog className="bg-[#EAEAF5] w-full rounded-[28px] claracontainer">
-              <DialogTrigger className="w-full">
-                <div
-                  className={`w-full min-h-[90px] flex flex-row justify-center items-center p-2 bg-white rounded-xl 
+              ))}
+            </>
+          ) : (
+            <p>No partner information available.</p>
+          )}
+          <Dialog className="bg-[#EAEAF5] w-full rounded-[28px] claracontainer">
+            <DialogTrigger className="w-full">
+              <div
+                className={`w-full min-h-[90px] flex flex-row justify-center items-center p-2 bg-white rounded-xl
                     ${
                       partners.length >= 5
                         ? "opacity-50 cursor-none pointer text-black pointer-events-none"
                         : "cursor-pointer text-red"
                     }`}
-                  onClick={() => {
-                    if (partners.length < 5) {
-                      // Your click handler code here
-                      console.log("New Profile Clicked");
-                    }
-                  }}
-                >
-                  <Plus className="text-red" /> New Profile
+                onClick={() => {
+                  if (partners.length < 5) {
+                    console.log("New Profile Clicked");
+                  }
+                }}
+              >
+                <Plus className="text-red" /> New Profile
+              </div>
+            </DialogTrigger>
+            <DialogContent className="bg-[#EAEAF5] min-h-[300px] pb-24 items-start scrollbar-hidden  max-w-[96%] max-h-[70%] overflow-scroll p-0 overflow-x-hidden rounded-[16px] w-full claracontainer">
+              <DialogHeader className="p-4">
+                <div className="flex flex-row justify-center items-center w-full">
+                  <DialogTitle>
+                    <div className="text-center">
+                      <span className="text-[#3f3a64] text-[24px] md:text-[36px] font-semibold font-fredoka capitalize  ">
+                        Connect{" "}
+                      </span>
+                      <span className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize  ">
+                        A Partner
+                      </span>
+                    </div>
+                  </DialogTitle>
                 </div>
-              </DialogTrigger>
-              <DialogContent className="bg-[#EAEAF5] min-h-[300px] pb-24 items-start scrollbar-hidden  max-w-[96%] max-h-[70%] overflow-scroll p-0 overflow-x-hidden rounded-[16px] w-full claracontainer">
-                <DialogHeader className="p-4">
-                  <div className="flex flex-row justify-center items-center w-full">
-                    <DialogTitle>
-                      <div className="text-center">
-                        <span className="text-[#3f3a64] text-[24px] md:text-[36px] font-semibold font-fredoka capitalize  ">
-                          Connect{" "}
-                        </span>
-                        <span className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize  ">
-                          A Partner
-                        </span>
-                      </div>
-                    </DialogTitle>
+              </DialogHeader>
+              <DialogDescription className="flex w-full px-4 claracontainer flex-col justify-start items-center">
+                <div className="flex flex-col md:flex-row px-2 md:px-6 max-w-[1000px] justify-center items-start claracontainer gap-4">
+                  <div className="flex w-full max-w-[20%]">
+                    <Image
+                      alt="Kindi"
+                      src={ConnectPartner}
+                      className="w-full h-auto"
+                    />
                   </div>
-                </DialogHeader>
-                <DialogDescription className="flex w-full px-4 claracontainer flex-col justify-start items-center">
-                  <div className="flex flex-col md:flex-row px-2 md:px-6 max-w-[1000px] justify-center items-start claracontainer gap-4">
-                    <div className="flex w-full max-w-[20%]">
-                      <Image
-                        alt="Kindi"
-                        src={ConnectPartner}
-                        className="w-full h-auto"
-                      />
+                  <div className="flex w-full flex-col justify-start items-start gap-4">
+                    <div className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize  ">
+                      Get $20
+                    </div>{" "}
+                    <div className="text-[#757575] text-[16px] md:text-2xl font-medium font-fredoka ">
+                      Invite a Partner or friends, family, coworkers,
+                      neighbours, and your favourite barista to Brushlink. Every
+                      time someone books and visits a new dentist through your
+                      link, you both get $20.
                     </div>
-                    <div className="flex w-full flex-col justify-start items-start gap-4">
-                      <div className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize  ">
-                        Get $20
-                      </div>{" "}
-                      <div className="text-[#757575] text-[16px] md:text-2xl font-medium font-fredoka ">
-                        Invite a Partner or friends, family, coworkers,
-                        neighbours, and your favourite barista to Brushlink. Every
-                        time someone books and visits a new dentist through your
-                        link, you both get $20.
-                      </div>
-                      <ConnectAccountForm />
-                    </div>
+                    <ConnectAccountForm />
                   </div>
-                </DialogDescription>
-              </DialogContent>
-            </Dialog>
-          </div>
-          <div className="flex flex-row justify-center w-full items-center">
-            <Image alt="Kindi" src={PartnerBulb} className="w-[24px] h-[24px]" />
-            <div className="text-black text-start clarabodyTwo">
-              You can add {5 - partners.length} more profiles{" "}
-            </div>
+                </div>
+              </DialogDescription>
+            </DialogContent>
+          </Dialog>
+        </div>
+        <div className="flex flex-row justify-center w-full items-center">
+          <Image alt="Kindi" src={PartnerBulb} className="w-[24px] h-[24px]" />
+          <div className="text-black text-start clarabodyTwo">
+            You can add {5 - partners.length} more profiles{" "}
           </div>
         </div>
-      </>
-    );
-  };
+      </div>
+    </>
+  );
+};
 
 const ConnectAccountForm = ({ userId }) => {
   const [email, setEmail] = useState("");
@@ -838,11 +834,11 @@ export default function ProfileSegments() {
                   </div>
                 </DialogHeader>
                 <DialogDescription className="flex w-full min-h-[300px] pb-24 px-4 claracontainer gap-4 flex-col justify-center items-start">
-                  {/* {user && hygraphUser ? (
+                  {user && hygraphUser ? (
                     <PartnerList userId={hygraphUser.id} />
                   ) : (
                     <></>
-                  )} */}
+                  )}
                 </DialogDescription>
                 <DialogFooter className="sticky rounded-t-[16px] bottom-0 m-0 w-full ">
                   <PopupFooter PrimaryText="Save and Continue" />

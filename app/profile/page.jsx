@@ -13,23 +13,23 @@ export default function ProfilePage() {
 }
 
 // export default function Profile() {
-//   const { user, loading } = useAuth();
-//   const router = useRouter();
-//   const [hygraphUser, setHygraphUser] = useState(null);
+  // const { user, loading } = useAuth();
+  // const router = useRouter();
+  // const [hygraphUser, setHygraphUser] = useState(null);
 
-//   useEffect(() => {
-//     if (!loading && !user) {
-//       router.push("/login"); // Redirect to login if not authenticated
-//     }
+  // useEffect(() => {
+  //   if (!loading && !user) {
+  //     router.push("/login"); // Redirect to login if not authenticated
+  //   }
 
-//     if (user && user.email) {
-//       getUserDataByEmail(user.email).then((data) => {
-//         setHygraphUser(data);
-//       });
-//     }
-//   }, [user, loading, router]);
+  //   if (user && user.email) {
+  //     getUserDataByEmail(user.email).then((data) => {
+  //       setHygraphUser(data);
+  //     });
+  //   }
+  // }, [user, loading, router]);
 
-//   if (loading) return <p>Loading...</p>;
+  // if (loading) return <p>Loading...</p>;
 
 //   return (
 //     <div className="p-4">

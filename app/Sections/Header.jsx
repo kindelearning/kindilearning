@@ -31,6 +31,9 @@ import { signOut, useSession } from "next-auth/react";
 import Loading from "../loading";
 import { useCart } from "../context/CartContext";
 import { GoogleTranslate } from "./GoogleTranslate";
+import { useAuth } from "../lib/useAuth";
+import { useRouter } from "next/navigation";
+import { getUserDataByEmail } from "@/lib/hygraph";
 
 const LocalNavitem = ({
   Link = "#",
@@ -142,23 +145,43 @@ const GET_ACCOUNT_BY_EMAIL = gql`
 const Header = () => {
   const { cart } = useCart();
   const pathname = usePathname();
+  const { user, loading } = useAuth();
+  const router = useRouter();
+  const [hygraphUser, setHygraphUser] = useState(null);
+
+  // Older logic with Next-auth
   const { data: session, status } = useSession();
   const [profileData, setProfileData] = useState(null);
 
-  useEffect(() => {
-    if (session && session.user) {
-      fetchUserData(session.user.email);
-    }
-  }, [session]);
+  // useEffect(() => {
+  //   if (session && session.user) {
+  //     fetchUserData(session.user.email);
+  //   }
+  // }, [session]);
 
-  const fetchUserData = async (email) => {
-    try {
-      const data = await client.request(GET_ACCOUNT_BY_EMAIL, { email });
-      setProfileData(data.account);
-    } catch (error) {
-      console.error("Error fetching profile data:", error);
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push("/login"); // Redirect to login if not authenticated
     }
-  };
+
+    if (user && user.email) {
+      getUserDataByEmail(user.email).then((data) => {
+        setHygraphUser(data);
+      });
+    }
+  }, [user, loading, router]);
+
+  if (loading) return <p>Loading...</p>;
+
+  // const fetchUserData = async (email) => {
+  //   try {
+  //     const data = await client.request(GET_ACCOUNT_BY_EMAIL, { email });
+  //     setProfileData(data.account);
+  //   } catch (error) {
+  //     console.error("Error fetching profile data:", error);
+  //   }
+  // };
 
   const handleSignOut = () => {
     signOut({
@@ -315,7 +338,7 @@ const Header = () => {
         </div>
 
         <div className="hidden lg:flex space-x-4">
-          {profileData ? (
+          {user && hygraphUser ? (
             <div className="flex flex-row justify-center items-center gap-2">
               <div className="flex z-12">
                 <Link
@@ -337,7 +360,7 @@ const Header = () => {
                 <div className="relative w-full flex justify-center items-center p-[2px] border-2 border-red hover:border-hoverRed rounded-full">
                   <div className="w-full h-full bg-white rounded-full  flex items-center justify-center">
                     <Image
-                      src={profileData.profilePicture?.url || ProfilePlaceHolderOne}
+                      src={hygraphUser.profilePicture?.url || ProfilePlaceHolderOne}
                       alt="User DP"
                       width={40}
                       height={40}
