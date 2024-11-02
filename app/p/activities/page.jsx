@@ -36,6 +36,20 @@ export default async function ActivitiesPage() {
   const [selectedSkilCategory, setSelectedSkilCategory] = useState([]); // State for selected SkillCategory
   const [loading, setLoading] = useState(true);
 
+  // Fetching all the activities form GraphCMS
+  useEffect(() => {
+    const fetchActivities = async () => {
+      const data = await getAllActivities();
+      console.log(data); // Log the activities
+      setActivities(data);
+      setFilteredActivities(data); // Initialize filtered activities with all activities
+      setLoading(false);
+    };
+
+    fetchActivities();
+  }, []);
+
+  
   // List of features options
   const featuresOptions = [
     "Emotional & Social Strength",
@@ -173,19 +187,6 @@ export default async function ActivitiesPage() {
       prev.includes(time) ? prev.filter((b) => b !== time) : [...prev, time]
     );
   };
-
-  // Fetching all the activities form GraphCMS
-  useEffect(() => {
-    const fetchActivities = async () => {
-      const data = await getAllActivities();
-      console.log(data); // Log the activities
-      setActivities(data);
-      setFilteredActivities(data); // Initialize filtered activities with all activities
-      setLoading(false);
-    };
-
-    fetchActivities();
-  }, []);
 
   // Function to handle filter change
   const handleDayChange = (day) => {

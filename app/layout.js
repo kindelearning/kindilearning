@@ -5,7 +5,6 @@ import { cn } from "@/lib/utils";
 import { SessionProvider } from "next-auth/react";
 import { CartProvider } from "./context/CartContext";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { Fredoka, Montserrat } from "next/font/google";
 import { UserProvider } from "./context/UserContext";
 
 const fontSans = FontSans({
@@ -13,28 +12,6 @@ const fontSans = FontSans({
   variable: "--font-sans",
 });
 
-const fredoka = Fredoka({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"], // Specify weights you want to include
-  display: "swap", // Optional: helps with font loading behavior
-});
-
-const montserrat = Montserrat({
-  subsets: ["latin"],
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"], // Specify weights and styles
-  display: "swap",
-  style: ["normal", "italic"], // Include italic if needed
-});
-
-// const myFont = localFont({
-//   src: "./path-to-your-font/font-file.ttf",
-//   display: "swap",
-// });
-
-// export const metadata = {
-//   title: "Kindi Education",
-//   description: "Built by ClaraVerse",
-// };
 
 export default function RootLayout({ children }) {
   return (
@@ -65,9 +42,7 @@ export default function RootLayout({ children }) {
         <body
           className={cn(
             "min-h-screen bg-background font-sans antialiased",
-            fontSans.variable,
-            fredoka.className,
-            montserrat.className
+            fontSans.variable
           )}
         >
           <UserProvider>

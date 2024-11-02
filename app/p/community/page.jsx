@@ -1,8 +1,10 @@
 "use client";
 
+import NotFound from "@/app/not-found";
 import { BlogCard } from "@/app/Widgets";
 import { Input } from "@/components/ui/input";
 import { getPublishedPosts } from "@/lib/hygraph";
+import { BlogThumb } from "@/public/Images";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -66,7 +68,9 @@ export default function Community() {
   };
 
   if (!blogs || blogs.length === 0) {
-    return <div>No blogs found!</div>;
+    return <div>
+      <NotFound />
+    </div>;
   }
 
   return (
@@ -114,7 +118,8 @@ export default function Community() {
                       <BlogCard
                         title={blog.blogTitle}
                         metsDesc={blog.metaDescription}
-                        image={blog.thumbnail.url}
+                        image={BlogThumb}
+                        // image={blog.thumbnail.url}
                       />
                     </article>
                   </Link>

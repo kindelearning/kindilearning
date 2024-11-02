@@ -45,7 +45,7 @@ function SearchInput({ value, onChange }) {
         </svg>
       </span>
       <Input
-        type="email"
+        type="text"
         placeholder="Search for products..."
         value={value}
         onChange={onChange}
@@ -120,14 +120,46 @@ const MobileProductCard = ({ image, title, price }) => {
   }, []);
 
   return (
-    <div className="flex min-w-[170px] max-w-[176px] md:min-w-full lg:min-w-full lg:w-full w-full flex-col rounded-[12px] items-center gap-2 lg:gap-4 bg-white hover:shadow-md">
+    // <div className="flex min-w-[170px] max-w-[176px] md:min-w-full lg:min-w-full lg:w-full w-full flex-col rounded-[12px] items-center gap-2 lg:gap-4 bg-white hover:shadow-md">
+    //   <div className="flex rounded-t-[12px] overflow-clip w-full">
+    //     <Image
+    //       src={image}
+    //       alt={title}
+    //       width={200}
+    //       height={200}
+    //       className="w-full hover:scale-110 duration-300 h-[160px] md:h-[260px] lg:h-[260px] rounded-t-[12px] object-cover"
+    //     />
+    //   </div>
+    //   <div className="claracontainer flex flex-col justify-start min-h-[100px] items-start  w-full gap-2">
+    //     <div className="flex items-center px-2 w-full justify-between gap-2">
+    //       <h1 className="flex text-[24px] leading-tight font-semibold text-[#0A1932] font-fredoka">
+    //         $ {price || "29"}
+    //       </h1>
+    //       <div className="flex flex-row justify-center gap-[2px] items-center">
+    //         <Image
+    //           alt="Kindi"
+    //           src={Ratings}
+    //           className="text-yellow-400 w-4 h-4"
+    //         />
+    //         <span className="text-right text-[#0a1932] clarabodyTwo">
+    //           {rating}+
+    //         </span>
+    //       </div>
+    //     </div>
+    //     <h3 className="text-start text-[#0a1932] clarabodyTwo w-full px-2 pb-4">
+    //       {/* {title} */}
+    //       {title.length > 50 ? `${title.slice(0, 44)}...` : title}
+    //     </h3>
+    //   </div>
+    // </div>
+    <div className="flex lg:max-w-[300px] min-w-[170px] max-w-[176px] lg:min-w-[240px] w-full flex-col rounded-[12px] items-center gap-2 lg:gap-4 bg-white hover:shadow-md">
       <div className="flex rounded-t-[12px] overflow-clip w-full">
         <Image
           src={image}
           alt={title}
           width={200}
           height={200}
-          className="w-full hover:scale-110 duration-300 h-[160px] md:h-[260px] lg:h-[260px] rounded-t-[12px] object-cover"
+          className="w-full hover:scale-110 duration-300 h-[160px] md:h-[220px] rounded-t-[12px] object-cover"
         />
       </div>
       <div className="claracontainer flex flex-col justify-start min-h-[100px] items-start  w-full gap-2">
@@ -146,9 +178,8 @@ const MobileProductCard = ({ image, title, price }) => {
             </span>
           </div>
         </div>
-        <h3 className="text-start text-[#0a1932] clarabodyTwo w-full px-2 pb-4">
-          {/* {title} */}
-          {title.length > 50 ? `${title.slice(0, 44)}...` : title}
+        <h3 className="text-start text-[#0a1932] clarabodyTwo font-medium w-full px-2 pb-4">
+          {title.length > 30 ? `${title.slice(0, 24)}...` : title}
         </h3>
       </div>
     </div>
