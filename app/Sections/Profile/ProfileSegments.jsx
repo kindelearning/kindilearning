@@ -44,7 +44,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import MyProfileRoutes from "./MyProfileRoutes";
-import { PopupFooter } from "..";
+import { DebitCard, PopupFooter } from "..";
 import { data } from "@/app/constant/menu";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
@@ -725,13 +725,14 @@ const CONNECT_PAYMENT_METHOD_TO_USER_MUTATION = `
 `;
 
 const GET_PAYMENT_METHODS_QUERY = `
-  query GetUserPaymentMethods($userId: ID!) {
+  query GetPaymentMethods($userId: ID!) {
     account(where: { id: $userId }) {
       myPaymentMethod {
         id
         name
         number
         expiryDate
+        cvv
       }
     }
   }
@@ -940,184 +941,42 @@ const PaymentMethodForm = ({ userId }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
+    <form
+      className="flex flex-col gap-2 w-full justify-center items-start"
+      onSubmit={handleSubmit}
+    >
+      <Input
         type="text"
         value={name}
         onChange={(e) => setName(e.target.value)}
         placeholder="Name"
         required
       />
-      <input
+      <Input
         type="text"
         value={number}
         onChange={(e) => setNumber(e.target.value)}
         placeholder="Card Number"
         required
       />
-      <input
+      <Input
         type="date"
         value={expiryDate}
         onChange={(e) => setExpiryDate(e.target.value)}
         required
       />
-      <input
+      <Input
         type="text"
         value={cvv}
         onChange={(e) => setCvv(e.target.value)}
         placeholder="CVV"
         required
       />
-      <button type="submit">Submit Payment Method</button>
+      <button className="clarabutton py-2 bg-red hover:bg-hoverRed text-white" type="submit">Submit Payment Method</button>
       {message && <p>{message}</p>}
     </form>
   );
 };
-
-// const PaymentMethodForm = () => {
-//   const { data: session } = useSession();
-//   const [name, setName] = useState("");
-//   const [number, setNumber] = useState("");
-//   const [expiryDate, setExpiryDate] = useState("");
-//   const [cvv, setCvv] = useState("");
-//   const [message, setMessage] = useState("");
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     const data = {
-//       name,
-//       number: parseInt(number), // Ensure the number is an integer
-//       expiryDate,
-//       cvv: parseInt(cvv), // Ensure CVV is an integer
-//     };
-
-//     await createAndPublishPaymentMethod(data);
-//   };
-
-//   const createAndPublishPaymentMethod = async (data) => {
-//     try {
-//       // Step 1: Create PaymentMethod
-//       const createResponse = await fetch(HYGRAPH_ENDPOINT, {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//           Authorization: `Bearer ${HYGRAPH_TOKEN}`,
-//         },
-//         body: JSON.stringify({
-//           query: `
-//               mutation CreatePaymentMethod($data: PaymentMethodCreateInput!) {
-//                 createPaymentMethod(data: $data) {
-//                   id
-//                 }
-//               }
-//             `,
-//           variables: { data },
-//         }),
-//       });
-
-//       const createResult = await createResponse.json();
-//       const paymentMethodId = createResult.data.createPaymentMethod.id;
-
-//       // Step 2: Publish PaymentMethod
-//       const publishResponse = await fetch(HYGRAPH_ENDPOINT, {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//           Authorization: `Bearer ${HYGRAPH_TOKEN}`,
-//         },
-//         body: JSON.stringify({
-//           query: `
-//               mutation PublishPaymentMethod($id: ID!) {
-//                 publishPaymentMethod(where: { id: $id }, to: PUBLISHED) {
-//                   id
-//                 }
-//               }
-//             `,
-//           variables: { id: paymentMethodId },
-//         }),
-//       });
-
-//       const publishResult = await publishResponse.json();
-//       if (publishResult.errors) {
-//         throw new Error("Error publishing payment method");
-//       }
-
-//       // Step 3: Update User Account with the new PaymentMethod
-//       const updateResponse = await fetch(HYGRAPH_ENDPOINT, {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//           Authorization: `Bearer ${HYGRAPH_TOKEN}`,
-//         },
-//         body: JSON.stringify({
-//           query: `
-//               mutation UpdateAccountWithPaymentMethod($accountId: ID!, $paymentMethodId: ID!) {
-//                 updateAccount(
-//                   where: { id: $accountId },
-//                   data: {
-//                     myPaymentMethod: {
-//                       connect: { id: $paymentMethodId }
-//                     }
-//                   }
-//                 ) {
-//                   id
-//                   myPaymentMethod {
-//                     id
-//                     name
-//                   }
-//                 }
-//               }
-//             `,
-//           variables: { accountId: session.user.id, paymentMethodId },
-//         }),
-//       });
-
-//       const updateResult = await updateResponse.json();
-//       if (updateResult.errors) {
-//         throw new Error("Error updating account with payment method");
-//       }
-
-//       setMessage("Payment method added and associated successfully!");
-//     } catch (error) {
-//       console.error("Error creating or associating payment method:", error);
-//       setMessage("Error adding payment method.");
-//     }
-//   };
-
-//   return (
-//     <form onSubmit={handleSubmit}>
-//       <input
-//         type="text"
-//         value={name}
-//         onChange={(e) => setName(e.target.value)}
-//         placeholder="Name"
-//         required
-//       />
-//       <input
-//         type="text"
-//         value={number}
-//         onChange={(e) => setNumber(e.target.value)}
-//         placeholder="Card Number"
-//         required
-//       />
-//       <input
-//         type="date"
-//         value={expiryDate}
-//         onChange={(e) => setExpiryDate(e.target.value)}
-//         required
-//       />
-//       <input
-//         type="text"
-//         value={cvv}
-//         onChange={(e) => setCvv(e.target.value)}
-//         placeholder="CVV"
-//         required
-//       />
-//       <button type="submit">Submit Payment Method</button>
-//       {message && <p>{message}</p>}
-//     </form>
-//   );
-// };
 
 const PaymentMethodsList = ({ userId }) => {
   const [paymentMethods, setPaymentMethods] = useState([]);
@@ -1146,7 +1005,8 @@ const PaymentMethodsList = ({ userId }) => {
         if (errors) {
           setError("Error fetching payment methods: " + errors[0].message);
         } else {
-          setPaymentMethods(data.account.myPaymentMethod);
+          console.log("Fetched payment methods:", data.account.myPaymentMethod); // Debugging line
+          setPaymentMethods(data.account.myPaymentMethod || []);
         }
       } catch (error) {
         setError("Error: " + error.message);
@@ -1163,19 +1023,18 @@ const PaymentMethodsList = ({ userId }) => {
 
   return (
     <div>
-      <h2>My Payment Methods</h2>
       {paymentMethods.length > 0 ? (
-        <ul>
+        <>
           {paymentMethods.map((method) => (
-            <li key={method.id}>
-              <p>Name on Card: {method.name}</p>
-              <p>
-                Card Number: **** **** **** {method.number.toString().slice(-4)}
-              </p>
-              <p>Expiry Date: {method.expiryDate}</p>
-            </li>
+            <div key={method.id}>
+              <DebitCard
+                cardName={method.name}
+                cardNumber={method.number}
+                expiary={method.expiryDate}
+              />
+            </div>
           ))}
-        </ul>
+        </>
       ) : (
         <p>No payment methods saved.</p>
       )}
@@ -1526,13 +1385,37 @@ export default function ProfileSegments() {
                       <p>id not found</p>
                     )}
                   </div>
-                  <div className="flex">
-                    {user && hygraphUser ? (
-                      <PaymentMethodForm userId={hygraphUser.id} />
-                    ) : (
-                      <p>id not found</p>
-                    )}
-                  </div>
+
+                  <Dialog className="bg-[#EAEAF5] w-full rounded-[28px] claracontainer">
+                    <DialogTrigger className="w-full">
+                      <Button className="bg-transparent text-black hover:bg-white hover:border-black ">
+                        Add new Payment Method
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="bg-[#EAEAF5] max-w-[96%] lg:max-w-[800px] max-h-[70%] overflow-scroll p-0 overflow-x-hidden rounded-[16px] w-full claracontainer">
+                      <DialogHeader className="p-4">
+                        <div className="flex flex-row justify-center items-center w-full">
+                          <DialogTitle>
+                            <div className="text-center">
+                              <span className="text-[#3f3a64] text-[24px] md:text-[36px] font-semibold font-fredoka capitalize  ">
+                                Add New{" "}
+                              </span>
+                              <span className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize  ">
+                                Payment Method
+                              </span>
+                            </div>
+                          </DialogTitle>
+                        </div>
+                      </DialogHeader>
+                      <DialogDescription className="flex w-full px-4 pb-12 claracontainer flex-col justify-start items-center">
+                        {user && hygraphUser ? (
+                          <PaymentMethodForm userId={hygraphUser.id} />
+                        ) : (
+                          <p>id not found</p>
+                        )}
+                      </DialogDescription>
+                    </DialogContent>
+                  </Dialog>
                 </DialogDescription>
                 <DialogFooter className="sticky bottom-0 m-0 w-full bg-[#ffffff]">
                   <DialogClose className="w-full">

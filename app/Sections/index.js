@@ -15,6 +15,8 @@ import Newsletter from "./Global/Newsletter";
 import PopupFooter from "./Global/PopupFooter";
 import EditForm from "./Profile/EditForm";
 import ImageInput from "./Profile/ImageInput";
+// import DebitCardBackground from "./Profile/DebitCardBackground";
+import DebitCard from "./Profile/DebitCardBackground";
 
 import BottomNavigation from "./Global/BottomNavigation";
 import KindiCalendar from "./Schedule/KindiCalendar";
@@ -22,11 +24,13 @@ import DynamicCardMobile from "./Global/DynamicCardMobile";
 
 export {
   BottomNavigation,
-  PopupFooter,DynamicCardMobile,
+  PopupFooter,
+  DynamicCardMobile,
   ImageInput,
   EditForm,
   PromotionalSection,
   OurPricing,
+  DebitCard,
   KindiCalendar,
   ProfileSection,
   Footer,
