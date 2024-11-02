@@ -1,17 +1,18 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { googleSignIn, signUpWithEmail } from "@/app/firebase/auth";
+import { signUpWithEmail, signUpWithGoogle } from "@/app/firebase/auth";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
 
   const handleGoogleSignUp = async () => {
     try {
-      const user = await googleSignIn();
+      const user = await signUpWithGoogle();
       console.log("Google Sign-Up Successful:", user);
       // Optional: Redirect user to dashboard or desired page
     } catch (error) {
@@ -21,13 +22,15 @@ const SignUp = () => {
 
   const handleSignUp = async (e) => {
     e.preventDefault();
-    setError("");
 
-    try {
-      await signUpWithEmail(email, password);
-      //   router.push("/p"); // Redirect to activity page or any desired page
-    } catch (error) {
-      setError(error.message);
+    const response = await signUpWithEmail(email, password);
+
+    if (response.success) {
+      setMessage("User created successfully!");
+      setError("");
+    } else {
+      setError(response.message);
+      setMessage("");
     }
   };
 
@@ -55,7 +58,8 @@ const SignUp = () => {
           Sign Up
         </button>
       </form>
-      {error && <p className="text-red-500">{error}</p>}
+      {message && <p style={{ color: "green" }}>{message}</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}{" "}
       <button onClick={handleGoogleSignUp} className="google-sign-in-btn">
         Sign up with Google
       </button>

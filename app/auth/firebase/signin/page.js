@@ -1,33 +1,64 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { googleSignIn, loginWithEmail } from "@/app/firebase/auth";
+import { loginWithEmail, signUpWithGoogle } from "@/app/firebase/auth"; // Ensure this export exists
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
   const router = useRouter();
 
-  const handleGoogleSignUp = async () => {
-    try {
-      const user = await googleSignIn();
-      console.log("Google Sign-Up Successful:", user);
-      // Optional: Redirect user to dashboard or desired page
-    } catch (error) {
-      console.error("Google Sign-Up Failed:", error);
+  const handleGoogleSignIn = async () => {
+    setMessage(""); // Clear previous messages
+    setError(""); // Clear previous errors
+
+    const response = await signUpWithGoogle();
+
+    if (response.success) {
+      const { email, name } = response.user;
+
+      // Log user data
+      console.log("User Data from Google:", { email, name });
+
+      try {
+        // Check if user already exists in Hygraph
+        const userExists = await checkIfUserExists(email); // Implement this function
+        if (!userExists) {
+          // Create the user in Hygraph
+          const createUserResponse = await createUserInHygraph(
+            email,
+            name,
+            "GoogleSignIn"
+          );
+          console.log("Create User Response:", createUserResponse); // Log response to check for errors
+        } else {
+          setMessage("User already exists.");
+        }
+
+        // Open home page in a new tab
+        window.open("/home", "_blank");
+      } catch (error) {
+        console.error("Error during user check or creation:", error);
+        setError("An error occurred during sign-up.");
+      }
+    } else {
+      alert(response.message || "An error occurred during Google sign-in.");
     }
   };
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setError("");
+    setError(""); // Clear previous errors
+    setMessage(""); // Clear previous messages
 
     try {
       await loginWithEmail(email, password);
+      setMessage("Login successful! Redirecting...");
       router.push("/p/activity"); // Redirect to activity page or any desired page
     } catch (error) {
-      setError(error.message);
+      setError(error.message || "An error occurred during login.");
     }
   };
 
@@ -55,9 +86,13 @@ const Login = () => {
           Log In
         </button>
       </form>
-      {error && <p className="text-red-500">{error}</p>}
-      <button onClick={handleGoogleSignUp} className="google-sign-in-btn">
-        Sign up with Google
+      {message && <p style={{ color: "green" }}>{message}</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}{" "}
+      <button
+        onClick={handleGoogleSignIn}
+        className="clara-button google-signin-button"
+      >
+        Sign in with Google
       </button>
     </div>
   );

@@ -1,7 +1,6 @@
-// app/firebase/firebaseConfig.js
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
 
+// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyBjI2HxUtlccYI0qMg3fGfCh7_cSAczvHk",
   authDomain: "kindi01.firebaseapp.com",
@@ -12,5 +11,7 @@ const firebaseConfig = {
   measurementId: "G-53GKJZ9PPV",
 };
 
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
+
+export default app;
