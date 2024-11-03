@@ -22,10 +22,12 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import NotFound from "@/app/not-found";
 import { ProductImages } from "@/app/shop";
-import { getActivityById } from "@/lib/hygraph";
+import { getActivityById, getUserDataByEmail } from "@/lib/hygraph";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/app/lib/useAuth";
 
 /**
  * @Main_account_Credentials
@@ -183,6 +185,19 @@ const DynamicMarkActivityCompleteComponent = ({ activityId }) => {
   const { data: session, status } = useSession();
   const [profileData, setProfileData] = useState(null);
 
+
+  const { user, loading } = useAuth();
+  const router = useRouter();
+  const [hygraphUser, setHygraphUser] = useState(null);
+
+  useEffect(() => {
+
+    if (user && user.email) {
+      getUserDataByEmail(user.email).then((data) => {
+        setHygraphUser(data);
+      });
+    }
+  }, [user, loading, router]);
   const fetchUserData = async (email) => {
     try {
       const data = await client.request(GET_ACCOUNT_BY_EMAIL, { email });
@@ -204,10 +219,10 @@ const DynamicMarkActivityCompleteComponent = ({ activityId }) => {
 
   return (
     <>
-      {profileData ? (
+      {user && hygraphUser ? (
         <ActivityCompleteButton
           activityId={activityId}
-          userId={profileData.id}
+          userId={hygraphUser.id}
         />
       ) : (
         <Link

@@ -21,7 +21,9 @@ import Image from "next/image";
 import { GraphQLClient, gql } from "graphql-request";
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-import { getPublishedMileStone } from "@/lib/hygraph";
+import { getPublishedMileStone, getUserDataByEmail } from "@/lib/hygraph";
+import { useAuth } from "@/app/lib/useAuth";
+import { useRouter } from "next/navigation";
 
 /**
  * @Main_account_Credentials
@@ -222,6 +224,18 @@ const CurvePath = ({ milestones = [] }) => {
   const [currentDate, setCurrentDate] = useState("");
   const [message, setMessage] = useState("");
 
+  const { user, loading } = useAuth();
+  const router = useRouter();
+  const [hygraphUser, setHygraphUser] = useState(null);
+
+  useEffect(() => {
+    if (user && user.email) {
+      getUserDataByEmail(user.email).then((data) => {
+        setHygraphUser(data);
+      });
+    }
+  }, [user, loading, router]);
+
   // console.log("profileData", profileData);
   useEffect(() => {
     if (session && session.user) {
@@ -345,14 +359,14 @@ const CurvePath = ({ milestones = [] }) => {
                   </Button>
                 </div>
                 <div className="w-fit flex flex-row justify-between items-center gap-4 px-4">
-                  {profileData ? (
+                  {user && hygraphUser ? (
                     <MilestoneCompleteButton
                       milestoneId={milestone.id}
-                      userId={profileData.id}
+                      userId={hygraphUser.id}
                       // userId="cm25lil0t0zvz07pfuuizj473"
                     />
                   ) : (
-                    <p>Id not found</p>
+                    <Button className="clarabutton">Login First!</Button>
                   )}
                 </div>
               </section>
@@ -421,6 +435,18 @@ const CurvePath = ({ milestones = [] }) => {
 export default function MileStone() {
   const { data: session, status } = useSession();
   const [profileData, setProfileData] = useState(null);
+  const { user, loading } = useAuth();
+  const router = useRouter();
+  const [hygraphUser, setHygraphUser] = useState(null);
+
+  useEffect(() => {
+
+    if (user && user.email) {
+      getUserDataByEmail(user.email).then((data) => {
+        setHygraphUser(data);
+      });
+    }
+  }, [user, loading, router]);
 
   useEffect(() => {
     if (session && session.user) {
@@ -449,10 +475,10 @@ export default function MileStone() {
                 src={progressImage01}
                 className="cursor-pointer w-20 object-cover rounded-full border-2 border-white -mr-[32px] h-20"
               />
-              {profileData ? (
+              {user && hygraphUser ? (
                 <Image
                   alt="Kindi"
-                  src={profileData.profilePicture?.url || ProfilePlaceHolderOne}
+                  src={hygraphUser.profilePicture?.url || ProfilePlaceHolderOne}
                   width={100}
                   height={100}
                   className="cursor-pointer w-28 h-28 min-w-[100px] min-h-[100px] border-gradient-to-r from-pink-500 to-yellow-500 border-2 border-red rounded-full z-10"
@@ -472,9 +498,9 @@ export default function MileStone() {
                 className="cursor-pointer w-20 -ml-[32px] h-20"
               />
             </div>
-            {profileData ? (
+            {hygraphUser ? (
               <div className="w-full text-center text-[#0a1932] text-[40px] font-semibold font-fredoka leading-normal">
-                {profileData.name}
+                {hygraphUser.name}
               </div>
             ) : (
               <div className="w-full text-center text-[#0a1932] text-[40px] font-semibold font-fredoka leading-normal">
