@@ -1,11 +1,15 @@
 "use client";
-import { GET_ACCOUNT_BY_EMAIL } from "@/lib/hygraph";
+import { GET_ACCOUNT_BY_EMAIL, getUserDataByEmail } from "@/lib/hygraph";
 import { Confidence } from "@/public/Icons";
 import { GraphQLClient, gql } from "graphql-request";
 import { KindiHeart, ScheduleEvent } from "@/public/Images";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import Loading from "@/app/loading";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/app/lib/useAuth";
+import Link from "next/link";
 
 const icons = [
   {
@@ -35,6 +39,74 @@ const client = new GraphQLClient(HYGRAPH_ENDPOINT, {
     Authorization: `Bearer ${HYGRAPH_TOKEN}`,
   },
 });
+
+const MyCompletedActivity = ({ userID }) => {
+  const [activities, setActivities] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  const fetchActivities = async () => {
+    const query = `
+      query GetUserActivities($relationalFirst: Int, $where: AccountWhereUniqueInput!) {
+        values: account(where: $where) {
+          id
+          username
+          myActivity(first: $relationalFirst) {
+            id
+            title
+            documentInStages(includeCurrent: true) {
+              id
+              stage
+              updatedAt
+              publishedAt
+            }
+          }
+        }
+      }
+    `;
+
+    const variables = {
+      relationalFirst: 10, // Adjust this value based on your needs
+      where: { id: userID }, // Replace with the current user's ID
+    };
+
+    try {
+      const response = await fetch(HYGRAPH_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${HYGRAPH_TOKEN}`,
+        },
+        body: JSON.stringify({ query, variables }),
+      });
+
+      const result = await response.json();
+
+      if (result.errors) {
+        throw new Error(result.errors[0].message);
+      } else {
+        setActivities(result.data.values.myActivity);
+      }
+    } catch (error) {
+      setError("Error fetching activities: " + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchActivities();
+  }, [userID]);
+
+  if (loading) return <p> loading...</p>;
+  if (error) return <pre>{JSON.stringify({ error }, null, 2)}</pre>;
+  console.log("my activity", activities);
+
+  // Convert the activities data to JSON format
+  const jsonOutput = JSON.stringify(activities, null, 2); // Pretty format for readability
+
+  return <pre>{jsonOutput}</pre>; // Display JSON data
+};
 
 const getAllActivities = async () => {
   const query = `
@@ -98,15 +170,6 @@ const getAllActivities = async () => {
     return [];
   }
 };
-
-function getDaysInMonth(month, year) {
-  return new Date(year, month + 1, 0).getDate();
-}
-
-// Helper function to get the first day of the month
-function getFirstDayOfMonth(month, year) {
-  return new Date(year, month, 1).getDay();
-}
 
 export default function NewCalendar() {
   const { data: session } = useSession();
@@ -422,6 +485,11 @@ export default function NewCalendar() {
           </svg>
         </button>
       </div>
+      {/* {user && hygraphUser ? (
+        <MyCompletedActivity userID={hygraphUser.id} />
+      ) : (
+        <p>id not found</p>
+      )} */}
 
       {/* Calendar Top Weekdays  */}
       <div className="flex-col flex lg:grid font-fredoka p-0 lg:p-4 bg-[#eaeaf5] lg:bg-[#DCDCE8] rounded-[20px] w-full grid-cols-7 gap-0 text-center">
@@ -543,6 +611,9 @@ export default function NewCalendar() {
                           </div>
                         </div>
                       </div>
+                      {/* <Link href="/p/activities" target="_blank">
+                        Check Now
+                      </Link> */}
                     </>
                   )}
                 </div>

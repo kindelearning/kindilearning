@@ -1,11 +1,15 @@
 "use client";
-import { GET_ACCOUNT_BY_EMAIL } from "@/lib/hygraph";
+import { GET_ACCOUNT_BY_EMAIL, getUserDataByEmail } from "@/lib/hygraph";
 import { Confidence } from "@/public/Icons";
 import { GraphQLClient, gql } from "graphql-request";
 import { KindiHeart, ScheduleEvent } from "@/public/Images";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { useAuth } from "@/app/lib/useAuth";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 const icons = [
   {
@@ -35,6 +39,139 @@ const client = new GraphQLClient(HYGRAPH_ENDPOINT, {
     Authorization: `Bearer ${HYGRAPH_TOKEN}`,
   },
 });
+
+// const MyCompletedActivity = ({ userID }) => {
+//   const [activities, setActivities] = useState([]);
+//   const [loading, setLoading] = useState(true);
+//   const [error, setError] = useState("");
+
+//   const fetchActivities = async () => {
+//     const query = `
+//       query GetUserActivities($relationalFirst: Int, $where: AccountWhereUniqueInput!) {
+//         values: account(where: $where) {
+//           id
+//           username
+//           myActivity(first: $relationalFirst) {
+//             id
+//             title
+//             documentInStages(includeCurrent: true) {
+//               id
+//               stage
+//               updatedAt
+//               publishedAt
+//             }
+//           }
+//         }
+//       }
+//     `;
+
+//     const variables = {
+//       relationalFirst: 10, // Adjust this value based on your needs
+//       where: { id: userID }, // Replace with the current user's ID
+//     };
+
+//     try {
+//       const response = await fetch(HYGRAPH_ENDPOINT, {
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json",
+//           Authorization: `Bearer ${HYGRAPH_TOKEN}`,
+//         },
+//         body: JSON.stringify({ query, variables }),
+//       });
+
+//       const result = await response.json();
+
+//       if (result.errors) {
+//         throw new Error(result.errors[0].message);
+//       } else {
+//         // setActivities(result.data.values.myActivity);
+//         setActivities(result.data.values.myActivity.map(activity => activity.id));
+
+//       }
+//     } catch (error) {
+//       setError("Error fetching activities: " + error.message);
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   useEffect(() => {
+//     fetchActivities();
+//   }, [userID]);
+
+//   if (loading) return <p> loading...</p>;
+//   if (error) return <pre>{JSON.stringify({ error }, null, 2)}</pre>;
+//   console.log("my activity", activities);
+
+//   // Convert the activities data to JSON format
+//   const jsonOutput = JSON.stringify(activities, null, 2); // Pretty format for readability
+
+//   return <pre>{jsonOutput}</pre>; // Display JSON data
+// };
+
+const MyCompletedActivity = ({ userID, onCompletedActivitiesFetched }) => {
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  const fetchActivities = async () => {
+    const query = `
+      query GetUserActivities($relationalFirst: Int, $where: AccountWhereUniqueInput!) {
+        values: account(where: $where) {
+          myActivity(first: $relationalFirst) {
+            id
+          }
+        }
+      }
+    `;
+
+    const variables = { relationalFirst: 10, where: { id: userID } };
+
+    try {
+      const response = await fetch(HYGRAPH_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${HYGRAPH_TOKEN}`,
+        },
+        body: JSON.stringify({ query, variables }),
+      });
+
+      const result = await response.json();
+      if (result.errors) {
+        throw new Error(result.errors[0].message);
+      } else {
+        // Extract IDs and pass them to the parent via callback
+        const activityIds = result.data.values.myActivity.map(
+          (activity) => activity.id
+        );
+        onCompletedActivitiesFetched(activityIds); // Pass IDs to parent
+      }
+    } catch (error) {
+      setError("Error fetching activities: " + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchActivities();
+  }, [userID]);
+
+  if (loading) return null;
+  if (error) return <pre>{JSON.stringify({ error }, null, 2)}</pre>;
+  return null; // This component now only fetches data, no need to render anything
+};
+
+// const StatusButton = ({ eventId, completedIds }) => {
+//   const isCompleted = completedIds.includes(eventId);
+
+//   return (
+//     <button className="clarabutton">
+//       {isCompleted ? "Completed" : "Let's Start"}
+//     </button>
+//   );
+// };
 
 const getAllActivities = async () => {
   const query = `
@@ -99,11 +236,23 @@ const getAllActivities = async () => {
   }
 };
 
-
 export default function Calendar() {
+  // const [completedIds, setCompletedIds] = useState([]);
   const { data: session } = useSession();
   const [currentDate, setCurrentDate] = useState(new Date());
   const today = new Date();
+
+  const { user, loading } = useAuth();
+  const router = useRouter();
+  const [hygraphUser, setHygraphUser] = useState(null);
+
+  useEffect(() => {
+    if (user && user.email) {
+      getUserDataByEmail(user.email).then((data) => {
+        setHygraphUser(data);
+      });
+    }
+  }, [user, loading, router]);
 
   // Initial loading of events from localStorage
   const [events, setEvents] = useState(() => {
@@ -324,6 +473,12 @@ export default function Calendar() {
         </button>
       </div>
 
+      {/* {user && hygraphUser ? (
+        <MyCompletedActivity userID={hygraphUser.id} />
+      ) : (
+        <p>User not found</p>
+      )} */}
+
       {/* Calendar Top Weekdays  */}
       <div className="flex-col flex lg:grid font-fredoka p-0 lg:p-4 bg-[#eaeaf5] lg:bg-[#DCDCE8] rounded-[20px] w-full grid-cols-7 gap-0 text-center">
         {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
@@ -374,7 +529,9 @@ export default function Calendar() {
 
               {/* Show events if they exist */}
               {eventsForDay.map((event, index) => (
-                <div
+                <Link
+                  href={`/p/activities/${event.id}`}
+                  target="_blank"
                   key={event.id}
                   draggable
                   className="w-full bg-white shadow-md rounded-lg p-2 text-sm"
@@ -411,13 +568,13 @@ export default function Calendar() {
                           <div className="flex w-full justify-between flex-col items-start">
                             <div className="flex gap-1 items-center ">
                               <div className="text-[#0a1932] text-[12px] leading-[14px] lg:text-[9px] lg:leading-[10px] font-semibold font-fredoka">
-                                {/* {event.focusAge} */}
-                                Tag 1
+                                {event.focusAge || 'Toddles'}
+                                {/* Tag 1 */}
                               </div>
                               <span className="flex items-center">•</span>
                               <div className="text-[#0a1932] text-[12px] leading-[14px] lg:text-[9px] lg:leading-[10px] font-semibold font-fredoka">
-                                {/* {event.themeName} */}
-                                Tag 2
+                                {event.themeName || "Winter"}
+                                {/* Tag 2 */}
                               </div>
                             </div>
                             <div className="flex flex-row justify-start items-center  w-full gap-[4px]">
@@ -438,9 +595,10 @@ export default function Calendar() {
                           </div>
                         </div>
                       </div>
+                      {/* <StatusButton eventId={event.id}/> */}
                     </>
                   )}
-                </div>
+                </Link>
               ))}
             </div>
           );

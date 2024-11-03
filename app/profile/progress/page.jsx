@@ -15,7 +15,9 @@ import { useSession } from "next-auth/react";
 import Loading from "@/app/loading";
 import Head from "next/head";
 import { progressData } from "@/app/constant/menu";
-import { getAllActivities } from "@/lib/hygraph";
+import { getAllActivities, getUserDataByEmail } from "@/lib/hygraph";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/app/lib/useAuth";
 
 const HYGRAPH_ENDPOINT =
   "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";
@@ -153,9 +155,15 @@ const MyActivity = ({ userID }) => {
     fetchActivities();
   }, [userID]);
 
-  if (loading) return <p><Loading /></p>;
+  if (loading)
+    return (
+      <p>
+        <Loading />
+      </p>
+    );
   if (error) return <p>{error}</p>;
   const CompletedActivity = activities.length;
+  console.log("my activity", activities);
   return (
     <>
       <SubBagde
@@ -173,22 +181,34 @@ export default async function ProgressSection() {
   const [profileData, setProfileData] = useState(null);
   const [activities, setActivities] = useState([]); //Getting all the activities from Hygraph
 
-  // Fetching all the activities form GraphCMS
-  useEffect(() => {
-    const fetchActivities = async () => {
-      const data = await getAllActivities();
-      console.log("Total Activity", data); // Log the activities
-      setActivities(data);
-    };
-
-    fetchActivities();
-  }, []);
+  const { user, loading } = useAuth();
+  const router = useRouter();
+  const [hygraphUser, setHygraphUser] = useState(null);
 
   useEffect(() => {
-    if (session && session.user) {
-      fetchUserData(session.user.email);
+    if (user && user.email) {
+      getUserDataByEmail(user.email).then((data) => {
+        setHygraphUser(data);
+      });
     }
-  }, [session]);
+  }, [user, loading, router]);
+
+  // Fetching all the activities form GraphCMS
+  // useEffect(() => {
+  //   const fetchActivities = async () => {
+  //     const data = await getAllActivities();
+  //     console.log("Total Activity", data); // Log the activities
+  //     setActivities(data);
+  //   };
+
+  //   fetchActivities();
+  // }, []);
+
+  // useEffect(() => {
+  //   if (session && session.user) {
+  //     fetchUserData(session.user.email);
+  //   }
+  // }, [session]);
 
   const fetchUserData = async (email) => {
     try {
@@ -238,10 +258,10 @@ export default async function ProgressSection() {
               src={progressImage01}
               className="cursor-pointer w-20 -mr-[32px] h-20"
             />
-            {profileData ? (
+            {user && hygraphUser ? (
               <Image
                 alt="Kindi"
-                src={profileData.profilePicture?.url || ProfilePlaceHolderOne}
+                src={hygraphUser.profilePicture?.url || ProfilePlaceHolderOne}
                 width={100}
                 height={100}
                 className="cursor-pointer w-30 h-30 border-gradient-to-r from-pink-500 to-yellow-500 border-2 border-red rounded-full z-10"
@@ -264,7 +284,7 @@ export default async function ProgressSection() {
           <>
             <div className="flex gap-2 px-4 lg:px-0 overflow-x-scroll scrollbar-hidden w-full">
               <SubBagde
-                number={activities.length || "20"}
+                number={activities.length || "20+"}
                 title="Total Activities"
                 backgroundColor="#019acf"
                 borderColor="#a4d2ea"
@@ -280,8 +300,8 @@ export default async function ProgressSection() {
                 backgroundColor="#f05c5c"
                 borderColor="#ecc0c8"
               />
-              {profileData ? (
-                <MyActivity userID={profileData.id} />
+              {hygraphUser ? (
+                <MyActivity userID={hygraphUser.id} />
               ) : (
                 <p>Not Found...</p>
               )}
