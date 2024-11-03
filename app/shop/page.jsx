@@ -44,7 +44,7 @@ function SearchInput({ value, onChange }) {
           />
         </svg>
       </span>
-      <Input
+      <input
         type="text"
         placeholder="Search for products..."
         value={value}
@@ -70,7 +70,7 @@ const ProductCard = ({ image, title, price }) => {
 
   return (
     // <div className="flex max-w-[300px] min-w-[240px] w-full flex-col rounded-[24px] items-center gap-4 bg-white  hover:shadow-md">
-    <div className="flex min-w-[170px] max-w-[176px] md:min-w-full lg:min-w-full lg:w-full w-full flex-col rounded-[12px] items-center gap-2 lg:gap-4 bg-white hover:shadow-md">
+    <div className="flex min-w-[170px] max-w-[176px] md:min-w-full lg:min-w-full lg:w-full w-full flex-col rounded-[12px] lg:rounded-[24px] items-center gap-2 lg:gap-4 bg-white hover:shadow-md">
       <div className="flex rounded-t-[24px] overflow-clip w-full">
         <Image
           src={image}
@@ -104,7 +104,6 @@ const ProductCard = ({ image, title, price }) => {
     </div>
   );
 };
-
 const MobileProductCard = ({ image, title, price }) => {
   const [rating, setRating] = useState(0);
   useEffect(() => {
@@ -178,7 +177,7 @@ const MobileProductCard = ({ image, title, price }) => {
             </span>
           </div>
         </div>
-        <h3 className="text-start text-[#0a1932] clarabodyTwo font-medium w-full px-2 pb-4">
+        <h3 className="text-start text-[#0a1932] clarabodyTwo font-medium w-full px-2 pb-4 lg:pb-0">
           {title.length > 30 ? `${title.slice(0, 24)}...` : title}
         </h3>
       </div>
@@ -199,6 +198,25 @@ export default async function ShopPage() {
   const [selectedToyType, setSelectedToyType] = useState("");
   const searchInputRef = useRef(null);
 
+
+
+   // Function to handle Search Operation
+   const handleSearchChange = (event) => {
+    const term = event.target.value.toLowerCase();
+    setSearchTerm(term);
+
+    const filtered = products.filter((product) =>
+      product.title.toLowerCase().includes(term)
+    );
+
+    // Log the search term and filtered results
+    console.log("Search Term:", term);
+    console.log("Filtered Products:", filtered);
+
+    setFilteredProducts(filtered);
+  };
+
+  
   // Hook to fetch All products from Hygraph CMS
   useEffect(() => {
     const fetchProducts = async () => {
@@ -263,21 +281,7 @@ export default async function ShopPage() {
     sortProducts(value);
   };
 
-  // Function to handle Search Operation
-  const handleSearchChange = (event) => {
-    const term = event.target.value.toLowerCase();
-    setSearchTerm(term);
-
-    const filtered = products.filter((product) =>
-      product.title.toLowerCase().includes(term)
-    );
-
-    // Log the search term and filtered results
-    console.log("Search Term:", term);
-    console.log("Filtered Products:", filtered);
-
-    setFilteredProducts(filtered);
-  };
+ 
 
   // List of Skills Options Based Filters options
   const skillCategoryOptions = [
@@ -669,7 +673,7 @@ export default async function ShopPage() {
                 {/* Search Input Row */}
                 <div className="flex w-full px-4 lg:px-0">
                   <SearchInput
-                    ref={searchInputRef}
+                    // ref={searchInputRef}
                     value={searchTerm}
                     onChange={handleSearchChange}
                   />
@@ -925,7 +929,6 @@ export default async function ShopPage() {
                 </div>
               </div>
               {/* Display Filtered Products First */}
-
               {(selectedCategory &&
                 selectedMaterial &&
                 selectedFeature &&
@@ -933,7 +936,7 @@ export default async function ShopPage() {
                 selectedToyType &&
                 filteredProducts.length > 0) ||
                 (!shouldShowAllProducts && (
-                  <>
+                  <div className="w-full flex flex-col gap-2 justify-start items-start">
                     <div className="flex justify-between items-center lg:px-0 px-4 w-full">
                       <span className="w-[max-content] text-[#0A1932] font-fredoka tex-[24px] font-semibold">
                         Search Results
@@ -952,7 +955,7 @@ export default async function ShopPage() {
                         </div>
                       ))}
                     </div>
-                  </>
+                  </div>
                 ))}
               {/* Message if no matching products found */}
               {searchTerm && filteredProducts.length === 0 && (
@@ -961,14 +964,46 @@ export default async function ShopPage() {
                   like:
                 </div>
               )}
+
+              {/* Render filtered products */}
+              <div>
+                <div className="w-full lg:grid lg:grid-cols-3 pl-4 md:pl-2 lg:px-0 flex flex-row overflow-x-scroll scrollbar-hidden gap-2">
+                  {filteredProducts.length > 0 ? (
+                    filteredProducts.map((product) => (
+                      <MobileProductCard
+                        key={product.id}
+                        image={product.thumbnail.url}
+                        title={product.title}
+                        price={product.salePrice}
+                      />
+                    ))
+                  ) : (
+                    <>
+                      <div className="w-full lg:grid lg:grid-cols-3 pl-4 md:pl-2 lg:px-0 flex flex-row overflow-x-scroll scrollbar-hidden gap-2">
+                        {sortedProducts.map((product) => (
+                          <div key={product.id} className="border">
+                            <Link href={`/shop/${product.id}`}>
+                              <ProductCard
+                                image={product.thumbnail.url}
+                                title={product.title}
+                                price={product.salePrice}
+                              />
+                            </Link>
+                          </div>
+                        ))}
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+
               {/* Display All Products Below */}
-              <div className="flex flex-col justify-start items-start gap-2 md:gap-4 w-full">
+              {/* <div className="flex flex-col justify-start items-start gap-2 md:gap-4 w-full">
                 <div className="flex justify-between items-center px-4 lg:px-0 w-full">
                   <span className="w-[max-content] text-[#0A1932] font-fredoka tex-[24px] font-semibold">
                     Trending Products #KindiLearning
                   </span>
                 </div>
-                {/* Display All Products Below if test no search term or filtered products */}
                 {(shouldShowAllProducts || filteredProducts.length <= 1) && (
                   // <div className="w-full lg:grid lg:grid-cols-3 pl-4 md:pl-2 lg:px-0 grid grid-cols-2 overflow-x-scroll scrollbar-hidden gap-2">
                   <div className="w-full lg:grid lg:grid-cols-3 pl-4 md:pl-2 lg:px-0 flex flex-row overflow-x-scroll scrollbar-hidden gap-2">
@@ -985,7 +1020,7 @@ export default async function ShopPage() {
                     ))}
                   </div>
                 )}
-              </div>
+              </div> */}
               <div className="flex flex-col justify-start items-start gap-2 md:gap-4 w-full">
                 <div className="flex justify-between items-center px-4 lg:px-0 w-full">
                   <span className="w-[max-content] text-[#0A1932] font-fredoka tex-[24px] font-semibold">
