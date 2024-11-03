@@ -30,7 +30,13 @@ import Loading from "@/app/loading";
 import Head from "next/head";
 import AchievementBadge from "@/app/Sections/Profile/AchievementBadge";
 import { AcheievemnetData } from "@/app/constant/menu";
-import { fetchBadges, getPublishedBadge } from "@/lib/hygraph";
+import {
+  fetchBadges,
+  getPublishedBadge,
+  getUserDataByEmail,
+} from "@/lib/hygraph";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/app/lib/useAuth";
 
 /**
  * @Main_account
@@ -135,7 +141,12 @@ const MyLevel = ({ userID }) => {
     }
   };
 
-  if (loading) return <p><Loading /></p>;
+  if (loading)
+    return (
+      <p>
+        <Loading />
+      </p>
+    );
   if (error) return <p>{error}</p>;
 
   const userLevel = getUserLevel(activities.length);
@@ -402,22 +413,34 @@ export default async function Achievement() {
   const { data: session, status } = useSession();
   const [profileData, setProfileData] = useState(null);
 
+  const { user, loading } = useAuth();
+  const router = useRouter();
+  const [hygraphUser, setHygraphUser] = useState(null);
+
   useEffect(() => {
-    if (session && session.user) {
-      fetchUserData(session.user.email);
+    if (user && user.email) {
+      getUserDataByEmail(user.email).then((data) => {
+        setHygraphUser(data);
+      });
     }
-  }, [session]);
+  }, [user, loading, router]);
 
-  const fetchUserData = async (email) => {
-    try {
-      const data = await client.request(GET_ACCOUNT_BY_EMAIL, { email });
-      setProfileData(data.account);
-    } catch (error) {
-      console.error("Error fetching profile data:", error);
-    }
-  };
+  // useEffect(() => {
+  //   if (session && session.user) {
+  //     fetchUserData(session.user.email);
+  //   }
+  // }, [session]);
 
-  if (status === "loading") {
+  // const fetchUserData = async (email) => {
+  //   try {
+  //     const data = await client.request(GET_ACCOUNT_BY_EMAIL, { email });
+  //     setProfileData(data.account);
+  //   } catch (error) {
+  //     console.error("Error fetching profile data:", error);
+  //   }
+  // };
+
+  if (loading) {
     return (
       <div className="w-full h-screen flex justify-center items-center">
         <Loading />
@@ -457,12 +480,15 @@ export default async function Achievement() {
           {/* Top Profile Card */}
           <div className="w-full flex bg-[white] rounded-[24px] p-2 md:p-4 justify-start items-start gap-[4px] lg:gap-[12px] lg:items-center">
             <div className="w-fit lg:max-w-[160px] lg:w-full items-center flex justify-start">
-              {profileData ? (
+              {user && hygraphUser ? (
                 <>
                   <div className="relative w-20 h-20 lg:w-36 lg:h-36 p-1 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600">
                     <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
                       <Image
-                        src={profileData.profilePicture?.url || ProfilePlaceHolderOne}
+                        src={
+                          hygraphUser.profilePicture?.url ||
+                          ProfilePlaceHolderOne
+                        }
                         alt="User DP"
                         width={100}
                         height={100}
@@ -481,13 +507,13 @@ export default async function Achievement() {
             </div>
             <div className="w-full gap-4 flex flex-col justify-center">
               <div className="flex flex-row justify-between items-start w-full">
-                {profileData ? (
+                {hygraphUser && user ? (
                   <div className="flex flex-col w-full justify-start items-start">
                     <div className="flex gap-1 items-center w-full justify-start">
                       <h2 className="text-[#029871] text-[20px] md:text-[28px] lg:text-[32px] xl:text-[40px] font-semibold font-fredoka leading-tight">
-                        {profileData.name}
+                        {hygraphUser.name}
                       </h2>
-                      {profileData.isVerified && (
+                      {hygraphUser.isVerified && (
                         <span
                           className="ml-2 text-[#255825]"
                           title="Verified User"
@@ -501,7 +527,7 @@ export default async function Achievement() {
                       )}
                     </div>
                     <p className="font-fredoka text-[12px] lg:text-[20px]">
-                      Email: {profileData.email}
+                      Email: {hygraphUser.email}
                     </p>
                   </div>
                 ) : (
@@ -526,7 +552,7 @@ export default async function Achievement() {
               <div className="flex flex-col w-full gap-1 items-start justify-start">
                 <div className="flex flex-row w-full justify-start items-start gap-2">
                   {/* Trigger for the Level Popup */}
-                  {profileData ? <MyLevel userID={profileData.id} /> : null}
+                  {hygraphUser ? <MyLevel userID={hygraphUser.id} /> : null}
                 </div>
               </div>
             </div>
@@ -539,8 +565,8 @@ export default async function Achievement() {
                 Your acievements
               </div>
               <div className="flex w-full overflow-x-scroll scrollbar-hidden gap-1">
-                {profileData ? (
-                  <BadgesDisplay userId={profileData.id} />
+                {hygraphUser ? (
+                  <BadgesDisplay userId={hygraphUser.id} />
                 ) : (
                   // v
                   <p className="clarabodyTwo">not found</p>
