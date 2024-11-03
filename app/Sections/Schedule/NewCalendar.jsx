@@ -99,6 +99,15 @@ const getAllActivities = async () => {
   }
 };
 
+function getDaysInMonth(month, year) {
+  return new Date(year, month + 1, 0).getDate();
+}
+
+// Helper function to get the first day of the month
+function getFirstDayOfMonth(month, year) {
+  return new Date(year, month, 1).getDay();
+}
+
 export default function NewCalendar() {
   const { data: session } = useSession();
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -180,6 +189,49 @@ export default function NewCalendar() {
   };
 
   // Generate monthly calendar
+  // const generateCalendar = () => {
+  //   const startOfMonth = new Date(
+  //     currentDate.getFullYear(),
+  //     currentDate.getMonth(),
+  //     1
+  //   );
+  //   const endOfMonth = new Date(
+  //     currentDate.getFullYear(),
+  //     currentDate.getMonth() + 1,
+  //     0
+  //   );
+  //   const daysInMonth = endOfMonth.getDate();
+  //   const firstDayOfWeek = startOfMonth.getDay();
+
+  //   const totalDaysToShow = firstDayOfWeek + daysInMonth > 35 ? 42 : 35;
+
+  //   const totalDays = Array.from({ length: totalDaysToShow }, (_, i) => {
+  //     if (i < firstDayOfWeek) {
+  //       // Days from the previous month
+  //       const prevMonthEnd = new Date(
+  //         currentDate.getFullYear(),
+  //         currentDate.getMonth(),
+  //         0
+  //       ).getDate();
+  //       return {
+  //         day: prevMonthEnd - (firstDayOfWeek - 1 - i),
+  //         isCurrentMonth: false,
+  //       };
+  //     } else if (i >= daysInMonth + firstDayOfWeek) {
+  //       return {
+  //         day: i - (daysInMonth + firstDayOfWeek) + 1,
+  //         isCurrentMonth: false,
+  //       };
+  //     }
+  //     return {
+  //       day: i - firstDayOfWeek + 1,
+  //       isCurrentMonth: true,
+  //     };
+  //   });
+
+  //   // console.log('Total days: ' + totalDays)
+  //   return totalDays;
+  // };
   const generateCalendar = () => {
     const startOfMonth = new Date(
       currentDate.getFullYear(),
@@ -209,16 +261,27 @@ export default function NewCalendar() {
           isCurrentMonth: false,
         };
       } else if (i >= daysInMonth + firstDayOfWeek) {
+        // Days from the next month
         return {
           day: i - (daysInMonth + firstDayOfWeek) + 1,
           isCurrentMonth: false,
         };
       }
+      // Days from the current month
       return {
         day: i - firstDayOfWeek + 1,
         isCurrentMonth: true,
       };
     });
+
+    // Add extra days from the next month if needed
+    const extraDaysFromNextMonth = totalDaysToShow - totalDays.length;
+    for (let i = 1; i <= extraDaysFromNextMonth; i++) {
+      totalDays.push({
+        day: i,
+        isCurrentMonth: false,
+      });
+    }
 
     return totalDays;
   };

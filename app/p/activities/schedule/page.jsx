@@ -9,6 +9,9 @@ import Loading from "@/app/loading";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Signup from "@/app/auth/sign-up/page";
+import { useAuth } from "@/app/lib/useAuth";
+import { useRouter } from "next/navigation";
+import { getUserDataByEmail } from "@/lib/hygraph";
 
 /**
  * @Main_account
@@ -42,23 +45,39 @@ export default function Schedule() {
   const { data: session, status } = useSession();
   const [profileData, setProfileData] = useState(null);
 
-  const fetchUserData = async (email) => {
-    try {
-      const data = await client.request(GET_ACCOUNT_BY_EMAIL, { email });
-      console.log("User data", data);
-      setProfileData(data.account);
-    } catch (error) {
-      console.error("Error fetching profile data:", error);
-    }
-  };
+  const { user, loading } = useAuth();
+  const router = useRouter();
+  const [hygraphUser, setHygraphUser] = useState(null);
 
   useEffect(() => {
-    if (session && session.user) {
-      fetchUserData(session.user.email);
-    }
-  }, [session]);
 
-  if (status === "loading") {
+    if (user && user.email) {
+      getUserDataByEmail(user.email).then((data) => {
+        setHygraphUser(data);
+      });
+    }
+  }, [user, loading, router]);
+
+  // if (loading) return <p>Loading...</p>;
+
+  // const fetchUserData = async (email) => {
+  //   try {
+  //     const data = await client.request(GET_ACCOUNT_BY_EMAIL, { email });
+  //     console.log("User data", data);
+  //     setProfileData(data.account);
+  //   } catch (error) {
+  //     console.error("Error fetching profile data:", error);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   if (session && session.user) {
+  //     fetchUserData(session.user.email);
+  //   }
+  // }, [session]);
+
+  // if (status === "loading") {
+  if (loading) {
     return (
       <div className="w-full h-screen flex justify-center items-center">
         <Loading />
@@ -69,7 +88,7 @@ export default function Schedule() {
     <>
       <section className="w-full h-auto bg-[#EAEAF5] pb-24 items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">
         <div className="claracontainer p-4 md:px-0 md:py-4 lg:p-4 w-full flex flex-col overflow-hidden gap-8">
-          {session ? (
+          {user && hygraphUser ? (
             <>
               <div className="claracontainer w-full flex flex-col overflow-hidden gap-2">
                 <div className="w-full text-center">
@@ -90,21 +109,20 @@ export default function Schedule() {
                 </div>
               </div>
 
-              {profileData ? (
+              {hygraphUser ? (
                 <>
                   <div className="w-full text-center text-[#3f3a64] clarabodyTwo">
-                    Welcome, {profileData.name}! <br />
-                    {profileData.isVerified ? "Yes" : "No"}!
+                    Welcome, {hygraphUser.name}! <br />
+                    {hygraphUser.isVerified ? "Yes" : "No"}!
                     <p className="font-semibold">
-                      {profileData.isVerified
+                      {hygraphUser.isVerified
                         ? "You are Verified"
                         : "You are Not Verified"}
                     </p>
                   </div>
-                  {profileData.isVerified ? (
+                  {hygraphUser.isVerified ? (
                     <div className="claracontainer md:p-0 p-0 py-4 w-full flex flex-col overflow-hidden gap-8">
                       <div className="flex lg:hidden">
-                        {/* <KindiCalendar /> */}
                         <NewCalendar />
                       </div>
                       <div className="lg:flex hidden">
@@ -125,7 +143,7 @@ export default function Schedule() {
                           Click here to Upgrade
                         </Button>
                         <p className="font-fredoka w-full justify-center flex items-center">
-                          Curruntly Logged in as: {profileData.email}
+                          Curruntly Logged in as: {hygraphUser.email}
                         </p>
                       </Link>
                     </div>
