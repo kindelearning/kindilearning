@@ -30,6 +30,41 @@ const client = new GraphQLClient(HYGRAPH_ENDPOINT, {
   },
 });
 
+const ActivitiesCount = () => {
+  const [totalActivities, setTotalActivities] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const fetchActivities = async () => {
+      try {
+        const activities = await getAllActivities();
+        setTotalActivities(activities.length); // Set the total number of activities
+      } catch (error) {
+        setError("Failed to fetch activities: " + error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchActivities();
+  }, []);
+
+  if (loading) return <p>Loading activities...</p>;
+  if (error) return <p>{error}</p>;
+
+  return (
+    <>
+      <SubBagde
+        number={totalActivities}
+        title="Total Activities"
+        backgroundColor="#019acf"
+        borderColor="#a4d2ea"
+      />
+    </>
+  );
+};
+
 const GET_ACCOUNT_BY_EMAIL = gql`
   query GetAccountByEmail($email: String!) {
     account(where: { email: $email }) {
@@ -97,6 +132,105 @@ const SubProfileRoutes = ({
  * @param {MyActivity completed by User} param0
  * @returns
  */
+
+const RemainingActivities = ({ userID }) => {
+  const [totalActivities, setTotalActivities] = useState(0);
+  const [completedActivities, setCompletedActivities] = useState(0);
+  const [loadingTotal, setLoadingTotal] = useState(true);
+  const [loadingCompleted, setLoadingCompleted] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const fetchTotalActivities = async () => {
+      try {
+        const activities = await getAllActivities();
+        setTotalActivities(activities.length);
+      } catch (error) {
+        setError("Failed to fetch total activities: " + error.message);
+      } finally {
+        setLoadingTotal(false);
+      }
+    };
+
+    fetchTotalActivities();
+  }, []);
+
+  useEffect(() => {
+    const fetchCompletedActivities = async () => {
+      try {
+        // Fetch completed activities using the MyActivity component's logic
+        const query = `
+          query GetUserActivities($relationalFirst: Int, $where: AccountWhereUniqueInput!) {
+            values: account(where: $where) {
+              id
+              username
+              myActivity(first: $relationalFirst) {
+                id
+                title
+                documentInStages(includeCurrent: true) {
+                  id
+                  stage
+                  updatedAt
+                  publishedAt
+                }
+              }
+            }
+          }
+        `;
+
+        const variables = {
+          relationalFirst: 100, // Adjust this value based on your needs
+          where: { id: userID }, // Replace with the current user's ID
+        };
+
+        const response = await fetch(HYGRAPH_ENDPOINT, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${HYGRAPH_TOKEN}`,
+          },
+          body: JSON.stringify({ query, variables }),
+        });
+
+        const result = await response.json();
+
+        if (result.errors) {
+          throw new Error(result.errors[0].message);
+        } else {
+          setCompletedActivities(result.data.values.myActivity.length);
+        }
+      } catch (error) {
+        setError("Error fetching completed activities: " + error.message);
+      } finally {
+        setLoadingCompleted(false);
+      }
+    };
+
+    fetchCompletedActivities();
+  }, [userID]);
+
+  if (loadingTotal || loadingCompleted) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
+
+  const remainingActivities = totalActivities - completedActivities;
+
+  return (
+    <>
+      <SubBagde
+        number={remainingActivities}
+        title="Remaining Activities"
+        backgroundColor="#f5a623"
+        borderColor="#f5d08e"
+      />
+    </>
+  );
+};
+
 const MyActivity = ({ userID }) => {
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -123,7 +257,7 @@ const MyActivity = ({ userID }) => {
     `;
 
     const variables = {
-      relationalFirst: 10, // Adjust this value based on your needs
+      relationalFirst: 100, // Adjust this value based on your needs
       where: { id: userID }, // Replace with the current user's ID
     };
 
@@ -138,6 +272,7 @@ const MyActivity = ({ userID }) => {
       });
 
       const result = await response.json();
+      console.log("Result", result);
 
       if (result.errors) {
         throw new Error(result.errors[0].message);
@@ -163,7 +298,7 @@ const MyActivity = ({ userID }) => {
     );
   if (error) return <p>{error}</p>;
   const CompletedActivity = activities.length;
-  console.log("my activity", activities);
+  // console.log("my activity", activities);
   return (
     <>
       <SubBagde
@@ -282,30 +417,16 @@ export default async function ProgressSection() {
             />
           </div>
           <>
-            <div className="flex gap-2 px-4 lg:px-0 overflow-x-scroll scrollbar-hidden w-full">
-              <SubBagde
-                number={activities.length || "20+"}
-                title="Total Activities"
-                backgroundColor="#019acf"
-                borderColor="#a4d2ea"
-              />
-              <SubBagde
-                number="3"
-                title={
-                  <>
-                    Pending <br />
-                    /Missed
-                  </>
-                }
-                backgroundColor="#f05c5c"
-                borderColor="#ecc0c8"
-              />
-              {hygraphUser ? (
+            {hygraphUser ? (
+              <div className="flex gap-2 px-4 lg:px-0 overflow-x-scroll scrollbar-hidden w-full">
+                <ActivitiesCount />
+                <RemainingActivities userID={hygraphUser.id} />
                 <MyActivity userID={hygraphUser.id} />
-              ) : (
-                <p>Not Found...</p>
-              )}
-            </div>
+              </div>
+            ) : (
+              <p>Not Found...</p>
+            )}
+            {/* <div className="flex gap-2 px-4 lg:px-0 overflow-x-scroll scrollbar-hidden w-full"></div> */}
           </>
           <div className="flex w-full px-2 lg:px-0 justify-start items-center gap-2 flex-wrap">
             {progressData.map((card, index) => (
