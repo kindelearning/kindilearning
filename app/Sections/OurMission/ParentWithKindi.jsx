@@ -140,7 +140,7 @@ const Gallery = () => {
 
 export default async function ParentWithKindi() {
   const stories = await getStoryData();
-  console.log("Story Page Data (in component):", stories);
+  // console.log("Story Page Data (in component):", stories);
   if (!stories || !stories[0]?.parentWithKindi) {
     console.error("Error: Stories data is missing or incomplete.");
     return <NotFound />;
@@ -206,8 +206,8 @@ export default async function ParentWithKindi() {
               />
             </div>
           </div>
-          {/* <ThreeDGallery /> */}
-          <Gallery />
+          <ThreeDGallery />
+          {/* <Gallery /> */}
         </div>
       </section>
     </>

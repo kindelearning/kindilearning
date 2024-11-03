@@ -52,7 +52,7 @@ const AgeCard = ({ bgImage, image, title, body, link }) => {
 
 const AgeRanges = async () => {
   const stories = await getHIWData();
-  console.log("Story Page Data (in component):", stories);
+  // console.log("Story Page Data (in component):", stories);
   if (!stories || !stories[0]?.ageRanges) {
     console.error("Error: Stories data is missing or incomplete.");
     return <NotFound />;

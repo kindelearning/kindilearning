@@ -6,7 +6,7 @@ import React from "react";
 
 export default async function TheTeam() {
   const stories = await getStoryData();
-  console.log("Story Page Data (in component):", stories);
+  // console.log("Story Page Data (in component):", stories);
   if (!stories || !stories[0]?.aboutJanineHaenel) {
     console.error("Error: Stories data is missing or incomplete.");
     return <NotFound />;

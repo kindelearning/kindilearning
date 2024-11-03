@@ -9,7 +9,7 @@ import React, { useState } from "react";
 const AreasOfLearning = async () => {
   const [isOpen, setIsOpen] = useState(false);
   const stories = await getHIWData();
-  console.log("Story Page Data (in component):", stories);
+  // console.log("Story Page Data (in component):", stories);
   if (!stories || !stories[0]?.areasOfLearning) {
     console.error("Error: Stories data is missing or incomplete.");
     return <NotFound />;

@@ -196,7 +196,7 @@ const cardData = [
 const KindiSkillsCategories = async () => {
   const [isOpen, setIsOpen] = useState(false);
   const stories = await getHIWData();
-  console.log("Story Page Data (in component):", stories);
+  // console.log("Story Page Data (in component):", stories);
   if (!stories || !stories[0]?.skillsCategories) {
     console.error("Error: Stories data is missing or incomplete.");
     return <NotFound />;

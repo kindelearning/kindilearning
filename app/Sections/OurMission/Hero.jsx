@@ -12,7 +12,7 @@ export default async function Hero() {
   const { data: session, status } = useSession();
 
   const stories = await getStoryData();
-  console.log("Story Page Data (in component):", stories);
+  // console.log("Story Page Data (in component):", stories);
   if (!stories || !stories[0]?.theKindiMission) {
     console.error("Error: Stories data is missing or incomplete.");
     return <NotFound />;
