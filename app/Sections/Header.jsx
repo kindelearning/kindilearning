@@ -150,8 +150,8 @@ const Header = () => {
   const [hygraphUser, setHygraphUser] = useState(null);
 
   // Older logic with Next-auth
-  const { data: session, status } = useSession();
-  const [profileData, setProfileData] = useState(null);
+  // const { data: session, status } = useSession();
+  // const [profileData, setProfileData] = useState(null);
 
   // useEffect(() => {
   //   if (session && session.user) {
@@ -161,10 +161,6 @@ const Header = () => {
 
 
   useEffect(() => {
-    if (!loading && !user) {
-      // router.push("/login"); // Redirect to login if not authenticated
-    }
-
     if (user && user.email) {
       getUserDataByEmail(user.email).then((data) => {
         setHygraphUser(data);
@@ -172,7 +168,7 @@ const Header = () => {
     }
   }, [user, loading, router]);
 
-  if (loading) return <p>Loading...</p>;
+  // if (loading) return <p>Loading...</p>;
 
   // const fetchUserData = async (email) => {
   //   try {
@@ -189,7 +185,7 @@ const Header = () => {
     });
   };
 
-  if (status === "loading") {
+  if (loading) {
     return (
       <div className="w-full h-screen flex justify-center items-center">
         <Loading />
@@ -250,7 +246,7 @@ const Header = () => {
                     <div className="flex w-full">
                       <GoogleTranslate />
                     </div>
-                    {profileData ? (
+                    {hygraphUser ? (
                       <div className="flex w-full gap-2 justify-start items-center">
                         <div className="flex">
                           <Link

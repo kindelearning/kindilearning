@@ -6,7 +6,6 @@ export default function Loading() {
           <source
             src="preloader.mp4"
             type="video/mp4"
-            // className="w-screen min-h-screen"
           />
         </video>
       </div>

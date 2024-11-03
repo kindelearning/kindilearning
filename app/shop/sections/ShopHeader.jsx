@@ -20,6 +20,9 @@ import { signOut, useSession } from "next-auth/react";
 import { GoogleTranslate } from "@/app/Sections/GoogleTranslate";
 import Loading from "@/app/loading";
 import { useCart } from "@/app/context/CartContext";
+import { useAuth } from "@/app/lib/useAuth";
+import { useRouter } from "next/navigation";
+import { getUserDataByEmail } from "@/lib/hygraph";
 
 const LocalNavitem = ({
   Link = "#",
@@ -33,7 +36,7 @@ const LocalNavitem = ({
     >
       <div className="flex items-center gap-2">
         <div className="icon-container w-5 h-5">
-          <Image alt="Kindi"  src={IconSrc} width={20} height={20} />
+          <Image alt="Kindi" src={IconSrc} width={20} height={20} />
         </div>
         <span className="text-lg font-medium font-fredoka">{Title}</span>
       </div>
@@ -49,7 +52,7 @@ const MileStone = () => {
         href="/"
         className="w-full h-[80px] bg-[#3f3d91] justify-center items-center gap-1 flex flex-col rounded-xl border-3 border-[#85829c]"
       >
-        <Image alt="Kindi"  src={Milestone} width={40} height={40} />
+        <Image alt="Kindi" src={Milestone} width={40} height={40} />
         <div className="text-center w-full text-white text-xs font-normal font-fredoka leading-none">
           Milestones
         </div>{" "}
@@ -65,7 +68,7 @@ const Progress = () => {
         href="/"
         className="w-full h-[80px] bg-[#FF8E00] justify-center items-center gap-1 flex flex-col rounded-xl border-3 border-[#f9d09b]"
       >
-        <Image alt="Kindi"  src={progressImage02} width={40} height={40} />
+        <Image alt="Kindi" src={progressImage02} width={40} height={40} />
         <div className="text-center w-full text-white text-xs font-normal font-fredoka leading-none">
           Milestones
         </div>{" "}
@@ -81,7 +84,7 @@ const Achievements = () => {
         href="/"
         className="w-full h-[80px] bg-[#C42797] justify-center items-center gap-1 flex flex-col rounded-xl border-3 border-[#e4a9d3]"
       >
-        <Image alt="Kindi"  src={Achievement} width={40} height={40} />
+        <Image alt="Kindi" src={Achievement} width={40} height={40} />
         <div className="text-center w-full text-white text-xs font-normal font-fredoka leading-none">
           Milestones
         </div>{" "}
@@ -89,7 +92,6 @@ const Achievements = () => {
     </>
   );
 };
-
 
 const usePathname = () => {
   const [pathname, setPathname] = useState("");
@@ -128,24 +130,35 @@ const GET_ACCOUNT_BY_EMAIL = gql`
 
 const ShopHeader = () => {
   const { cart } = useCart();
+  const { user, loading } = useAuth();
+  const router = useRouter();
+  const [hygraphUser, setHygraphUser] = useState(null);
   const pathname = usePathname();
   const { data: session, status } = useSession();
   const [profileData, setProfileData] = useState(null);
 
   useEffect(() => {
-    if (session && session.user) {
-      fetchUserData(session.user.email);
+    if (user && user.email) {
+      getUserDataByEmail(user.email).then((data) => {
+        setHygraphUser(data);
+      });
     }
-  }, [session]);
+  }, [user, loading, router]);
 
-  const fetchUserData = async (email) => {
-    try {
-      const data = await client.request(GET_ACCOUNT_BY_EMAIL, { email });
-      setProfileData(data.account);
-    } catch (error) {
-      console.error("Error fetching profile data:", error);
-    }
-  };
+  // useEffect(() => {
+  //   if (session && session.user) {
+  //     fetchUserData(session.user.email);
+  //   }
+  // }, [session]);
+
+  // const fetchUserData = async (email) => {
+  //   try {
+  //     const data = await client.request(GET_ACCOUNT_BY_EMAIL, { email });
+  //     setProfileData(data.account);
+  //   } catch (error) {
+  //     console.error("Error fetching profile data:", error);
+  //   }
+  // };
 
   const handleSignOut = () => {
     signOut({
@@ -153,7 +166,7 @@ const ShopHeader = () => {
     });
   };
 
-  if (status === "loading") {
+  if (loading) {
     return (
       <div className="w-full h-screen flex justify-center items-center">
         <Loading />
@@ -214,7 +227,7 @@ const ShopHeader = () => {
                     <div className="flex w-full">
                       <GoogleTranslate />
                     </div>
-                    {profileData ? (
+                    {user && hygraphUser ? (
                       <div className="flex w-full gap-2 justify-start items-center">
                         <div className="flex">
                           <Link
@@ -302,7 +315,7 @@ const ShopHeader = () => {
         </div>
 
         <div className="hidden lg:flex space-x-4">
-          {profileData ? (
+          {user && hygraphUser ? (
             <div className="flex flex-row justify-center items-center gap-2">
               <div className="flex z-12">
                 <Link
@@ -324,7 +337,7 @@ const ShopHeader = () => {
                 <div className="relative w-full flex justify-center items-center p-[2px] border-2 border-red hover:border-hoverRed rounded-full">
                   <div className="w-full h-full bg-white rounded-full  flex items-center justify-center">
                     <Image
-                      src={profileData.profilePicture?.url}
+                      src={hygraphUser.profilePicture?.url}
                       alt="User DP"
                       width={40}
                       height={40}
