@@ -25,6 +25,7 @@ import { getPublishedMileStone } from "@/lib/hygraph";
 import { PopupFooter } from "@/app/Sections";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import Loading from "../loading";
 
 /**
  * @Main_account_Credentials
@@ -332,7 +333,7 @@ const DisplayAllMileStone = () => {
     return <p>Error: Expected milestones to be an array.</p>;
   }
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <p><Loading /></p>;
   if (error) return <p>Error: {error}</p>;
 
   return (

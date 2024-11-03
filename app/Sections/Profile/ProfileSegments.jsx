@@ -53,6 +53,7 @@ import SettingCard from "./SettingCard";
 import { Plus } from "lucide-react";
 import LevelCard from "./LevelCard";
 import { useSession } from "next-auth/react";
+import Loading from "@/app/loading";
 
 const HYGRAPH_ENDPOINT =
   "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";
@@ -972,7 +973,12 @@ const PaymentMethodForm = ({ userId }) => {
         placeholder="CVV"
         required
       />
-      <button className="clarabutton py-2 bg-red hover:bg-hoverRed text-white" type="submit">Submit Payment Method</button>
+      <button
+        className="clarabutton py-2 bg-red hover:bg-hoverRed text-white"
+        type="submit"
+      >
+        Submit Payment Method
+      </button>
       {message && <p>{message}</p>}
     </form>
   );
@@ -1022,11 +1028,14 @@ const PaymentMethodsList = ({ userId }) => {
   if (error) return <p>{error}</p>;
 
   return (
-    <div>
+    <>
       {paymentMethods.length > 0 ? (
         <>
           {paymentMethods.map((method) => (
-            <div key={method.id}>
+            <div
+            className="w-full items-center justify-center flex"
+              key={method.id}
+            >
               <DebitCard
                 cardName={method.name}
                 cardNumber={method.number}
@@ -1038,7 +1047,7 @@ const PaymentMethodsList = ({ userId }) => {
       ) : (
         <p>No payment methods saved.</p>
       )}
-    </div>
+    </>
   );
 };
 
@@ -1051,7 +1060,6 @@ export default function ProfileSegments() {
   //   router.push("/login"); // Redirect to login if not authenticated
   // }
   useEffect(() => {
-
     if (user && user.email) {
       getUserDataByEmail(user.email).then((data) => {
         setHygraphUser(data);
@@ -1059,7 +1067,7 @@ export default function ProfileSegments() {
     }
   }, [user, loading, router]);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <p><Loading /></p>;
 
   return (
     <>
@@ -1374,11 +1382,6 @@ export default function ProfileSegments() {
                 </DialogHeader>
                 <DialogDescription className="flex w-full px-4 claracontainer flex-col justify-start items-center">
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 px-2 md:px-4 lg:px-6 py-6 w-full claracontainer gap-4">
-                    {/* <Image
-                      alt="Kindi"
-                      src={MasterCard}
-                      className="w-full cursor-pointer hover:scale-[1.05] transition-transform duration-300 ease-in-out h-auto"
-                    /> */}
                     {user && hygraphUser ? (
                       <PaymentMethodsList userId={hygraphUser.id} />
                     ) : (

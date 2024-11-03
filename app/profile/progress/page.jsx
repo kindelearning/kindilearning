@@ -153,7 +153,7 @@ const MyActivity = ({ userID }) => {
     fetchActivities();
   }, [userID]);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <p><Loading /></p>;
   if (error) return <p>{error}</p>;
   const CompletedActivity = activities.length;
   return (

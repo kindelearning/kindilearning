@@ -10,6 +10,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { confirmPasswordReset, getAuth, sendPasswordResetEmail } from "firebase/auth";
+import Loading from "@/app/loading";
 
 export default function ResetPassword() {
   const [newPassword, setNewPassword] = useState("");
@@ -27,7 +28,7 @@ export default function ResetPassword() {
   }, [oobCode]);
 
   if (!code) {
-    return <p>Loading...</p>; // Consider adding a timeout or redirection if the code is not present
+    return <p><Loading /></p>; // Consider adding a timeout or redirection if the code is not present
   }
 
   const handleResetPassword = async (e) => {
