@@ -1,6 +1,12 @@
 "use client";
 
-import { ActivityBlack, ActivityCard } from "@/public/Images";
+import {
+  ActivityBlack,
+  ActivityCard,
+  HowItWorkVideo,
+  ParentwithKindi,
+  ProfessionalThumb,
+} from "@/public/Images";
 import Image from "next/image";
 import { useRef, useState } from "react";
 
