@@ -198,10 +198,8 @@ export default async function ShopPage() {
   const [selectedToyType, setSelectedToyType] = useState("");
   const searchInputRef = useRef(null);
 
-
-
-   // Function to handle Search Operation
-   const handleSearchChange = (event) => {
+  // Function to handle Search Operation
+  const handleSearchChange = (event) => {
     const term = event.target.value.toLowerCase();
     setSearchTerm(term);
 
@@ -216,7 +214,6 @@ export default async function ShopPage() {
     setFilteredProducts(filtered);
   };
 
-  
   // Hook to fetch All products from Hygraph CMS
   useEffect(() => {
     const fetchProducts = async () => {
@@ -280,8 +277,6 @@ export default async function ShopPage() {
     setSortOption(value);
     sortProducts(value);
   };
-
- 
 
   // List of Skills Options Based Filters options
   const skillCategoryOptions = [

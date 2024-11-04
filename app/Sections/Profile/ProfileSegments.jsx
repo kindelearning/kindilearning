@@ -371,7 +371,7 @@ const PartnerList = ({ userId }) => {
 
   useEffect(() => {
     if (!loading && !user) {
-      router.push("/login"); // Redirect to login if not authenticated
+      router.push("/auth/sign-up"); // Redirect to login if not authenticated
     }
     if (user && user.email) {
       getUserDataByEmail(user.email).then((data) => {
@@ -1056,9 +1056,6 @@ export default function ProfileSegments() {
   const router = useRouter();
   const [hygraphUser, setHygraphUser] = useState(null);
 
-  // if (!loading && !user) {
-  //   router.push("/login"); // Redirect to login if not authenticated
-  // }
   useEffect(() => {
     if (user && user.email) {
       getUserDataByEmail(user.email).then((data) => {
