@@ -3,7 +3,7 @@ import Image from "next/image";
 import React from "react";
 import ThemeTimer from "../Chip/ThemeTimer";
 
-const ThemeCard = () => {
+const ThemeCard = ({ image, title, metaDesc }) => {
   return (
     <div
       className={`flex flex-col gap-[-12px] justify-center items-end animate-fade-in transition-all duration-300  cursor-pointer group`}
@@ -18,16 +18,24 @@ const ThemeCard = () => {
             className={`w-full max-w-[200px] flex flex-col bg-[#3f3d91] lg:max-w-[460px] z-2 rounded-r-[100px] rounded-l-[50px] lg:rounded-l-[38px] py-4 lg:py-8 justify-start items-start pl-4 pr-2 animate-fade-in`}
           >
             <div className="text-white font-semibold font-fredoka capitalize text-[24px] leading-[28px] md:text-[24px] md:leading-[28px] lg:text-[32px] lg:leading-[36px] xl:text-[36px] xl:leading-[40px]">
-              Winter Magic
+              {title.length > 14
+                ? title.slice(0, 12) + "..."
+                : title || "Winter Magic"}
             </div>
-            <div className="text-white text-[14px] leading-[18px] max-w-[350px] md:text-[16px] md:leading-[20px] lg:text-[20px] lg:leading-[24px] xl:text-[22px] xl:leading-[26px] font-medium font-montserrat">
-              Snowy adventures, ice castles, cozy indoor playtimes.
+            {/* <div className="text-white text-[14px] leading-[18px] max-w-[350px] md:text-[16px] md:leading-[20px] lg:text-[20px] lg:leading-[24px] xl:text-[22px] xl:leading-[26px] font-medium font-montserrat"> */}
+            <div className="text-[white] clarabodyTwo font-medium font-montserrat">
+              {metaDesc.length > 100
+                ? metaDesc.slice(0, 100) + "..."
+                : metaDesc ||
+                  "Snowy adventures, ice castles, cozy indoor playtimes."}
             </div>
           </div>
           <div className="flex overflow-clip -z-20 -ml-[96px] group-hover:scale-[1.025] transition-all duration-300">
             <Image
               alt="Kindi"
-              src={ThemeDummy}
+              width={400}
+              height={100}
+              src={image || ThemeDummy}
               className={`w-full max-w-[130px] md:max-w-[200px] lg:max-w-[240px]  h-full object-cover rounded-r-[28px] animate-fade-in`}
             />
           </div>

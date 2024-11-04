@@ -1,11 +1,13 @@
 import NotFound from "@/app/not-found";
 import ThemeCard from "@/app/Widgets/Card/ThemeCard";
-import { getHomeData } from "@/lib/hygraph";
+import { getHomeData, getThemes } from "@/lib/hygraph";
 
 const MonthlyThemes = async () => {
   const homeData = await getHomeData();
+
+  const themes = await getThemes();
   // console.log("Home Page Data (in component):", homeData);
-  if (!homeData || !homeData[0]?.monthlyTheme) {
+  if (!themes || themes.length === 0) {
     return <NotFound />;
   }
 
@@ -32,10 +34,20 @@ const MonthlyThemes = async () => {
           </div>
 
           <div className="lg:grid claracontainer w-full flex flex-row overflow-x-scroll scrollbar-hidden px-2 py-4 hover:px-2 gap-4 lg:grid-cols-2 xl:grid-cols-2">
-            <ThemeCard />
-            <ThemeCard />
-            <ThemeCard />
-            <ThemeCard />
+            {/* {themes.map((theme) => (
+              <>
+              <ThemeCard  image={theme.thumbnail.url} metaDesc={theme.metaDesc} title={theme.title}>
+              </>
+            ))} */}
+
+            {themes.map((theme) => (
+              <ThemeCard
+                key={theme.id}
+                image={theme.thumbnail.url}
+                metaDesc={theme.metaDesc}
+                title={theme.title}
+              />
+            ))}
           </div>
         </div>
       </section>
