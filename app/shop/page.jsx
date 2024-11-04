@@ -185,7 +185,7 @@ const MobileProductCard = ({ image, title, price }) => {
   );
 };
 
-export default async function ShopPage() {
+export default function ShopPage() {
   const [products, setProducts] = useState([]);
   const [sortOption, setSortOption] = useState("priceLowToHigh");
   const [sortedProducts, setSortedProducts] = useState([]);
