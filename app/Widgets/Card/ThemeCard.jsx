@@ -1,9 +1,8 @@
 import { ThemeDummy } from "@/public/Images";
 import Image from "next/image";
-import React from "react";
 import ThemeTimer from "../Chip/ThemeTimer";
 
-const ThemeCard = ({ image, title, metaDesc }) => {
+const ThemeCard = ({ image, title, metaDesc, theTime }) => {
   return (
     <div
       className={`flex flex-col gap-[-12px] justify-center items-end animate-fade-in transition-all duration-300  cursor-pointer group`}
@@ -12,10 +11,10 @@ const ThemeCard = ({ image, title, metaDesc }) => {
         className={`p-[8px] w-full bg-[#3f3d91] min-w-[360px] flex flex-col items-end rounded-[32px] animate-slide-up `}
       >
         <div
-          className={`w-full flex max-h-[200px] lg:min-h-[200px]  justify-between border-2 border-white  rounded-[28px] `}
+          className={`w-full flex min-h-[180px] max-h-[182px] lg:min-h-[200px]  justify-between border-2 border-white  rounded-[28px] `}
         >
           <div
-            className={`w-full max-w-[200px] flex flex-col bg-[#3f3d91] lg:max-w-[460px] z-2 rounded-r-[100px] rounded-l-[50px] lg:rounded-l-[38px] py-4 lg:py-8 justify-start items-start pl-4 pr-2 animate-fade-in`}
+            className={`w-full max-w-[200px] flex flex-col bg-[#3f3d91] lg:max-w-[460px] z-2 rounded-r-[60px] rounded-l-[50px] lg:rounded-l-[38px] py-4 lg:py-8 justify-start items-start pl-4 pr-2 animate-fade-in`}
           >
             <div className="text-white font-semibold font-fredoka capitalize text-[24px] leading-[28px] md:text-[24px] md:leading-[28px] lg:text-[32px] lg:leading-[36px] xl:text-[36px] xl:leading-[40px]">
               {title.length > 14
@@ -42,7 +41,7 @@ const ThemeCard = ({ image, title, metaDesc }) => {
         </div>
       </div>
       <div className="-mt-4 flex mr-2 z-12 animate-fade-in">
-        <ThemeTimer />
+        <ThemeTimer targetDate={theTime} />
       </div>
     </div>
   );
