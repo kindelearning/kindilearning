@@ -328,32 +328,6 @@ export default async function ProgressSection() {
     }
   }, [user, loading, router]);
 
-  // Fetching all the activities form GraphCMS
-  // useEffect(() => {
-  //   const fetchActivities = async () => {
-  //     const data = await getAllActivities();
-  //     console.log("Total Activity", data); // Log the activities
-  //     setActivities(data);
-  //   };
-
-  //   fetchActivities();
-  // }, []);
-
-  // useEffect(() => {
-  //   if (session && session.user) {
-  //     fetchUserData(session.user.email);
-  //   }
-  // }, [session]);
-
-  const fetchUserData = async (email) => {
-    try {
-      const data = await client.request(GET_ACCOUNT_BY_EMAIL, { email });
-      setProfileData(data.account);
-    } catch (error) {
-      console.error("Error fetching profile data:", error);
-    }
-  };
-
   if (status === "loading") {
     return (
       <div className="w-full h-screen flex justify-center items-center">
@@ -399,7 +373,7 @@ export default async function ProgressSection() {
                 src={hygraphUser.profilePicture?.url || ProfilePlaceHolderOne}
                 width={100}
                 height={100}
-                className="cursor-pointer w-30 h-30 border-gradient-to-r from-pink-500 to-yellow-500 border-2 border-red rounded-full z-10"
+                className="cursor-pointer w-28 h-28  border-gradient-to-r from-pink-500 to-yellow-500 border-2 border-red rounded-full z-10"
               />
             ) : (
               <Image
