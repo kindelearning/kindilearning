@@ -2,6 +2,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { loginWithEmail, signUpWithGoogle } from "@/app/firebase/auth"; // Ensure this export exists
+import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import app from "@/app/firebase/firebaseConfig";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -9,6 +11,7 @@ const Login = () => {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const router = useRouter();
+  const auth = getAuth(app); // Use the initialized app here
 
   const handleGoogleSignIn = async () => {
     setMessage(""); // Clear previous messages
@@ -46,6 +49,24 @@ const Login = () => {
       }
     } else {
       alert(response.message || "An error occurred during Google sign-in.");
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    const provider = new GoogleAuthProvider();
+
+    try {
+      const result = await signInWithPopup(auth, provider);
+      // User information from Google
+      const user = result.user;
+      console.log("Logged in user:", user);
+
+      // You can now use user data (e.g., user.displayName, user.email) as needed
+
+      // Redirect or handle the login success here, e.g., storing user data in state
+    } catch (err) {
+      setError(err.message);
+      console.error("Google login error:", err);
     }
   };
 
@@ -95,6 +116,8 @@ const Login = () => {
       >
         Sign in with Google
       </button>
+      <button onClick={handleGoogleLogin}>Login with Google</button>
+      {error && <p>{error}</p>}
     </div>
   );
 };

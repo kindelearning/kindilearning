@@ -42,6 +42,49 @@ mutation PublishUser($id: ID!) {
 }
 `;
 
+// GraphQL query to check if a user exists by email
+const CHECK_USER_EXISTENCE_QUERY = `
+  query CheckUserExistence($email: String!) {
+    users(where: { email: $email }) {
+      id
+      email
+      name
+    }
+  }
+`;
+
+// GraphQL mutation to create a new user
+const CREATE_USER_MUTATION = `
+  mutation CreateUser($email: String!, $name: String!) {
+    createAccount(data: { email: $email, name: $name }) {
+      id
+    }
+  }
+`;
+
+const handleHygraphUser = async (email, name) => {
+  try {
+    // Step 1: Check if the user already exists in Hygraph
+    const userCheckResponse = await request(HYGRAPH_MAIN_ENDPOINT, CHECK_USER_EXISTENCE_QUERY, { email });
+    
+    if (userCheckResponse.users.length > 0) {
+      // User exists, return the user data
+      console.log('User already exists:', userCheckResponse.users[0]);
+      return userCheckResponse.users[0];
+    } else {
+      // Step 2: If user does not exist, create a new user
+      console.log('User does not exist, creating new user...');
+      const createUserResponse = await request(HYGRAPH_MAIN_TOKEN, CREATE_USER_MUTATION, { email, name });
+      
+      console.log('New user created:', createUserResponse.createAccount);
+      return createUserResponse.createAccount;
+    }
+  } catch (error) {
+    console.error('Error handling Hygraph user:', error);
+    throw new Error('Failed to handle Hygraph user');
+  }
+};
+
 export const linkGoogleAccount = async () => {
   try {
     // This will link the Google provider to the current user
@@ -150,6 +193,19 @@ export const loginWithEmail = async (email, password) => {
   } catch (error) {
     console.error("Error during login:", error);
     return { success: false, message: error.message };
+  }
+};
+export const signInWithGoogle = async () => {
+  try {
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user; // This will give you the signed-in user's info
+    const { email, displayName } = user;
+    console.log("User logged in:", email, displayName);
+
+    // Now call your API to create or fetch user in Hygraph
+    await handleHygraphUser(email, displayName);
+  } catch (error) {
+    console.error("Error signing in with Google:", error);
   }
 };
 

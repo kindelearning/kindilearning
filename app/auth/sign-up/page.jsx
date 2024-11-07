@@ -38,6 +38,8 @@ export default function Signup() {
       setLoading(true); // Set loading to true when submitting starts
       console.log("Google Sign-Up Successful:", user);
       // Optional: Redirect user to dashboard or desired page
+      router.push("/profile"); // Redirect to activity page or any desired page
+      
     } catch (error) {
       console.error("Google Sign-Up Failed:", error);
       setLoading(false); // Set loading to true when submitting starts
@@ -60,35 +62,7 @@ export default function Signup() {
       setLoading(false); // Set loading to true when submitting starts
     }
   };
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
-  // const [error, setError] = useState(null);
-  // const [loading, setLoading] = useState(false); // New state for loading
 
-  // const router = useRouter();
-
-  // const handleSignup = async (e) => {
-  //   e.preventDefault();
-  //   setLoading(true); // Set loading to true when submitting starts
-
-  //   try {
-  //     const variables = { email, password };
-  //     const { createAccount } = await hygraphClient.request(
-  //       CREATE_USER_MUTATION,
-  //       variables
-  //     );
-
-  //     if (createAccount) {
-  //       // If signup is successful, redirect to login page or homepage
-  //       router.push("/auth/sign-in"); // Redirect to signin after signup
-  //     }
-  //   } catch (error) {
-  //     setLoading(false); // Set loading to false if there's an error
-
-  //     console.error("GraphQL error:", error.response?.errors || error.message);
-  //     setError("Signup failed. Try again.");
-  //   }
-  // };
 
   return (
     <>
@@ -241,6 +215,18 @@ export default function Signup() {
             >
               Login
             </Link>
+          </div>
+          <div className="flex w-full flex-col justify-center py-4 items-center gap-4">
+            <div className="text-center text-[#0a1932] text-lg font-medium font-fredoka leading-tight">
+              Or continue with
+            </div>
+            <div className="flex gap-2 items-center justify-center w-full">
+              <Image alt="Kindi" className="cursor-pointer" src={WithApple} />
+              <button onClick={handleGoogleSignUp}>
+                <Image alt="Kindi" className="cursor-pointer" src={Google} />
+              </button>
+              <Image alt="Kindi" className="cursor-pointer" src={Facebook} />
+            </div>
           </div>
         </div>
         <BottomNavigation />

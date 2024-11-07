@@ -12,6 +12,8 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { loginWithEmail, signUpWithGoogle } from "@/app/firebase/auth";
 import { Eye, EyeOff } from "lucide-react";
+import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import app from "@/app/firebase/firebaseConfig";
 
 export default function Signin() {
   const [loading, setLoading] = useState(false); // New state for loading
@@ -21,12 +23,14 @@ export default function Signin() {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const router = useRouter();
+  const auth = getAuth(app); // Use the initialized app here
 
   const handleGoogleSignIn = async () => {
     setMessage(""); // Clear previous messages
     setError(""); // Clear previous errors
 
     const response = await signUpWithGoogle();
+    console.log("Google sign-in response:", response); // Log the entire response object
 
     if (response.success) {
       const { email, name } = response.user;
@@ -50,13 +54,31 @@ export default function Signin() {
         }
 
         // Open home page in a new tab
-        window.open("/home", "_blank");
+        window.open("/profile", "_blank");
       } catch (error) {
         console.error("Error during user check or creation:", error);
         setError("An error occurred during sign-up.");
       }
     } else {
       alert(response.message || "An error occurred during Google sign-in.");
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    const provider = new GoogleAuthProvider();
+
+    try {
+      const result = await signInWithPopup(auth, provider);
+      // User information from Google
+      const user = result.user;
+      console.log("Logged in user:", user);
+
+      // You can now use user data (e.g., user.displayName, user.email) as needed
+
+      // Redirect or handle the login success here, e.g., storing user data in state
+    } catch (err) {
+      setError(err.message);
+      console.error("Google login error:", err);
     }
   };
 
@@ -69,7 +91,7 @@ export default function Signin() {
     try {
       const response = await loginWithEmail(emailTrimmed, passwordTrimmed);
       if (response.success) {
-        router.push("/p"); // Redirect to activity page or any desired page
+        router.push("/profile"); // Redirect to activity page or any desired page
       } else {
         setError(response.message); // Display error message to user
       }
@@ -166,7 +188,10 @@ export default function Signin() {
               </div>
               <div className="flex gap-2 items-center justify-center w-full">
                 <Image alt="Kindi" className="cursor-pointer" src={WithApple} />
-                <Image alt="Kindi" className="cursor-pointer" src={Google} />
+                <button onClick={handleGoogleLogin}>
+                  <Image alt="Kindi" className="cursor-pointer" src={Google} />
+                </button>
+                {error && <p>{error}</p>}
                 <Image alt="Kindi" className="cursor-pointer" src={Facebook} />
               </div>
             </div>
@@ -251,6 +276,19 @@ export default function Signin() {
             >
               Sign Up
             </Link>
+          </div>
+          <div className="flex w-full flex-col justify-center py-4 items-center gap-4">
+            <div className="text-center text-[#0a1932] text-lg font-medium font-fredoka leading-tight">
+              Or continue with
+            </div>
+            <div className="flex gap-2 items-center justify-center w-full">
+              <Image alt="Kindi" className="cursor-pointer" src={WithApple} />
+              <button onClick={handleGoogleLogin}>
+                <Image alt="Kindi" className="cursor-pointer" src={Google} />
+              </button>
+              {error && <p>{error}</p>}{" "}
+              <Image alt="Kindi" className="cursor-pointer" src={Facebook} />
+            </div>
           </div>
         </div>
         <BottomNavigation />
