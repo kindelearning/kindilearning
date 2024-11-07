@@ -289,22 +289,22 @@ export default function Calendar() {
     fetchActivities();
   }, []);
 
-  // Fetch user data when session changes
-  useEffect(() => {
-    if (session && session.user) {
-      fetchUserData(session.user.email);
-    }
-  }, [session]);
+  // // Fetch user data when session changes
+  // useEffect(() => {
+  //   if (session && session.user) {
+  //     fetchUserData(session.user.email);
+  //   }
+  // }, [session]);
 
-  const fetchUserData = async (email) => {
-    try {
-      const data = await client.request(GET_ACCOUNT_BY_EMAIL, { email });
-      console.log("User Data:", data);
-      setProfileData(data.account);
-    } catch (error) {
-      console.error("Error fetching profile data:", error);
-    }
-  };
+  // const fetchUserData = async (email) => {
+  //   try {
+  //     const data = await client.request(GET_ACCOUNT_BY_EMAIL, { email });
+  //     console.log("User Data:", data);
+  //     setProfileData(data.account);
+  //   } catch (error) {
+  //     console.error("Error fetching profile data:", error);
+  //   }
+  // };
 
   const handlePrevMonth = () => {
     const newDate = new Date(
