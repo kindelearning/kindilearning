@@ -208,6 +208,14 @@ const MyLevel = ({ userID }) => {
             </DialogFooter>
           </DialogContent>
         </Dialog>
+        <Link href="/profile/update" className="flex lg:hidden" target="_blank">
+          <Badge
+            className="text-[10px] md:text-[16px] cursor-pointer"
+            variant="outline"
+          >
+            Edit
+          </Badge>
+        </Link>
       </div>
 
       <div className="flex w-full gap-1 items-center">
@@ -229,7 +237,7 @@ const MyLevel = ({ userID }) => {
             }}
           ></div>
         </div>
-        <p className="clarabodyTwo w-[max-content] min-w-[120px]">
+        <p className="clarabodyTwo w-[max-content] min-w-[90px] lg:min-w-[120px]">
           Activities: {activities.length}
         </p>
       </div>
@@ -1172,10 +1180,10 @@ export default function ProfileSegments() {
                     </p>
                   </div>
                 )}
-                {/* Trigger for the Edit Profile Popup */}
+                {/* Trigger for the Edit Profile Popup for Larger screen */}
                 <Link
                   href="/profile/update"
-                  className="hidden md:flex"
+                  className="hidden lg:flex"
                   target="_blank"
                 >
                   <Badge
@@ -1186,24 +1194,12 @@ export default function ProfileSegments() {
                   </Badge>
                 </Link>
               </div>
+              {/* Trigger for the Level Popup and Edit on Mobile, hidden after mobile */}
               <div className="flex flex-col w-full gap-1 items-start justify-start">
                 <div className="flex flex-row w-full justify-start items-center gap-2">
-                  {/* Trigger for the Level Popup */}
                   {user && hygraphUser ? (
                     <MyLevel userID={hygraphUser.id} />
                   ) : null}
-                  <Link
-                    href="/profile/update"
-                    className="flex md:hidden"
-                    target="_blank"
-                  >
-                    <Badge
-                      className="text-[10px] md:text-[16px] cursor-pointer"
-                      variant="outline"
-                    >
-                      Edit
-                    </Badge>
-                  </Link>
                 </div>
               </div>
             </div>
