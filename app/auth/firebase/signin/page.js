@@ -15,6 +15,7 @@ const Login = () => {
     setError(""); // Clear previous errors
 
     const response = await signUpWithGoogle();
+    console.log("Google sign-in response:", response); // Log the entire response object
 
     if (response.success) {
       const { email, name } = response.user;
@@ -38,7 +39,7 @@ const Login = () => {
         }
 
         // Open home page in a new tab
-        window.open("/home", "_blank");
+        window.open("/profile", "_blank");
       } catch (error) {
         console.error("Error during user check or creation:", error);
         setError("An error occurred during sign-up.");
