@@ -165,9 +165,9 @@ export default function Signin() {
                 <Image alt="Kindi" className="cursor-pointer" src={WithApple} />
                 <button onClick={handleGoogleLogin}>
                   <Image alt="Kindi" className="cursor-pointer" src={Google} />
-                </button>
+                </button> <br />
                 {error && <p>{error}</p>}
-                <Image alt="Kindi" className="cursor-pointer" src={Facebook} />
+                {/* <Image alt="Kindi" className="cursor-pointer" src={Facebook} /> */}
               </div>
             </div>
             <div className="w-[max-content] justify-end items-start text-center">
@@ -260,9 +260,9 @@ export default function Signin() {
               <Image alt="Kindi" className="cursor-pointer" src={WithApple} />
               <button onClick={handleGoogleLogin}>
                 <Image alt="Kindi" className="cursor-pointer" src={Google} />
-              </button>
+              </button> <br />
               {error && <p>{error}</p>}{" "}
-              <Image alt="Kindi" className="cursor-pointer" src={Facebook} />
+              {/* <Image alt="Kindi" className="cursor-pointer" src={Facebook} /> */}
             </div>
           </div>
         </div>
