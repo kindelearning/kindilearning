@@ -24,6 +24,7 @@ import { useSession } from "next-auth/react";
 import { getPublishedMileStone, getUserDataByEmail } from "@/lib/hygraph";
 import { useAuth } from "@/app/lib/useAuth";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 /**
  * @Main_account_Credentials
@@ -39,19 +40,6 @@ const client = new GraphQLClient(HYGRAPH_ENDPOINT, {
   },
 });
 
-// const GET_ACCOUNT_BY_EMAIL = gql`
-//   query GetAccountByEmail($email: String!) {
-//     account(where: { email: $email }) {
-//       name
-//       username
-//       email
-//       profilePicture {
-//         url
-//       }
-//       isVerified
-//     }
-//   }
-// `;
 const GET_ACCOUNT_BY_EMAIL = gql`
   query GetAccountByEmail($email: String!) {
     account(where: { email: $email }) {
@@ -219,8 +207,8 @@ const DisplayAllMileStone = () => {
 };
 
 const CurvePath = ({ milestones = [] }) => {
-  const { data: session, status } = useSession();
-  const [profileData, setProfileData] = useState(null);
+  // const { data: session, status } = useSession();
+  // const [profileData, setProfileData] = useState(null);
   const [currentDate, setCurrentDate] = useState("");
   const [message, setMessage] = useState("");
 
@@ -237,20 +225,20 @@ const CurvePath = ({ milestones = [] }) => {
   }, [user, loading, router]);
 
   // console.log("profileData", profileData);
-  useEffect(() => {
-    if (session && session.user) {
-      fetchUserData(session.user.email);
-    }
-  }, [session]);
+  // useEffect(() => {
+  //   if (session && session.user) {
+  //     fetchUserData(session.user.email);
+  //   }
+  // }, [session]);
 
-  const fetchUserData = async (email) => {
-    try {
-      const data = await client.request(GET_ACCOUNT_BY_EMAIL, { email });
-      setProfileData(data.account);
-    } catch (error) {
-      console.error("Error fetching profile data:", error);
-    }
-  };
+  // const fetchUserData = async (email) => {
+  //   try {
+  //     const data = await client.request(GET_ACCOUNT_BY_EMAIL, { email });
+  //     setProfileData(data.account);
+  //   } catch (error) {
+  //     console.error("Error fetching profile data:", error);
+  //   }
+  // };
 
   useEffect(() => {
     const today = new Date();
@@ -329,7 +317,7 @@ const CurvePath = ({ milestones = [] }) => {
       >
         <Dialog className="p-2 lg:p-4">
           <DialogTrigger>
-            <button className="clarabutton bg-red px-4 py-2 hover:shadow text-white rounded hover:bg-hoverRed">
+            <button className="transition duration-300 ease-in-out hover:scale-[1.03] font-fredoka tracking-wider md: uppercase font-bold text-[10px] md:text-[16px] hover:border-2 hover:border-[#ffffff] border-transparent md:px-8 xl:px-12 border-2 rounded-[12px] bg-red px-4 py-2 hover:shadow text-white hover:bg-hoverRed">
               {milestone.title}
             </button>
           </DialogTrigger>
@@ -343,7 +331,9 @@ const CurvePath = ({ milestones = [] }) => {
                   {milestone.description}
                 </div>
                 <div className="w-full p-2 flex flex-col gap-2 bg-white rounded-lg shadow">
-                  <div className="text-[#757575] clarabodyTwo ">Date</div>
+                  <div className="text-[#757575] clarabodyTwo ">
+                    Date of Completion
+                  </div>
                   <div className="text-[#0a1932] text-[20px] font-normal font-fredoka leading-[20px]">
                     {currentDate}
                   </div>
@@ -433,14 +423,13 @@ const CurvePath = ({ milestones = [] }) => {
 };
 
 export default function MileStone() {
-  const { data: session, status } = useSession();
-  const [profileData, setProfileData] = useState(null);
+  // const { data: session, status } = useSession();
+  // const [profileData, setProfileData] = useState(null);
   const { user, loading } = useAuth();
   const router = useRouter();
   const [hygraphUser, setHygraphUser] = useState(null);
 
   useEffect(() => {
-
     if (user && user.email) {
       getUserDataByEmail(user.email).then((data) => {
         setHygraphUser(data);
@@ -448,20 +437,20 @@ export default function MileStone() {
     }
   }, [user, loading, router]);
 
-  useEffect(() => {
-    if (session && session.user) {
-      fetchUserData(session.user.email);
-    }
-  }, [session]);
+  // useEffect(() => {
+  //   if (session && session.user) {
+  //     fetchUserData(session.user.email);
+  //   }
+  // }, [session]);
 
-  const fetchUserData = async (email) => {
-    try {
-      const data = await client.request(GET_ACCOUNT_BY_EMAIL, { email });
-      setProfileData(data.account);
-    } catch (error) {
-      console.error("Error fetching profile data:", error);
-    }
-  };
+  // const fetchUserData = async (email) => {
+  //   try {
+  //     const data = await client.request(GET_ACCOUNT_BY_EMAIL, { email });
+  //     setProfileData(data.account);
+  //   } catch (error) {
+  //     console.error("Error fetching profile data:", error);
+  //   }
+  // };
 
   return (
     <>
@@ -476,21 +465,29 @@ export default function MileStone() {
                 className="cursor-pointer w-20 object-cover rounded-full border-2 border-white -mr-[32px] h-20"
               />
               {user && hygraphUser ? (
-                <Image
-                  alt="Kindi"
-                  src={hygraphUser.profilePicture?.url || ProfilePlaceHolderOne}
-                  width={100}
-                  height={100}
-                  className="cursor-pointer w-28 h-28 min-w-[100px] min-h-[100px] border-gradient-to-r from-pink-500 to-yellow-500 border-2 border-red rounded-full z-10"
-                />
+                <div className="relative w-20 h-20 lg:w-36 lg:h-36 p-1 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600">
+                  <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
+                    <Image
+                      src={
+                        hygraphUser.profilePicture?.url || ProfilePlaceHolderOne
+                      }
+                      alt="User DP"
+                      width={100}
+                      height={100}
+                      className="w-[72px] h-[72px] lg:w-36 lg:h-36 object-cover overflow-clip rounded-full"
+                    />
+                  </div>
+                </div>
               ) : (
-                <Image
-                  alt="Kindi"
-                  src={progressImage02}
-                  width={100}
-                  height={100}
-                  className="cursor-pointer w-30 rounded-full border-2 border-white z-10 h-30"
-                />
+                <div className="relative w-20 h-20 lg:w-36 lg:h-36 p-1 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600">
+                  <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
+                    <Image
+                      src={ProfilePlaceHolderOne}
+                      alt="Logo"
+                      className="w-[80px] h-[80px] lg:w-36 lg:h-36 object-cover overflow-clip rounded-full"
+                    />
+                  </div>
+                </div>
               )}
               <Image
                 alt="Kindi"
@@ -503,8 +500,16 @@ export default function MileStone() {
                 {hygraphUser.name}
               </div>
             ) : (
-              <div className="w-full text-center text-[#0a1932] text-[40px] font-semibold font-fredoka leading-normal">
-                Jacob
+              <div className="flex w-full flex-col justify-center items-center gap-2">
+                <h2 className="text-[#029871] text-[24px] md:text-[28px] lg:text-[32px] xl:text-[40px] font-semibold  font-fredoka leading-tight">
+                  Kindi Learner
+                </h2>
+                <p className="font-fredoka text-[12px] lg:text-[20px]">
+                  <Link href="/auth/sign-in" className="text-red">
+                    Login&nbsp;
+                  </Link>
+                  to use more feature
+                </p>
               </div>
             )}
           </div>

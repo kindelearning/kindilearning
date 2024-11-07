@@ -18,6 +18,7 @@ import { progressData } from "@/app/constant/menu";
 import { getAllActivities, getUserDataByEmail } from "@/lib/hygraph";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/lib/useAuth";
+import Link from "next/link";
 
 const HYGRAPH_ENDPOINT =
   "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";
@@ -312,9 +313,9 @@ const MyActivity = ({ userID }) => {
 };
 
 export default async function ProgressSection() {
-  const { data: session, status } = useSession();
-  const [profileData, setProfileData] = useState(null);
-  const [activities, setActivities] = useState([]); //Getting all the activities from Hygraph
+  // const { data: session, status } = useSession();
+  // const [profileData, setProfileData] = useState(null);
+  // const [activities, setActivities] = useState([]); //Getting all the activities from Hygraph
 
   const { user, loading } = useAuth();
   const router = useRouter();
@@ -328,7 +329,7 @@ export default async function ProgressSection() {
     }
   }, [user, loading, router]);
 
-  if (status === "loading") {
+  if (loading) {
     return (
       <div className="w-full h-screen flex justify-center items-center">
         <Loading />
@@ -357,9 +358,8 @@ export default async function ProgressSection() {
         />
         <meta name="twitter:image" content="/images/logo.png" />
       </Head>
-      <section className="w-full h-auto bg-[#F5F5F5] md:bg-[#EAEAF5] items-center justify-center flex flex-col px-0">
+      <section className="w-full h-auto bg-[#F5F5F5] pb-12 md:bg-[#EAEAF5] items-center justify-center flex flex-col px-0">
         {/* Topbar */}
-
         <div className="claracontainer py-4 md:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-8">
           <div className="flex w-full px-4 h-[160px] flex-row justify-center gap-0 items-center relative">
             <Image
@@ -368,21 +368,29 @@ export default async function ProgressSection() {
               className="cursor-pointer w-20 -mr-[32px] h-20"
             />
             {user && hygraphUser ? (
-              <Image
-                alt="Kindi"
-                src={hygraphUser.profilePicture?.url || ProfilePlaceHolderOne}
-                width={100}
-                height={100}
-                className="cursor-pointer w-28 h-28  border-gradient-to-r from-pink-500 to-yellow-500 border-2 border-red rounded-full z-10"
-              />
+              <div className="relative w-20 h-20 lg:w-36 lg:h-36 p-1 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600">
+                <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
+                  <Image
+                    src={
+                      hygraphUser.profilePicture?.url || ProfilePlaceHolderOne
+                    }
+                    alt="User DP"
+                    width={100}
+                    height={100}
+                    className="w-[72px] h-[72px] lg:w-36 lg:h-36 object-cover overflow-clip rounded-full"
+                  />
+                </div>
+              </div>
             ) : (
-              <Image
-                alt="Kindi"
-                src={progressImage02}
-                width={100}
-                height={100}
-                className="cursor-pointer w-30 rounded-full border-2 border-white z-10 h-30"
-              />
+              <div className="relative w-20 h-20 lg:w-36 lg:h-36 p-1 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600">
+                <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
+                  <Image
+                    src={ProfilePlaceHolderOne}
+                    alt="Logo"
+                    className="w-[80px] h-[80px] lg:w-36 lg:h-36 object-cover overflow-clip rounded-full"
+                  />
+                </div>
+              </div>
             )}
             <Image
               alt="Kindi"
@@ -398,7 +406,18 @@ export default async function ProgressSection() {
                 <MyActivity userID={hygraphUser.id} />
               </div>
             ) : (
-              <p>Not Found...</p>
+              // <p>Not Found...</p>
+              <div className="flex w-full flex-col justify-center items-center gap-2">
+                <h2 className="text-[#029871] text-[24px] md:text-[28px] lg:text-[32px] xl:text-[40px] font-semibold  font-fredoka leading-tight">
+                  Kindi Learner
+                </h2>
+                <p className="font-fredoka text-[12px] lg:text-[20px]">
+                  <Link href="/auth/sign-in" className="text-red">
+                    Login&nbsp;
+                  </Link>
+                  to use more feature
+                </p>
+              </div>
             )}
             {/* <div className="flex gap-2 px-4 lg:px-0 overflow-x-scroll scrollbar-hidden w-full"></div> */}
           </>
@@ -412,7 +431,7 @@ export default async function ProgressSection() {
               />
             ))}
           </div>
-          <div className="claracontainer px-0 w-full flex flex-col justify-start items-start overflow-hidden gap-8">
+          <div className="claracontainer px-4 lg:px-0 w-full flex flex-col justify-start items-start overflow-hidden gap-8">
             <ReferralCard />
           </div>
         </div>

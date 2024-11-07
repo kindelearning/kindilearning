@@ -11,6 +11,7 @@ import { hygraphClient } from "@/lib/hygraph";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { signUpWithEmail, signUpWithGoogle } from "@/app/firebase/auth";
+import { Eye, EyeOff } from "lucide-react";
 
 // queries/createUser.js
 export const CREATE_USER_MUTATION = `
@@ -26,6 +27,7 @@ export default function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false); // New state for loading
   const router = useRouter();
@@ -102,7 +104,7 @@ export default function Signup() {
               onSubmit={handleSignUp}
               className="flex flex-col w-full px-8 justify-center items-center gap-4"
             >
-              <input
+              <Input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -110,13 +112,30 @@ export default function Signup() {
                 required
               />
 
-              <input
+              {/* <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Password"
                 required
-              />
+              /> */}
+              <div className="relative w-full">
+                <Input
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Password"
+                  required
+                  className="pr-10" // Space for the toggle icon
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute inset-y-0 right-3 flex items-center text-gray-500"
+                >
+                  {showPassword ? <EyeOff /> : <Eye />}
+                </button>
+              </div>
               <Button
                 disabled={loading}
                 className="clarabutton hover:bg-hoverRed w-full bg-red"
@@ -178,13 +197,30 @@ export default function Signup() {
               placeholder="Email"
               required
             />
-            <Input
+            {/* <Input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
               required
-            />
+            /> */}
+            <div className="relative w-full">
+              <Input
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Password"
+                required
+                className="pr-10" // Space for the toggle icon
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute inset-y-0 right-3 flex items-center text-gray-500"
+              >
+                {showPassword ? <EyeOff /> : <Eye />}
+              </button>
+            </div>
             <Button
               disabled={loading}
               className="clarabutton hover:bg-hoverRed w-full bg-red"
