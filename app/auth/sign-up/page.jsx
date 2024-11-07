@@ -56,6 +56,8 @@ export default function Signup() {
 
       setMessage("User created successfully!");
       setError("");
+      router.push("/profile"); // Redirect to activity page or any desired page
+
     } else {
       setError(response.message);
       setMessage("");

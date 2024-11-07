@@ -76,6 +76,7 @@ export default function Signin() {
       // You can now use user data (e.g., user.displayName, user.email) as needed
 
       // Redirect or handle the login success here, e.g., storing user data in state
+      router.push("/profile"); // Redirect to activity page or any desired page
     } catch (err) {
       setError(err.message);
       console.error("Google login error:", err);
@@ -100,32 +101,6 @@ export default function Signin() {
       setError("An error occurred during login.");
     }
   };
-
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
-  // const [error, setError] = useState("");
-  // const router = useRouter();
-
-  // const handleSignin = async (e) => {
-  //   e.preventDefault();
-  //   setLoading(true); // Set loading to true when submitting starts
-
-  //   const res = await signIn("credentials", {
-  //     email,
-  //     password,
-  //     redirect: false,
-  //   });
-
-  //   console.log("Sign In Response:", res);
-  //   if (res?.ok) {
-  //     setLoading(false); // Set loading to false if there's an error
-  //     router.push("/p/activities");
-  //   } else {
-  //     setError("Invalid email or password.");
-  //     setLoading(false); // Set loading to false if there's an error
-  //     console.log("Signin failed", res);
-  //   }
-  // };
 
   return (
     <>
