@@ -603,7 +603,7 @@ const MobileCurvePath = ({ milestones = [] }) => {
   );
 };
 
-const TrigSnakeCurve = ({ amplitude = 3, numButtons = 5, step = 0.1 }) => {
+const TrigSnakeCurve = ({ amplitude = 3, numButtons = 8, step = 0.1 }) => {
   const sinePoints = [];
   const maxY = numButtons * Math.PI;
 
@@ -613,9 +613,10 @@ const TrigSnakeCurve = ({ amplitude = 3, numButtons = 5, step = 0.1 }) => {
     sinePoints.push({ x: xSine, y: -y }); // Flipping y to make the curve move downwards
   }
 
-  // Calculate extreme positions (maximum and minimum) of the curve
+  // Calculate dynamic extreme positions (maximum and minimum) of the curve based on numButtons
   const extremePositions = [];
   for (let i = Math.PI / 2; i < maxY; i += Math.PI) {
+    if (extremePositions.length >= numButtons) break; // Limit the number of dots
     const xExtreme = amplitude * Math.sin(i); // Calculate extreme x values at multiples of π/2
     extremePositions.push({ x: xExtreme, y: -i }); // Negate y to match the flipped curve
   }
@@ -637,15 +638,20 @@ const TrigSnakeCurve = ({ amplitude = 3, numButtons = 5, step = 0.1 }) => {
           fill="none"
         />
 
-        {/* Circles at Extreme Points */}
+        {/* Dynamic Circles at Extreme Points with Serial Numbers */}
         {extremePositions.map((pos, index) => (
-          <circle
-            key={index}
-            cx={pos.x}
-            cy={pos.y}
-            r="0.2" // Radius of the circle
-            fill="#f05c5c" // Color of the circle
-          />
+          <g key={index}>
+            <circle cx={pos.x} cy={pos.y} r="0.2" fill="#f05c5c" />
+            <text
+              x={pos.x}
+              y={pos.y - 0.5}
+              fontSize="0.5"
+              textAnchor="middle"
+              fill="#000"
+            >
+              {index + 1}
+            </text>
+          </g>
         ))}
       </svg>
     </div>
