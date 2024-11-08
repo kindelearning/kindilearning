@@ -633,7 +633,6 @@ const MobileCurvePath = ({ milestones = [] }) => {
 };
 
 const TrigSnakeCurve = ({ amplitude = 3, step = 0.1 }) => {
-  // Dynamically set maxY based on the number of items in mileStoneCustomData
   const numButtons = mileStoneCustomData.length; // Use the length of your data array
   const maxY = numButtons * Math.PI * 2; // Adjust height based on numButtons
 
@@ -670,26 +669,65 @@ const TrigSnakeCurve = ({ amplitude = 3, step = 0.1 }) => {
           fill="none"
         />
 
-        {/* Dynamic Circles at Extreme Points with Titles */}
+        {/* Circles at Extreme Points */}
         {extremePositions.map((pos, index) => (
           <g key={index}>
-            {/* Circle at the extreme positions */}
-            <circle cx={pos.x} cy={pos.y} r="0.4" fill="#f05c5c" />
-
-            {/* Title Text Above the Circle */}
-            <text
-              className="bg-red text-[1/2px] text-white px-2 py-1 rounded-sm"
-              x={pos.x}
-              y={pos.y - 0.5}
-              fontSize="0.5"
-              textAnchor="middle"
-              fill="#000"
-            >
-              {mileStoneCustomData[index]?.title || "Title Not Available"}
-            </text>
+            <circle
+              cx={pos.x}
+              cy={pos.y}
+              r="0.4"
+              className="cursor-pointer"
+              fill="#f05c5c"
+            />
           </g>
         ))}
       </svg>
+
+      {/* Dialogs outside SVG */}
+      {/* {extremePositions.map((pos, index) => (
+        <Dialog
+          key={index}
+          className="p-2 lg:p-4"
+          style={{ position: "absolute", left: `${pos.x}%`, top: `${pos.y}%` }}
+        >
+          <DialogTrigger>
+            <div
+              className="cursor-pointer"
+              style={{
+                position: "absolute",
+                left: `${pos.x}%`,
+                top: `${pos.y - 0.5}%`, // Adjust to position relative to sine curve
+              }}
+            >
+              <text
+                className="bg-red text-[1/2px] text-white px-2 py-1 rounded-sm"
+                x={pos.x}
+                y={pos.y - 0.5}
+                fontSize="0.5"
+                textAnchor="middle"
+                fill="#000"
+              >
+                {mileStoneCustomData[index]?.title || "Title Not Available"}
+              </text>
+            </div>
+          </DialogTrigger>
+          <DialogContent className="w-full bg-[#eaeaf5] p-0 lg:min-w-[800px] ">
+            <DialogHeader className="p-4">
+              <DialogDescription className="w-full p-4 flex flex-col gap-4 justify-start items-start">
+                <div className="text-[#757575] clarabodyTwo">
+                  Date of Completion
+                </div>
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+              <Button className="px-4 py-2 bg-white hover:bg-white text-[#3f3a64] text-[20px] md:text-[24px] font-medium font-fredoka leading-none rounded-2xl border-2 border-[#3f3a64] justify-center items-center gap-1 inline-flex">
+                <ChevronLeft className="w-[24px] h-[24px]" />
+                Back
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      ))} */}
     </div>
   );
 };
