@@ -77,7 +77,7 @@ export default function NewsLetter() {
               </Button>
             </div>
 
-            {status && <p className="clarabodyTwo text-white">{status}</p>}
+            {status && <p className="clarabodyTwo w-full text-start justify-start text-white">{status}</p>}
           </form>
         </div>
       </div>
