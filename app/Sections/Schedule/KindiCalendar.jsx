@@ -246,6 +246,13 @@ export default function Calendar() {
   const router = useRouter();
   const [hygraphUser, setHygraphUser] = useState(null);
 
+  // Adding the Action button and border for future events
+  const isFutureEvent = (eventDate) => {
+    const currentDate = new Date();
+    const eventDateObj = new Date(eventDate);
+    return eventDateObj >= currentDate; // True if the event is today or in the future
+  };
+
   useEffect(() => {
     if (user && user.email) {
       getUserDataByEmail(user.email).then((data) => {
@@ -288,23 +295,6 @@ export default function Calendar() {
 
     fetchActivities();
   }, []);
-
-  // // Fetch user data when session changes
-  // useEffect(() => {
-  //   if (session && session.user) {
-  //     fetchUserData(session.user.email);
-  //   }
-  // }, [session]);
-
-  // const fetchUserData = async (email) => {
-  //   try {
-  //     const data = await client.request(GET_ACCOUNT_BY_EMAIL, { email });
-  //     console.log("User Data:", data);
-  //     setProfileData(data.account);
-  //   } catch (error) {
-  //     console.error("Error fetching profile data:", error);
-  //   }
-  // };
 
   const handlePrevMonth = () => {
     const newDate = new Date(
@@ -473,12 +463,6 @@ export default function Calendar() {
         </button>
       </div>
 
-      {/* {user && hygraphUser ? (
-        <MyCompletedActivity userID={hygraphUser.id} />
-      ) : (
-        <p>User not found</p>
-      )} */}
-
       {/* Calendar Top Weekdays  */}
       <div className="flex-col flex lg:grid font-fredoka p-0 lg:p-4 bg-[#eaeaf5] lg:bg-[#DCDCE8] rounded-[20px] w-full grid-cols-7 gap-0 text-center">
         {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
@@ -534,7 +518,9 @@ export default function Calendar() {
                   target="_blank"
                   key={event.id}
                   draggable
-                  className="w-full bg-white shadow-md rounded-lg p-2 text-sm"
+                  className={`w-full ${
+                    isFutureEvent(event.date) ? "border-2" : "border-0"
+                  } border-red bg-white shadow-md rounded-lg p-2 text-sm`}
                   onDragStart={(e) => handleDragStart(e, event.id)}
                 >
                   {/* Show only the title if there are multiple events, otherwise show title and description */}
@@ -547,7 +533,9 @@ export default function Calendar() {
                       <div className="flex flex-col w-full gap-1 justify-between items-start">
                         <div className="flex w-full justify-between gap-1 lg:gap-0 items-start">
                           <p className="font-semibold  text-[14px] leading-[16px] lg:text-[12px] lg:leading-[12px] text-start">
-                            {event.title}
+                            {event.title.length > 24
+                              ? event.title.slice(0, 20) + "..."
+                              : event.title}
                           </p>
                           {/* Drag icon */}
                           <div className="cursor-grab text-gray-500 items-start">
@@ -568,7 +556,7 @@ export default function Calendar() {
                           <div className="flex w-full justify-between flex-col items-start">
                             <div className="flex gap-1 items-center ">
                               <div className="text-[#0a1932] text-[12px] leading-[14px] lg:text-[9px] lg:leading-[10px] font-semibold font-fredoka">
-                                {event.focusAge || 'Toddles'}
+                                {event.focusAge || "Toddles"}
                                 {/* Tag 1 */}
                               </div>
                               <span className="flex items-center">•</span>
