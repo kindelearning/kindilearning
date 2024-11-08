@@ -604,105 +604,26 @@ const MobileCurvePath = ({ milestones = [] }) => {
 };
 
 const TrigSnakeCurve = ({ amplitude = 3, numButtons = 5, step = 0.1 }) => {
-  // Generate points for the sine curve
   const sinePoints = [];
-
-  // The maxY will determine how long the curve stretches along the y-axis
   const maxY = numButtons * Math.PI;
 
-  // Calculate points for the sine curve
-  for (let y = 0; y > -maxY; y -= step) {
+  // Generate points for the sine curve, flipping the direction downwards
+  for (let y = 0; y < maxY; y += step) {
     const xSine = amplitude * Math.sin(y); // x = A * sin(y)
-    sinePoints.push({ x: xSine, y });
+    sinePoints.push({ x: xSine, y: -y }); // Flipping y to make the curve move downwards
   }
 
-  // We need to calculate where the sine curve crosses the maximum and minimum values (i.e., A and -A)
-  const buttonPositions = [];
-
-  // Calculate the extreme points (maximum and minimum values) at multiples of π/2
-  for (let i = -Math.PI / 2; i > -maxY; i -= Math.PI) {
-    const xExtreme = amplitude * Math.sin(i); // These are the max/min values at multiples of π
-    buttonPositions.push({ x: xExtreme, y: i });
+  // Calculate extreme positions (maximum and minimum) of the curve
+  const extremePositions = [];
+  for (let i = Math.PI / 2; i < maxY; i += Math.PI) {
+    const xExtreme = amplitude * Math.sin(i); // Calculate extreme x values at multiples of π/2
+    extremePositions.push({ x: xExtreme, y: -i }); // Negate y to match the flipped curve
   }
 
   return (
-    <div
-      className="min-h-[1000px] h-full"
-      style={{ position: "relative", width: "100%" }}
-    >
-      <svg
-        viewBox={`-10 -${maxY / 2} 20 ${maxY}`}
-        width="100%"
-        height="100%"
-        // style={{ overflow: "visible" }}
-      >
-        {/* Sine Curve with modifications */}
-        <path
-          d={sinePoints
-            .map(
-              (point, index) =>
-                `${index === 0 ? "M" : "L"} ${point.x},${point.y}`
-            )
-            .join(" ")}
-          stroke="#f05c5c" // Color set to #f05c5c
-          strokeWidth="0.1" // Narrower stroke width
-          strokeDasharray="0.2,0.2" // Increased number of dashes and decreased gap
-          fill="none"
-        />
-      </svg>
-      {/* Buttons at the extreme positions of the curve */}
-      {buttonPositions.map((pos, index) => (
-        <button
-          key={index}
-          style={{
-            position: "absolute",
-            left: `calc(50% + ${pos.x * 10}px)`, // Adjust positioning based on x (extreme positions)
-            top: `calc(50% - ${pos.y * 10}px)`, // Adjust positioning based on y (extreme positions)
-            transform: "translate(-50%, -50%)", // To center the button correctly
-          }}
-        >
-          Button {index + 1}
-        </button>
-      ))}
-    </div>
-  );
-};
-
-const TrigSnakeCurveTwo = ({ amplitude = 3, numButtons = 5, step = 0.1 }) => {
-  // Generate points for the sine curve
-  const sinePoints = [];
-
-  // The maxY determines how long the curve stretches along the y-axis
-  const maxY = numButtons * Math.PI;
-
-  // Calculate points for the sine curve
-  for (let y = 0; y > -maxY; y -= step) {
-    const xSine = amplitude * Math.sin(y); // x = A * sin(y)
-    sinePoints.push({ x: xSine, y });
-  }
-
-  // Calculate positions for buttons at the extreme points (peaks and valleys)
-  const buttonPositions = [];
-  for (let i = -Math.PI / 2; i > -maxY; i -= Math.PI) {
-    const xExtreme = amplitude * Math.sin(i);
-    buttonPositions.push({ x: xExtreme, y: i });
-  }
-
-  // Calculate scale factor for consistent SVG and CSS positioning
-  const scale = 20; // Adjust this scaling factor as needed for better alignment
-
-  return (
-    <div
-      className="min-h-[1000px] h-full"
-      style={{ position: "relative", width: "100%" }}
-    >
-      <svg
-        viewBox={`-10 -${maxY / 2} 20 ${maxY}`}
-        width="100%"
-        height="100%"
-        style={{ overflow: "visible" }} // Allow buttons to align freely
-      >
-        {/* Render the sine curve */}
+    <div className="h-full" style={{ position: "relative", width: "100%" }}>
+      <svg viewBox={`-10 -${maxY / 2} 20 ${maxY}`} width="100%" height="100%">
+        {/* Sine Curve */}
         <path
           d={sinePoints
             .map(
@@ -715,21 +636,18 @@ const TrigSnakeCurveTwo = ({ amplitude = 3, numButtons = 5, step = 0.1 }) => {
           strokeDasharray="0.2,0.2"
           fill="none"
         />
+
+        {/* Circles at Extreme Points */}
+        {extremePositions.map((pos, index) => (
+          <circle
+            key={index}
+            cx={pos.x}
+            cy={pos.y}
+            r="0.2" // Radius of the circle
+            fill="#f05c5c" // Color of the circle
+          />
+        ))}
       </svg>
-      {/* Render buttons at extreme positions */}
-      {buttonPositions.map((pos, index) => (
-        <button
-          key={index}
-          style={{
-            position: "absolute",
-            left: `calc(50% + ${pos.x * scale}px)`, // Scale x for alignment
-            top: `calc(50% - ${pos.y * scale}px)`, // Scale y for alignment
-            transform: "translate(-50%, -50%)",
-          }}
-        >
-          Button {index + 1}
-        </button>
-      ))}
     </div>
   );
 };
