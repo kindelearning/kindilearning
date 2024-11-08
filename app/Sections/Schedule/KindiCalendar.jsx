@@ -10,6 +10,7 @@ import { useAuth } from "@/app/lib/useAuth";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
 
 const icons = [
   {
@@ -530,11 +531,27 @@ export default function Calendar() {
                     </p>
                   ) : (
                     <>
+                      <div
+                        className={`-mt-[32px] ${
+                          isFutureEvent(event.date) ? "flex" : "hidden"
+                        } w-full justify-between items-center`}
+                      >
+                        <div />
+                        <Link
+                          target="_blank"
+                          href={`/p/activities/${event.id}`}
+                          className={`w-fit px-[6px] py-[2px]  bg-red text-white shadow-md rounded-lg p-2 text-sm`}
+                        >
+                          <p className="font-semibold flex items-center text-[14px] leading-[16px] lg:leading-[12px] lg:text-[12px] text-start">
+                            Lets Start &nbsp; <ArrowRight />
+                          </p>
+                        </Link>
+                      </div>
                       <div className="flex flex-col w-full gap-1 justify-between items-start">
                         <div className="flex w-full justify-between gap-1 lg:gap-0 items-start">
                           <p className="font-semibold  text-[14px] leading-[16px] lg:text-[12px] lg:leading-[12px] text-start">
-                            {event.title.length > 24
-                              ? event.title.slice(0, 20) + "..."
+                            {event.title.length > 30
+                              ? event.title.slice(0, 28) + "..."
                               : event.title}
                           </p>
                           {/* Drag icon */}
