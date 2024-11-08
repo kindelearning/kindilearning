@@ -10,12 +10,7 @@ import {
   DialogHeader,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-  ProfilePlaceHolderOne,
-  progressImage01,
-  progressImage02,
-  progressImage03,
-} from "@/public/Images";
+import { ProfilePlaceHolderOne } from "@/public/Images";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import { GraphQLClient, gql } from "graphql-request";
@@ -56,6 +51,28 @@ const GET_ACCOUNT_BY_EMAIL = gql`
   }
 `;
 
+export const mileStoneCustomData = [
+  {
+    id: 1,
+    title: "Custom Title",
+    time: "10 minutes",
+  },
+  {
+    id: 2,
+    title: "Custom Title",
+    time: "10 minutes",
+  },
+  {
+    id: 3,
+    title: "Custom Title",
+    time: "10 minutes",
+  },
+  {
+    id: 4,
+    title: "Custom Title",
+    time: "10 minutes",
+  },
+];
 const ProfileRoute = () => {
   const [currentIndex, setCurrentIndex] = useState(0); // State to track the current index
 
