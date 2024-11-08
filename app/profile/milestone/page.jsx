@@ -54,23 +54,35 @@ const GET_ACCOUNT_BY_EMAIL = gql`
 export const mileStoneCustomData = [
   {
     id: 1,
-    title: "Custom Title",
-    time: "10 minutes",
+    title: "Custom Title 01",
   },
   {
     id: 2,
-    title: "Custom Title",
-    time: "10 minutes",
+    title: "Custom Title 02",
   },
   {
     id: 3,
-    title: "Custom Title",
-    time: "10 minutes",
+    title: "Custom Title 03",
   },
   {
     id: 4,
-    title: "Custom Title",
-    time: "10 minutes",
+    title: "Custom Title 04",
+  },
+  {
+    id: 5,
+    title: "Custom Title 05",
+  },
+  {
+    id: 6,
+    title: "Custom Title 06",
+  },
+  {
+    id: 7,
+    title: "Custom Title 05",
+  },
+  {
+    id: 8,
+    title: "Custom Title 06",
   },
 ];
 const ProfileRoute = () => {
@@ -620,9 +632,12 @@ const MobileCurvePath = ({ milestones = [] }) => {
   );
 };
 
-const TrigSnakeCurve = ({ amplitude = 3, numButtons = 8, step = 0.1 }) => {
+const TrigSnakeCurve = ({ amplitude = 3, step = 0.1 }) => {
+  // Dynamically set maxY based on the number of items in mileStoneCustomData
+  const numButtons = mileStoneCustomData.length; // Use the length of your data array
+  const maxY = numButtons * Math.PI * 2; // Adjust height based on numButtons
+
   const sinePoints = [];
-  const maxY = numButtons * Math.PI;
 
   // Generate points for the sine curve, flipping the direction downwards
   for (let y = 0; y < maxY; y += step) {
@@ -633,7 +648,7 @@ const TrigSnakeCurve = ({ amplitude = 3, numButtons = 8, step = 0.1 }) => {
   // Calculate dynamic extreme positions (maximum and minimum) of the curve based on numButtons
   const extremePositions = [];
   for (let i = Math.PI / 2; i < maxY; i += Math.PI) {
-    if (extremePositions.length >= numButtons) break; // Limit the number of dots
+    if (extremePositions.length >= numButtons) break; // Limit the number of dots to match the number of data points
     const xExtreme = amplitude * Math.sin(i); // Calculate extreme x values at multiples of π/2
     extremePositions.push({ x: xExtreme, y: -i }); // Negate y to match the flipped curve
   }
@@ -655,18 +670,22 @@ const TrigSnakeCurve = ({ amplitude = 3, numButtons = 8, step = 0.1 }) => {
           fill="none"
         />
 
-        {/* Dynamic Circles at Extreme Points with Serial Numbers */}
+        {/* Dynamic Circles at Extreme Points with Titles */}
         {extremePositions.map((pos, index) => (
           <g key={index}>
-            <circle cx={pos.x} cy={pos.y} r="0.2" fill="#f05c5c" />
+            {/* Circle at the extreme positions */}
+            <circle cx={pos.x} cy={pos.y} r="0.4" fill="#f05c5c" />
+
+            {/* Title Text Above the Circle */}
             <text
+              className="bg-red text-[1/2px] text-white px-2 py-1 rounded-sm"
               x={pos.x}
               y={pos.y - 0.5}
               fontSize="0.5"
               textAnchor="middle"
               fill="#000"
             >
-              {index + 1}
+              {mileStoneCustomData[index]?.title || "Title Not Available"}
             </text>
           </g>
         ))}
