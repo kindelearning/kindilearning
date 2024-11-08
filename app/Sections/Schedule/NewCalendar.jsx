@@ -10,6 +10,7 @@ import Loading from "@/app/loading";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/lib/useAuth";
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
 const icons = [
   {
@@ -251,50 +252,13 @@ export default function NewCalendar() {
     setCurrentDate(newDate);
   };
 
-  // Generate monthly calendar
-  // const generateCalendar = () => {
-  //   const startOfMonth = new Date(
-  //     currentDate.getFullYear(),
-  //     currentDate.getMonth(),
-  //     1
-  //   );
-  //   const endOfMonth = new Date(
-  //     currentDate.getFullYear(),
-  //     currentDate.getMonth() + 1,
-  //     0
-  //   );
-  //   const daysInMonth = endOfMonth.getDate();
-  //   const firstDayOfWeek = startOfMonth.getDay();
+  // Adding the Action button and border for future events
+  const isFutureEvent = (eventDate) => {
+    const currentDate = new Date();
+    const eventDateObj = new Date(eventDate);
+    return eventDateObj >= currentDate; // True if the event is today or in the future
+  };
 
-  //   const totalDaysToShow = firstDayOfWeek + daysInMonth > 35 ? 42 : 35;
-
-  //   const totalDays = Array.from({ length: totalDaysToShow }, (_, i) => {
-  //     if (i < firstDayOfWeek) {
-  //       // Days from the previous month
-  //       const prevMonthEnd = new Date(
-  //         currentDate.getFullYear(),
-  //         currentDate.getMonth(),
-  //         0
-  //       ).getDate();
-  //       return {
-  //         day: prevMonthEnd - (firstDayOfWeek - 1 - i),
-  //         isCurrentMonth: false,
-  //       };
-  //     } else if (i >= daysInMonth + firstDayOfWeek) {
-  //       return {
-  //         day: i - (daysInMonth + firstDayOfWeek) + 1,
-  //         isCurrentMonth: false,
-  //       };
-  //     }
-  //     return {
-  //       day: i - firstDayOfWeek + 1,
-  //       isCurrentMonth: true,
-  //     };
-  //   });
-
-  //   // console.log('Total days: ' + totalDays)
-  //   return totalDays;
-  // };
   const generateCalendar = () => {
     const startOfMonth = new Date(
       currentDate.getFullYear(),
@@ -485,11 +449,6 @@ export default function NewCalendar() {
           </svg>
         </button>
       </div>
-      {/* {user && hygraphUser ? (
-        <MyCompletedActivity userID={hygraphUser.id} />
-      ) : (
-        <p>id not found</p>
-      )} */}
 
       {/* Calendar Top Weekdays  */}
       <div className="flex-col flex lg:grid font-fredoka p-0 lg:p-4 bg-[#eaeaf5] lg:bg-[#DCDCE8] rounded-[20px] w-full grid-cols-7 gap-0 text-center">
@@ -544,10 +503,14 @@ export default function NewCalendar() {
               {/* {checkEventForDate(dayObj.day).map((event) => ( */}
               {/* {eventsForDay.map((event, index) => ( */}
               {checkEventForDate(dayObj.day).map((event) => (
-                <div
+                <Link
+                  href={`/p/activities/${event.id}`}
+                  target="_blank"
                   key={event.id}
                   draggable
-                  className="w-full bg-white shadow-md rounded-lg p-2 text-sm"
+                  className={`w-full my-2 ${
+                    isFutureEvent(event.date) ? "border-2 border-red" : "border-0"
+                  } bg-white shadow-md rounded-lg p-2 text-sm`}
                   onDragStart={(e) => onDragStart(e, event)}
                   onTouchStart={(e) => onTouchStart(e, event)}
                   onTouchMove={onTouchMove}
@@ -611,12 +574,25 @@ export default function NewCalendar() {
                           </div>
                         </div>
                       </div>
-                      {/* <Link href="/p/activities" target="_blank">
-                        Check Now
-                      </Link> */}
+                      <div
+                        className={`-mb-[24px] ${
+                          isFutureEvent(event.date) ? "flex" : "hidden"
+                        } w-full justify-between items-center`}
+                      >
+                        <div />
+                        <Link
+                          target="_blank"
+                          href={`/p/activities/${event.id}`}
+                          className={`w-fit px-[6px] py-[2px]  bg-red text-white shadow-md rounded-lg p-2 text-sm`}
+                        >
+                          <p className="font-semibold flex items-center text-[14px] leading-[16px] lg:leading-[12px] lg:text-[12px] text-start">
+                            Lets Start &nbsp; <ArrowRight />
+                          </p>
+                        </Link>
+                      </div>
                     </>
                   )}
-                </div>
+                </Link>
               ))}
             </div>
           );
