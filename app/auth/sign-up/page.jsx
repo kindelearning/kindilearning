@@ -34,6 +34,7 @@ export default function Signup() {
 
   const handleGoogleSignUp = async () => {
     try {
+
       const user = await signUpWithGoogle();
       setLoading(true); // Set loading to true when submitting starts
       console.log("Google Sign-Up Successful:", user);
