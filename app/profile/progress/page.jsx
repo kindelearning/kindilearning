@@ -19,6 +19,7 @@ import { getAllActivities, getUserDataByEmail } from "@/lib/hygraph";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/lib/useAuth";
 import Link from "next/link";
+import { StockImages } from "@/app/constant/profile";
 
 const HYGRAPH_ENDPOINT =
   "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";
@@ -312,6 +313,37 @@ const MyActivity = ({ userID }) => {
   );
 };
 
+const getRandomImage = () => {
+  const randomIndex = Math.floor(Math.random() * StockImages.length);
+  return StockImages[randomIndex].url;
+};
+
+const RandomImageComponentTwo = () => {
+  const randomImage = getRandomImage();
+
+  return (
+    <Image
+      src={randomImage}
+      alt="Random Profile Placeholder"
+      className="cursor-pointer w-20 h-20"
+    />
+  );
+};
+const RandomImageComponent = () => {
+  const randomImage = getRandomImage();
+
+  return (
+    <div className="relative w-20 h-20 lg:w-36 lg:h-36 p-1 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600">
+      <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
+        <Image
+          src={randomImage}
+          alt="Logo"
+          className="w-[80px] h-[80px] lg:w-36 lg:h-36 object-cover overflow-clip rounded-full"
+        />
+      </div>
+    </div>
+  );
+};
 export default async function ProgressSection() {
   // const { data: session, status } = useSession();
   // const [profileData, setProfileData] = useState(null);
@@ -362,13 +394,14 @@ export default async function ProgressSection() {
         {/* Topbar */}
         <div className="claracontainer py-4 md:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-8">
           <div className="flex w-full px-4 h-[160px] flex-row justify-center gap-0 items-center relative">
-            <Image
+            {/* <Image
               alt="Kindi"
               src={progressImage01}
               className="cursor-pointer w-20 -mr-[32px] h-20"
-            />
+            /> */}
+            <RandomImageComponentTwo />
             {user && hygraphUser ? (
-              <div className="relative w-20 h-20 lg:w-36 lg:h-36 p-1 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600">
+              <div className="relative -mx-[32px]  w-20 h-20 lg:w-36 lg:h-36 p-1 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600">
                 <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
                   <Image
                     src={
@@ -382,21 +415,14 @@ export default async function ProgressSection() {
                 </div>
               </div>
             ) : (
-              <div className="relative w-20 h-20 lg:w-36 lg:h-36 p-1 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600">
-                <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
-                  <Image
-                    src={ProfilePlaceHolderOne}
-                    alt="Logo"
-                    className="w-[80px] h-[80px] lg:w-36 lg:h-36 object-cover overflow-clip rounded-full"
-                  />
-                </div>
-              </div>
+              <RandomImageComponent />
             )}
-            <Image
+            {/* <Image
               alt="Kindi"
               src={progressImage03}
               className="cursor-pointer w-20 -ml-[32px] h-20"
-            />
+            /> */}
+            <RandomImageComponentTwo />
           </div>
           <>
             {hygraphUser ? (

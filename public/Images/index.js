@@ -13,6 +13,20 @@ import FamilyPlusThumb from "./FamilyPlusThumb.svg";
 import SlideLearn from "./SlideLearn.svg";
 import SlideGrow from "./SlideGrow.svg";
 
+// profile Imports
+import ProfilePlaceholder01 from "./ProfilePlaceholder01.svg";
+import ProfilePlaceholder02 from "./ProfilePlaceholder02.svg";
+import ProfilePlaceholder03 from "./ProfilePlaceholder03.svg";
+import ProfilePlaceholder04 from "./ProfilePlaceholder04.svg";
+import ProfilePlaceholder05 from "./ProfilePlaceholder05.svg";
+import ProfilePlaceholder06 from "./ProfilePlaceholder06.svg";
+import ProfilePlaceholder07 from "./ProfilePlaceholder07.svg";
+import ProfilePlaceholder08 from "./ProfilePlaceholder08.svg";
+import ProfilePlaceholder09 from "./ProfilePlaceholder09.svg";
+import ProfilePlaceholder10 from "./ProfilePlaceholder10.svg";
+import ProfilePlaceholder11 from "./ProfilePlaceholder11.svg";
+import ProfilePlaceholder12 from "./ProfilePlaceholder12.svg";
+
 import SlideThrive from "./SlideThrive.svg";
 import SlideMain from "./SlideMain.svg";
 import SlidePlay from "./SlidePlay.svg";
@@ -202,6 +216,20 @@ export {
   ExperimentsMathActivity,
   PhysicalAgilityActivity,
   SpeechLanguageActivity,
+
+  //Profile Export
+  ProfilePlaceholder01,
+  ProfilePlaceholder02,
+  ProfilePlaceholder03,
+  ProfilePlaceholder04,
+  ProfilePlaceholder05,
+  ProfilePlaceholder06,
+  ProfilePlaceholder07,
+  ProfilePlaceholder08,
+  ProfilePlaceholder09,
+  ProfilePlaceholder10,
+  ProfilePlaceholder11,
+  ProfilePlaceholder12,
 
   // HIW Areas of learning Icons Export
   CreativityImagination,

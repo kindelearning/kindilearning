@@ -53,6 +53,7 @@ import { Plus } from "lucide-react";
 import LevelCard from "./LevelCard";
 import { useSession } from "next-auth/react";
 import Loading from "@/app/loading";
+import { StockImages } from "@/app/constant/profile";
 
 const HYGRAPH_ENDPOINT =
   "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";
@@ -1058,6 +1059,27 @@ const PaymentMethodsList = ({ userId }) => {
   );
 };
 
+const getRandomImage = () => {
+  const randomIndex = Math.floor(Math.random() * StockImages.length);
+  return StockImages[randomIndex].url;
+};
+
+const RandomImageComponent = () => {
+  const randomImage = getRandomImage();
+
+  return (
+    <div className="relative w-20 h-20 lg:w-36 lg:h-36 p-1 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600">
+      <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
+        <Image
+          src={randomImage}
+          alt="Random Profile Placeholder"
+          className="w-[72px] h-[72px] lg:w-36 lg:h-36 object-cover overflow-clip rounded-full"
+        />
+      </div>
+    </div>
+  );
+};
+
 export default function ProfileSegments() {
   const { user, loading } = useAuth();
   const router = useRouter();
@@ -1129,16 +1151,7 @@ export default function ProfileSegments() {
                   </div>
                 </>
               ) : (
-                <div className="relative w-20 h-20 lg:w-36 lg:h-36 p-1 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600">
-                  <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
-                    <Image
-                      src={ProfilePlaceHolderOne}
-                      alt="Logo"
-                      // className="rounded-full border-2 lg:w-full lg:h-full border-red w-[48px] h-[48px]"
-                      className="w-[72px] h-[72px] lg:w-36 lg:h-36 object-cover overflow-clip rounded-full"
-                    />
-                  </div>
-                </div>
+                <RandomImageComponent />
               )}
             </div>
 

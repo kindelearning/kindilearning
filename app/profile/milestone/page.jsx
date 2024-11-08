@@ -25,6 +25,7 @@ import { getPublishedMileStone, getUserDataByEmail } from "@/lib/hygraph";
 import { useAuth } from "@/app/lib/useAuth";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { StockImages } from "@/app/constant/profile";
 
 /**
  * @Main_account_Credentials
@@ -733,6 +734,38 @@ const TrigSnakeCurveTwo = ({ amplitude = 3, numButtons = 5, step = 0.1 }) => {
   );
 };
 
+const getRandomImage = () => {
+  const randomIndex = Math.floor(Math.random() * StockImages.length);
+  return StockImages[randomIndex].url;
+};
+
+const RandomImageComponentTwo = () => {
+  const randomImage = getRandomImage();
+
+  return (
+    <Image
+      src={randomImage}
+      alt="Random Profile Placeholder"
+      className="cursor-pointer w-20 h-20"
+    />
+  );
+};
+const RandomImageComponent = () => {
+  const randomImage = getRandomImage();
+
+  return (
+    <div className="relative w-20 h-20 lg:w-36 lg:h-36 p-1 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600">
+      <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
+        <Image
+          src={randomImage}
+          alt="Logo"
+          className="w-[80px] h-[80px] lg:w-36 lg:h-36 object-cover overflow-clip rounded-full"
+        />
+      </div>
+    </div>
+  );
+};
+
 export default function MileStone() {
   const { user, loading } = useAuth();
   const router = useRouter();
@@ -753,13 +786,14 @@ export default function MileStone() {
           {/* <UserImages /> */}
           <div className="flex w-full flex-col justify-center items-center">
             <div className="flex w-full h-[160px] flex-row justify-center gap-0 items-center relative">
-              <Image
+              {/* <Image
                 alt="Kindi"
                 src={progressImage01}
                 className="cursor-pointer w-20 object-cover rounded-full border-2 border-white -mr-[32px] h-20"
-              />
+              /> */}
+              <RandomImageComponentTwo />
               {user && hygraphUser ? (
-                <div className="relative w-20 h-20 lg:w-36 lg:h-36 p-1 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600">
+                <div className="relative w-20 -mx-[32px] h-20 lg:w-36 lg:h-36 p-1 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600">
                   <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
                     <Image
                       src={
@@ -773,21 +807,14 @@ export default function MileStone() {
                   </div>
                 </div>
               ) : (
-                <div className="relative w-20 h-20 lg:w-36 lg:h-36 p-1 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600">
-                  <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
-                    <Image
-                      src={ProfilePlaceHolderOne}
-                      alt="Logo"
-                      className="w-[80px] h-[80px] lg:w-36 lg:h-36 object-cover overflow-clip rounded-full"
-                    />
-                  </div>
-                </div>
+                <RandomImageComponent />
               )}
-              <Image
+              {/* <Image
                 alt="Kindi"
                 src={progressImage03}
                 className="cursor-pointer w-20 -ml-[32px] h-20"
-              />
+              /> */}
+              <RandomImageComponentTwo />
             </div>
             {hygraphUser ? (
               <div className="w-full text-center text-[#0a1932] text-[40px] font-semibold font-fredoka leading-normal">
