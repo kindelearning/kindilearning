@@ -34,13 +34,11 @@ export default function Signup() {
 
   const handleGoogleSignUp = async () => {
     try {
-
       const user = await signUpWithGoogle();
       setLoading(true); // Set loading to true when submitting starts
       console.log("Google Sign-Up Successful:", user);
       // Optional: Redirect user to dashboard or desired page
       router.push("/profile"); // Redirect to activity page or any desired page
-      
     } catch (error) {
       console.error("Google Sign-Up Failed:", error);
       setLoading(false); // Set loading to true when submitting starts
@@ -54,18 +52,29 @@ export default function Signup() {
 
     if (response.success) {
       setLoading(true); // Set loading to true when submitting starts
-
+      try {
+        await fetch("/api/sendWelcomeEmail", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: email,
+            name: email.split("@")[0], // Extract a default name from the email if not provided; adjust as needed
+          }),
+        });
+      } catch (error) {
+        console.error("Failed to send welcome email:", error);
+      }
       setMessage("User created successfully!");
       setError("");
       router.push("/profile"); // Redirect to activity page or any desired page
-
     } else {
       setError(response.message);
       setMessage("");
       setLoading(false); // Set loading to true when submitting starts
     }
   };
-
 
   return (
     <>
