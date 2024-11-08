@@ -509,7 +509,9 @@ export default function NewCalendar() {
                   key={event.id}
                   draggable
                   className={`w-full my-2 ${
-                    isFutureEvent(event.date) ? "border-2 border-red" : "border-0"
+                    isFutureEvent(event.date)
+                      ? "border-2 border-red"
+                      : "border-0"
                   } bg-white shadow-md rounded-lg p-2 text-sm`}
                   onDragStart={(e) => onDragStart(e, event)}
                   onTouchStart={(e) => onTouchStart(e, event)}
@@ -518,7 +520,13 @@ export default function NewCalendar() {
                 >
                   {/* Show only the title if there are multiple events, otherwise show title and description */}
                   {eventCount > 1 ? (
-                    <p className="font-semibold text-[14px] leading-[16px] lg:leading-[12px] lg:text-[12px] text-start">
+                    <p
+                      className={`font-semibold ${
+                        isFutureEvent(event.date)
+                          ? "border-2 border-white"
+                          : "border-0"
+                      } text-[14px] border-0 border-white leading-[16px] lg:leading-[12px] lg:text-[12px] text-start`}
+                    >
                       {event.title}
                     </p>
                   ) : (
