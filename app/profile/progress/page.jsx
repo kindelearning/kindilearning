@@ -325,7 +325,7 @@ const RandomImageComponentTwo = () => {
     <Image
       src={randomImage}
       alt="Random Profile Placeholder"
-      className="cursor-pointer w-20 h-20"
+      className="cursor-pointer w-16 h-16"
     />
   );
 };
