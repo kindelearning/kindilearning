@@ -633,29 +633,32 @@ const MobileCurvePath = ({ milestones = [] }) => {
 };
 
 const TrigSnakeCurve = ({ amplitude = 3, step = 0.1 }) => {
-  const numButtons = mileStoneCustomData.length; // Use the length of your data array
-  const maxY = numButtons * Math.PI * 2; // Adjust height based on numButtons
+  const numButtons = mileStoneCustomData.length;
+  const maxY = numButtons * Math.PI * 2;
 
   const sinePoints = [];
-
-  // Generate points for the sine curve, flipping the direction downwards
   for (let y = 0; y < maxY; y += step) {
-    const xSine = amplitude * Math.sin(y); // x = A * sin(y)
-    sinePoints.push({ x: xSine, y: -y }); // Flipping y to make the curve move downwards
+    const xSine = amplitude * Math.sin(y);
+    sinePoints.push({ x: xSine, y: -y });
   }
 
-  // Calculate dynamic extreme positions (maximum and minimum) of the curve based on numButtons
   const extremePositions = [];
   for (let i = Math.PI / 2; i < maxY; i += Math.PI) {
-    if (extremePositions.length >= numButtons) break; // Limit the number of dots to match the number of data points
-    const xExtreme = amplitude * Math.sin(i); // Calculate extreme x values at multiples of π/2
-    extremePositions.push({ x: xExtreme, y: -i }); // Negate y to match the flipped curve
+    if (extremePositions.length >= numButtons) break;
+    const xExtreme = amplitude * Math.sin(i);
+    extremePositions.push({ x: xExtreme, y: -i });
   }
 
+  // Assume a scaling factor for SVG to DOM transformation
+  const scaleX = 10; // Adjust these scaling factors as necessary for your use case
+  const scaleY = 10;
+
   return (
-    <div className="h-full" style={{ position: "relative", width: "100%" }}>
+    <div
+      className="h-full relative"
+      style={{ width: "100%", position: "relative" }}
+    >
       <svg viewBox={`-10 -${maxY / 2} 20 ${maxY}`} width="100%" height="100%">
-        {/* Sine Curve */}
         <path
           d={sinePoints
             .map(
@@ -668,8 +671,6 @@ const TrigSnakeCurve = ({ amplitude = 3, step = 0.1 }) => {
           strokeDasharray="0.2,0.2"
           fill="none"
         />
-
-        {/* Circles at Extreme Points */}
         {extremePositions.map((pos, index) => (
           <g key={index}>
             <circle
@@ -683,51 +684,24 @@ const TrigSnakeCurve = ({ amplitude = 3, step = 0.1 }) => {
         ))}
       </svg>
 
-      {/* Dialogs outside SVG */}
-      {/* {extremePositions.map((pos, index) => (
-        <Dialog
-          key={index}
-          className="p-2 lg:p-4"
-          style={{ position: "absolute", left: `${pos.x}%`, top: `${pos.y}%` }}
+      {/* Non-SVG Elements Positioned Based on Extreme Points */}
+      {extremePositions.map((pos, index) => (
+        <div
+          key={`non-svg-${index}`}
+          style={{
+            position: "absolute",
+            left: `calc(50% + ${pos.x * scaleX}px)`, // Adjust position based on SVG-to-DOM conversion
+            top: `calc(50% + ${pos.y * scaleY * 2}px)`,
+            transform: "translate(-50%, -50%)", // Center the element at the calculated position
+          }}
         >
-          <DialogTrigger>
-            <div
-              className="cursor-pointer"
-              style={{
-                position: "absolute",
-                left: `${pos.x}%`,
-                top: `${pos.y - 0.5}%`, // Adjust to position relative to sine curve
-              }}
-            >
-              <text
-                className="bg-red text-[1/2px] text-white px-2 py-1 rounded-sm"
-                x={pos.x}
-                y={pos.y - 0.5}
-                fontSize="0.5"
-                textAnchor="middle"
-                fill="#000"
-              >
-                {mileStoneCustomData[index]?.title || "Title Not Available"}
-              </text>
-            </div>
-          </DialogTrigger>
-          <DialogContent className="w-full bg-[#eaeaf5] p-0 lg:min-w-[800px] ">
-            <DialogHeader className="p-4">
-              <DialogDescription className="w-full p-4 flex flex-col gap-4 justify-start items-start">
-                <div className="text-[#757575] clarabodyTwo">
-                  Date of Completion
-                </div>
-              </DialogDescription>
-            </DialogHeader>
-            <DialogFooter>
-              <Button className="px-4 py-2 bg-white hover:bg-white text-[#3f3a64] text-[20px] md:text-[24px] font-medium font-fredoka leading-none rounded-2xl border-2 border-[#3f3a64] justify-center items-center gap-1 inline-flex">
-                <ChevronLeft className="w-[24px] h-[24px]" />
-                Back
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
-      ))} */}
+          <button
+            className="clarabutton bg-red text-white" /* className="bg-red px-2 py-1 rounded" */
+          >
+            {mileStoneCustomData[index]?.title || "Action"}
+          </button>
+        </div>
+      ))}
     </div>
   );
 };
