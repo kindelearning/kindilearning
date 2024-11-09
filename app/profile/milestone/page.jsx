@@ -231,7 +231,7 @@ const DisplayAllMileStone = () => {
 
   return (
     <>
-      <MobileCurvePath milestones={milestones} />
+      <TrigSnakeCurve amplitude={7} mileStoneCustomData={milestones} />
       <CurvePath milestones={milestones} />
     </>
   );
@@ -632,7 +632,11 @@ const MobileCurvePath = ({ milestones = [] }) => {
   );
 };
 
-const TrigSnakeCurve = ({ amplitude = 3, step = 0.1 }) => {
+const TrigSnakeCurve = ({
+  amplitude = 6,
+  mileStoneCustomData = [],
+  step = 0.1,
+}) => {
   const [currentDate, setCurrentDate] = useState("");
   const [message, setMessage] = useState("");
   const numButtons = mileStoneCustomData.length;
@@ -652,10 +656,18 @@ const TrigSnakeCurve = ({ amplitude = 3, step = 0.1 }) => {
   }, [user, loading, router]);
 
   const sinePoints = [];
+
   for (let y = 0; y < maxY; y += step) {
     const xSine = amplitude * Math.sin(y);
     sinePoints.push({ x: xSine, y: -y });
   }
+
+
+  if (!mileStoneCustomData || mileStoneCustomData.length === 0) {
+    return <div>No data available</div>;
+  }
+
+  
 
   // Current Date
   useEffect(() => {
@@ -674,6 +686,7 @@ const TrigSnakeCurve = ({ amplitude = 3, step = 0.1 }) => {
   }, []);
 
   const extremePositions = [];
+
   for (let i = Math.PI / 2; i < maxY; i += Math.PI) {
     if (extremePositions.length >= numButtons) break;
     const xExtreme = amplitude * Math.sin(i);
@@ -686,10 +699,15 @@ const TrigSnakeCurve = ({ amplitude = 3, step = 0.1 }) => {
 
   return (
     <div
-      className="h-full relative"
+      className="h-full flex md:hidden relative"
       style={{ width: "100%", position: "relative" }}
     >
-      <svg viewBox={`-10 -${maxY / 2} 20 ${maxY}`} width="100%" height="100%">
+      <svg
+        viewBox={`-10 -${maxY / 2} 20 ${maxY}`}
+        width="100%"
+        className="min-h-[700px]"
+        height="100%"
+      >
         <path
           d={sinePoints
             .map(
@@ -721,7 +739,7 @@ const TrigSnakeCurve = ({ amplitude = 3, step = 0.1 }) => {
           key={`non-svg-${index}`}
           style={{
             position: "absolute",
-            left: `calc(50% + ${pos.x * scaleX}px)`, // Adjust position based on SVG-to-DOM conversion
+            left: `calc(50% + ${pos.x * scaleX * 2}px)`, // Adjust position based on SVG-to-DOM conversion
             top: `calc(50% + ${pos.y * scaleY * 2}px)`,
             transform: "translate(-50%, -50%)", // Center the element at the calculated position
           }}
@@ -729,7 +747,7 @@ const TrigSnakeCurve = ({ amplitude = 3, step = 0.1 }) => {
           <Dialog className="p-2 lg:p-4">
             <DialogTrigger>
               <button
-                className="clarabutton bg-red text-white" /* className="bg-red px-2 py-1 rounded" */
+                className="text-[12px] min-w-[60px] max-w-[80px] w-full rounded-sm px-2 bg-red text-white" /* className="bg-red px-2 py-1 rounded" */
               >
                 {mileStoneCustomData[index]?.title || "Action"}
               </button>
@@ -740,7 +758,7 @@ const TrigSnakeCurve = ({ amplitude = 3, step = 0.1 }) => {
                   <div className="text-[#0a1932] claraheading">
                     {mileStoneCustomData[index]?.title}
                   </div>
-                  <div className="w-full text-[#4a4a4a] clarabodyTwo justify-center items-center">
+                  <div className="w-full text-start text-[#4a4a4a] clarabodyTwo justify-center items-center">
                     {mileStoneCustomData[index]?.description ||
                       "Description not found"}
                   </div>
@@ -765,7 +783,7 @@ const TrigSnakeCurve = ({ amplitude = 3, step = 0.1 }) => {
                   <div className="w-fit flex flex-row justify-between items-center gap-4 px-4">
                     {user && hygraphUser ? (
                       <MilestoneCompleteButton
-                        milestoneId={index}
+                        milestoneId={mileStoneCustomData[index]?.id}
                         userId={hygraphUser.id}
                         // userId="cm25lil0t0zvz07pfuuizj473"
                       />
@@ -885,7 +903,7 @@ export default function MileStone() {
               </div>
             )}
           </div>
-          <TrigSnakeCurve amplitude={6} numButtons={12} />
+          {/* <TrigSnakeCurve amplitude={6} numButtons={12} /> */}
           <ProfileRoute />
           <DisplayAllMileStone />
         </div>
