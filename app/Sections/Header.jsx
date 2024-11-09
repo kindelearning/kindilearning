@@ -2,15 +2,10 @@
 
 import {
   Achievement,
-  BlogThumb,
   Logo,
   Milestone,
-  ProfessionalThumb,
-  ProfileDP,
   ProfilePlaceHolderOne,
   ProfileProgress,
-  progressImage02,
-  User,
 } from "@/public/Images";
 import Image from "next/image";
 import { NavMenu } from "../constant/menu";
@@ -27,7 +22,7 @@ import {
 import { ChevronRight, Menu, ShoppingBag } from "lucide-react";
 import { HomeLight } from "@/public/Icons";
 import { useEffect, useState } from "react";
-import { signOut, useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import Loading from "../loading";
 import { useCart } from "../context/CartContext";
 import { GoogleTranslate } from "./GoogleTranslate";
@@ -95,7 +90,7 @@ const Achievements = () => {
         href="/profile/achievements"
         className="w-full h-[80px] bg-[#C42797] justify-center items-center gap-1 flex flex-col rounded-xl border-3 border-[#e4a9d3]"
       >
-        <Image src={Achievement} alt="Kindi"  width={40} height={40} />
+        <Image src={Achievement} alt="Kindi" width={40} height={40} />
         <div className="text-center w-full text-white text-xs font-normal font-fredoka leading-none">
           Achievements
         </div>{" "}
@@ -158,7 +153,6 @@ const Header = () => {
   //     fetchUserData(session.user.email);
   //   }
   // }, [session]);
-
 
   useEffect(() => {
     if (user && user.email) {
@@ -356,7 +350,9 @@ const Header = () => {
                 <div className="relative w-full flex justify-center items-center p-[2px] border-2 border-red hover:border-hoverRed rounded-full">
                   <div className="w-full h-full bg-white rounded-full  flex items-center justify-center">
                     <Image
-                      src={hygraphUser.profilePicture?.url || ProfilePlaceHolderOne}
+                      src={
+                        hygraphUser.profilePicture?.url || ProfilePlaceHolderOne
+                      }
                       alt="User DP"
                       width={40}
                       height={40}

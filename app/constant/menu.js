@@ -113,16 +113,16 @@ export const NavMenu = [
     activeIcon: BrainActive,
   },
   {
-    title: "Shop",
-    link: "/shop",
-    icon: ShopIcon,
-    activeIcon: ShopActive,
-  },
-  {
     title: "Community",
     link: "/p/community",
     icon: CommunityIcon,
     activeIcon: CommunityActive,
+  },
+  {
+    title: "Shop",
+    link: "/shop",
+    icon: ShopIcon,
+    activeIcon: ShopActive,
   },
 ];
 
@@ -456,7 +456,7 @@ export const cardData = [
         <li>Using different medias and colours to express oneself</li>
       </ul>
     ),
-    textColor:'black',
+    textColor: "black",
     backgroundColor: "f0c84a",
   },
   {
@@ -480,43 +480,43 @@ export const navItems = [
   {
     id: "home",
     label: "Home",
-    iconActive: <Image alt="Kindi"  src={HomeActive} className="h-6 w-6" />,
-    iconInactive: <Image alt="Kindi"  src={Home} className="h-6 w-6" />,
+    iconActive: <Image alt="Kindi" src={HomeActive} className="h-6 w-6" />,
+    iconInactive: <Image alt="Kindi" src={Home} className="h-6 w-6" />,
     href: "/",
   },
   {
     id: "calendar",
     label: "Calendar",
-    iconActive: <Image alt="Kindi"  src={CalendarActive} className="h-6 w-6" />,
-    iconInactive: <Image alt="Kindi"  src={CalendarTwo} className="h-6 w-6" />,
+    iconActive: <Image alt="Kindi" src={CalendarActive} className="h-6 w-6" />,
+    iconInactive: <Image alt="Kindi" src={CalendarTwo} className="h-6 w-6" />,
     href: "/p/activities/schedule",
   },
   {
     id: "brain",
     label: "Brain",
-    iconActive: <Image alt="Kindi"  src={BrainActive} className="h-6 w-6" />,
-    iconInactive: <Image alt="Kindi"  src={Brain} className="h-6 w-6" />,
+    iconActive: <Image alt="Kindi" src={BrainActive} className="h-6 w-6" />,
+    iconInactive: <Image alt="Kindi" src={Brain} className="h-6 w-6" />,
     href: "/p/activities",
   },
   {
     id: "earth",
     label: "Earth",
-    iconActive: <Image alt="Kindi"  src={EarthActive} className="h-6 w-6" />,
-    iconInactive: <Image alt="Kindi"  src={Earth} className="h-6 w-6" />,
+    iconActive: <Image alt="Kindi" src={EarthActive} className="h-6 w-6" />,
+    iconInactive: <Image alt="Kindi" src={Earth} className="h-6 w-6" />,
     href: "/p/community",
   },
   {
     id: "shop",
     label: "Shop",
-    iconActive: <Image alt="Kindi"  src={ShopTwoActive} className="h-6 w-6" />,
-    iconInactive: <Image alt="Kindi"  src={ShopTwo} className="h-6 w-6" />,
+    iconActive: <Image alt="Kindi" src={ShopTwoActive} className="h-6 w-6" />,
+    iconInactive: <Image alt="Kindi" src={ShopTwo} className="h-6 w-6" />,
     href: "/shop",
   },
   {
     id: "profile",
     label: "Profile",
-    iconActive: <Image alt="Kindi"  src={UserActive} className="h-6 w-6" />,
-    iconInactive: <Image alt="Kindi"  src={UserTwo} className="h-6 w-6" />,
+    iconActive: <Image alt="Kindi" src={UserActive} className="h-6 w-6" />,
+    iconInactive: <Image alt="Kindi" src={UserTwo} className="h-6 w-6" />,
     href: "/profile",
   },
 ];
