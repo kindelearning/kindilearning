@@ -642,7 +642,7 @@ const TrigSnakeCurve = ({
   const numButtons = mileStoneCustomData.length;
   const maxY = numButtons * Math.PI * 2;
 
-  // Getting hygraph User for Auth
+  // Getting Hygraph User for Auth
   const { user, loading } = useAuth();
   const router = useRouter();
   const [hygraphUser, setHygraphUser] = useState(null);
@@ -654,20 +654,6 @@ const TrigSnakeCurve = ({
       });
     }
   }, [user, loading, router]);
-
-  const sinePoints = [];
-
-  for (let y = 0; y < maxY; y += step) {
-    const xSine = amplitude * Math.sin(y);
-    sinePoints.push({ x: xSine, y: -y });
-  }
-
-
-  if (!mileStoneCustomData || mileStoneCustomData.length === 0) {
-    return <div>No data available</div>;
-  }
-
-  
 
   // Current Date
   useEffect(() => {
@@ -685,8 +671,17 @@ const TrigSnakeCurve = ({
     }
   }, []);
 
-  const extremePositions = [];
+  if (!mileStoneCustomData || mileStoneCustomData.length === 0) {
+    return <div>No data available</div>;
+  }
 
+  const sinePoints = [];
+  for (let y = 0; y < maxY; y += step) {
+    const xSine = amplitude * Math.sin(y);
+    sinePoints.push({ x: xSine, y: -y });
+  }
+
+  const extremePositions = [];
   for (let i = Math.PI / 2; i < maxY; i += Math.PI) {
     if (extremePositions.length >= numButtons) break;
     const xExtreme = amplitude * Math.sin(i);
@@ -746,13 +741,11 @@ const TrigSnakeCurve = ({
         >
           <Dialog className="p-2 lg:p-4">
             <DialogTrigger>
-              <button
-                className="text-[12px] min-w-[60px] max-w-[80px] w-full rounded-sm px-2 bg-red text-white" /* className="bg-red px-2 py-1 rounded" */
-              >
+              <button className="text-[12px] min-w-[60px] max-w-[80px] w-full rounded-sm px-2 bg-red text-white">
                 {mileStoneCustomData[index]?.title || "Action"}
               </button>
             </DialogTrigger>
-            <DialogContent className="w-full bg-[#eaeaf5] p-0 lg:min-w-[800px] ">
+            <DialogContent className="w-full bg-[#eaeaf5] p-0 lg:min-w-[800px]">
               <DialogHeader className="p-4">
                 <DialogDescription className="w-full p-4 flex flex-col gap-4 justify-start items-start">
                   <div className="text-[#0a1932] claraheading">
@@ -763,7 +756,7 @@ const TrigSnakeCurve = ({
                       "Description not found"}
                   </div>
                   <div className="w-full p-2 flex flex-col gap-2 bg-white rounded-lg shadow">
-                    <div className="text-[#757575] clarabodyTwo ">
+                    <div className="text-[#757575] clarabodyTwo">
                       Date of Completion
                     </div>
                     <div className="text-[#0a1932] text-[20px] font-normal font-fredoka leading-[20px]">
@@ -785,7 +778,6 @@ const TrigSnakeCurve = ({
                       <MilestoneCompleteButton
                         milestoneId={mileStoneCustomData[index]?.id}
                         userId={hygraphUser.id}
-                        // userId="cm25lil0t0zvz07pfuuizj473"
                       />
                     ) : (
                       <Link href="/auth/sign-up" className="clarabutton">
