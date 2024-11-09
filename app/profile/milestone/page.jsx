@@ -633,14 +633,45 @@ const MobileCurvePath = ({ milestones = [] }) => {
 };
 
 const TrigSnakeCurve = ({ amplitude = 3, step = 0.1 }) => {
+  const [currentDate, setCurrentDate] = useState("");
+  const [message, setMessage] = useState("");
   const numButtons = mileStoneCustomData.length;
   const maxY = numButtons * Math.PI * 2;
+
+  // Getting hygraph User for Auth
+  const { user, loading } = useAuth();
+  const router = useRouter();
+  const [hygraphUser, setHygraphUser] = useState(null);
+
+  useEffect(() => {
+    if (user && user.email) {
+      getUserDataByEmail(user.email).then((data) => {
+        setHygraphUser(data);
+      });
+    }
+  }, [user, loading, router]);
 
   const sinePoints = [];
   for (let y = 0; y < maxY; y += step) {
     const xSine = amplitude * Math.sin(y);
     sinePoints.push({ x: xSine, y: -y });
   }
+
+  // Current Date
+  useEffect(() => {
+    const today = new Date();
+    const formattedDate = today.toLocaleDateString("en-US", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+    setCurrentDate(formattedDate);
+    const savedMessage = localStorage.getItem("milestoneMessage");
+    if (savedMessage) {
+      setMessage(savedMessage);
+    }
+  }, []);
 
   const extremePositions = [];
   for (let i = Math.PI / 2; i < maxY; i += Math.PI) {
@@ -695,11 +726,59 @@ const TrigSnakeCurve = ({ amplitude = 3, step = 0.1 }) => {
             transform: "translate(-50%, -50%)", // Center the element at the calculated position
           }}
         >
-          <button
-            className="clarabutton bg-red text-white" /* className="bg-red px-2 py-1 rounded" */
-          >
-            {mileStoneCustomData[index]?.title || "Action"}
-          </button>
+          <Dialog className="p-2 lg:p-4">
+            <DialogTrigger>
+              <button
+                className="clarabutton bg-red text-white" /* className="bg-red px-2 py-1 rounded" */
+              >
+                {mileStoneCustomData[index]?.title || "Action"}
+              </button>
+            </DialogTrigger>
+            <DialogContent className="w-full bg-[#eaeaf5] p-0 lg:min-w-[800px] ">
+              <DialogHeader className="p-4">
+                <DialogDescription className="w-full p-4 flex flex-col gap-4 justify-start items-start">
+                  <div className="text-[#0a1932] claraheading">
+                    {mileStoneCustomData[index]?.title}
+                  </div>
+                  <div className="w-full text-[#4a4a4a] clarabodyTwo justify-center items-center">
+                    {mileStoneCustomData[index]?.description ||
+                      "Description not found"}
+                  </div>
+                  <div className="w-full p-2 flex flex-col gap-2 bg-white rounded-lg shadow">
+                    <div className="text-[#757575] clarabodyTwo ">
+                      Date of Completion
+                    </div>
+                    <div className="text-[#0a1932] text-[20px] font-normal font-fredoka leading-[20px]">
+                      {currentDate}
+                    </div>
+                  </div>
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter>
+                <section className="w-full h-auto shadow-upper bg-[#ffffff] -top-2 sticky bottom-0 z-10 rounded-t-[16px] items-center justify-between py-4 flex flex-row">
+                  <div className="w-fit flex flex-row justify-between items-center gap-4 px-4">
+                    <Button className="px-4 py-2 bg-white hover:bg-white text-[#3f3a64] text-[20px] md:text-[24px] font-medium font-fredoka leading-none rounded-2xl border-2 border-[#3f3a64] justify-center items-center gap-1 inline-flex">
+                      <ChevronLeft className="w-[24px] h-[24px]" />
+                      Back
+                    </Button>
+                  </div>
+                  <div className="w-fit flex flex-row justify-between items-center gap-4 px-4">
+                    {user && hygraphUser ? (
+                      <MilestoneCompleteButton
+                        milestoneId={index}
+                        userId={hygraphUser.id}
+                        // userId="cm25lil0t0zvz07pfuuizj473"
+                      />
+                    ) : (
+                      <Link href="/auth/sign-up" className="clarabutton">
+                        Login First!
+                      </Link>
+                    )}
+                  </div>
+                </section>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </div>
       ))}
     </div>
