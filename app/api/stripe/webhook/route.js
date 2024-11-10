@@ -1,46 +1,37 @@
-import { buffer } from "micro";
+// app/api/webhooks/stripe/route.js (using App Router)
+
 import { NextResponse } from "next/server";
-import Stripe from "stripe";
-
-export const config = {
-  api: {
-    bodyParser: false, // Disables default body parsing to correctly process Stripe events
-  },
-};
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export async function POST(req) {
-  const sig = req.headers["stripe-signature"];
-  const buf = await buffer(req);
-
-  let event;
-
   try {
-    event = stripe.webhooks.constructEvent(
-      buf,
+    // Assuming you need the raw body for signature verification (e.g., with Stripe)
+    const body = await req.text(); // Use .text() for raw body, .json() if JSON parsing is required
+
+    // You can perform your logic here (e.g., signature verification, processing events, etc.)
+    // Example: Parse Stripe event (ensure you have the Stripe SDK installed)
+    const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+    const sig = req.headers.get("stripe-signature");
+    const event = stripe.webhooks.constructEvent(
+      body,
       sig,
-      process.env.STRIPE_WEBHOOK_SECRET
+      process.env.STRIPE_ENDPOINT_SECRET
     );
+
+    // Handle the event
+    switch (event.type) {
+      case "checkout.session.completed":
+        const session = event.data.object;
+        console.log("Payment successful:", session);
+        // Your custom handling logic
+        break;
+      // Handle other event types as needed
+      default:
+        console.log(`Unhandled event type ${event.type}`);
+    }
+
+    return NextResponse.json({ received: true });
   } catch (err) {
-    return new NextResponse(`Webhook Error: ${err.message}`, { status: 400 });
+    console.error("Error handling webhook:", err);
+    return NextResponse.json({ error: "Webhook error" }, { status: 400 });
   }
-
-  if (event.type === "checkout.session.completed") {
-    const session = event.data.object;
-
-    // Extract necessary data
-    const orderData = {
-      sessionId: session.id,
-      customerEmail: session.customer_email,
-      amountTotal: session.amount_total,
-      paymentStatus: session.payment_status,
-      createdDate: new Date(session.created * 1000).toISOString(),
-    };
-
-    // Call a function to save this data to Hygraph
-    await saveOrderToHygraph(orderData);
-  }
-
-  return new NextResponse("Received", { status: 200 });
 }
