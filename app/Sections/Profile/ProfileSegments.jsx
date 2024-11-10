@@ -54,6 +54,8 @@ import LevelCard from "./LevelCard";
 import { useSession } from "next-auth/react";
 import Loading from "@/app/loading";
 import { StockImages } from "@/app/constant/profile";
+import { getAuth, signOut } from "firebase/auth";
+import app from "@/app/firebase/firebaseConfig";
 
 const HYGRAPH_ENDPOINT =
   "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";
@@ -359,6 +361,7 @@ const FETCH_PARTNERS_QUERY = gql`
     }
   }
 `;
+
 const getHygraphPartners = async (userId) => {
   try {
     const data = await client.request(FETCH_PARTNERS_QUERY, {
@@ -1099,6 +1102,19 @@ export default function ProfileSegments() {
         <Loading />
       </p>
     );
+  const auth = getAuth(app); // Use the initialized app here
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      console.log("User successfully logged out");
+
+      // Redirect to the home or login page after logging out
+      router.push("/p");
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+  };
 
   return (
     <>
@@ -1556,6 +1572,14 @@ export default function ProfileSegments() {
                 </DialogHeader>
               </DialogContent>
             </Dialog>
+          </div>
+          <div className="w-full justify-start items-center flex">
+            <Button
+              className="clarabutton max-w-[300px] bg-red hover:bg-hoverRed"
+              onClick={handleLogout}
+            >
+              Logout
+            </Button>
           </div>
 
           {/* Reffereal Card Section */}
