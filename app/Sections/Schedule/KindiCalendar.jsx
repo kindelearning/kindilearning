@@ -526,7 +526,7 @@ export default function Calendar() {
                 >
                   {/* Show only the title if there are multiple events, otherwise show title and description */}
                   {eventCount > 1 ? (
-                    <p className="font-semibold text-[14px] leading-[16px] lg:leading-[12px] lg:text-[12px] text-start">
+                    <p className="font-semibold text-[14px]  border-white border-2 leading-[16px] lg:leading-[12px] lg:text-[12px] text-start">
                       {event.title}
                     </p>
                   ) : (
