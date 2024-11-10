@@ -1,79 +1,46 @@
+import { buffer } from "micro";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: "2022-11-15",
-});
+export const config = {
+  api: {
+    bodyParser: false, // Disables default body parsing to correctly process Stripe events
+  },
+};
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export async function POST(req) {
-  const sig = req.headers.get("stripe-signature");
-  const body = await req.text();
+  const sig = req.headers["stripe-signature"];
+  const buf = await buffer(req);
 
-  const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET; // Your webhook secret from Stripe
+  let event;
 
   try {
-    // Verify the webhook signature to make sure it came from Stripe
-    const event = stripe.webhooks.constructEvent(body, sig, endpointSecret);
-
-    // Handle the event
-    switch (event.type) {
-      case "payment_intent.amount_capturable_updated":
-        const amountCapturableUpdated = event.data.object;
-        console.log(
-          "Payment Intent Amount Capturable Updated:",
-          amountCapturableUpdated
-        );
-        break;
-
-      case "payment_intent.canceled":
-        const paymentIntentCanceled = event.data.object;
-        console.log("Payment Intent Canceled:", paymentIntentCanceled);
-        break;
-
-      case "payment_intent.created":
-        const paymentIntentCreated = event.data.object;
-        console.log("Payment Intent Created:", paymentIntentCreated);
-        break;
-
-      case "payment_intent.partially_funded":
-        const paymentIntentPartiallyFunded = event.data.object;
-        console.log(
-          "Payment Intent Partially Funded:",
-          paymentIntentPartiallyFunded
-        );
-        break;
-
-      case "payment_intent.payment_failed":
-        const paymentIntentFailed = event.data.object;
-        console.log("Payment Intent Failed:", paymentIntentFailed);
-        break;
-
-      case "payment_intent.processing":
-        const paymentIntentProcessing = event.data.object;
-        console.log("Payment Intent Processing:", paymentIntentProcessing);
-        break;
-
-      case "payment_intent.requires_action":
-        const paymentIntentRequiresAction = event.data.object;
-        console.log(
-          "Payment Intent Requires Action:",
-          paymentIntentRequiresAction
-        );
-        break;
-
-      case "payment_intent.succeeded":
-        const paymentIntentSucceeded = event.data.object;
-        console.log("Payment Intent Succeeded:", paymentIntentSucceeded);
-        break;
-
-      default:
-        console.log(`Unhandled event type: ${event.type}`);
-    }
-
-    // Return a 200 response to Stripe to acknowledge receipt of the event
-    return new NextResponse("Webhook received", { status: 200 });
+    event = stripe.webhooks.constructEvent(
+      buf,
+      sig,
+      process.env.STRIPE_WEBHOOK_SECRET
+    );
   } catch (err) {
-    console.error(`Webhook Error: ${err.message}`);
     return new NextResponse(`Webhook Error: ${err.message}`, { status: 400 });
   }
+
+  if (event.type === "checkout.session.completed") {
+    const session = event.data.object;
+
+    // Extract necessary data
+    const orderData = {
+      sessionId: session.id,
+      customerEmail: session.customer_email,
+      amountTotal: session.amount_total,
+      paymentStatus: session.payment_status,
+      createdDate: new Date(session.created * 1000).toISOString(),
+    };
+
+    // Call a function to save this data to Hygraph
+    await saveOrderToHygraph(orderData);
+  }
+
+  return new NextResponse("Received", { status: 200 });
 }
