@@ -122,14 +122,14 @@ const PricingCard = ({
               </div>
             </div>
           )}
-          <div
-            className="bg-[#f05c5c00] hover:bg-[#f05c5c00] items-center rounded-[32px] flex py-0 px-0 "
+          <button
+            className="bg-[#f05c5c00] cursor-pointer hover:bg-[#f05c5c00] items-center rounded-[32px] flex py-0 px-0 "
             onClick={(e) => {
               e.preventDefault(); // Prevent default action
               toggleAccordion(); // Call the toggle function
             }}
           >
-            <div className="w-[max-content] text-[#3f3a64] text-sm text-start font-bold font-fredoka uppercase leading-10">
+            <div className="w-[max-content]  cursor-pointer text-[#3f3a64] text-sm text-start font-bold font-fredoka uppercase leading-10">
               {isOpen ? "Discover Less" : "Discover More"}
             </div>
             {isOpen ? (
@@ -137,7 +137,7 @@ const PricingCard = ({
             ) : (
               <ChevronDown className="text-[#3f3a64]" />
             )}
-          </div>
+          </button>
         </div>
         <div className="flex w-full flex-row justify-between gap-4 items-center px-0">
           <Link target="_blank" href={paymentLink}>
@@ -267,7 +267,7 @@ const OurPricing = async () => {
                 transition: "transform 0.5s ease-in-out",
               }}
             >
-              <PricingCard
+              <PricingCard 
                 title="Family"
                 paymentLink="https://buy.stripe.com/6oEbKT0yJa5qbPG28h"
                 description="No more guesswork! Unlock your child's full potential with our affordable Milestone Tracker—an essential tool for every parent. Ensure your child gets the right support when they need it, keeping them on track and maximizing their brain growth effortlessly."
