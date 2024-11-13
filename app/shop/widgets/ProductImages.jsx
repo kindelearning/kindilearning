@@ -11,7 +11,7 @@ const ProductImages = ({ images = [] }) => {
   return (
     <div className="flex claracontainer w-full gap-2 flex-col items-start">
       {/* Featured Image */}
-      <div className="w-full rounded-[16px] overflow-clip max-h-[400px] md:max-h-[500px]">
+      <div className="w-full lg:rounded-[16px] rounded-none overflow-clip max-h-[400px] md:max-h-[500px]">
         <div className="flex w-full h-fit overflow-clip">
           <Image
             width={600}
