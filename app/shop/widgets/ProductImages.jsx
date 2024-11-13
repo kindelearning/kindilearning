@@ -15,9 +15,10 @@ const ProductImages = ({ images = [] }) => {
       <div className="w-full rounded-[16px] overflow-clip max-h-[400px] md:max-h-[500px]">
         <div className="flex w-full h-fit overflow-clip">
           <Image
-            width={100}
-            height={100}
+            width={600}
+            height={400}
             src={mainImage}
+            quality={100} 
             className="lg:rounded-[16px] rounded-none lg:min-w-[600px] md:min-h-[400px] md:h-full lg:full lg:h-[500px] object-cover lg:max-h-[500px] max-h-[320px] h-[300px] min-h-[300px] w-full"
             alt="Product Image"
           />
