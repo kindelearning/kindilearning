@@ -3,7 +3,6 @@
 import Image from "next/image";
 import React, { useState } from "react";
 
-// const ProductImages = ({ images }) => {
 const ProductImages = ({ images = [] }) => {
   const [mainImage, setMainImage] = useState(
     images && images.length > 0 ? images[0] : ""

@@ -12,6 +12,7 @@ import React from "react";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
+
 const PopularActivityCarousel = ({ activities }) => {
   const containerRef = useRef(null);
 
@@ -36,7 +37,7 @@ const PopularActivityCarousel = ({ activities }) => {
     <>
       <div className="w-full flex items-center justify-center claracontainer ">
         <ChevronLeft
-          className="z-10 mx-4 hidden lg:flex cursor-pointer hover:bg-purple hover:text-white bg-[white] text-[20px] text-purple p-2 rounded-full"
+          className="z-10 mx-4 hidden lg:flex cursor-pointer hover:bg-purple hover:text-white bg-[white] text-[20px] text-purple p-1 rounded-full"
           onClick={scrollLeft}
         />
 
@@ -119,7 +120,7 @@ const PopularActivityCarousel = ({ activities }) => {
           ))}
         </div>
         <ChevronRight
-          className="z-10 mx-4 hidden lg:flex cursor-pointer hover:bg-purple hover:text-white bg-[white] text-[20px] text-purple p-2 rounded-full"
+          className="z-10 mx-4 hidden lg:flex cursor-pointer hover:bg-purple hover:text-white bg-[white] text-[20px] text-purple p-1 rounded-full"
           onClick={scrollRight}
         />
       </div>
