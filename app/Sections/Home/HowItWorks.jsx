@@ -134,7 +134,7 @@ export default async function HowItWorks() {
             <Image
               alt="Kindi"
               src={CurveTwo}
-              className="transform hidden md:hidden lg:flex -rotate-180 w-[56%]  -mt-[100px] -mb-[80px]"
+              className="transform hidden md:hidden lg:flex -rotate-180 w-[56%] -mt-[160px] -mb-[60px]"
             />
 
             {/* Section Three */}
