@@ -37,7 +37,7 @@ const MonthlyThemes = async () => {
 
           <div className="lg:grid claracontainer w-full flex flex-row overflow-x-scroll scrollbar-hidden px-2 py-4 hover:px-2 gap-4 lg:grid-cols-2 xl:grid-cols-2">
             {themes.slice(0, 4).map((theme) => (
-              <Link href={`/p/our-themes/${theme.id}`}>
+              <Link href={`/p/our-themes/${theme.id}`}  key={theme.id}>
                 <ThemeCard
                   key={theme.id}
                   image={theme.thumbnail.url}
