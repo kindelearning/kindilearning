@@ -1,64 +1,52 @@
-import NotFound from "@/app/not-found";
-import Activity from "@/app/Widgets/Card/Activity";
-import PopularActivityCarousel from "@/app/Widgets/Carousel/PopularActivityCarousel";
-import { getAllActivities, getHomeData } from "@/lib/hygraph";
-import { Confidence } from "@/public/Icons";
+"use client";
+import { useRef } from "react";
+
 import {
   DiscoveringOurWorldActivity,
   ExperimentsMathActivity,
-  KindiHeart,
   ReadingWritingActivity,
   SpeechLanguageActivity,
 } from "@/public/Images";
 import Image from "next/image";
+import React from "react";
 import Link from "next/link";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
-const PopularActivity = async () => {
-  const homeData = await getHomeData();
-  const activities = await getAllActivities();
-  if (!activities || activities.length === 0) {
-    return <div>No activities found!</div>;
-  }
+const PopularActivityCarousel = ({ activities }) => {
+  const containerRef = useRef(null);
 
-  // console.log("Home Page Data (in component):", homeData);
-  if (!homeData || !homeData[0]?.popularLearningActivities) {
-    return <NotFound />;
-  }
+  const scrollLeft = () => {
+    if (containerRef.current) {
+      containerRef.current.scrollBy({
+        left: -200, // Adjust scroll amount as needed
+        behavior: "smooth",
+      });
+    }
+  };
 
+  const scrollRight = () => {
+    if (containerRef.current) {
+      containerRef.current.scrollBy({
+        left: 200, // Adjust scroll amount as needed
+        behavior: "smooth",
+      });
+    }
+  };
   return (
-    <section className="w-full h-auto bg-[#eaeaf5] pt-12 pb-20 items-center justify-center flex flex-col gap-[20px]">
-      {/* Top Heading Section */}
-      <div className="claracontainer w-full script p-4 flex-col justify-start items-start md:items-center inline-flex">
-        <h2 className="clarascript text-start md:text-center text-red">
-          Follow with your Child, Guided step-by-step
-        </h2>
-        <div className="flex w-full heading justify-start items-start md:items-center md:justify-center flex-col">
-          <div className="flex flex-wrap gap-1  text-start md:text-center justify-start items-start md:items-center md:justify-center  w-full">
-            <span className="claraheading text-start md:text-center text-purple">
-              Popular Learning
-            </span>
-            &nbsp;
-            <span className="claraheading text-red">Activities</span>
-          </div>
-          <p className="clarabodyTwo text-start md:text-center text-purple">
-            {homeData[0].popularLearningActivities}
-          </p>
-        </div>
-      </div>
-      {/* The Activity Carousel */}
-      <PopularActivityCarousel activities={activities} />
-      {/* <div className="w-full flex items-center justify-between">
-        <button
+    <>
+      <div className="w-full flex items-center justify-center claracontainer ">
+        <ChevronLeft
+          className="z-10 mx-4 hidden lg:flex cursor-pointer hover:bg-purple hover:text-white bg-[white] text-[20px] text-purple p-2 rounded-full"
           onClick={scrollLeft}
-          className="absolute left-0 z-10 bg-gray-700 text-white px-2 py-1 rounded-full"
-          style={{ top: "50%", transform: "translateY(-50%)" }}
+        />
+
+        <div
+          ref={containerRef}
+          className="flex  overflow-x-auto py-2 scrollbar-hidden px-4 lg:px-0 w-full claracontainer gap-4 scrollbar-hidden"
         >
-          &#8249;
-        </button>
-        <div className="flex overflow-x-auto py-2 scrollbar-hidden px-4 lg:px-0 w-full claracontainer gap-4 scrollbar-hidden">
           {activities.map((activity) => (
             <div key={activity.id}>
-              <article className="rounded-lg ">
+              <article className="claraShadow rounded-3xl">
                 <Link target="_blank" href={`/p/activities/${activity.id}`}>
                   <div className="md:w-full hover:shadow-md duration-200 min-w-[200px] w-[200px] min-h-[250px] h-full bg-white items-start justify-start border rounded-3xl flex flex-col md:flex-row gap-4">
                     <div className="claracontainer w-full flex-col justify-start items-center gap-7 inline-flex lg:min-w-[300px]">
@@ -130,16 +118,13 @@ const PopularActivity = async () => {
             </div>
           ))}
         </div>
-        <button
+        <ChevronRight
+          className="z-10 mx-4 hidden lg:flex cursor-pointer hover:bg-purple hover:text-white bg-[white] text-[20px] text-purple p-2 rounded-full"
           onClick={scrollRight}
-          className="absolute right-0 z-10 bg-gray-700 text-white px-2 py-1 rounded-full"
-          style={{ top: "50%", transform: "translateY(-50%)" }}
-        >
-          &#8250;
-        </button>
-      </div> */}
-    </section>
+        />
+      </div>
+    </>
   );
 };
 
-export default PopularActivity;
+export default PopularActivityCarousel;

@@ -10,14 +10,25 @@ const ThemeCard = ({ image, title, metaDesc, theTime }) => {
           <div
             className="w-full max-w-[200px] flex flex-col bg-[#3f3d91] lg:max-w-[460px] z-2 rounded-r-[60px] rounded-l-[50px] lg:rounded-l-[38px] py-4 lg:py-8 justify-start items-start pl-4 pr-2 animate-fade-in"
           >
-            <div className="text-white font-semibold font-fredoka capitalize text-[24px] leading-[28px] md:text-[24px] md:leading-[28px] lg:text-[32px] lg:leading-[36px] xl:text-[36px] xl:leading-[40px]">
+            <div className="text-white flex lg:hidden font-semibold font-fredoka capitalize text-[24px] leading-[28px] md:text-[24px] md:leading-[28px] lg:text-[32px] lg:leading-[36px] xl:text-[36px] xl:leading-[40px]">
               {title.length > 14
                 ? title.slice(0, 12) + "..."
                 : title || "Winter Magic"}
             </div>
-            <div className="text-[white] clarabodyTwo font-medium font-montserrat">
+            <div className="text-white hidden lg:flex font-semibold font-fredoka capitalize text-[24px] leading-[28px] md:text-[24px] md:leading-[28px] lg:text-[32px] lg:leading-[36px] xl:text-[36px] xl:leading-[40px]">
+              {title.length > 24
+                ? title.slice(0, 24) + "..."
+                : title || "Winter Magic"}
+            </div>
+            <div className="text-[white] flex lg:hidden clarabodyTwo text-[14px] font-montserrat">
               {metaDesc.length > 100
                 ? metaDesc.slice(0, 100) + "..."
+                : metaDesc ||
+                  "Snowy adventures, ice castles, cozy indoor playtimes."}
+            </div>
+            <div className="text-[white] hidden lg:flex clarabodyTwo font-medium font-montserrat">
+              {metaDesc.length > 160
+                ? metaDesc.slice(0, 180) + "..."
                 : metaDesc ||
                   "Snowy adventures, ice castles, cozy indoor playtimes."}
             </div>

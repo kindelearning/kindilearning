@@ -231,6 +231,11 @@
       max-width: 1536px;
     }
   }
+
+
+  .claraShadow:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1);
+  }
   .claraimage {
     @apply w-full;
     @apply h-48 md:h-64 lg:h-80 xl:h-96;

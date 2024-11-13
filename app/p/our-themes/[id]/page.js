@@ -42,8 +42,8 @@ export default async function ThemeDetailPage({ params }) {
           />
         </div>
         <div className="claracontainer p-4 md:p-2 lg:p-4 w-full flex flex-col overflow-hidden gap-8">
-        <div className="w-full mx-auto flex flex-col gap-4 justify-center items-center">
-        <h2 className="text-[#3f3a64] w-full claraheading text-start">
+          <div className="w-full mx-auto flex flex-col gap-4 justify-center items-center">
+            <h2 className="text-[#3f3a64] w-full claraheading text-start">
               {theme.title}
             </h2>
             <p className=" text-[#0a1932] text-justify clarabodyTwo">
