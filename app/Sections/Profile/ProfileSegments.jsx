@@ -598,31 +598,46 @@ const ConnectAccountForm = ({ userId }) => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const { data: session, status } = useSession();
-  const [profileData, setProfileData] = useState(null);
+    const [profileData, setProfileData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const { user, loading } = useAuth();
+  const router = useRouter();
+  const [hygraphUser, setHygraphUser] = useState(null);
 
   useEffect(() => {
-    if (session && session.user) {
-      fetchUserData(session.user.email);
+    if (!loading && !user) {
+      router.push("/auth/sign-up"); // Redirect to login if not authenticated
     }
-  }, [session]);
+    if (user && user.email) {
+      getUserDataByEmail(user.email).then((data) => {
+        setHygraphUser(data);
+      });
+    }
+  
+  }, [userId, user, loading, router]);
 
-  const fetchUserData = async (email) => {
-    try {
-      const data = await client.request(GET_ACCOUNT_BY_EMAIL, { email });
-      setProfileData(data.account);
-    } catch (error) {
-      console.error("Error fetching profile data:", error);
-    }
-  };
+  // useEffect(() => {
+  //   if (session && session.user) {
+  //     fetchUserData(session.user.email);
+  //   }
+  // }, [session]);
+
+  // const fetchUserData = async (email) => {
+  //   try {
+  //     const data = await client.request(GET_ACCOUNT_BY_EMAIL, { email });
+  //     setProfileData(data.account);
+  //   } catch (error) {
+  //     console.error("Error fetching profile data:", error);
+  //   }
+  // };
 
   const handleConnect = async (e) => {
     e.preventDefault();
 
-    if (!session || !session.user) {
-      setMessage("Please log in to connect a partner.");
-      return;
-    }
+    // if (!session || !session.user) {
+    //   setMessage("Please log in to connect a partner.");
+    //   return;
+    // }
 
     const query = `
         mutation AddPartner($userId: ID!, $partnerEmail: String!) {
@@ -1376,14 +1391,17 @@ export default function ProfileSegments() {
                       />
                     </div>
                     <div className="flex w-full flex-col justify-start items-start gap-4">
-                      <div className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize  ">
+                      {/* <div className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize  ">
                         Get $20
-                      </div>{" "}
+                      </div> */}
                       <div className="text-[#757575] text-[16px] md:text-2xl font-medium font-fredoka ">
-                        Invite a Partner or friends, family, coworkers,
-                        neighbours, and your favourite barista to Brushlink.
-                        Every time someone books and visits a new dentist
-                        through your link, you both get $20.
+                        Securely grant access to your child&apos;s progress,
+                        activities, and milestones, ensuring that both parents
+                        can stay up-to-date and involved in every step of their
+                        learning. Simply invite your partner to join, and
+                        they&apos;ll gain shared access to the Kindi
+                        experience—helping you both support your little one
+                        together.
                       </div>
                       {user && hygraphUser ? (
                         <ConnectAccountForm userId={hygraphUser.id} />
