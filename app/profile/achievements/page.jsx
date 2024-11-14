@@ -398,7 +398,7 @@ const DisplayAllBadges = () => {
                         {badge.name.length > 16
                           ? badge.name.slice(0, 16) + "..."
                           : badge.name}
-                      </h2>
+                      </h2>   
                     </div>
                   );
                 })}

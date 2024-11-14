@@ -113,7 +113,7 @@ export default function ReferralForm() {
                           value={referrerName}
                           required
                           onChange={(e) => setReferrerName(e.target.value)}
-                          placeholder="Your Name"
+                          placeholder="Enter Your Name"
                           className=" bg-white w-full rounded-lg focus-within:border-0 focus-within:border-[#ffffff00]  shadow border border-[#383838]"
                         />
                         <Input
@@ -121,7 +121,7 @@ export default function ReferralForm() {
                           value={referrerEmail}
                           required
                           onChange={(e) => setReferrerEmail(e.target.value)}
-                          placeholder="Friend's Name"
+                          placeholder="Enter your Email"
                           className=" bg-white w-full rounded-lg focus-within:border-0 focus-within:border-[#ffffff00]  shadow border border-[#383838]"
                         />
                         <Input
@@ -129,7 +129,7 @@ export default function ReferralForm() {
                           value={referredName}
                           required
                           onChange={(e) => setReferredName(e.target.value)}
-                          placeholder="Friend's Name"
+                          placeholder="Enter Friend's Name"
                           className=" bg-white w-full rounded-lg focus-within:border-0 focus-within:border-[#ffffff00]  shadow border border-[#383838]"
                         />
                         <Input
@@ -137,7 +137,7 @@ export default function ReferralForm() {
                           type="email"
                           value={referredEmail}
                           onChange={(e) => setReferredEmail(e.target.value)}
-                          placeholder="Friend's Email"
+                          placeholder="Enter Friend's Email"
                           required
                         />
                         <Button
