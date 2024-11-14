@@ -370,37 +370,59 @@ const DisplayAllBadges = () => {
     <>
       <div className="flex w-full flex-col gap-1">
         {allBadges.length > 0 ? (
-          <div className="flex w-full overflow-x-scroll scrollbar-hidden gap-2">
-            {allBadges.map((badge) => {
-              const randomWidth = Math.floor(Math.random() * 46) + 10; // Random number between 10 and 100
-              return (
-                <div
-                  className="flex cursor-pointer flex-col justify-start items-center w-fit max-w-[160px] min-w-[120px] gap-2"
-                  key={badge.id}
-                >
-                  <Image
-                    width={80}
-                    height={80}
-                    className="min-w-[80px] min-h-[80px] object-cover"
-                    src={badge.icon.url}
-                    alt={badge.icon.fileName}
-                  />
-                  {/* Progress Bar */}
-                  <div className="w-full max-w-[80px] h-1 bg-[#bfbfbf]  rounded">
+          <Dialog>
+            <DialogTrigger>
+              <div className="grid w-full overflow-hidden md:grid-cols-6 justify-between lg:grid-cols-9 grid-cols-3 gap-2">
+                {allBadges.map((badge) => {
+                  const randomWidth = Math.floor(Math.random() * 46) + 10; // Random number between 10 and 100
+                  return (
                     <div
-                      className="h-full bg-red rounded"
-                      style={{ width: `${randomWidth}%` }} // Set random width
-                    />
+                      className="flex cursor-pointer flex-col justify-start items-center w-fit max-w-[160px] min-w-[120px] gap-2"
+                      key={badge.id}
+                    >
+                      <Image
+                        width={80}
+                        height={80}
+                        className="min-w-[80px] min-h-[80px] object-cover"
+                        src={badge.icon.url}
+                        alt={badge.icon.fileName}
+                      />
+                      {/* Progress Bar */}
+                      <div className="w-full max-w-[80px] h-1 bg-[#bfbfbf]  rounded">
+                        <div
+                          className="h-full bg-red rounded"
+                          style={{ width: `${randomWidth}%` }} // Set random width
+                        />
+                      </div>
+                      <h2 className="w-full text-center text-sm text-[#000000] font-normal font-fredoka leading-tight">
+                        {badge.name.length > 16
+                          ? badge.name.slice(0, 16) + "..."
+                          : badge.name}
+                      </h2>
+                    </div>
+                  );
+                })}
+              </div>
+            </DialogTrigger>
+            <DialogContent className="bg-[#EAEAF5] max-w-[96%] lg:max-w-[800px] items-start max-h-[70%] scrollbar-hidden overflow-scroll p-0 overflow-x-hidden  rounded-[16px] w-full claracontainer">
+              <DialogHeader className="p-4">
+                <DialogTitle>
+                  <div className="text-center">
+                    <span className="text-[#3f3a64] text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
+                      How {" "}
+                    </span>
+                    <span className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
+                     to Earn
+                    </span>
                   </div>
-                  <h2 className="w-full text-center text-sm text-[#000000] font-normal font-fredoka leading-tight">
-                    {badge.name.length > 16
-                      ? badge.name.slice(0, 16) + "..."
-                      : badge.name}
-                  </h2>
-                </div>
-              );
-            })}
-          </div>
+                </DialogTitle>
+                <DialogDescription className="flex w-full px-4 claracontainer gap-4 flex-col justify-center items-start">
+                  {/* Rendering badge.description */}
+                  {allBadges.length > 0 && <p>{allBadges[0].description}</p>}
+                </DialogDescription>
+              </DialogHeader>
+            </DialogContent>
+          </Dialog>
         ) : (
           <p>No badges found.</p>
         )}
@@ -568,8 +590,9 @@ export default async function Achievement() {
                 {hygraphUser ? (
                   <BadgesDisplay userId={hygraphUser.id} />
                 ) : (
-                  // v
-                  <p className="clarabodyTwo">not found</p>
+                  <p className="clarabodyTwo text-red">
+                    Work Hard and Try Again
+                  </p>
                 )}
               </div>
             </div>
