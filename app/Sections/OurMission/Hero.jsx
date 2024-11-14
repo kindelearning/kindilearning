@@ -19,7 +19,7 @@ export default async function Hero() {
   }
 
   return (
-    <section className="max-w-[1500px] flex justify-center bg-[#ffffff] w-full items-center">
+    <section className="max-w-[1500px] min-h-screen h-full md:min-h-[600px] md:h-full lg:h-full flex justify-center bg-[#ffffff] w-full items-center">
       <div className="w-full min-h-screen lg:h-[814px] object-bottom bg-none lg:bg-hero-image bg-contain bottom-0 bg-center bg-no-repeat justify-self-end grid md:flex md:flex-col lg:grid-cols-2 pb-16 gap-6 animate-fadeIn">
         <div className="w-full h-full flex flex-col lg:hidden p-0 justify-start items-start animate-slideInUp">
           <Image

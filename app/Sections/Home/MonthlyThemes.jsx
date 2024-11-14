@@ -1,6 +1,5 @@
 import NotFound from "@/app/not-found";
 import ThemeCard from "@/app/Widgets/Card/ThemeCard";
-import { Button } from "@/components/ui/button";
 import { getHomeData, getThemes } from "@/lib/hygraph";
 import Link from "next/link";
 
