@@ -493,7 +493,7 @@ export default async function ActivitiesPage() {
                       >
                         <article className="rounded-lg">
                           <Link
-                            target="_blank"
+                          
                             href={`/p/activities/${activity.id}`}
                           >
                             <div className="md:w-full hover:shadow-md duration-200 min-w-[170px] w-full min-h-[250px] h-full bg-white items-start justify-start border rounded-3xl flex flex-col md:flex-row gap-4">
@@ -589,7 +589,7 @@ export default async function ActivitiesPage() {
                             <div key={activity.id}>
                               <article className="rounded-lg ">
                                 <Link
-                                  target="_blank"
+                              
                                   href={`/p/activities/${activity.id}`}
                                 >
                                   <div
@@ -687,7 +687,7 @@ export default async function ActivitiesPage() {
                     <div key={activity.id}>
                       <article className="rounded-lg ">
                         <Link
-                          target="_blank"
+                      
                           href={`/p/activities/${activity.id}`}
                         >
                           <div

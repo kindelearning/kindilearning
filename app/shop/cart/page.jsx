@@ -74,7 +74,7 @@ export default function CartPage() {
         <div className="claracontainer flex justify-center items-center claraheading">
           Your cart is empty
         </div>
-        <Link href="/shop" target="_blank" className="clarabodyTwo text-red">
+        <Link href="/shop" className="clarabodyTwo text-red">
           Explore Shop{" "}
         </Link>
       </div>

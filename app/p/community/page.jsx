@@ -110,7 +110,7 @@ export default function Community() {
               filteredBlogs.map((blog) => (
                 <div key={blog.id}>
                   <Link
-                    target="_blank"
+                
                     href={`/p/community/${blog.id}`}
                     onClick={() => console.log("Clicked Blog:", blog.blogTitle)}
                   >
@@ -134,7 +134,7 @@ export default function Community() {
                   {blogs.map((blog) => (
                     <div key={blog.id}>
                       <Link
-                        target="_blank"
+                    
                         href={`/p/community/${blog.id}`}
                         onClick={() =>
                           console.log("Clicked Blog:", blog.blogTitle)

@@ -58,12 +58,12 @@ export default async function HowItWorks() {
                   </div>
                   <Link
                     href="/p/how-it-works#video"
-                    target="_blank"
+                  
                     rel="noopener noreferrer"
                     className="w-full h-12 "
                   >
                     <Button className="absolute text-center animate-fade-in hover:bg-white bg-white text-red shadow border-2 border-white clarabutton">
-                      <Link target="_blank" href="/p/how-it-works">
+                      <Link href="/p/how-it-works">
                         SHOW ME
                       </Link>
                     </Button>
@@ -117,12 +117,12 @@ export default async function HowItWorks() {
                   </div>
                   <Link
                     href="/p/how-it-works#video"
-                    target="_blank"
+                 
                     rel="noopener noreferrer"
                     className="w-full h-12 relative"
                   >
                     <Button className="absolute text-center animate-fade-in bg-white hover:bg-white text-red shadow border-2 border-white clarabutton">
-                      <Link target="_blank" href="/p/how-it-works">
+                      <Link  href="/p/how-it-works">
                         SHOW ME
                       </Link>
                     </Button>

@@ -18,7 +18,7 @@ export default async function ProductGrid() {
       <div className="w-full flex gap-2 scrollbar-hidden overflow-x-scroll">
         {products.map((product) => (
           <div key={product.id} className="border">
-            <Link href={`/shop/${product.id}`} target="_blank">
+            <Link href={`/shop/${product.id}`}  >
               <ProductCard
                 image={product.thumbnail.url}
                 title={product.title}
