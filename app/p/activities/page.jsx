@@ -496,9 +496,9 @@ export default async function ActivitiesPage() {
                             target="_blank"
                             href={`/p/activities/${activity.id}`}
                           >
-                            <div className="md:w-full hover:shadow-md duration-200 min-w-[170px] w-[170px] min-h-[250px] h-full bg-white items-start justify-start border rounded-3xl flex flex-col md:flex-row gap-4">
+                            <div className="md:w-full hover:shadow-md duration-200 min-w-[170px] w-full min-h-[250px] h-full bg-white items-start justify-start border rounded-3xl flex flex-col md:flex-row gap-4">
                               <div className="claracontainer w-full flex-col justify-start items-center gap-7 inline-flex">
-                                <div className="w-full max-w-[180px] md:min-w-full lg:max-w-full h-auto">
+                                <div className="w-full max-w-full md:min-w-full lg:max-w-full h-auto">
                                   <div className="flex max-h-[180px] min-h-[150px] h-[150px] md:min-h-[200px] md:h-full lg:min-h-[276px] lg:h-full lg:max-h-[276px] md:max-h-[300px] overflow-clip rounded-t-3xl">
                                     <Image
                                       width={280}
@@ -512,21 +512,21 @@ export default async function ActivitiesPage() {
                                     <div className="flex-col w-full gap-[6px] justify-start items-start">
                                       <div className="text-[#0a1932] text-[16px] md:text-xl font-semibold font-fredoka leading-[20px]">
                                         {/* {activity.title} */}
-                                        {activity.title.length > 30
-                                          ? `${activity.title.slice(0, 28)}...`
+                                        {activity.title.length > 20
+                                          ? `${activity.title.slice(0, 22)}...`
                                           : activity.title}
                                       </div>
                                       <div className="justify-start overflow-clip w-full items-center gap-1 lg:gap-2 inline-flex">
-                                        <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-4 flex px-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
-                                          {activity.setUpTime.slice(0,10)}
+                                        <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-4 flex px-0 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
+                                          {activity.setUpTime.slice(0, 10)}
                                         </div>
                                         •
                                         <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-6 flex pr-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
-                                          {activity.themeName.slice(0,10)}
+                                          {activity.themeName.slice(0, 10)}
                                         </div>
                                         •
                                         <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-6 flex pr-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
-                                          {activity.focusAge.slice(0,10)}
+                                          {activity.focusAge.slice(0, 10)}
                                         </div>
                                         {/* <ul className="text-[#0a1932] justify-between items-center gap-4 flex px-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
                                           {activity.skills
@@ -592,15 +592,18 @@ export default async function ActivitiesPage() {
                                   target="_blank"
                                   href={`/p/activities/${activity.id}`}
                                 >
-                                  <div className="md:w-full hover:shadow-md duration-200 min-w-[170px] w-[170px] min-h-[250px] h-full bg-white items-start justify-start border rounded-3xl flex flex-col md:flex-row gap-4">
+                                  <div
+                                    className="md:w-full hover:shadow-md duration-200 min-w-[170px] w-full min-h-[250px] h-full bg-white items-start justify-start border rounded-3xl flex flex-col md:flex-row gap-4
+"
+                                  >
                                     <div className="claracontainer w-full flex-col justify-start items-center gap-7 inline-flex">
-                                      <div className="w-full max-w-[180px] md:min-w-full lg:max-w-full h-auto">
+                                      <div className="w-full max-w-full md:min-w-full lg:max-w-full h-auto">
                                         <div className="flex max-h-[180px] min-h-[150px] h-[150px] md:min-h-[200px] md:h-full lg:min-h-[276px] lg:h-full lg:max-h-[276px] md:max-h-[300px] overflow-clip rounded-t-3xl">
                                           <Image
                                             width={280}
                                             height={250}
                                             alt={activity.title}
-                                            className="w-full max-h-[180px] duration-300 hover:scale-105 lg:min-h-[276px] lg:h-full lg:max-h-[276px] md:max-h-[300px] object-cover rounded-t-3xl "
+                                            className="w-full max-h-[180px] duration-300 hover:scale-105 lg:min-h-[276px] lg:h-full lg:max-h-[276px] md:max-h-[300px] object-cover rounded-t-3xl"
                                             src={activity.thumbnail.url}
                                           />
                                         </div>
@@ -608,15 +611,15 @@ export default async function ActivitiesPage() {
                                           <div className="flex-col w-full gap-[6px] justify-start items-start">
                                             <div className="text-[#0a1932] text-[16px] md:text-xl font-semibold font-fredoka leading-[20px]">
                                               {/* {activity.title} */}
-                                              {activity.title.length > 30
+                                              {activity.title.length > 20
                                                 ? `${activity.title.slice(
                                                     0,
-                                                    28
+                                                    22
                                                   )}...`
                                                 : activity.title}
                                             </div>
                                             <div className="justify-start w-full items-center gap-1 lg:gap-2 inline-flex">
-                                              <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-4 flex px-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
+                                              <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-4 flex px-0 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
                                                 {activity.setUpTime}
                                               </div>
                                               <ul className="text-[#0a1932] justify-between items-center gap-4 flex px-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
@@ -687,15 +690,18 @@ export default async function ActivitiesPage() {
                           target="_blank"
                           href={`/p/activities/${activity.id}`}
                         >
-                          <div className="md:w-full hover:shadow-md duration-200 min-w-[170px] w-[170px] min-h-[250px] h-full bg-white items-start justify-start border rounded-3xl flex flex-col md:flex-row gap-4">
+                          <div
+                            className="md:w-full hover:shadow-md duration-200 min-w-[170px] w-full min-h-[250px] h-full bg-white items-start justify-start border rounded-3xl flex flex-col md:flex-row gap-4
+"
+                          >
                             <div className="claracontainer w-full flex-col justify-start items-center gap-7 inline-flex">
-                              <div className="w-full max-w-[180px] md:min-w-full lg:max-w-full h-auto">
+                              <div className="w-full max-w-full md:min-w-full lg:max-w-full h-auto">
                                 <div className="flex max-h-[180px] min-h-[150px] h-[150px] md:min-h-[200px] md:h-full lg:min-h-[276px] lg:h-full lg:max-h-[276px] md:max-h-[300px] overflow-clip rounded-t-3xl">
                                   <Image
                                     width={280}
                                     height={250}
                                     alt={activity.title}
-                                    className="w-full max-h-[180px] duration-300 hover:scale-105 lg:min-h-[276px] lg:h-full lg:max-h-[276px] md:max-h-[300px] object-cover rounded-t-3xl "
+                                    className="w-full max-h-[180px] duration-300 hover:scale-105 lg:min-h-[276px] lg:h-full lg:max-h-[276px] md:max-h-[300px] object-cover rounded-t-3xl"
                                     src={activity.thumbnail.url}
                                   />
                                 </div>
@@ -703,8 +709,8 @@ export default async function ActivitiesPage() {
                                   <div className="flex-col w-full gap-[6px] justify-start items-start">
                                     <div className="text-[#0a1932] text-[16px] md:text-xl font-semibold font-fredoka leading-[20px]">
                                       {/* {activity.title} */}
-                                      {activity.title.length > 30
-                                        ? `${activity.title.slice(0, 28)}...`
+                                      {activity.title.length > 20
+                                        ? `${activity.title.slice(0, 22)}...`
                                         : activity.title}
                                     </div>
                                     <div className="justify-start w-full items-center gap-1 lg:gap-2 inline-flex">
