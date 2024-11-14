@@ -5,96 +5,107 @@ import {
   ActivityCard,
   BlogThumb,
   HowItWorkVideo,
-  ParentwithKindi,
   ProfessionalThumb,
 } from "@/public/Images";
 import Image from "next/image";
 
 export default function Claras3DGallery({
-  images = [
-    BlogThumb,
-    ParentwithKindi,
-    ProfessionalThumb,
-    HowItWorkVideo,
-    ActivityCard,
-  ],
+  images = [BlogThumb, ProfessionalThumb, HowItWorkVideo, ActivityCard],
 }) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [dragging, setDragging] = useState(false);
+  const [dragOffset, setDragOffset] = useState(0);
   const touchStartRef = useRef(null);
   const autoplayRef = useRef(null);
 
-  // Function to handle dragging and slide effect
   const handleDragStart = (e) => {
     e.preventDefault();
+    setDragging(true);
     touchStartRef.current = e.touches ? e.touches[0].clientX : e.clientX;
   };
 
   const handleDragMove = (e) => {
-    if (!touchStartRef.current) return;
+    if (!dragging || !touchStartRef.current) return;
 
     const currentX = e.touches ? e.touches[0].clientX : e.clientX;
-    const deltaX = touchStartRef.current - currentX;
+    const deltaX = currentX - touchStartRef.current;
+    setDragOffset(deltaX);
 
-    if (Math.abs(deltaX) > 50) {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+    if (Math.abs(deltaX) > 100) {
+      setCurrentIndex(
+        (prevIndex) =>
+          (prevIndex + (deltaX > 0 ? -1 : 1) + images.length) % images.length
+      );
       touchStartRef.current = null;
+      setDragOffset(0);
     }
   };
 
   const handleDragEnd = () => {
+    setDragging(false);
+    setDragOffset(0);
     touchStartRef.current = null;
   };
 
-  // Function to get the image index with circular behavior
-  const getImageIndex = (index) => (currentIndex + index) % images.length;
-
-  // Autoplay logic
   useEffect(() => {
-    // Set autoplay to change the image every 3 seconds (3000ms)
     autoplayRef.current = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
     }, 3000);
 
-    // Clear interval on component unmount
     return () => clearInterval(autoplayRef.current);
   }, [images.length]);
+
+  const getImageIndex = (index) => (currentIndex + index) % images.length;
 
   return (
     <div className="relative bg-[#523373] perspective-[1000px] w-[360px] lg:w-[400px] h-[500px] flex justify-center items-center overflow-hidden">
       {images.map((_, index) => {
         const imageIndex = getImageIndex(index);
+        const isActive = index === 0;
+
+        // Improved stacking and peeking effect
+        const zIndexOffset = 20 - index;
+        const translateYOffset = index * 25; // Slightly increased for better peeking
+        const scaleValue = 1 - index * 0.05; // Gradually reduce size for depth
+        const opacityValue = 1 - index * 0.15; // Gradually reduce opacity for depth
+        const boxShadowValue = isActive
+          ? "0px 8px 15px rgba(0, 0, 0, 0.5)"
+          : "0px 4px 10px rgba(0, 0, 0, 0.3)";
+
         return (
           <div
             key={imageIndex}
-            className={`absolute rounded-xl bg-[#523373] shadow-xl transition-all duration-700 ease-in-out transform ${
-              index === 0 ? "z-20 scale-105 shadow-xl" : "z-0 opacity-60"
+            className={`absolute rounded-xl bg-[#523373] transition-transform duration-700 ease-in-out ${
+              isActive ? "z-20" : "z-0"
             }`}
             style={{
-              transform: `translateZ(-${index * 50}px)`,
+              transform: `translateZ(-${index * 50}px) translateX(${
+                isActive ? dragOffset : 0
+              }px) translateY(${translateYOffset}px) scale(${scaleValue})`,
               width: "100%",
               height: "100%",
               borderRadius: "10px",
               overflow: "hidden",
-              filter: index === 0 ? "brightness(0.8)" : "none",
-              cursor: "grab",
-              marginBottom: index !== 0 ? "-8px" : "0",
-              marginRight: index !== 0 ? "-8px" : "0",
+              opacity: opacityValue,
+              cursor: isActive ? "grab" : "default",
+              zIndex: zIndexOffset,
+              boxShadow: boxShadowValue,
+              marginBottom: index !== 0 ? "-10px" : "0",
+              marginRight: index !== 0 ? "-10px" : "0",
             }}
-            onMouseDown={index === 0 ? handleDragStart : null}
-            onTouchStart={index === 0 ? handleDragStart : null}
-            onMouseMove={index === 0 ? handleDragMove : null}
-            onTouchMove={index === 0 ? handleDragMove : null}
-            onMouseUp={index === 0 ? handleDragEnd : null}
-            onTouchEnd={index === 0 ? handleDragEnd : null}
-            onDragEnd={index === 0 ? handleDragEnd : null}
+            onMouseDown={isActive ? handleDragStart : null}
+            onTouchStart={isActive ? handleDragStart : null}
+            onMouseMove={isActive ? handleDragMove : null}
+            onTouchMove={isActive ? handleDragMove : null}
+            onMouseUp={isActive ? handleDragEnd : null}
+            onTouchEnd={isActive ? handleDragEnd : null}
           >
-            {/* Image rendered as an <img> tag to handle object-fit */}
             <Image
               width={500}
               height={600}
               src={images[imageIndex].src || images[imageIndex]}
               alt={`gallery-image-${imageIndex}`}
-              className="w-full h-full object-cover border-8 border-[white] rounded-xl overflow-clip transition-all duration-500 ease-in-out transform hover:scale-105 hover:opacity-90 hover:shadow-lg"
+              className="w-full h-full object-cover border-8 border-[white] rounded-xl transition-all duration-500 ease-in-out hover:scale-105 hover:opacity-90"
             />
           </div>
         );

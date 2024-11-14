@@ -163,30 +163,7 @@ export default async function ParentWithKindi() {
               </div>
               <div className="flex w-full container justify-start px-0 items-center flex-col">
                 <div className="w-full px-0 text-start clarabodyTwo text-[white] font-medium font-fredoka">
-                  {/* Parenthood is a whirlwind of responsibilities, and we get it.
-                  That&apos;s why we&apos;ve created Kindi, a haven for busy
-                  parents like you. No more endless scrolling for play ideas.
-                  With Kindi, every moment counts.
-                  <br />
-                  <br />
-                  Our platform offers curated activities for children aged 6
-                  months to 5 years, designed to make learning enjoyable. Say
-                  goodbye to parenting uncertainties and hello to confident
-                  meaningful experiences at home that foster your child&apos;s
-                  growth and witness your child flourish, knowing each
-                  interaction shapes their future.
-                  <br />
-                  <br />
-                  Explore exciting monthly themes covering literacy, numeracy,
-                  fine motor skills, sensory play, and crafting. With Kindi,
-                  embark on this journey of discovery and growth confidently,
-                  giving your child the best start in life.
-                  <br />
-                  <br />
-                  Parents trust Kindi because it comes from a place of love,
-                  passion and real-life experience. Join the Kindi community and
-                  together, let&apos;s create lasting memories and build a
-                  brighter future for our children. */}
+               
                   <p>{stories[0].parentWithKindi}</p>
                 </div>
               </div>
