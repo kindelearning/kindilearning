@@ -967,7 +967,8 @@ export default function ShopPage() {
                 <div className="w-full lg:grid lg:grid-cols-3 pl-4 md:pl-2 lg:px-0 flex flex-row overflow-x-scroll scrollbar-hidden gap-2">
                   {filteredProducts.length > 0 ? (
                     filteredProducts.map((product) => (
-                      <Link href={`/shop/${product.id}`}>
+                      <Link href={`/shop/${product.id}`} 
+                      key={product.id}>
                         <MobileProductCard
                           key={product.id}
                           image={product.thumbnail.url}
