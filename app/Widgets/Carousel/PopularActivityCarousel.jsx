@@ -47,7 +47,7 @@ const PopularActivityCarousel = ({ activities }) => {
         >
           {activities.map((activity) => (
             <div key={activity.id}>
-              <article className="claraShadow rounded-3xl">
+              <article className="claraShadow rounded-3xl lg:max-w-[300px] lg:w-full">
                 <Link target="_blank" href={`/p/activities/${activity.id}`}>
                   <div className="md:w-full hover:shadow-md duration-200 min-w-[200px] w-[200px] min-h-[250px] h-full bg-white items-start justify-start border rounded-3xl flex flex-col md:flex-row gap-4">
                     <div className="claracontainer w-full flex-col justify-start items-center gap-7 inline-flex lg:min-w-[300px]">
@@ -68,17 +68,23 @@ const PopularActivityCarousel = ({ activities }) => {
                                 ? `${activity.title.slice(0, 20)}...`
                                 : activity.title}
                             </div>
-                            <div className="justify-start w-full items-center gap-1 lg:gap-2 inline-flex">
+                            <div className="justify-start list-disc w-full items-center gap-1 inline-flex">
                               <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-6 flex pr-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
-                                {activity.setUpTime}
+                              {activity.setUpTime.slice(0,10)}
+                              </div>•
+                              <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-6 flex pr-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
+                                {activity.themeName.slice(0,10)}
+                              </div>•
+                              <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-6 flex pr-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
+                                {activity.focusAge.slice(0,10)}
                               </div>
-                              <ul className="text-[#0a1932] justify-between items-center gap-6 flex px-4 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
+                              {/* <ul className="text-[#0a1932] justify-between items-center gap-6 flex px-4 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
                                 {activity.skills
                                   .slice(0, 2)
                                   .map((skill, index) => (
                                     <li key={index}>{skill.slice(0, 8)}</li>
                                   ))}
-                              </ul>
+                              </ul> */}
                             </div>
                           </div>
                           <div className="items-center justify-center gap-2 md:gap-4 grid grid-cols-5">

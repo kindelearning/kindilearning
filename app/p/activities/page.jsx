@@ -49,7 +49,6 @@ export default async function ActivitiesPage() {
     fetchActivities();
   }, []);
 
-  
   // List of features options
   const featuresOptions = [
     "Emotional & Social Strength",
@@ -492,7 +491,7 @@ export default async function ActivitiesPage() {
                         key={activity.id}
                         className="w-full flex flex-col gap-4 "
                       >
-                        <article className="rounded-lg ">
+                        <article className="rounded-lg">
                           <Link
                             target="_blank"
                             href={`/p/activities/${activity.id}`}
@@ -517,11 +516,19 @@ export default async function ActivitiesPage() {
                                           ? `${activity.title.slice(0, 28)}...`
                                           : activity.title}
                                       </div>
-                                      <div className="justify-start w-full items-center gap-1 lg:gap-2 inline-flex">
+                                      <div className="justify-start overflow-clip w-full items-center gap-1 lg:gap-2 inline-flex">
                                         <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-4 flex px-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
-                                          {activity.setUpTime}
+                                          {activity.setUpTime.slice(0,10)}
                                         </div>
-                                        <ul className="text-[#0a1932] justify-between items-center gap-4 flex px-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
+                                        •
+                                        <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-6 flex pr-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
+                                          {activity.themeName.slice(0,10)}
+                                        </div>
+                                        •
+                                        <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-6 flex pr-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
+                                          {activity.focusAge.slice(0,10)}
+                                        </div>
+                                        {/* <ul className="text-[#0a1932] justify-between items-center gap-4 flex px-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
                                           {activity.skills
                                             .slice(0, 2)
                                             .map((skill, index) => (
@@ -529,7 +536,7 @@ export default async function ActivitiesPage() {
                                                 {skill.slice(0, 8)}
                                               </li>
                                             ))}
-                                        </ul>
+                                        </ul> */}
                                       </div>
                                     </div>
                                     <div className="items-center justify-center gap-2 md:gap-4 grid grid-cols-5">
