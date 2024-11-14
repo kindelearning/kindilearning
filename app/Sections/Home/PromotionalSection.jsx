@@ -34,7 +34,7 @@ const PromotionalSection = async () => {
               </div>
             </div>
             <div className="w-auto hover:pl-[4px] duration-200 h-auto animate-fade-in">
-              <Button className="bg-[#ffffff] hover:bg-[white] text-[#029871] clarabutton">
+              <Button className="bg-[#ffffff] hover:bg-red hover:text-white text-[#029871] clarabutton">
                 {session ? "Upgrade" : "Get Started"}
               </Button>
             </div>

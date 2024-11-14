@@ -62,7 +62,7 @@ const PromotionalSectionTwo = async () => {
               </div>
             </div>
             <div className="w-full h-auto animate-fade-in">
-              <Button className="bg-red hover:bg-hoverRed px-4 md:px-8 xl:px-12 border-2 clarabutton rounded-[16px]">
+              <Button className="bg-red hover:bg-purple px-4 md:px-8 xl:px-12 border-2 clarabutton rounded-[16px]">
                 {/* Get Started */}
                 {session ? "Upgrade" : "Get Started"}
               </Button>

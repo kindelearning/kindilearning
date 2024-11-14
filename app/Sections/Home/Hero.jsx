@@ -87,7 +87,7 @@ export default async function Hero() {
           <div className="w-auto animate-fade-in">
             <Button
               onClick={() => (window.location.href = "#pricing_Section")}
-              className="bg-red hover:bg-hoverRed clarabutton"
+              className="bg-red hover:bg-[#eaeaf5] hover:text-red clarabutton"
             >
               {session ? "Upgrade" : "Get Started"}
             </Button>

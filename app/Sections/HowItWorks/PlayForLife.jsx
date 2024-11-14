@@ -82,7 +82,7 @@ const PlayForLife = async () => {
               </div>
             </div>
             <div className="w-auto py-2 h-auto">
-              <Button className="bg-[#ffffff] text-[#019acf] hover:bg-[#ffffff] hover:border-2 hover:border-[#ffffff8a] px-4 md:px-8 xl:px-12 border-2 clarabutton rounded-[10px]">
+              <Button className="bg-[#ffffff] text-[#019acf] hover:bg-red hover:text-white hover:border-2 hover:border-[#ffffff8a] px-4 md:px-8 xl:px-12 border-2 clarabutton rounded-[10px]">
                 {session ? "Upgrade" : "Get Started"}
                 {/* Get Started */}
               </Button>

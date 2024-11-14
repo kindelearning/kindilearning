@@ -56,7 +56,7 @@ export default async function Hero() {
             </div>
           </div>
           <div className="w-auto animate-slideInUp animate-delay-4000">
-            <Button className="bg-red hover:bg-hoverRed clarabutton px-6 md:px-12 py-3 rounded-[16px] animate-fadeIn animate-delay-4500">
+            <Button className="bg-red hover:bg-purple text-white clarabutton px-6 md:px-12 py-3 rounded-[16px] animate-fadeIn animate-delay-4500">
               {/* Get Started */}
               {session ? "Upgrade" : "Get Started"}
             </Button>

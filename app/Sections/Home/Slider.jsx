@@ -204,7 +204,7 @@ const Slider = () => {
               }`}
             >
               <Button
-                className={`bg-white py-4 hover:bg-white clarabutton font-medium px-8 md:px-12 border-2 border-[#${slides[currentSlide].backgroundColor}] rounded-[10px]`}
+                className={`bg-white py-4 hover:bg-red hover: text-white clarabutton font-medium px-8 md:px-12 border-2 border-[#${slides[currentSlide].backgroundColor}] rounded-[10px]`}
                 disabled={!loaded}
                 style={{
                   color: `#${slides[currentSlide].textcolor}`,

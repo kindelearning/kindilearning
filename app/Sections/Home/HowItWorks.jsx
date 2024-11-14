@@ -62,11 +62,10 @@ export default async function HowItWorks() {
                     rel="noopener noreferrer"
                     className="w-full h-12 "
                   >
-                    <Button className="absolute text-center animate-fade-in hover:bg-white bg-white text-red shadow border-2 border-white clarabutton">
-                      <Link href="/p/how-it-works">
+                    <Link href="/p/how-it-works" className="absolute text-center py-2 animate-fade-in hover:bg-red bg-white hover:text-white text-red shadow border-2 border-white clarabutton">
                         SHOW ME
-                      </Link>
-                    </Button>
+                     
+                    </Link>
                   </Link>
                 </div>
               </div>
@@ -121,11 +120,10 @@ export default async function HowItWorks() {
                     rel="noopener noreferrer"
                     className="w-full h-12 relative"
                   >
-                    <Button className="absolute text-center animate-fade-in bg-white hover:bg-white text-red shadow border-2 border-white clarabutton">
-                      <Link  href="/p/how-it-works">
+                    <Link href="/p/how-it-works" className="absolute text-center py-2 animate-fade-in hover:bg-red bg-white hover:text-white text-red shadow border-2 border-white clarabutton">
                         SHOW ME
-                      </Link>
-                    </Button>
+                     
+                    </Link>
                   </Link>
                 </div>
               </div>
@@ -163,11 +161,10 @@ export default async function HowItWorks() {
                     rel="noopener noreferrer"
                     className="w-full h-12 relative"
                   >
-                    <Button className="absolute text-center animate-fade-in bg-white hover:bg-white text-red shadow border-2 border-white clarabutton">
-                      <Link target="_blank" href="/p/how-it-works">
+                    <Link href="/p/how-it-works" className="absolute text-center py-2 animate-fade-in hover:bg-red bg-white hover:text-white text-red shadow border-2 border-white clarabutton">
                         SHOW ME
-                      </Link>
-                    </Button>
+                     
+                    </Link>
                   </Link>
                 </div>
               </div>

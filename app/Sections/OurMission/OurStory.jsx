@@ -75,7 +75,7 @@ const OurStory = async () => {
               </div>
             </div>
             <div className="w-full flex">
-              <Button className="bg-[#ffffff] text-[#EEBA00] animate-fadeIn animate-delay-150 hover:bg-[#ffffff] hover:border-2  px-4 md:px-8 xl:px-12 border-2 clarabutton rounded-[10px]">
+              <Button className="bg-[#ffffff] text-[#EEBA00] hover:bg-red hover:text-white animate-fadeIn animate-delay-150 hover:border-2  px-4 md:px-8 xl:px-12 border-2 clarabutton rounded-[10px]">
                 {/* Get Started */}
                 {session ? "Upgrade" : "Get Started"}
               </Button>

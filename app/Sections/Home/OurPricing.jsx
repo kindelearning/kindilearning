@@ -141,7 +141,7 @@ const PricingCard = ({
         </div>
         <div className="flex w-full flex-row justify-between gap-4 items-center px-0">
           <Link target="_blank" href={paymentLink}>
-            <Button className="bg-red py-2 px-6 rounded-[12px] text-white clarabutton hover:border-2 hover:border-white hover:shadow-sm  hover:bg-hoverRed clarabutton">
+            <Button className="bg-red hover:bg-purple py-2 px-6 rounded-[12px] text-white clarabutton hover:border-2 hover:border-white hover:shadow-sm  clarabutton">
               Get Started
             </Button>
           </Link>
