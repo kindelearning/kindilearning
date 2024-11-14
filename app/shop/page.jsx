@@ -70,7 +70,7 @@ const ProductCard = ({ image, title, price }) => {
 
   return (
     // <div className="flex max-w-[300px] min-w-[240px] w-full flex-col rounded-[24px] items-center gap-4 bg-white  hover:shadow-md">
-    <div className="flex min-w-[170px] max-w-[176px] md:min-w-full lg:min-w-full lg:w-full w-full flex-col rounded-[12px] lg:rounded-[24px] items-center gap-2 lg:gap-4 bg-white hover:shadow-md">
+    <div className="flex min-w-[170px] max-w-[176px] md:min-w-full lg:min-w-full lg:w-full w-full flex-col rounded-[24px] lg:rounded-[24px] items-center gap-2 lg:gap-4 bg-white hover:shadow-md">
       <div className="flex rounded-t-[24px] overflow-clip w-full">
         <Image
           src={image}
@@ -96,9 +96,11 @@ const ProductCard = ({ image, title, price }) => {
             </span>
           </div>
         </div>
-        <h3 className="text-start text-[#0a1932] text-[10px] font-fredoka w-full px-4 pb-4 pt-2 text-base font-medium leading-[20px]">
-          {/* {title} */}
+        <h3 className="text-start hidden md:flex text-[#0a1932] text-[10px] font-fredoka w-full px-4 pb-4 pt-2 text-base font-medium leading-[20px]">
           {title.length > 50 ? `${title.slice(0, 44)}...` : title}
+        </h3>
+        <h3 className="text-start flex md:hidden text-[#0a1932] text-[10px] font-fredoka w-full px-4 pb-4 pt-2 text-base font-medium leading-[20px]">
+          {title.length > 24 ? `${title.slice(0, 22)}...` : title}
         </h3>
       </div>
     </div>
@@ -151,7 +153,7 @@ const MobileProductCard = ({ image, title, price }) => {
     //     </h3>
     //   </div>
     // </div>
-    <div className="flex lg:max-w-[300px] min-w-[170px] max-w-[176px] lg:min-w-[240px] w-full flex-col rounded-[12px] items-center gap-2 lg:gap-4 bg-white hover:shadow-md">
+    <div className="flex lg:max-w-[300px] min-w-[170px] max-w-full lg:min-w-[240px] w-full flex-col rounded-[12px] items-center gap-2 lg:gap-4 bg-white hover:shadow-md">
       <div className="flex rounded-t-[12px] overflow-clip w-full">
         <Image
           src={image}
@@ -965,16 +967,19 @@ export default function ShopPage() {
                 <div className="w-full lg:grid lg:grid-cols-3 pl-4 md:pl-2 lg:px-0 flex flex-row overflow-x-scroll scrollbar-hidden gap-2">
                   {filteredProducts.length > 0 ? (
                     filteredProducts.map((product) => (
-                      <MobileProductCard
-                        key={product.id}
-                        image={product.thumbnail.url}
-                        title={product.title}
-                        price={product.salePrice}
-                      />
+                      <Link href={`/shop/${product.id}`}>
+                        <MobileProductCard
+                          key={product.id}
+                          image={product.thumbnail.url}
+                          title={product.title}
+                          price={product.salePrice}
+                        />
+                      </Link>
                     ))
                   ) : (
                     <>
-                      <div className="w-full lg:grid lg:grid-cols-3 pl-4 md:pl-2 lg:px-0 flex flex-row overflow-x-scroll scrollbar-hidden gap-2">
+                      <div>
+                        {/* <div className="w-full lg:grid lg:grid-cols-3 pl-4 md:pl-2 lg:px-0 flex flex-row overflow-x-scroll scrollbar-hidden gap-2"> */}
                         {sortedProducts.map((product) => (
                           <div key={product.id} className="border">
                             <Link href={`/shop/${product.id}`}>
