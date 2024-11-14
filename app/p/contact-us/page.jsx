@@ -10,6 +10,7 @@ export default function ContactForm() {
     name: "",
     email: "",
     message: "",
+    phoneNumber: "",
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -40,7 +41,7 @@ export default function ContactForm() {
       const data = await response.json();
       if (data.success) {
         setSuccessMessage("Message sent successfully!");
-        setFormData({ name: "", email: "", message: "" }); // Reset form
+        setFormData({ name: "", email: "", message: "", phoneNumber: "" }); // Reset form
       } else {
         setError("Failed to send the message. Please try again.");
       }
@@ -75,30 +76,40 @@ export default function ContactForm() {
         {/* Form */}
 
         <div className="flex flex-col items-center justify-center">
-          {successMessage && <p>{successMessage}</p>}
-          {error && <p>{error}</p>}
+          {successMessage && <p className="text-green-800 pb-4">{successMessage}</p>}
+          {error && <p className="text-red pb-4">{error}</p>}
           <form
             onSubmit={handleSubmit}
             className="flex justify-center items-center flex-col gap-4 w-full"
           >
-            <Input
-              type="text"
-              name="name"
-              value={formData.name}
-              className="border p-2"
-              placeholder="Your Name"
-              onChange={handleChange}
-              required
-            />
+            <div className="flex w-full flex-col lg:flex-row gap-1">
+              <Input
+                type="text"
+                name="name"
+                value={formData.name}
+                className="border p-2"
+                placeholder="Your Name"
+                onChange={handleChange}
+                required
+              />
 
+              <Input
+                type="email"
+                name="email"
+                className="border p-2"
+                value={formData.email}
+                placeholder="Your Email"
+                onChange={handleChange}
+                required
+              />
+            </div>
             <Input
-              type="email"
-              name="email"
+              type="tel"
+              name="phoneNumber"
               className="border p-2"
-              value={formData.email}
-              placeholder="Your Email"
+              value={formData.phoneNumber}
+              placeholder="Your Contact"
               onChange={handleChange}
-              required
             />
             <Textarea
               name="message"

@@ -3,12 +3,60 @@ const HYGRAPH_API_TOKEN =
 const HYGRAPH_API_URL =
   "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";
 
-
 import { NextResponse } from "next/server";
 import { GraphQLClient } from "graphql-request";
 import { gql } from "graphql-request";
 
+// export async function POST(request) {
+//   const { name, email, message, phoneNumber } = await request.json();
 
+//   // Format email and phone number
+//   const formattedEmail = email.trim().toLowerCase(); // Ensure email is lowercase for slug
+//   const formattedPhoneNumber = phoneNumber.trim().replace(/\D/g, ""); // Remove non-numeric characters from phone number
+
+//   const hygraphClient = new GraphQLClient(HYGRAPH_API_URL, {
+//     headers: {
+//       Authorization: `Bearer ${HYGRAPH_API_TOKEN}`,
+//     },
+//   });
+
+//   const CREATE_CONTACT = gql`
+//     mutation SubmitContactForm(
+//       $name: String!
+//       $email: String!
+//       $message: String!
+//       $phoneNumber: String!
+//     ) {
+//       createContact(
+//         data: {
+//           name: $name
+//           email: $email
+//           message: $message
+//           phoneNumber: $phoneNumber
+//         }
+//       ) {
+//         id
+//       }
+//     }
+//   `;
+
+//   try {
+//     await hygraphClient.request(CREATE_CONTACT, {
+//       name,
+//       email: formattedEmail,
+//       message,
+//       phoneNumber: formattedPhoneNumber,
+//     });
+
+//     return NextResponse.json({ success: true });
+//   } catch (error) {
+//     console.error("Error submitting contact form:", error);
+//     return NextResponse.json({
+//       success: false,
+//       error: "Failed to submit contact form",
+//     });
+//   }
+// }
 
 export async function POST(request) {
   const { name, email, message } = await request.json();
@@ -41,3 +89,4 @@ export async function POST(request) {
     });
   }
 }
+
