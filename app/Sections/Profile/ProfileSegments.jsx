@@ -56,6 +56,7 @@ import Loading from "@/app/loading";
 import { StockImages } from "@/app/constant/profile";
 import { getAuth, signOut } from "firebase/auth";
 import app from "@/app/firebase/firebaseConfig";
+import LevelList from "./LevelList";
 
 const HYGRAPH_ENDPOINT =
   "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";
@@ -195,13 +196,7 @@ const MyLevel = ({ userID }) => {
             </DialogHeader>
             <DialogDescription className="flex w-full px-4 claracontainer flex-col justify-start items-center">
               <div className="flex flex-col justify-center items-center w-full claracontainer gap-4">
-                {[5, 10, 15, 20, 25].map((activityGoal, index) => (
-                  <LevelCard
-                    key={index}
-                    level={`Level ${index + 1}`}
-                    activities={activityGoal.toString()}
-                  />
-                ))}
+                <LevelList />
               </div>
             </DialogDescription>
             <DialogFooter className="sticky rounded-t-[16px] shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] bottom-0 m-0 w-full  bg-[#ffffff]">
@@ -331,78 +326,80 @@ const ContactForm = () => {
         {successMessage && <p>{successMessage}</p>}
         {error && <p>{error}</p>}
         <form
-            onSubmit={handleSubmit}
-            className="flex justify-center items-center flex-col gap-2 lg:gap-4 w-full"
+          onSubmit={handleSubmit}
+          className="flex justify-center items-center flex-col gap-2 lg:gap-4 w-full"
+        >
+          <div className="flex w-full flex-col lg:flex-row gap-2 lg:gap-1">
+            <Input
+              type="text"
+              name="name"
+              value={formData.name}
+              className="border p-2"
+              placeholder="Your Name"
+              onChange={handleChange}
+              required
+            />
+
+            <Input
+              type="email"
+              name="email"
+              className="border p-2"
+              value={formData.email}
+              placeholder="Your Email"
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <Input
+            type="tel"
+            name="phoneNumber"
+            className="border p-2"
+            value={formData.phoneNumber}
+            required
+            placeholder="Your Contact"
+            onChange={handleChange}
+          />
+          <Input
+            name="subject"
+            value={formData.subject}
+            placeholder="Enter Subject"
+            onChange={handleChange}
+            className="border p-2"
+            required
+          />
+          <select
+            name="inquiryType"
+            value={formData.inquiryType}
+            onChange={handleChange}
+            required
+            className="border p-2 font-fredoka text-[#7f8896] rounded-[8px] w-full"
           >
-            <div className="flex w-full flex-col lg:flex-row gap-2 lg:gap-1">
-              <Input
-                type="text"
-                name="name"
-                value={formData.name}
-                className="border p-2"
-                placeholder="Your Name"
-                onChange={handleChange}
-                required
-              />
-
-              <Input
-                type="email"
-                name="email"
-                className="border p-2"
-                value={formData.email}
-                placeholder="Your Email"
-                onChange={handleChange}
-                required
-              />
-            </div>
-
-            <Input
-              type="tel"
-              name="phoneNumber"
-              className="border p-2"
-              value={formData.phoneNumber}
-              required
-              placeholder="Your Contact"
-              onChange={handleChange}
-            />
-            <Input
-              name="subject"
-              value={formData.subject}
-              placeholder="Enter Subject"
-              onChange={handleChange}
-              className="border p-2"
-              required
-            />
-            <select
-              name="inquiryType"
-              value={formData.inquiryType}
-              onChange={handleChange}
-              required
-              className="border p-2 font-fredoka text-[#7f8896] rounded-[8px] w-full"
-            >
-              <option className="text-black" value="">Select Inquiry Type</option>
-              {inquiryOptions.map((option, index) => (
-                <option className="text-black" key={index} value={option}>
-                  {option}
-                </option>
-              ))}
-            </select>
-            <Textarea
-              name="message"
-              value={formData.message}
-              placeholder="Your Message"
-              onChange={handleChange}
-              className="border p-2"
-              required
-            />
-            <Button
-              type="submit"
-              disabled={loading}
-              className="clarabutton w-[200px] lg:w-[300px] bg-red hover:bg-hoverRed text-white p-2"
-            >
-              {loading ? "Sending..." : "Submit"}
-            </Button>
-          </form>
+            <option className="text-black" value="">
+              Select Inquiry Type
+            </option>
+            {inquiryOptions.map((option, index) => (
+              <option className="text-black" key={index} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+          <Textarea
+            name="message"
+            value={formData.message}
+            placeholder="Your Message"
+            onChange={handleChange}
+            className="border p-2"
+            required
+          />
+          <Button
+            type="submit"
+            disabled={loading}
+            className="clarabutton w-[200px] lg:w-[300px] bg-red hover:bg-hoverRed text-white p-2"
+          >
+            {loading ? "Sending..." : "Submit"}
+          </Button>
+        </form>
       </div>
     </section>
   );
@@ -659,11 +656,12 @@ const PartnerList = ({ userId }) => {
   );
 };
 
+
 const ConnectAccountForm = ({ userId }) => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const { data: session, status } = useSession();
-    const [profileData, setProfileData] = useState(null);
+  const [profileData, setProfileData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const { user, loading } = useAuth();
   const router = useRouter();
@@ -678,32 +676,10 @@ const ConnectAccountForm = ({ userId }) => {
         setHygraphUser(data);
       });
     }
-  
   }, [userId, user, loading, router]);
-
-  // useEffect(() => {
-  //   if (session && session.user) {
-  //     fetchUserData(session.user.email);
-  //   }
-  // }, [session]);
-
-  // const fetchUserData = async (email) => {
-  //   try {
-  //     const data = await client.request(GET_ACCOUNT_BY_EMAIL, { email });
-  //     setProfileData(data.account);
-  //   } catch (error) {
-  //     console.error("Error fetching profile data:", error);
-  //   }
-  // };
 
   const handleConnect = async (e) => {
     e.preventDefault();
-
-    // if (!session || !session.user) {
-    //   setMessage("Please log in to connect a partner.");
-    //   return;
-    // }
-
     const query = `
         mutation AddPartner($userId: ID!, $partnerEmail: String!) {
           updateAccount(

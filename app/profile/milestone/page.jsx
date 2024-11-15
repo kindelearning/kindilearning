@@ -870,11 +870,6 @@ export default function MileStone() {
               ) : (
                 <RandomImageComponent />
               )}
-              {/* <Image
-                alt="Kindi"
-                src={progressImage03}
-                className="cursor-pointer w-20 -ml-[32px] h-20"
-              /> */}
               <RandomImageComponentTwo />
             </div>
             {hygraphUser ? (

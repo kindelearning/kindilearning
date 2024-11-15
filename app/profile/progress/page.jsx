@@ -15,11 +15,12 @@ import { useSession } from "next-auth/react";
 import Loading from "@/app/loading";
 import Head from "next/head";
 import { progressData } from "@/app/constant/menu";
-import { getAllActivities, getUserDataByEmail } from "@/lib/hygraph";
+import { getAllActivities, getLevelData, getUserDataByEmail } from "@/lib/hygraph";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/lib/useAuth";
 import Link from "next/link";
 import { StockImages } from "@/app/constant/profile";
+import LevelList from "@/app/Sections/Profile/LevelList";
 
 const HYGRAPH_ENDPOINT =
   "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";
@@ -128,6 +129,7 @@ const SubProfileRoutes = ({
     </div>
   );
 };
+
 
 /**
  *
@@ -390,6 +392,8 @@ export default async function ProgressSection() {
         />
         <meta name="twitter:image" content="/images/logo.png" />
       </Head>
+
+      {/* <LevelList /> */}
       <section className="w-full h-auto bg-[#F5F5F5] pb-12 md:bg-[#EAEAF5] items-center justify-center flex flex-col px-0">
         {/* Topbar */}
         <div className="claracontainer py-4 md:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-8">

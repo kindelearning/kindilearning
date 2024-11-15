@@ -37,6 +37,7 @@ import {
 } from "@/lib/hygraph";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/lib/useAuth";
+import LevelList from "@/app/Sections/Profile/LevelList";
 
 /**
  * @Main_account
@@ -167,7 +168,7 @@ const MyLevel = ({ userID }) => {
               Check Now
             </Badge>
           </DialogTrigger>
-          <DialogContent className="bg-[#EAEAF5] max-h-[70%] overflow-scroll p-0 overflow-x-hidden rounded-[28px] w-full claracontainer">
+          <DialogContent className="bg-[#EAEAF5] max-h-[70%] overflow-scroll p-0 pb-6 overflow-x-hidden rounded-[28px] w-full claracontainer">
             <DialogHeader className="p-4">
               <div className="flex flex-row justify-center items-center w-full">
                 <DialogTitle>
@@ -183,12 +184,8 @@ const MyLevel = ({ userID }) => {
               </div>
             </DialogHeader>
             <DialogDescription className="flex w-full px-4 claracontainer flex-col justify-start items-center">
-              <div className="flex flex-col justify-center items-center w-full claracontainer gap-4">
-                <LevelCard level="Level 1" activities="5" />
-                <LevelCard level="Level 2" activities="10" />
-                <LevelCard level="Level 3" activities="15" />
-                <LevelCard level="Level 4" activities="20" />
-                <LevelCard level="Level 5" activities="25" />
+              <div className="flex w-full flex-col justify-center items-center claracontainer gap-4">
+                <LevelList  />
               </div>
             </DialogDescription>
             {/* <DialogFooter className="sticky  rounded-t-[16px] shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] bottom-0 m-0 w-full px-4 bg-[#ffffff]">
