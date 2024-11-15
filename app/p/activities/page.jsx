@@ -492,10 +492,7 @@ export default async function ActivitiesPage() {
                         className="w-full flex flex-col gap-4 "
                       >
                         <article className="rounded-lg">
-                          <Link
-                          
-                            href={`/p/activities/${activity.id}`}
-                          >
+                          <Link href={`/p/activities/${activity.id}`}>
                             <div className="md:w-full hover:shadow-md duration-200 min-w-[170px] w-full min-h-[250px] h-full bg-white items-start justify-start border rounded-3xl flex flex-col md:flex-row gap-4">
                               <div className="claracontainer w-full flex-col justify-start items-center gap-7 inline-flex">
                                 <div className="w-full max-w-full md:min-w-full lg:max-w-full h-auto">
@@ -588,10 +585,7 @@ export default async function ActivitiesPage() {
                           {activities.map((activity) => (
                             <div key={activity.id}>
                               <article className="rounded-lg ">
-                                <Link
-                              
-                                  href={`/p/activities/${activity.id}`}
-                                >
+                                <Link href={`/p/activities/${activity.id}`}>
                                   <div
                                     className="md:w-full hover:shadow-md duration-200 min-w-[170px] w-full min-h-[250px] h-full bg-white items-start justify-start border rounded-3xl flex flex-col md:flex-row gap-4
 "
@@ -622,15 +616,17 @@ export default async function ActivitiesPage() {
                                               <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-4 flex px-0 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
                                                 {activity.setUpTime}
                                               </div>
-                                              <ul className="text-[#0a1932] justify-between items-center gap-4 flex px-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
-                                                {activity.skills
-                                                  .slice(0, 2)
-                                                  .map((skill, index) => (
-                                                    <li key={index}>
-                                                      {skill.slice(0, 8)}
-                                                    </li>
-                                                  ))}
-                                              </ul>
+                                              •
+                                              <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-6 flex pr-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
+                                                {activity.themeName.slice(
+                                                  0,
+                                                  10
+                                                )}
+                                              </div>
+                                              •
+                                              <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-6 flex pr-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
+                                                {activity.focusAge.slice(0, 10)}
+                                              </div>
                                             </div>
                                           </div>
                                           <div className="items-center justify-center gap-2 md:gap-4 grid grid-cols-5">
@@ -686,14 +682,8 @@ export default async function ActivitiesPage() {
                   {activities.map((activity) => (
                     <div key={activity.id}>
                       <article className="rounded-lg ">
-                        <Link
-                      
-                          href={`/p/activities/${activity.id}`}
-                        >
-                          <div
-                            className="md:w-full hover:shadow-md duration-200 min-w-[170px] w-full min-h-[250px] h-full bg-white items-start justify-start border rounded-3xl flex flex-col md:flex-row gap-4
-"
-                          >
+                        <Link href={`/p/activities/${activity.id}`}>
+                          <div className="md:w-full hover:shadow-md duration-200 min-w-[170px] w-full min-h-[250px] h-full bg-white items-start justify-start border rounded-3xl flex flex-col md:flex-row gap-4">
                             <div className="claracontainer w-full flex-col justify-start items-center gap-7 inline-flex">
                               <div className="w-full max-w-full md:min-w-full lg:max-w-full h-auto">
                                 <div className="flex max-h-[180px] min-h-[150px] h-[150px] md:min-h-[200px] md:h-full lg:min-h-[276px] lg:h-full lg:max-h-[276px] md:max-h-[300px] overflow-clip rounded-t-3xl">
@@ -717,15 +707,14 @@ export default async function ActivitiesPage() {
                                       <div className="text-[#0a1932] min-w-[max-content] p-0 lg:pl-2 md:text-[18px] md:leading-[22px] font-[500] font-fredoka text-[10px] lg:text-[16px] leading-none">
                                         {activity.setUpTime}
                                       </div>
-                                      <ul className="text-[#0a1932] justify-between items-center gap-4 flex px-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
-                                        {activity.skills
-                                          .slice(0, 2)
-                                          .map((skill, index) => (
-                                            <li key={index}>
-                                              {skill.slice(0, 8)}
-                                            </li>
-                                          ))}
-                                      </ul>
+                                      •
+                                        <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-6 flex pr-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
+                                          {activity.themeName.slice(0, 10)}
+                                        </div>
+                                        •
+                                        <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-6 flex pr-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
+                                          {activity.focusAge.slice(0, 10)}
+                                        </div>
                                     </div>
                                   </div>
                                   <div className="items-center justify-center gap-2 md:gap-4 grid grid-cols-5">
