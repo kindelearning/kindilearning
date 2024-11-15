@@ -317,6 +317,7 @@ export default async function ActivityDetailPage({ params }) {
               </div>
             </div>
             {/* Row - 2(C1) */}
+            {/* {JSON.stringify(activity.bodyOne.markdown, null, 2)} */}
             <div className="items-center px-4 hidden lg:px-0 w-full lg:min-w-[600px] justify-center lg:flex flex-col gap-2">
               <div className="px-4 mb-6 md:hidden flex w-full py-6 bg-white rounded-xl shadow gap-3 flex-col justify-center items-center">
                 <div className="text-[#3f3a64] text-base font-semibold font-montserrat uppercase leading-[19px]">
@@ -329,23 +330,63 @@ export default async function ActivityDetailPage({ params }) {
               </div>
               <Accordian
                 title={activity.accordionOne}
-                description={activity.bodyOne}
+                description={
+                  activity.bodyOne && (
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: activity.bodyOne.html,
+                      }}
+                    />
+                  )
+                }
               />
               <Accordian
                 title={activity.accordionTwo}
-                description={activity.bodyTwo}
+                description={
+                  activity.bodyTwo && (
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: activity.bodyTwo.html,
+                      }}
+                    />
+                  )
+                }
               />
               <Accordian
                 title={activity.accordionThree}
-                description={activity.bodyThree}
+                description={
+                  activity.bodyThree && (
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: activity.bodyThree.html,
+                      }}
+                    />
+                  )
+                }
               />
               <Accordian
                 title={activity.accordionFour}
-                description={activity.bodyFour}
+                description={
+                  activity.bodyFour && (
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: activity.bodyFour.html,
+                      }}
+                    />
+                  )
+                }
               />
               <Accordian
                 title={activity.accordionFive}
-                description={activity.bodyFive}
+                description={
+                  activity.bodyFive && (
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: activity.bodyFive.html,
+                      }}
+                    />
+                  )
+                }
               />
             </div>
           </div>
