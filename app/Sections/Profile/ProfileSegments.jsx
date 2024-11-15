@@ -655,35 +655,67 @@ const PartnerList = ({ userId }) => {
     </>
   );
 };
-
-
-const ConnectAccountForm = ({ userId }) => {
-  const [email, setEmail] = useState("");
+export const ConnectAccountForm = () => {
+  const [partnerEmail, setPartnerEmail] = useState("");
   const [message, setMessage] = useState("");
-  const { data: session, status } = useSession();
-  const [profileData, setProfileData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const { user, loading } = useAuth();
-  const router = useRouter();
+  const { user } = useAuth();
   const [hygraphUser, setHygraphUser] = useState(null);
 
   useEffect(() => {
-    if (!loading && !user) {
-      router.push("/auth/sign-up"); // Redirect to login if not authenticated
-    }
     if (user && user.email) {
       getUserDataByEmail(user.email).then((data) => {
         setHygraphUser(data);
       });
     }
-  }, [userId, user, loading, router]);
+  }, [user]);
 
-  const handleConnect = async (e) => {
-    e.preventDefault();
+  // Function to check if partner exists
+  const checkPartnerExists = async (email) => {
     const query = `
-        mutation AddPartner($userId: ID!, $partnerEmail: String!) {
+      query GetAccountByEmail($email: String!) {
+        account(where: { email: $email }) {
+          id
+          email
+        }
+      }
+    `;
+    const response = await fetch(HYGRAPH_ENDPOINT, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${HYGRAPH_TOKEN}`,
+      },
+      body: JSON.stringify({ query, variables: { email } }),
+    });
+    const result = await response.json();
+    return result.data && result.data.account;
+  };
+
+  // Handles form submission
+  const handleInvite = async (e) => {
+    e.preventDefault();
+
+    if (!user || !hygraphUser) {
+      setMessage("You must be logged in to invite a partner.");
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+
+      // Check if the partner exists
+      const partnerExists = await checkPartnerExists(partnerEmail.trim());
+      if (!partnerExists) {
+        setMessage("Partner does not exist. Please enter a valid email.");
+        return;
+      }
+
+      // Define mutation query and variables
+      const mutation = `
+        mutation AddPartner($accountEmail: String!, $partnerEmail: String!) {
           updateAccount(
-            where: { id: $userId },
+            where: { email: $accountEmail },
             data: {
               partner: {
                 connect: { where: { email: $partnerEmail } }
@@ -701,58 +733,54 @@ const ConnectAccountForm = ({ userId }) => {
           }
         }
       `;
+      const variables = {
+        accountEmail: hygraphUser.email, // Current logged-in user's email
+        partnerEmail: partnerEmail.trim(),
+      };
 
-    const variables = {
-      userId, // Use the userId prop directly for the logged-in user's ID
-      partnerEmail: email.trim(),
-    };
-
-    try {
-      setIsLoading(true);
       const response = await fetch(HYGRAPH_ENDPOINT, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${HYGRAPH_TOKEN}`,
         },
-        body: JSON.stringify({ query, variables }),
+        body: JSON.stringify({
+          query: mutation,
+          variables,
+        }),
       });
 
       const result = await response.json();
 
       if (result.errors) {
-        setMessage("Error connecting partner: " + result.errors[0].message);
+        setMessage(`Error: ${result.errors[0].message}`);
       } else {
-        setMessage("Partner connected successfully!");
-        setEmail("");
+        setMessage("Partner invited successfully!");
+        setPartnerEmail(""); // Clear input field after success
       }
     } catch (error) {
-      setMessage("Error: " + error.message);
-      console.error("Error during partner connection:", error);
+      setMessage(`Error: ${error.message}`);
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <form
-      onSubmit={handleConnect}
-      className="flex w-full flex-col justify-start items-start gap-4"
-    >
+    <form onSubmit={handleInvite}  className="flex w-full flex-col justify-start items-start gap-4">
       <Input
         type="email"
-        className="bg-white w-full rounded-lg focus-within:border-0 focus-within:border-[#ffffff00] shadow border border-[#383838]"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        value={partnerEmail}
+        onChange={(e) => setPartnerEmail(e.target.value)}
         placeholder="Enter partner's email"
         required
+        className="bg-white w-full rounded-lg focus-within:border-0 focus-within:border-[#ffffff00] shadow border border-[#383838]"
       />
       <Button
-        className="clarabutton bg-red hover:bg-hoverRed"
         type="submit"
+        className="clarabutton bg-red hover:bg-hoverRed"
         disabled={isLoading}
       >
-        {isLoading ? "Submitting..." : "Connect Partner"}
+        {isLoading ? "Inviting..." : "Invite Partner"}
       </Button>
       {message && <p>{message}</p>}
     </form>
@@ -1435,7 +1463,7 @@ export default function ProfileSegments() {
                       {/* <div className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize  ">
                         Get $20
                       </div> */}
-                      <div className="text-[#757575] text-[16px] md:text-2xl font-medium font-fredoka ">
+                      <div className="text-[#757575] text-[16px] leading-[18px] md:text-2xl md:leading-[26px] font-normal font-fredoka ">
                         Securely grant access to your child&apos;s progress,
                         activities, and milestones, ensuring that both parents
                         can stay up-to-date and involved in every step of their
@@ -1445,7 +1473,7 @@ export default function ProfileSegments() {
                         together.
                       </div>
                       {user && hygraphUser ? (
-                        <ConnectAccountForm userId={hygraphUser.id} />
+                        <ConnectAccountForm />
                       ) : (
                         <>id Not found</>
                       )}
