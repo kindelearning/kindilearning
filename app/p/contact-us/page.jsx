@@ -10,11 +10,37 @@ export default function ContactForm() {
     name: "",
     email: "",
     message: "",
-    phoneNumber: "",
+    inquiryType: "",
+    subject: "",
+    phoneNumber: "", // Add phoneNumber here
   });
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
+
+
+  const inquiryOptions = [
+    "Career Opportunities",
+    "Partnership or Collaboration Opportunity",
+    "Investment Opportunities",
+    "Compliment or Praise",
+    "Press or Media Inquiry",
+    "Product Suggestions or Recommendations",
+    "Custom Orders or Special Requests",
+    "Wholesale or Bulk Order Inquiry",
+    "Events",
+    "Subscription or Service Questions",
+    "Billing or Payment",
+    "Website Bug or Technical Issue",
+    "Technical Assistance",
+    "Returns, Exchanges, or Refunds",
+    "Order Status",
+    "Product Information Request",
+    "Account Login or Password Help",
+    "Feedback or Complaint",
+    "Developer Support (API, Integration)",
+  ];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -41,7 +67,14 @@ export default function ContactForm() {
       const data = await response.json();
       if (data.success) {
         setSuccessMessage("Message sent successfully!");
-        setFormData({ name: "", email: "", message: "", phoneNumber: "" }); // Reset form
+        setFormData({
+          name: "",
+          email: "",
+          message: "",
+          subject: "",
+          inquiryType: "",
+          phoneNumber: "",
+        });
       } else {
         setError("Failed to send the message. Please try again.");
       }
@@ -76,13 +109,15 @@ export default function ContactForm() {
         {/* Form */}
 
         <div className="flex flex-col items-center justify-center">
-          {successMessage && <p className="text-green-800 pb-4">{successMessage}</p>}
+          {successMessage && (
+            <p className="text-green-800 pb-4">{successMessage}</p>
+          )}
           {error && <p className="text-red pb-4">{error}</p>}
           <form
             onSubmit={handleSubmit}
-            className="flex justify-center items-center flex-col gap-4 w-full"
+            className="flex justify-center items-center flex-col gap-2 lg:gap-4 w-full"
           >
-            <div className="flex w-full flex-col lg:flex-row gap-1">
+            <div className="flex w-full flex-col lg:flex-row gap-2 lg:gap-1">
               <Input
                 type="text"
                 name="name"
@@ -103,14 +138,38 @@ export default function ContactForm() {
                 required
               />
             </div>
+
             <Input
               type="tel"
               name="phoneNumber"
               className="border p-2"
               value={formData.phoneNumber}
+              required
               placeholder="Your Contact"
               onChange={handleChange}
             />
+            <Input
+              name="subject"
+              value={formData.subject}
+              placeholder="Enter Subject"
+              onChange={handleChange}
+              className="border p-2"
+              required
+            />
+            <select
+              name="inquiryType"
+              value={formData.inquiryType}
+              onChange={handleChange}
+              required
+              className="border p-2 font-fredoka text-[#7f8896] rounded-[8px] w-full"
+            >
+              <option className="text-black" value="">Select Inquiry Type</option>
+              {inquiryOptions.map((option, index) => (
+                <option className="text-black" key={index} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
             <Textarea
               name="message"
               value={formData.message}
