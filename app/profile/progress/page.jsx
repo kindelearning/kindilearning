@@ -9,16 +9,12 @@ import {
 } from "@/public/Images";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ReferralCard from "@/app/Sections/Profile/ReferralCard";
-import { GraphQLClient, gql } from "graphql-request";
-
 import Loading from "@/app/loading";
-import Head from "next/head";
 import { progressData } from "@/app/constant/menu";
 import { getAllActivities, getUserDataByEmail } from "@/lib/hygraph";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/lib/useAuth";
 import Link from "next/link";
-import { StockImages } from "@/app/constant/profile";
 
 const HYGRAPH_ENDPOINT =
   "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";
@@ -60,20 +56,7 @@ const ActivitiesCount = () => {
   );
 };
 
-const GET_ACCOUNT_BY_EMAIL = gql`
-  query GetAccountByEmail($email: String!) {
-    account(where: { email: $email }) {
-      id
-      name
-      username
-      email
-      profilePicture {
-        url
-      }
-      isVerified
-    }
-  }
-`;
+
 
 const SubBagde = ({
   title = "title",
