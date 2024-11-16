@@ -1,159 +1,154 @@
 "use client";
+import { useEffect, useState } from "react";
 
-import { StockImages } from "@/app/constant/profile";
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
-import React, { useState } from "react";
+export default function AvatarSelectionForm({ accountId }) {
+  const [avatars, setAvatars] = useState([]);
+  const [selectedAvatarId, setSelectedAvatarId] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState("");
 
+  useEffect(() => {
+    const fetchAvatars = async () => {
+      try {
+        const response = await fetch("/api/avatars", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            query: `
+              query GetAvailableAvatars {
+                avatars {
+                  id
+                  profileAvatar {
+                    url
+                    fileName
+                  }
+                }
+              }
+            `,
+          }),
+        });
 
-export default function ImageInput() {
-  const [loading, setLoading] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [preview, setPreview] = useState(null);
+        if (!response.ok) throw new Error("Failed to fetch avatars");
 
-  // Handle file change from file input
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setSelectedImage(file);
-      setLoading(false); // Ensure loading is false when selecting a new image
+        const result = await response.json();
+        setAvatars(result.data.avatars);
+      } catch (err) {
+        setError("Error loading avatars. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-      // Create a preview URL
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreview(reader.result);
-      };
-      reader.readAsDataURL(file);
+    fetchAvatars();
+  }, []);
+
+  const handleAvatarChange = (avatarId) => {
+    setSelectedAvatarId(avatarId);
+    setSuccessMessage(""); // Clear success message on new selection
+  };
+
+  const handleFormSubmit = async (event) => {
+    event.preventDefault();
+
+    if (!selectedAvatarId) {
+      setError("Please select an avatar before submitting.");
+      return;
     }
-  };
 
-  // Handle stock image selection
-  const handleStockImageSelect = (image) => {
-    setSelectedImage(image);
-    setPreview(image.url);
-  };
-
-  // Handle removing selected image
-  const handleRemoveImage = () => {
-    setSelectedImage(null);
-    setPreview(null);
-  };
-
-  // Handle image update/upload action
-  const handleUpdateImage = async () => {
-    if (!selectedImage) return;
-
-    setLoading(true);
-    
     try {
-      // Example of uploading to a server or cloud storage
-      // Replace this with your actual upload logic
-      let formData = new FormData();
-      formData.append("image", selectedImage);
+      const response = await fetch("/api/update-avatar", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          query: `
+            mutation UpdateUserAvatar($accountId: ID!, $avatarId: ID!) {
+              updateAccount(
+                where: { id: $accountId }
+                data: { myAvatar: { connect: { id: $avatarId } } }
+              ) {
+                id
+                myAvatar {
+                  id
+                  profileAvatar {
+                    url
+                    fileName
+                  }
+                }
+              }
+            }
+          `,
+          variables: {
+            accountId,
+            avatarId: selectedAvatarId,
+          },
+        }),
+      });
 
-      // Simulate an upload request
-      await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulated delay
+      if (!response.ok) throw new Error("Failed to update avatar");
 
-      // Show success message or handle post-upload action
-      alert("Image updated successfully!");
+      const result = await response.json();
+      if (result.errors) {
+        throw new Error(result.errors[0].message);
+      }
 
-    } catch (error) {
-      console.error("Error updating image:", error);
-      alert("Failed to update image. Please try again.");
-    } finally {
-      setLoading(false);
+      setSuccessMessage("Avatar updated successfully!");
+      setError("");
+    } catch (err) {
+      setError("Failed to update avatar. Please try again.");
     }
   };
+
+  if (loading) return <div>Loading avatars...</div>;
+  if (error) return <div>{error}</div>;
 
   return (
-    <>
-      <div className="flex flex-col md:flex-col lg:flex-row w-full gap-[16px] lg:gap-8 justify-between items-start">
-        <div className="flex flex-col gap-4 p-6 justify-center items-center max-w-[360px] w-full bg-white rounded-[12px] relative">
-          {preview ? (
-            <div className="relative">
-              <Image
-                src={preview}
-                alt="Profile Image"
-                width={128}
-                height={128}
-                className="w-32 shadow-sm h-32 rounded-full"
-              />
-              <button
-                className="absolute top-0 right-0 bg-red text-white p-1 rounded-full"
-                onClick={handleRemoveImage}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
+    <div>
+      <h1>Select Your Avatar</h1>
+      <form onSubmit={handleFormSubmit}>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+          {avatars.map((avatar) => (
+            <div key={avatar.id} style={{ textAlign: "center" }}>
+              <label>
+                <input
+                  type="radio"
+                  name="avatar"
+                  value={avatar.id}
+                  onChange={() => handleAvatarChange(avatar.id)}
+                  checked={selectedAvatarId === avatar.id}
+                  style={{ marginBottom: "5px" }}
+                />
+                <img
+                  src={avatar.profileAvatar.url}
+                  alt={avatar.profileAvatar.fileName}
+                  style={{
+                    width: "100px",
+                    height: "100px",
+                    cursor: "pointer",
+                    border:
+                      selectedAvatarId === avatar.id
+                        ? "2px solid blue"
+                        : "2px solid transparent",
+                  }}
+                />
+              </label>
             </div>
-          ) : (
-            <label className="w-32 h-32 rounded-full border-2 border-dashed border-gray-200 flex flex-col justify-center items-center cursor-pointer">
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-                className="opacity-0 absolute w-full h-full"
-              />
-              <p className="text-[#0a1932] text-sm font-medium text-center font-fredoka leading-tight">
-                Drag and drop or click to upload
-              </p>
-            </label>
-          )}
-          {selectedImage ? (
-            <div className="text-[#0a1932] text-sm font-semibold font-fredoka leading-tight">
-              You&apos;re looking great!
-            </div>
-          ) : (
-            <>
-              <div className="text-[#0a1932] text-sm font-semibold font-fredoka leading-tight">
-                Upload Photo
-              </div>
-              <div className="text-center text-[#757575] text-xs font-normal font-fredoka leading-none">
-                OR
-              </div>
-              <div className="text-[#0a1932] text-sm font-semibold font-fredoka leading-tight">
-                Select custom avatar
-              </div>
-            </>
-          )}
+          ))}
         </div>
-
-        <div className="flex w-full flex-col gap-2 justify-between">
-          <div className="flex flex-wrap w-full justify-start items-start mt-4">
-            {StockImages.map((image) => (
-              <Image
-                key={image.id}
-                src={image.url}
-                alt="Stock Image"
-                width={64}
-                height={64}
-                className="w-16 h-16 rounded-full cursor-pointer m-2"
-                onClick={() => handleStockImageSelect(image)}
-              />
-            ))}
-          </div>
-          <Button
-            className="text-center text-white text-base bg-red rounded-2xl shadow border-2 border-white font-semibold font-['Fredoka'] leading-tight w-[200px]"
-            type="submit"
-            onClick={handleUpdateImage}
-            disabled={loading}
-          >
-            {loading ? "Updating ..." : "Update Image"}
-          </Button>
+        <button type="submit" disabled={!selectedAvatarId}>
+          Save Selection
+        </button>
+      </form>
+      {successMessage && (
+        <div style={{ color: "green", marginTop: "10px" }}>
+          {successMessage}
         </div>
-      </div>
-    </>
+      )}
+      {error && <div style={{ color: "red", marginTop: "10px" }}>{error}</div>}
+    </div>
   );
 }

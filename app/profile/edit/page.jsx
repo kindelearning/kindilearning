@@ -1,6 +1,7 @@
 "use client";
 
 import { ImageInput } from "@/app/Sections";
+import AvatarSelectionForm from "@/app/Sections/Profile/ImageInput";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { RefreshCcw } from "lucide-react";
@@ -395,6 +396,7 @@ export default function ProfileEdit({ userId }) {
 
   return (
     <>
+    
       <Head>
         <title>Profile Edit | Kindilearning</title>
         <meta name="description" content="Edit your profile in Kindilearning" />
@@ -416,7 +418,7 @@ export default function ProfileEdit({ userId }) {
 
           <div className="claracontainer lg:px-[144px] flex flex-col gap-8 justify-center items-center">
             <div className="flex w-full justify-center items-center">
-              <ImageInput />
+              <AvatarSelectionForm accountId='cm38dbvnn1feo07pgs5bf2gq6' />
             </div>
             <form
               onSubmit={handleSubmit}
