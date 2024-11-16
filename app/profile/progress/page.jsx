@@ -304,267 +304,267 @@ const MyActivity = ({ userID }) => {
   );
 };
 
-const PartnerOne = () => {
-  const { user, loading } = useAuth();
-  const router = useRouter();
-  const [hygraphUser, setHygraphUser] = useState(null);
+// const PartnerOne = () => {
+//   const { user, loading } = useAuth();
+//   const router = useRouter();
+//   const [hygraphUser, setHygraphUser] = useState(null);
 
-  useEffect(() => {
-    if (user && user.email) {
-      getUserDataByEmail(user.email).then((data) => {
-        setHygraphUser(data);
-      });
-    }
-  }, [user, loading, router]);
+//   useEffect(() => {
+//     if (user && user.email) {
+//       getUserDataByEmail(user.email).then((data) => {
+//         setHygraphUser(data);
+//       });
+//     }
+//   }, [user, loading, router]);
 
-  useEffect(() => {
-    if (hygraphUser && hygraphUser.partner) {
-      hygraphUser.partner.forEach((partner) => {
-        const partnerAvatarUrl = partner.profileAvatar
-          ? partner.profileAvatar.url
-          : null;
+//   useEffect(() => {
+//     if (hygraphUser && hygraphUser.partner) {
+//       hygraphUser.partner.forEach((partner) => {
+//         const partnerAvatarUrl = partner.profileAvatar
+//           ? partner.profileAvatar.url
+//           : null;
 
-        // Check if the partner has an avatar in myAvatar field
-        const avatarUrl =
-          partner.myAvatar?.profileAvatar?.url || partnerAvatarUrl;
+//         // Check if the partner has an avatar in myAvatar field
+//         const avatarUrl =
+//           partner.myAvatar?.profileAvatar?.url || partnerAvatarUrl;
 
-        if (avatarUrl) {
-          console.log("Partner Avatar URL:", avatarUrl);
-        } else {
-          console.log("No avatar for this partner.");
-        }
-        console.log("Partner ID:", partner.id);
-        console.log("Partner Name:", partner.email);
-        // console.log("Partner Name:", partner.myAvatar.profileAvatar.url);
-      });
-    }
-  }, [hygraphUser]);
-  return (
-    <div className="relative w-16 h-16  p-0 lg:p-1  rounded-full ">
-      <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
-        {hygraphUser &&
-          hygraphUser.partner &&
-          hygraphUser.partner.slice(0, 1).map((partner) => {
-            const avatarUrl =
-              partner.myAvatar?.profileAvatar?.url ||
-              partner.profileAvatar?.url;
+//         if (avatarUrl) {
+//           console.log("Partner Avatar URL:", avatarUrl);
+//         } else {
+//           console.log("No avatar for this partner.");
+//         }
+//         console.log("Partner ID:", partner.id);
+//         console.log("Partner Name:", partner.email);
+//         // console.log("Partner Name:", partner.myAvatar.profileAvatar.url);
+//       });
+//     }
+//   }, [hygraphUser]);
+//   return (
+//     <div className="relative w-16 h-16  p-0 lg:p-1  rounded-full ">
+//       <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
+//         {hygraphUser &&
+//           hygraphUser.partner &&
+//           hygraphUser.partner.slice(0, 1).map((partner) => {
+//             const avatarUrl =
+//               partner.myAvatar?.profileAvatar?.url ||
+//               partner.profileAvatar?.url;
 
-            return (
-              <div key={partner.id} className="flex justify-center">
-                {avatarUrl ? (
-                  <Image
-                    width={84}
-                    height={84}
-                    src={avatarUrl}
-                    alt={`Avatar of ${partner.name}`}
-                    className="min-w-16 h-16 cursor-pointer hover:scale-110 ease-in-out duration-200  object-cover overflow-clip rounded-full"
-                  />
-                ) : (
-                  <div>No avatar</div>
-                )}
-              </div>
-            );
-          })}
-      </div>
-    </div>
-  );
-};
-const PartnerTwo = () => {
-  const { user, loading } = useAuth();
-  const router = useRouter();
-  const [hygraphUser, setHygraphUser] = useState(null);
+//             return (
+//               <div key={partner.id} className="flex justify-center">
+//                 {avatarUrl ? (
+//                   <Image
+//                     width={84}
+//                     height={84}
+//                     src={avatarUrl}
+//                     alt={`Avatar of ${partner.name}`}
+//                     className="min-w-16 h-16 cursor-pointer hover:scale-110 ease-in-out duration-200  object-cover overflow-clip rounded-full"
+//                   />
+//                 ) : (
+//                   <div>No avatar</div>
+//                 )}
+//               </div>
+//             );
+//           })}
+//       </div>
+//     </div>
+//   );
+// };
+// const PartnerTwo = () => {
+//   const { user, loading } = useAuth();
+//   const router = useRouter();
+//   const [hygraphUser, setHygraphUser] = useState(null);
 
-  useEffect(() => {
-    if (user && user.email) {
-      getUserDataByEmail(user.email).then((data) => {
-        setHygraphUser(data);
-      });
-    }
-  }, [user, loading, router]);
+//   useEffect(() => {
+//     if (user && user.email) {
+//       getUserDataByEmail(user.email).then((data) => {
+//         setHygraphUser(data);
+//       });
+//     }
+//   }, [user, loading, router]);
 
-  useEffect(() => {
-    if (hygraphUser && hygraphUser.partner) {
-      hygraphUser.partner.forEach((partner) => {
-        const partnerAvatarUrl = partner.profileAvatar
-          ? partner.profileAvatar.url
-          : null;
+//   useEffect(() => {
+//     if (hygraphUser && hygraphUser.partner) {
+//       hygraphUser.partner.forEach((partner) => {
+//         const partnerAvatarUrl = partner.profileAvatar
+//           ? partner.profileAvatar.url
+//           : null;
 
-        // Check if the partner has an avatar in myAvatar field
-        const avatarUrl =
-          partner.myAvatar?.profileAvatar?.url || partnerAvatarUrl;
+//         // Check if the partner has an avatar in myAvatar field
+//         const avatarUrl =
+//           partner.myAvatar?.profileAvatar?.url || partnerAvatarUrl;
 
-        if (avatarUrl) {
-          console.log("Partner Avatar URL:", avatarUrl);
-        } else {
-          console.log("No avatar for this partner.");
-        }
-        console.log("Partner ID:", partner.id);
-        console.log("Partner Name:", partner.email);
-        // console.log("Partner Name:", partner.myAvatar.profileAvatar.url);
-      });
-    }
-  }, [hygraphUser]);
-  return (
-    <div className="relative w-16 h-16 p-0 lg:p-1 rounded-full ">
-      <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
-        {hygraphUser &&
-          hygraphUser.partner &&
-          hygraphUser.partner.slice(1, 2).map((partner) => {
-            const avatarUrl =
-              partner.myAvatar?.profileAvatar?.url ||
-              partner.profileAvatar?.url;
+//         if (avatarUrl) {
+//           console.log("Partner Avatar URL:", avatarUrl);
+//         } else {
+//           console.log("No avatar for this partner.");
+//         }
+//         console.log("Partner ID:", partner.id);
+//         console.log("Partner Name:", partner.email);
+//         // console.log("Partner Name:", partner.myAvatar.profileAvatar.url);
+//       });
+//     }
+//   }, [hygraphUser]);
+//   return (
+//     <div className="relative w-16 h-16 p-0 lg:p-1 rounded-full ">
+//       <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
+//         {hygraphUser &&
+//           hygraphUser.partner &&
+//           hygraphUser.partner.slice(1, 2).map((partner) => {
+//             const avatarUrl =
+//               partner.myAvatar?.profileAvatar?.url ||
+//               partner.profileAvatar?.url;
 
-            return (
-              <div key={partner.id} className="flex justify-center">
-                {avatarUrl ? (
-                  <Image
-                    width={84}
-                    height={84}
-                    src={avatarUrl}
-                    alt={`Avatar of ${partner.name}`}
-                    className="min-w-16 h-16 cursor-pointer hover:scale-110 ease-in-out duration-200  object-cover overflow-clip rounded-full"
-                  />
-                ) : (
-                  <div>No avatar</div>
-                )}
-              </div>
-            );
-          })}
-      </div>
-    </div>
-  );
-};
-const PartnerThree = () => {
-  const { user, loading } = useAuth();
-  const router = useRouter();
-  const [hygraphUser, setHygraphUser] = useState(null);
+//             return (
+//               <div key={partner.id} className="flex justify-center">
+//                 {avatarUrl ? (
+//                   <Image
+//                     width={84}
+//                     height={84}
+//                     src={avatarUrl}
+//                     alt={`Avatar of ${partner.name}`}
+//                     className="min-w-16 h-16 cursor-pointer hover:scale-110 ease-in-out duration-200  object-cover overflow-clip rounded-full"
+//                   />
+//                 ) : (
+//                   <div>No avatar</div>
+//                 )}
+//               </div>
+//             );
+//           })}
+//       </div>
+//     </div>
+//   );
+// };
+// const PartnerThree = () => {
+//   const { user, loading } = useAuth();
+//   const router = useRouter();
+//   const [hygraphUser, setHygraphUser] = useState(null);
 
-  useEffect(() => {
-    if (user && user.email) {
-      getUserDataByEmail(user.email).then((data) => {
-        setHygraphUser(data);
-      });
-    }
-  }, [user, loading, router]);
+//   useEffect(() => {
+//     if (user && user.email) {
+//       getUserDataByEmail(user.email).then((data) => {
+//         setHygraphUser(data);
+//       });
+//     }
+//   }, [user, loading, router]);
 
-  useEffect(() => {
-    if (hygraphUser && hygraphUser.partner) {
-      hygraphUser.partner.forEach((partner) => {
-        const partnerAvatarUrl = partner.profileAvatar
-          ? partner.profileAvatar.url
-          : null;
+//   useEffect(() => {
+//     if (hygraphUser && hygraphUser.partner) {
+//       hygraphUser.partner.forEach((partner) => {
+//         const partnerAvatarUrl = partner.profileAvatar
+//           ? partner.profileAvatar.url
+//           : null;
 
-        // Check if the partner has an avatar in myAvatar field
-        const avatarUrl =
-          partner.myAvatar?.profileAvatar?.url || partnerAvatarUrl;
+//         // Check if the partner has an avatar in myAvatar field
+//         const avatarUrl =
+//           partner.myAvatar?.profileAvatar?.url || partnerAvatarUrl;
 
-        if (avatarUrl) {
-          console.log("Partner Avatar URL:", avatarUrl);
-        } else {
-          console.log("No avatar for this partner.");
-        }
-        console.log("Partner ID:", partner.id);
-        console.log("Partner Name:", partner.email);
-        // console.log("Partner Name:", partner.myAvatar.profileAvatar.url);
-      });
-    }
-  }, [hygraphUser]);
-  return (
-    <div className="relative w-16 h-16  p-0 lg:p-1  rounded-full ">
-      <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
-        {hygraphUser &&
-          hygraphUser.partner &&
-          hygraphUser.partner.slice(2, 3).map((partner) => {
-            const avatarUrl =
-              partner.myAvatar?.profileAvatar?.url ||
-              partner.profileAvatar?.url;
+//         if (avatarUrl) {
+//           console.log("Partner Avatar URL:", avatarUrl);
+//         } else {
+//           console.log("No avatar for this partner.");
+//         }
+//         console.log("Partner ID:", partner.id);
+//         console.log("Partner Name:", partner.email);
+//         // console.log("Partner Name:", partner.myAvatar.profileAvatar.url);
+//       });
+//     }
+//   }, [hygraphUser]);
+//   return (
+//     <div className="relative w-16 h-16  p-0 lg:p-1  rounded-full ">
+//       <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
+//         {hygraphUser &&
+//           hygraphUser.partner &&
+//           hygraphUser.partner.slice(2, 3).map((partner) => {
+//             const avatarUrl =
+//               partner.myAvatar?.profileAvatar?.url ||
+//               partner.profileAvatar?.url;
 
-            return (
-              <div key={partner.id} className="flex justify-center">
-                {avatarUrl ? (
-                  <Image
-                    width={84}
-                    height={84}
-                    src={avatarUrl}
-                    alt={`Avatar of ${partner.name}`}
-                    className="min-w-16 h-16  cursor-pointer hover:scale-110 ease-in-out duration-200  object-cover overflow-clip rounded-full"
-                  />
-                ) : (
-                  <div>No avatar</div>
-                )}
-              </div>
-            );
-          })}
-      </div>
-    </div>
-  );
-};
-const PartnerFour = () => {
-  const { user, loading } = useAuth();
-  const router = useRouter();
-  const [hygraphUser, setHygraphUser] = useState(null);
+//             return (
+//               <div key={partner.id} className="flex justify-center">
+//                 {avatarUrl ? (
+//                   <Image
+//                     width={84}
+//                     height={84}
+//                     src={avatarUrl}
+//                     alt={`Avatar of ${partner.name}`}
+//                     className="min-w-16 h-16  cursor-pointer hover:scale-110 ease-in-out duration-200  object-cover overflow-clip rounded-full"
+//                   />
+//                 ) : (
+//                   <div>No avatar</div>
+//                 )}
+//               </div>
+//             );
+//           })}
+//       </div>
+//     </div>
+//   );
+// };
+// const PartnerFour = () => {
+//   const { user, loading } = useAuth();
+//   const router = useRouter();
+//   const [hygraphUser, setHygraphUser] = useState(null);
 
-  useEffect(() => {
-    if (user && user.email) {
-      getUserDataByEmail(user.email).then((data) => {
-        setHygraphUser(data);
-      });
-    }
-  }, [user, loading, router]);
+//   useEffect(() => {
+//     if (user && user.email) {
+//       getUserDataByEmail(user.email).then((data) => {
+//         setHygraphUser(data);
+//       });
+//     }
+//   }, [user, loading, router]);
 
-  useEffect(() => {
-    if (hygraphUser && hygraphUser.partner) {
-      hygraphUser.partner.forEach((partner) => {
-        const partnerAvatarUrl = partner.profileAvatar
-          ? partner.profileAvatar.url
-          : null;
+//   useEffect(() => {
+//     if (hygraphUser && hygraphUser.partner) {
+//       hygraphUser.partner.forEach((partner) => {
+//         const partnerAvatarUrl = partner.profileAvatar
+//           ? partner.profileAvatar.url
+//           : null;
 
-        // Check if the partner has an avatar in myAvatar field
-        const avatarUrl =
-          partner.myAvatar?.profileAvatar?.url || partnerAvatarUrl;
+//         // Check if the partner has an avatar in myAvatar field
+//         const avatarUrl =
+//           partner.myAvatar?.profileAvatar?.url || partnerAvatarUrl;
 
-        if (avatarUrl) {
-          console.log("Partner Avatar URL:", avatarUrl);
-        } else {
-          console.log("No avatar for this partner.");
-        }
-        console.log("Partner ID:", partner.id);
-        console.log("Partner Name:", partner.email);
-        // console.log("Partner Name:", partner.myAvatar.profileAvatar.url);
-      });
-    }
-  }, [hygraphUser]);
-  return (
-    <div className="relative w-16 h-16  p-0 lg:p-1  rounded-full ">
-      <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
-        {hygraphUser &&
-          hygraphUser.partner &&
-          hygraphUser.partner.slice(3, 4).map((partner) => {
-            const avatarUrl =
-              partner.myAvatar?.profileAvatar?.url ||
-              partner.profileAvatar?.url;
+//         if (avatarUrl) {
+//           console.log("Partner Avatar URL:", avatarUrl);
+//         } else {
+//           console.log("No avatar for this partner.");
+//         }
+//         console.log("Partner ID:", partner.id);
+//         console.log("Partner Name:", partner.email);
+//         // console.log("Partner Name:", partner.myAvatar.profileAvatar.url);
+//       });
+//     }
+//   }, [hygraphUser]);
+//   return (
+//     <div className="relative w-16 h-16  p-0 lg:p-1  rounded-full ">
+//       <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
+//         {hygraphUser &&
+//           hygraphUser.partner &&
+//           hygraphUser.partner.slice(3, 4).map((partner) => {
+//             const avatarUrl =
+//               partner.myAvatar?.profileAvatar?.url ||
+//               partner.profileAvatar?.url;
 
-            return (
-              <div key={partner.id} className="flex justify-center">
-                {avatarUrl ? (
-                  <Image
-                    width={84}
-                    height={84}
-                    src={avatarUrl}
-                    alt={`Avatar of ${partner.name}`}
-                    className="min-w-16 h-16 cursor-pointer hover:scale-110 ease-in-out duration-200  object-cover overflow-clip rounded-full"
-                    // className="w-[80px] h-[80px] lg:w-36 lg:h-36 object-cover overflow-clip rounded-full"
-                  />
-                ) : (
-                  <div>No avatar</div>
-                )}
-              </div>
-            );
-          })}
-      </div>
-    </div>
-  );
-};
+//             return (
+//               <div key={partner.id} className="flex justify-center">
+//                 {avatarUrl ? (
+//                   <Image
+//                     width={84}
+//                     height={84}
+//                     src={avatarUrl}
+//                     alt={`Avatar of ${partner.name}`}
+//                     className="min-w-16 h-16 cursor-pointer hover:scale-110 ease-in-out duration-200  object-cover overflow-clip rounded-full"
+//                     // className="w-[80px] h-[80px] lg:w-36 lg:h-36 object-cover overflow-clip rounded-full"
+//                   />
+//                 ) : (
+//                   <div>No avatar</div>
+//                 )}
+//               </div>
+//             );
+//           })}
+//       </div>
+//     </div>
+//   );
+// };
 
 const CurrentUser = () => {
   const { user, loading } = useAuth();
