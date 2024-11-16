@@ -1,5 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { ProfileDP } from "@/public/Images";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
@@ -98,7 +99,7 @@ export default function AvatarSelectionForm({ accountId }) {
         throw new Error(result.errors[0].message);
       }
 
-      setSuccessMessage("Avatar updated successfully!");
+      setSuccessMessage("Avatar updated successfully! It will reflect Shortly");
       setError("");
     } catch (err) {
       setError("Failed to update avatar. Please try again.");
@@ -111,8 +112,19 @@ export default function AvatarSelectionForm({ accountId }) {
   return (
     <>
       <div className="flex flex-col w-full gap-[16px] lg:gap-8 justify-between items-start">
-        <h1>Select Your Avatar</h1>
-        <div className="flex flex-col gap-4 p-6 justify-center items-center  w-full bg-white rounded-[12px] relative">
+        <div className="flex flex-col lg:flex-row gap-4 p-6 justify-between items-start  w-full bg-white rounded-[12px] relative">
+          {/* <div className="flex flex-col gap-4 p-6 justify-center items-center max-w-[360px] w-full bg-white rounded-[12px] relative">
+            <label className="w-32 h-32 rounded-full border-2 border-dashed border-gray-200 flex flex-col justify-center items-center cursor-pointer">
+              <Image
+                src={ProfileDP}
+                className="opacity-0 absolute w-full h-full"
+              />
+            </label>
+            <div className="text-[#0a1932] text-sm font-semibold font-fredoka leading-tight">
+              Select custom avatar
+            </div>
+          </div> */}
+
           <form onSubmit={handleFormSubmit}>
             <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
               {avatars.map((avatar) => (
@@ -124,20 +136,30 @@ export default function AvatarSelectionForm({ accountId }) {
                       value={avatar.id}
                       onChange={() => handleAvatarChange(avatar.id)}
                       checked={selectedAvatarId === avatar.id}
-                      style={{ marginBottom: "5px" }}
+                      style={{ display: "none" }} // Hide the radio button visually
                     />
-                    <Image
-                      src={avatar.profileAvatar.url}
-                      width={100}
-                      height={100}
+                    <div
                       style={{
                         cursor: "pointer",
                         border:
                           selectedAvatarId === avatar.id
-                            ? "2px solid blue"
-                            : "2px solid transparent",
+                            ? "4px solid red"
+                            : "2px solid transparent", // Red border when selected
+                        borderRadius: "50%", // Make the border circular
+                        padding: "2px", // To make space around the image inside the border
+                        transition: "border 0.3s ease", // Optional: Smooth transition for border change
                       }}
-                    />
+                    >
+                      <Image
+                        src={avatar.profileAvatar.url}
+                        width={100}
+                        height={100}
+                        alt={`Avatar ${avatar.id}`}
+                        style={{
+                          borderRadius: "50%", // Ensure the image has circular corners to match the border shape
+                        }}
+                      />
+                    </div>
                   </label>
                 </div>
               ))}

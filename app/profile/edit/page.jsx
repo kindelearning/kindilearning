@@ -418,7 +418,7 @@ export default function ProfileEdit({ userId }) {
 
           <div className="claracontainer lg:px-[144px] flex flex-col gap-8 justify-center items-center">
             <div className="flex w-full justify-center items-center">
-              <AvatarSelectionForm accountId='cm38dbvnn1feo07pgs5bf2gq6' />
+              <AvatarSelectionForm accountId={userId} />
             </div>
             <form
               onSubmit={handleSubmit}
