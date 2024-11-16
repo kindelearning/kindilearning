@@ -7,6 +7,7 @@ import {
   ProfilePlaceholder01,
   ProfilePlaceHolderOne,
 } from "@/public/Images";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ReferralCard from "@/app/Sections/Profile/ReferralCard";
 import { GraphQLClient, gql } from "graphql-request";
 
@@ -638,7 +639,6 @@ export default async function ProgressSection() {
         }
         console.log("Partner ID:", partner.id);
         console.log("Partner Name:", partner.email);
-        // console.log("Partner Name:", partner.myAvatar.profileAvatar.url);
       });
     }
   }, [hygraphUser]);
@@ -676,40 +676,95 @@ export default async function ProgressSection() {
       <section className="w-full h-auto bg-[#F5F5F5] pb-12 md:bg-[#EAEAF5] items-center justify-center flex flex-col px-0">
         {/* Topbar */}
         <div className="claracontainer py-4 md:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-8">
-          <div className="flex w-full px-4 h-[160px] flex-row justify-center gap-0 items-center ">
-            <div className="w-fit gap-[-4px] flex">
-              <PartnerThree />
-              <PartnerOne />
-            </div>
-            <CurrentUser />
-            <div className="w-fit flex">
-              <PartnerTwo />
-              <PartnerFour />
-            </div>
-          </div>
-          <>
-            {hygraphUser ? (
-              <div className="flex gap-2 px-4 lg:px-0 overflow-x-scroll scrollbar-hidden w-full">
-                <ActivitiesCount />
-                <RemainingActivities userID={hygraphUser.id} />
-                <MyActivity userID={hygraphUser.id} />
-              </div>
-            ) : (
-              // <p>Not Found...</p>
-              <div className="flex w-full flex-col justify-center items-center gap-2">
-                <h2 className="text-[#029871] text-[24px] md:text-[28px] lg:text-[32px] xl:text-[40px] font-semibold  font-fredoka leading-tight">
-                  Kindi Learner
-                </h2>
-                <p className="font-fredoka text-[12px] lg:text-[20px]">
-                  <Link href="/auth/sign-in" className="text-red">
-                    Login&nbsp;
-                  </Link>
-                  to use more feature
-                </p>
-              </div>
-            )}
-            {/* <div className="flex gap-2 px-4 lg:px-0 overflow-x-scroll scrollbar-hidden w-full"></div> */}
-          </>
+          <Tabs
+            defaultValue="CurrentUser"
+            className="w-full flex flex-col gap-24"
+          >
+            <TabsList className="bg-[#eaeaf5]">
+              {hygraphUser?.partner.slice(0, 2)?.map((partner) => (
+                <TabsTrigger
+                  className="data-[state=active]:bg-[#f5f5f500] p-0 data-[state=active]:shadow-none"
+                  key={partner.id}
+                  value={`Partner-${partner.id}`}
+                >
+                  <Image
+                    width={84}
+                    height={84}
+                    src={
+                      partner.myAvatar?.profileAvatar?.url ||
+                      ProfilePlaceholder01
+                    }
+                    alt={`Avatar of ${partner.name}`}
+                    className="min-w-16 max-w-16 h-16 cursor-pointer hover:scale-110 ease-in-out duration-200  object-cover overflow-clip rounded-full"
+                  />
+                </TabsTrigger>
+              ))}
+              <TabsTrigger
+                className="data-[state=active]:bg-[#f5f5f500] p-0 data-[state=active]:shadow-none"
+                value="CurrentUser"
+              >
+                <CurrentUser />
+              </TabsTrigger>
+              {hygraphUser?.partner.slice(2, 4)?.map((partner) => (
+                <TabsTrigger
+                  className="data-[state=active]:bg-[#f5f5f500] p-0 data-[state=active]:shadow-none"
+                  key={partner.id}
+                  value={`Partner-${partner.id}`}
+                >
+                  <Image
+                    width={84}
+                    height={84}
+                    src={
+                      partner.myAvatar?.profileAvatar?.url ||
+                      ProfilePlaceholder01
+                    }
+                    alt={`Avatar of ${partner.name}`}
+                    className="min-w-16 max-w-16 h-16 cursor-pointer hover:scale-110 ease-in-out duration-200 object-cover overflow-clip rounded-full"
+                  />
+                </TabsTrigger>
+              ))}
+            </TabsList>
+            {hygraphUser?.partner?.map((partner) => (
+              <TabsContent key={partner.id} value={`Partner-${partner.id}`}>
+                {hygraphUser ? (
+                  <div className="w-full flex flex-col gap-2 justify-between items-center">
+                    <div className="font-fredoka text-[12px] lg:text-[20px]">
+                      Email: {partner.email || "Partner"}
+                    </div>
+                    <div className="flex gap-2 px-4 lg:px-0 overflow-x-scroll scrollbar-hidden w-full">
+                      <ActivitiesCount />
+                      <RemainingActivities userID={partner.id} />
+                      <MyActivity userID={partner.id} />
+                    </div>
+                  </div>
+                ) : null}
+              </TabsContent>
+            ))}
+            <TabsContent value="CurrentUser">
+              <>
+                {hygraphUser ? (
+                  <div className="flex gap-2 px-4 lg:px-0 overflow-x-scroll scrollbar-hidden w-full">
+                    <ActivitiesCount />
+                    <RemainingActivities userID={hygraphUser.id} />
+                    <MyActivity userID={hygraphUser.id} />
+                  </div>
+                ) : (
+                  <div className="flex w-full flex-col justify-center items-center gap-2">
+                    <h2 className="text-[#029871] text-[24px] md:text-[28px] lg:text-[32px] xl:text-[40px] font-semibold  font-fredoka leading-tight">
+                      Kindi Learner
+                    </h2>
+                    <p className="font-fredoka text-[12px] lg:text-[20px]">
+                      <Link href="/auth/sign-in" className="text-red">
+                        Login&nbsp;
+                      </Link>
+                      to use more feature
+                    </p>
+                  </div>
+                )}
+              </>
+            </TabsContent>
+          </Tabs>
+
           <div className="grid grid-cols-2 md:flex w-full px-2 lg:px-0 justify-start items-center gap-2 flex-wrap">
             {progressData.map((card, index) => (
               <SubProfileRoutes
