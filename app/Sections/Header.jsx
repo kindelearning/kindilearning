@@ -143,16 +143,7 @@ const Header = () => {
   const { user, loading } = useAuth();
   const router = useRouter();
   const [hygraphUser, setHygraphUser] = useState(null);
-
-  // Older logic with Next-auth
-  // const { data: session, status } = useSession();
-  // const [profileData, setProfileData] = useState(null);
-
-  // useEffect(() => {
-  //   if (session && session.user) {
-  //     fetchUserData(session.user.email);
-  //   }
-  // }, [session]);
+  // const [avatarUrl, setAvatarUrl] = useState(null);
 
   useEffect(() => {
     if (user && user.email) {
@@ -161,17 +152,6 @@ const Header = () => {
       });
     }
   }, [user, loading, router]);
-
-  // if (loading) return <p>Loading...</p>;
-
-  // const fetchUserData = async (email) => {
-  //   try {
-  //     const data = await client.request(GET_ACCOUNT_BY_EMAIL, { email });
-  //     setProfileData(data.account);
-  //   } catch (error) {
-  //     console.error("Error fetching profile data:", error);
-  //   }
-  // };
 
   const handleSignOut = () => {
     signOut({
@@ -349,11 +329,15 @@ const Header = () => {
               >
                 <div className="relative w-full flex justify-center items-center p-[2px] border-2 border-red hover:border-hoverRed rounded-full">
                   <div className="w-full h-full bg-white rounded-full  flex items-center justify-center">
-                    <Image
+                    {/* <Image
                       src={
                         hygraphUser.profilePicture?.url || ProfilePlaceHolderOne
                       }
-                      alt="User DP"
+                      className="w-[40px] h-[40px] object-cover rounded-full"
+                    /> */}
+                    <Image
+                      src={hygraphUser.myAvatar.profileAvatar.url}
+                      alt="User Avatar"
                       width={40}
                       height={40}
                       className="w-[40px] h-[40px] object-cover rounded-full"
