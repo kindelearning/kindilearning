@@ -1,4 +1,6 @@
 "use client";
+import { Button } from "@/components/ui/button";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
 export default function AvatarSelectionForm({ accountId }) {
@@ -107,48 +109,57 @@ export default function AvatarSelectionForm({ accountId }) {
   if (error) return <div>{error}</div>;
 
   return (
-    <div>
-      <h1>Select Your Avatar</h1>
-      <form onSubmit={handleFormSubmit}>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
-          {avatars.map((avatar) => (
-            <div key={avatar.id} style={{ textAlign: "center" }}>
-              <label>
-                <input
-                  type="radio"
-                  name="avatar"
-                  value={avatar.id}
-                  onChange={() => handleAvatarChange(avatar.id)}
-                  checked={selectedAvatarId === avatar.id}
-                  style={{ marginBottom: "5px" }}
-                />
-                <img
-                  src={avatar.profileAvatar.url}
-                  alt={avatar.profileAvatar.fileName}
-                  style={{
-                    width: "100px",
-                    height: "100px",
-                    cursor: "pointer",
-                    border:
-                      selectedAvatarId === avatar.id
-                        ? "2px solid blue"
-                        : "2px solid transparent",
-                  }}
-                />
-              </label>
+    <>
+      <div className="flex flex-col w-full gap-[16px] lg:gap-8 justify-between items-start">
+        <h1>Select Your Avatar</h1>
+        <div className="flex flex-col gap-4 p-6 justify-center items-center  w-full bg-white rounded-[12px] relative">
+          <form onSubmit={handleFormSubmit}>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+              {avatars.map((avatar) => (
+                <div key={avatar.id} style={{ textAlign: "center" }}>
+                  <label>
+                    <input
+                      type="radio"
+                      name="avatar"
+                      value={avatar.id}
+                      onChange={() => handleAvatarChange(avatar.id)}
+                      checked={selectedAvatarId === avatar.id}
+                      style={{ marginBottom: "5px" }}
+                    />
+                    <Image
+                      src={avatar.profileAvatar.url}
+                      width={100}
+                      height={100}
+                      style={{
+                        cursor: "pointer",
+                        border:
+                          selectedAvatarId === avatar.id
+                            ? "2px solid blue"
+                            : "2px solid transparent",
+                      }}
+                    />
+                  </label>
+                </div>
+              ))}
             </div>
-          ))}
+            <Button
+              className="text-center text-white text-base bg-red rounded-2xl shadow border-2 border-white font-semibold font-['Fredoka'] leading-tight w-[200px]"
+              type="submit"
+              disabled={!selectedAvatarId}
+            >
+              Save Selection
+            </Button>
+          </form>
         </div>
-        <button type="submit" disabled={!selectedAvatarId}>
-          Save Selection
-        </button>
-      </form>
-      {successMessage && (
-        <div style={{ color: "green", marginTop: "10px" }}>
-          {successMessage}
-        </div>
-      )}
-      {error && <div style={{ color: "red", marginTop: "10px" }}>{error}</div>}
-    </div>
+        {successMessage && (
+          <div style={{ color: "green", marginTop: "10px" }}>
+            {successMessage}
+          </div>
+        )}
+        {error && (
+          <div style={{ color: "red", marginTop: "10px" }}>{error}</div>
+        )}
+      </div>
+    </>
   );
 }
