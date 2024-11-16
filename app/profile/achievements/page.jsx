@@ -505,7 +505,7 @@ export default async function Achievement() {
                     <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
                       <Image
                         src={
-                          hygraphUser.profilePicture?.url ||
+                          hygraphUser.myAvatar.profileAvatar.url ||
                           ProfilePlaceHolderOne
                         }
                         alt="User DP"

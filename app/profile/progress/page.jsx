@@ -409,7 +409,7 @@ export default async function ProgressSection() {
                 <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
                   <Image
                     src={
-                      hygraphUser.profilePicture?.url || ProfilePlaceHolderOne
+                      hygraphUser.myAvatar.profileAvatar.url || ProfilePlaceHolderOne
                     }
                     alt="User DP"
                     width={100}
