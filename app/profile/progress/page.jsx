@@ -101,7 +101,7 @@ const SubProfileRoutes = ({
   iconBackgroundColor = "#f05c5c",
 }) => {
   return (
-    <div className="w-full min-w-[120px] lg:min-w-[180px] lg:min-h-[136px] lg:h-full rounded-[8px] h-full justify-start gap-1 max-w-[180px] min-h-[120px] cursor-pointer p-4 bg-white items-start inline-flex">
+    <div className="w-full min-w-[120px]  lg:min-w-[180px] lg:min-h-[136px] lg:h-full rounded-[8px] h-full justify-start gap-1 max-w-full lg:max-w-[180px] min-h-[120px] cursor-pointer p-4 bg-white items-start inline-flex">
       <div className="justify-start items-center w-full gap-[20px] flex flex-col">
         <div
           className="w-[42px] flex justify-center p-2 items-center h-[42px] rounded-[12px]"
@@ -339,7 +339,7 @@ const PartnerOne = () => {
     }
   }, [hygraphUser]);
   return (
-    <div className="relative w-16 h-16 p-1 rounded-full ">
+    <div className="relative w-16 h-16  p-0 lg:p-1  rounded-full ">
       <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
         {hygraphUser &&
           hygraphUser.partner &&
@@ -404,7 +404,7 @@ const PartnerTwo = () => {
     }
   }, [hygraphUser]);
   return (
-    <div className="relative w-16 h-16 p-1 rounded-full ">
+    <div className="relative w-16 h-16 p-0 lg:p-1 rounded-full ">
       <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
         {hygraphUser &&
           hygraphUser.partner &&
@@ -469,7 +469,7 @@ const PartnerThree = () => {
     }
   }, [hygraphUser]);
   return (
-    <div className="relative w-16 h-16  p-1 rounded-full ">
+    <div className="relative w-16 h-16  p-0 lg:p-1  rounded-full ">
       <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
         {hygraphUser &&
           hygraphUser.partner &&
@@ -534,7 +534,7 @@ const PartnerFour = () => {
     }
   }, [hygraphUser]);
   return (
-    <div className="relative w-16 h-16 p-1 rounded-full ">
+    <div className="relative w-16 h-16  p-0 lg:p-1  rounded-full ">
       <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
         {hygraphUser &&
           hygraphUser.partner &&
@@ -710,7 +710,7 @@ export default async function ProgressSection() {
             )}
             {/* <div className="flex gap-2 px-4 lg:px-0 overflow-x-scroll scrollbar-hidden w-full"></div> */}
           </>
-          <div className="flex w-full px-2 lg:px-0 justify-start items-center gap-2 flex-wrap">
+          <div className="grid grid-cols-2 md:flex w-full px-2 lg:px-0 justify-start items-center gap-2 flex-wrap">
             {progressData.map((card, index) => (
               <SubProfileRoutes
                 key={card.id}

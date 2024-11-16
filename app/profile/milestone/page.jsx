@@ -863,7 +863,7 @@ const PartnerOne = () => {
     }
   }, [hygraphUser]);
   return (
-    <div className="relative w-16 h-16 p-1 rounded-full ">
+    <div className="relative w-16 h-16  p-0 lg:p-1  rounded-full ">
       <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
         {hygraphUser &&
           hygraphUser.partner &&
@@ -928,7 +928,7 @@ const PartnerTwo = () => {
     }
   }, [hygraphUser]);
   return (
-    <div className="relative w-16 h-16 p-1 rounded-full ">
+    <div className="relative w-16 h-16 p-0 lg:p-1 rounded-full ">
       <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
         {hygraphUser &&
           hygraphUser.partner &&
@@ -993,7 +993,7 @@ const PartnerThree = () => {
     }
   }, [hygraphUser]);
   return (
-    <div className="relative w-16 h-16  p-1 rounded-full ">
+    <div className="relative w-16 h-16  p-0 lg:p-1  rounded-full ">
       <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
         {hygraphUser &&
           hygraphUser.partner &&
@@ -1058,7 +1058,7 @@ const PartnerFour = () => {
     }
   }, [hygraphUser]);
   return (
-    <div className="relative w-16 h-16 p-1 rounded-full ">
+    <div className="relative w-16 h-16  p-0 lg:p-1  rounded-full ">
       <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
         {hygraphUser &&
           hygraphUser.partner &&
@@ -1165,33 +1165,11 @@ export default function MileStone() {
                 <PartnerOne />
               </div>
               <CurrentUser />
-              <div className="w-fit flex">
+              <div className="w-fit gap-0 lg:gap-1 flex">
                 <PartnerTwo />
                 <PartnerFour />
               </div>
             </div>
-            {/* <div className="flex w-full h-[160px] flex-row justify-center gap-0 items-center relative">
-              <RandomImageComponentTwo />
-              {user && hygraphUser ? (
-                <div className="relative w-20 -mx-[32px] h-20 lg:w-36 lg:h-36 p-1 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600">
-                  <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
-                    <Image
-                      src={
-                        hygraphUser.myAvatar.profileAvatar.url ||
-                        ProfilePlaceHolderOne
-                      }
-                      alt="User DP"
-                      width={100}
-                      height={100}
-                      className="w-[72px] h-[72px] lg:w-36 lg:h-36 object-cover overflow-clip rounded-full"
-                    />
-                  </div>
-                </div>
-              ) : (
-                <RandomImageComponent />
-              )}
-              <RandomImageComponentTwo />
-            </div> */}
           </div>
           {hygraphUser ? (
             <div className="w-full text-center text-[#0a1932] text-[40px] font-semibold font-fredoka leading-normal">
