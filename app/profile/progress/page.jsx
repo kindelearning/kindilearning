@@ -2,7 +2,11 @@
 
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import { KindiHeart, ProfilePlaceHolderOne } from "@/public/Images";
+import {
+  KindiHeart,
+  ProfilePlaceholder01,
+  ProfilePlaceHolderOne,
+} from "@/public/Images";
 import ReferralCard from "@/app/Sections/Profile/ReferralCard";
 import { GraphQLClient, gql } from "graphql-request";
 
@@ -299,35 +303,307 @@ const MyActivity = ({ userID }) => {
   );
 };
 
-const getRandomImage = () => {
-  const randomIndex = Math.floor(Math.random() * StockImages.length);
-  return StockImages[randomIndex].url;
-};
+const PartnerOne = () => {
+  const { user, loading } = useAuth();
+  const router = useRouter();
+  const [hygraphUser, setHygraphUser] = useState(null);
 
-const RandomImageComponentTwo = () => {
-  const randomImage = getRandomImage();
+  useEffect(() => {
+    if (user && user.email) {
+      getUserDataByEmail(user.email).then((data) => {
+        setHygraphUser(data);
+      });
+    }
+  }, [user, loading, router]);
 
+  useEffect(() => {
+    if (hygraphUser && hygraphUser.partner) {
+      hygraphUser.partner.forEach((partner) => {
+        const partnerAvatarUrl = partner.profileAvatar
+          ? partner.profileAvatar.url
+          : null;
+
+        // Check if the partner has an avatar in myAvatar field
+        const avatarUrl =
+          partner.myAvatar?.profileAvatar?.url || partnerAvatarUrl;
+
+        if (avatarUrl) {
+          console.log("Partner Avatar URL:", avatarUrl);
+        } else {
+          console.log("No avatar for this partner.");
+        }
+        console.log("Partner ID:", partner.id);
+        console.log("Partner Name:", partner.email);
+        // console.log("Partner Name:", partner.myAvatar.profileAvatar.url);
+      });
+    }
+  }, [hygraphUser]);
   return (
-    <Image
-      src={randomImage}
-      alt="Random Profile Placeholder"
-      className="cursor-pointer w-16 h-16"
-    />
-  );
-};
-const RandomImageComponent = () => {
-  const randomImage = getRandomImage();
-
-  return (
-    <div className="relative w-20  -mx-[32px] h-20 lg:w-36 lg:h-36 p-1 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600">
+    <div className="relative w-16 h-16 p-1 rounded-full ">
       <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
-        <Image
-          src={randomImage}
-          alt="Logo"
-          className="w-[80px] h-[80px] lg:w-36 lg:h-36 object-cover overflow-clip rounded-full"
-        />
+        {hygraphUser &&
+          hygraphUser.partner &&
+          hygraphUser.partner.slice(0, 1).map((partner) => {
+            const avatarUrl =
+              partner.myAvatar?.profileAvatar?.url ||
+              partner.profileAvatar?.url;
+
+            return (
+              <div key={partner.id} className="flex justify-center">
+                {avatarUrl ? (
+                  <Image
+                    width={84}
+                    height={84}
+                    src={avatarUrl}
+                    alt={`Avatar of ${partner.name}`}
+                    className="min-w-16 h-16 cursor-pointer hover:scale-110 ease-in-out duration-200  object-cover overflow-clip rounded-full"
+                  />
+                ) : (
+                  <div>No avatar</div>
+                )}
+              </div>
+            );
+          })}
       </div>
     </div>
+  );
+};
+const PartnerTwo = () => {
+  const { user, loading } = useAuth();
+  const router = useRouter();
+  const [hygraphUser, setHygraphUser] = useState(null);
+
+  useEffect(() => {
+    if (user && user.email) {
+      getUserDataByEmail(user.email).then((data) => {
+        setHygraphUser(data);
+      });
+    }
+  }, [user, loading, router]);
+
+  useEffect(() => {
+    if (hygraphUser && hygraphUser.partner) {
+      hygraphUser.partner.forEach((partner) => {
+        const partnerAvatarUrl = partner.profileAvatar
+          ? partner.profileAvatar.url
+          : null;
+
+        // Check if the partner has an avatar in myAvatar field
+        const avatarUrl =
+          partner.myAvatar?.profileAvatar?.url || partnerAvatarUrl;
+
+        if (avatarUrl) {
+          console.log("Partner Avatar URL:", avatarUrl);
+        } else {
+          console.log("No avatar for this partner.");
+        }
+        console.log("Partner ID:", partner.id);
+        console.log("Partner Name:", partner.email);
+        // console.log("Partner Name:", partner.myAvatar.profileAvatar.url);
+      });
+    }
+  }, [hygraphUser]);
+  return (
+    <div className="relative w-16 h-16 p-1 rounded-full ">
+      <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
+        {hygraphUser &&
+          hygraphUser.partner &&
+          hygraphUser.partner.slice(1, 2).map((partner) => {
+            const avatarUrl =
+              partner.myAvatar?.profileAvatar?.url ||
+              partner.profileAvatar?.url;
+
+            return (
+              <div key={partner.id} className="flex justify-center">
+                {avatarUrl ? (
+                  <Image
+                    width={84}
+                    height={84}
+                    src={avatarUrl}
+                    alt={`Avatar of ${partner.name}`}
+                    className="min-w-16 h-16 cursor-pointer hover:scale-110 ease-in-out duration-200  object-cover overflow-clip rounded-full"
+                  />
+                ) : (
+                  <div>No avatar</div>
+                )}
+              </div>
+            );
+          })}
+      </div>
+    </div>
+  );
+};
+const PartnerThree = () => {
+  const { user, loading } = useAuth();
+  const router = useRouter();
+  const [hygraphUser, setHygraphUser] = useState(null);
+
+  useEffect(() => {
+    if (user && user.email) {
+      getUserDataByEmail(user.email).then((data) => {
+        setHygraphUser(data);
+      });
+    }
+  }, [user, loading, router]);
+
+  useEffect(() => {
+    if (hygraphUser && hygraphUser.partner) {
+      hygraphUser.partner.forEach((partner) => {
+        const partnerAvatarUrl = partner.profileAvatar
+          ? partner.profileAvatar.url
+          : null;
+
+        // Check if the partner has an avatar in myAvatar field
+        const avatarUrl =
+          partner.myAvatar?.profileAvatar?.url || partnerAvatarUrl;
+
+        if (avatarUrl) {
+          console.log("Partner Avatar URL:", avatarUrl);
+        } else {
+          console.log("No avatar for this partner.");
+        }
+        console.log("Partner ID:", partner.id);
+        console.log("Partner Name:", partner.email);
+        // console.log("Partner Name:", partner.myAvatar.profileAvatar.url);
+      });
+    }
+  }, [hygraphUser]);
+  return (
+    <div className="relative w-16 h-16  p-1 rounded-full ">
+      <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
+        {hygraphUser &&
+          hygraphUser.partner &&
+          hygraphUser.partner.slice(2, 3).map((partner) => {
+            const avatarUrl =
+              partner.myAvatar?.profileAvatar?.url ||
+              partner.profileAvatar?.url;
+
+            return (
+              <div key={partner.id} className="flex justify-center">
+                {avatarUrl ? (
+                  <Image
+                    width={84}
+                    height={84}
+                    src={avatarUrl}
+                    alt={`Avatar of ${partner.name}`}
+                    className="min-w-16 h-16  cursor-pointer hover:scale-110 ease-in-out duration-200  object-cover overflow-clip rounded-full"
+                  />
+                ) : (
+                  <div>No avatar</div>
+                )}
+              </div>
+            );
+          })}
+      </div>
+    </div>
+  );
+};
+const PartnerFour = () => {
+  const { user, loading } = useAuth();
+  const router = useRouter();
+  const [hygraphUser, setHygraphUser] = useState(null);
+
+  useEffect(() => {
+    if (user && user.email) {
+      getUserDataByEmail(user.email).then((data) => {
+        setHygraphUser(data);
+      });
+    }
+  }, [user, loading, router]);
+
+  useEffect(() => {
+    if (hygraphUser && hygraphUser.partner) {
+      hygraphUser.partner.forEach((partner) => {
+        const partnerAvatarUrl = partner.profileAvatar
+          ? partner.profileAvatar.url
+          : null;
+
+        // Check if the partner has an avatar in myAvatar field
+        const avatarUrl =
+          partner.myAvatar?.profileAvatar?.url || partnerAvatarUrl;
+
+        if (avatarUrl) {
+          console.log("Partner Avatar URL:", avatarUrl);
+        } else {
+          console.log("No avatar for this partner.");
+        }
+        console.log("Partner ID:", partner.id);
+        console.log("Partner Name:", partner.email);
+        // console.log("Partner Name:", partner.myAvatar.profileAvatar.url);
+      });
+    }
+  }, [hygraphUser]);
+  return (
+    <div className="relative w-16 h-16 p-1 rounded-full ">
+      <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
+        {hygraphUser &&
+          hygraphUser.partner &&
+          hygraphUser.partner.slice(3, 4).map((partner) => {
+            const avatarUrl =
+              partner.myAvatar?.profileAvatar?.url ||
+              partner.profileAvatar?.url;
+
+            return (
+              <div key={partner.id} className="flex justify-center">
+                {avatarUrl ? (
+                  <Image
+                    width={84}
+                    height={84}
+                    src={avatarUrl}
+                    alt={`Avatar of ${partner.name}`}
+                    className="min-w-16 h-16 cursor-pointer hover:scale-110 ease-in-out duration-200  object-cover overflow-clip rounded-full"
+                    // className="w-[80px] h-[80px] lg:w-36 lg:h-36 object-cover overflow-clip rounded-full"
+                  />
+                ) : (
+                  <div>No avatar</div>
+                )}
+              </div>
+            );
+          })}
+      </div>
+    </div>
+  );
+};
+
+const CurrentUser = () => {
+  const { user, loading } = useAuth();
+  const router = useRouter();
+  const [hygraphUser, setHygraphUser] = useState(null);
+
+  useEffect(() => {
+    if (user && user.email) {
+      getUserDataByEmail(user.email).then((data) => {
+        setHygraphUser(data);
+      });
+    }
+  }, [user, loading, router]);
+
+  return (
+    <>
+      {user && hygraphUser ? (
+        <div className="relative -mx-[26px] z-20 min-w-20 lg:min-w-36 w-20 h-20 lg:w-36 lg:h-36 p-1 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600">
+          <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
+            <Image
+              src={
+                hygraphUser.myAvatar.profileAvatar.url || ProfilePlaceHolderOne
+              }
+              alt="User DP"
+              width={100}
+              height={100}
+              className="w-[72px] cursor-pointer hover:scale-110 ease-in-out duration-200 h-[72px] lg:w-36 lg:h-36 object-cover overflow-clip rounded-full"
+            />
+          </div>
+        </div>
+      ) : (
+        <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
+          <Image
+            src={ProfilePlaceholder01}
+            alt="Random Profile Placeholder"
+            className="cursor-pointer w-16 h-16"
+          />
+        </div>
+      )}
+    </>
   );
 };
 
@@ -347,8 +623,22 @@ export default async function ProgressSection() {
   useEffect(() => {
     if (hygraphUser && hygraphUser.partner) {
       hygraphUser.partner.forEach((partner) => {
+        const partnerAvatarUrl = partner.profileAvatar
+          ? partner.profileAvatar.url
+          : null;
+
+        // Check if the partner has an avatar in myAvatar field
+        const avatarUrl =
+          partner.myAvatar?.profileAvatar?.url || partnerAvatarUrl;
+
+        if (avatarUrl) {
+          console.log("Partner Avatar URL:", avatarUrl);
+        } else {
+          console.log("No avatar for this partner.");
+        }
         console.log("Partner ID:", partner.id);
         console.log("Partner Name:", partner.email);
+        // console.log("Partner Name:", partner.myAvatar.profileAvatar.url);
       });
     }
   }, [hygraphUser]);
@@ -363,7 +653,7 @@ export default async function ProgressSection() {
 
   return (
     <>
-      <Head>
+      <head>
         <title>Profile - Kindilearning</title>
         <meta name="description" content="Your profile page on Kindilearning" />
         <meta property="og:title" content="Profile - Kindilearning" />
@@ -381,39 +671,21 @@ export default async function ProgressSection() {
           content="Your profile page on Kindilearning"
         />
         <meta name="twitter:image" content="/images/logo.png" />
-      </Head>
-
+      </head>
       {/* <LevelList /> */}
       <section className="w-full h-auto bg-[#F5F5F5] pb-12 md:bg-[#EAEAF5] items-center justify-center flex flex-col px-0">
         {/* Topbar */}
         <div className="claracontainer py-4 md:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-8">
-          <div className="flex w-full px-4 h-[160px] flex-row justify-center gap-0 items-center relative">
-            <RandomImageComponentTwo />
-
-            {user && hygraphUser ? (
-              <div className="relative -mx-[32px]  w-20 h-20 lg:w-36 lg:h-36 p-1 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600">
-                <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
-                  <Image
-                    src={
-                      hygraphUser.myAvatar.profileAvatar.url ||
-                      ProfilePlaceHolderOne
-                    }
-                    alt="User DP"
-                    width={100}
-                    height={100}
-                    className="w-[72px] h-[72px] lg:w-36 lg:h-36 object-cover overflow-clip rounded-full"
-                  />
-                </div>
-              </div>
-            ) : (
-              <RandomImageComponent />
-            )}
-            {/* <Image
-              alt="Kindi"
-              src={progressImage03}
-              className="cursor-pointer w-20 -ml-[32px] h-20"
-            /> */}
-            <RandomImageComponentTwo />
+          <div className="flex w-full px-4 h-[160px] flex-row justify-center gap-0 items-center ">
+            <div className="w-fit gap-[-4px] flex">
+              <PartnerThree />
+              <PartnerOne />
+            </div>
+            <CurrentUser />
+            <div className="w-fit flex">
+              <PartnerTwo />
+              <PartnerFour />
+            </div>
           </div>
           <>
             {hygraphUser ? (

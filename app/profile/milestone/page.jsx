@@ -851,6 +851,13 @@ export default function MileStone() {
 
   return (
     <>
+      <head>
+        <title>Milestone - Kindilearning</title>
+        <meta name="description" content="Kindi Learning - Milestone" />
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+       
+      </head>
       <section className="w-full pb-24 h-full bg-[#EAEAF5] items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">
         <div className="claracontainer items-center justify-center p-4 md:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-8">
           {/* <UserImages /> */}
