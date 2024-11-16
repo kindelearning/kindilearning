@@ -837,8 +837,17 @@ export default function MileStone() {
       getUserDataByEmail(user.email).then((data) => {
         setHygraphUser(data);
       });
+      console.log("Hygraph User Data", hygraphUser);
     }
   }, [user, loading, router]);
+  useEffect(() => {
+    if (hygraphUser && hygraphUser.partner) {
+      hygraphUser.partner.forEach((partner) => {
+        console.log("Partner ID:", partner.id);
+        console.log("Partner Name:", partner.name);
+      });
+    }
+  }, [hygraphUser]);
 
   return (
     <>
@@ -858,7 +867,8 @@ export default function MileStone() {
                   <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
                     <Image
                       src={
-                        hygraphUser.profilePicture?.url || ProfilePlaceHolderOne
+                        hygraphUser.myAvatar.profileAvatar.url ||
+                        ProfilePlaceHolderOne
                       }
                       alt="User DP"
                       width={100}

@@ -1144,6 +1144,7 @@ export default function ProfileSegments() {
       });
     }
   }, [user, loading, router]);
+  console.log("Hygraph User Data", hygraphUser);
 
   if (loading)
     return (
