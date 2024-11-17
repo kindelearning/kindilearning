@@ -135,7 +135,7 @@ const MilestoneCompleteButton = ({ userId, milestoneId }) => {
   );
 };
 
-const DisplayAllMileStone = () => {
+const DisplayAllMileStone = ({ passThecurrentUserId }) => {
   const [milestones, setMilestones] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -166,13 +166,17 @@ const DisplayAllMileStone = () => {
 
   return (
     <>
-      <TrigSnakeCurve amplitude={7} mileStoneCustomData={milestones} />
-      <CurvePath milestones={milestones} />
+      <TrigSnakeCurve
+        amplitude={7}
+        mileStoneCustomData={milestones}
+        currentUserId={passThecurrentUserId}
+      />
+      <CurvePath milestones={milestones} currentUserId={passThecurrentUserId} />
     </>
   );
 };
 
-const CurvePath = ({ milestones = [] }) => {
+const CurvePath = ({ milestones = [], currentUserId }) => {
   const [currentDate, setCurrentDate] = useState("");
   const [message, setMessage] = useState("");
 
@@ -300,8 +304,8 @@ const CurvePath = ({ milestones = [] }) => {
                   {user && hygraphUser ? (
                     <MilestoneCompleteButton
                       milestoneId={milestone.id}
-                      userId={hygraphUser.id}
-                      // userId="cm25lil0t0zvz07pfuuizj473"
+                      // userId={hygraphUser.id}
+                      userId={currentUserId}
                     />
                   ) : (
                     <Button className="clarabutton">Login First!</Button>
@@ -374,6 +378,7 @@ const TrigSnakeCurve = ({
   amplitude = 6,
   mileStoneCustomData = [],
   step = 0.1,
+  currentUserId,
 }) => {
   const [currentDate, setCurrentDate] = useState("");
   const [message, setMessage] = useState("");
@@ -515,7 +520,8 @@ const TrigSnakeCurve = ({
                     {user && hygraphUser ? (
                       <MilestoneCompleteButton
                         milestoneId={mileStoneCustomData[index]?.id}
-                        userId={hygraphUser.id}
+                        userId={currentUserId}
+                        // userId={hygraphUser.id}
                       />
                     ) : (
                       <Link href="/auth/sign-up" className="clarabutton">
@@ -603,10 +609,10 @@ export default function MileStone() {
       <section className="w-full pb-24 h-full bg-[#EAEAF5] items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">
         <div className="claracontainer items-center justify-center p-4 md:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-8">
           {/* <UserImages /> */}
-          <div className="flex w-full flex-col justify-center items-center">
+          <div className="flex w-full py-6 flex-col justify-center items-center">
             <Tabs
               defaultValue="CurrentUser"
-              className="w-full flex flex-col gap-24"
+              className="w-full flex flex-col gap-6 lg:gap-12"
             >
               <TabsList className="bg-[#eaeaf5]">
                 {hygraphUser?.partner.slice(0, 2)?.map((partner) => (
@@ -655,10 +661,15 @@ export default function MileStone() {
               {hygraphUser?.partner?.map((partner) => (
                 <TabsContent key={partner.id} value={`Partner-${partner.id}`}>
                   {hygraphUser ? (
-                    <div className="w-full flex flex-col gap-2 justify-between items-center">
+                    <div className="w-full flex flex-col gap-2 lg:gap-4 justify-between items-center">
+                      {/* <div className="w-full text-center text-[#0a1932] text-[40px] font-semibold font-fredoka leading-normal">
+                        Milestone For: {partner.name}
+                      </div> */}
                       <div className="font-fredoka text-[12px] lg:text-[20px]">
                         Email: {partner.email || "Partner"}
                       </div>
+                      <ProfileRoute />
+                      <DisplayAllMileStone passThecurrentUserId={partner.id} />
                     </div>
                   ) : null}
                 </TabsContent>
@@ -666,7 +677,15 @@ export default function MileStone() {
               <TabsContent value="CurrentUser">
                 <>
                   {hygraphUser ? (
-                    <div className="flex gap-2 px-4 lg:px-0 overflow-x-scroll scrollbar-hidden w-full"></div>
+                    <div className="flex flex-col justify-center items-center gap-2 lg:gap-4 px-4 lg:px-0 overflow-x-scroll scrollbar-hidden w-full">
+                      <div className="w-full text-center text-[#0a1932] text-[40px] font-semibold font-fredoka leading-normal">
+                        {hygraphUser.name}
+                      </div>
+                      <ProfileRoute />
+                      <DisplayAllMileStone
+                        passThecurrentUserId={hygraphUser.id}
+                      />
+                    </div>
                   ) : (
                     <div className="flex w-full flex-col justify-center items-center gap-2">
                       <h2 className="text-[#029871] text-[24px] md:text-[28px] lg:text-[32px] xl:text-[40px] font-semibold  font-fredoka leading-tight">
@@ -684,25 +703,6 @@ export default function MileStone() {
               </TabsContent>
             </Tabs>
           </div>
-          {hygraphUser ? (
-            <div className="w-full text-center text-[#0a1932] text-[40px] font-semibold font-fredoka leading-normal">
-              {hygraphUser.name}
-            </div>
-          ) : (
-            <div className="flex w-full flex-col justify-center items-center gap-2">
-              <h2 className="text-[#029871] text-[24px] md:text-[28px] lg:text-[32px] xl:text-[40px] font-semibold  font-fredoka leading-tight">
-                Kindi Learner
-              </h2>
-              <p className="font-fredoka text-[12px] lg:text-[20px]">
-                <Link href="/auth/sign-in" className="text-red">
-                  Login&nbsp;
-                </Link>
-                to use more feature
-              </p>
-            </div>
-          )}
-          <ProfileRoute />
-          <DisplayAllMileStone />
         </div>
       </section>
     </>
