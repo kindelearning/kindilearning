@@ -1,15 +1,14 @@
 "use client";
-import { GET_ACCOUNT_BY_EMAIL, getUserDataByEmail } from "@/lib/hygraph";
+
+import { getUserDataByEmail } from "@/lib/hygraph";
 import { Confidence } from "@/public/Icons";
-import { GraphQLClient, gql } from "graphql-request";
-import { KindiHeart, ScheduleEvent } from "@/public/Images";
+import { KindiHeart } from "@/public/Images";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/app/lib/useAuth";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 
 const icons = [
@@ -35,81 +34,6 @@ const HYGRAPH_ENDPOINT =
   "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";
 const HYGRAPH_TOKEN =
   "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImdjbXMtbWFpbi1wcm9kdWN0aW9uIn0.eyJ2ZXJzaW9uIjozLCJpYXQiOjE3MjcwNjQxNzcsImF1ZCI6WyJodHRwczovL2FwaS1hcC1zb3V0aC0xLmh5Z3JhcGguY29tL3YyL2NtMWRvbTFoaDAzeTEwN3V3d3hydXRwbXovbWFzdGVyIiwibWFuYWdlbWVudC1uZXh0LmdyYXBoY21zLmNvbSJdLCJpc3MiOiJodHRwczovL21hbmFnZW1lbnQtYXAtc291dGgtMS5oeWdyYXBoLmNvbS8iLCJzdWIiOiI2Yzg4NjI5YS1jMmU5LTQyYjctYmJjOC04OTI2YmJlN2YyNDkiLCJqdGkiOiJjbTFlaGYzdzYwcmZuMDdwaWdwcmpieXhyIn0.YMoI_XTrCZI-C7v_FX-oKL5VVtx95tPmOFReCdUcP50nIpE3tTjUtYdApDqSRPegOQai6wbyT0H8UbTTUYsZUnBbvaMd-Io3ru3dqT1WdIJMhSx6007fl_aD6gQcxb-gHxODfz5LmJdwZbdaaNnyKIPVQsOEb-uVHiDJP3Zag2Ec2opK-SkPKKWq-gfDv5JIZxwE_8x7kwhCrfQxCZyUHvIHrJb9VBPrCIq1XE-suyA03bGfh8_5PuCfKCAof7TbH1dtvaKjUuYY1Gd54uRgp8ELZTf13i073I9ZFRUU3PVjUKEOUoCdzNLksKc-mc-MF8tgLxSQ946AfwleAVkFCXduIAO7ASaWU3coX7CsXmZLGRT_a82wOORD8zihfJa4LG8bB-FKm2LVIu_QfqIHJKq-ytuycpeKMV_MTvsbsWeikH0tGPQxvAA902mMrYJr9wohOw0gru7mg_U6tLOwG2smcwuXBPnpty0oGuGwXWt_D6ryLwdNubLJpIWV0dOWF8N5D6VubNytNZlIbyFQKnGcPDw6hGRLMw2B7-1V2RpR6F3RibLFJf9GekI60UYdsXthAFE6Xzrlw03Gv5BOKImBoDPyMr0DCzneyAj9KDq4cbNNcihbHl1iA6lUCTNY3vkCBXmyujXZEcLu_Q0gvrAW3OvZMHeHY__CtXN6JFA";
-const client = new GraphQLClient(HYGRAPH_ENDPOINT, {
-  headers: {
-    Authorization: `Bearer ${HYGRAPH_TOKEN}`,
-  },
-});
-
-// const MyCompletedActivity = ({ userID }) => {
-//   const [activities, setActivities] = useState([]);
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState("");
-
-//   const fetchActivities = async () => {
-//     const query = `
-//       query GetUserActivities($relationalFirst: Int, $where: AccountWhereUniqueInput!) {
-//         values: account(where: $where) {
-//           id
-//           username
-//           myActivity(first: $relationalFirst) {
-//             id
-//             title
-//             documentInStages(includeCurrent: true) {
-//               id
-//               stage
-//               updatedAt
-//               publishedAt
-//             }
-//           }
-//         }
-//       }
-//     `;
-
-//     const variables = {
-//       relationalFirst: 10, // Adjust this value based on your needs
-//       where: { id: userID }, // Replace with the current user's ID
-//     };
-
-//     try {
-//       const response = await fetch(HYGRAPH_ENDPOINT, {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//           Authorization: `Bearer ${HYGRAPH_TOKEN}`,
-//         },
-//         body: JSON.stringify({ query, variables }),
-//       });
-
-//       const result = await response.json();
-
-//       if (result.errors) {
-//         throw new Error(result.errors[0].message);
-//       } else {
-//         // setActivities(result.data.values.myActivity);
-//         setActivities(result.data.values.myActivity.map(activity => activity.id));
-
-//       }
-//     } catch (error) {
-//       setError("Error fetching activities: " + error.message);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   useEffect(() => {
-//     fetchActivities();
-//   }, [userID]);
-
-//   if (loading) return <p> loading...</p>;
-//   if (error) return <pre>{JSON.stringify({ error }, null, 2)}</pre>;
-//   console.log("my activity", activities);
-
-//   // Convert the activities data to JSON format
-//   const jsonOutput = JSON.stringify(activities, null, 2); // Pretty format for readability
-
-//   return <pre>{jsonOutput}</pre>; // Display JSON data
-// };
 
 const MyCompletedActivity = ({ userID, onCompletedActivitiesFetched }) => {
   const [loading, setLoading] = useState(true);
@@ -163,16 +87,6 @@ const MyCompletedActivity = ({ userID, onCompletedActivitiesFetched }) => {
   if (error) return <pre>{JSON.stringify({ error }, null, 2)}</pre>;
   return null; // This component now only fetches data, no need to render anything
 };
-
-// const StatusButton = ({ eventId, completedIds }) => {
-//   const isCompleted = completedIds.includes(eventId);
-
-//   return (
-//     <button className="clarabutton">
-//       {isCompleted ? "Completed" : "Let's Start"}
-//     </button>
-//   );
-// };
 
 const getAllActivities = async () => {
   const query = `
