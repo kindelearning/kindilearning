@@ -637,7 +637,7 @@ export default async function ProgressSection() {
   return (
     <>
       <head>
-        <title>Profile - Kindilearning</title>
+        <title>Progress - Kindilearning</title>
         <meta name="description" content="Your profile page on Kindilearning" />
         <meta property="og:title" content="Profile - Kindilearning" />
         <meta
