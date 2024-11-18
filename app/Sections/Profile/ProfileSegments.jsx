@@ -199,11 +199,11 @@ const MyLevel = ({ userID }) => {
                 <LevelList />
               </div>
             </DialogDescription>
-            <DialogFooter className="sticky rounded-t-[16px] shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] bottom-0 m-0 w-full  bg-[#ffffff]">
+            {/* <DialogFooter className="sticky rounded-t-[16px] shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] bottom-0 m-0 w-full  bg-[#ffffff]">
               <DialogClose className="w-full">
                 <PopupFooter PrimaryText="Save and Continue" />
               </DialogClose>
-            </DialogFooter>
+            </DialogFooter> */}
           </DialogContent>
         </Dialog>
         <Link href="/profile/update" className="flex lg:hidden" target="_blank">
@@ -587,13 +587,13 @@ const PartnerList = ({ userId }) => {
                 />
               </div>
               <div className="flex w-full flex-col justify-start items-start gap-4">
-                <div className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
-                  Get $20
-                </div>
-                <div className="text-[#757575] text-[16px] md:text-2xl font-medium font-fredoka">
-                  Invite a Partner or friends, family, coworkers, neighbors, and
-                  your favorite barista to Brushlink. Every time someone books
-                  and visits a new dentist through your link, you both get $20.
+                <div className="text-[#757575] text-[16px] leading-[18px] md:text-2xl md:leading-[26px] font-normal font-fredoka ">
+                  Securely grant access to your child&apos;s progress,
+                  activities, and milestones, ensuring that both parents can
+                  stay up-to-date and involved in every step of their learning.
+                  Simply invite your partner to join, and they&apos;ll gain
+                  shared access to the Kindi experience—helping you both support
+                  your little one together.
                 </div>
                 {user && hygraphUser ? (
                   <ConnectAccountForm userId={hygraphUser.id} />
@@ -1477,7 +1477,7 @@ export default function ProfileSegments() {
                     {user && hygraphUser ? (
                       <PaymentMethodsList userId={hygraphUser.id} />
                     ) : (
-                      <p>id not found</p>
+                      <p> Please Login to use this feature!</p>
                     )}
                   </div>
 

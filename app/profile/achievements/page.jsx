@@ -469,7 +469,7 @@ export default async function Achievement() {
 
   return (
     <>
-      <Head>
+      <head>
         <title>Profile - Kindilearning</title>
         <meta name="description" content="Your profile page on Kindilearning" />
         <meta property="og:title" content="Profile - Kindilearning" />
@@ -487,7 +487,7 @@ export default async function Achievement() {
           content="Your profile page on Kindilearning"
         />
         <meta name="twitter:image" content="/images/logo.png" />
-      </Head>
+      </head>
       <section className="w-full h-auto bg-[#F5F5F5] md:bg-[#EAEAF5] items-center justify-center flex flex-col md:flex-row px-0">
         {/* Topbar */}
         <div className="w-full flex pt-4 pb-7 md:hidden bg-red">
@@ -551,7 +551,7 @@ export default async function Achievement() {
                   </div>
                 ) : (
                   <h2 className="text-[#029871] text-[24px] md:text-[28px] lg:text-[32px] xl:text-[40px] font-semibold  font-fredoka leading-tight">
-                    John Doe
+                     Kindi Learner
                   </h2>
                 )}
                 {/* Trigger for the Edit Profile Popup */}

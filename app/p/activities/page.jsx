@@ -525,15 +525,6 @@ export default async function ActivitiesPage() {
                                         <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-6 flex pr-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
                                           {activity.focusAge.slice(0, 10)}
                                         </div>
-                                        {/* <ul className="text-[#0a1932] justify-between items-center gap-4 flex px-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
-                                          {activity.skills
-                                            .slice(0, 2)
-                                            .map((skill, index) => (
-                                              <li key={index}>
-                                                {skill.slice(0, 8)}
-                                              </li>
-                                            ))}
-                                        </ul> */}
                                       </div>
                                     </div>
                                     <div className="items-center justify-center gap-2 md:gap-4 grid grid-cols-5">

@@ -33,7 +33,7 @@ export default async function ProfileUpdate() {
         {user && hygraphUser ? (
           <ProfileEdit userId={hygraphUser.id} />
         ) : (
-          <p>User Id Not found</p>
+          <p>User Not found</p>
         )}
       </section>
     </>
