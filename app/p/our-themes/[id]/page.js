@@ -18,7 +18,7 @@ export default async function ThemeDetailPage({ params }) {
 
   return (
     <>
-      <Head>
+      <head>
         <title>{theme.title}</title>
         <meta name="description" content={theme.metaDesc} />
         <meta property="og:title" content={theme.title} />
@@ -30,7 +30,7 @@ export default async function ThemeDetailPage({ params }) {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={theme.title} />
         <meta name="twitter:description" content={theme.metaDesc} />
-      </Head>
+      </head>
       <section className="w-full h-auto py-0 lg:py-12 bg-[#EAEAF5] items-center justify-center pb-24 flex flex-col gap-[20px]">
         <div className="flex overflow-clip lg:rounded-xl lg:max-w-[960px] w-full">
           <Image

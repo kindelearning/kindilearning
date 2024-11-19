@@ -174,7 +174,7 @@ export default async function BlogDetailPage({ params }) {
   };
   return (
     <>
-      <Head>
+      <head>
         <title>{blog.blogTitle}</title>
         <meta name="description" content={blog.blogDescription} />
         <meta property="og:title" content={blog.blogTitle} />
@@ -187,7 +187,7 @@ export default async function BlogDetailPage({ params }) {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={blog.blogTitle} />
         <meta name="twitter:description" content={blog.blogDescription} />
-      </Head>
+      </head>
       <section className="w-full h-auto py-0 lg:py-12 bg-[#EAEAF5] items-center justify-center pb-24 flex flex-col gap-[20px]">
         <div className="flex overflow-clip lg:rounded-xl lg:max-w-[960px] w-full">
           <Image

@@ -206,7 +206,7 @@ export default async function ProfileSection() {
 
   return (
     <>
-      <Head>
+      <head>
         <title>Profile - Kindilearning</title>
         <meta name="description" content="Your profile page on Kindilearning" />
         <meta property="og:title" content="Profile - Kindilearning" />
@@ -224,7 +224,7 @@ export default async function ProfileSection() {
           content="Your profile page on Kindilearning"
         />
         <meta name="twitter:image" content="/images/logo.png" />
-      </Head>
+      </head>
       <section className="w-full h-auto bg-[#F5F5F5] md:bg-[#EAEAF5] items-center justify-center flex flex-col px-0">
         {/* Topbar */}
         <div className="claracontainer py-4 md:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-8">

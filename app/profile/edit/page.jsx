@@ -156,7 +156,6 @@ const AvailableDaysForm = ({ userId }) => {
   );
 };
 
-
 export default function ProfileEdit({ userId }) {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -222,13 +221,9 @@ export default function ProfileEdit({ userId }) {
 
   return (
     <>
-    
       <head>
         <title>Profile Edit | Kindilearning</title>
         <meta name="description" content="Edit your profile in Kindilearning" />
-        <link rel="icon" href="/favicon.ico" />
-        <link rel="stylesheet" href="/styles.css" />
-        <link rel="stylesheet" href="/profile.css" />
       </head>
       <section className="w-full pb-24 h-auto bg-[#f5f5f5] flex flex-col md:flex-row items-center justify-center px-0">
         <div className="w-full flex pt-4 pb-7 md:hidden bg-red">
