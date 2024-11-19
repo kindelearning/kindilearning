@@ -433,7 +433,7 @@ export default function Calendar() {
                   target="_blank"
                   key={event.id}
                   draggable
-                  className={`w-full ${
+                  className={`w-full gap=2 lg:min-h-[90px] flex flex-col items-center ${
                     isFutureEvent(event.date) ? "border-2" : "border-0"
                   } border-red bg-white shadow-md rounded-lg p-2 text-sm`}
                   onDragStart={(e) => handleDragStart(e, event.id)}
@@ -446,7 +446,7 @@ export default function Calendar() {
                   ) : (
                     <>
                       <div
-                        className={`-mt-[32px] ${
+                        className={`-mt-[24px] ${
                           isFutureEvent(event.date) ? "flex" : "hidden"
                         } w-full justify-between items-center`}
                       >
@@ -454,10 +454,11 @@ export default function Calendar() {
                         <Link
                           target="_blank"
                           href={`/p/activities/${event.id}`}
-                          className={`w-fit px-[6px] py-[2px]  bg-red text-white shadow-md rounded-lg p-2 text-sm`}
+                          className={`w-fit px-[8px] py-[4px]  bg-red text-white shadow-md rounded-lg p-2 text-sm`}
                         >
-                          <p className="font-semibold flex items-center text-[14px] leading-[16px] lg:leading-[12px] lg:text-[12px] text-start">
-                            Lets Start &nbsp; <ArrowRight />
+                          <p className="font-semibold flex items-center text-[12px] leading-[12px] text-start">
+                            Lets Start &nbsp;{" "}
+                            <ArrowRight className="text-[12px] w-[12px] h-[12px]" />
                           </p>
                         </Link>
                       </div>
@@ -487,8 +488,10 @@ export default function Calendar() {
                           <div className="flex w-full justify-between flex-col items-start">
                             <div className="flex gap-1 items-center ">
                               <div className="text-[#0a1932] text-[12px] leading-[14px] lg:text-[9px] lg:leading-[10px] font-semibold font-fredoka">
-                                {event.focusAge || "Toddles"}
-                                {/* Tag 1 */}
+                                {event.focusAge ||
+                                  (Math.random() < 0.5
+                                    ? "Toddles"
+                                    : "Pre-schooler").slice(0,10)}
                               </div>
                               <span className="flex items-center">•</span>
                               <div className="text-[#0a1932] text-[12px] leading-[14px] lg:text-[9px] lg:leading-[10px] font-semibold font-fredoka">
@@ -514,7 +517,6 @@ export default function Calendar() {
                           </div>
                         </div>
                       </div>
-                      {/* <StatusButton eventId={event.id}/> */}
                     </>
                   )}
                 </Link>
