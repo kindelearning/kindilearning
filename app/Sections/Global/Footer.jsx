@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/select";
 import { footerSections } from "@/app/constant/menu";
 import Link from "next/link";
+import { GoogleTranslate } from "../GoogleTranslate";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -39,7 +40,7 @@ const Footer = () => {
                       <a
                         key={linkIndex}
                         href={link.href}
-                        className="text-[#BABABA] w-[max-content] text-[18px] font-normal font-fredoka "
+                        className="text-[#BABABA] hover:text-white w-[max-content] text-[18px] font-normal font-fredoka "
                       >
                         {link.label}
                       </a>
@@ -51,32 +52,13 @@ const Footer = () => {
           </div>
           <div className="w-full claracontainer px-4 flex flex-col md:border-l-[0px] md:border-l-emerald-50 border-0 justify-between gap-[20px] items-start md:w-full xl:w-1/3">
             <Image alt="Kindi" src={KindiVector} className="flex w-[120px]" />
-            <div className="w-auto text-white text-[18px] md:text-[22px] font-medium font-fredoka capitalize mb-8 md:mb-0">
+            <div className="w-auto text-white clarabodyTwo font-medium font-fredoka capitalize mb-8 md:mb-0">
               special offers and latest news about our products directly{" "}
             </div>
-            <Select className="rounded-full px-1">
-              <SelectTrigger className="max-w-[390px] rounded-full py-3 flex flex-row text-[white] gap-1 justify-start items-center bg-[#000000] w-full mb-8 md:mb-0">
-                <Image alt="Kindi" src={Language} />
-                <SelectValue
-                  placeholder="Select Language"
-                  className="text-[white] text-[14px] md:text-[16px] font-fredoka"
-                />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup className="flex flex-col font-fredoka justify-between">
-                  <SelectItem value="est">English</SelectItem>
-                </SelectGroup>
-                <SelectGroup className="flex flex-col font-fredoka justify-between">
-                  <SelectItem value="gmt">German</SelectItem>
-                </SelectGroup>
-                <SelectGroup className="flex flex-col font-fredoka justify-between">
-                  <SelectItem value="l3">Language 3</SelectItem>
-                </SelectGroup>
-                <SelectGroup className="flex flex-col font-fredoka justify-between">
-                  <SelectItem value="l4">Language 4</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
+
+            <div className="hidden lg:flex w-full">
+              <GoogleTranslate />
+            </div>
           </div>
         </div>
         <div className="claracontainer w-full py-8 px-2 flex flex-col justify-center items-center gap-1">
@@ -94,18 +76,22 @@ const Footer = () => {
           </div>
           <Link href="#" className="flex w-full justify-end items-end gap-2">
             <Image
+              alt="Kindi"
               src={Facebook}
               className="w-6 h-6 justify-center items-center p-1 border-[1px] rounded-[4px] border-white flex"
             />
             <Image
+              alt="Kindi"
               src={Instagram}
               className="w-6 h-6 justify-center items-center p-1 border-[1px] rounded-[4px] border-white flex"
             />
             <Image
+              alt="Kindi"
               src={Telegram}
               className="w-6 h-6 justify-center items-center p-1 border-[1px] rounded-[4px] border-white flex"
             />
             <Image
+              alt="Kindi"
               src={WhatsApp}
               className="w-6 h-6 justify-center items-center p-1 border-[1px] rounded-[4px] border-white flex"
             />

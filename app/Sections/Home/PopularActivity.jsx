@@ -1,18 +1,32 @@
 import NotFound from "@/app/not-found";
 import Activity from "@/app/Widgets/Card/Activity";
-import { getHomeData } from "@/lib/hygraph";
+import PopularActivityCarousel from "@/app/Widgets/Carousel/PopularActivityCarousel";
+import { getAllActivities, getHomeData } from "@/lib/hygraph";
 import { Confidence } from "@/public/Icons";
-import { KindiHeart } from "@/public/Images";
-import React from "react";
+import {
+  DiscoveringOurWorldActivity,
+  ExperimentsMathActivity,
+  KindiHeart,
+  ReadingWritingActivity,
+  SpeechLanguageActivity,
+} from "@/public/Images";
+import Image from "next/image";
+import Link from "next/link";
 
 const PopularActivity = async () => {
   const homeData = await getHomeData();
-  console.log("Home Page Data (in component):", homeData);
+  const activities = await getAllActivities();
+  if (!activities || activities.length === 0) {
+    return <div>No activities found!</div>;
+  }
+
+  // console.log("Home Page Data (in component):", homeData);
   if (!homeData || !homeData[0]?.popularLearningActivities) {
     return <NotFound />;
   }
+
   return (
-    <section className="w-full h-auto bg-[#eaeaf5] py-12 items-center justify-center flex flex-col gap-[20px]">
+    <section className="w-full h-auto bg-[#eaeaf5] pt-12 pb-20 items-center justify-center flex flex-col gap-[20px]">
       {/* Top Heading Section */}
       <div className="claracontainer w-full script p-4 flex-col justify-start items-start md:items-center inline-flex">
         <h2 className="clarascript text-start md:text-center text-red">
@@ -32,17 +46,8 @@ const PopularActivity = async () => {
         </div>
       </div>
       {/* The Activity Carousel */}
-      <div className="flex overflow-x-auto  scrollbar-hidden px-4 lg:px-0 w-full claracontainer gap-4 scrollbar-hidden">
-        {[1, 2, 3, 4, 5].map((item, index) => (
-          <Activity
-            key={index}
-            title="Custom Title"
-            time="10 minutes"
-            tags={["Tag 1", "Tag 2", "Tag 3"]}
-            icons={[KindiHeart, Confidence]}
-          />
-        ))}
-      </div>
+      <PopularActivityCarousel activities={activities} />
+   
     </section>
   );
 };

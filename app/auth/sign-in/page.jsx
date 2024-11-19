@@ -1,20 +1,5 @@
 "use client";
 
-import { REGEXP_ONLY_DIGITS_AND_CHARS } from "input-otp";
-import {
-  InputOTP,
-  InputOTPGroup,
-  InputOTPSlot,
-} from "@/components/ui/input-otp";
-import Image from "next/image";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Facebook, Google, WithApple } from "@/public/Images";
 import DynamicCard from "@/app/Sections/Global/DynamicCard";
@@ -22,42 +7,113 @@ import { Input } from "@/components/ui/input";
 import { BottomNavigation, Header } from "@/app/Sections";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { loginWithEmail, signUpWithGoogle } from "@/app/firebase/auth";
+import { Eye, EyeOff } from "lucide-react";
+import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import app from "@/app/firebase/firebaseConfig";
 
-export default function SignIn() {
+export default function Signin() {
+  const [loading, setLoading] = useState(false); // New state for loading
   const [email, setEmail] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
+  const router = useRouter();
+  const auth = getAuth(app); // Use the initialized app here
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleGoogleSignIn = async () => {
+    setMessage(""); // Clear previous messages
+    setError(""); // Clear previous errors
 
-    const res = await signIn("credentials", {
-      redirect: false,
-      email,
-      password,
-    });
+    const response = await signUpWithGoogle();
+    console.log("Google sign-in response:", response); // Log the entire response object
 
-    if (res?.error) {
-      setError("Failed to sign in");
+    if (response.success) {
+      const { email, name } = response.user;
+
+      // Log user data
+      console.log("User Data from Google:", { email, name });
+
+      try {
+        // Check if user already exists in Hygraph
+        const userExists = await checkIfUserExists(email); // Implement this function
+        if (!userExists) {
+          // Create the user in Hygraph
+          const createUserResponse = await createUserInHygraph(
+            email,
+            name,
+            "GoogleSignIn"
+          );
+          console.log("Create User Response:", createUserResponse); // Log response to check for errors
+        } else {
+          setMessage("User already exists.");
+        }
+
+        // Open home page in a new tab
+        window.open("/profile", "_blank");
+      } catch (error) {
+        console.error("Error during user check or creation:", error);
+        setError("An error occurred during sign-up.");
+      }
     } else {
-      setError("");
-      window.location.href = "/p";
+      alert(response.message || "An error occurred during Google sign-in.");
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    const provider = new GoogleAuthProvider();
+
+    try {
+      const result = await signInWithPopup(auth, provider);
+      // User information from Google
+      const user = result.user;
+      console.log("Logged in user:", user);
+
+      // You can now use user data (e.g., user.displayName, user.email) as needed
+
+      // Redirect or handle the login success here, e.g., storing user data in state
+      router.push("/profile"); // Redirect to activity page or any desired page
+    } catch (err) {
+      setError(err.message);
+      console.error("Google login error:", err);
+    }
+  };
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setError(""); // Reset any previous errors
+
+    const emailTrimmed = email.trim();
+    const passwordTrimmed = password.trim();
+    try {
+      const response = await loginWithEmail(emailTrimmed, passwordTrimmed);
+      if (response.success) {
+        router.push("/profile"); // Redirect to activity page or any desired page
+      } else {
+        setError(response.message); // Display error message to user
+      }
+    } catch (error) {
+      console.error("Login Error:", error); // Log the error for debugging
+      setError("An error occurred during login.");
     }
   };
 
   return (
     <>
       {/* Larger Screens */}
-      <section className="w-full h-screen bg-[url('/Images/SignUpBG.svg')] bg-[#EAEAF5] items-center justify-center py-0 md:py-4 hidden md:flex md:flex-col  gap-[20px]">
-        <div className="claracontainer p-0 w-full bg-[#ffffff] rounded-[20px] flex flex-col md:flex-row md:justify-between items-center justify-center overflow-hidden gap-8">
+      <section className="w-full h-screen bg-[url('/Images/SignUpBG.svg')] bg-[#EAEAF5] items-center justify-center py-0 md:py-4 hidden lg:flex lg:flex-col  gap-[20px]">
+        <div className="claracontainer h-screen md:h-full p-0 w-full bg-[#ffffff] rounded-[20px] flex flex-col md:flex-col lg:flex-row md:justify-between items-center justify-center overflow-hidden gap-8">
           {/* column 1 - The Animated Section */}
           <div className="md:flex md:flex-col hidden gap-4 justify-center items-center px-4 w-full md:w-[50%]">
             <div className="text-[#0a1932] w-[50%] claraheading font-semibold flex flex-col justify-center items-center font-fredoka leading-10">
               Login
             </div>
-            {error && <p>{error}</p>}
             <form
-              onSubmit={handleSubmit}
+              onSubmit={handleLogin}
               className="flex flex-col w-full px-8 justify-center items-center gap-4"
             >
               <Input
@@ -65,74 +121,41 @@ export default function SignIn() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Email"
+                required
               />
-              <Input
+              {/* <Input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Password"
-              />
-              <button type="submit">Sign In</button>
+                required
+              /> */}
+              <div className="relative w-full">
+                <Input
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Password"
+                  required
+                  className="pr-10" // Space for the toggle icon
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute inset-y-0 right-3 flex items-center text-gray-500"
+                >
+                  {showPassword ? <EyeOff /> : <Eye />}
+                </button>
+              </div>
+              <Button
+                disabled={loading}
+                className="clarabutton hover:bg-hoverRed w-full bg-red"
+                type="submit"
+              >
+                {loading ? "Signing In..." : "Sign In"}{" "}
+              </Button>
+              {error && <p style={{ color: "red" }}>{error}</p>}
             </form>
-            <Dialog className="p-0 w-full rounded-[24px]">
-              {/* OTP verification Trigger */}
-              <DialogTrigger className="w-full p-0">
-                <div className="flex w-full px-8">
-                  <Button className="w-full bg-red hover:bg-red clarabutton rounded-2xl shadow border-2 border-white">
-                    Login
-                  </Button>
-                </div>
-              </DialogTrigger>
-              <DialogContent className="w-full p-0 rounded-[24px] max-w-[1000px] flex items-center justify-center">
-                <DialogHeader className="p-0">
-                  {/* <DialogTitle>Are you absolutely sure?</DialogTitle> */}
-                  <DialogDescription className="flex flex-row  gap-0 h-[70vh] items-center justify-between w-full">
-                    {/* Coloumn 1 */}
-                    <div className="w-full flex gap-8 flex-col justify-center items-center bg-[url('/Images/BGVectors.svg')] h-full min-w-[500px]">
-                      <div className="text-[#0a1932] text-[50px] font-semibold flex flex-col justify-center items-center font-fredoka leading-10">
-                        Verify Your Email
-                      </div>
-                      <div className="w-full px-4 justify-end items-start text-center">
-                        <span className="text-[#0a1932] text-sm font-medium font-fredoka leading-tight">
-                          Please check your email Tom@example.com. We sent you
-                          the verification code.
-                        </span>{" "}
-                        <Link
-                          href="/auth/sign-in"
-                          className="text-red text-sm font-semibold font-fredoka leading-tight"
-                        >
-                          Resend
-                        </Link>
-                      </div>
-                      <div className="flex">
-                        <InputOTP
-                          maxLength={6}
-                          pattern={REGEXP_ONLY_DIGITS_AND_CHARS}
-                        >
-                          <InputOTPGroup>
-                            <InputOTPSlot index={0} />
-                            <InputOTPSlot index={1} />
-                            <InputOTPSlot index={2} />
-                            <InputOTPSlot index={3} />
-                            <InputOTPSlot index={4} />
-                            <InputOTPSlot index={5} />
-                          </InputOTPGroup>
-                        </InputOTP>
-                      </div>
-                      <div className="flex w-full px-8">
-                        <Link href="/" className="w-full">
-                          <Button className="w-full bg-red hover:bg-red clarabutton rounded-2xl shadow border-2 border-white">
-                            Submit
-                          </Button>
-                        </Link>
-                      </div>
-                    </div>
-                    {/* Coloumn 2 */}
-                    <DynamicCard />
-                  </DialogDescription>
-                </DialogHeader>
-              </DialogContent>
-            </Dialog>
 
             <div className="flex w-full flex-col justify-center py-4 items-center gap-4">
               <div className="text-center text-[#0a1932] text-lg font-medium font-fredoka leading-tight">
@@ -140,19 +163,22 @@ export default function SignIn() {
               </div>
               <div className="flex gap-2 items-center justify-center w-full">
                 <Image alt="Kindi" className="cursor-pointer" src={WithApple} />
-                <Image alt="Kindi" className="cursor-pointer" src={Google} />
-                <Image alt="Kindi" className="cursor-pointer" src={Facebook} />
+                <button onClick={handleGoogleLogin}>
+                  <Image alt="Kindi" className="cursor-pointer" src={Google} />
+                </button> <br />
+                {error && <p>{error}</p>}
+                {/* <Image alt="Kindi" className="cursor-pointer" src={Facebook} /> */}
               </div>
             </div>
             <div className="w-[max-content] justify-end items-start text-center">
               <span className="text-[#0a1932] text-sm font-medium font-fredoka leading-tight">
-                Already have an account.{" "}
+                Don&apos;t have an account.{" "}
               </span>
               <Link
-                href="/auth/sign-in"
+                href="/auth/sign-up"
                 className="text-red text-sm font-medium font-fredoka leading-tight"
               >
-                Login
+                Sign Up
               </Link>
             </div>
           </div>
@@ -165,15 +191,14 @@ export default function SignIn() {
       </section>
 
       {/* Mobile Screen */}
-      <section className="flex flex-col bg-[#f5f5f5] w-full overflow-y-hidden md:hidden">
+      <section className="flex flex-col bg-[#f5f5f5] w-full overflow-y-hidden lg:hidden">
         <Header />
-        <div className="flex claracontainer px-4 w-full flex-col h-[90vh]  py-12">
+        <div className="flex claracontainer px-4 w-full flex-col h-[90vh] gap-6 py-12">
           <div className="text-[#0a1932] text-2xl font-semibold font-fredoka leading-loose">
             Login
           </div>
-          {error && <p>{error}</p>}
           <form
-            onSubmit={handleSubmit}
+            onSubmit={handleLogin}
             className="flex flex-col w-full justify-center items-center gap-4"
           >
             <Input
@@ -181,72 +206,65 @@ export default function SignIn() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Email"
+              required
             />
-            <Input
+            {/* <Input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
-            />
-            <button type="submit">Sign In</button>
+              required
+            /> */}
+            <div className="relative w-full">
+              <Input
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Password"
+                required
+                className="pr-10" // Space for the toggle icon
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute inset-y-0 right-3 flex items-center text-gray-500"
+              >
+                {showPassword ? <EyeOff /> : <Eye />}
+              </button>
+            </div>
+            <Button
+              disabled={loading}
+              className="clarabutton hover:bg-hoverRed w-full bg-red"
+              type="submit"
+            >
+              {loading ? "Signing In..." : "Sign In"}{" "}
+            </Button>
+            {error && <p style={{ color: "red" }}>{error}</p>}
           </form>
-          <Dialog className="p-0 w-full rounded-[24px]">
-            {/* OTP verification Trigger */}
-            <DialogTrigger className="w-full p-0">
-              <div className="flex w-full px-0 py-8">
-                <Button className="w-full bg-red hover:bg-red clarabutton rounded-2xl shadow border-2 border-white">
-                  Login
-                </Button>
-              </div>
-            </DialogTrigger>
-            <DialogContent className="w-full p-0 rounded-[24px] flex items-center justify-center">
-              <DialogHeader className="p-0">
-                {/* <DialogTitle>Are you absolutely sure?</DialogTitle> */}
-                <DialogDescription className="flex flex-row  gap-0 h-[50vh] items-center justify-between w-full">
-                  {/* Coloumn 1 */}
-                  <div className="w-full flex gap-8 flex-col justify-center items-center bg-[url('/Images/BGVectors.svg')] h-full">
-                    <div className="text-[#0a1932] text-[32px] font-semibold flex flex-col justify-center items-center font-fredoka leading-10">
-                      Verify Your Email
-                    </div>
-                    <div className="w-full px-4 justify-end items-start text-center">
-                      <span className="text-[#0a1932] text-sm font-medium font-fredoka leading-tight">
-                        Please check your email Tom@example.com. We sent you the
-                        verification code.
-                      </span>{" "}
-                      <Link
-                        href="/auth/sign-in"
-                        className="text-red text-sm font-semibold font-fredoka leading-tight"
-                      >
-                        Resend
-                      </Link>
-                    </div>
-                    <div className="flex">
-                      <InputOTP
-                        maxLength={6}
-                        pattern={REGEXP_ONLY_DIGITS_AND_CHARS}
-                      >
-                        <InputOTPGroup>
-                          <InputOTPSlot index={0} />
-                          <InputOTPSlot index={1} />
-                          <InputOTPSlot index={2} />
-                          <InputOTPSlot index={3} />
-                          <InputOTPSlot index={4} />
-                          <InputOTPSlot index={5} />
-                        </InputOTPGroup>
-                      </InputOTP>
-                    </div>
-                    <div className="flex w-full px-8">
-                      <Link href="/" className="w-full">
-                        <Button className="w-full bg-red hover:bg-red clarabutton rounded-2xl shadow border-2 border-white">
-                          Submit
-                        </Button>
-                      </Link>
-                    </div>
-                  </div>
-                </DialogDescription>
-              </DialogHeader>
-            </DialogContent>
-          </Dialog>
+          <div className="w-[max-content] justify-end items-start text-center">
+            <span className="text-[#0a1932] text-sm font-medium font-fredoka leading-tight">
+              Don&apos;t have an account.{" "}
+            </span>
+            <Link
+              href="/auth/sign-up"
+              className="text-red text-sm font-medium font-fredoka leading-tight"
+            >
+              Sign Up
+            </Link>
+          </div>
+          <div className="flex w-full flex-col justify-center py-4 items-center gap-4">
+            <div className="text-center text-[#0a1932] text-lg font-medium font-fredoka leading-tight">
+              Or continue with
+            </div>
+            <div className="flex gap-2 items-center justify-center w-full">
+              <Image alt="Kindi" className="cursor-pointer" src={WithApple} />
+              <button onClick={handleGoogleLogin}>
+                <Image alt="Kindi" className="cursor-pointer" src={Google} />
+              </button> <br />
+              {error && <p>{error}</p>}{" "}
+              {/* <Image alt="Kindi" className="cursor-pointer" src={Facebook} /> */}
+            </div>
+          </div>
         </div>
         <BottomNavigation />
       </section>

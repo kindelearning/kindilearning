@@ -1,10 +1,15 @@
+"use client";
+
 import NotFound from "@/app/not-found";
 import { Button } from "@/components/ui/button";
 import { getHIWData, getStandardPagesContent } from "@/lib/hygraph";
+import { useSession } from "next-auth/react";
 
 const PlayForLife = async () => {
+  const { data: session, status } = useSession();
+
   const standardPages = await getStandardPagesContent();
-  console.log("Standard Pages Content: ", standardPages);
+  // console.log("Standard Pages Content: ", standardPages);
 
   if (
     !standardPages ||
@@ -15,7 +20,7 @@ const PlayForLife = async () => {
   }
 
   const stories = await getHIWData();
-  console.log("Story Page Data (in component):", stories);
+  // console.log("Story Page Data (in component):", stories);
   if (!stories || !stories[0]?.playForLife) {
     console.error("Error: Stories data is missing or incomplete.");
     return <NotFound />;
@@ -24,21 +29,19 @@ const PlayForLife = async () => {
   return (
     <>
       {/* New COmponent */}
-      <section className="w-full h-auto bg-[#0097cb] items-center justify-center py-8 lg:py-16 flex flex-col gap-[20px] md:flex-row">
+      <section
+        id="video"
+        className="w-full h-auto bg-[#0097cb] items-center justify-center py-8 lg:py-16 flex flex-col gap-[20px] md:flex-row"
+      >
         <div className="claracontainer px-4 md:px-2 lg:px-4 items-start justify-start-4 w-full flex flex-col md:flex-col lg:flex-row xl:flex-row overflow-hidden gap-8">
           <div className="w-full flex justify-center items-center h-auto">
-            <div className="w-full lg:w-[400px] h-full xl:w-[500px] animate-fadeIn animate-delay-500 duration-300">
-              {/* <Image
-                alt="Kindi"
-                src={HowItWorkVideo}
-                className="animate-fadeIn w-full h-full animate-delay-500 duration-300"
-              /> */}
+            <div className="w-full lg:w-[400px] h-full lg:h-[340px] xl:w-[500px] animate-fadeIn animate-delay-500 duration-300">
               <video
                 controls
                 autoPlay
                 loop
                 muted
-                className="object-cover max-h-[260px] lg:max-h-[360px] rounded-[24px] w-full md:w-full lg:w-[540px] h-full"
+                className="object-cover max-h-[260px] lg:max-h-[340px] lg:h-[340px] rounded-[24px] w-full md:w-full lg:w-[540px] h-full"
               >
                 <source src={videoUrl} type="video/mp4" /> Your browser does not
                 support the video tag.
@@ -79,8 +82,9 @@ const PlayForLife = async () => {
               </div>
             </div>
             <div className="w-auto py-2 h-auto">
-              <Button className="bg-[#ffffff] text-[#019acf] hover:bg-[#ffffff] hover:border-2 hover:border-[#ffffff8a] px-4 md:px-8 xl:px-12 border-2 clarabutton rounded-[10px]">
-                Get Started
+              <Button className="bg-[#ffffff] text-[#019acf] hover:bg-red hover:text-white hover:border-2 hover:border-[#ffffff8a] px-4 md:px-8 xl:px-12 border-2 clarabutton rounded-[10px]">
+                {session ? "Upgrade" : "Get Started"}
+                {/* Get Started */}
               </Button>
             </div>
           </div>

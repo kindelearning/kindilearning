@@ -9,7 +9,7 @@ import React, { useState } from "react";
 const AreasOfLearning = async () => {
   const [isOpen, setIsOpen] = useState(false);
   const stories = await getHIWData();
-  console.log("Story Page Data (in component):", stories);
+  // console.log("Story Page Data (in component):", stories);
   if (!stories || !stories[0]?.areasOfLearning) {
     console.error("Error: Stories data is missing or incomplete.");
     return <NotFound />;
@@ -26,19 +26,19 @@ const AreasOfLearning = async () => {
           </div>
           <div className="flex w-full justify-start items-start flex-col">
             <div className="w-full px-0 md:px-12 lg:px-32 text-start md:text-center text-[#3f3a64] font-fredoka text-[18px] font-medium leading-[22px]">
-              {/* Unlocking your child&apos;s full potential. Kindi is here to
-              equip you with the tools to make it happen! Discover our early
-              years education activities across eight distinctive categories,
-              all aligned with UK education curriculums. */}
               <p>{stories[0].areasOfLearning}</p>
             </div>
           </div>
         </div>
 
-        <div className="claracontainer px-4 md:pl-0  flex flex-row overflow-x-scroll scrollbar-hidden md:grid md:grid-cols-3 lg:grid lg:grid-cols-4 xl:grid xl:grid-cols-4 gap-4 justify-between">
+        <div
+          id="area_of_learning"
+          className="claracontainer px-4 md:pl-0  flex flex-row overflow-x-scroll scrollbar-hidden md:grid md:grid-cols-3 lg:grid lg:grid-cols-4 xl:grid xl:grid-cols-4 gap-4 justify-between"
+        >
           {cardData.map((card, index) => (
             <MyToggleCard
               key={index}
+              color={card.color || "white"}
               isOpen={isOpen}
               setIsOpen={setIsOpen}
               title={card.title}

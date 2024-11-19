@@ -24,7 +24,7 @@ const Header = () => {
         </div>
 
         {/* Hamburger icon for small screens */}
-        <div className="lg:hidden flex items-center">
+        <div className="lg:hidden df flex items-center">
           <button onClick={toggleMenu} aria-label="Toggle Menu">
             {isMenuOpen ? (
               <p>X</p> // Replace with an appropriate close icon

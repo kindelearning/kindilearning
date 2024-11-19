@@ -113,16 +113,16 @@ export const NavMenu = [
     activeIcon: BrainActive,
   },
   {
-    title: "Shop",
-    link: "/shop",
-    icon: ShopIcon,
-    activeIcon: ShopActive,
-  },
-  {
     title: "Community",
     link: "/p/community",
     icon: CommunityIcon,
     activeIcon: CommunityActive,
+  },
+  {
+    title: "Shop",
+    link: "/shop",
+    icon: ShopIcon,
+    activeIcon: ShopActive,
   },
 ];
 
@@ -141,7 +141,7 @@ export const footerSections = [
   {
     title: "General",
     links: [
-      { label: "Newsletter", href: "#" },
+      { label: "Newsletter", href: "/newsletter" },
       { label: "Community", href: "/p/community" },
       { label: "Themes", href: "/p/our-themes" },
       { label: "Quality Control", href: "/p/quality-control" },
@@ -306,6 +306,64 @@ export const developmentAreas = [
   "Experiments & Math",
 ];
 
+export const progressData = [
+  {
+    id: 1,
+    icon: KindiHeart,
+    title: "Emotional & Social Strength",
+    backgroundColor: "f05c5c",
+  },
+  {
+    id: 2,
+
+    icon: ConfidenceIndependence,
+    title: "Confidence & Independence",
+
+    backgroundColor: "19262d",
+  },
+  {
+    id: 3,
+    icon: SpeechLanguage,
+    title: "Speech & Language",
+
+    backgroundColor: "036e9a",
+  },
+  {
+    id: 4,
+    icon: PhysicalAgility,
+    title: "Physical Agility",
+    backgroundColor: "b05282",
+  },
+  {
+    id: 5,
+    icon: ReadingWriting,
+    title: "Reading & Writing",
+
+    backgroundColor: "a7b568",
+  },
+  {
+    id: 6,
+    icon: DiscoveringWorld,
+    title: "Discovering Our World",
+
+    backgroundColor: "0aab84",
+  },
+  {
+    id: 7,
+    icon: CreativityImagination,
+    title: "Creativity & Imagination",
+
+    backgroundColor: "f0c84a",
+  },
+  {
+    id: 8,
+    icon: Experiments,
+    title: "Experiments & Math",
+
+    backgroundColor: "0f172a",
+  },
+];
+
 export const cardData = [
   {
     icon: KindiHeart,
@@ -320,7 +378,6 @@ export const cardData = [
       </ul>
     ),
     backgroundColor: "f05c5c",
-    // Replace with your icon component
   },
   {
     icon: ConfidenceIndependence,
@@ -399,6 +456,7 @@ export const cardData = [
         <li>Using different medias and colours to express oneself</li>
       </ul>
     ),
+    textColor: "black",
     backgroundColor: "f0c84a",
   },
   {
@@ -422,43 +480,43 @@ export const navItems = [
   {
     id: "home",
     label: "Home",
-    iconActive: <Image src={HomeActive} className="h-6 w-6" />,
-    iconInactive: <Image src={Home} className="h-6 w-6" />,
+    iconActive: <Image alt="Kindi" src={HomeActive} className="h-6 w-6" />,
+    iconInactive: <Image alt="Kindi" src={Home} className="h-6 w-6" />,
     href: "/",
   },
   {
     id: "calendar",
     label: "Calendar",
-    iconActive: <Image src={CalendarActive} className="h-6 w-6" />,
-    iconInactive: <Image src={CalendarTwo} className="h-6 w-6" />,
+    iconActive: <Image alt="Kindi" src={CalendarActive} className="h-6 w-6" />,
+    iconInactive: <Image alt="Kindi" src={CalendarTwo} className="h-6 w-6" />,
     href: "/p/activities/schedule",
   },
   {
     id: "brain",
     label: "Brain",
-    iconActive: <Image src={BrainActive} className="h-6 w-6" />,
-    iconInactive: <Image src={Brain} className="h-6 w-6" />,
+    iconActive: <Image alt="Kindi" src={BrainActive} className="h-6 w-6" />,
+    iconInactive: <Image alt="Kindi" src={Brain} className="h-6 w-6" />,
     href: "/p/activities",
   },
   {
     id: "earth",
     label: "Earth",
-    iconActive: <Image src={EarthActive} className="h-6 w-6" />,
-    iconInactive: <Image src={Earth} className="h-6 w-6" />,
+    iconActive: <Image alt="Kindi" src={EarthActive} className="h-6 w-6" />,
+    iconInactive: <Image alt="Kindi" src={Earth} className="h-6 w-6" />,
     href: "/p/community",
   },
   {
     id: "shop",
     label: "Shop",
-    iconActive: <Image src={ShopTwoActive} className="h-6 w-6" />,
-    iconInactive: <Image src={ShopTwo} className="h-6 w-6" />,
+    iconActive: <Image alt="Kindi" src={ShopTwoActive} className="h-6 w-6" />,
+    iconInactive: <Image alt="Kindi" src={ShopTwo} className="h-6 w-6" />,
     href: "/shop",
   },
   {
     id: "profile",
     label: "Profile",
-    iconActive: <Image src={UserActive} className="h-6 w-6" />,
-    iconInactive: <Image src={UserTwo} className="h-6 w-6" />,
+    iconActive: <Image alt="Kindi" src={UserActive} className="h-6 w-6" />,
+    iconInactive: <Image alt="Kindi" src={UserTwo} className="h-6 w-6" />,
     href: "/profile",
   },
 ];

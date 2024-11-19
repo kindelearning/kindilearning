@@ -2,21 +2,25 @@
 
 import React, { useState } from "react";
 
-const QuantityControl = () => {
-  const [quantity, setQuantity] = useState(1);
+const QuantityControl = ({ initialQuantity = 1, onQuantityChange }) => {
+  const [quantity, setQuantity] = useState(initialQuantity);
 
   const handleIncrement = () => {
-    setQuantity(quantity + 1);
+    const newQuantity = quantity + 1;
+    setQuantity(newQuantity);
+    onQuantityChange(newQuantity);
   };
 
   const handleDecrement = () => {
     if (quantity > 1) {
-      setQuantity(quantity - 1);
+      const newQuantity = quantity - 1;
+      setQuantity(newQuantity);
+      onQuantityChange(newQuantity);
     }
   };
 
   return (
-    <div className="flex w-fit min-w-[124px] items-center border-1 border-gray-200 rounded-full overflow-hidden">
+    <div className="flex border-[#eaeaf5] w-fit min-w-[124px] items-center border-1 shadow-sm lg:shadow-none rounded-full overflow-hidden">
       <button
         className="px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-600 transition duration-200 ease-in-out"
         onClick={handleDecrement}
@@ -36,12 +40,16 @@ const QuantityControl = () => {
           />
         </svg>
       </button>
-      <input
+      {/* <input
         type="text"
         value={quantity}
         className="w-8 py-1 text-center text-gray-600 bg-white focus:outline-none appearance-none"
         readOnly
-      />
+      /> */}
+      <span className="w-8 py-1 text-center text-gray-600 bg-white focus:outline-none appearance-none">
+        {quantity}
+      </span>
+
       <button
         className="px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded-r-full text-gray-600 transition duration-200 ease-in-out"
         onClick={handleIncrement}

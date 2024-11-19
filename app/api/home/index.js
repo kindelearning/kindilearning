@@ -1,6 +1,6 @@
 import Image from "next/image";
-import { getHomeData } from "@/lib/hygraph";
 import NotFound from "@/app/not-found";
+import { getHomeData } from "@/lib/hygraph";
 
 export default async function ActivityPage() {
   const home = await getHomeData();

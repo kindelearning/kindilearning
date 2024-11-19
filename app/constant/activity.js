@@ -83,3 +83,49 @@ export const activityData = [
   },
   // Add more blog data here...
 ];
+
+
+export const filters = [
+  {
+    label: "Select Learning Area",
+    options: [
+      "Emotional & Social Strength",
+      "Confidence & Independence",
+      "Speech & Language",
+      "Physical Agility",
+      "Reading & Writing",
+      "Discovering Our World",
+      "Creativity & Imagination",
+      "Experiments & Math",
+    ],
+  },
+  {
+    label: "Select Skill Category",
+    options: [
+      "Sensory Development",
+      "Mastering Feelings",
+      "Listening & Talking",
+      "Problem-solving & Independence",
+      "Social Play",
+      "Fine Motor",
+      "GROSS MOTOR",
+      "Pretend Play",
+      "Crafts",
+      "Exploring the Seasons",
+      "Outdoors & Nature",
+      "Rainy Day Play",
+    ],
+  },
+  {
+    label: "Select Theme",
+    options: ["Option 1", "Option 2", "Option 3"],
+  },
+  {
+    label: "Select Age Focus",
+    options: ["BABY", "TODDLER", "PRE-SCHOOLER", "KINDI"],
+  },
+  {
+    label: "Select Prep Time",
+    options: ["5 Minutes", "10 Minutes", "10+ Minutes"],
+  },
+];

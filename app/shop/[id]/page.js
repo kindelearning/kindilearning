@@ -1,3 +1,5 @@
+"use client";
+
 import {
   ActivityImage,
   creditCard,
@@ -22,130 +24,195 @@ import Link from "next/link";
 import { Textarea } from "@/components/ui/textarea";
 import { ArrowRight } from "lucide-react";
 
-// // const AnimatedButton = () => {
-// //   const [isAnimating, setIsAnimating] = useState(false);
-// //   const [text, setText] = useState("Share your Review");
+const ReviewForm = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [content, setContent] = useState("");
+  const [rating, setRating] = useState(0);
+  const [message, setMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false); // Add loading state
 
-// //   const handleButtonClick = () => {
-// //     setIsAnimating(true);
-// //     setTimeout(() => {
-// //       setText("Done");
-// //       setIsAnimating(false);
-// //     }, 2000);
-// //   };
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-// //   return (
-// //     <div className="claracontainer w-full py-6 flex flex-col gap-4 justify-between items-center">
-// //       <Button
-// //         className={`w-[300px] flex flex-row gap-1 justify-center items-center bg-red rounded-[10px] shadow border-2 border-white ${
-// //           isAnimating ? "animate-button" : ""
-// //         }`}
-// //         onClick={handleButtonClick}
-// //       >
-// //         <ArrowRight
-// //           className={`transition-transform duration-2000 ${
-// //             isAnimating ? "animate-arrow" : ""
-// //           }`}
-// //         />
-// //         <span
-// //           className={`transition-opacity duration-1000 ${
-// //             isAnimating ? "opacity-80" : "opacity-100"
-// //           }`}
-// //         >
-// //           Share your Review
-// //         </span>
-// //         <span
-// //           className={`transition-opacity duration-1000 ${
-// //             isAnimating ? "opacity-0" : "hidden"
-// //           }`}
-// //         >
-// //           Done
-// //         </span>
-// //       </Button>
-// //     </div>
-// //   );
-// // };
+    const reviewData = {
+      name,
+      email,
+      content,
+      rating: parseInt(rating, 10),
+    };
 
-// export async function generateStaticParams() {
-//   const uniqueParams = productData
-//     .map((post) => ({
-//       slug: slugify(post.title),
-//     }))
-//     .filter((value, index, self) => {
-//       return self.findIndex((v) => v.slug === value.slug) === index;
-//     });
+    setIsLoading(true); // Start loading
 
-//   console.log("Generated Params:", uniqueParams);
-//   return uniqueParams;
-// }
+    try {
+      const response = await fetch("/api/reviews", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(reviewData),
+      });
 
-// export default async function Page({ params }) {
-//   console.log("Received Params:", params);
-//   if (!params || !params.id) {
-//     return (
-//       <main>
-//         <h1>Params ID is null or undefined</h1>
-//         <p>Please check routing configuration and generateStaticParams</p>
-//       </main>
-//     );
-//   }
+      const data = await response.json();
 
-//   const post = productData.find((b) => slugify(b.title) === params.id);
+      if (!response.ok) {
+        setMessage(
+          `Failed to submit review: ${data.message || "Unknown error"}`
+        );
+        setIsLoading(false); // Stop loading on error
 
-//   if (!post) {
-//     return (
-//       <section className="w-full h-auto bg-[#EAEAF5] items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">
-//         <div className="claracontainer p-4 md:p-8 xl:p-12 w-full flex flex-col md:flex-col lg:flex-row overflow-hidden gap-8">
-//           <Image alt="Kindi" src={NotFoundImg} />
-//           <div className="flex w-full flex-col justify-start items-start gap-4">
-//             <div className="flex flex-col w-full justify-start items-start gap-4">
-//               <div className="w-full">
-//                 <span className="text-[#3f3a64] text-4xl font-normal font-fredoka leading-[45px]">
-//                   404 Error!
-//                   <br />
-//                 </span>
-//                 <span className="text-red text-4xl font-normal font-fredoka leading-[45px]">
-//                   Opps... This page is taking a little nap!{" "}
-//                 </span>
-//               </div>
-//             </div>
-//             <div className="w-[460px] h-[203px]">
-//               <span className="text-[#696969] text-lg font-semibold font-['Fredoka'] leading-[21px]">
-//                 This page isn’t quite ready to play right now. While you’re
-//                 here:
-//                 <br />
-//               </span>
-//               <span className="text-[#696969] text-lg font-normal font-['Fredoka'] leading-[21px]">
-//                 <br />
-//               </span>
-//               <span className="text-[#696969] text-lg font-normal font-['Fredoka'] leading-[21px]">
-//                 Try searching for the page again
-//                 <br />
-//                 Return to our homepage, or
-//                 <br />
-//                 Take a quick detour to explore some fun activities for your
-//                 toddler!
-//                 <br />
-//               </span>
-//               <span className="text-[#696969] text-lg font-normal font-['Fredoka'] leading-[21px]">
-//                 <br />
-//               </span>
-//             </div>
-//             <p>Could not find requested resource</p>
-//             <Link href="/">Return Home</Link>
-//           </div>
-//         </div>
-//       </section>
-//     );
-//   }
+        return;
+      }
 
-import { getProductById } from "@/lib/hygraph";
+      setMessage("Review submitted successfully!");
+      setName("");
+      setEmail("");
+      setContent("");
+      setRating(0);
+    } catch (error) {
+      console.error("Error submitting review:", error);
+      setMessage("Failed to submit review. Please try again.");
+    }
+    setIsLoading(false); // Stop loading after submission
+  };
+
+  return (
+    <form
+      className="w-full flex flex-col justify-center items-center"
+      onSubmit={handleSubmit}
+    >
+      <div className="claracontainer w-full py-6 flex flex-col gap-4 justify-between items-start">
+        <div className="w-full object-contain overflow-clip">
+          <Image
+            alt="Kindi"
+            src={ShopImage}
+            className="w-full rounded-[8px] object-cover overflow-clip flex h-[200px]"
+          />
+        </div>
+        <div className="flex w-full flex-col gap-2 justify-start items-start claracontainer">
+          <div className="claracontainer w-full flex flex-col gap-2 justify-between items-start">
+            <div className="w-full text-[#3f3a64] clarabodyTwo font-fredoka capitalize">
+              Add your Comments
+            </div>{" "}
+            <div className="w-full flex lg:flex-row flex-col gap-2 justify-between items-center">
+              <Input
+                type="text"
+                placeholder="Name..."
+                value={name}
+                className="border-2 focus:border-black focus-within:ring-0 ring-offset-0 focus-visible:ring-0 ring-white border-[#b4b4b4] "
+                onChange={(e) => setName(e.target.value)}
+              />
+              <Input
+                type="email"
+                placeholder="Email"
+                value={email}
+                className="border-2 focus:border-black focus-within:ring-0 ring-offset-0 focus-visible:ring-0 ring-white border-[#b4b4b4] "
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <Textarea
+              placeholder="Add your review..."
+              className="w-full p-4 focus-within:ring-0 focus-visible:ring-0 ring-white ring-offset-0 text=[#0f172a] py-4 text-start rounded-lg border-2 border-[#b4b4b4] justify-center items-center gap-2.5 inline-flex"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              required
+            />
+            <div className="flex flex-row justify-between items-center w-full">
+              <div className="text-center text-red clarabodyTwo">
+                Give us Rating out of 5-Stars
+              </div>
+              <div className="flex gap-1 items-center">
+                <Image
+                  className="w-2 h-2 lg:w-4 lg:h-4"
+                  src={Ratings}
+                  alt="Rating"
+                />
+                <Image
+                  className="w-2 h-2 lg:w-4 lg:h-4"
+                  src={Ratings}
+                  alt="Rating"
+                />
+                <Image
+                  className="w-2 h-2 lg:w-4 lg:h-4"
+                  src={Ratings}
+                  alt="Rating"
+                />
+                <Image
+                  className="w-2 h-2 lg:w-4 lg:h-4"
+                  src={Ratings}
+                  alt="Rating"
+                />
+                <Image
+                  className="w-2 h-2 lg:w-4 lg:h-4"
+                  src={Ratings}
+                  alt="Rating"
+                />
+              </div>
+            </div>
+            <Input
+              type="number"
+              placeholder="Rating"
+              value={rating}
+              className="border-2 focus-within:ring-0 ring-offset-0 focus-visible:ring-0 ring-white border-[#b4b4b4] "
+              onChange={(e) => setRating(e.target.value)}
+              min="1"
+              max="5"
+              required
+            />
+          </div>
+        </div>
+      </div>
+
+      <Button
+        disabled={isLoading}
+        className="clarabutton bg-red hover:bg-hoverRed"
+        type="submit"
+      >
+        {/* Submit Review */}
+        {isLoading ? "Submitting..." : "Submit Review"}{" "}
+        {/* Change text based on loading */}
+      </Button>
+      {message && <p>{message}</p>}
+    </form>
+  );
+};
+
+import { getProductById, submitReview } from "@/lib/hygraph";
 import NotFound from "@/app/not-found";
+import { useState } from "react";
+import { Input } from "@/components/ui/input";
+import { useCart } from "@/app/context/CartContext";
+import { loadStripe } from "@stripe/stripe-js";
+import { useRouter } from "next/navigation";
+const stripePromise = loadStripe(process.env.STRIPE_PUBLIC_KEY);
 
 export default async function ProductDetailPage({ params }) {
   const { id } = params;
+  const [loading, setLoading] = useState(false); // State to manage loading
+  const { addToCart } = useCart();
+  const router = useRouter();
+  const [quantity, setQuantity] = useState(1); // Manage quantity state
 
   const product = await getProductById(id);
+
+  // Handling add to cart request
+  const handleAddToCart = async (e) => {
+    e.preventDefault(); // Prevent the page refresh
+    console.log("Adding to cart:", product);
+    setLoading(true); // Set loading to true
+    await new Promise((resolve) => setTimeout(resolve, 500)); // Simulate delay
+
+    addToCart({
+      id: product.id,
+      title: product.title,
+      description: product.description,
+      price: product.salePrice,
+      image: product.productImages[0]?.url,
+      quantity,
+    });
+    setLoading(false); // Set loading to false after adding to cart
+    router.push("/shop/cart"); // Navigate to cart page
+  };
 
   if (!product) {
     return (
@@ -157,14 +224,12 @@ export default async function ProductDetailPage({ params }) {
 
   return (
     <>
-      <section className="w-full h-auto bg-[#F5F5F5] lg:bg-[#eaeaf5] items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">
+      <section className="w-full h-auto bg-[#F5F5F5] lg:bg-[#eaeaf5] items-center justify-center py-4 plg:pb-32 flex flex-col md:flex-row gap-[20px]">
         <div className="claracontainer p-4 md:p-2 lg:p-4 w-full flex flex-col overflow-hidden gap-8">
           {/* Row 1 */}
           <div className="flex w-full flex-col md:flex-col lg:flex-row xl:flex-row gap-8 justify-between items-start">
             {/* column1 */}
-            {/* <div className="claracontainer min-w-[52%] flex flex-col gap-4 justify-center items-center w-full"> */}
             <div className="claracontainer py-0 flex flex-col justify-between items-start gap-8">
-              
               <ProductImages
                 images={product.productImages.map((img) => img.url)}
               />
@@ -202,7 +267,7 @@ export default async function ProductDetailPage({ params }) {
                   157 Reviews
                 </div>
               </div>
-              {/* COntent */}
+              {/* Content */}
               <div className="claracontainer">
                 <div className="w-[max-content] text-[#0a1932] text-[32px] font-semibold font-fredoka leading-tight">
                   Description
@@ -215,116 +280,75 @@ export default async function ProductDetailPage({ params }) {
                   />
                 </div>
               </div>
-              {/* variants */}
-              <div className="claracontainer flex flex-col gap-1">
-                <div className="w-[max-content] text-[#0a1932] text-[32px] font-semibold font-fredoka leading-tight">
-                  Select Variant
-                </div>
-                {/* <GroupChip
-                  options={options}
-                  selectedOption={selectedOption}
-                  onChange={handleOptionChange}
-                /> */}
-                To be added soon
-              </div>
               {/* CTA */}
               <div className="claracontainer flex flex-col w-full gap-1">
-                <div className="claracontainer w-full justify-between items-center flex flex-row gap-4">
-                  <QuantityControl />
-                  <Link className="w-full" href="/shop/cart">
-                    <Button className="bg-red w-full rounded-[16px] border-2 border-[white]">
-                      Add to Cart
-                    </Button>
-                  </Link>
-                </div>
-                <div className="claracontainer w-full justify-end items-end flex flex-row gap-4">
-                  <div className="w-full flex flex-row justify-center items-center gap-2">
-                    <Image alt="Kindi" src={creditCard} className="w-2 h-2" />
-                    <div className="text-zinc-600 text-sm font-medium font-fredoka leading-[20px]">
-                      100% Secured Payment
+                <div className="claracontainer w-full justify-between items-start flex flex-row gap-4">
+                  {/* <QuantityControl /> */}
+                  <QuantityControl
+                    initialQuantity={quantity}
+                    onQuantityChange={setQuantity}
+                  />{" "}
+                  {/* Pass quantity state to QuantityControl */}
+                  <div className="w-full flex flex-col gap-1">
+                    <div className="flex w-full items-center justify-between gap-2">
+                      <Button
+                        type="button"
+                        onClick={handleAddToCart}
+                        disabled={loading}
+                        className="bg-red hover:bg-hoverRed w-full  rounded-[16px] border-2 border-[white]"
+                      >
+                        {loading ? "Adding..." : "Add to Cart"}
+                      </Button>
+                    </div>
+                    <div className="w-full flex flex-row justify-start items-center gap-2">
+                      <Image alt="Kindi" src={creditCard} className="w-4 h-4" />
+                      <div className="text-zinc-600 text-sm text-start font-medium font-fredoka leading-[20px]">
+                        100% Secured Payment
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          {/* Row 2 */}
+          {/* Row 2 | Recent product */}
           <div className="flex w-full flex-col justify-start items-center">
             <div className="text-[#0a1932] text-[20px] lg:text-[28px] font-semibold font-fredoka text-start w-full ">
               Recently Viewed
             </div>
             <ProductGrid />
           </div>
-          {/* Row 3 - Reviews */}
+          {/* Row- 3 | Add Review */}
           <div className="flex w-full flex-col justify-start items-center">
             <div className="flex justify-between w-full items-center">
               <div className="text-[#0a1932] text-[20px] lg:text-[28px]  font-semibold font-fredoka text-start w-full leading-loose">
                 Customer Reviews
               </div>
-              <Dialog className="w-full flex justify-center items-center">
-                <DialogTrigger className="text-red w-full text-end text-xl font-semibold font-fredoka leading-none">
-                  {" "}
-                  Write a Review
+              <Dialog className="p-2 lg:p-4">
+                <DialogTrigger>
+                  <div className="text-center w-[max-content]  text-red clarabodyTwo font-semibold capitalize ">
+                    Write a Review
+                  </div>
                 </DialogTrigger>
-                <DialogContent className="claracontainer w-full rounded-[24px] gap-6 min-h-[600px] justify-start items-start px-4">
+                <DialogContent>
                   <DialogHeader>
                     <DialogTitle>
-                      {" "}
-                      <div className="text-center text-red claraheading font-semibold capitalize ">
+                      <div className="text-center text-red lg:text-[32px] lg:font-semibold clarabodyTwo font-semibold capitalize ">
                         Write a Review
                       </div>
                     </DialogTitle>
                     <DialogDescription>
-                      <div className="claracontainer w-full py-6 flex flex-row gap-4 justify-between items-start">
-                        <Image
-                          alt="Kindi"
-                          src={ShopImage}
-                          className="w-[260px] hidden lg:flex h-[200px]"
-                        />
-                        <div className="flex w-full flex-col gap-2 justify-start items-start claracontainer">
-                          <div className="text-start text-[#3f3a64] text-[20px] lg:text-4xl font-semibold font-fredoka capitalize">
-                            Wooden geometrical montessori puzzle
-                          </div>
-                          <div className="text-[#757575] text-[16px] lg:text-2xl text-start font-light font-fredoka">
-                            Lorem ipsum dolor sit amet consectetur. At lectus
-                            diam a sit aliquet sollicitudin sagittis
-                            volutpat....
-                          </div>
-                          <div className="flex flex-col justify-start items-start w-full">
-                            <div className="text-center text-red text-[12px] lg:text-[20px] font-bold font-['Montserrat']">
-                              Give us Rating out of 5-Stars
-                            </div>
-                            <div className="flex gap-1">
-                              <Image src={Ratings} alt="Rating" />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="claracontainer w-full py-6 flex flex-col gap-2 justify-between items-start">
-                        <div className="w-full text-[#3f3a64] text-2xl lg:text-4xl font-semibold text-start font-fredoka capitalize leading-10">
-                          add your Comments
-                        </div>{" "}
-                        <Textarea
-                          placeholder="Lorem ipsum dolor sit amet consectetur. In elementum in tempus massa tellus nullam nulla quis. Sed volutpat id mi ut diam. Faucibus lectus sit quam nascetur diam donec pharetra fermentum semper.."
-                          className="w-full p-4 text=[#0f172a] py-4 text-start rounded-lg border-2 border-[#b4b4b4] justify-center items-center gap-2.5 inline-flex"
-                        />
-                      </div>
-                      {/* <div className="claracontainer w-full py-6 flex flex-col gap-4 justify-between items-center">
-                        <Button className="w-[300px] flex flex-row gap-1 justify-center items-center bg-red rounded-[10px] shadow border-2 border-white">
-                          <ArrowRight />
-                          Share your Review
-                        </Button>
-                      </div> */}
-                      <Button>Drop Review</Button>
+                      <ReviewForm />
                     </DialogDescription>
                   </DialogHeader>
                 </DialogContent>
               </Dialog>
             </div>
+
             <ReviewGrid />
           </div>
-          {/* Row 4 */}
-          <div className="flex w-full flex-col justify-start items-center">
+          {/* Row- 4 | Similar Product*/}
+          <div className="flex w-full pb-20 flex-col justify-start items-center">
             <div className="text-[#0a1932] text-[20px] lg:text-[28px]  font-semibold font-fredoka text-start w-full leading-loose">
               You May also like
             </div>
@@ -332,17 +356,37 @@ export default async function ProductDetailPage({ params }) {
           </div>
         </div>
       </section>
-      {/* Row 5 - Sticky CTA Mobile */}
-      <div className="flex w-full lg:hidden md:hidden flex-col justify-start items-center">
+      {/* Row- 5 (Mobile CTA's) */}
+      <div className="flex w-full z-20 lg:hidden md:hidden flex-col pb-20 fixed bottom-0 justify-start items-center">
         <div className="claracontainer px-4 py-4 w-full bg-[#ffffff] rounded-t-[24px] shadow-upper sticky bottom-0 z-12 justify-between items-center flex flex-row gap-4">
-          <QuantityControl />
-          <Link className="w-full" href="/shop/cart">
-            <Button className="bg-red w-full rounded-[16px] border-2 border-[white]">
-              Add to Cart
-            </Button>
-          </Link>
+          <QuantityControl
+            initialQuantity={quantity}
+            onQuantityChange={setQuantity}
+          />{" "}
+          <Button
+            type="button"
+            onClick={handleAddToCart}
+            disabled={loading} // Disable button when loading
+            className="bg-red w-full rounded-[16px] border-2 border-[white]"
+          >
+            {loading ? "Adding..." : "Add to Cart"}
+          </Button>
         </div>
       </div>
     </>
   );
+}
+
+{
+  /* <div className="claracontainer flex flex-col gap-1">
+  <div className="w-[max-content] text-[#0a1932] text-[32px] font-semibold font-fredoka leading-tight">
+    Select Variant
+  </div>
+  <GroupChip
+    options={options}
+    selectedOption={selectedOption}
+    onChange={handleOptionChange}
+  />
+  To be added soon
+</div> */
 }

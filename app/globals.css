@@ -93,22 +93,45 @@
   .button {
     @apply gap-[32px] md:gap-[36px] lg:gap-[40px];
   }
-
-  /* .script {
-    @apply gap-[30px] md:gap-[32px] lg:gap-[36px];
-  }
-  .heading {
-    @apply gap-[18px] md:gap-[23px] lg:gap-[28px];
-  }
-  .body {
-    @apply gap-[36px] md:gap-[40px] lg:gap-[44px];
-  } */
 }
 
 @layer utilities {
   .claracontainer {
     width: 100%;
   }
+  /* .dragging {
+    background-color: #d1d5db;
+    border: 2px dashed #6b7280; 
+  } */
+  .milestone-dot {
+    width: 16px;
+    height: 16px;
+    background-color: #029871;
+    border: 3px solid #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  }
+
+  svg path {
+    transition: stroke-dashoffset 0.3s ease-in-out;
+  }
+  .skiptranslate {
+    position: fixed !important; /* Ensure it’s fixed */
+    left: 0 !important; /* Align to left */
+    bottom: 0 !important; /* Position it at the bottom */
+    width: 100% !important; /* Full width */
+    height: 0 !important; /* Set height to 0 */
+    overflow: hidden !important; /* Hide overflow */
+    z-index: -1 !important; /* Send it behind other elements */
+  }
+
+  iframe {
+    height: 0 !important; /* Force height to zero */
+    width: 0 !important; /* Force width to zero */
+    position: absolute !important; /* Ensure it's removed from the flow */
+    left: -9999px !important; /* Move off-screen */
+  }
+
   .gallery {
     margin: auto;
     height: 100vh; /* Changed from 100% to 100vh */
@@ -207,6 +230,11 @@
     .claracontainer {
       max-width: 1536px;
     }
+  }
+
+
+  .claraShadow:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1);
   }
   .claraimage {
     @apply w-full;

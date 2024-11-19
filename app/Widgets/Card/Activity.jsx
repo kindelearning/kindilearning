@@ -158,9 +158,9 @@ const Activity = ({
     className="w-full min-w-[300px] h-auto bg-white items-start justify-start border rounded-3xl flex flex-col md:flex-row gap-4"
   >
     <div className="claracontainer w-full flex-col justify-start items-center gap-7 inline-flex">
-      <div className="w-full max-w-full h-auto overflow-clip">
+      <div className="w-full max-w-full h-auto overflow-clip rounded-t-3xl ">
         <Image
-          className="w-full max-h-[240px] hover:scale-105  md:max-h-[300px] object-cover rounded-tl-3xl rounded-tr-3xl"
+          className="w-full max-h-[240px] hover:scale-105  md:max-h-[300px] object-cover rounded-t-3xl "
           src={ActivityCard}
           alt="Activity Card" // Add alt attribute for accessibility
         />

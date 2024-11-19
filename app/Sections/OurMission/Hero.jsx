@@ -1,21 +1,26 @@
+"use client";
+
 import NotFound from "@/app/not-found";
 import { Button } from "@/components/ui/button";
 import { getStoryData } from "@/lib/hygraph";
 import { HeroBGOurStoryTwo } from "@/public/Images";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import React from "react";
 
 export default async function Hero() {
+  const { data: session, status } = useSession();
+
   const stories = await getStoryData();
-  console.log("Story Page Data (in component):", stories);
+  // console.log("Story Page Data (in component):", stories);
   if (!stories || !stories[0]?.theKindiMission) {
     console.error("Error: Stories data is missing or incomplete.");
     return <NotFound />;
   }
 
   return (
-    <section className="max-w-[1500px] flex justify-center bg-[#ffffff] w-full items-center">
-      <div className="w-full h-screen lg:h-[814px]  object-bottom bg-none lg:bg-hero-image bg-contain bottom-0 bg-center bg-no-repeat justify-self-end grid md:flex md:flex-col lg:grid-cols-2 pb-16 gap-6 animate-fadeIn">
+    <section className="max-w-[1500px] min-h-screen h-full md:min-h-[600px] md:h-full lg:h-full flex justify-center bg-[#ffffff] w-full items-center">
+      <div className="w-full min-h-screen lg:h-[814px] object-bottom bg-none lg:bg-hero-image bg-contain bottom-0 bg-center bg-no-repeat justify-self-end grid md:flex md:flex-col lg:grid-cols-2 pb-16 gap-6 animate-fadeIn">
         <div className="w-full h-full flex flex-col lg:hidden p-0 justify-start items-start animate-slideInUp">
           <Image
             alt="Kindi"
@@ -51,8 +56,9 @@ export default async function Hero() {
             </div>
           </div>
           <div className="w-auto animate-slideInUp animate-delay-4000">
-            <Button className="bg-red hover:bg-hoverRed clarabutton px-6 md:px-12 py-3 rounded-[16px] animate-fadeIn animate-delay-4500">
-              Get Started
+            <Button className="bg-red hover:bg-purple text-white clarabutton px-6 md:px-12 py-3 rounded-[16px] animate-fadeIn animate-delay-4500">
+              {/* Get Started */}
+              {session ? "Upgrade" : "Get Started"}
             </Button>
           </div>
         </div>

@@ -154,11 +154,11 @@ const Page = () => {
                   Select Variant
                 </div>
 
-                <GroupChip
+                {/* <GroupChip
                   options={options}
                   selectedOption={selectedOption}
                   onChange={handleOptionChange}
-                />
+                /> */}
               </div>
               {/* CTA */}
               <div className="claracontainer flex flex-col w-full gap-1">

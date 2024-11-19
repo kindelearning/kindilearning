@@ -1,6 +1,8 @@
 "use client";
 
 import {
+  KindiVector,
+  Logo,
   PromotionalImage,
   SlideGrow,
   SlideLearn,
@@ -9,6 +11,7 @@ import {
   SlideThrive,
 } from "@/public/Images";
 import Image from "next/image";
+import Link from "next/link";
 import React, { useEffect, useState, useMemo } from "react";
 
 const DynamicCardMobile = () => {
@@ -75,8 +78,14 @@ const DynamicCardMobile = () => {
         style={{
           backgroundColor: slides[currentSlide].backgroundColor,
         }}
-        className="w-screen h-screen flex justify-center items-center"
+        className="w-screen h-screen md:min-h-[90vh] md:h-full flex flex-col justify-center items-center"
       >
+        <Link
+          href="/"
+          className="w-full claracontainer bg-transparent py-4 flex flex-row justify-between items-center"
+        >
+          <Image src={KindiVector} className="w-[100px] " alt="KindiDark" />
+        </Link>
         <div
           className="flex-col gap-4 p-4 w-full h-full rounded-[16px] flex justify-center items-center"
           style={{
@@ -86,13 +95,13 @@ const DynamicCardMobile = () => {
           <Image
             src={slides[currentSlide].image}
             alt={slides[currentSlide].title}
-            className={`w-full h-fit object-cover transition duration-1000`}
+            className={`w-full md:w-[400px] h-fit object-cover transition duration-1000`}
           />
-          <div className="w-full justify-center items-center flex flex-col gap-2 transition duration-1000">
-            <h2 className="text-white text-[24px] leading-[28px] font-semibold font-fredoka text-center transition duration-3000">
+          <div className="w-full justify-center items-center flex flex-col gap-2 md:gap-4 transition duration-1000">
+            <h2 className="text-white claraheading md:text-[44px] md:leading-[48px] font-semibold font-fredoka text-center transition duration-3000">
               {slides[currentSlide].title}
             </h2>
-            <p className="w-full text-center text-white clarabodyTwo transition duration-3000">
+            <p className="w-full text-center text-white clarabodyTwo md:text-[28px] md:leading-[32px] transition duration-3000">
               {slides[currentSlide].description}
             </p>
           </div>

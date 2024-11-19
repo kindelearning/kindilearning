@@ -12,6 +12,8 @@ import {
 } from "@/public/Images";
 import Image from "next/image";
 import { useRef, useState } from "react";
+import { ThreeDGallery } from ".";
+import Claras3DGallery from "./ClaraGallery";
 
 const InternalChip = ({
   image,
@@ -138,7 +140,7 @@ const Gallery = () => {
 
 export default async function ParentWithKindi() {
   const stories = await getStoryData();
-  console.log("Story Page Data (in component):", stories);
+  // console.log("Story Page Data (in component):", stories);
   if (!stories || !stories[0]?.parentWithKindi) {
     console.error("Error: Stories data is missing or incomplete.");
     return <NotFound />;
@@ -149,7 +151,7 @@ export default async function ParentWithKindi() {
       <section className="w-full h-auto bg-[#523373] items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">
         {/* <section className="w-full h-auto cursor-pointer bg-gradient-to-r from-[#523373] to-[#663399] hover:from-[#663399] hover:to-[#523373] duration-500 items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]"> */}
         <div className="claracontainer  md:px-0 lg:px-4 px-4 py-12 w-full flex flex-col-reverse lg:flex-row xl:flex-row overflow-hidden gap-8">
-          <div className="w-full py-6 flex-col justify-start items-start button inline-flex">
+          <div className="w-full lg:max-w-[60%] py-6 flex-col justify-start items-start button inline-flex">
             {/* Top Heading Section */}
             <div className="flex-col flex justify-center heading items-start">
               <div className="text-start w-full">
@@ -161,30 +163,7 @@ export default async function ParentWithKindi() {
               </div>
               <div className="flex w-full container justify-start px-0 items-center flex-col">
                 <div className="w-full px-0 text-start clarabodyTwo text-[white] font-medium font-fredoka">
-                  {/* Parenthood is a whirlwind of responsibilities, and we get it.
-                  That&apos;s why we&apos;ve created Kindi, a haven for busy
-                  parents like you. No more endless scrolling for play ideas.
-                  With Kindi, every moment counts.
-                  <br />
-                  <br />
-                  Our platform offers curated activities for children aged 6
-                  months to 5 years, designed to make learning enjoyable. Say
-                  goodbye to parenting uncertainties and hello to confident
-                  meaningful experiences at home that foster your child&apos;s
-                  growth and witness your child flourish, knowing each
-                  interaction shapes their future.
-                  <br />
-                  <br />
-                  Explore exciting monthly themes covering literacy, numeracy,
-                  fine motor skills, sensory play, and crafting. With Kindi,
-                  embark on this journey of discovery and growth confidently,
-                  giving your child the best start in life.
-                  <br />
-                  <br />
-                  Parents trust Kindi because it comes from a place of love,
-                  passion and real-life experience. Join the Kindi community and
-                  together, let&apos;s create lasting memories and build a
-                  brighter future for our children. */}
+               
                   <p>{stories[0].parentWithKindi}</p>
                 </div>
               </div>
@@ -204,41 +183,11 @@ export default async function ParentWithKindi() {
               />
             </div>
           </div>
-          <Gallery />
+
+          <Claras3DGallery />
+          {/* <Gallery /> */}
         </div>
       </section>
     </>
   );
-}
-
-{
-  /* <div
-  className="relative w-full max-w-lg mx-auto cursor-pointer"
-  onClick={handleSlide}
->
-  <div className="absolute top-0 left-0 right-0 z-10 transition-transform duration-300 ease-in-out transform">
-    <Image
-      src={images[currentImageIndex]} // Use the current image based on the index
-      alt="Top Image"
-      className="w-full h-[600px] object-cover rounded-[20px] border-8 border-white shadow-lg"
-    />
-  </div>
-
-  <div className="flex justify-between">
-    <div className="relative z-0 transform translate-y-0 transition-transform duration-300 ease-in-out">
-      <Image
-        src={images[(currentImageIndex + 1) % images.length]} // Next image
-        alt="Hidden Image 1"
-        className="w-full h-[600px] object-cover rounded-[20px] border-8 border-white  shadow-lg"
-      />
-    </div>
-    <div className="relative z-0 transform translate-y-0 transition-transform duration-300 ease-in-out">
-      <Image
-        src={images[(currentImageIndex + 2) % images.length]} // Next to next image
-        alt="Hidden Image 2"
-        className="w-full h-[600px] object-cover rounded-[20px] border-8 border-white  shadow-lg"
-      />
-    </div>
-  </div>
-</div>; */
 }

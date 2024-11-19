@@ -301,11 +301,11 @@ const page = () => {
           {/* Row 4(C1) */}
           <div className="flex md:hidden shadow-upper pt-2 pb-4 px-2 mb-[72px] rounded-t-[8px] justify-between items-center gap-1 bg-[white] shadow-sm fixed bottom-0 left-0 w-full">
             <Button className="flex bg-[#3f3a64] gap-[4px] py-2 text-center text-white text-xs font-semibold font-fredoka rounded-2xl shadow border-2 border-white flex-row justify-center items-center w-full">
-              <Image src={Print} />
+              <Image alt="Kindi" src={Print} />
               Print
             </Button>
             <Button className="flex bg-red gap-[4px] py-2 text-center text-white text-xs font-semibold font-fredoka rounded-2xl shadow border-2 border-white flex-row justify-center items-center w-full">
-              <Image src={CompletedMark} />
+              <Image alt="Kindi" src={CompletedMark} />
               Mark as Complete
             </Button>
           </div>
@@ -316,3 +316,64 @@ const page = () => {
 };
 
 export default page;
+
+{
+  /* <div className="items-center scrollbar-hidden w-full justify-start flex flex-row gap-1">
+  {activity.speechLanguage ? (
+    <>
+      <IconBadge icon={SpeechLanguageActivity} />
+    </>
+  ) : (
+    <></>
+  )}
+  {activity.emotionalSocialStrength ? (
+    <>
+      <IconBadge icon={EmotionalSocialStrengthActivity} />
+    </>
+  ) : (
+    <></>
+  )}
+  {activity.confidenceIndependence ? (
+    <>
+      <IconBadge icon={ConfidenceIndependenceActivity} />
+    </>
+  ) : (
+    <></>
+  )}
+  {activity.physicalAgility ? (
+    <>
+      <IconBadge icon={PhysicalAgilityActivity} />
+    </>
+  ) : (
+    <></>
+  )}
+  {activity.readingWriting ? (
+    <>
+      <IconBadge icon={ReadingWritingActivity} />
+    </>
+  ) : (
+    <></>
+  )}
+  {activity.discoveringOurWorld ? (
+    <>
+      <IconBadge icon={DiscoveringOurWorldActivity} />
+    </>
+  ) : (
+    <></>
+  )}
+  {activity.creativityImagination ? (
+    <>
+      <IconBadge icon={CreativityImaginationActivity} />
+    </>
+  ) : (
+    <></>
+  )}
+  {activity.experimentsMath ? (
+    <>
+      <IconBadge icon={ExperimentsMathActivity} />
+    </>
+  ) : (
+    <></>
+  )}
+</div>; */
+}

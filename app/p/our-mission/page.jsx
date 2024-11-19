@@ -1,12 +1,13 @@
-import { DefaultReviews, PopularActivity } from "@/app/Sections";
+import { DefaultReviews, PopularActivity } from "@/app/Sections"; //-
 import {
-  Hero,
-  OurStory,
-  ParentWithKindi,
-  TheTeam,
-} from "@/app/Sections/OurMission";
+  //-
+  Hero, //-
+  OurStory, //-
+  ParentWithKindi, //-
+  TheTeam, //-
+} from "@/app/Sections/OurMission"; //-
 
-const page = () => {
+export default function OurMission() {
   return (
     <>
       <section className="w-full bg-[#ffffff] flex flex-col gap-0 justify-center items-center">
@@ -19,6 +20,4 @@ const page = () => {
       </section>
     </>
   );
-};
-
-export default page;
+}

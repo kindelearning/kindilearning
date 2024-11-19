@@ -16,7 +16,7 @@ const MyProfileRoutes = ({
             className="w-[42px] flex justify-center items-center h-[42px] rounded-[12px]"
             style={{ backgroundColor: iconBackgroundColor }}
           >
-            <Image alt="Kindi" src={image || KindiHeart} />
+            <Image alt="Kindi" src={image || KindiHeart} className="w-[24px] h-[28px]"/>
           </div>
           <div className="text-[#0a1932] text-[16px] md:text-[18px] lg:text-[20px] font-medium font-fredoka ">
             {title}

@@ -15,13 +15,35 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import DynamicCard from "../Sections/Global/DynamicCard";
 import { DynamicCardMobile } from "../Sections";
-
+import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import app from "../firebase/firebaseConfig";
+import { useState } from "react";
+const auth = getAuth(app); // Use the initialized app here
 
 const Page = () => {
+  const [error, setError] = useState("");
+
+  const handleGoogleLogin = async () => {
+    const provider = new GoogleAuthProvider();
+
+    try {
+      const result = await signInWithPopup(auth, provider);
+      // User information from Google
+      const user = result.user;
+      console.log("Logged in user:", user);
+
+      // You can now use user data (e.g., user.displayName, user.email) as needed
+
+      // Redirect or handle the login success here, e.g., storing user data in state
+    } catch (err) {
+      setError(err.message);
+      console.error("Google login error:", err);
+    }
+  };
   return (
     <>
       {/* Larger Screens */}
-      <section className="w-full h-screen bg-[url('/Images/SignUpBG.svg')] bg-[#EAEAF5] items-center justify-center py-4 hidden md:flex md:flex-col  gap-[20px]">
+      <section className="w-full h-screen bg-[url('/Images/SignUpBG.svg')] bg-[#EAEAF5] items-center justify-center py-4 hidden lg:flex lg:flex-col  gap-[20px]">
         <div className="claracontainer p-4 md:p-8 xl:p-12 w-full flex flex-col items-center justify-center overflow-hidden gap-8">
           <Image alt="Kindi" src={Logo} className="w-[200px] h-[100px]" />
         </div>
@@ -65,7 +87,7 @@ const Page = () => {
       </section>
 
       {/* Mobile Screen */}
-      <section className="flex flex-col h-screen w-full md:hidden">
+      <section className="flex flex-col h-screen w-full lg:hidden">
         <DynamicCardMobile />
 
         <div className="flex justify-between bottom-0 py-4 gap-2 px-4 h-fit fixed w-full ">
@@ -86,9 +108,12 @@ const Page = () => {
                     <div className="text-[#0a1932] text-2xl font-semibold font-fredoka leading-loose">
                       Sign up
                     </div>
-                    <Link href="/auth/sign-up" className="w-full px-4 justify-end items-start text-center">
+                    <Link
+                      href="/auth/sign-up"
+                      className="w-full px-4 justify-end items-start text-center"
+                    >
                       <Button className="w-full flex  gap-2 bg-red hover:bg-red clarabutton rounded-2xl shadow border-2 border-white">
-                        <Image src={EmailIcons} />
+                        <Image alt="Kindi" src={EmailIcons} />
                         Continue with Email
                       </Button>
                       <div className="flex w-full flex-col justify-center py-4 items-center gap-4">
@@ -117,7 +142,10 @@ const Page = () => {
                         <span className="text-[#0a1932] text-sm font-medium font-fredoka leading-tight">
                           Already have an account.{" "}
                         </span>
-                        <Link href='/auth/sign-in' className="text-[#f05c5c] text-sm font-medium font-fredoka leading-tight">
+                        <Link
+                          href="/auth/sign-in"
+                          className="text-[#f05c5c] text-sm font-medium font-fredoka leading-tight"
+                        >
                           Login
                         </Link>
                       </div>
@@ -141,14 +169,17 @@ const Page = () => {
               <DialogHeader className="p-0">
                 <DialogDescription className="flex flex-row  gap-0 h-fit py-12 items-start  justify-start w-full">
                   {/* Coloumn 1 -bg-[url('/Images/BGVectors.svg')] */}
-                  
+
                   <div className="w-full flex gap-8 flex-col justify-center items-center  h-full">
                     <div className="text-[#0a1932] text-2xl font-semibold font-fredoka leading-loose">
                       Log in
                     </div>
-                    <Link href="/auth/sign-in" className="w-full px-4 justify-end items-start text-center">
+                    <Link
+                      href="/auth/sign-in"
+                      className="w-full px-4 justify-end items-start text-center"
+                    >
                       <Button className="w-full flex  gap-2 bg-red hover:bg-red clarabutton rounded-2xl shadow border-2 border-white">
-                        <Image src={EmailIcons} />
+                        <Image alt="Kindi" src={EmailIcons} />
                         Continue with Email
                       </Button>
                       <div className="flex w-full flex-col justify-center py-4 items-center gap-4">
@@ -161,11 +192,15 @@ const Page = () => {
                             className="cursor-pointer"
                             src={WithApple}
                           />
-                          <Image
-                            alt="Kindi"
-                            className="cursor-pointer"
-                            src={Google}
-                          />
+                          <button onClick={handleGoogleLogin}>
+                            <Image
+                              alt="Kindi"
+                              className="cursor-pointer"
+                              src={Google}
+                            />
+                          </button>
+                          {error && <p>{error}</p>}
+
                           <Image
                             alt="Kindi"
                             className="cursor-pointer"
@@ -177,7 +212,10 @@ const Page = () => {
                         <span className="text-[#0a1932] text-sm font-medium font-fredoka leading-tight">
                           Don&apos;t have an account.{" "}
                         </span>
-                        <Link href='/auth/sign-up' className="text-[#f05c5c] text-sm font-medium font-fredoka leading-tight">
+                        <Link
+                          href="/auth/sign-up"
+                          className="text-[#f05c5c] text-sm font-medium font-fredoka leading-tight"
+                        >
                           Signup
                         </Link>
                       </div>

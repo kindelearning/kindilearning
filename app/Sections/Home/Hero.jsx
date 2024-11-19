@@ -10,6 +10,7 @@ import {
   HomeHeroThree,
   HomeHeroTwo,
 } from "@/public/Images";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 
@@ -18,7 +19,7 @@ const HeroImageGif = [
   { id: 2, src: HomeHeroTwo },
   { id: 3, src: HomeHeroThree },
   { id: 4, src: HomeHeroFour },
-  { id: 4, src: HomeHero },
+  { id: 5, src: HomeHero },
 ];
 
 const ImageSlider = () => {
@@ -50,31 +51,31 @@ const ImageSlider = () => {
   );
 };
 
-const Hero = async () => {
+export default async function Hero() {
+  const { data: session, status } = useSession();
   const homeData = await getHomeData();
-  console.log("Home Page Data (in component):", homeData);
   if (!homeData || !homeData[0]?.hero) {
     return <NotFound />;
   }
 
   return (
-    <section className="w-full h-screen lg:h-auto bg-purple py-12 md:py-24 lg:py-28 items-center justify-center flex flex-col md:flex-row gap-[20px]">
-      <div className="claracontainer w-full flex flex-col-reverse justify-between md:flex-row px-0 md:px-6 lg:px-0 xl:px-0 bg-purple lg:flex-row xl:flex-row gap-8 md:gap-0 lg:gap-4 ">
-        <div className="h-auto w-full md:min-w-[50%] lg:w-full flex-col px-4 md:px-0 lg:px-4 justify-center items-start gap-6 md:gap-7 lg:gap-8 xl:gap-10 inline-flex ">
+    <section className="w-full min-h-screen h-full md:min-h-[600px] md:h-full lg:h-full bg-purple py-12 md:py-24 lg:py-28 items-center justify-center flex flex-col md:flex-row gap-[20px]">
+      <div className="claracontainer w-full flex flex-col-reverse justify-between md:items-center lg:flex-row px-0 md:px-2 lg:px-0 xl:px-0 bg-purple xl:flex-row gap-8 md:gap-0 lg:gap-4 ">
+        <div className="h-auto w-full md:min-w-[50%] md:w-[100%] lg:w-full flex-col px-4 md:px-0 lg:px-4 justify-center items-start gap-6 md:gap-7 lg:gap-8 xl:gap-10 inline-flex ">
           <div className="w-full flex flex-col justify-start items-start h-auto gap-6 md:gap-2 lg:gap-4 xl:gap-4 ">
             <div className="text-white animate-text-reveal clarascript ">
               Early Learning for a Lifetime of Achievement
             </div>
             <div className="flex flex-col w-full justify-start items-start gap-3 lg:gap-6 animate-fade-in ">
               <div className="w-full lg:w-[max-content]">
-                <span className="text-white claraheading md:text-[24px] md:leading-[26px] lg:text-[50px] lg:leading-[56px]  font-bold font-fredoka capitalize animate-fade-in">
+                <span className="text-white claraheading lg:text-[50px] lg:leading-[56px]  font-bold font-fredoka capitalize animate-fade-in">
                   Brain Development Activities
                 </span>
                 <br />
                 <span className="text-light-purple-100 claraheading md:text-[24px] md:leading-[26px] font-normal font-fredoka capitalize animate-fade-in">
                   {" "}
                 </span>
-                <span className="text-red claraheading md:text-[24px] md:leading-[26px] lg:text-[50px] lg:leading-[56px]  animate-fade-in">
+                <span className="text-red claraheading  lg:text-[50px] lg:leading-[56px]  animate-fade-in">
                   for 0 - 5 Year Olds
                 </span>
               </div>
@@ -84,21 +85,18 @@ const Hero = async () => {
             </div>
           </div>
           <div className="w-auto animate-fade-in">
-            <Button className="bg-red hover:bg-hoverRed clarabutton">
-              Get Started
+            <Button
+              onClick={() => (window.location.href = "#pricing_Section")}
+              className="bg-red hover:bg-[#eaeaf5] hover:text-red clarabutton"
+            >
+              {session ? "Upgrade" : "Get Started"}
             </Button>
           </div>
         </div>
-        <div className="w-full flex md:min-w-[300px] h-fit min-h-[400px] md:w-[300px] lg:w-full ">
+        <div className="w-full flex md:min-w-[300px] items-start justify-center h-fit min-h-[400px] md:w-[300px] lg:w-full ">
           <ImageSlider />
-          {/* <Image
-            alt="Kindi"
-            src={HomeHero}
-            className="w-full  md:min-w-[300px] md:w-[300px] lg:w-full object-cover"
-          /> */}
         </div>
       </div>
     </section>
   );
-};
-export default Hero;
+}

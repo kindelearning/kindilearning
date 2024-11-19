@@ -11,6 +11,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 const AccordianList = ({
   text = "I am the List item",
@@ -59,8 +61,11 @@ const PricingCard = ({
   duration = "/Monthly",
   services = ["Service 1", "Service 2", "Service 3"],
   isOpen = false,
+  paymentLink,
   isActive = [false, true, false],
 }) => {
+  const { data: session, status } = useSession();
+
   const [isAccordionOpen, setIsAccordionOpen] = useState(isOpen);
 
   return (
@@ -108,9 +113,20 @@ const PricingCard = ({
           </Button>
         </div>
         <div className="flex w-full flex-row justify-between gap-4 items-center px-4">
-          <Button className="bg-red py-2 px-6 rounded-[12px] text-white hover:border-hoverRed hover:bg-hoverRed clarabutton">
-            Get Started
-          </Button>
+          {session ? (
+            <Link target="_blank" href={paymentLink}>
+              <Button className="bg-red py-2 px-6 rounded-[12px] text-white hover:border-hoverRed hover:bg-hoverRed clarabutton">
+                Upgrade
+              </Button>
+            </Link>
+          ) : (
+            <Link target="_blank" href="/auth/sign-up">
+              <Button className="bg-red py-2 px-6 rounded-[12px] text-white hover:border-hoverRed hover:bg-hoverRed clarabutton">
+                Get Started
+              </Button>
+            </Link>
+          )}
+
           <p className="text-4xl flex flex-col justify-end items-end font-semibold font-fredoka text-end text-red">
             {price}
             <span className="text-center text-[#3f3a64] text-[13px] font-normal font-montserrat leading-tight">
