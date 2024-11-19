@@ -307,27 +307,27 @@ const DynamicMarkActivityCompleteComponent = ({ activityId }) => {
                   {hygraphUser?.partner.slice(2, 4)?.map((partner) => (
                     <div key={partner.id} value={`Partner-${partner.id}`}>
                       {hygraphUser ? (
-                         <div className="w-full flex justify-between items-center">
-                         <div className="flex flex-col p-2 bg-[#eaeaf5] hover:shadow-lg hover:scale-105 duration-500 cursor-pointer shadow rounded-xl justify-center gap-2 items-center w-full">
-                           <Image
-                             width={36}
-                             height={36}
-                             src={
-                               partner.myAvatar?.profileAvatar?.url ||
-                               ProfilePlaceholder01
-                             }
-                             alt={`Avatar of ${partner.name}`}
-                             className="min-w-9 max-w-9 h-9 cursor-pointer hover:scale-110 ease-in-out duration-200 object-cover overflow-clip rounded-full"
-                           />
-                           <div className="font-fredoka text-[12px] lg:text-[16px]">
-                             {partner?.email?.split("@")[0]}
-                           </div>
-                           <ActivityCompleteButton
-                             activityId={activityId}
-                             userId={partner.id}
-                           />
-                         </div>
-                       </div>
+                        <div className="w-full flex justify-between items-center">
+                          <div className="flex flex-col p-2 bg-[#eaeaf5] hover:shadow-lg hover:scale-105 duration-500 cursor-pointer shadow rounded-xl justify-center gap-2 items-center w-full">
+                            <Image
+                              width={36}
+                              height={36}
+                              src={
+                                partner.myAvatar?.profileAvatar?.url ||
+                                ProfilePlaceholder01
+                              }
+                              alt={`Avatar of ${partner.name}`}
+                              className="min-w-9 max-w-9 h-9 cursor-pointer hover:scale-110 ease-in-out duration-200 object-cover overflow-clip rounded-full"
+                            />
+                            <div className="font-fredoka text-[12px] lg:text-[16px]">
+                              {partner?.email?.split("@")[0]}
+                            </div>
+                            <ActivityCompleteButton
+                              activityId={activityId}
+                              userId={partner.id}
+                            />
+                          </div>
+                        </div>
                       ) : null}
                     </div>
                   ))}
@@ -363,10 +363,6 @@ export default async function ActivityDetailPage({ params }) {
 
   return (
     <>
-      <head>
-        <title>Activities - Kindilearning</title>
-        <meta name="description" content="Your profile page on Kindilearning" />
-      </head>
       <section className="w-full h-auto bg-[#EAEAF5] items-center justify-center py-0 px-0 flex flex-col md:flex-row gap-[20px]">
         <div className="claracontainer p-0 lg:p-8 xl:p-12 w-full flex flex-col md:flex-row overflow-hidden gap-8">
           <div className="w-full hidden  text-[#3f3a64] claraheading capitalize">

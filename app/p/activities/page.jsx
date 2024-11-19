@@ -233,13 +233,6 @@ export default async function ActivitiesPage() {
   }
   return (
     <>
-    <head>
-      <title>Select Your Learning Activity | Kindi Learning</title>
-      <meta
-        name="description"
-        content="Discover the best play activities for your child's early years development at Kindi Learning. Select your preferred activities and learn more about the benefits of engaging with them."
-      />
-   </head>
       <section className="w-full h-auto pb-32 bg-[#EAEAF5] items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">
         <div className="claracontainer p-4 md:p-0 lg:p-4 w-full flex flex-col overflow-hidden gap-8">
           {/* Top Description Section */}
@@ -706,13 +699,13 @@ export default async function ActivitiesPage() {
                                         {activity.setUpTime}
                                       </div>
                                       •
-                                        <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-6 flex pr-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
-                                          {activity.themeName.slice(0, 10)}
-                                        </div>
-                                        •
-                                        <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-6 flex pr-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
-                                          {activity.focusAge.slice(0, 10)}
-                                        </div>
+                                      <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-6 flex pr-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
+                                        {activity.themeName.slice(0, 10)}
+                                      </div>
+                                      •
+                                      <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-6 flex pr-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
+                                        {activity.focusAge.slice(0, 10)}
+                                      </div>
                                     </div>
                                   </div>
                                   <div className="items-center justify-center gap-2 md:gap-4 grid grid-cols-5">

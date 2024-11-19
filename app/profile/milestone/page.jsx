@@ -37,10 +37,6 @@ export default function MileStone() {
 
   return (
     <>
-      <head>
-        <title>Milestone - Kindi Learning</title>
-        <meta name="description" content="Milestone Progress" />
-      </head>
       <section className="w-full pb-24 h-full bg-[#EAEAF5] items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">
         <div className="claracontainer items-center justify-center p-4 md:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-8">
           {/* <UserImages /> */}
