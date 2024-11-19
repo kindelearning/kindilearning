@@ -429,8 +429,7 @@ const DisplayAllBadges = () => {
 };
 
 export default async function Achievement() {
-  const { data: session, status } = useSession();
-  const [profileData, setProfileData] = useState(null);
+
 
   const { user, loading } = useAuth();
   const router = useRouter();
