@@ -375,7 +375,7 @@ export default function NewCalendar() {
               data-day={dayObj.day}
               onDragOver={onDragOver}
               onDrop={(e) => onDrop(e, dayObj.day)}
-              className={`p-2 gap-[2px] flex flex-col font-fredoka justify-start items-start border-[1.2px] border-[white] w-full min-h-[40px] h-fit lg:h-[140px] ${
+              className={`p-2 gap-[2px] py-4 flex flex-col font-fredoka justify-start items-start border-[1.2px] border-[white] w-full min-h-[40px] h-fit lg:h-[140px] ${
                 !dayObj.isCurrentMonth
                   ? "bg-[#EFEFEF] text-[#8C8C8C] cursor-not-allowed"
                   : isToday
@@ -403,7 +403,7 @@ export default function NewCalendar() {
                 <div
                   key={event.id}
                   draggable
-                  className="w-full bg-white shadow-md rounded-lg p-2 text-sm"
+                  className="w-full bg- white text-sm"
                   onDragStart={(e) => onDragStart(e, event)}
                   onTouchStart={(e) => onTouchStart(e, event)}
                   onTouchMove={onTouchMove}
@@ -411,12 +411,12 @@ export default function NewCalendar() {
                 >
                   {/* Show only the title if there are multiple events, otherwise show title and description */}
                   {eventCount > 1 ? (
-                    <p className="font-semibold text-[14px] leading-[16px] lg:leading-[12px] lg:text-[12px] text-start">
+                    <p className="font-semibold text-[14px] leading-[16px] rounded-lg lg:leading-[12px] lg:text-[12px] text-start">
                       {event.title}
                     </p>
                   ) : (
                     <>
-                      <div className="flex flex-col w-full gap-1 justify-between items-start">
+                      <div className="flex flex-col bg-white p-2  rounded-lg w-full gap-1 justify-between items-start">
                         <div className="flex w-full justify-between gap-1 lg:gap-0 items-start">
                           <p className="font-semibold  text-[14px] leading-[16px] lg:text-[12px] lg:leading-[12px] text-start">
                             {event.title}
@@ -468,13 +468,13 @@ export default function NewCalendar() {
                         </div>
                       </div>
                       <div
-                        className={`-mb-[24px] w-full justify-between items-center`}
+                        className={` w-full flex -my-[8px] px-4 justify-between items-center`}
                       >
                         <div />
                         <Link
                           target="_blank"
                           href={`/p/activities/${event.id}`}
-                          className={`w-fit px-[6px] py-[2px] text-red shadow-md rounded-lg p-2 text-sm`}
+                          className={`w-[max-content] flex px-[6px] py-[2px]  bg-red  text-white shadow-md rounded-lg text-sm`}
                         >
                           <p className="font-semibold flex justify-end items-center text-[14px] leading-[16px] lg:leading-[12px] lg:text-[12px] text-start">
                             Lets Start &nbsp; <ArrowRight />
