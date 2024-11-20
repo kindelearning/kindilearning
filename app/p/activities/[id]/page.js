@@ -164,7 +164,7 @@ const ActivityAttribute = ({
   );
 };
 
-const IconBadge = ({ icon, backgroundColor = "f05c5c" }) => {
+export const IconBadge = ({ icon, backgroundColor = "f05c5c" }) => {
   return (
     <div
       className={`w-[50px] h-[50px] flex justify-center items-center bg-[#${backgroundColor}] rounded-[16px]`}
@@ -405,6 +405,7 @@ export default async function ActivityDetailPage({ params }) {
                   />
                 </div>
               </div>
+              
               <div className="flex w-full flex-col justify-star items-start gap-2">
                 <div className="text-[#0a1932]  text-start justify-start items-start w-full font-fredoka font-semibold text-[24px] md:text-[28px] lg:text-[28px]">
                   Learning Areas

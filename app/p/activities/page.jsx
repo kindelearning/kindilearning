@@ -23,6 +23,8 @@ import { Badge } from "@/components/ui/badge";
 import { getAllActivities } from "@/lib/hygraph";
 import Head from "next/head";
 import Loading from "@/app/loading";
+import { activityIcons } from "@/app/constant/activity";
+import { IconBadge } from "./[id]/page";
 
 export default async function ActivitiesPage() {
   const [date, setDate] = useState(new Date());
@@ -528,33 +530,32 @@ export default async function ActivitiesPage() {
                                       </div>
                                     </div>
                                     <div className="items-center justify-center gap-2 md:gap-4 grid grid-cols-5">
-                                      <Image
-                                        alt="Kindi"
-                                        className="w-[20px] h-[24px] md:w-[36px] md:h-[36px] lg:w-[48px] lg:h-[48px]"
-                                        src={SpeechLanguageActivity}
-                                      />
-                                      <Image
-                                        alt="Kindi"
-                                        className="w-[20px] h-[24px] md:w-[36px] md:h-[36px] lg:w-[48px] lg:h-[48px]"
-                                        src={DiscoveringOurWorldActivity}
-                                      />
-                                      <Image
-                                        alt="Kindi"
-                                        className="w-[20px] h-[24px] md:w-[36px] md:h-[36px] lg:w-[48px] lg:h-[48px]"
-                                        src={ReadingWritingActivity}
-                                      />
-                                      <Image
-                                        alt="Kindi"
-                                        className="w-[20px] h-[24px] md:w-[36px] md:h-[36px] lg:w-[48px] lg:h-[48px]"
-                                        src={ExperimentsMathActivity}
-                                      />
-                                      <div
-                                        className={`w-[20px] lg:w-[48px]  md:w-[36px] md:h-[36px] md:rounded-xl lg:h-[48px] h-[20px] flex lg:rounded-[12px] justify-center items-center bg-[#F6BEBF] rounded-[4px]`}
-                                      >
-                                        <span className="text-red p-[2px] text-[12px] lg:text-[20px] font-medium font-fredoka">
-                                          +1
-                                        </span>
-                                      </div>
+                                      {activityIcons.slice(0, 4).map(
+                                        (item) =>
+                                          activity[item.key] && (
+                                            <div
+                                              key={item.key}
+                                              className={`w-[20px] h-[24px] md:w-[36px] md:h-[36px] lg:w-[48px] lg:h-[48px] flex justify-center items-center bg-[#${activityIcons.concatbackgroundColor}] rounded-[16px]`}
+                                            >
+                                              <Image
+                                                alt="Kindi"
+                                                src={item.icon}
+                                              />
+                                            </div>
+                                          )
+                                      )}
+                                      {activityIcons.slice(4, 5).map(
+                                        (item) =>
+                                          activity[item.key] && (
+                                            <div
+                                              className={`w-[20px] lg:w-[48px] md:w-[36px] md:h-[36px] md:rounded-xl lg:h-[48px] h-[20px] flex lg:rounded-[12px] justify-center items-center bg-[#F6BEBF] rounded-[4px]`}
+                                            >
+                                              <span className="text-red p-[2px] text-[12px] lg:text-[20px] font-medium font-fredoka">
+                                                +1
+                                              </span>
+                                            </div>
+                                          )
+                                      )}
                                     </div>
                                   </div>
                                 </div>
@@ -621,33 +622,32 @@ export default async function ActivitiesPage() {
                                             </div>
                                           </div>
                                           <div className="items-center justify-center gap-2 md:gap-4 grid grid-cols-5">
-                                            <Image
-                                              alt="Kindi"
-                                              className="w-[20px] h-[24px] md:w-[36px] md:h-[36px] lg:w-[48px] lg:h-[48px]"
-                                              src={SpeechLanguageActivity}
-                                            />
-                                            <Image
-                                              alt="Kindi"
-                                              className="w-[20px] h-[24px] md:w-[36px] md:h-[36px] lg:w-[48px] lg:h-[48px]"
-                                              src={DiscoveringOurWorldActivity}
-                                            />
-                                            <Image
-                                              alt="Kindi"
-                                              className="w-[20px] h-[24px] md:w-[36px] md:h-[36px] lg:w-[48px] lg:h-[48px]"
-                                              src={ReadingWritingActivity}
-                                            />
-                                            <Image
-                                              alt="Kindi"
-                                              className="w-[20px] h-[24px] md:w-[36px] md:h-[36px] lg:w-[48px] lg:h-[48px]"
-                                              src={ExperimentsMathActivity}
-                                            />
-                                            <div
-                                              className={`w-[20px] lg:w-[48px]  md:w-[36px] md:h-[36px] md:rounded-xl lg:h-[48px] h-[20px] flex lg:rounded-[12px] justify-center items-center bg-[#F6BEBF] rounded-[4px]`}
-                                            >
-                                              <span className="text-red p-[2px] text-[12px] lg:text-[20px] font-medium font-fredoka">
-                                                +1
-                                              </span>
-                                            </div>
+                                            {activityIcons.slice(0, 4).map(
+                                              (item) =>
+                                                activity[item.key] && (
+                                                  <div
+                                                    key={item.key}
+                                                    className={`w-[20px] h-[24px] md:w-[36px] md:h-[36px] lg:w-[48px] lg:h-[48px] flex justify-center items-center bg-[#${activityIcons.concatbackgroundColor}] rounded-[16px]`}
+                                                  >
+                                                    <Image
+                                                      alt="Kindi"
+                                                      src={item.icon}
+                                                    />
+                                                  </div>
+                                                )
+                                            )}
+                                            {activityIcons.slice(4, 5).map(
+                                              (item) =>
+                                                activity[item.key] && (
+                                                  <div
+                                                    className={`w-[20px] lg:w-[48px] md:w-[36px] md:h-[36px] md:rounded-xl lg:h-[48px] h-[20px] flex lg:rounded-[12px] justify-center items-center bg-[#F6BEBF] rounded-[4px]`}
+                                                  >
+                                                    <span className="text-red p-[2px] text-[12px] lg:text-[20px] font-medium font-fredoka">
+                                                      +1
+                                                    </span>
+                                                  </div>
+                                                )
+                                            )}
                                           </div>
                                         </div>
                                       </div>
@@ -709,33 +709,32 @@ export default async function ActivitiesPage() {
                                     </div>
                                   </div>
                                   <div className="items-center justify-center gap-2 md:gap-4 grid grid-cols-5">
-                                    <Image
-                                      alt="Kindi"
-                                      className="w-[20px] h-[24px] md:w-[36px] md:h-[36px] lg:w-[48px] lg:h-[48px]"
-                                      src={SpeechLanguageActivity}
-                                    />
-                                    <Image
-                                      alt="Kindi"
-                                      className="w-[20px] h-[24px] md:w-[36px] md:h-[36px] lg:w-[48px] lg:h-[48px]"
-                                      src={DiscoveringOurWorldActivity}
-                                    />
-                                    <Image
-                                      alt="Kindi"
-                                      className="w-[20px] h-[24px] md:w-[36px] md:h-[36px] lg:w-[48px] lg:h-[48px]"
-                                      src={ReadingWritingActivity}
-                                    />
-                                    <Image
-                                      alt="Kindi"
-                                      className="w-[20px] h-[24px] md:w-[36px] md:h-[36px] lg:w-[48px] lg:h-[48px]"
-                                      src={ExperimentsMathActivity}
-                                    />
-                                    <div
-                                      className={`w-[20px] lg:w-[48px]  md:w-[36px] md:h-[36px] md:rounded-xl lg:h-[48px] h-[20px] flex lg:rounded-[12px] justify-center items-center bg-[#F6BEBF] rounded-[4px]`}
-                                    >
-                                      <span className="text-red p-[2px] text-[12px] lg:text-[20px] font-medium font-fredoka">
-                                        +1
-                                      </span>
-                                    </div>
+                                    {activityIcons.slice(0, 4).map(
+                                      (item) =>
+                                        activity[item.key] && (
+                                          <div
+                                            key={item.key}
+                                            className={`w-[20px] h-[24px] md:w-[36px] md:h-[36px] lg:w-[48px] lg:h-[48px] flex justify-center items-center bg-[#${activityIcons.concatbackgroundColor}] rounded-[16px]`}
+                                          >
+                                            <Image
+                                              alt="Kindi"
+                                              src={item.icon}
+                                            />
+                                          </div>
+                                        )
+                                    )}
+                                    {activityIcons.slice(4, 5).map(
+                                      (item) =>
+                                        activity[item.key] && (
+                                          <div
+                                            className={`w-[20px] lg:w-[48px] md:w-[36px] md:h-[36px] md:rounded-xl lg:h-[48px] h-[20px] flex lg:rounded-[12px] justify-center items-center bg-[#F6BEBF] rounded-[4px]`}
+                                          >
+                                            <span className="text-red p-[2px] text-[12px] lg:text-[20px] font-medium font-fredoka">
+                                              +1
+                                            </span>
+                                          </div>
+                                        )
+                                    )}
                                   </div>
                                 </div>
                               </div>
