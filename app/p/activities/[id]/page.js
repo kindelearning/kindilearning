@@ -37,6 +37,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/lib/useAuth";
 import { activityIcons } from "@/app/constant/activity";
+import ActivityResources from "../ActivityResources";
 
 /**
  * @Main_account_Credentials
@@ -178,8 +179,6 @@ export const IconBadge = ({ icon, backgroundColor = "f05c5c" }) => {
 const handlePrint = () => {
   window.print();
 };
-
-
 
 const DynamicMarkActivityCompleteComponent = ({ activityId }) => {
   const { data: session, status } = useSession();
@@ -397,7 +396,7 @@ export default async function ActivityDetailPage({ params }) {
                   />
                 </div>
               </div>
-              
+
               <div className="flex w-full flex-col justify-star items-start gap-2">
                 <div className="text-[#0a1932]  text-start justify-start items-start w-full font-fredoka font-semibold text-[24px] md:text-[28px] lg:text-[28px]">
                   Learning Areas
@@ -428,12 +427,33 @@ export default async function ActivityDetailPage({ params }) {
             <div className="items-center px-4 hidden lg:px-0 w-full lg:min-w-[600px] justify-center lg:flex flex-col gap-2">
               <div className="px-4 mb-6 md:hidden flex w-full py-6 bg-white rounded-xl shadow gap-3 flex-col justify-center items-center">
                 <div className="text-[#3f3a64] text-base font-semibold font-montserrat uppercase leading-[19px]">
-                  Check Activity resources{" "}
+                  Check Activity Resources
                 </div>
-                <Button className=" w-full flex md:hidden bg-[#3f3a64] text-white text-sm font-normal font-fredoka uppercase leading-[18px] tracking-wide rounded-2xl shadow border-2 border-white">
-                  {" "}
-                  Resourses
-                </Button>
+                <Dialog>
+                  <DialogTrigger className="w-full">
+                    <Button
+                      disabled={
+                        !activity.resources || activity.resources.length === 0
+                      }
+                      className={`w-full clarabuttton flex md:hidden ${
+                        activity.resources && activity.resources.length > 0
+                          ? "bg-[#3f3a64] text-white"
+                          : "bg-gray-400 text-gray-600 cursor-not-allowed"
+                      } text-sm font-normal font-fredoka uppercase leading-[18px] tracking-wide rounded-2xl shadow border-2 border-white`}
+                    >
+                      Resources
+                    </Button>
+                  </DialogTrigger>
+                  {activity.resources && activity.resources.length > 0 && (
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogDescription>
+                          <ActivityResources resources={activity.resources} />
+                        </DialogDescription>
+                      </DialogHeader>
+                    </DialogContent>
+                  )}
+                </Dialog>
               </div>
               <Accordian
                 title={activity.accordionOne}
@@ -557,12 +577,33 @@ export default async function ActivityDetailPage({ params }) {
             <div className="items-center px-4 lg:hidden lg:px-0 w-full lg:min-w-[600px] justify-center flex flex-col gap-2">
               <div className="px-4 mb-6 md:hidden flex w-full py-6 bg-white rounded-xl shadow gap-3 flex-col justify-center items-center">
                 <div className="text-[#3f3a64] text-base font-semibold font-montserrat uppercase leading-[19px]">
-                  Check Activity resources{" "}
+                  Check Activity Resources
                 </div>
-                <Button className=" w-full flex md:hidden bg-[#3f3a64] text-white text-sm font-normal font-fredoka uppercase leading-[18px] tracking-wide rounded-2xl shadow border-2 border-white">
-                  {" "}
-                  Resourses
-                </Button>
+                <Dialog>
+                  <DialogTrigger className="w-full">
+                    <Button
+                      disabled={
+                        !activity.resources || activity.resources.length === 0
+                      }
+                      className={`w-full clarabuttton flex md:hidden ${
+                        activity.resources && activity.resources.length > 0
+                          ? "bg-[#3f3a64] text-white"
+                          : "bg-gray-400 text-gray-600 cursor-not-allowed"
+                      } text-sm font-normal font-fredoka uppercase leading-[18px] tracking-wide rounded-2xl shadow border-2 border-white`}
+                    >
+                      Resources
+                    </Button>
+                  </DialogTrigger>
+                  {activity.resources && activity.resources.length > 0 && (
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogDescription>
+                          <ActivityResources resources={activity.resources} />
+                        </DialogDescription>
+                      </DialogHeader>
+                    </DialogContent>
+                  )}
+                </Dialog>
               </div>
               <Accordian
                 title={activity.accordionOne}
@@ -596,15 +637,37 @@ export default async function ActivityDetailPage({ params }) {
                 </div>
                 <ChevronRight />
               </div>
-              <div className=" px-4 md:flex hidden w-full py-6 bg-white rounded-xl shadow gap-3 flex-col justify-center items-center">
+              <div className="px-4 md:flex hidden w-full py-6 bg-white rounded-xl shadow gap-3 flex-col justify-center items-center">
                 <div className="text-[#3f3a64] text-base font-semibold font-montserrat uppercase leading-[19px]">
-                  Check Activity resources{" "}
+                  Check Activity Resources
                 </div>
-                <Button className=" w-full md:flex hidden bg-[#3f3a64] text-white text-sm font-normal font-fredoka uppercase leading-[18px] tracking-wide rounded-2xl shadow border-2 border-white">
-                  {" "}
-                  Resourses
-                </Button>
+                <Dialog>
+                  <DialogTrigger className="w-full">
+                    <Button
+                      disabled={
+                        !activity.resources || activity.resources.length === 0
+                      }
+                      className={`w-full clarabuttton md:flex hidden ${
+                        activity.resources && activity.resources.length > 0
+                          ? "bg-[#3f3a64] text-white"
+                          : "bg-gray-400 text-gray-600 cursor-not-allowed"
+                      } text-sm font-normal font-fredoka uppercase leading-[18px] tracking-wide rounded-2xl shadow border-2 border-white`}
+                    >
+                      Resources
+                    </Button>
+                  </DialogTrigger>
+                  {activity.resources && activity.resources.length > 0 && (
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogDescription>
+                          <ActivityResources resources={activity.resources} />
+                        </DialogDescription>
+                      </DialogHeader>
+                    </DialogContent>
+                  )}
+                </Dialog>
               </div>
+
               <div className="md:flex hidden px-4 w-full py-6 bg-white rounded-xl shadow gap-3 flex-col justify-center items-center">
                 <div className="text-[#3f3a64] text-base font-semibold font-montserrat uppercase leading-[19px]">
                   Print Activity{" "}
