@@ -548,7 +548,7 @@ export default async function ActivitiesPage() {
                                       {activityIcons.slice(4, 5).map(
                                         (item) =>
                                           activity[item.key] && (
-                                            <div
+                                            <div    key={item.key}
                                               className={`w-[20px] lg:w-[48px] md:w-[36px] md:h-[36px] md:rounded-xl lg:h-[48px] h-[20px] flex lg:rounded-[12px] justify-center items-center bg-[#F6BEBF] rounded-[4px]`}
                                             >
                                               <span className="text-red p-[2px] text-[12px] lg:text-[20px] font-medium font-fredoka">
@@ -640,7 +640,7 @@ export default async function ActivitiesPage() {
                                             {activityIcons.slice(4, 5).map(
                                               (item) =>
                                                 activity[item.key] && (
-                                                  <div
+                                                  <div    key={item.key}
                                                     className={`w-[20px] lg:w-[48px] md:w-[36px] md:h-[36px] md:rounded-xl lg:h-[48px] h-[20px] flex lg:rounded-[12px] justify-center items-center bg-[#F6BEBF] rounded-[4px]`}
                                                   >
                                                     <span className="text-red p-[2px] text-[12px] lg:text-[20px] font-medium font-fredoka">
