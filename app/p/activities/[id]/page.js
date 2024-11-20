@@ -445,7 +445,7 @@ export default async function ActivityDetailPage({ params }) {
                     </Button>
                   </DialogTrigger>
                   {activity.resources && activity.resources.length > 0 && (
-                    <DialogContent>
+                    <DialogContent className="w-full max-w-[96%] p-0 lg:max-w-[800px] max-h-[500px] overflow-y-scroll rounded-lg">
                       <DialogHeader>
                         <DialogDescription>
                           <ActivityResources resources={activity.resources} />
@@ -523,7 +523,7 @@ export default async function ActivityDetailPage({ params }) {
             {/* Row 1(R2) */}
             <div className="claracontainer hidden lg:flex w-full flex-col px-4 lg:px-0 justify-start items-start gap-4">
               <div className="flex w-full flex-col justify-normal items-center gap-2">
-                <div className="text-[#0a1932]  text-start justify-start items-start w-full font-fredoka font-semibold text-[24px] md:text-[28px] lg:text-[28px]">
+                <div className="text-[#0a1932] text-start justify-start items-start w-full font-fredoka font-semibold text-[24px] md:text-[28px] lg:text-[28px]">
                   {activity.title}
                 </div>
                 <div className="items-center w-full justify-center flex flex-col gap-2">
@@ -595,7 +595,7 @@ export default async function ActivityDetailPage({ params }) {
                     </Button>
                   </DialogTrigger>
                   {activity.resources && activity.resources.length > 0 && (
-                    <DialogContent>
+                    <DialogContent className="w-full max-w-[96%] p-0 lg:max-w-[800px] max-h-[500px] overflow-y-scroll rounded-lg">
                       <DialogHeader>
                         <DialogDescription>
                           <ActivityResources resources={activity.resources} />
@@ -633,7 +633,7 @@ export default async function ActivityDetailPage({ params }) {
                 <ChevronLeft />
                 <div className="text-center text-[#3f3a64] text-base font-semibold font-montserrat uppercase leading-[19px]">
                   Activity date <br />
-                  {new Date(activity.activityDate).toLocaleDateString()}
+                  {new Date(activity.activityDate).toLocaleDateString("en-GB")}
                 </div>
                 <ChevronRight />
               </div>
@@ -657,7 +657,7 @@ export default async function ActivityDetailPage({ params }) {
                     </Button>
                   </DialogTrigger>
                   {activity.resources && activity.resources.length > 0 && (
-                    <DialogContent>
+                    <DialogContent className="w-full p-0 max-w-[96%] lg:max-w-[800px] max-h-[500px] overflow-y-scroll rounded-lg">
                       <DialogHeader>
                         <DialogDescription>
                           <ActivityResources resources={activity.resources} />
