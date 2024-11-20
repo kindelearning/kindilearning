@@ -25,6 +25,7 @@ import Head from "next/head";
 import Loading from "@/app/loading";
 import { activityIcons } from "@/app/constant/activity";
 import { IconBadge } from "./[id]/page";
+import ActivitiesList from "./ActivitiesList";
 
 export default async function ActivitiesPage() {
   const [date, setDate] = useState(new Date());
@@ -665,7 +666,8 @@ export default async function ActivitiesPage() {
               </div>
 
               {/* Showing all the activites at the bottom */}
-              <div className="w-full flex flex-col gap-2 lg:gap-6 lg:pt-6">
+              <ActivitiesList activities={activities} />
+              {/* <div className="w-full flex flex-col gap-2 lg:gap-6 lg:pt-6">
                 <div className="flex clarabodyTwo text-purple lg:text-[32px]">
                   Discover All Activities
                 </div>
@@ -689,7 +691,6 @@ export default async function ActivitiesPage() {
                                 <div className="w-full p-2 md:p-4 flex-col justify-start lg:p-4 items-start flex gap-2 md:gap-2 lg:gap-4">
                                   <div className="flex-col w-full gap-[6px] justify-start items-start">
                                     <div className="text-[#0a1932] text-[16px] md:text-xl font-semibold font-fredoka leading-[20px]">
-                                      {/* {activity.title} */}
                                       {activity.title.length > 20
                                         ? `${activity.title.slice(0, 22)}...`
                                         : activity.title}
@@ -745,7 +746,7 @@ export default async function ActivitiesPage() {
                     </div>
                   ))}
                 </div>
-              </div>
+              </div> */}
             </div>
             {/* filters column begin */}
             <div className="lg:flex flex-col hidden min-w-[30%] max-w-[36%] gap-8 w-full justify-start items-start">
