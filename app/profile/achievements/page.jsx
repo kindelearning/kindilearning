@@ -20,16 +20,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { PopupFooter } from "@/app/Sections";
 import ReferralCard from "@/app/Sections/Profile/ReferralCard";
-import LevelCard from "@/app/Sections/Profile/LevelCard";
 import Link from "next/link";
 import { GraphQLClient, gql } from "graphql-request";
-import { useSession } from "next-auth/react";
 import Loading from "@/app/loading";
-import Head from "next/head";
-import AchievementBadge from "@/app/Sections/Profile/AchievementBadge";
-import { AcheievemnetData } from "@/app/constant/menu";
+
 import {
   fetchBadges,
   getPublishedBadge,

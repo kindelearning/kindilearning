@@ -12,20 +12,18 @@ import {
   Bag,
   Email,
   Kid,
-  LanguageIcon,
   Partner,
   Payments,
   Support,
   TnC,
   User,
-  MasterCard,
   ConnectPartner,
   Milestone,
   ProfileSettingIcon,
   VerifiedIcon,
   ProfileProgress,
-  ProfilePlaceHolderOne,
   PartnerBulb,
+  ProfilePlaceholder01,
 } from "@/public/Images";
 import Head from "next/head";
 import Link from "next/link";
@@ -507,7 +505,10 @@ const PartnerList = ({ userId }) => {
                 <div className="w-16 h-16 overflow-clip flex justify-center items-center">
                   {partner.profilePicture ? (
                     <Image
-                      src={partner.profilePicture?.url}
+                      src={
+                        hygraphUser.myAvatar.profileAvatar.url ||
+                        ProfilePlaceholder01
+                      }
                       alt="Profile Image"
                       width={64}
                       height={64}
@@ -515,7 +516,7 @@ const PartnerList = ({ userId }) => {
                     />
                   ) : (
                     <Image
-                      src={ProfilePlaceHolderOne} // Ensure this is correctly imported
+                      src={ProfilePlaceholder01} // Ensure this is correctly imported
                       alt="Profile Image"
                       width={64}
                       height={64}
@@ -1206,7 +1207,7 @@ export default function ProfileSegments() {
                       <Image
                         src={
                           hygraphUser.myAvatar.profileAvatar.url ||
-                          ProfilePlaceHolderOne
+                          ProfilePlaceholder01
                         }
                         alt="User DP"
                         width={100}

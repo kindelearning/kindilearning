@@ -1,11 +1,9 @@
 "use client";
 
-import { ImageInput } from "@/app/Sections";
 import AvatarSelectionForm from "@/app/Sections/Profile/ImageInput";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { RefreshCcw } from "lucide-react";
-import Head from "next/head";
 import React, { useEffect, useState } from "react";
 
 const HYGRAPH_TOKEN =
