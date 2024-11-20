@@ -99,10 +99,7 @@
   .claracontainer {
     width: 100%;
   }
-  /* .dragging {
-    background-color: #d1d5db;
-    border: 2px dashed #6b7280; 
-  } */
+  
   .milestone-dot {
     width: 16px;
     height: 16px;
@@ -260,7 +257,9 @@
   .clarabutton {
     @apply transition duration-300 ease-in-out hover:scale-[1.03] font-fredoka tracking-wider uppercase font-bold text-[16px] hover:border-2 hover:border-[#ffffff] border-transparent px-6 md:px-8 xl:px-12 border-2 rounded-[12px];
   }
-
+  .semiClara {
+    @apply text-red-500 font-fredoka font-semibold;
+  }
   .scrollbar-hidden {
     &::-webkit-scrollbar {
       width: 8px;

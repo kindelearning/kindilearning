@@ -1,4 +1,5 @@
 import { getStandardPagesContent } from "@/lib/hygraph";
+import { RichText } from "@graphcms/rich-text-react-renderer";
 import Link from "next/link";
 import React from "react";
 
@@ -42,10 +43,24 @@ const Page = async () => {
           <div className="h-[1.5px] bg-[black] rounded-full my-4" />
           <div className="items-center w-full justify-center flex flex-col gap-4">
             {standardPages?.termsConditions?.html ? (
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: standardPages.termsConditions.html,
+              // <div
+              //   dangerouslySetInnerHTML={{
+              //     __html: standardPages.termsConditions.html,
+              //   }}
+              <RichText
+                renderers={{
+                  p: ({ children, className }) => (
+                    <p
+                      className={`${className || ""} text-base leading-relaxed`}
+                    >
+                      {children}
+                    </p>
+                  ),
+                  span: ({ children, className }) => (
+                    <span className={className}>{children}</span>
+                  ),
                 }}
+                content={standardPages.termsConditions.raw}
               />
             ) : (
               <p>No content found</p>
