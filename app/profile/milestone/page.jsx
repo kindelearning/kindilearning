@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import CurrentUser from "./IntComponent/CurrentUser";
 import ProfileRoute from "./IntComponent/ProfileRoute";
-import DisplayAllMileStone from "./IntComponent/DisplayAllMileStone";
+import DisplayAllMileStone from "./IntComponent/Milestonepath";
 
 export default function MileStone() {
   const { user, loading } = useAuth();

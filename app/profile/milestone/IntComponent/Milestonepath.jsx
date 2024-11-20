@@ -15,6 +15,7 @@ import { ChevronLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import MilestoneCompleteButton from "./MilestoneCompleteButton";
+import { getPublishedMileStone } from "@/lib/hygraph";
 import Link from "next/link";
 
 export function CurvePath({ milestones = [], currentUserId }) {
@@ -109,7 +110,7 @@ export function CurvePath({ milestones = [], currentUserId }) {
       >
         <Dialog className="p-2 lg:p-4">
           <DialogTrigger>
-            <button className="transition duration-300 ease-in-out hover:scale-[1.03] font-fredoka tracking-wider md: uppercase font-bold text-[10px] md:text-[16px] hover:border-2 hover:border-[#ffffff] border-transparent md:px-8 xl:px-12 border-2 rounded-[12px] bg-red px-4 py-2 hover:shadow text-white hover:bg-hoverRed">
+            <button className="transition duration-300 ease-in-out hover:scale-[1.03] font-fredoka tracking-wider font-bold text-[10px] md:text-[16px] hover:bg-purple hover:border-2 hover:border-[#ffffff] border-transparent md:px-6 border-2 rounded-[12px] bg-red px-4 py-2 hover:shadow text-white">
               {milestone.title}
             </button>
           </DialogTrigger>
@@ -378,3 +379,125 @@ export const TrigSnakeCurve = ({
     </div>
   );
 };
+
+export default function DisplayAllMileStone({ passThecurrentUserId }) {
+  const [milestones, setMilestones] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedSubCategory, setSelectedSubCategory] = useState("All");
+
+  useEffect(() => {
+    const fetchMilestones = async () => {
+      try {
+        const data = await getPublishedMileStone();
+        console.log("Fetched milestones:", data);
+        setMilestones(data);
+      } catch (err) {
+        setError("Error fetching milestones.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMilestones();
+  }, []);
+
+  // Adding Filters for milestone based on Category and subcategory
+  const categories = [
+    "All",
+    ...new Set(milestones.map((m) => m.category || "Uncategorized")),
+  ];
+
+  // Extract unique subcategories for the selected category
+  const subCategories =
+    selectedCategory === "All"
+      ? ["All"]
+      : [
+          "All",
+          ...new Set(
+            milestones
+              .filter((m) => m.category === selectedCategory)
+              .map((m) => m.subCategory || "Unspecified")
+          ),
+        ];
+
+  // Filter milestones based on selected category and subcategory
+  const filteredMilestones = milestones.filter((milestone) => {
+    const matchesCategory =
+      selectedCategory === "All" || milestone.category === selectedCategory;
+    const matchesSubCategory =
+      selectedSubCategory === "All" ||
+      milestone.subCategory === selectedSubCategory;
+    return matchesCategory && matchesSubCategory;
+  });
+
+  if (!Array.isArray(milestones)) {
+    return <p>Error: Expected milestones to be an array.</p>;
+  }
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
+
+  return (
+    <>
+      <section className="w-full pb-24 h-full bg-[#EAEAF5] items-center justify-center py-4 flex flex-col gap-[20px]">
+        <div className="flex w-full flex-col items-start">
+          <select
+            id="category-select"
+            value={selectedCategory}
+            onChange={(e) => {
+              setSelectedCategory(e.target.value);
+              setSelectedSubCategory("All"); // Reset subcategory selection when category changes
+            }}
+            className="border  w-full border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          >
+            {categories.map((category) => (
+              <option key={category} value={category}>
+                {category}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Subcategory Filter as Badge/Chip (conditionally rendered) */}
+        {selectedCategory !== "All" && (
+          <div className="subcategory-filter mt-4">
+            <div className="flex overflow-x-scroll scrollbar-hidden flex-wrap gap-2">
+              {subCategories.map((subCategory) => (
+                <span
+                  key={subCategory}
+                  onClick={() => setSelectedSubCategory(subCategory)}
+                  className={`cursor-pointer border-white border-2 duration-200 px-4 py-1 rounded-full ${
+                    selectedSubCategory === subCategory
+                      ? "bg-red  text-white"
+                      : "bg-gray-200  text-gray-800"
+                  } hover:bg-red hover:text-white`}
+                  style={{
+                    display: "inline-block",
+                    margin: "0.2rem",
+                    // border:
+                    //   selectedSubCategory === subCategory
+                    //     ? "2px solid #000"
+                    //     : "1px solid #ccc",
+                  }}
+                >
+                  {subCategory}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+      </section>
+      <TrigSnakeCurve
+        amplitude={6}
+        mileStoneCustomData={filteredMilestones}
+        currentUserId={passThecurrentUserId}
+      />
+      <CurvePath
+        milestones={filteredMilestones}
+        currentUserId={passThecurrentUserId}
+      />
+    </>
+  );
+}
