@@ -36,6 +36,7 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/lib/useAuth";
+import { activityIcons } from "@/app/constant/activity";
 
 /**
  * @Main_account_Credentials
@@ -178,16 +179,7 @@ const handlePrint = () => {
   window.print();
 };
 
-const activityIcons = [
-  { key: "speechLanguage", icon: SpeechLanguageActivity },
-  { key: "emotionalSocialStrength", icon: EmotionalSocialStrengthActivity },
-  { key: "confidenceIndependence", icon: ConfidenceIndependenceActivity },
-  { key: "physicalAgility", icon: PhysicalAgilityActivity },
-  { key: "readingWriting", icon: ReadingWritingActivity },
-  { key: "discoveringOurWorld", icon: DiscoveringOurWorldActivity },
-  { key: "creativityImagination", icon: CreativityImaginationActivity },
-  { key: "experimentsMath", icon: ExperimentsMathActivity },
-];
+
 
 const DynamicMarkActivityCompleteComponent = ({ activityId }) => {
   const { data: session, status } = useSession();

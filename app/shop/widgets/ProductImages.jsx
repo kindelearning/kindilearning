@@ -23,8 +23,8 @@ const ProductImages = ({ images = [] }) => {
           />
         </div>
       </div>
-      <div className="flex max-w-[600px] w-full scrollbar-hidden overflow-y-hidden overflow-x-auto pt-4">
-        <div className="flex flex-nowrap">
+      <div className="flex max-w-full w-full scrollbar-hidden overflow-y-hidden overflow-x-auto pt-4">
+        <div className="flex px-4 lg:px-0 flex-nowrap">
           {images.map((image, index) => (
             <div
               key={index}
