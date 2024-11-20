@@ -403,7 +403,7 @@ export default function NewCalendar() {
                 <div
                   key={event.id}
                   draggable
-                  className="w-full bg-white shadow-md rounded-lg p-2 text-sm"
+                  className="w-full  text-sm"
                   onDragStart={(e) => onDragStart(e, event)}
                   onTouchStart={(e) => onTouchStart(e, event)}
                   onTouchMove={onTouchMove}
@@ -415,8 +415,8 @@ export default function NewCalendar() {
                       {event.title}
                     </p>
                   ) : (
-                    <>
-                      <div className="flex flex-col w-full gap-1 justify-between items-start">
+                    <> 
+                      <div className="flex p-2 bg-white shadow-md rounded-lg flex-col w-full gap-1 justify-between items-start">
                         <div className="flex w-full justify-between gap-1 lg:gap-0 items-start">
                           <p className="font-semibold  text-[14px] leading-[16px] lg:text-[12px] lg:leading-[12px] text-start">
                             {event.title}
@@ -468,16 +468,16 @@ export default function NewCalendar() {
                         </div>
                       </div>
                       <div
-                        className={`-mb-[24px] w-full justify-between items-center`}
+                        className={`w-full justify-between flex py-2 items-center`}
                       >
                         <div />
                         <Link
                           target="_blank"
                           href={`/p/activities/${event.id}`}
-                          className={`w-fit px-[6px] py-[2px] text-red shadow-md rounded-lg p-2 text-sm`}
+                          className={`w-[max-content] px-[8px] -mt-[12px] flex py-[6px] bg-red shadow-md rounded-md p-2 text-sm`}
                         >
-                          <p className="font-semibold flex justify-end items-center text-[14px] leading-[16px] lg:leading-[12px] lg:text-[12px] text-start">
-                            Lets Start &nbsp; <ArrowRight />
+                          <p className="font-semibold flex text-white bg-red justify-end items-center ¸ leading-[12px] text-start">
+                            Lets Start &nbsp; <ArrowRight className="text-[10px] w-[12px] h-[12px]" />
                           </p>
                         </Link>
                       </div>
