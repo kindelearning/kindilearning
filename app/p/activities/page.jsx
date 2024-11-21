@@ -123,11 +123,30 @@ export default async function ActivitiesPage() {
 
   // List of Select Themes options
   const selectTheme = [
-    "Winter Magic",
-    "Exploring Harvest",
-    "Environmental Care",
-    "Farmyard Adventures",
-    "Springtime",
+    "Winter",
+    "Healthy Eating",
+    "Five Senses",
+    "Early Maths",
+    "Shapes",
+    "Colours",
+    "Spring",
+    "Farm Life",
+    "Transport & Travel",
+    "Road Awareness",
+    "Community Helpers",
+    "Insects & Bugs",
+    "Space",
+    "Summer",
+    "Sea Life",
+    "Feelings & Emotions",
+    "Marvellous Me",
+    "Harvest",
+    "Opposites",
+    "Autumn",
+    "Forest & Woodland Animals",
+    "Eco, Recycling & Environment",
+    "World Nursery Rhyme Week",
+    "Festive Season",
   ];
   // Effect to filter activities based on selected Theme Option
   useEffect(() => {
@@ -149,7 +168,12 @@ export default async function ActivitiesPage() {
   };
 
   // List of Select Age Focus options
-  const selectAgeFocusOptions = ["BABY", "TODDLER", "PRE-SCHOOLER", "KINDI"];
+  const selectAgeFocusOptions = [
+    "Beginners",
+    "Explorers",
+    "Discoverers",
+    "Adventurers",
+  ];
   // Effect to filter activities based on selected Age Focus Option
   useEffect(() => {
     if (selectedAgeFocus.length > 0) {
@@ -328,7 +352,7 @@ export default async function ActivitiesPage() {
                       <div className="flex flex-col w-full gap-4 justify-start items-center">
                         <div className="flex flex-col justify-start items-start gap-2 w-full">
                           <div className="text-purple clarabodyTwo">
-                            Learning Areas
+                            Select Area of Learning
                           </div>
                           <select
                             id="feature-select"
@@ -339,7 +363,7 @@ export default async function ActivitiesPage() {
                             className="border-2 w-full pr-2 rounded-full border-[#3f3a64] text-[#3f3a64] bg-white text-base font-fredoka leading-[13px] font-medium p-2"
                           >
                             <option value="" disabled>
-                              Select features
+                              Select Area of Learning
                             </option>
                             {featuresOptions.map((feature) => (
                               <option key={feature} value={feature}>
@@ -376,7 +400,7 @@ export default async function ActivitiesPage() {
                         </div>
                         <div className="flex flex-col justify-start items-start gap-2 w-full">
                           <div className="text-purple clarabodyTwo">
-                            Select Skill Options
+                            Select From Skill Options
                           </div>
                           <select
                             id="feature-select"
@@ -427,7 +451,7 @@ export default async function ActivitiesPage() {
                             className="border-2 w-full pr-2 rounded-full border-[#3f3a64] text-[#3f3a64] bg-white text-base font-fredoka leading-[13px] font-medium p-2"
                           >
                             <option value="" disabled>
-                              Select Skills
+                              Select Difficulty
                             </option>
                             {selectAgeFocusOptions.map((age) => (
                               <option key={age} value={age}>
@@ -438,7 +462,7 @@ export default async function ActivitiesPage() {
                         </div>
                         <div className="flex flex-col justify-start items-start gap-2 w-full">
                           <div className="text-purple clarabodyTwo">
-                            Select based on Preperation Time
+                            Select Based on Prep Time
                           </div>
                           <select
                             id="feature-select"
@@ -449,7 +473,7 @@ export default async function ActivitiesPage() {
                             className="border-2 w-full pr-2 rounded-full border-[#3f3a64] text-[#3f3a64] bg-white text-base font-fredoka leading-[13px] font-medium p-2"
                           >
                             <option value="" disabled>
-                              Select Preperation Time
+                              Select Based on Prep Time
                             </option>
                             {selectPrepTime.map((time) => (
                               <option key={time} value={time}>
@@ -548,7 +572,8 @@ export default async function ActivitiesPage() {
                                       {activityIcons.slice(4, 5).map(
                                         (item) =>
                                           activity[item.key] && (
-                                            <div    key={item.key}
+                                            <div
+                                              key={item.key}
                                               className={`w-[20px] lg:w-[48px] md:w-[36px] md:h-[36px] md:rounded-xl lg:h-[48px] h-[20px] flex lg:rounded-[12px] justify-center items-center bg-[#F6BEBF] rounded-[4px]`}
                                             >
                                               <span className="text-red p-[2px] text-[12px] lg:text-[20px] font-medium font-fredoka">
@@ -640,7 +665,8 @@ export default async function ActivitiesPage() {
                                             {activityIcons.slice(4, 5).map(
                                               (item) =>
                                                 activity[item.key] && (
-                                                  <div    key={item.key}
+                                                  <div
+                                                    key={item.key}
                                                     className={`w-[20px] lg:w-[48px] md:w-[36px] md:h-[36px] md:rounded-xl lg:h-[48px] h-[20px] flex lg:rounded-[12px] justify-center items-center bg-[#F6BEBF] rounded-[4px]`}
                                                   >
                                                     <span className="text-red p-[2px] text-[12px] lg:text-[20px] font-medium font-fredoka">
@@ -769,7 +795,7 @@ export default async function ActivitiesPage() {
                       className="border-2 w-full rounded-full border-[#3f3a64] text-[#3f3a64] bg-white text-base font-fredoka leading-[13px] font-medium p-2"
                     >
                       <option value="" disabled>
-                        Select Features
+                        Select Area of Learning
                       </option>
                       {featuresOptions.map((feature) => (
                         <option key={feature} value={feature}>
@@ -814,7 +840,7 @@ export default async function ActivitiesPage() {
                       className="border-2 w-full pr-2 rounded-full border-[#3f3a64] text-[#3f3a64] bg-white text-base font-fredoka leading-[13px] font-medium p-2"
                     >
                       <option value="" disabled>
-                        Select Skills
+                        Select Difficulty
                       </option>
                       {selectAgeFocusOptions.map((age) => (
                         <option key={age} value={age}>
@@ -829,7 +855,7 @@ export default async function ActivitiesPage() {
                       className="border-2 w-full pr-2 rounded-full border-[#3f3a64] text-[#3f3a64] bg-white text-base font-fredoka leading-[13px] font-medium p-2"
                     >
                       <option value="" disabled>
-                        Select based on Prep Time
+                        Select Based on Prep Time
                       </option>
                       {selectPrepTime.map((time) => (
                         <option key={time} value={time}>

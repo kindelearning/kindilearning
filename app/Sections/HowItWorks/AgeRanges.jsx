@@ -82,7 +82,7 @@ const AgeRanges = async () => {
             <AgeCard
               image={AgeCardOne}
               bgImage="/Images/AgeRangeOne.svg"
-              title="BABY (0+ YEARS)"
+              title="Beginners (0+ YEARS)"
               body="Sensory play activities tailored for very young little ones, but appeal to all young children."
             />
             <Image
@@ -94,7 +94,7 @@ const AgeRanges = async () => {
               image={AgeCardTwo}
               bgImage="/Images/AgeRangeTwo.svg"
               body="Our learning activities help toddlers develop essential language, social, motor and cognitive skills — but babies and pre-schoolers can enjoy the fun, too!"
-              title="TODDLER (18+ MONTHS)"
+              title="Explorers (18+ MONTHS)"
             />
             <Image
               src={AgeRangeArrow}
@@ -105,7 +105,7 @@ const AgeRanges = async () => {
               image={AgeCardThree}
               bgImage="/Images/AgeRangeThree.svg"
               body="Fun learning activities for children approaching the beginning of their school careers; these activities will also appeal to toddlers and babies."
-              title="PRE-SCHOOLER (2.5+ YEARS)"
+              title="Discoverers (2.5+ YEARS)"
             />
             <Image
               src={AgeRangeArrow}
@@ -115,7 +115,7 @@ const AgeRanges = async () => {
             <AgeCard
               image={AgeCardFour}
               bgImage="/Images/AgeRangeFour.svg"
-              title="KINDI (4+ YEARS)"
+              title="Adventurers (4+ YEARS)"
               body="Fun and engaging early years development activities for kindergarteners — Tailored developmental stages for toddlers, babies and pre-schoolers alike."
             />
           </div>
