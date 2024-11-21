@@ -442,7 +442,7 @@ export default function DisplayAllMileStone({ passThecurrentUserId }) {
   return (
     <>
       <section className="w-full pb-24 h-full bg-[#EAEAF5] items-center justify-center py-4 flex flex-col gap-[20px]">
-        <div className="flex w-full flex-col items-start">
+        <div className="flex w-full lg:max-w-[800px] flex-col  items-start">
           <select
             id="category-select"
             value={selectedCategory}
@@ -450,7 +450,7 @@ export default function DisplayAllMileStone({ passThecurrentUserId }) {
               setSelectedCategory(e.target.value);
               setSelectedSubCategory("All"); // Reset subcategory selection when category changes
             }}
-            className="border  w-full border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="border rounded-full w-full border-gray-300 pr-2 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple"
           >
             {categories.map((category) => (
               <option key={category} value={category}>
