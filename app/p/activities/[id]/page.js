@@ -183,10 +183,16 @@ const handlePrint = () => {
 const DynamicMarkActivityCompleteComponent = ({ activityId }) => {
   const { data: session, status } = useSession();
   const [profileData, setProfileData] = useState(null);
-
+  const [isOpen, setIsOpen] = useState(false);
   const { user, loading } = useAuth();
   const router = useRouter();
   const [hygraphUser, setHygraphUser] = useState(null);
+
+  const handleClose = () => {
+    setTimeout(() => {
+      setIsOpen(false); // Close the dialog after a delay
+    }, 1000); // Close the dialog
+  };
 
   useEffect(() => {
     if (user && user.email) {
@@ -240,9 +246,12 @@ const DynamicMarkActivityCompleteComponent = ({ activityId }) => {
     <>
       {user && hygraphUser ? (
         <>
-          <Dialog>
+          <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger className="w-full">
-              <Button className="bg-red w-full hover:bg-hoverRed clarabutton">
+              <Button
+                onClick={() => setIsOpen(true)}
+                className="bg-red w-full hover:bg-hoverRed clarabutton"
+              >
                 Mark as Completed
               </Button>
             </DialogTrigger>
@@ -250,7 +259,11 @@ const DynamicMarkActivityCompleteComponent = ({ activityId }) => {
               <DialogHeader>
                 <DialogDescription className="w-full grid grid-cols-2 lg:grid-cols-3 justify-between gap-1 lg:gap-2">
                   {hygraphUser?.partner.slice(0, 2)?.map((partner) => (
-                    <div key={partner.id} value={`Partner-${partner.id}`}>
+                    <div
+                      onClick={handleClose}
+                      key={partner.id}
+                      value={`Partner-${partner.id}`}
+                    >
                       {hygraphUser ? (
                         <div className="w-full flex justify-between items-center">
                           <div className="flex flex-col p-2 bg-[#eaeaf5] hover:shadow-lg hover:scale-105 duration-500 cursor-pointer shadow rounded-xl justify-center gap-2 items-center w-full">
@@ -277,7 +290,10 @@ const DynamicMarkActivityCompleteComponent = ({ activityId }) => {
                     </div>
                   ))}
 
-                  <div className="flex flex-col p-2 bg-[#eaeaf5] hover:shadow-lg hover:scale-105 duration-500 cursor-pointer shadow rounded-xl justify-center gap-2 items-center w-full">
+                  <div
+                    onClick={handleClose}
+                    className="flex flex-col p-2 bg-[#eaeaf5] hover:shadow-lg hover:scale-105 duration-500 cursor-pointer shadow rounded-xl justify-center gap-2 items-center w-full"
+                  >
                     <Image
                       width={36}
                       height={36}
@@ -296,7 +312,11 @@ const DynamicMarkActivityCompleteComponent = ({ activityId }) => {
                     />
                   </div>
                   {hygraphUser?.partner.slice(2, 4)?.map((partner) => (
-                    <div key={partner.id} value={`Partner-${partner.id}`}>
+                    <div
+                      onClick={handleClose}
+                      key={partner.id}
+                      value={`Partner-${partner.id}`}
+                    >
                       {hygraphUser ? (
                         <div className="w-full flex justify-between items-center">
                           <div className="flex flex-col p-2 bg-[#eaeaf5] hover:shadow-lg hover:scale-105 duration-500 cursor-pointer shadow rounded-xl justify-center gap-2 items-center w-full">
