@@ -27,7 +27,7 @@ import { activityIcons } from "@/app/constant/activity";
 import { IconBadge } from "./[id]/page";
 import ActivitiesList from "./ActivitiesList";
 
-export default async function ActivitiesPage() {
+export default function ActivitiesPage() {
   const [date, setDate] = useState(new Date());
   const [activities, setActivities] = useState([]); //Getting all the activities from Hygraph
   const [filteredActivities, setFilteredActivities] = useState([]);

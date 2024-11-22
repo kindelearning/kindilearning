@@ -43,6 +43,7 @@ async function saveOrderToHygraph(session) {
     paymentStatus: payment_status,
     createdDate: new Date(created * 1000).toISOString(),
   };
+  console.log("Constructed order data:", orderData); // Log the order data to verify it
 
   try {
     const response = await fetch(HYGRAPH_ENDPOINT, {
