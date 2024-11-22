@@ -7,6 +7,7 @@ import { getPublishedPosts } from "@/lib/hygraph";
 import { BlogThumb } from "@/public/Images";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import BlogList from "./BlogList";
 
 function SearchInput({ value, onChange }) {
   return (
@@ -130,7 +131,8 @@ export default function Community() {
                 <div className="w-full text-center clarabodyTwo text-red-500">
                   No matching blogs found.
                 </div>
-                <div className="claracontainer w-full grid grid-cols-1 overflow-hidden gap-4">
+                <BlogList blogs={blogs} />
+                {/* <div className="claracontainer w-full grid grid-cols-1 overflow-hidden gap-4">
                   {blogs.map((blog) => (
                     <div key={blog.id}>
                       <Link
@@ -150,7 +152,7 @@ export default function Community() {
                       </Link>
                     </div>
                   ))}
-                </div>
+                </div> */}
               </div>
             )}
           </div>

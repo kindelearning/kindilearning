@@ -35,7 +35,7 @@ const BlogCard = ({
           <h2 className="text-[24px] font-bold text-[#3F3A64] font-fredoka">
             {title.slice(0, 24)}...
           </h2>
-          <p className="text-[#757575] clarabodyTwo ">{metsDesc}</p>
+          <p className="text-[#757575] clarabodyTwo min-h-[58px]">{metsDesc}</p>
         </div>
         <div className="p-4 border-t flex justify-between items-center end-0">
           <div className="flex py-1 gap-4 items-center">

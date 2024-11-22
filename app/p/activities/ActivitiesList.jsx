@@ -8,7 +8,7 @@ import { useState } from "react";
 const ActivitiesList = ({ activities }) => {
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
+  const itemsPerPage = 12;
 
   // Calculate the indices for slicing
   const startIndex = (currentPage - 1) * itemsPerPage;
