@@ -14,136 +14,20 @@ const badgeIds = {
 };
 
 // This is the API Code for assigning the badges based on Activities completed
-export async function POST(req) {
-  try {
-    // Step 1: Query accounts with at least one activity
-    const accountsQuery = `
-            query {
-              accounts(where: { myActivity_some: {} }) {
-                id
-                name
-                myActivity {
-                  id
-                }
-              }
-            }
-          `;
-
-    const accountsResponse = await fetch(GRAPHQL_API_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${GRAPHQL_API_KEY}`,
-      },
-      body: JSON.stringify({ query: accountsQuery }),
-    });
-
-    const accountsData = await accountsResponse.json();
-    console.log("Accounts Response:", accountsData);
-
-    if (!accountsData || accountsData.errors) {
-      return new Response(
-        JSON.stringify({ error: "Failed to fetch accounts data" }),
-        { status: 500, headers: { "Content-Type": "application/json" } }
-      );
-    }
-
-    const accounts = accountsData.data?.accounts;
-
-    // Step 2: Badge assignment logic for users with different activity counts
-    const results = [];
-
-    for (const account of accounts) {
-      const activityCount = account.myActivity.length;
-
-      let badgeIdToAssign = null;
-
-      // Determine the badge to assign based on activity count
-      if (activityCount >= 12) {
-        badgeIdToAssign = badgeIds[12];
-      } else if (activityCount >= 10) {
-        badgeIdToAssign = badgeIds[10];
-      } else if (activityCount >= 8) {
-        badgeIdToAssign = badgeIds[8];
-      } else if (activityCount >= 6) {
-        badgeIdToAssign = badgeIds[6];
-      } else if (activityCount >= 2) {
-        badgeIdToAssign = badgeIds[2];
-      }
-
-      if (badgeIdToAssign) {
-        // Mutation to assign the badge
-        const assignBadgeMutation = `
-                mutation {
-                  updateAccount(
-                    where: { id: "${account.id}" }
-                    data: { badge: { connect: { where: { id: "${badgeIdToAssign}" } } } }
-                  ) {
-                    id
-                    name
-                    badge {
-                      id
-                      name
-                    }
-                  }
-                }
-              `;
-
-        const assignBadgeResponse = await fetch(GRAPHQL_API_URL, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${GRAPHQL_API_KEY}`,
-          },
-          body: JSON.stringify({ query: assignBadgeMutation }),
-        });
-
-        const assignBadgeData = await assignBadgeResponse.json();
-        console.log("Assign Badge Response:", assignBadgeData);
-
-        if (assignBadgeData.errors) {
-          results.push({
-            accountId: account.id,
-            status: "Failed",
-            errors: assignBadgeData.errors,
-          });
-        } else {
-          results.push({
-            accountId: account.id,
-            status: "Success",
-          });
-        }
-      }
-    }
-
-    // Step 3: Return results
-    return new NextResponse(JSON.stringify({ results }), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    });
-  } catch (error) {
-    console.error("Error in badge assignment:", error);
-    return new NextResponse(JSON.stringify({ error: error.message }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
-    });
-  }
-}
-
 // export async function POST(req) {
 //   try {
 //     // Step 1: Query accounts with at least one activity
 //     const accountsQuery = `
-//           query {
-//             accounts(where: { myActivity_some: {} }) {
-//               id
-//               name
-//               myActivity {
+//             query {
+//               accounts(where: { myActivity_some: {} }) {
 //                 id
+//                 name
+//                 myActivity {
+//                   id
+//                 }
 //               }
 //             }
-//           }
-//         `;
+//           `;
 
 //     const accountsResponse = await fetch(GRAPHQL_API_URL, {
 //       method: "POST",
@@ -166,28 +50,44 @@ export async function POST(req) {
 
 //     const accounts = accountsData.data?.accounts;
 
-//     // Step 2: Badge assignment logic
+//     // Step 2: Badge assignment logic for users with different activity counts
 //     const results = [];
 
 //     for (const account of accounts) {
-//       // Check if the account has 2 or more activities
-//       if (account.myActivity.length >= 2) {
+//       const activityCount = account.myActivity.length;
+
+//       let badgeIdToAssign = null;
+
+//       // Determine the badge to assign based on activity count
+//       if (activityCount >= 12) {
+//         badgeIdToAssign = badgeIds[12];
+//       } else if (activityCount >= 10) {
+//         badgeIdToAssign = badgeIds[10];
+//       } else if (activityCount >= 8) {
+//         badgeIdToAssign = badgeIds[8];
+//       } else if (activityCount >= 6) {
+//         badgeIdToAssign = badgeIds[6];
+//       } else if (activityCount >= 2) {
+//         badgeIdToAssign = badgeIds[2];
+//       }
+
+//       if (badgeIdToAssign) {
 //         // Mutation to assign the badge
 //         const assignBadgeMutation = `
-//               mutation {
-//                 updateAccount(
-//                   where: { id: "${account.id}" }
-//                   data: { badge: { connect: { where: { id: "${badgeIdwithTwoActivity}" } } } }
-//                 ) {
-//                   id
-//                   name
-//                   badge {
+//                 mutation {
+//                   updateAccount(
+//                     where: { id: "${account.id}" }
+//                     data: { badge: { connect: { where: { id: "${badgeIdToAssign}" } } } }
+//                   ) {
 //                     id
 //                     name
+//                     badge {
+//                       id
+//                       name
+//                     }
 //                   }
 //                 }
-//               }
-//             `;
+//               `;
 
 //         const assignBadgeResponse = await fetch(GRAPHQL_API_URL, {
 //           method: "POST",
@@ -226,6 +126,120 @@ export async function POST(req) {
 //     return new NextResponse(JSON.stringify({ error: error.message }), {
 //       status: 500,
 //       headers: { "Content-Type": "application/json" },
+//     });
+//   }
+// }
+
+export async function GET(request) {
+  try {
+    // Extract userId from query parameters
+    const url = new URL(request.url);
+    const userId = url.searchParams.get("userId"); // Assuming the userId is passed as a query parameter
+
+    if (!userId) {
+      return new NextResponse(JSON.stringify({ error: "userId is required" }), {
+        status: 400,
+      });
+    }
+
+    // Step 1: GraphQL query to fetch the user's badges
+    const badgesQuery = `
+      query {
+        account(where: { id: "${userId}" }) {
+          id
+          name
+          badge {
+            id
+            name
+            description
+            icon {
+              url
+            }
+          }
+        }
+      }
+    `;
+
+    const response = await fetch(GRAPHQL_API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${GRAPHQL_API_KEY}`,
+      },
+      body: JSON.stringify({ query: badgesQuery }),
+    });
+
+    const data = await response.json();
+
+    // Handle GraphQL errors if present
+    if (data.errors) {
+      return new NextResponse(
+        JSON.stringify({ error: "Failed to fetch badges" }),
+        { status: 500 }
+      );
+    }
+
+    const badges = data?.data?.account?.badge || [];
+
+    // Step 2: Return the badges
+    return new NextResponse(JSON.stringify({ badges }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
+  } catch (error) {
+    console.error("Error fetching badges:", error);
+    return new NextResponse(JSON.stringify({ error: error.message }), {
+      status: 500,
+    });
+  }
+}
+// export async function GET(req) {
+//   try {
+//     const { userId } = req.query; // Assuming you're passing the user's ID as a query parameter
+
+//     // Step 1: GraphQL query to fetch the user's badges
+//     const badgesQuery = `
+//       query {
+//         account(where: { id: "${userId}" }) {
+//           id
+//           name
+//           badge {
+//             id
+//             name
+//             description
+//             icon {
+//               url
+//             }
+//           }
+//         }
+//       }
+//     `;
+
+//     const response = await fetch(GRAPHQL_API_URL, {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//         Authorization: `Bearer ${GRAPHQL_API_KEY}`,
+//       },
+//       body: JSON.stringify({ query: badgesQuery }),
+//     });
+
+//     const data = await response.json();
+//     if (data.errors) {
+//       return new NextResponse(
+//         JSON.stringify({ error: "Failed to fetch badges" }),
+//         { status: 500 }
+//       );
+//     }
+
+//     const badges = data?.data?.account?.badge || [];
+
+//     // Step 2: Return the badges
+//     return new NextResponse(JSON.stringify({ badges }), { status: 200 });
+//   } catch (error) {
+//     console.error("Error fetching badges:", error);
+//     return new NextResponse(JSON.stringify({ error: error.message }), {
+//       status: 500,
 //     });
 //   }
 // }
