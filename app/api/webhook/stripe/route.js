@@ -8,11 +8,7 @@ const HYGRAPH_TOKEN =
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-export const config = {
-  api: {
-    bodyParser: false, // Required for Stripe's raw body
-  },
-};
+export const runtime = "edge"; // Enables edge runtime
 
 export async function POST(req) {
   const sig = req.headers.get("stripe-signature");
@@ -57,12 +53,12 @@ async function saveOrderToHygraph(session) {
       },
       body: JSON.stringify({
         query: `
-          mutation CreateOrder($data: OrderCreateInput!) {
-            createOrder(data: $data) {
-              id
+            mutation CreateOrder($data: OrderCreateInput!) {
+              createOrder(data: $data) {
+                id
+              }
             }
-          }
-        `,
+          `,
         variables: { data: orderData },
       }),
     });
