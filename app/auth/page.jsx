@@ -56,7 +56,7 @@ const Page = () => {
           </DialogTrigger>
           <DialogContent className="w-full p-0 rounded-[24px] max-w-[1000px] flex items-center justify-center">
             <DialogHeader className="p-0">
-              {/* <DialogTitle>Are you absolutely sure?</DialogTitle> */}
+              <DialogTitle></DialogTitle>
               <DialogDescription className="flex flex-row  gap-0 h-[70vh] items-center justify-between w-full">
                 {/* Coloumn 1 */}
                 <div className="w-full flex gap-8 flex-col justify-center items-center bg-[url('/Images/BGVectors.svg')] h-full min-w-[500px]">
@@ -102,6 +102,7 @@ const Page = () => {
             </DialogTrigger>
             <DialogContent className="w-full px-4 p-0 rounded-[12px] flex items-center justify-center">
               <DialogHeader className="p-0">
+                  <DialogTitle></DialogTitle>
                 <DialogDescription className="flex flex-row  gap-0 h-fit py-12 items-start  justify-start w-full">
                   {/* Coloumn 1 - bg-[url('/Images/BGVectors.svg')] */}
                   <div className="w-full flex gap-8 flex-col justify-center items-center h-full">
@@ -167,6 +168,7 @@ const Page = () => {
             </DialogTrigger>
             <DialogContent className="w-full p-0 rounded-[24px] flex items-center justify-center">
               <DialogHeader className="p-0">
+                <DialogTitle></DialogTitle>
                 <DialogDescription className="flex flex-row  gap-0 h-fit py-12 items-start  justify-start w-full">
                   {/* Coloumn 1 -bg-[url('/Images/BGVectors.svg')] */}
 

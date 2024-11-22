@@ -257,6 +257,7 @@ const DynamicMarkActivityCompleteComponent = ({ activityId }) => {
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
+                <DialogTitle></DialogTitle>
                 <DialogDescription className="w-full grid grid-cols-2 lg:grid-cols-3 justify-between gap-1 lg:gap-2">
                   {hygraphUser?.partner.slice(0, 2)?.map((partner) => (
                     <div
@@ -467,6 +468,7 @@ export default async function ActivityDetailPage({ params }) {
                   {activity.resources && activity.resources.length > 0 && (
                     <DialogContent className="w-full max-w-[96%] p-0 lg:max-w-[800px] max-h-[500px] overflow-y-scroll rounded-lg">
                       <DialogHeader>
+                        <DialogTitle></DialogTitle>
                         <DialogDescription>
                           <ActivityResources resources={activity.resources} />
                         </DialogDescription>
@@ -617,6 +619,7 @@ export default async function ActivityDetailPage({ params }) {
                   {activity.resources && activity.resources.length > 0 && (
                     <DialogContent className="w-full max-w-[96%] p-0 lg:max-w-[800px] max-h-[500px] overflow-y-scroll rounded-lg">
                       <DialogHeader>
+                      <DialogTitle></DialogTitle>
                         <DialogDescription>
                           <ActivityResources resources={activity.resources} />
                         </DialogDescription>
@@ -679,6 +682,7 @@ export default async function ActivityDetailPage({ params }) {
                   {activity.resources && activity.resources.length > 0 && (
                     <DialogContent className="w-full p-0 max-w-[96%] lg:max-w-[800px] max-h-[500px] overflow-y-scroll rounded-lg">
                       <DialogHeader>
+                        <DialogTitle></DialogTitle>
                         <DialogDescription>
                           <ActivityResources resources={activity.resources} />
                         </DialogDescription>

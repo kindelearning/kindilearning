@@ -116,6 +116,7 @@ export function CurvePath({ milestones = [], currentUserId }) {
           </DialogTrigger>
           <DialogContent className="w-full bg-[#eaeaf5] p-0 lg:min-w-[800px] ">
             <DialogHeader className="p-4">
+              <DialogTitle></DialogTitle>
               <DialogDescription className="w-full p-4 flex flex-col gap-4 justify-start items-start">
                 <div className="text-[#0a1932] claraheading">
                   {milestone.title}
@@ -331,6 +332,7 @@ export const TrigSnakeCurve = ({
             </DialogTrigger>
             <DialogContent className="w-full bg-[#eaeaf5] p-0 lg:min-w-[800px]">
               <DialogHeader className="p-4">
+              <DialogTitle></DialogTitle>
                 <DialogDescription className="w-full p-4 flex flex-col gap-4 justify-start items-start">
                   <div className="text-[#0a1932] claraheading">
                     {mileStoneCustomData[index]?.title}
