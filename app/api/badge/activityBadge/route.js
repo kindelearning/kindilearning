@@ -12,8 +12,6 @@ const badgeIds = {
   10: "cm2lp2d6z026l07pqqmmbps1q", // Replace with actual badge ID for 10 activities
   12: "cm2lp3nzs02cg07pnqofwvo9b", // Replace with actual badge ID for 12 activities
 };
-
-// This is the API Code for assigning the badges based on Activities completed
 export async function POST(req) {
   try {
     // Step 1: Query accounts with at least one activity
@@ -229,3 +227,5 @@ export async function POST(req) {
 //     });
 //   }
 // }
+
+
