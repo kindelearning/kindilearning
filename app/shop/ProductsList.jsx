@@ -8,7 +8,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 const ProductsList = ({ products }) => {
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 6; // Number of products per page
+  const productsPerPage = 18; // Number of products per page
 
   // Calculate indexes for slicing
   const startIndex = (currentPage - 1) * productsPerPage;

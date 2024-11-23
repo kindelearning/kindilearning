@@ -260,6 +260,12 @@
   .semiClara {
     @apply text-red-500 font-fredoka font-semibold;
   }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    scrollbar-width: none; /* Firefox */
+  }
   .scrollbar-hidden {
     &::-webkit-scrollbar {
       width: 8px;
