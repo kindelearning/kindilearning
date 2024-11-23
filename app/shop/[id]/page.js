@@ -179,22 +179,59 @@ export const ReviewForm = () => {
 
 import { getProductById, submitReview } from "@/lib/hygraph";
 import NotFound from "@/app/not-found";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { useCart } from "@/app/context/CartContext";
 import { loadStripe } from "@stripe/stripe-js";
 import { useRouter } from "next/navigation";
 const stripePromise = loadStripe(process.env.STRIPE_PUBLIC_KEY);
 
-export default async function ProductDetailPage({ params }) {
+export default function ProductDetailPage({ params }) {
   const { id } = params;
-  const [loading, setLoading] = useState(false); // State to manage loading
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  // State to manage loading
   const { addToCart } = useCart();
   const router = useRouter();
   const [quantity, setQuantity] = useState(1); // Manage quantity state
 
-  const product = await getProductById(id);
+  // const product = await getProductById(id);
+  useEffect(() => {
+    // Create an async function inside the useEffect
+    const fetchProduct = async () => {
+      try {
+        setLoading(true);
+        // Assuming getProductById is your function to fetch the product data by ID
+        const productData = await getProductById(id);
+        setProduct(productData); // Update state with fetched product data
+      } catch (error) {
+        setError("Failed to load product"); // Handle error
+      } finally {
+        setLoading(false); // Set loading state to false when done
+      }
+    };
 
+    fetchProduct(); // Call the async function
+
+    // Optional: Cleanup function if needed
+    return () => {
+      setProduct(null);
+      setLoading(false);
+      setError(null);
+    };
+  }, [id]);
+  // Increment function
+  const incrementQuantity = () => {
+    setQuantity((prevQuantity) => prevQuantity + 1);
+  };
+
+  // Decrement function
+  const decrementQuantity = () => {
+    if (quantity > 1) {
+      setQuantity((prevQuantity) => prevQuantity - 1);
+    }
+  };
   // Handling add to cart request
   const handleAddToCart = async (e) => {
     e.preventDefault(); // Prevent the page refresh
@@ -230,7 +267,7 @@ export default async function ProductDetailPage({ params }) {
           <div className="flex w-full flex-col md:flex-col lg:flex-row xl:flex-row gap-8 justify-between items-start">
             {/* column1 */}
             <div className="claracontainer py-0 flex flex-col max-w-full lg:max-w-[60%] justify-between items-start gap-8 sticky top-0 h-fit lg:h-[calc(100vh-32px)]">
-              <ProductImages 
+              <ProductImages
                 images={product.productImages.map((img) => img.url)}
               />
             </div>
@@ -284,10 +321,49 @@ export default async function ProductDetailPage({ params }) {
               <div className="claracontainer py-2 shadow-none lg:bg-[#eaeaf5] lg:shadow-lg lg:shadow-[#d0d0d0] lg:sticky lg:bottom-0 flex flex-col w-full gap-1">
                 <div className="claracontainer w-full justify-between items-start flex flex-row gap-4">
                   {/* <QuantityControl /> */}
-                  <QuantityControl
-                    initialQuantity={quantity}
-                    onQuantityChange={setQuantity}
-                  />{" "}
+                  <div className="flex border-[#eaeaf5] w-fit min-w-[124px] items-center border-1 shadow-sm lg:shadow-none rounded-full overflow-hidden">
+                    <button
+                      onClick={decrementQuantity}
+                      className="px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-600 transition duration-200 ease-in-out"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-4 w-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M18 12H6"
+                        />
+                      </svg>
+                    </button>
+                    <span className="w-8 py-1 text-center text-gray-600 bg-white focus:outline-none appearance-none">
+                      {quantity}
+                    </span>
+                    <button
+                      onClick={incrementQuantity}
+                      className="px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded-r-full text-gray-600 transition duration-200 ease-in-out"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-4 w-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                        />
+                      </svg>
+                    </button>
+                  </div>
                   {/* Pass quantity state to QuantityControl */}
                   <div className="w-full flex flex-col gap-1">
                     <div className="flex w-full items-center justify-between gap-2">
@@ -359,10 +435,53 @@ export default async function ProductDetailPage({ params }) {
       {/* Row- 5 (Mobile CTA's) */}
       <div className="flex w-full z-20 lg:hidden md:hidden flex-col pb-20 fixed bottom-0 justify-start items-center">
         <div className="claracontainer px-4 py-4 w-full bg-[#ffffff] rounded-t-[24px] shadow-upper sticky bottom-0 z-12 justify-between items-center flex flex-row gap-4">
-          <QuantityControl
+          {/* <QuantityControl
             initialQuantity={quantity}
             onQuantityChange={setQuantity}
-          />{" "}
+          /> */}
+          <div className="flex border-[#eaeaf5] w-fit min-w-[124px] items-center border-1 shadow-sm lg:shadow-none rounded-full overflow-hidden">
+            <button
+              onClick={decrementQuantity}
+              className="px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-600 transition duration-200 ease-in-out"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M18 12H6"
+                />
+              </svg>
+            </button>
+            <span className="w-8 py-1 text-center text-gray-600 bg-white focus:outline-none appearance-none">
+              {quantity}
+            </span>
+            <button
+              onClick={incrementQuantity}
+              className="px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded-r-full text-gray-600 transition duration-200 ease-in-out"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                />
+              </svg>
+            </button>
+          </div>
           <Button
             type="button"
             onClick={handleAddToCart}
