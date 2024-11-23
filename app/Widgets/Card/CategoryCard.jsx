@@ -71,12 +71,14 @@ const CategoryCard = ({
                 {header}
               </h2>
 
-              <p className="text-[#0a1932] text-[16px] font-normal font-fredoka leading-[20px]">
-                {description}
+              <p className="text-[#0a1932] min-h-[60px] max-h-[60px] text-[16px] font-normal font-fredoka leading-[20px]">
+                {description.length > 100
+                  ? description.slice(0, 99) + "..."
+                  : description}
               </p>
             </div>
 
-            <button
+            {/* <button
               className="border border-red text-red rounded-sm"
               onClick={() => setIsOpen(!isOpen)}
             >
@@ -109,7 +111,7 @@ const CategoryCard = ({
                   />
                 </svg>
               )}
-            </button>
+            </button> */}
           </div>
         </div>
       </div>{" "}

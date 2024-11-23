@@ -7,7 +7,7 @@ import Link from "next/link";
 export default async function Page() {
   const themes = await getThemes();
   const { title, metaDesc, thumbnail, launchTime } = themes;
-  const formattedLaunchTime = launchTime
+  const formattedLaunchTime = themes.launchTime
     ? new Date(launchTime).toLocaleString()
     : "No launch date available";
 
@@ -29,7 +29,6 @@ export default async function Page() {
                 <div key={theme.id}>
                   <Link
                     key={theme.id}
-                
                     // href={`/p/community/${slugify(blog.id)}`}
                     href={`/p/our-themes/${theme.id}`}
                     onClick={() => console.log("Clicked Blog:", CategoryCard)}
