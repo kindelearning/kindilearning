@@ -1,3 +1,29 @@
+import {
+  Filters01,
+  Filters02,
+  Filters03,
+  Filters04,
+  Filters05,
+  Filters06,
+  Filters07,
+  Filters08,
+  Filters09,
+  Filters10,
+} from "@/public/Images";
+
+export const cardGroupData = [
+  { bgColor: "#FF8E00", icon: Filters01, title: "Language & Literacy" },
+  { bgColor: "#019ACF", icon: Filters02, title: "Fine Motor Development" },
+  { bgColor: "#EEBA00", icon: Filters03, title: "Creative Arts Supplies " },
+  { bgColor: "#8D2F88", icon: Filters04, title: "Music & Movement" },
+  { bgColor: "#2B313C", icon: Filters05, title: "Mathematics & Logic" },
+  { bgColor: "#41AD49", icon: Filters06, title: "Multicultural & Diversity" },
+  { bgColor: "#C13192", icon: Filters07, title: "Imaginative Play Sets" },
+  { bgColor: "#056F9A", icon: Filters08, title: "Gross Motor Equipment" },
+  { bgColor: "#17A99F", icon: Filters09, title: "Sensory Play Materials" },
+  { bgColor: "#F04C64", icon: Filters10, title: "Social & Emotional" },
+];
+
 export const pricingDetailsFamily = [
   {
     id: 1,

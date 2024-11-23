@@ -13,7 +13,7 @@ import {
   Filters10,
 } from "@/public/Images";
 
-const cardData = [
+export const cardData = [
   { bgColor: "#FF8E00", icon: Filters01, title: "Language & Literacy" },
   { bgColor: "#019ACF", icon: Filters02, title: "Fine Motor Development" },
   { bgColor: "#EEBA00", icon: Filters03, title: "Creative Arts Supplies " },
