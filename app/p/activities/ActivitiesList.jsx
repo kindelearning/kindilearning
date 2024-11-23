@@ -40,7 +40,7 @@ const ActivitiesList = ({ activities }) => {
       <div className="grid grid-cols-2 w-full gap-2 md:gap-4 justify-between items-start">
         {paginatedActivities.map((activity) => (
           <div key={activity.id}>
-            <article className="rounded-lg">
+            <article className="rounded-lg overflow-clip">
               <Link href={`/p/activities/${activity.id}`}>
                 <div className="md:w-full hover:shadow-md duration-200 min-w-[170px] w-full min-h-[250px] h-full bg-white items-start justify-start border rounded-3xl flex flex-col md:flex-row gap-4">
                   <div className="claracontainer w-full flex-col justify-start items-center gap-7 inline-flex">
