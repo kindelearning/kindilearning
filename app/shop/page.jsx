@@ -440,7 +440,10 @@ export default function ShopPage() {
     <>
       <Header className="sticky" />
       <section className="w-full pb-32 bg-[#EAEAF5] flex flex-col gap-0 justify-center items-start">
+        <div className="flex w-full justify-center items-center">
+
         <Banner />
+        </div>
         <CardGroup />
         <div className="w-full h-auto bg-[#eaeaf5] items-center justify-center py-2  flex flex-col md:flex-row gap-[20px]">
           <div className="claracontainer py-4 w-full bg-[#eaeaf5] flex flex-row overflow-hidden gap-8">
