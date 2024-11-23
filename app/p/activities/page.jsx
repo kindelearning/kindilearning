@@ -555,7 +555,7 @@ export default function ActivitiesPage() {
                                       </div>
                                     </div>
                                     <div className="items-center justify-center gap-2 md:gap-4 grid grid-cols-5">
-                                      {activityIcons.slice(0, 4).map(
+                                      {/* {activityIcons.map(
                                         (item) =>
                                           activity[item.key] && (
                                             <div
@@ -568,7 +568,23 @@ export default function ActivitiesPage() {
                                               />
                                             </div>
                                           )
-                                      )}
+                                      )} */}
+                                      {activityIcons.map((item, index) => {
+                                        if (activity[item.key] && index < 4) {
+                                          return (
+                                            <div
+                                              key={item.key}
+                                              className={`w-[20px] h-[24px] md:w-[36px] md:h-[36px] lg:w-[48px] lg:h-[48px] flex justify-center items-center bg-[#${activityIcons.concatbackgroundColor}] rounded-[16px]`}
+                                            >
+                                              <Image
+                                                alt="Kindi"
+                                                src={item.icon}
+                                              />
+                                            </div>
+                                          );
+                                        }
+                                        return null; // Skip rendering if the condition is not met
+                                      })}
                                       {activityIcons.slice(4, 5).map(
                                         (item) =>
                                           activity[item.key] && (
@@ -648,7 +664,7 @@ export default function ActivitiesPage() {
                                         </div>
                                       </div>
                                       <div className="items-center justify-center gap-2 md:gap-4 grid grid-cols-5">
-                                        {activityIcons.slice(0, 4).map(
+                                        {/* {activityIcons.slice(0, 4).map(
                                           (item) =>
                                             activity[item.key] && (
                                               <div
@@ -661,7 +677,25 @@ export default function ActivitiesPage() {
                                                 />
                                               </div>
                                             )
-                                        )}
+                                        )} */}
+                                        {activityIcons.map((item, index) => {
+                                          // Ensure you only render icons that are available in the activity and limit to 4 items
+                                          if (activity[item.key] && index < 4) {
+                                            return (
+                                              <div
+                                                key={item.key}
+                                                className={`w-[20px] h-[24px] md:w-[36px] md:h-[36px] lg:w-[48px] lg:h-[48px] flex justify-center items-center bg-[#${activityIcons.concatbackgroundColor}] rounded-[16px]`}
+                                              >
+                                                <Image
+                                                  alt="Kindi"
+                                                  src={item.icon}
+                                                />
+                                              </div>
+                                            );
+                                          }
+                                          return null; // Skip rendering if the condition is not met
+                                        })}
+
                                         {activityIcons.slice(4, 5).map(
                                           (item) =>
                                             activity[item.key] && (
@@ -735,7 +769,7 @@ export default function ActivitiesPage() {
                                     </div>
                                   </div>
                                   <div className="items-center justify-center gap-2 md:gap-4 grid grid-cols-5">
-                                    {activityIcons.slice(0, 4).map(
+                                      {activityIcons.slice(1, 5).map(
                                       (item) =>
                                         activity[item.key] && (
                                           <div

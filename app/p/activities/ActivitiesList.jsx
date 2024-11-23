@@ -76,7 +76,7 @@ const ActivitiesList = ({ activities }) => {
                           </div>
                         </div>
                         <div className="items-center justify-center gap-2 md:gap-4 grid grid-cols-5">
-                          {activityIcons.slice(0, 4).map(
+                          {/* {activityIcons.slice(0, 4).map(
                             (item) =>
                               activity[item.key] && (
                                 <div
@@ -86,7 +86,21 @@ const ActivitiesList = ({ activities }) => {
                                   <Image alt="Kindi" src={item.icon} />
                                 </div>
                               )
-                          )}
+                          )} */}
+                          {activityIcons.reduce((acc, item, index) => {
+                            // Only render the icon if it matches the activity and we haven't already displayed 4
+                            if (activity[item.key] && acc.length < 4) {
+                              acc.push(
+                                <div
+                                  key={item.key}
+                                  className={`w-[20px] h-[24px] md:w-[36px] md:h-[36px] lg:w-[48px] lg:h-[48px] flex justify-center items-center bg-[#${activityIcons.concatbackgroundColor}] rounded-[16px]`}
+                                >
+                                  <Image alt="Kindi" src={item.icon} />
+                                </div>
+                              );
+                            }
+                            return acc; // Return accumulated icons
+                          }, [])}
                           {activityIcons.length > 4 && (
                             <div
                               className={`w-[20px] lg:w-[48px] md:w-[36px] md:h-[36px] md:rounded-xl lg:h-[48px] h-[20px] flex lg:rounded-[12px] justify-center items-center bg-[#F6BEBF] rounded-[4px]`}
