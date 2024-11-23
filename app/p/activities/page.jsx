@@ -513,7 +513,7 @@ export default function ActivitiesPage() {
                 selectedSkilCategory &&
                 filteredActivities.length > 0 ? (
                   filteredActivities.map((activity) => (
-                    <div className="flex w-full gap-2 md:gap-4 justify-between items-start">
+                    <div key={activity.id} className="flex w-full gap-2 md:gap-4 justify-between items-start">
                       <div
                         key={activity.id}
                         className="w-full flex flex-col gap-4 "
