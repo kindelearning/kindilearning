@@ -119,7 +119,7 @@ export default function Community() {
                       <BlogCard
                         title={blog.blogTitle}
                         metsDesc={blog.metaDescription}
-                        image={BlogThumb}
+                        image={blog.thumbnail.url}
                         // image={blog.thumbnail.url}
                       />
                     </article>

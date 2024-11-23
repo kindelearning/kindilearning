@@ -2,7 +2,7 @@
 
 import { ShareButton } from "@/app/Widgets";
 import { fetchProfilePictures, getBlogById, likeBlogPost } from "@/lib/hygraph";
-import { CommentIcon, LikeIcon, ProfilePlaceHolderOne } from "@/public/Images";
+import { CommentIcon, LikeIcon, ProfilePlaceholder01, ProfilePlaceHolderOne } from "@/public/Images";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import CommentForm from "../comments/CommentForm";
@@ -69,7 +69,7 @@ const ProfilePictureComponent = () => {
         />
       ) : (
         <Image
-          src={ProfilePlaceHolderOne}
+          src={ProfilePlaceholder01}
           alt="Profile Picture"
           className="rounded-full w-8 h-8"
         />
@@ -258,7 +258,7 @@ export default async function BlogDetailPage({ params }) {
               <div className="w-full flex flex-col gap-2 justify-end items-end">
                 {blog.comments.map((comment) => (
                   <div
-                    className="w-full lg:min-w-[max-content] lg:max-w-[700px] flex flex-col justify-normal items-start bg-white gap-4 rounded-[8px] p-2 lg:p-4"
+                    className="w-full lg:min-w-[500px] lg:max-w-[700px] flex flex-col justify-normal items-start bg-white gap-4 rounded-[8px] p-2 lg:p-4"
                     key={comment.id}
                   >
                     <div className="w-full flex gap-2 justify-start items-start">
@@ -272,7 +272,7 @@ export default async function BlogDetailPage({ params }) {
                         </div>
                       </div>
                     </div>
-                    <div className="w-[max-content] text-[#0a1932] text-xs font-normal font-fredoka leading-none">
+                    <div className="w-full flex-wrap text-[#0a1932] text-xs font-normal font-fredoka leading-[14px]">
                       {comment.content}
                     </div>
                     <LikeButton />
