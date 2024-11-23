@@ -148,7 +148,7 @@ const ActivityAttribute = ({
   image,
 }) => {
   return (
-    <div className="w-full justify-between items-center inline-flex">
+    <div className="w-full cursor-pointer justify-between items-center inline-flex">
       <div className="justify-start w-full items-center gap-2 flex">
         <Image
           alt="Kindi"
@@ -169,7 +169,7 @@ const ActivityAttribute = ({
 export const IconBadge = ({ icon, backgroundColor = "f05c5c" }) => {
   return (
     <div
-      className={`w-[50px] h-[50px] flex justify-center items-center bg-[#${backgroundColor}] rounded-[16px]`}
+      className={`w-[50px] hover:scale-105 duration-200 ease-ease-out cursor-pointer h-[50px] flex justify-center items-center bg-[#${backgroundColor}] rounded-[16px]`}
     >
       <Image alt="Kindi" src={icon || KindiHeart} />
     </div>
@@ -394,7 +394,7 @@ export default async function ActivityDetailPage({ params }) {
                 <div className="text-[#0a1932]  text-start justify-start items-start w-full font-fredoka font-semibold text-[24px] md:text-[28px] lg:text-[28px]">
                   {activity.title}
                 </div>
-                <div className="items-center w-full justify-center flex flex-col gap-2">
+                <div className="items-center cursor-pointer w-full justify-center flex flex-col gap-2">
                   <ActivityAttribute
                     image={ActivityBlack}
                     features={activity.eventTimeline}
@@ -423,7 +423,7 @@ export default async function ActivityDetailPage({ params }) {
                   Learning Areas
                 </div>
 
-                <div className="items-center overflow-x-scroll scrollbar-hidden w-full justify-start flex flex-row gap-1">
+                <div className="items-center h-fit hover:h-full overflow-y-hidden overflow-x-scroll scrollbar-hidden w-full justify-start flex flex-row gap-1">
                   {activityIcons.map(
                     (item) =>
                       activity[item.key] && (
@@ -541,7 +541,7 @@ export default async function ActivityDetailPage({ params }) {
           </div>
 
           {/* Col Two */}
-          <div className="claracontainer p-0 pb-24 flex flex-col justify-between items-start gap-8">
+          <div className="claracontainer p-0 pb-24 flex flex-col justify-start items-start gap-8">
             {/* Row 1(R2) */}
             <div className="claracontainer hidden lg:flex w-full flex-col px-4 lg:px-0 justify-start items-start gap-4">
               <div className="flex w-full flex-col justify-normal items-center gap-2">
