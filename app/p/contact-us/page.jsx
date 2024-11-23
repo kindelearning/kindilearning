@@ -145,7 +145,7 @@ export default function ContactForm() {
               className="border p-2"
               value={formData.phoneNumber}
               required
-              placeholder="Your Contact"
+              placeholder="Your Mobile Number"
               onChange={handleChange}
             />
             <Input
