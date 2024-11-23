@@ -24,7 +24,7 @@ import Link from "next/link";
 import { Textarea } from "@/components/ui/textarea";
 import { ArrowRight } from "lucide-react";
 
-const ReviewForm = () => {
+export const ReviewForm = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [content, setContent] = useState("");
@@ -229,13 +229,13 @@ export default async function ProductDetailPage({ params }) {
           {/* Row 1 */}
           <div className="flex w-full flex-col md:flex-col lg:flex-row xl:flex-row gap-8 justify-between items-start">
             {/* column1 */}
-            <div className="claracontainer py-0 flex flex-col justify-between items-start gap-8">
-              <ProductImages
+            <div className="claracontainer py-0 flex flex-col max-w-full lg:max-w-[60%] justify-between items-start gap-8 sticky top-0 h-fit lg:h-[calc(100vh-32px)]">
+              <ProductImages 
                 images={product.productImages.map((img) => img.url)}
               />
             </div>
             {/* col 2 */}
-            <div className="claracontainer py-0 flex w-full flex-col lg:max-w-[48%] justify-between items-start gap-4">
+            <div className="claracontainer lg:max-h-[600px] py-0 flex w-full flex-col scrollbar-hide lg:max-w-[48%] justify-between items-start gap-4 overflow-y-auto  h-fit lg:h-[calc(100vh-32px)]">
               <div className="w-full hidden md:hidden lg:flex text-[#3f3a64] text-[32px] leading-normal font-semibold font-fredoka capitalize">
                 {product.title}
               </div>
@@ -281,7 +281,7 @@ export default async function ProductDetailPage({ params }) {
                 </div>
               </div>
               {/* CTA */}
-              <div className="claracontainer flex flex-col w-full gap-1">
+              <div className="claracontainer py-2 shadow-none lg:bg-[#eaeaf5] lg:shadow-lg lg:shadow-[#d0d0d0] lg:sticky lg:bottom-0 flex flex-col w-full gap-1">
                 <div className="claracontainer w-full justify-between items-start flex flex-row gap-4">
                   {/* <QuantityControl /> */}
                   <QuantityControl
@@ -375,18 +375,4 @@ export default async function ProductDetailPage({ params }) {
       </div>
     </>
   );
-}
-
-{
-  /* <div className="claracontainer flex flex-col gap-1">
-  <div className="w-[max-content] text-[#0a1932] text-[32px] font-semibold font-fredoka leading-tight">
-    Select Variant
-  </div>
-  <GroupChip
-    options={options}
-    selectedOption={selectedOption}
-    onChange={handleOptionChange}
-  />
-  To be added soon
-</div> */
 }
