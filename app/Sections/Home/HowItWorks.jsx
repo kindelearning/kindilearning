@@ -86,7 +86,7 @@ export default async function HowItWorks() {
             />
 
             {/* Section Two */}
-            <div className="flex flex-col  lg:flex-row xl:flex-row w-full items-center justify-between py-8 gap-4">
+            <div className="flex flex-col lg:flex-row xl:flex-row w-full items-center justify-between py-8 gap-4">
               <div className="w-full h-[460px] md:max-w-[500px] flex items-end justify-end">
                 <Image
                   alt="Kindi"
@@ -132,7 +132,7 @@ export default async function HowItWorks() {
             <Image
               alt="Kindi"
               src={CurveTwo}
-              className="transform hidden md:hidden lg:flex -rotate-180 w-[56%] -mt-[160px] -mb-[60px]"
+              className="transform hidden md:hidden lg:flex -rotate-180 w-[56%] -mt-[130px] -mb-[20px]"
             />
 
             {/* Section Three */}
