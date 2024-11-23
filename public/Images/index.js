@@ -1,3 +1,6 @@
+//global
+import HomeHeroGif from "./HomeHero.gif";
+
 import Logo from "./Logo.svg";
 import HowItWorkVideo from "./HowItWorkVideo.png";
 import HIWTwo from "./HIWTwo.svg";
@@ -217,6 +220,10 @@ export {
   PhysicalAgilityActivity,
   SpeechLanguageActivity,
 
+  //Global Export
+  HomeHeroGif,
+
+  
   //Profile Export
   ProfilePlaceholder01,
   ProfilePlaceholder02,
