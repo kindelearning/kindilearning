@@ -513,7 +513,10 @@ export default function ActivitiesPage() {
                 selectedSkilCategory &&
                 filteredActivities.length > 0 ? (
                   filteredActivities.map((activity) => (
-                    <div key={activity.id} className="flex w-full gap-2 md:gap-4 justify-between items-start">
+                    <div
+                      key={activity.id}
+                      className="flex w-full gap-2 md:gap-4 justify-between items-start"
+                    >
                       <div
                         key={activity.id}
                         className="w-full flex flex-col gap-4 "
@@ -623,10 +626,7 @@ export default function ActivitiesPage() {
                         >
                           <article className="rounded-lg overflow-clip">
                             <Link href={`/p/activities/${activity.id}`}>
-                              <div
-                                className="md:w-full md:max-w-full max-w-[196px] hover:shadow-md duration-200 min-w-[170px] w-full min-h-[250px] h-full bg-white items-start justify-start border rounded-3xl flex flex-col md:flex-row gap-4
-"
-                              >
+                              <div className="md:w-full md:max-w-full max-w-[196px] hover:shadow-md duration-200 min-w-[170px] w-full min-h-[250px] h-full bg-white items-start justify-start border rounded-3xl flex flex-col md:flex-row gap-4">
                                 <div className="claracontainer w-full flex-col justify-start items-center gap-7 inline-flex">
                                   <div className="w-full max-w-full md:min-w-full lg:max-w-full h-auto">
                                     <div className="flex max-h-[180px] min-h-[150px] h-[150px] md:min-h-[200px] md:h-full lg:min-h-[276px] lg:h-full lg:max-h-[276px] md:max-h-[300px] overflow-clip rounded-t-3xl">

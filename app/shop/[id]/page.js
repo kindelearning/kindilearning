@@ -1,16 +1,9 @@
 "use client";
 
-import {
-  ActivityImage,
-  creditCard,
-  ProductImage,
-  PromotionalImage,
-  Ratings,
-  ShopImage,
-} from "@/public/Images";
+import { creditCard, Ratings, ShopImage } from "@/public/Images";
 import { ProductGrid, ProductImages, ReviewGrid } from "..";
 import Image from "next/image";
-import { GroupChip, QuantityControl } from "..";
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -20,9 +13,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import Link from "next/link";
+
 import { Textarea } from "@/components/ui/textarea";
-import { ArrowRight } from "lucide-react";
 
 export const ReviewForm = () => {
   const [name, setName] = useState("");
@@ -184,7 +176,6 @@ import { Input } from "@/components/ui/input";
 import { useCart } from "@/app/context/CartContext";
 import { loadStripe } from "@stripe/stripe-js";
 import { useRouter } from "next/navigation";
-const stripePromise = loadStripe(process.env.STRIPE_PUBLIC_KEY);
 
 export default function ProductDetailPage({ params }) {
   const { id } = params;

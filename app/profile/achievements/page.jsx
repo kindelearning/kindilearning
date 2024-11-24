@@ -24,11 +24,7 @@ import ReferralCard from "@/app/Sections/Profile/ReferralCard";
 import Link from "next/link";
 import Loading from "@/app/loading";
 
-import {
-  fetchBadges,
-  getPublishedBadge,
-  getUserDataByEmail,
-} from "@/lib/hygraph";
+import { getPublishedBadge, getUserDataByEmail } from "@/lib/hygraph";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/lib/useAuth";
 import LevelList from "@/app/Sections/Profile/LevelList";
@@ -331,7 +327,7 @@ const BadgesDisplay = ({ userID }) => {
                   src={badge.icon.url}
                   alt={badge.name}
                   className="min-w-[80px] min-h-[80px] object-cover"
-                  />
+                />
               )}
 
               {selectedBadgeLevel && (
