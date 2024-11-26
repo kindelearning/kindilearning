@@ -152,8 +152,6 @@ const getAllActivities = async () => {
 };
 
 export default function Calendar() {
-  // const [completedIds, setCompletedIds] = useState([]);
-  const { data: session } = useSession();
   const [currentDate, setCurrentDate] = useState(new Date());
   const today = new Date();
 
@@ -198,11 +196,22 @@ export default function Calendar() {
       try {
         const activitiesFromHygraph = await getAllActivities();
         console.log("Activities fetched from Hygraph:", activitiesFromHygraph);
+        const savedEvents = localStorage.getItem("events");
+        const localEvents = savedEvents ? JSON.parse(savedEvents) : [];
 
-        if (events.length === 0) {
-          // Only set events from Hygraph if local storage is empty
-          setEvents(activitiesFromHygraph);
-        }
+        // Combine events from localStorage and Hygraph, ensuring no duplicates by event ID
+        const combinedEvents = [
+          ...localEvents,
+          ...activitiesFromHygraph.filter(
+            (hygraphEvent) =>
+              !localEvents.some(
+                (localEvent) => localEvent.id === hygraphEvent.id
+              )
+          ),
+        ];
+
+        // Set the events state with combined events
+        setEvents(combinedEvents);
       } catch (error) {
         console.error("Error fetching activities from Hygraph:", error);
       }
@@ -246,29 +255,65 @@ export default function Calendar() {
 
     const totalDaysToShow = firstDayOfWeek + daysInMonth > 35 ? 42 : 35;
 
-    const totalDays = Array.from({ length: totalDaysToShow }, (_, i) => {
-      if (i < firstDayOfWeek) {
-        // Days from the previous month
-        const prevMonthEnd = new Date(
-          currentDate.getFullYear(),
-          currentDate.getMonth(),
-          0
-        ).getDate();
+    // Calculate the last day of the previous month
+    const prevMonthEnd = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      0
+    ).getDate();
+
+    // Create an array for previous month's days to fill the first part of the grid
+    const prevMonthDaysToAdd = Array.from(
+      { length: firstDayOfWeek },
+      (_, i) => {
         return {
           day: prevMonthEnd - (firstDayOfWeek - 1 - i),
           isCurrentMonth: false,
-        };
-      } else if (i >= daysInMonth + firstDayOfWeek) {
-        return {
-          day: i - (daysInMonth + firstDayOfWeek) + 1,
-          isCurrentMonth: false,
+          isNextMonth: false,
+          date: new Date(
+            currentDate.getFullYear(),
+            currentDate.getMonth() - 1, // Ensure the date is from the previous month
+            prevMonthEnd - (firstDayOfWeek - 1 - i) // Get the correct day from the previous month
+          ),
         };
       }
+    );
+
+    // Create the days for the current month
+    const currentMonthDays = Array.from({ length: daysInMonth }, (_, i) => {
       return {
-        day: i - firstDayOfWeek + 1,
+        day: i + 1,
         isCurrentMonth: true,
+        isNextMonth: false,
+        date: new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth(),
+          i + 1
+        ),
       };
     });
+
+    // Calculate the first 7 days of the next month (for filling the calendar)
+    const nextMonthFirstWeek = Array.from({ length: 7 }, (_, i) => {
+      return {
+        day: i + 1,
+        isCurrentMonth: false,
+        isNextMonth: true,
+        date: new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth() + 1,
+          i + 1
+        ),
+      };
+    });
+
+    // Combine previous month days, current month days, and next month's first week
+    const totalDays = prevMonthDaysToAdd.concat(currentMonthDays);
+
+    // If the total number of days exceeds 35, add the first week of the next month
+    if (totalDays.length < totalDaysToShow) {
+      return totalDays.concat(nextMonthFirstWeek);
+    }
 
     return totalDays;
   };
@@ -292,26 +337,43 @@ export default function Calendar() {
 
   const handleDrop = (e, dayObj) => {
     e.preventDefault();
-    const eventId = e.dataTransfer.getData("eventId");
-    const targetDate = new Date(
-      currentDate.getFullYear(),
-      currentDate.getMonth(),
-      dayObj.day
-    );
 
-    if (
-      !dayObj.isCurrentMonth ||
-      (targetDate < today && targetDate.getDate() !== today.getDate())
-    ) {
-      return;
+    // Get the eventId from the dragged event
+    const eventId = e.dataTransfer.getData("eventId");
+
+    // Determine the target date. If it's a day from the current month
+    // or the first week of the next month, we use the dayObj's information
+    let targetDate;
+    if (dayObj.isNextMonth) {
+      // If the day is from the next month, use its full date
+      targetDate = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth() + 1, // Next month
+        dayObj.day
+      );
+    } else {
+      // If the day is from the current month
+      targetDate = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth(),
+        dayObj.day
+      );
     }
 
-    const updatedEvents = events.map((event) =>
-      event.id === eventId ? { ...event, date: targetDate } : event
-    );
+    // Check if the drop target is valid (e.g., not in the past)
+    if (
+      (dayObj.isNextMonth || dayObj.isCurrentMonth) &&
+      (targetDate >= today || targetDate.getDate() === today.getDate())
+    ) {
+      // Update the events with the new date
+      const updatedEvents = events.map((event) =>
+        event.id === eventId ? { ...event, date: targetDate } : event
+      );
 
-    setEvents(updatedEvents);
-    localStorage.setItem("events", JSON.stringify(updatedEvents));
+      // Update state and localStorage with the updated events
+      setEvents(updatedEvents);
+      localStorage.setItem("events", JSON.stringify(updatedEvents));
+    }
   };
 
   const handleDragOver = (e, dayObj) => {
@@ -409,7 +471,9 @@ export default function Calendar() {
                 !dayObj.isCurrentMonth
                   ? "bg-[#EFEFEF] text-[#8C8C8C] cursor-not-allowed"
                   : isToday
-                  ? "bg-[#ffd9d9] text-[#000000] "
+                  ? "bg-[#DCDCE8] text-[#000000] "
+                  : dayObj.isNextMonth
+                  ? "bg-[#EFEFEF] text-[#3b82f6] cursor-pointer" // Next month days (active)
                   : dayObj.day < today.getDate() &&
                     currentDate.getMonth() === today.getMonth()
                   ? "bg-[#DCDCE8] text-[#999] cursor-not-allowed" // Past dates in the current month
