@@ -3,7 +3,6 @@
 import { creditCard, Ratings, ShopImage } from "@/public/Images";
 import { ProductGrid, ProductImages, ReviewGrid } from "..";
 import Image from "next/image";
-
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -13,7 +12,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-
+import { getProductById, submitReview } from "@/lib/hygraph";
+import NotFound from "@/app/not-found";
+import { useEffect, useState } from "react";
+import { Input } from "@/components/ui/input";
+import { useCart } from "@/app/context/CartContext";
+import { useRouter } from "next/navigation";
 import { Textarea } from "@/components/ui/textarea";
 
 export const ReviewForm = () => {
@@ -169,25 +173,15 @@ export const ReviewForm = () => {
   );
 };
 
-import { getProductById, submitReview } from "@/lib/hygraph";
-import NotFound from "@/app/not-found";
-import { useEffect, useState } from "react";
-import { Input } from "@/components/ui/input";
-import { useCart } from "@/app/context/CartContext";
-import { loadStripe } from "@stripe/stripe-js";
-import { useRouter } from "next/navigation";
-
 export default function ProductDetailPage({ params }) {
   const { id } = params;
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  // State to manage loading
   const { addToCart } = useCart();
   const router = useRouter();
   const [quantity, setQuantity] = useState(1); // Manage quantity state
 
-  // const product = await getProductById(id);
   useEffect(() => {
     // Create an async function inside the useEffect
     const fetchProduct = async () => {
@@ -212,18 +206,16 @@ export default function ProductDetailPage({ params }) {
       setError(null);
     };
   }, [id]);
-  // Increment function
+
   const incrementQuantity = () => {
     setQuantity((prevQuantity) => prevQuantity + 1);
   };
-
-  // Decrement function
   const decrementQuantity = () => {
     if (quantity > 1) {
       setQuantity((prevQuantity) => prevQuantity - 1);
     }
   };
-  // Handling add to cart request
+
   const handleAddToCart = async (e) => {
     e.preventDefault(); // Prevent the page refresh
     console.log("Adding to cart:", product);
@@ -249,7 +241,7 @@ export default function ProductDetailPage({ params }) {
       </div>
     );
   }
-
+  const videoUrl = product.featuredVideo?.url || "";
   return (
     <>
       <section className="w-full h-auto bg-[#F5F5F5] lg:bg-[#eaeaf5] items-center justify-center py-4 plg:pb-32 flex flex-col md:flex-row gap-[20px]">
@@ -260,6 +252,8 @@ export default function ProductDetailPage({ params }) {
             <div className="claracontainer py-0 flex flex-col max-w-full lg:max-w-[60%] justify-between items-start gap-8 sticky top-0 h-fit lg:h-[calc(100vh-32px)]">
               <ProductImages
                 images={product.productImages.map((img) => img.url)}
+                video={videoUrl}
+                // video='/preloader.mp4'
               />
             </div>
             {/* col 2 */}
@@ -309,7 +303,7 @@ export default function ProductDetailPage({ params }) {
                 </div>
               </div>
               {/* CTA */}
-              <div className="claracontainer py-2 shadow-none lg:bg-[#eaeaf5] lg:shadow-lg lg:shadow-[#d0d0d0] lg:sticky lg:bottom-0 flex flex-col w-full gap-1">
+              <div className="claracontainer py-2 rounded-t-[12px] shadow-none lg:bg-[#eaeaf5] lg:shadow-[0px_-4px_8px_rgba(0,0,0,0.1)] lg:shadow-[#f0f0fb7e] lg:sticky lg:bottom-0 flex flex-col w-full gap-1">
                 <div className="claracontainer w-full justify-between items-start flex flex-row gap-4">
                   {/* <QuantityControl /> */}
                   <div className="flex border-[#eaeaf5] w-fit min-w-[124px] items-center border-1 shadow-sm lg:shadow-none rounded-full overflow-hidden">
