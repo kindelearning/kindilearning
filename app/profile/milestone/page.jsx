@@ -9,7 +9,6 @@ import { useAuth } from "@/app/lib/useAuth";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import CurrentUser from "./IntComponent/CurrentUser";
-import ProfileRoute from "./IntComponent/ProfileRoute";
 import DisplayAllMileStone from "./IntComponent/Milestonepath";
 
 export default function MileStone() {
@@ -99,7 +98,7 @@ export default function MileStone() {
                       <div className="font-fredoka text-[12px] lg:text-[20px]">
                         Email: {partner.email || "Partner"}
                       </div>
-                      <ProfileRoute />
+                      {/* <ProfileRoute /> */}
                       <DisplayAllMileStone passThecurrentUserId={partner.id} />
                     </div>
                   ) : null}
@@ -112,7 +111,7 @@ export default function MileStone() {
                       <div className="w-full text-center text-[#0a1932] text-[40px] font-semibold font-fredoka leading-normal">
                         {hygraphUser.name}
                       </div>
-                      <ProfileRoute />
+                      {/* <ProfileRoute /> */}
                       <DisplayAllMileStone
                         passThecurrentUserId={hygraphUser.id}
                       />

@@ -18,6 +18,8 @@ import { useEffect, useState } from "react";
 import MilestoneCompleteButton from "./MilestoneCompleteButton";
 import { getPublishedMileStone } from "@/lib/hygraph";
 import Link from "next/link";
+import { activityIcons } from "@/app/constant/menu";
+import Image from "next/image";
 
 export function CurvePath({ milestones = [], currentUserId }) {
   const [currentDate, setCurrentDate] = useState("");
@@ -387,7 +389,7 @@ const OptionSlider = ({
   options,
   selectedOption,
   onSelect,
-  visibleCount = 3,
+  visibleCount = 1,
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -403,42 +405,49 @@ const OptionSlider = ({
     );
   };
 
+  // Automatically select the option when it becomes visible
+  useEffect(() => {
+    const currentOption = options[currentIndex];
+    if (currentOption && currentOption.title !== selectedOption) {
+      onSelect(currentOption.title);
+    }
+  }, [currentIndex, options, selectedOption, onSelect]);
+
   return (
-    <div className="flex items-center relative">
+    <div className="flex items-center w-full justify-between gap-1">
       <button
         onClick={handlePrev}
-        className="absolute w-[32px] h-[32px] hidden lg:flex justify-center items-center left-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-30 backdrop-blur-lg text-[#000000] p-2 rounded-full z-10"
+        className="w-[32px] h-[32px] flex justify-center items-center left-0 top-1/2 transform bg-white bg-opacity-30 backdrop-blur-lg text-[#000000] p-2 rounded-full z-10"
       >
         <ChevronLeft />
       </button>
-      <div className="flex overflow-hidden">
-        <div className="flex space-x-4">
-          {options
-            .slice(currentIndex, currentIndex + visibleCount)
-            .map((option, index) => (
-              <button
-                key={index}
-                onClick={() => onSelect(option)}
-                className={`px-4 py-2 rounded-full transition duration-200 ${
-                  option === selectedOption
-                    ? "bg-red text-white"
-                    : "bg-gray-200 text-gray-800"
-                }`}
-              >
-                {option}
-              </button>
-            ))}
-        </div>
+      <div className="flex w-full justify-center">
+        {options
+          .slice(currentIndex, currentIndex + visibleCount)
+          .map(({ title, icon }, index) => (
+            <div
+              key={index}
+              className={`px-4 py-2 w-full max-w-[260px] rounded-full gap-2 bg-white transition duration-200 flex items-center ${
+                title === selectedOption ? "text-gray-800" : "text-gray-500"
+              }`}
+            >
+              <Image className="w-[24px] h-[24px]" src={icon} />
+              <span className="font-fredoka min-w-[max-content] font-semibold">
+                {title}
+              </span>
+            </div>
+          ))}
       </div>
       <button
         onClick={handleNext}
-        className="absolute w-[32px] h-[32px] hidden lg:flex justify-center items-center right-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-30 backdrop-blur-lg text-[#000000] p-2 rounded-full z-10"
+        className="w-[32px] h-[32px] flex justify-center items-center right-0 top-1/2 transform bg-white bg-opacity-30 backdrop-blur-lg text-[#000000] p-2 rounded-full z-10"
       >
         <ChevronRight />
       </button>
     </div>
   );
 };
+
 export default function DisplayAllMileStone({ passThecurrentUserId }) {
   const [milestones, setMilestones] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -500,57 +509,10 @@ export default function DisplayAllMileStone({ passThecurrentUserId }) {
 
   return (
     <>
-      {/* <section className="w-full pb-24 h-full bg-[#EAEAF5] items-center justify-center py-4 flex flex-col gap-[20px]">
-        <div className="flex w-full lg:max-w-[800px] flex-col  items-start">
-          <select
-            id="category-select"
-            value={selectedCategory}
-            onChange={(e) => {
-              setSelectedCategory(e.target.value);
-              setSelectedSubCategory("All"); // Reset subcategory selection when category changes
-            }}
-            className="border rounded-full w-full border-gray-300 pr-2 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple"
-          >
-            {categories.map((category) => (
-              <option key={category} value={category}>
-                {category}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {selectedCategory !== "All" && (
-          <div className="subcategory-filter mt-4">
-            <div className="flex overflow-x-scroll scrollbar-hidden flex-wrap gap-2">
-              {subCategories.map((subCategory) => (
-                <span
-                  key={subCategory}
-                  onClick={() => setSelectedSubCategory(subCategory)}
-                  className={`cursor-pointer border-white border-2 duration-200 px-4 py-1 rounded-full ${
-                    selectedSubCategory === subCategory
-                      ? "bg-red  text-white"
-                      : "bg-gray-200  text-gray-800"
-                  } hover:bg-red hover:text-white`}
-                  style={{
-                    display: "inline-block",
-                    margin: "0.2rem",
-                    // border:
-                    //   selectedSubCategory === subCategory
-                    //     ? "2px solid #000"
-                    //     : "1px solid #ccc",
-                  }}
-                >
-                  {subCategory}
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
-      </section> */}
       <section className="w-full pb-24 h-full bg-[#EAEAF5] items-center justify-center py-4 flex flex-col gap-[20px]">
-        <div className="flex w-full lg:max-w-[800px] flex-col items-start">
+        <div className="flex w-full lg:max-w-[340px] rounded-[12px] px-2 py-2 bg-white max-w-full  flex-col items-start">
           <OptionSlider
-            options={categories}
+            options={activityIcons}
             selectedOption={selectedCategory}
             onSelect={(value) => {
               setSelectedCategory(value);
@@ -569,8 +531,8 @@ export default function DisplayAllMileStone({ passThecurrentUserId }) {
                   onClick={() => setSelectedSubCategory(subCategory)}
                   className={`cursor-pointer border-white border-2 duration-200 px-4 py-1 rounded-full ${
                     selectedSubCategory === subCategory
-                      ? "bg-red  text-white"
-                      : "bg-gray-200  text-gray-800"
+                      ? "bg-red text-white"
+                      : "bg-gray-200 text-gray-800"
                   } hover:bg-red hover:text-white`}
                   style={{ display: "inline-block", margin: "0.2rem" }}
                 >
