@@ -2,7 +2,7 @@ import { RichText } from "@graphcms/rich-text-react-renderer";
 
 const RichTextRender = ({ content }) => {
   return (
-    <div className="rich-text-container">
+    <div className="rich-text-container font-fredoka">
       <RichText
         content={content}
         renderers={{

@@ -2,11 +2,17 @@
 
 import { ShareButton } from "@/app/Widgets";
 import { fetchProfilePictures, getBlogById, likeBlogPost } from "@/lib/hygraph";
-import { CommentIcon, LikeIcon, ProfilePlaceholder01, ProfilePlaceHolderOne } from "@/public/Images";
+import {
+  CommentIcon,
+  LikeIcon,
+  ProfilePlaceholder01,
+  ProfilePlaceHolderOne,
+} from "@/public/Images";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import CommentForm from "../comments/CommentForm";
 import Head from "next/head";
+import RichTextRender from "@/app/Sections/Global/RichTextRender";
 
 const scrollToCommentSection = () => {
   const commentSection = document.getElementById("comment_Section");
@@ -134,7 +140,6 @@ const getRandomNumber = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-
 export default async function BlogDetailPage({ params }) {
   const { id } = params;
   const [blog, setBlog] = useState(null);
@@ -210,7 +215,7 @@ export default async function BlogDetailPage({ params }) {
                       }`}
                       onClick={handleLikeClick}
                     >
-                      <Image alt="Kindi"  src={LikeIcon} />
+                      <Image alt="Kindi" src={LikeIcon} />
                     </button>
                     <span className="ml-2 text-[#0a1932] font-fredoka font-medium">
                       {/* {blog.likeCount} */}
@@ -222,7 +227,7 @@ export default async function BlogDetailPage({ params }) {
                       onClick={scrollToCommentSection}
                       className="text-[#0a1932] bg-[#f8f8f8] rounded-full p-2 hover:text-[#0a1932]"
                     >
-                      <Image alt="Kindi"  src={CommentIcon || "129"} />
+                      <Image alt="Kindi" src={CommentIcon || "129"} />
                     </button>
                     {randomComments}+
                   </button>
@@ -242,7 +247,8 @@ export default async function BlogDetailPage({ params }) {
                 {blog.metaDescription}
               </div>
               <div className="content py-4 flex flex-col gap-2 justify-center">
-                <div dangerouslySetInnerHTML={{ __html: blog.content.html }} />{" "}
+                {/* <div dangerouslySetInnerHTML={{ __html: blog.content.html }} /> */}
+                <RichTextRender content={blog.content.json} />
               </div>
             </div>
           </div>

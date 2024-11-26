@@ -1,4 +1,5 @@
 import NotFound from "@/app/not-found";
+import RichTextRender from "@/app/Sections/Global/RichTextRender";
 import { getThemeById } from "@/lib/hygraph";
 import Head from "next/head";
 import Image from "next/image";
@@ -46,7 +47,7 @@ export default async function ThemeDetailPage({ params }) {
             <h2 className="text-[#3f3a64] w-full claraheading text-start">
               {theme.title}
             </h2>
-            <p className=" text-[#0a1932] text-justify clarabodyTwo">
+            <p className=" text-[#0a1932] text-start clarabodyTwo">
               {theme.metaDesc}
             </p>
           </div>
@@ -55,18 +56,20 @@ export default async function ThemeDetailPage({ params }) {
               <h3 className="text-2xl md:text-3xl font-medium font-fredoka">
                 About the theme
               </h3>
-              <span className="text-justify text-[#0a1932] clarabodyTwo">
-                <div
+                {/* <div
                   dangerouslySetInnerHTML={{ __html: theme.aboutContent.html }}
-                />
-              </span>
+                /> */}
+              <div className="w-full text-[#757575] text-[20px] font-medium font-fredoka leading-[24px]">
+                <RichTextRender content={theme.aboutContent.json} />
+              </div>
             </div>
             <div className="flex flex-col w-full gap-[12px]">
               <h3 className="text-2xl md:text-3xl  font-medium font-fredoka">
                 What to Expect
               </h3>
-              <span className=" text-justify text-[#0a1932] clarabodyTwo">
-                {theme.expectContent && theme.expectContent.html ? (
+              <div className="w-full text-[#757575] text-[20px] font-medium font-fredoka leading-[24px]">
+              <RichTextRender content={theme.expectContent.json} />
+                {/* {theme.expectContent && theme.expectContent.html ? (
                   <div
                     dangerouslySetInnerHTML={{
                       __html: theme.expectContent.html,
@@ -74,8 +77,8 @@ export default async function ThemeDetailPage({ params }) {
                   />
                 ) : (
                   <p>No content available</p>
-                )}
-              </span>
+                )} */}
+              </div>
             </div>
           </div>
         </div>

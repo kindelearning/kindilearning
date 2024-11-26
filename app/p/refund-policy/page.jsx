@@ -1,3 +1,4 @@
+import RichTextRender from "@/app/Sections/Global/RichTextRender";
 import { getStandardPagesContent } from "@/lib/hygraph";
 import Link from "next/link";
 import React from "react";
@@ -50,11 +51,10 @@ const Page = async () => {
           <div className="h-[1.5px] bg-[black] rounded-full my-4" />
           <div className="items-center w-full justify-center flex flex-col gap-4">
             {standardPages?.refundPolicy?.html ? (
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: standardPages.refundPolicy.html,
-                }}
-              />
+             
+              <div className="w-full text-[#757575] text-[20px] font-medium font-fredoka leading-[24px]">
+                <RichTextRender content={standardPages?.refundPolicy?.json} />
+              </div>
             ) : (
               <p>No content found</p>
             )}

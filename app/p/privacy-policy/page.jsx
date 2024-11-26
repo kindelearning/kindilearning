@@ -1,3 +1,4 @@
+import RichTextRender from "@/app/Sections/Global/RichTextRender";
 import { getStandardPagesContent } from "@/lib/hygraph";
 import Link from "next/link";
 import React from "react";
@@ -28,7 +29,7 @@ export default async function PrivacyPolicy() {
               <span className="text-[#3f3a64] claraheading uppercase">
                 {" "}
                 Policy
-              </span>  {" "}
+              </span>{" "}
             </div>
             <div className="justify-center flex items-center text-center">
               <span className="text-black text-xs font-medium font-['Fredoka']">
@@ -56,11 +57,9 @@ export default async function PrivacyPolicy() {
 
           <div className="items-center w-full justify-center flex flex-col gap-4">
             {standardPages?.privacyPolicy?.html ? (
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: standardPages.privacyPolicy.html, // Inject the HTML safely
-                }}
-              />
+              <div className="w-full text-[#757575] text-[20px] font-medium font-fredoka leading-[24px]">
+                <RichTextRender content={standardPages?.privacyPolicy?.json} />
+              </div>
             ) : (
               <p>No content found</p>
             )}
