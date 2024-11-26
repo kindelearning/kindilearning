@@ -19,6 +19,7 @@ import { Input } from "@/components/ui/input";
 import { useCart } from "@/app/context/CartContext";
 import { useRouter } from "next/navigation";
 import { Textarea } from "@/components/ui/textarea";
+import RichTextRender from "@/app/Sections/Global/RichTextRender";
 
 export const ReviewForm = () => {
   const [name, setName] = useState("");
@@ -294,12 +295,9 @@ export default function ProductDetailPage({ params }) {
                 <div className="w-[max-content] text-[#0a1932] text-[32px] font-semibold font-fredoka leading-tight">
                   Description
                 </div>
+
                 <div className="w-full text-[#757575] text-[20px] font-medium font-fredoka leading-[24px]">
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: product.description.html,
-                    }}
-                  />
+                  <RichTextRender content={product.description.json} />
                 </div>
               </div>
               {/* CTA */}
