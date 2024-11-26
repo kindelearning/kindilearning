@@ -36,10 +36,11 @@ const Page = async () => {
           </div>
           <div className="items-center w-full justify-center flex flex-col gap-4">
             {standardPages?.termsConditions?.html ? (
-              
               <div className="w-full text-[#757575] text-[20px] font-medium font-fredoka leading-[24px]">
-              <RichTextRender content={standardPages?.termsConditions?.json} />
-            </div>
+                <RichTextRender
+                  content={standardPages?.termsConditions?.json}
+                />
+              </div>
             ) : (
               <p>No content found</p>
             )}

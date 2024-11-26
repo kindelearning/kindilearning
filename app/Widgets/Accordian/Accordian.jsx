@@ -1,5 +1,6 @@
 "use client";
 
+import RichTextRender from "@/app/Sections/Global/RichTextRender";
 import { ChevronRight } from "lucide-react";
 import React, { useState } from "react";
 
@@ -45,7 +46,10 @@ const Accordian = ({ title, description }) => {
       </div>
       {isOpen && (
         <div className="pb-4">
-          <p className="text-base font-medium text-[#0A1932]">{description}</p>
+          <div className="w-full text-[#757575] text-[20px] font-medium font-fredoka leading-[24px]">
+            <RichTextRender content={description} />
+          </div>
+          {/* <p className="text-base font-medium text-[#0A1932]">{description}</p> */}
         </div>
       )}
     </div>

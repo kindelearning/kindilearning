@@ -479,63 +479,23 @@ export default async function ActivityDetailPage({ params }) {
               </div>
               <Accordian
                 title={activity.accordionOne}
-                description={
-                  activity.bodyOne && (
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: activity.bodyOne.html,
-                      }}
-                    />
-                  )
-                }
+                description={activity?.bodyOne?.json}
               />
               <Accordian
                 title={activity.accordionTwo}
-                description={
-                  activity.bodyTwo && (
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: activity.bodyTwo.html,
-                      }}
-                    />
-                  )
-                }
+                description={activity?.bodyTwo?.json}
               />
               <Accordian
                 title={activity.accordionThree}
-                description={
-                  activity.bodyThree && (
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: activity.bodyThree.html,
-                      }}
-                    />
-                  )
-                }
+                description={activity?.bodyThree?.json}
               />
               <Accordian
                 title={activity.accordionFour}
-                description={
-                  activity.bodyFour && (
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: activity.bodyFour.html,
-                      }}
-                    />
-                  )
-                }
+                description={activity?.bodyFour?.json}
               />
               <Accordian
                 title={activity.accordionFive}
-                description={
-                  activity.bodyFive && (
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: activity.bodyFive.html,
-                      }}
-                    />
-                  )
-                }
+                description={activity?.bodyFive?.json}
               />
             </div>
           </div>
@@ -619,7 +579,7 @@ export default async function ActivityDetailPage({ params }) {
                   {activity.resources && activity.resources.length > 0 && (
                     <DialogContent className="w-full max-w-[96%] p-0 lg:max-w-[800px] max-h-[500px] overflow-y-scroll rounded-lg">
                       <DialogHeader>
-                      <DialogTitle></DialogTitle>
+                        <DialogTitle></DialogTitle>
                         <DialogDescription>
                           <ActivityResources resources={activity.resources} />
                         </DialogDescription>
@@ -630,23 +590,23 @@ export default async function ActivityDetailPage({ params }) {
               </div>
               <Accordian
                 title={activity.accordionOne}
-                description={activity.bodyOne}
+                description={activity?.bodyOne?.json}
               />
               <Accordian
                 title={activity.accordionTwo}
-                description={activity.bodyTwo}
+                description={activity?.bodyTwo?.json}
               />
               <Accordian
                 title={activity.accordionThree}
-                description={activity.bodyThree}
+                description={activity?.bodyThree?.json}
               />
               <Accordian
                 title={activity.accordionFour}
-                description={activity.bodyFour}
+                description={activity?.bodyFour?.json}
               />
               <Accordian
                 title={activity.accordionFive}
-                description={activity.bodyFive}
+                description={activity?.bodyFive?.json}
               />
             </div>
 
