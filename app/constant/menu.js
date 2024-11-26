@@ -53,6 +53,14 @@ import {
   DiscoveringWorld,
   CreativityImagination,
   Experiments,
+  SpeechLanguageActivity,
+  ExperimentsMathActivity,
+  CreativityImaginationActivity,
+  DiscoveringOurWorldActivity,
+  ReadingWritingActivity,
+  PhysicalAgilityActivity,
+  ConfidenceIndependenceActivity,
+  EmotionalSocialStrengthActivity,
 } from "@/public/Images";
 import Image from "next/image";
 
@@ -304,6 +312,19 @@ export const developmentAreas = [
   "Speech & Language",
   "Discovering our world",
   "Experiments & Math",
+];
+export const activityIcons = [
+  { title: "Speech & Language", icon: SpeechLanguageActivity },
+  {
+    title: "Emotional & Social Strength",
+    icon: EmotionalSocialStrengthActivity,
+  },
+  { title: "Confidence & Independence", icon: ConfidenceIndependenceActivity },
+  { title: "Physical Agility", icon: PhysicalAgilityActivity },
+  { title: "Reading & Writing", icon: ReadingWritingActivity },
+  { title: "Discovering Our World", icon: DiscoveringOurWorldActivity },
+  { title: "Creativity & Imagination", icon: CreativityImaginationActivity },
+  { title: "Experiments & Math", icon: ExperimentsMathActivity },
 ];
 
 export const progressData = [

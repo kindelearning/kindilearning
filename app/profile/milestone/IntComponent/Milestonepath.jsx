@@ -12,7 +12,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { getUserDataByEmail } from "@/lib/hygraph";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import MilestoneCompleteButton from "./MilestoneCompleteButton";
@@ -407,9 +407,9 @@ const OptionSlider = ({
     <div className="flex items-center relative">
       <button
         onClick={handlePrev}
-        className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-300 p-2 rounded-full"
+        className="absolute w-[32px] h-[32px] hidden lg:flex justify-center items-center left-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-30 backdrop-blur-lg text-[#000000] p-2 rounded-full z-10"
       >
-        &lt;
+        <ChevronLeft />
       </button>
       <div className="flex overflow-hidden">
         <div className="flex space-x-4">
@@ -432,9 +432,9 @@ const OptionSlider = ({
       </div>
       <button
         onClick={handleNext}
-        className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-300 p-2 rounded-full"
+        className="absolute w-[32px] h-[32px] hidden lg:flex justify-center items-center right-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-30 backdrop-blur-lg text-[#000000] p-2 rounded-full z-10"
       >
-        &gt;
+        <ChevronRight />
       </button>
     </div>
   );
