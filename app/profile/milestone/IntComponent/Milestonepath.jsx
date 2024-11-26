@@ -333,7 +333,7 @@ export const TrigSnakeCurve = ({
             </DialogTrigger>
             <DialogContent className="w-full bg-[#eaeaf5] p-0 lg:min-w-[800px]">
               <DialogHeader className="p-4">
-              <DialogTitle></DialogTitle>
+                <DialogTitle></DialogTitle>
                 <DialogDescription className="w-full p-4 flex flex-col gap-4 justify-start items-start">
                   <div className="text-[#0a1932] claraheading">
                     {mileStoneCustomData[index]?.title}
@@ -383,6 +383,62 @@ export const TrigSnakeCurve = ({
   );
 };
 
+const OptionSlider = ({
+  options,
+  selectedOption,
+  onSelect,
+  visibleCount = 3,
+}) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const handlePrev = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? options.length - visibleCount : prevIndex - 1
+    );
+  };
+
+  const handleNext = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === options.length - visibleCount ? 0 : prevIndex + 1
+    );
+  };
+
+  return (
+    <div className="flex items-center relative">
+      <button
+        onClick={handlePrev}
+        className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-300 p-2 rounded-full"
+      >
+        &lt;
+      </button>
+      <div className="flex overflow-hidden">
+        <div className="flex space-x-4">
+          {options
+            .slice(currentIndex, currentIndex + visibleCount)
+            .map((option, index) => (
+              <button
+                key={index}
+                onClick={() => onSelect(option)}
+                className={`px-4 py-2 rounded-full transition duration-200 ${
+                  option === selectedOption
+                    ? "bg-red text-white"
+                    : "bg-gray-200 text-gray-800"
+                }`}
+              >
+                {option}
+              </button>
+            ))}
+        </div>
+      </div>
+      <button
+        onClick={handleNext}
+        className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-300 p-2 rounded-full"
+      >
+        &gt;
+      </button>
+    </div>
+  );
+};
 export default function DisplayAllMileStone({ passThecurrentUserId }) {
   const [milestones, setMilestones] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -444,7 +500,7 @@ export default function DisplayAllMileStone({ passThecurrentUserId }) {
 
   return (
     <>
-      <section className="w-full pb-24 h-full bg-[#EAEAF5] items-center justify-center py-4 flex flex-col gap-[20px]">
+      {/* <section className="w-full pb-24 h-full bg-[#EAEAF5] items-center justify-center py-4 flex flex-col gap-[20px]">
         <div className="flex w-full lg:max-w-[800px] flex-col  items-start">
           <select
             id="category-select"
@@ -463,7 +519,6 @@ export default function DisplayAllMileStone({ passThecurrentUserId }) {
           </select>
         </div>
 
-        {/* Subcategory Filter as Badge/Chip (conditionally rendered) */}
         {selectedCategory !== "All" && (
           <div className="subcategory-filter mt-4">
             <div className="flex overflow-x-scroll scrollbar-hidden flex-wrap gap-2">
@@ -484,6 +539,40 @@ export default function DisplayAllMileStone({ passThecurrentUserId }) {
                     //     ? "2px solid #000"
                     //     : "1px solid #ccc",
                   }}
+                >
+                  {subCategory}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+      </section> */}
+      <section className="w-full pb-24 h-full bg-[#EAEAF5] items-center justify-center py-4 flex flex-col gap-[20px]">
+        <div className="flex w-full lg:max-w-[800px] flex-col items-start">
+          <OptionSlider
+            options={categories}
+            selectedOption={selectedCategory}
+            onSelect={(value) => {
+              setSelectedCategory(value);
+              setSelectedSubCategory("All"); // Reset subcategory selection when category changes
+            }}
+          />
+        </div>
+
+        {/* Subcategory Filter as Badge/Chip (conditionally rendered) */}
+        {selectedCategory !== "All" && (
+          <div className="subcategory-filter mt-4">
+            <div className="flex overflow-x-scroll scrollbar-hidden flex-wrap gap-2">
+              {subCategories.map((subCategory) => (
+                <span
+                  key={subCategory}
+                  onClick={() => setSelectedSubCategory(subCategory)}
+                  className={`cursor-pointer border-white border-2 duration-200 px-4 py-1 rounded-full ${
+                    selectedSubCategory === subCategory
+                      ? "bg-red  text-white"
+                      : "bg-gray-200  text-gray-800"
+                  } hover:bg-red hover:text-white`}
+                  style={{ display: "inline-block", margin: "0.2rem" }}
                 >
                   {subCategory}
                 </span>

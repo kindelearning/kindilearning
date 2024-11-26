@@ -637,21 +637,6 @@ export default async function ProgressSection() {
       <head>
         <title>Progress - Kindilearning</title>
         <meta name="description" content="Your profile page on Kindilearning" />
-        <meta property="og:title" content="Profile - Kindilearning" />
-        <meta
-          property="og:description"
-          content="Your profile page on Kindilearning"
-        />
-        <meta property="og:image" content="/images/logo.png" />
-        <meta property="og:url" content="https://kindilearning.com/profile" />
-        <meta property="og:site_name" content="Kindilearning" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Profile - Kindilearning" />
-        <meta
-          name="twitter:description"
-          content="Your profile page on Kindilearning"
-        />
-        <meta name="twitter:image" content="/images/logo.png" />
       </head>
       <section className="w-full h-auto bg-[#F5F5F5] pb-12 md:bg-[#EAEAF5] items-center justify-center flex flex-col px-0">
         {/* Topbar */}
