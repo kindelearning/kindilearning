@@ -33,7 +33,7 @@ export default async function Page() {
                   >
                     <article className="rounded-lg">
                       <CategoryCard
-                        schedulesDate={formattedLaunchTime}
+                        schedulesDate={theme.launchTime}
                         image={theme.thumbnail.url}
                         description={theme.metaDesc.slice(0, 100)}
                         header={theme.title}
