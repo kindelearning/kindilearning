@@ -31,7 +31,6 @@ export default function RootLayout({ children }) {
             sizes="180x180"
             href="/apple-touch-icon.png"
           />
-          <link rel="manifest" href="/site.webmanifest" />
           {/* Google CDN for all the fonts */}
           <link
             href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&family=Gloria+Hallelujah&family=Montserrat:wght@400;700&display=swap"
