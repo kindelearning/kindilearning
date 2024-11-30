@@ -267,9 +267,11 @@ const MyActivity = ({ userID }) => {
       setLoading(false);
     }
   };
+  console.log("Activities from Progress page", activities);
 
   useEffect(() => {
     fetchActivities();
+    console.log(fetchActivities);
   }, [userID]);
 
   if (loading)
