@@ -9,7 +9,6 @@ import {
   LevelTwo,
   LevelOne,
   LevelThree,
-  ProfilePlaceHolderOne,
 } from "@/public/Images";
 import {
   Dialog,
@@ -28,7 +27,6 @@ import { getPublishedBadge, getUserDataByEmail } from "@/lib/hygraph";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/lib/useAuth";
 import LevelList from "@/app/Sections/Profile/LevelList";
-import RichTextRender from "@/app/Sections/Global/RichTextRender";
 
 const HYGRAPH_ENDPOINT =
   "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";
@@ -109,12 +107,7 @@ const MyLevel = ({ userID }) => {
     }
   };
 
-  if (loading)
-    return (
-      <p>
-        <Loading />
-      </p>
-    );
+  if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 
   const userLevel = getUserLevel(activities.length);
@@ -359,12 +352,7 @@ const DisplayAllBadges = () => {
                 </DialogTitle>
                 <DialogDescription className="flex w-full px-4 claracontainer gap-4 flex-col justify-center items-start">
                   {/* Rendering badge.description */}
-                  <div className="w-full text-[#575757] text-[20px] font-medium font-fredoka leading-[24px]">
-                    <RichTextRender
-                      content={allBadges[0].badgeDescription?.json}
-                    />
-                  </div>
-                  {/* {allBadges.length > 0 && <p>{allBadges[0].description}</p>} */}
+                  {allBadges.length > 0 && <p>{allBadges[0].description}</p>}
                 </DialogDescription>
               </DialogHeader>
             </DialogContent>
@@ -377,7 +365,7 @@ const DisplayAllBadges = () => {
   );
 };
 
-export default async function Achievement() {
+export default function Achievement() {
   const { user, loading } = useAuth();
   const router = useRouter();
   const [hygraphUser, setHygraphUser] = useState(null);
@@ -393,7 +381,7 @@ export default async function Achievement() {
   if (loading) {
     return (
       <div className="w-full h-screen flex justify-center items-center">
-        <Loading />
+        Loadng...
       </div>
     );
   }
