@@ -56,7 +56,7 @@ export default function MileStone() {
                       height={84}
                       src={
                         partner.myAvatar?.profileAvatar?.url ||
-                        ProfilePlaceholder01
+                        'https://ap-south-1.graphassets.com/cm1dom2gf0lqw07pi72v8797k/cm3jnqto60fx008o0ctpfoiaq'
                       }
                       alt={`Avatar of ${partner.name}`}
                       className="min-w-16 max-w-16 h-16 cursor-pointer hover:scale-110 ease-in-out duration-200  object-cover overflow-clip rounded-full"
@@ -80,7 +80,7 @@ export default function MileStone() {
                       height={84}
                       src={
                         partner.myAvatar?.profileAvatar?.url ||
-                        ProfilePlaceholder01
+                        'https://ap-south-1.graphassets.com/cm1dom2gf0lqw07pi72v8797k/cm3jnqto60fx008o0ctpfoiaq'
                       }
                       alt={`Avatar of ${partner.name}`}
                       className="min-w-16 max-w-16 h-16 cursor-pointer hover:scale-110 ease-in-out duration-200 object-cover overflow-clip rounded-full"

@@ -196,6 +196,20 @@ export default function Calendar() {
       try {
         const activitiesFromHygraph = await getAllActivities();
         console.log("Activities fetched from Hygraph:", activitiesFromHygraph);
+        // Check if the response is valid and contains the expected data
+        if (!Array.isArray(activitiesFromHygraph)) {
+          throw new Error(
+            "Activities from Hygraph are not in the expected format (array)."
+          );
+        }
+
+        // Filter out any invalid activities (e.g., missing 'html' property or null/undefined values)
+        // const validActivities = activitiesFromHygraph.filter(
+        //   (activity) => activity && activity.html
+        // );
+
+        // console.log("Valid activities:", validActivities);
+
         const savedEvents = localStorage.getItem("events");
         const localEvents = savedEvents ? JSON.parse(savedEvents) : [];
 
@@ -442,14 +456,16 @@ export default function Calendar() {
 
       {/* Calendar Top Weekdays  */}
       <div className="flex-col flex lg:grid font-fredoka p-0 lg:p-4 bg-[#eaeaf5] lg:bg-[#DCDCE8] rounded-[20px] w-full grid-cols-7 gap-0 text-center">
-        {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
-          <div
-            key={day}
-            className="font-semibold w-full justify-center items-center text-center hidden uppercase lg:flex font-fredoka text-[#3F3A64] py-2 gap-0"
-          >
-            {day}
-          </div>
-        ))}
+        {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => {
+          return (
+            <div
+              key={day}
+              className="font-semibold w-full justify-center items-center text-center hidden uppercase lg:flex font-fredoka text-[#3F3A64] py-2 gap-0"
+            >
+              {day}
+            </div>
+          );
+        })}
 
         {/* Monthly Calendar Date View  */}
         {days.map((dayObj, index) => {

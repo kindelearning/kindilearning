@@ -10,7 +10,7 @@ export default function CancelPage() {
           <div className="flex h-full flex-col gap-2 justify-center items-center w-full">
             <Image alt="Kindi" src={OrderConfirmed} className="w-12 h-12" />
             <div className="w-full text-center text-red text-[24px] lg:text-[40px] font-semibold font-fredoka leading-tight">
-              Opps!
+              Oops!
             </div>
             <div className="w-full text-center text-[#0a1932] text-[16px] lg:text-[24px] font-normal font-fredoka">
               Your order was not Successfull. Please try again.

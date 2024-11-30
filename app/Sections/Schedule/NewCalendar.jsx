@@ -349,14 +349,16 @@ export default function NewCalendar() {
 
       {/* Calendar Top Weekdays  */}
       <div className="flex-col flex lg:grid font-fredoka p-0 lg:p-4 bg-[#eaeaf5] lg:bg-[#DCDCE8] rounded-[20px] w-full grid-cols-7 gap-0 text-center">
-        {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
-          <div
-            key={day}
-            className="font-semibold w-full justify-center items-center text-center hidden uppercase lg:flex font-fredoka text-[#3F3A64] py-2 gap-0"
-          >
-            {day}
-          </div>
-        ))}
+        {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => {
+          return (
+            <div
+              key={day}
+              className="font-semibold w-full justify-center items-center text-center hidden uppercase lg:flex font-fredoka text-[#3F3A64] py-2 gap-0"
+            >
+              {day}
+            </div>
+          );
+        })}
 
         {/* Monthly Calendar Date View  */}
         {days.map((dayObj, index) => {
@@ -415,7 +417,7 @@ export default function NewCalendar() {
                       {event.title}
                     </p>
                   ) : (
-                    <> 
+                    <>
                       <div className="flex p-2 bg-white shadow-md rounded-lg flex-col w-full gap-1 justify-between items-start">
                         <div className="flex w-full justify-between gap-1 lg:gap-0 items-start">
                           <p className="font-semibold  text-[14px] leading-[16px] lg:text-[12px] lg:leading-[12px] text-start">
@@ -477,7 +479,8 @@ export default function NewCalendar() {
                           className={`w-[max-content] px-[8px] -mt-[12px] flex py-[6px] bg-red shadow-md rounded-md p-2 text-sm`}
                         >
                           <p className="font-semibold flex text-white bg-red justify-end items-center ¸ leading-[12px] text-start">
-                            Lets Start &nbsp; <ArrowRight className="text-[10px] w-[12px] h-[12px]" />
+                            Lets Start &nbsp;{" "}
+                            <ArrowRight className="text-[10px] w-[12px] h-[12px]" />
                           </p>
                         </Link>
                       </div>

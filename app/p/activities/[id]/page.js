@@ -227,7 +227,8 @@ const DynamicMarkActivityCompleteComponent = ({ activityId }) => {
 
         // Check if the partner has an avatar in myAvatar field
         const avatarUrl =
-          partner.myAvatar?.profileAvatar?.url || partnerAvatarUrl;
+          partner.myAvatar?.profileAvatar?.url ||
+          'https://ap-south-1.graphassets.com/cm1dom2gf0lqw07pi72v8797k/cm3jnqto60fx008o0ctpfoiaq';
 
         if (avatarUrl) {
           console.log("Partner Avatar URL:", avatarUrl);
@@ -273,7 +274,7 @@ const DynamicMarkActivityCompleteComponent = ({ activityId }) => {
                               height={36}
                               src={
                                 partner.myAvatar?.profileAvatar?.url ||
-                                ProfilePlaceholder01
+                                'https://ap-south-1.graphassets.com/cm1dom2gf0lqw07pi72v8797k/cm3jnqto60fx008o0ctpfoiaq'
                               }
                               alt={`Avatar of ${partner.name}`}
                               className="min-w-9 max-w-9 h-9 cursor-pointer hover:scale-110 ease-in-out duration-200 object-cover overflow-clip rounded-full"
@@ -300,7 +301,7 @@ const DynamicMarkActivityCompleteComponent = ({ activityId }) => {
                       height={36}
                       src={
                         hygraphUser.myAvatar.profileAvatar.url ||
-                        ProfilePlaceholder01
+                        'https://ap-south-1.graphassets.com/cm1dom2gf0lqw07pi72v8797k/cm3jnqto60fx008o0ctpfoiaq'
                       }
                       className="min-w-9 max-w-9 h-9 cursor-pointer hover:scale-110 ease-in-out duration-200 object-cover overflow-clip rounded-full"
                     />
@@ -326,7 +327,7 @@ const DynamicMarkActivityCompleteComponent = ({ activityId }) => {
                               height={36}
                               src={
                                 partner.myAvatar?.profileAvatar?.url ||
-                                ProfilePlaceholder01
+                                'https://ap-south-1.graphassets.com/cm1dom2gf0lqw07pi72v8797k/cm3jnqto60fx008o0ctpfoiaq'
                               }
                               alt={`Avatar of ${partner.name}`}
                               className="min-w-9 max-w-9 h-9 cursor-pointer hover:scale-110 ease-in-out duration-200 object-cover overflow-clip rounded-full"

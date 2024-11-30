@@ -567,7 +567,8 @@ const CurrentUser = () => {
           <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
             <Image
               src={
-                hygraphUser.myAvatar.profileAvatar.url || ProfilePlaceHolderOne
+                hygraphUser.myAvatar.profileAvatar.url ||
+                'https://ap-south-1.graphassets.com/cm1dom2gf0lqw07pi72v8797k/cm3jnqto60fx008o0ctpfoiaq'
               }
               alt="User DP"
               width={100}
@@ -607,7 +608,7 @@ export default async function ProgressSection() {
       hygraphUser.partner.forEach((partner) => {
         const partnerAvatarUrl = partner.profileAvatar
           ? partner.profileAvatar.url
-          : null;
+          : 'https://ap-south-1.graphassets.com/cm1dom2gf0lqw07pi72v8797k/cm3jnqto60fx008o0ctpfoiaq';
 
         // Check if the partner has an avatar in myAvatar field
         const avatarUrl =
@@ -657,7 +658,7 @@ export default async function ProgressSection() {
                     height={84}
                     src={
                       partner.myAvatar?.profileAvatar?.url ||
-                      ProfilePlaceholder01
+                      'https://ap-south-1.graphassets.com/cm1dom2gf0lqw07pi72v8797k/cm3jnqto60fx008o0ctpfoiaq'
                     }
                     alt={`Avatar of ${partner.name}`}
                     className="min-w-16 max-w-16 h-16 cursor-pointer hover:scale-110 ease-in-out duration-200  object-cover overflow-clip rounded-full"
@@ -681,7 +682,7 @@ export default async function ProgressSection() {
                     height={84}
                     src={
                       partner.myAvatar?.profileAvatar?.url ||
-                      ProfilePlaceholder01
+                      'https://ap-south-1.graphassets.com/cm1dom2gf0lqw07pi72v8797k/cm3jnqto60fx008o0ctpfoiaq'
                     }
                     alt={`Avatar of ${partner.name}`}
                     className="min-w-16 max-w-16 h-16 cursor-pointer hover:scale-110 ease-in-out duration-200 object-cover overflow-clip rounded-full"

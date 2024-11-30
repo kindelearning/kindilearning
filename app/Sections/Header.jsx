@@ -336,7 +336,10 @@ const Header = () => {
                       className="w-[40px] h-[40px] object-cover rounded-full"
                     /> */}
                     <Image
-                      src={hygraphUser.myAvatar.profileAvatar.url}
+                      src={
+                        hygraphUser.myAvatar.profileAvatar.url ||
+                        'https://ap-south-1.graphassets.com/cm1dom2gf0lqw07pi72v8797k/cm3jnqto60fx008o0ctpfoiaq'
+                      }
                       alt="User Avatar"
                       width={40}
                       height={40}

@@ -478,7 +478,7 @@ export default async function Achievement() {
                       <Image
                         src={
                           hygraphUser.myAvatar.profileAvatar.url ||
-                          ProfilePlaceHolderOne
+                          'https://ap-south-1.graphassets.com/cm1dom2gf0lqw07pi72v8797k/cm3jnqto60fx008o0ctpfoiaq'
                         }
                         alt="User DP"
                         width={100}

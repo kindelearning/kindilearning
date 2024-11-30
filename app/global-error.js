@@ -18,7 +18,7 @@ export default function GlobalError({ error, reset }) {
                     <br />
                   </span>
                   <span className="text-red text-4xl font-normal font-fredoka leading-[45px]">
-                    Opps... This page is taking a little nap!{" "}
+                    Oops... This page is taking a little nap!{" "}
                   </span>
                 </div>
               </div>
