@@ -1,8 +1,7 @@
-
 import Image from "next/image";
 import { ThemeDummy } from "@/public/Images";
 import ThemeTimer from "../Chip/ThemeTimer";
-
+import { Link } from "lucide-react";
 
 const CategoryCard = ({
   image,
@@ -12,7 +11,6 @@ const CategoryCard = ({
 }) => {
   return (
     <div className="flex cursor-pointer flex-col justify-end relative">
-      {" "}
       <div className="bg-white shadow-md rounded-lg">
         <div className="flex rounded-t-lg  overflow-clip">
           <Image
@@ -36,49 +34,25 @@ const CategoryCard = ({
                   : description}
               </p>
             </div>
-
-            {/* <button
-              className="border border-red text-red rounded-sm"
-              onClick={() => setIsOpen(!isOpen)}
-            >
-              {isOpen ? (
-                <svg
-                  className="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M18 12H6"
-                  />
-                </svg>
-              ) : (
-                <svg
-                  className="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                  />
-                </svg>
-              )}
-            </button> */}
           </div>
         </div>
-      </div>{" "}
-      {/* <div className="w-full flex justify-end px-4 -mt-4">
-        <CountdownTimer endDate={schedulesDate} />
+      </div>
+      {/* <div className="-mt-4 flex justify-end mr-2 z-12 animate-fade-in">
+        <ThemeTimer targetDate={schedulesDate} />
       </div> */}
       <div className="-mt-4 flex justify-end mr-2 z-12 animate-fade-in">
-        <ThemeTimer targetDate={schedulesDate} />
+        {new Date(schedulesDate).getTime() > Date.now() ? (
+          <ThemeTimer targetDate={schedulesDate} />
+        ) : (
+          // <span className="text-red font-semibold">Explore Theme</span>
+          <div className="w-auto hover:scale-110 duration-500 ease-out max-w-[340px] h-auto bg-purple rounded-full px-[16px] flex gap-[8px] items-center justify-between">
+            <div className="w-auto h-[34px] flex gap-[12px] justify-between items-center">
+              <div className="w-[max-content] font-semibold text-white text-[12px] md:text-[16px] font-fredoka leading-[28px]">
+                Explore Theme
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

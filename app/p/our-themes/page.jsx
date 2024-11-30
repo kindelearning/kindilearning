@@ -27,8 +27,8 @@ export default async function Page() {
                 <div key={theme.id}>
                   <Link
                     key={theme.id}
+                    target="_blank"
                     href={`/p/our-themes/${theme.id}`}
-                    // onClick={() => console.log("Clicked Blog:", CategoryCard)}
                   >
                     <article className="rounded-lg">
                       <CategoryCard
