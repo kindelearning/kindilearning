@@ -43,7 +43,8 @@ const DefaultReviews = () => {
   const currentReview = data[currentIndex];
 
   return (
-    <div className="flex flex-col gap-[20px] justify-center items-center w-full"
+    <div
+      className="flex flex-col gap-[20px] justify-center items-center w-full"
       style={{
         padding: "20px",
         backgroundColor: currentReview.bgColor?.hex || "#3f3a64",
@@ -59,10 +60,11 @@ const DefaultReviews = () => {
       >
         <button
           onClick={handlePrev}
-          className="p-1 lg:p-2 lg:border-2 border-white rounded-full transition"
+          // className="p-1 lg:p-2 lg:border-2 border-white rounded-full transition"
+          className=" w-[32px] h-[32px] hidden lg:flex justify-center items-center left-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-30 backdrop-blur-lg text-[#000000] p-2 rounded-full z-10"
         >
           <ChevronLeft />
-          </button>
+        </button>
         <div className="claracontainer w-full flex-col duration-150 animate-fade-in justify-center items-center inline-flex md:py-6 sm:py-4">
           <h2
             className="text-3xl text-center font-fredoka duration-150 animate-fade-in font-bold md:text-2xl sm:text-xl"
@@ -86,12 +88,12 @@ const DefaultReviews = () => {
         </div>
         <button
           onClick={handleNext}
-          className="p-1 lg:p-2 lg:border-2 border-white rounded-full transition"
+          className=" w-[32px] h-[32px] hidden lg:flex justify-center items-center right-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-30 backdrop-blur-lg text-[#000000] p-2 rounded-full z-10"
+
+          // className="p-1 lg:p-2 lg:border-2 border-white rounded-full transition"
         >
           <ChevronRight />
         </button>
-
-       
       </section>
       {/* Dot Navigation */}
       <div className="flex mt-4 space-x-2">

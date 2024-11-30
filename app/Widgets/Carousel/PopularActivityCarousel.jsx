@@ -37,13 +37,16 @@ const PopularActivityCarousel = ({ activities }) => {
     <>
       <div className="w-full flex items-center justify-center claracontainer ">
         <ChevronLeft
-          className="z-10 mx-4 hidden lg:flex cursor-pointer hover:bg-purple hover:text-white bg-[white] text-[20px] text-purple p-1 rounded-full"
+          // className="z-10 mx-4 hidden lg:flex cursor-pointer hover:bg-purple hover:text-white bg-[white] text-[20px] text-purple p-1 rounded-full"
+          className=" w-[32px] cursor-pointer hover:bg-purple hover:text-white  h-[32px] hidden lg:flex justify-center items-center left-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-30 backdrop-blur-lg text-[#000000] p-2 rounded-full z-10"
+          
+
           onClick={scrollLeft}
         />
 
         <div
           ref={containerRef}
-          className="flex  overflow-x-auto py-2 scrollbar-hidden px-4 lg:px-0 w-full claracontainer gap-4 scrollbar-hidden"
+          className="flex mx-1 overflow-x-auto py-2 scrollbar-hidden px-4 lg:px-0 w-full claracontainer gap-4 scrollbar-hidden"
         >
           {activities.map((activity) => (
             <div key={activity.id}>
@@ -126,7 +129,9 @@ const PopularActivityCarousel = ({ activities }) => {
           ))}
         </div>
         <ChevronRight
-          className="z-10 mx-4 hidden lg:flex cursor-pointer hover:bg-purple hover:text-white bg-[white] text-[20px] text-purple p-1 rounded-full"
+          // className="z-10 mx-4 hidden lg:flex cursor-pointer hover:bg-purple hover:text-white bg-[white] text-[20px] text-purple p-1 rounded-full"
+          className=" cursor-pointer hover:bg-purple hover:text-white  w-[32px] h-[32px] hidden lg:flex justify-center items-center right-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-30 backdrop-blur-lg text-[#000000] p-2 rounded-full z-10"
+
           onClick={scrollRight}
         />
       </div>
