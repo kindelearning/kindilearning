@@ -28,7 +28,7 @@ export default async function Page() {
                   <Link
                     key={theme.id}
                     href={`/p/our-themes/${theme.id}`}
-                    onClick={() => console.log("Clicked Blog:", CategoryCard)}
+                    // onClick={() => console.log("Clicked Blog:", CategoryCard)}
                   >
                     <article className="rounded-lg">
                       <CategoryCard
