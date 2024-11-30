@@ -248,68 +248,6 @@ const BadgesDisplay = ({ userID }) => {
   return (
     <div>
       <div className="flex w-full overflow-x-scroll scrollbar-hidden gap-2">
-        {/* {badges.length > 0 ? (
-          <Dialog>
-            <DialogTrigger>
-              {badges.map((badge) => {
-                // Select a random badge level based on your badgeLevels array
-                const randomLevelIndex = Math.floor(
-                  Math.random() * badgeLevels.length
-                );
-                const selectedBadgeLevel = badgeLevels[randomLevelIndex];
-
-                return (
-                  <div
-                    key={badge.id}
-                    className="flex flex-col justify-start items-center w-fit max-w-[100px] min-w-[80px] gap-0 cursor-pointer"
-                  >
-                    {badge.icon && (
-                      <img
-                        src={badge.icon.url}
-                        alt={badge.name}
-                        className="w-[60px] h-[60px] object-cover flex"
-                      />
-                    )}
-
-                    {selectedBadgeLevel && (
-                      <div className="flex w-full justify-end items-end">
-                        <Image
-                          src={selectedBadgeLevel?.image}
-                          alt={`Badge Level ${randomLevelIndex + 1}`}
-                          className="-mt-[20px] lg:-mt-[22px] w-[24px] h-[24px] md:w-[32px] md:h-[32px] mr-0 lg:mr-[10px]"
-                        />
-                      </div>
-                    )}
-                    <h2 className="w-full text-center text-sm text-[#000000] font-normal font-fredoka leading-tight">
-                      {badge.name.length > 16
-                        ? badge.name.slice(0, 16) + "..."
-                        : badge.name}
-                    </h2>
-                  </div>
-                );
-              })}
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>
-                  <div className="text-center">
-                    <span className="text-[#3f3a64] text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
-                      Yay!
-                    </span>
-                    <span className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
-                      you earned a Badge
-                    </span>
-                  </div>
-                </DialogTitle>
-                <DialogDescription >
-                  {badge.length > 0 && <p>{badge[0].description}</p>}
-                </DialogDescription>
-              </DialogHeader>
-            </DialogContent>
-          </Dialog>
-        ) : (
-          <p>No badges found.</p>
-        )} */}
         {badges.map((badge) => {
           // Select a random badge level based on your badgeLevels array
           const randomLevelIndex = Math.floor(
@@ -326,7 +264,7 @@ const BadgesDisplay = ({ userID }) => {
                 <img
                   src={badge.icon.url}
                   alt={badge.name}
-                  className="min-w-[80px] min-h-[80px] object-cover"
+                  className="min-w-[80px] max-w-[80px] max-h-[80px] min-h-[80px] object-cover"
                 />
               )}
 
@@ -384,7 +322,7 @@ const DisplayAllBadges = () => {
                       <Image
                         width={80}
                         height={80}
-                        className="min-w-[80px] min-h-[80px] object-cover"
+                        className="min-w-[80px] min-h-[80px] max-w-[80px] max-h-[80px] object-cover"
                         src={badge.icon.url}
                         alt={badge.icon.fileName}
                       />
@@ -478,7 +416,7 @@ export default async function Achievement() {
                       <Image
                         src={
                           hygraphUser.myAvatar.profileAvatar.url ||
-                          'https://ap-south-1.graphassets.com/cm1dom2gf0lqw07pi72v8797k/cm3jnqto60fx008o0ctpfoiaq'
+                          "https://ap-south-1.graphassets.com/cm1dom2gf0lqw07pi72v8797k/cm3jnqto60fx008o0ctpfoiaq"
                         }
                         alt="User DP"
                         width={100}
