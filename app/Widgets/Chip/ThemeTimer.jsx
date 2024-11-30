@@ -55,20 +55,3 @@ export default function ThemeTimer({ targetDate = "2024-10-31" }) {
     </div>
   );
 }
-
-// export default function ThemeTimer({ time = "12d 20:18:45" }) {
-//   return (
-//     <>
-//       <div className="w-auto max-w-[340px] h-auto bg-red rounded-full px-[16px] flex gap-[8px] items-center justify-between">
-//         <div className="w-auto h-[34px] flex gap-[12px] justify-between items-center">
-//           <div className="w-[max-content] text-white text-[12px] md:text-[16px] font-normal font-fredoka leading-[28px]">
-//             Adventure Countdown:
-//           </div>
-//           <div className="w-[max-content] font-fredoka text-right text-white text-[12px] md:text-[18px] font-semibold leading-[32px]">
-//             {time}
-//           </div>
-//         </div>
-//       </div>
-//     </>
-//   );
-// }

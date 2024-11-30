@@ -36,7 +36,11 @@ const MonthlyThemes = async () => {
 
           <div className="lg:grid claracontainer w-full flex flex-row overflow-x-scroll scrollbar-hidden px-2 py-4 hover:px-2 gap-4 lg:grid-cols-2 xl:grid-cols-2">
             {themes.slice(0, 4).map((theme) => (
-              <Link href={`/p/our-themes/${theme.id}`}  key={theme.id}>
+              <Link
+                target="_blank"
+                href={`/p/our-themes/${theme.id}`}
+                key={theme.id}
+              >
                 <ThemeCard
                   key={theme.id}
                   image={theme.thumbnail.url}
@@ -50,6 +54,7 @@ const MonthlyThemes = async () => {
           {themes.length > 4 ? (
             <div className="w-full flex-col justify-center items-center px-4 heading inline-flex">
               <Link
+                target="_blank"
                 href="/p/our-themes"
                 className="clarabutton text-white py-2 min-w-[200px] lg:w-[240px] text-center px-8 lg:px-4  bg-red hover:bg-purple"
               >
