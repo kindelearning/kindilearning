@@ -10,7 +10,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ReferralCard from "@/app/Sections/Profile/ReferralCard";
 import Loading from "@/app/loading";
-import { progressData } from "@/app/constant/menu";
+import { activityIcons, progressData } from "@/app/constant/menu";
 import { getAllActivities, getUserDataByEmail } from "@/lib/hygraph";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/lib/useAuth";
@@ -215,32 +215,51 @@ const RemainingActivities = ({ userID }) => {
 
 const MyActivity = ({ userID }) => {
   const [activities, setActivities] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true); // To track if there's more data to load
+  const [totalPages, setTotalPages] = useState(1);
 
-  const ITEMS_PER_PAGE = 6; // Number of activities to fetch per page
+  const ITEMS_PER_PAGE = 8; // Number of activities per page
 
   const fetchActivities = async () => {
     setLoading(true);
+
     const query = `
-      query GetUserActivities($relationalFirst: Int, $where: AccountWhereUniqueInput!) {
+      query GetUserActivities($relationalFirst: Int, $relationalSkip: Int, $where: AccountWhereUniqueInput!) {
         values: account(where: $where) {
           id
           username
-          myActivity(first: $relationalFirst) {
+          myActivity(first: $relationalFirst, skip: $relationalSkip) {
             id
             title
             thumbnail {
               url
             }
+            skills
+            setUpTime
+            themeName
+            focusAge
+            eventTimeline
+            speechLanguage
+            emotionalSocialStrength
+            confidenceIndependence
+            physicalAgility
+            readingWriting
+            discoveringOurWorld
+            creativityImagination
+            experimentsMath
             documentInStages(includeCurrent: true) {
               id
               stage
               updatedAt
               publishedAt
             }
+          }
+        }
+        activityCount: account(where: $where) {
+          myActivity {
+            id
           }
         }
       }
@@ -251,10 +270,6 @@ const MyActivity = ({ userID }) => {
       relationalSkip: (page - 1) * ITEMS_PER_PAGE,
       where: { id: userID },
     };
-    // const variables = {
-    //   relationalFirst: 100, // Adjust this value based on your needs
-    //   where: { id: userID }, // Replace with the current user's ID
-    // };
 
     try {
       const response = await fetch(HYGRAPH_ENDPOINT, {
@@ -267,20 +282,15 @@ const MyActivity = ({ userID }) => {
       });
 
       const result = await response.json();
-      // console.log("Result", result);
 
       if (result.errors) {
         throw new Error(result.errors[0].message);
       } else {
         const newActivities = result.data.values.myActivity;
+        const totalItems = result.data.activityCount.myActivity.length;
 
-        setActivities((prevActivities) => [
-          ...prevActivities,
-          ...newActivities,
-        ]);
-        if (newActivities.length < ITEMS_PER_PAGE) {
-          setHasMore(false); // No more data to load
-        }
+        setActivities(newActivities);
+        setTotalPages(Math.ceil(totalItems / ITEMS_PER_PAGE));
       }
     } catch (error) {
       setError("Error fetching activities: " + error.message);
@@ -288,49 +298,39 @@ const MyActivity = ({ userID }) => {
       setLoading(false);
     }
   };
-  console.log("Activities from Progress page", activities);
 
-  // useEffect(() => {
-  //   fetchActivities();
-  //   console.log(fetchActivities);
-  // }, [userID]);
   useEffect(() => {
     fetchActivities();
   }, [page, userID]);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>{error}</p>;
-
-  const loadMore = () => {
-    if (!loading && hasMore) {
-      setPage((prevPage) => prevPage + 1);
+  const handlePageChange = (newPage) => {
+    if (newPage > 0 && newPage <= totalPages) {
+      setPage(newPage);
     }
   };
 
   if (error) return <p>{error}</p>;
 
-  const CompletedActivity = activities.length;
-  // console.log("my activity", activities);
   return (
     <>
       <Dialog>
         <DialogTrigger>
           <SubBagde
-            number={CompletedActivity}
+            number={activities.length}
             title="Complete"
             backgroundColor="#029871"
             borderColor="#a5d2ce"
           />
         </DialogTrigger>
-        <DialogContent className="max-w-[96%] lg:max-w-[1000px] w-full overflow-x-hidden overflow-y-scroll">
+        <DialogContent className="w-full lg:max-w-[1000px] lg:max-h-[600px] overflow-x-hidden overflow-y-scroll">
           <DialogHeader className="p-4">
             <div className="flex flex-row justify-center items-center w-full">
               <DialogTitle>
                 <div className="text-center">
-                  <span className="text-[#3f3a64] text-[24px] md:text-[36px] font-semibold font-fredoka capitalize  ">
+                  <span className="text-[#3f3a64] text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
                     Completed{" "}
                   </span>
-                  <span className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize  ">
+                  <span className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
                     Activity
                   </span>
                 </div>
@@ -338,7 +338,7 @@ const MyActivity = ({ userID }) => {
             </div>
           </DialogHeader>
           <DialogDescription>
-            <div className="grid grid-cols-2 w-full gap-2 md:gap-4 justify-between items-start">
+            <div className="grid grid-cols-2 lg:grid-cols-4 w-full gap-2 md:gap-4 justify-between items-start">
               {activities.map((activity) => (
                 <Link
                   key={activity.id}
@@ -346,32 +346,101 @@ const MyActivity = ({ userID }) => {
                   href={`/p/activities/${activity.id}`}
                   className="md:w-full hover:shadow-md duration-200 min-w-[170px] w-full min-h-[250px] h-full bg-white items-start justify-start border rounded-3xl flex flex-col gap-4"
                 >
-                  <div className="flex max-h-[180px] min-h-[150px] h-[150px] md:min-h-[200px] md:h-full lg:min-h-[276px] lg:h-full lg:max-h-[276px] md:max-h-[300px] overflow-clip rounded-t-3xl">
+                  <div className="flex max-h-[180px] min-h-[150px] h-[150px] md:max-h-[200px] md:h-full lg:h-full lg:max-h-[182px] lg:min-h-[182px]  overflow-clip rounded-t-3xl">
                     <Image
                       src={activity.thumbnail.url}
                       alt={activity.title}
                       width={200}
                       height={150}
-                      className="w-full max-h-[180px] duration-300 hover:scale-105 lg:min-h-[276px] lg:h-full lg:max-h-[276px] md:max-h-[300px] object-cover rounded-t-3xl"
+                      className="w-full max-h-[180px] duration-300 hover:scale-105 lg:h-full lg:max-h-[182px] lg:min-h-[182px] md:max-h-[300px] object-cover rounded-t-3xl"
                     />
                   </div>
-                  <div className="text-[#0a1932] text-[16px] md:text-xl font-semibold font-fredoka leading-[20px]">
-                    {activity.title.length > 20
-                      ? `${activity.title.slice(0, 22)}...`
-                      : activity.title}
-                  </div>{" "}
+                  <div className="w-full overflow-clip p-2 flex-col justify-start items-start flex gap-2 md:gap-2 lg:gap-4">
+                    <div className="flex-col w-full gap-[6px] justify-start items-start">
+                      <div className="text-[#0a1932] text-[16px] md:text-xl font-semibold font-fredoka leading-[20px]">
+                        {activity.title.length > 14
+                          ? `${activity.title.slice(0, 14)}...`
+                          : activity.title}
+                      </div>
+                      <div className="justify-start pb-1 w-full items-center gap-1 lg:gap-2 inline-flex">
+                        <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-6 flex pr-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
+                          {activity.themeName.slice(0, 10)}
+                        </div>
+                        •
+                        <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-6 flex pr-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
+                          {activity.focusAge.slice(0, 10)}
+                        </div>
+                      </div>
+                    </div>
+                    {/* <div className="items-center justify-center gap-2 md:gap-4 grid grid-cols-5">
+                      {activityIcons.reduce((acc, item, index) => {
+                        // Only render the icon if it matches the activity and we haven't already displayed 4
+                        if (activity[item.key] && acc.length < 4) {
+                          acc.push(
+                            <div
+                              key={item.key}
+                              className={`w-[20px] h-[24px] md:w-[36px] md:h-[36px] lg:w-[48px] lg:h-[48px] flex justify-center items-center bg-[#${activityIcons.concatbackgroundColor}] rounded-[16px]`}
+                            >
+                              <Image alt="Kindi" src={item.icon} />
+                            </div>
+                          );
+                        }
+                        return acc; // Return accumulated icons
+                      }, [])}
+                      {activityIcons.length > 4 && (
+                        <div
+                          className={`w-[20px] lg:w-[48px] md:w-[36px] md:h-[36px] md:rounded-xl lg:h-[48px] h-[20px] flex lg:rounded-[12px] justify-center items-center bg-[#F6BEBF] rounded-[4px]`}
+                        >
+                          <span className="text-red p-[2px] text-[12px] lg:text-[20px] font-medium font-fredoka">
+                            +{activityIcons.length - 4}
+                          </span>
+                        </div>
+                      )}
+                    </div> */}
+                  </div>
                 </Link>
               ))}
             </div>
             {loading && <p>Loading...</p>}
-            {!loading && hasMore && (
+
+            {/* Pagination Controls */}
+            <div className="flex justify-center items-center mt-4 gap-4">
               <button
-                onClick={loadMore}
-                className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                onClick={() => handlePageChange(page - 1)}
+                disabled={page === 1}
+                className={`px-4 py-2 rounded-lg ${
+                  page === 1
+                    ? "bg-gray-300 cursor-not-allowed"
+                    : "bg-red text-white hover:bg-hoverRed"
+                }`}
               >
-                Load More
+                Previous
               </button>
-            )}
+              {[...Array(totalPages).keys()].map((num) => (
+                <button
+                  key={num + 1}
+                  onClick={() => handlePageChange(num + 1)}
+                  className={`px-3 py-2 rounded-lg ${
+                    page === num + 1
+                      ? "bg-red text-white"
+                      : "bg-gray-200 hover:bg-gray-300"
+                  }`}
+                >
+                  {num + 1}
+                </button>
+              ))}
+              <button
+                onClick={() => handlePageChange(page + 1)}
+                disabled={page === totalPages}
+                className={`px-4 py-2 rounded-lg ${
+                  page === totalPages
+                    ? "bg-gray-300 cursor-not-allowed"
+                    : "bg-red text-white hover:bg-hoverRed"
+                }`}
+              >
+                Next
+              </button>
+            </div>
           </DialogDescription>
         </DialogContent>
       </Dialog>
