@@ -217,8 +217,13 @@ const MyActivity = ({ userID }) => {
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true); // To track if there's more data to load
+
+  const ITEMS_PER_PAGE = 6; // Number of activities to fetch per page
 
   const fetchActivities = async () => {
+    setLoading(true);
     const query = `
       query GetUserActivities($relationalFirst: Int, $where: AccountWhereUniqueInput!) {
         values: account(where: $where) {
@@ -227,6 +232,9 @@ const MyActivity = ({ userID }) => {
           myActivity(first: $relationalFirst) {
             id
             title
+            thumbnail {
+              url
+            }
             documentInStages(includeCurrent: true) {
               id
               stage
@@ -239,9 +247,14 @@ const MyActivity = ({ userID }) => {
     `;
 
     const variables = {
-      relationalFirst: 100, // Adjust this value based on your needs
-      where: { id: userID }, // Replace with the current user's ID
+      relationalFirst: ITEMS_PER_PAGE,
+      relationalSkip: (page - 1) * ITEMS_PER_PAGE,
+      where: { id: userID },
     };
+    // const variables = {
+    //   relationalFirst: 100, // Adjust this value based on your needs
+    //   where: { id: userID }, // Replace with the current user's ID
+    // };
 
     try {
       const response = await fetch(HYGRAPH_ENDPOINT, {
@@ -259,7 +272,15 @@ const MyActivity = ({ userID }) => {
       if (result.errors) {
         throw new Error(result.errors[0].message);
       } else {
-        setActivities(result.data.values.myActivity);
+        const newActivities = result.data.values.myActivity;
+
+        setActivities((prevActivities) => [
+          ...prevActivities,
+          ...newActivities,
+        ]);
+        if (newActivities.length < ITEMS_PER_PAGE) {
+          setHasMore(false); // No more data to load
+        }
       }
     } catch (error) {
       setError("Error fetching activities: " + error.message);
@@ -269,18 +290,25 @@ const MyActivity = ({ userID }) => {
   };
   console.log("Activities from Progress page", activities);
 
+  // useEffect(() => {
+  //   fetchActivities();
+  //   console.log(fetchActivities);
+  // }, [userID]);
   useEffect(() => {
     fetchActivities();
-    console.log(fetchActivities);
-  }, [userID]);
+  }, [page, userID]);
 
-  if (loading)
-    return (
-      <p>
-        <Loading />
-      </p>
-    );
+  if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
+
+  const loadMore = () => {
+    if (!loading && hasMore) {
+      setPage((prevPage) => prevPage + 1);
+    }
+  };
+
+  if (error) return <p>{error}</p>;
+
   const CompletedActivity = activities.length;
   // console.log("my activity", activities);
   return (
@@ -294,7 +322,7 @@ const MyActivity = ({ userID }) => {
             borderColor="#a5d2ce"
           />
         </DialogTrigger>
-        <DialogContent>
+        <DialogContent className="max-w-[96%] lg:max-w-[1000px] w-full overflow-x-hidden overflow-y-scroll">
           <DialogHeader className="p-4">
             <div className="flex flex-row justify-center items-center w-full">
               <DialogTitle>
@@ -310,8 +338,40 @@ const MyActivity = ({ userID }) => {
             </div>
           </DialogHeader>
           <DialogDescription>
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
+            <div className="grid grid-cols-2 w-full gap-2 md:gap-4 justify-between items-start">
+              {activities.map((activity) => (
+                <Link
+                  key={activity.id}
+                  target="_blank"
+                  href={`/p/activities/${activity.id}`}
+                  className="md:w-full hover:shadow-md duration-200 min-w-[170px] w-full min-h-[250px] h-full bg-white items-start justify-start border rounded-3xl flex flex-col gap-4"
+                >
+                  <div className="flex max-h-[180px] min-h-[150px] h-[150px] md:min-h-[200px] md:h-full lg:min-h-[276px] lg:h-full lg:max-h-[276px] md:max-h-[300px] overflow-clip rounded-t-3xl">
+                    <Image
+                      src={activity.thumbnail.url}
+                      alt={activity.title}
+                      width={200}
+                      height={150}
+                      className="w-full max-h-[180px] duration-300 hover:scale-105 lg:min-h-[276px] lg:h-full lg:max-h-[276px] md:max-h-[300px] object-cover rounded-t-3xl"
+                    />
+                  </div>
+                  <div className="text-[#0a1932] text-[16px] md:text-xl font-semibold font-fredoka leading-[20px]">
+                    {activity.title.length > 20
+                      ? `${activity.title.slice(0, 22)}...`
+                      : activity.title}
+                  </div>{" "}
+                </Link>
+              ))}
+            </div>
+            {loading && <p>Loading...</p>}
+            {!loading && hasMore && (
+              <button
+                onClick={loadMore}
+                className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+              >
+                Load More
+              </button>
+            )}
           </DialogDescription>
         </DialogContent>
       </Dialog>
