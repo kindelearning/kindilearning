@@ -61,7 +61,7 @@ const DefaultReviews = () => {
         <button
           onClick={handlePrev}
           // className="p-1 lg:p-2 lg:border-2 border-white rounded-full transition"
-          className=" w-[32px] h-[32px] hidden lg:flex justify-center items-center left-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-30 backdrop-blur-lg text-[#000000] p-2 rounded-full z-10"
+          className=" w-[32px] h-[32px] hidden lg:flex justify-center items-center left-0  transform -translate-y-1/2 bg-white bg-opacity-30 backdrop-blur-lg text-[#000000] p-2 rounded-full z-10"
         >
           <ChevronLeft />
         </button>
@@ -88,7 +88,7 @@ const DefaultReviews = () => {
         </div>
         <button
           onClick={handleNext}
-          className=" w-[32px] h-[32px] hidden lg:flex justify-center items-center right-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-30 backdrop-blur-lg text-[#000000] p-2 rounded-full z-10"
+          className=" w-[32px] h-[32px] hidden lg:flex justify-center items-center right-0 transform -translate-y-1/2 bg-white bg-opacity-30 backdrop-blur-lg text-[#000000] p-2 rounded-full z-10"
 
           // className="p-1 lg:p-2 lg:border-2 border-white rounded-full transition"
         >
