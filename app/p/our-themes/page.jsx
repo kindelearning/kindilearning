@@ -1,12 +1,10 @@
-"use client";
-
 import { CategoryCard } from "@/app/Widgets";
 import { getThemes } from "@/lib/hygraph";
 import Link from "next/link";
 
 export default async function Page() {
   const themes = await getThemes();
-  const { title, metaDesc, thumbnail, launchTime } = themes;
+  const { launchTime } = themes;
   const formattedLaunchTime = themes.launchTime
     ? new Date(launchTime).toLocaleString()
     : "No launch date available";
@@ -42,12 +40,6 @@ export default async function Page() {
                       />
                     </article>
                   </Link>
-                  {/* <p>
-                    Launch Time:{" "}
-                    {launchTime
-                      ? new Date(launchTime).toLocaleDateString()
-                      : "Not specified"}
-                  </p> */}
                 </div>
               ))}
             </div>

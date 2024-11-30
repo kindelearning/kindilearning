@@ -1,56 +1,54 @@
-"use client";
-import React, { useEffect, useState } from "react";
+// "use client";
+// import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { ThemeDummy } from "@/public/Images";
 import Link from "next/link";
+import ThemeTimer from "../Chip/ThemeTimer";
 
-const CountdownTimer = ({ endDate }) => {
-  const [days, setDays] = useState(0);
-  const [hours, setHours] = useState(0);
-  const [minutes, setMinutes] = useState(0);
-  const [seconds, setSeconds] = useState(0);
+// const CountdownTimer = ({ endDate }) => {
+//   const [days, setDays] = useState(0);
+//   const [hours, setHours] = useState(0);
+//   const [minutes, setMinutes] = useState(0);
+//   const [seconds, setSeconds] = useState(0);
 
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      const now = new Date();
-      const timeLeft = endDate - now;
+//   useEffect(() => {
+//     const intervalId = setInterval(() => {
+//       const now = new Date();
+//       const timeLeft = endDate - now;
 
-      if (timeLeft > 0) {
-        setDays(Math.floor(timeLeft / (1000 * 60 * 60 * 24)));
-        setHours(Math.floor((timeLeft / (1000 * 60 * 60)) % 24));
-        setMinutes(Math.floor((timeLeft / (1000 * 60)) % 60));
-        setSeconds(Math.floor((timeLeft / 1000) % 60));
-      } else {
-        clearInterval(intervalId);
-      }
-    }, 1000);
+//       if (timeLeft > 0) {
+//         setDays(Math.floor(timeLeft / (1000 * 60 * 60 * 24)));
+//         setHours(Math.floor((timeLeft / (1000 * 60 * 60)) % 24));
+//         setMinutes(Math.floor((timeLeft / (1000 * 60)) % 60));
+//         setSeconds(Math.floor((timeLeft / 1000) % 60));
+//       } else {
+//         clearInterval(intervalId);
+//       }
+//     }, 1000);
 
-    return () => clearInterval(intervalId);
-  }, [endDate]);
+//     return () => clearInterval(intervalId);
+//   }, [endDate]);
 
-  return (
-    <div className="px-4 py-2 bg-red rounded-xl justify-start items-start gap-1 inline-flex">
-      <div className="text-white w-[max-content] text-xs font-normal font-fredoka leading-none">
-        Adventure Countdown:
-      </div>
-      <div className="text-right w-[max-content] text-white text-xs font-semibold font-fredoka leading-none">
-        {days} d, {hours.toString().padStart(2, "0")}:
-        {minutes.toString().padStart(2, "0")}:
-        {seconds.toString().padStart(2, "0")}
-      </div>
-    </div>
-  );
-};
-// const endDate = new Date("2025-12-31T23:59:59.999Z");
+//   return (
+//     <div className="px-4 py-2 bg-red rounded-xl justify-start items-start gap-1 inline-flex">
+//       <div className="text-white w-[max-content] text-xs font-normal font-fredoka leading-none">
+//         Adventure Countdown:
+//       </div>
+//       <div className="text-right w-[max-content] text-white text-xs font-semibold font-fredoka leading-none">
+//         {days} d, {hours.toString().padStart(2, "0")}:
+//         {minutes.toString().padStart(2, "0")}:
+//         {seconds.toString().padStart(2, "0")}
+//       </div>
+//     </div>
+//   );
+// };
+
 const CategoryCard = ({
   image,
   schedulesDate,
   header = "Winter Magic",
   description = "Snow adventure, ice castles, cozy indoor playtimes",
-  buttonText = "Button Text",
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
-
   return (
     <div className="flex cursor-pointer flex-col justify-end relative">
       {" "}
@@ -115,8 +113,11 @@ const CategoryCard = ({
           </div>
         </div>
       </div>{" "}
-      <div className="w-full flex justify-end px-4 -mt-4">
+      {/* <div className="w-full flex justify-end px-4 -mt-4">
         <CountdownTimer endDate={schedulesDate} />
+      </div> */}
+      <div className="-mt-4 flex justify-end mr-2 z-12 animate-fade-in">
+        <ThemeTimer targetDate={schedulesDate} />
       </div>
     </div>
   );

@@ -2,6 +2,7 @@ import { ThemeDummy } from "@/public/Images";
 import Image from "next/image";
 import ThemeTimer from "../Chip/ThemeTimer";
 
+
 const ThemeCard = ({ image, title, metaDesc, theTime }) => {
   return (
     <div className="flex flex-col gap-[-12px] cursor-pointer justify-center items-end animate-fade-in transition-all duration-300 group">
