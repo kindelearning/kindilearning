@@ -15,6 +15,14 @@ import { getAllActivities, getUserDataByEmail } from "@/lib/hygraph";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/lib/useAuth";
 import Link from "next/link";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 const HYGRAPH_ENDPOINT =
   "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";
@@ -275,12 +283,36 @@ const MyActivity = ({ userID }) => {
   // console.log("my activity", activities);
   return (
     <>
-      <SubBagde
-        number={CompletedActivity}
-        title="Complete"
-        backgroundColor="#029871"
-        borderColor="#a5d2ce"
-      />
+      <Dialog>
+        <DialogTrigger>
+          <SubBagde
+            number={CompletedActivity}
+            title="Complete"
+            backgroundColor="#029871"
+            borderColor="#a5d2ce"
+          />
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader className="p-4">
+            <div className="flex flex-row justify-center items-center w-full">
+              <DialogTitle>
+                <div className="text-center">
+                  <span className="text-[#3f3a64] text-[24px] md:text-[36px] font-semibold font-fredoka capitalize  ">
+                    Completed{" "}
+                  </span>
+                  <span className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize  ">
+                    Activity
+                  </span>
+                </div>
+              </DialogTitle>
+            </div>
+          </DialogHeader>
+          <DialogDescription>
+            This action cannot be undone. This will permanently delete your
+            account and remove your data from our servers.
+          </DialogDescription>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };
@@ -568,7 +600,7 @@ const CurrentUser = () => {
             <Image
               src={
                 hygraphUser.myAvatar.profileAvatar.url ||
-                'https://ap-south-1.graphassets.com/cm1dom2gf0lqw07pi72v8797k/cm3jnqto60fx008o0ctpfoiaq'
+                "https://ap-south-1.graphassets.com/cm1dom2gf0lqw07pi72v8797k/cm3jnqto60fx008o0ctpfoiaq"
               }
               alt="User DP"
               width={100}
@@ -608,7 +640,7 @@ export default async function ProgressSection() {
       hygraphUser.partner.forEach((partner) => {
         const partnerAvatarUrl = partner.profileAvatar
           ? partner.profileAvatar.url
-          : 'https://ap-south-1.graphassets.com/cm1dom2gf0lqw07pi72v8797k/cm3jnqto60fx008o0ctpfoiaq';
+          : "https://ap-south-1.graphassets.com/cm1dom2gf0lqw07pi72v8797k/cm3jnqto60fx008o0ctpfoiaq";
 
         // Check if the partner has an avatar in myAvatar field
         const avatarUrl =
@@ -658,7 +690,7 @@ export default async function ProgressSection() {
                     height={84}
                     src={
                       partner.myAvatar?.profileAvatar?.url ||
-                      'https://ap-south-1.graphassets.com/cm1dom2gf0lqw07pi72v8797k/cm3jnqto60fx008o0ctpfoiaq'
+                      "https://ap-south-1.graphassets.com/cm1dom2gf0lqw07pi72v8797k/cm3jnqto60fx008o0ctpfoiaq"
                     }
                     alt={`Avatar of ${partner.name}`}
                     className="min-w-16 max-w-16 h-16 cursor-pointer hover:scale-110 ease-in-out duration-200  object-cover overflow-clip rounded-full"
@@ -682,7 +714,7 @@ export default async function ProgressSection() {
                     height={84}
                     src={
                       partner.myAvatar?.profileAvatar?.url ||
-                      'https://ap-south-1.graphassets.com/cm1dom2gf0lqw07pi72v8797k/cm3jnqto60fx008o0ctpfoiaq'
+                      "https://ap-south-1.graphassets.com/cm1dom2gf0lqw07pi72v8797k/cm3jnqto60fx008o0ctpfoiaq"
                     }
                     alt={`Avatar of ${partner.name}`}
                     className="min-w-16 max-w-16 h-16 cursor-pointer hover:scale-110 ease-in-out duration-200 object-cover overflow-clip rounded-full"
