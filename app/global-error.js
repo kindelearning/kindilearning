@@ -1,5 +1,6 @@
 "use client";
 
+import { NotFoundImg } from "@/public/Images";
 import Image from "next/image";
 import Link from "next/link";
 

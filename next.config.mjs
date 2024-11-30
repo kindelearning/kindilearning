@@ -16,14 +16,7 @@ const nextConfig = {
       },
     ],
   },
-  webpack(config, { isServer }) {
-    if (!isServer) {
-      config.resolve.alias["react"] = "react/cjs/react.development.js";
-      config.resolve.alias["react-dom"] =
-        "react-dom/cjs/react-dom.development.js";
-    }
-    return config;
-  },
+
 };
 
 export default nextConfig;
