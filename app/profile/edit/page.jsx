@@ -20,16 +20,16 @@ const AvailableDaysForm = ({ userId }) => {
 
   const updateAvailableDays = async (userId, availableDays) => {
     const mutation = `
-          mutation UpdateAvailableDays($id: ID!, $availableDays: [String!]) {
-            updateAccount(
-              where: { id: $id }
-              data: { availableDays: $availableDays }
-            ) {
-              id
-              availableDays
-            }
-          }
-        `;
+      mutation UpdateAvailableDays($id: ID!, $availableDays: [String!]) {
+        updateAccount(
+          where: { id: $id }
+          data: { availableDays: $availableDays }
+        ) {
+          id
+          availableDays
+        }
+      }
+    `;
 
     const variables = {
       id: userId,

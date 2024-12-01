@@ -7,18 +7,34 @@ import { getUserDataByEmail } from "@/lib/hygraph";
 import Loading from "../loading";
 import { useEffect, useState } from "react";
 
-export default async function ProfileUpdate() {
+export default function ProfileUpdate() {
   const { user, loading } = useAuth();
   const router = useRouter();
   const [hygraphUser, setHygraphUser] = useState(null);
 
   useEffect(() => {
     if (user && user.email) {
-      getUserDataByEmail(user.email).then((data) => {
-        setHygraphUser(data);
-      });
+      // Fetch user data by email when the user is available
+      const fetchData = async () => {
+        try {
+          const data = await getUserDataByEmail(user.email);
+          setHygraphUser(data);
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      };
+
+      fetchData();
     }
   }, [user, loading, router]);
+  
+  // useEffect(() => {
+  //   if (user && user.email) {
+  //     getUserDataByEmail(user.email).then((data) => {
+  //       setHygraphUser(data);
+  //     });
+  //   }
+  // }, [user, loading, router]);
 
   if (loading)
     return (
