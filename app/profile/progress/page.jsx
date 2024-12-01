@@ -30,15 +30,20 @@ const HYGRAPH_TOKEN =
   "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImdjbXMtbWFpbi1wcm9kdWN0aW9uIn0.eyJ2ZXJzaW9uIjozLCJpYXQiOjE3MjcwNjQxNzcsImF1ZCI6WyJodHRwczovL2FwaS1hcC1zb3V0aC0xLmh5Z3JhcGguY29tL3YyL2NtMWRvbTFoaDAzeTEwN3V3d3hydXRwbXovbWFzdGVyIiwibWFuYWdlbWVudC1uZXh0LmdyYXBoY21zLmNvbSJdLCJpc3MiOiJodHRwczovL21hbmFnZW1lbnQtYXAtc291dGgtMS5oeWdyYXBoLmNvbS8iLCJzdWIiOiI2Yzg4NjI5YS1jMmU5LTQyYjctYmJjOC04OTI2YmJlN2YyNDkiLCJqdGkiOiJjbTFlaGYzdzYwcmZuMDdwaWdwcmpieXhyIn0.YMoI_XTrCZI-C7v_FX-oKL5VVtx95tPmOFReCdUcP50nIpE3tTjUtYdApDqSRPegOQai6wbyT0H8UbTTUYsZUnBbvaMd-Io3ru3dqT1WdIJMhSx6007fl_aD6gQcxb-gHxODfz5LmJdwZbdaaNnyKIPVQsOEb-uVHiDJP3Zag2Ec2opK-SkPKKWq-gfDv5JIZxwE_8x7kwhCrfQxCZyUHvIHrJb9VBPrCIq1XE-suyA03bGfh8_5PuCfKCAof7TbH1dtvaKjUuYY1Gd54uRgp8ELZTf13i073I9ZFRUU3PVjUKEOUoCdzNLksKc-mc-MF8tgLxSQ946AfwleAVkFCXduIAO7ASaWU3coX7CsXmZLGRT_a82wOORD8zihfJa4LG8bB-FKm2LVIu_QfqIHJKq-ytuycpeKMV_MTvsbsWeikH0tGPQxvAA902mMrYJr9wohOw0gru7mg_U6tLOwG2smcwuXBPnpty0oGuGwXWt_D6ryLwdNubLJpIWV0dOWF8N5D6VubNytNZlIbyFQKnGcPDw6hGRLMw2B7-1V2RpR6F3RibLFJf9GekI60UYdsXthAFE6Xzrlw03Gv5BOKImBoDPyMr0DCzneyAj9KDq4cbNNcihbHl1iA6lUCTNY3vkCBXmyujXZEcLu_Q0gvrAW3OvZMHeHY__CtXN6JFA";
 
 const ActivitiesCount = () => {
-  const [totalActivities, setTotalActivities] = useState(0);
+  const [activities, setActivities] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  const itemsPerPage = 8; // Number of items per page
+  const totalPages = Math.ceil(activities.length / itemsPerPage);
 
   useEffect(() => {
     const fetchActivities = async () => {
       try {
         const activities = await getAllActivities();
-        setTotalActivities(activities.length); // Set the total number of activities
+        setActivities(activities); // Set the fetched activities
+        console.log("All activities: ", activities);
       } catch (error) {
         setError("Failed to fetch activities: " + error.message);
       } finally {
@@ -49,17 +54,121 @@ const ActivitiesCount = () => {
     fetchActivities();
   }, []);
 
+  // Handle page change
+  const handlePageChange = (newPage) => {
+    if (newPage > 0 && newPage <= totalPages) {
+      setCurrentPage(newPage);
+    }
+  };
+
+  // Paginated activities for the current page
+  const paginatedActivities = activities.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
   if (loading) return <p>Loading activities...</p>;
   if (error) return <p>{error}</p>;
 
   return (
     <>
-      <SubBagde
-        number={totalActivities}
-        title="Total Activities"
-        backgroundColor="#019acf"
-        borderColor="#a4d2ea"
-      />
+      <Dialog>
+        <DialogTrigger>
+          <SubBagde
+            number={activities.length}
+            title="Total Activities"
+            backgroundColor="#019acf"
+            borderColor="#a4d2ea"
+          />
+        </DialogTrigger>
+        <DialogContent className="w-full lg:max-w-[1000px] lg:max-h-[600px] overflow-x-hidden overflow-y-scroll">
+          <DialogHeader className="p-4">
+            <div className="flex flex-row justify-center items-center w-full">
+              <DialogTitle>
+                <div className="text-center">
+                  <span className="text-[#3f3a64] text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
+                    All{" "}
+                  </span>
+                  <span className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
+                    Activities
+                  </span>
+                </div>
+              </DialogTitle>
+            </div>
+          </DialogHeader>
+          <DialogDescription>
+            <div className="grid grid-cols-2 lg:grid-cols-4 w-full gap-2 md:gap-4 justify-between items-start">
+              {paginatedActivities.map((activity) => (
+                <Link
+                  key={activity.id}
+                  target="_blank"
+                  href={`/p/activities/${activity.id}`}
+                  className="md:w-full hover:shadow-md duration-200 min-w-[170px] w-full min-h-[250px] h-full bg-white items-start justify-start border rounded-3xl flex flex-col gap-4"
+                >
+                  <div className="flex max-h-[180px] min-h-[150px] h-[150px] md:max-h-[200px] md:h-full lg:h-full lg:max-h-[182px] lg:min-h-[182px] overflow-clip rounded-t-3xl">
+                    <Image
+                      src={activity.thumbnail.url}
+                      alt={activity.title}
+                      width={200}
+                      height={150}
+                      className="w-full max-h-[180px] duration-300 hover:scale-105 lg:h-full lg:max-h-[182px] lg:min-h-[182px] md:max-h-[300px] object-cover rounded-t-3xl"
+                    />
+                  </div>
+                  <div className="w-full overflow-clip p-2 flex-col justify-start items-start flex gap-2 md:gap-2 lg:gap-4">
+                    <div className="flex-col w-full gap-[6px] justify-start items-start">
+                      <div className="text-[#0a1932] text-[16px] md:text-xl font-semibold font-fredoka leading-[20px]">
+                        {activity.title.length > 14
+                          ? `${activity.title.slice(0, 14)}...`
+                          : activity.title}
+                      </div>
+                      <div className="justify-start pb-1 w-full items-center gap-1 lg:gap-2 inline-flex">
+                        <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-6 flex pr-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
+                          {activity.themeName.slice(0, 10)}
+                        </div>
+                        •
+                        <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-6 flex pr-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
+                          {activity.focusAge.slice(0, 10)}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+            {paginatedActivities.length === 0 && (
+              <p>No activities available.</p>
+            )}
+            {/* Pagination Controls */}
+            <div className="flex justify-between items-center mt-4">
+              <button
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+                className={`px-4 py-2 rounded-lg ${
+                  currentPage === 1
+                    ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                    : "bg-red text-white"
+                }`}
+              >
+                Previous
+              </button>
+              <span className="text-gray-600">
+                Page {currentPage} of {totalPages}
+              </span>
+              <button
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                className={`px-4 py-2 rounded-lg ${
+                  currentPage === totalPages
+                    ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                    : "bg-red text-white"
+                }`}
+              >
+                Next
+              </button>
+            </div>
+          </DialogDescription>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };
@@ -72,7 +181,7 @@ const SubBagde = ({
 }) => {
   return (
     <div
-      className={`flex w-full flex-col md:flex-col lg:flex-row max-w-[240px] px-6 items-center gap-2  cursor-pointer  border-4 py-4 border-[${borderColor}] rounded-[12px] text-white`}
+      className={`flex w-full h-full flex-col md:flex-col lg:flex-row max-w-[240px] px-6 items-center gap-2  cursor-pointer  border-4 py-4 border-[${borderColor}] rounded-[12px] text-white`}
       style={{ backgroundColor: backgroundColor, borderColor: borderColor }}
     >
       <div className="text-center text-white text-[56px] font-semibold font-fredoka leading-[60px]">
@@ -122,6 +231,8 @@ const RemainingActivities = ({ userID }) => {
   const [loadingCompleted, setLoadingCompleted] = useState(true);
   const [error, setError] = useState("");
 
+  const ITEMS_PER_PAGE = 8;
+
   useEffect(() => {
     const fetchTotalActivities = async () => {
       try {
@@ -149,6 +260,13 @@ const RemainingActivities = ({ userID }) => {
               myActivity(first: $relationalFirst) {
                 id
                 title
+                thumbnail {
+                  url
+                }
+                skills
+                setUpTime
+                themeName
+                focusAge
                 documentInStages(includeCurrent: true) {
                   id
                   stage
@@ -203,12 +321,36 @@ const RemainingActivities = ({ userID }) => {
 
   return (
     <>
-      <SubBagde
-        number={remainingActivities}
-        title="Remaining Activities"
-        backgroundColor="#f5a623"
-        borderColor="#f5d08e"
-      />
+      <Dialog>
+        <DialogTrigger>
+          <SubBagde
+            number={remainingActivities}
+            title="Remaining Activities"
+            backgroundColor="#f5a623"
+            borderColor="#f5d08e"
+          />
+        </DialogTrigger>
+        <DialogContent className="w-full lg:max-w-[1000px] lg:max-h-[600px] overflow-x-hidden overflow-y-scroll">
+          <DialogHeader className="p-4">
+            <div className="flex flex-row justify-center items-center w-full">
+              <DialogTitle>
+                <div className="text-center">
+                  <span className="text-[#3f3a64] text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
+                    Remaining{" "}
+                  </span>
+                  <span className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
+                    Activity
+                  </span>
+                </div>
+              </DialogTitle>
+            </div>
+          </DialogHeader>
+          <DialogDescription>
+            This action cannot be undone. This will permanently delete your
+            account and remove your data from our servers.
+          </DialogDescription>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };
@@ -240,15 +382,6 @@ const MyActivity = ({ userID }) => {
             setUpTime
             themeName
             focusAge
-            eventTimeline
-            speechLanguage
-            emotionalSocialStrength
-            confidenceIndependence
-            physicalAgility
-            readingWriting
-            discoveringOurWorld
-            creativityImagination
-            experimentsMath
             documentInStages(includeCurrent: true) {
               id
               stage
@@ -291,6 +424,7 @@ const MyActivity = ({ userID }) => {
 
         setActivities(newActivities);
         setTotalPages(Math.ceil(totalItems / ITEMS_PER_PAGE));
+        console.log("Completed activities", activities);
       }
     } catch (error) {
       setError("Error fetching activities: " + error.message);
@@ -404,7 +538,7 @@ const MyActivity = ({ userID }) => {
             {loading && <p>Loading...</p>}
 
             {/* Pagination Controls */}
-            <div className="flex justify-center items-center mt-4 gap-4">
+            {/* <div className="flex justify-center items-center mt-4 gap-4">
               <button
                 onClick={() => handlePageChange(page - 1)}
                 disabled={page === 1}
@@ -436,6 +570,33 @@ const MyActivity = ({ userID }) => {
                   page === totalPages
                     ? "bg-gray-300 cursor-not-allowed"
                     : "bg-red text-white hover:bg-hoverRed"
+                }`}
+              >
+                Next
+              </button>
+            </div> */}
+            <div className="flex justify-between items-center mt-4">
+              <button
+                onClick={() => handlePageChange(page - 1)}
+                disabled={page === 1}
+                className={`px-4 py-2 rounded-lg ${
+                  page === 1
+                    ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                    : "bg-red text-white"
+                }`}
+              >
+                Previous
+              </button>
+              <span className="text-gray-600">
+                Page {page} of {totalPages}
+              </span>
+              <button
+                onClick={() => handlePageChange(page + 1)}
+                disabled={page === totalPages}
+                className={`px-4 py-2 rounded-lg ${
+                  page === totalPages
+                    ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                    : "bg-red text-white"
                 }`}
               >
                 Next
@@ -802,14 +963,14 @@ export default async function ProgressSection() {
         <title>Progress - Kindilearning</title>
         <meta name="description" content="Your profile page on Kindilearning" />
       </head>
-      <section className="w-full h-auto bg-[#F5F5F5] pb-12 md:bg-[#EAEAF5] items-center justify-center flex flex-col px-0">
+      <section className="w-full h-auto bg-[#F5F5F5] pb-12 pt-6 lg:pt-0 md:bg-[#EAEAF5] items-center justify-center flex flex-col px-0">
         {/* Topbar */}
-        <div className="claracontainer py-4 md:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-8">
+        <div className="claracontainer py-4 md:p-8 lg:pt-20 w-full flex flex-col overflow-hidden gap-8">
           <Tabs
             defaultValue="CurrentUser"
-            className="w-full flex flex-col gap-24"
+            className="w-full flex flex-col gap-6 lg:gap-24"
           >
-            <TabsList className="bg-[#eaeaf5]">
+            <TabsList className="lg:bg-[#eaeaf5] bg-[#F5F5F5]">
               {hygraphUser?.partner.slice(0, 2)?.map((partner) => (
                 <TabsTrigger
                   className="data-[state=active]:bg-[#f5f5f500] p-0 data-[state=active]:shadow-none"
@@ -860,7 +1021,7 @@ export default async function ProgressSection() {
                     <div className="font-fredoka text-[12px] lg:text-[20px]">
                       Email: {partner.email || "Partner"}
                     </div>
-                    <div className="flex gap-2 px-4 lg:px-0 overflow-x-scroll scrollbar-hidden w-full">
+                    <div className="flex gap-2 px-4 items-start lg:px-0 overflow-x-scroll scrollbar-hidden w-full">
                       <ActivitiesCount />
                       <RemainingActivities userID={partner.id} />
                       <MyActivity userID={partner.id} />
