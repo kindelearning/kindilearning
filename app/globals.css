@@ -203,6 +203,24 @@
     background-position: 100% 100%;
     background-image: linear-gradient(to right, #365a69, #7fd8fc);
   }
+
+  .slider {
+    transition: background-color 0.3s, box-shadow 0.3s;
+  }
+  
+  .slider.touched {
+    background-color: rgba(0, 0, 0, 0.1); /* Light gray overlay */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3); /* Slight shadow effect */
+  }
+  
+  .slide {
+    transition: transform 0.3s ease;
+  }
+  
+  .slider.touched .slide {
+    transform: scale(0.98); /* Slightly shrink slides */
+  }
+  
   @media (min-width: 640px) {
     .claracontainer {
       max-width: 640px;

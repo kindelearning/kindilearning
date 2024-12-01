@@ -114,19 +114,22 @@ const Slider = () => {
   const [loaded, setLoaded] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  const [isTouched, setIsTouched] = useState(false); // Manage touch state
 
   let touchStartX = 0;
   let touchEndX = 0;
 
   const handleTouchStart = (e) => {
-    touchStartX = e.touches[0].clientX; // Get the initial touch position
+    setIsTouched(true); // Show touch indication
+    touchStartX = e.touches[0].clientX;
   };
 
   const handleTouchMove = (e) => {
-    touchEndX = e.touches[0].clientX; // Track the touch as it moves
+    touchEndX = e.touches[0].clientX;
   };
 
   const handleTouchEnd = () => {
+    setIsTouched(false); // Hide touch indication
     if (touchStartX - touchEndX > 50) {
       // Swipe left
       setCurrentSlide((prev) => (prev + 1) % slides.length);
@@ -134,7 +137,6 @@ const Slider = () => {
       // Swipe right
       setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
     }
-    // Reset values after swipe
     touchStartX = 0;
     touchEndX = 0;
   };
@@ -278,18 +280,14 @@ const Slider = () => {
           </button>
         </div>
 
-        {/* Arrow Navigation */}
-        {/* <div className="absolute top-1/2 left-4 transform -translate-y-1/2"></div>
-        <div className="absolute top-1/2 right-4 transform -translate-y-1/2"></div> */}
-
         {/* Dot Navigation */}
         <div className="flex w-full px-4 justify-between items-center">
-          {/* <button
+          <button
             onClick={handlePrevSlide}
-            className=" w-[32px]  h-[32px] lg:hidden flex justify-center items-center left-0  transform  bg-white bg-opacity-30 backdrop-blur-lg text-[#000000] p-2 rounded-full z-10"
+            className="w-[32px]  h-[32px] lg:hidden flex justify-center items-center left-0  transform   bg-opacity-30 backdrop-blur-lg text-[#f6f6f6] p-2 rounded-full z-10"
           >
             <ChevronLeft />
-          </button> */}
+          </button>
           <div className="flex cursor-pointer justify-center w-full">
             {slides.map((slide, index) => (
               <div
@@ -301,12 +299,12 @@ const Slider = () => {
               />
             ))}
           </div>
-          {/* <button
+          <button
             onClick={handleNextSlide}
-            className=" w-[32px] h-[32px] lg:hidden flex justify-center items-center right-0  transform bg-white bg-opacity-30 backdrop-blur-lg text-[#000000] p-2 rounded-full z-10"
+            className="w-[32px] h-[32px] lg:hidden flex justify-center items-center right-0  transform bg-opacity-30 backdrop-blur-lg text-[#d6d6d6] p-2 rounded-full z-10"
           >
             <ChevronRight />
-          </button> */}
+          </button>
         </div>
       </section>
     </>
