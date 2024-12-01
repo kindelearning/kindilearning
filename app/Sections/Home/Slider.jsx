@@ -11,7 +11,7 @@ import {
 } from "@/public/Images";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const SimpleLine = ({ SlideTitle = "Educational play for young children" }) => {
   return (
@@ -110,10 +110,11 @@ const slides = [
 
 const Slider = () => {
   const { data: session, status } = useSession();
-
   const [loaded, setLoaded] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+
+
 
   useEffect(() => {
     const timeout = setTimeout(() => {

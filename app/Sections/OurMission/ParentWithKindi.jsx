@@ -67,8 +67,8 @@ export default async function ParentWithKindi() {
                 </span>
               </div>
               <div className="flex w-full container justify-start px-0 items-center flex-col">
-                {storyData.map((story) => (
-                  <div className="w-full px-0 text-start clarabodyTwo text-[white] font-medium font-fredoka">
+                {storyData.map((story, id) => (
+                  <div key={id} className="w-full px-0 text-start clarabodyTwo text-[white] font-medium font-fredoka">
                     {story.parentWithKindi?.json && (
                       <RichTextRender content={story.parentWithKindi.json} />
                     )}
