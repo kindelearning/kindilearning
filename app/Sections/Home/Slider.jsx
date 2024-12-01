@@ -9,6 +9,7 @@ import {
   SlidePlay,
   SlideThrive,
 } from "@/public/Images";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
@@ -109,12 +110,34 @@ const slides = [
 ];
 
 const Slider = () => {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const [loaded, setLoaded] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
 
+  let touchStartX = 0;
+  let touchEndX = 0;
 
+  const handleTouchStart = (e) => {
+    touchStartX = e.touches[0].clientX; // Get the initial touch position
+  };
+
+  const handleTouchMove = (e) => {
+    touchEndX = e.touches[0].clientX; // Track the touch as it moves
+  };
+
+  const handleTouchEnd = () => {
+    if (touchStartX - touchEndX > 50) {
+      // Swipe left
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    } else if (touchStartX - touchEndX < -50) {
+      // Swipe right
+      setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
+    }
+    // Reset values after swipe
+    touchStartX = 0;
+    touchEndX = 0;
+  };
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -125,13 +148,13 @@ const Slider = () => {
       if (!isHovered) {
         setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
       }
-    }, 6000); // change slide every 6 seconds
+    }, 6000);
 
     return () => {
       clearTimeout(timeout);
       clearInterval(interval);
     };
-  }, [isHovered]);
+  }, [isHovered, slides.length]);
 
   const handleMouseEnter = () => {
     setIsHovered(true);
@@ -141,10 +164,20 @@ const Slider = () => {
     setIsHovered(false);
   };
 
+  const handlePrevSlide = () => {
+    setCurrentSlide((prevSlide) =>
+      prevSlide === 0 ? slides.length - 1 : prevSlide - 1
+    );
+  };
+
+  const handleNextSlide = () => {
+    setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
+  };
+
   return (
     <>
       <section
-        className={`w-full h-auto bg-purple py-12 md:pt-16 md:pb-4 items-center justify-center flex flex-col  gap-[20px] ${
+        className={`w-full h-auto bg-purple py-12 md:pt-16 md:pb-4 items-center justify-center flex flex-col gap-[20px] ${
           loaded ? "loaded" : "loading"
         }`}
         style={{
@@ -152,13 +185,22 @@ const Slider = () => {
         }}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
       >
         <div
           className={`claracontainer w-full flex flex-col-reverse md:flex-col-reverse md:justify-center md:items-center lg:flex-row-reverse xl:flex-row-reverse gap-8 md:gap-8 ${
             loaded ? "animate-fade-in" : "opacity-0"
           }`}
         >
-          {/* col 1 */}
+          <button
+            onClick={handlePrevSlide}
+            className=" w-[32px] h-[32px] hidden lg:flex justify-center items-center left-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-30 backdrop-blur-lg text-[#000000] p-2 rounded-full z-10"
+          >
+            <ChevronRight />
+          </button>
+          {/* Left Column */}
           <div
             className={`h-auto w-full flex-col px-4 md:px-2 lg:px-4 justify-start items-start gap-6 md:gap-8 lg:gap-10 xl:gap-12 inline-flex ${
               loaded ? "animate-slide-up" : ""
@@ -170,20 +212,20 @@ const Slider = () => {
               }`}
             >
               <div
-                className={`text-white clarascript  ${
+                className={`text-white clarascript ${
                   loaded ? "animate-text-reveal" : ""
                 }`}
               >
                 {slides[currentSlide].script}
               </div>
               <div
-                className={`flex flex-col w-full justify-start items-start gap-4  ${
+                className={`flex flex-col w-full justify-start items-start gap-4 ${
                   loaded ? "animate-fade-in" : "opacity-0"
                 }`}
               >
                 <div className="w-auto">
                   <span
-                    className={`text-white claraheading  ${
+                    className={`text-white claraheading ${
                       loaded ? "animate-text-reveal" : ""
                     }`}
                   >
@@ -215,7 +257,7 @@ const Slider = () => {
               </Button>
             </div>
           </div>
-          {/* col 2 */}
+          {/* Right Column */}
           <div
             className={`w-full slide-in-from-left-2 duration-200 md:min-w-[300px] md:w-[300px] lg:w-full flex justify-center items-center h-auto ${
               loaded ? "animate-fade-in" : "opacity-0"
@@ -228,18 +270,43 @@ const Slider = () => {
               onLoad={() => setLoaded(true)}
             />
           </div>
+          <button
+            onClick={handleNextSlide}
+            className=" w-[32px] h-[32px] hidden lg:flex justify-center items-center right-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-30 backdrop-blur-lg text-[#000000] p-2 rounded-full z-10"
+          >
+            <ChevronLeft />
+          </button>
         </div>
+
+        {/* Arrow Navigation */}
+        {/* <div className="absolute top-1/2 left-4 transform -translate-y-1/2"></div>
+        <div className="absolute top-1/2 right-4 transform -translate-y-1/2"></div> */}
+
         {/* Dot Navigation */}
-        <div className="flex cursor-pointer justify-center w-full mt-8">
-          {slides.map((slide, index) => (
-            <div
-              key={index}
-              className={`w-2 h-2 bg-gray-300 rounded-full mx-2 ${
-                currentSlide === index ? "bg-white" : ""
-              }`}
-              onClick={() => setCurrentSlide(index)}
-            />
-          ))}
+        <div className="flex w-full px-4 justify-between items-center">
+          {/* <button
+            onClick={handlePrevSlide}
+            className=" w-[32px]  h-[32px] lg:hidden flex justify-center items-center left-0  transform  bg-white bg-opacity-30 backdrop-blur-lg text-[#000000] p-2 rounded-full z-10"
+          >
+            <ChevronLeft />
+          </button> */}
+          <div className="flex cursor-pointer justify-center w-full">
+            {slides.map((slide, index) => (
+              <div
+                key={index}
+                className={`w-2 h-2 bg-gray-300 rounded-full mx-2 ${
+                  currentSlide === index ? "bg-white" : ""
+                }`}
+                onClick={() => setCurrentSlide(index)}
+              />
+            ))}
+          </div>
+          {/* <button
+            onClick={handleNextSlide}
+            className=" w-[32px] h-[32px] lg:hidden flex justify-center items-center right-0  transform bg-white bg-opacity-30 backdrop-blur-lg text-[#000000] p-2 rounded-full z-10"
+          >
+            <ChevronRight />
+          </button> */}
         </div>
       </section>
     </>
