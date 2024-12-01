@@ -321,14 +321,14 @@ const RemainingActivities = ({ userID }) => {
 
   return (
     <>
-      <Dialog>
+      <SubBagde
+        number={remainingActivities}
+        title="Remaining Activities"
+        backgroundColor="#f5a623"
+        borderColor="#f5d08e"
+      />
+      {/* <Dialog>
         <DialogTrigger>
-          <SubBagde
-            number={remainingActivities}
-            title="Remaining Activities"
-            backgroundColor="#f5a623"
-            borderColor="#f5d08e"
-          />
         </DialogTrigger>
         <DialogContent className="w-full lg:max-w-[1000px] lg:max-h-[600px] overflow-x-hidden overflow-y-scroll">
           <DialogHeader className="p-4">
@@ -350,7 +350,7 @@ const RemainingActivities = ({ userID }) => {
             account and remove your data from our servers.
           </DialogDescription>
         </DialogContent>
-      </Dialog>
+      </Dialog> */}
     </>
   );
 };
@@ -424,7 +424,6 @@ const MyActivity = ({ userID }) => {
 
         setActivities(newActivities);
         setTotalPages(Math.ceil(totalItems / ITEMS_PER_PAGE));
-        console.log("Completed activities", activities);
       }
     } catch (error) {
       setError("Error fetching activities: " + error.message);
@@ -538,43 +537,7 @@ const MyActivity = ({ userID }) => {
             {loading && <p>Loading...</p>}
 
             {/* Pagination Controls */}
-            {/* <div className="flex justify-center items-center mt-4 gap-4">
-              <button
-                onClick={() => handlePageChange(page - 1)}
-                disabled={page === 1}
-                className={`px-4 py-2 rounded-lg ${
-                  page === 1
-                    ? "bg-gray-300 cursor-not-allowed"
-                    : "bg-red text-white hover:bg-hoverRed"
-                }`}
-              >
-                Previous
-              </button>
-              {[...Array(totalPages).keys()].map((num) => (
-                <button
-                  key={num + 1}
-                  onClick={() => handlePageChange(num + 1)}
-                  className={`px-3 py-2 rounded-lg ${
-                    page === num + 1
-                      ? "bg-red text-white"
-                      : "bg-gray-200 hover:bg-gray-300"
-                  }`}
-                >
-                  {num + 1}
-                </button>
-              ))}
-              <button
-                onClick={() => handlePageChange(page + 1)}
-                disabled={page === totalPages}
-                className={`px-4 py-2 rounded-lg ${
-                  page === totalPages
-                    ? "bg-gray-300 cursor-not-allowed"
-                    : "bg-red text-white hover:bg-hoverRed"
-                }`}
-              >
-                Next
-              </button>
-            </div> */}
+
             <div className="flex justify-between items-center mt-4">
               <button
                 onClick={() => handlePageChange(page - 1)}
@@ -971,7 +934,25 @@ export default async function ProgressSection() {
             className="w-full flex flex-col gap-6 lg:gap-24"
           >
             <TabsList className="lg:bg-[#eaeaf5] bg-[#F5F5F5]">
-              {hygraphUser?.partner.slice(0, 2)?.map((partner) => (
+              {hygraphUser?.partner.slice(2, 3)?.map((partner) => (
+                <TabsTrigger
+                  className="data-[state=active]:bg-[#f5f5f500] p-0 data-[state=active]:shadow-none"
+                  key={partner.id}
+                  value={`Partner-${partner.id}`}
+                >
+                  <Image
+                    width={84}
+                    height={84}
+                    src={
+                      partner.myAvatar?.profileAvatar?.url ||
+                      "https://ap-south-1.graphassets.com/cm1dom2gf0lqw07pi72v8797k/cm3jnqto60fx008o0ctpfoiaq"
+                    }
+                    alt={`Avatar of ${partner.name}`}
+                    className="min-w-16 max-w-16 h-16 cursor-pointer hover:scale-110 ease-in-out duration-200  object-cover overflow-clip rounded-full"
+                  />
+                </TabsTrigger>
+              ))}
+              {hygraphUser?.partner.slice(0, 1)?.map((partner) => (
                 <TabsTrigger
                   className="data-[state=active]:bg-[#f5f5f500] p-0 data-[state=active]:shadow-none"
                   key={partner.id}
@@ -995,7 +976,25 @@ export default async function ProgressSection() {
               >
                 <CurrentUser />
               </TabsTrigger>
-              {hygraphUser?.partner.slice(2, 4)?.map((partner) => (
+              {hygraphUser?.partner.slice(1, 2)?.map((partner) => (
+                <TabsTrigger
+                  className="data-[state=active]:bg-[#f5f5f500] p-0 data-[state=active]:shadow-none"
+                  key={partner.id}
+                  value={`Partner-${partner.id}`}
+                >
+                  <Image
+                    width={84}
+                    height={84}
+                    src={
+                      partner.myAvatar?.profileAvatar?.url ||
+                      "https://ap-south-1.graphassets.com/cm1dom2gf0lqw07pi72v8797k/cm3jnqto60fx008o0ctpfoiaq"
+                    }
+                    alt={`Avatar of ${partner.name}`}
+                    className="min-w-16 max-w-16 h-16 cursor-pointer hover:scale-110 ease-in-out duration-200 object-cover overflow-clip rounded-full"
+                  />
+                </TabsTrigger>
+              ))}
+              {hygraphUser?.partner.slice(3, 4)?.map((partner) => (
                 <TabsTrigger
                   className="data-[state=active]:bg-[#f5f5f500] p-0 data-[state=active]:shadow-none"
                   key={partner.id}
