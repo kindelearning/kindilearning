@@ -182,16 +182,6 @@ export default async function BlogDetailPage({ params }) {
       <head>
         <title>{blog.blogTitle}</title>
         <meta name="description" content={blog.blogDescription} />
-        <meta property="og:title" content={blog.blogTitle} />
-        <meta property="og:description" content={blog.blogDescription} />
-        <meta property="og:image" content={blog.thumbnail.url} />
-        <meta property="og:url" content={blogUrl} />
-        <meta property="og:type" content="website" />
-        <meta property="og:site_name" content="Kindlearning" />
-        <meta property="og:locale" content="en_US" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={blog.blogTitle} />
-        <meta name="twitter:description" content={blog.blogDescription} />
       </head>
       <section className="w-full h-auto py-0 lg:py-12 bg-[#EAEAF5] items-center justify-center pb-24 flex flex-col gap-[20px]">
         <div className="flex overflow-clip lg:rounded-xl lg:max-w-[960px] w-full">
@@ -240,7 +230,7 @@ export default async function BlogDetailPage({ params }) {
             </div>
             <div className="flex max-w-4xl w-full flex-col gap-4">
               <hr className="border-1 my-3 rounded-full w-full h-[2px] border-[#000000]" />
-              <div className="w-full text-[#3f3a64] claraheading">
+              <div className="w-full text-[#3f3a64] font-semibold font-fredoka capitalize text-[32px] md:text-[36px] md:leading-[40px] lg:text-[48px] lg:leading-[54px]">
                 {blog.blogTitle}
               </div>{" "}
               <div className="w-full text-[#0a1932] text-2xl font-normal font-fredoka leading-[28px]">

@@ -17,17 +17,20 @@ import NotFound from "@/app/not-found";
 import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { useCart } from "@/app/context/CartContext";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { Textarea } from "@/components/ui/textarea";
 import RichTextRender from "@/app/Sections/Global/RichTextRender";
 
 export const ReviewForm = () => {
+  const { id } = useParams();
+  const [product, setProduct] = useState(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [content, setContent] = useState("");
   const [rating, setRating] = useState(0);
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false); // Add loading state
+  const [error, setError] = useState(null);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -57,7 +60,6 @@ export const ReviewForm = () => {
           `Failed to submit review: ${data.message || "Unknown error"}`
         );
         setIsLoading(false); // Stop loading on error
-
         return;
       }
 
@@ -73,6 +75,38 @@ export const ReviewForm = () => {
     setIsLoading(false); // Stop loading after submission
   };
 
+  useEffect(() => {
+    const fetchProduct = async () => {
+      setIsLoading(true); // Start loading while fetching product
+      try {
+        const productData = await getProductById(id);
+        setProduct(productData); // Update state with fetched product data
+      } catch (error) {
+        setError("Failed to load product"); // Handle error
+      }
+      setIsLoading(false); // Stop loading after fetching
+    };
+
+    fetchProduct(); // Call the async function
+
+    return () => {
+      setProduct(null);
+      setError(null);
+    };
+  }, [id]);
+
+  if (isLoading && !product) {
+    return <div>Loading...</div>; // Display loading state while product is being fetched
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
+
+  if (!product) {
+    return <div>Product Not Found</div>;
+  }
+
   return (
     <form
       className="w-full flex flex-col justify-center items-center"
@@ -82,7 +116,9 @@ export const ReviewForm = () => {
         <div className="w-full object-contain overflow-clip">
           <Image
             alt="Kindi"
-            src={ShopImage}
+            width={600}
+            height={400}
+            src={product.thumbnail.url || "/default-image.png"}
             className="w-full rounded-[8px] object-cover overflow-clip flex h-[200px]"
           />
         </div>
@@ -90,26 +126,26 @@ export const ReviewForm = () => {
           <div className="claracontainer w-full flex flex-col gap-2 justify-between items-start">
             <div className="w-full text-[#3f3a64] clarabodyTwo font-fredoka capitalize">
               Add your Comments
-            </div>{" "}
+            </div>
             <div className="w-full flex lg:flex-row flex-col gap-2 justify-between items-center">
               <Input
                 type="text"
                 placeholder="Name..."
                 value={name}
-                className="border-2 focus:border-black focus-within:ring-0 ring-offset-0 focus-visible:ring-0 ring-white border-[#b4b4b4] "
+                className="border-2 focus:border-black focus-within:ring-0 ring-offset-0 focus-visible:ring-0 ring-white border-[#b4b4b4]"
                 onChange={(e) => setName(e.target.value)}
               />
               <Input
                 type="email"
                 placeholder="Email"
                 value={email}
-                className="border-2 focus:border-black focus-within:ring-0 ring-offset-0 focus-visible:ring-0 ring-white border-[#b4b4b4] "
+                className="border-2 focus:border-black focus-within:ring-0 ring-offset-0 focus-visible:ring-0 ring-white border-[#b4b4b4]"
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <Textarea
               placeholder="Add your review..."
-              className="w-full p-4 focus-within:ring-0 focus-visible:ring-0 ring-white ring-offset-0 text=[#0f172a] py-4 text-start rounded-lg border-2 border-[#b4b4b4] justify-center items-center gap-2.5 inline-flex"
+              className="w-full p-4 focus-within:ring-0 focus-visible:ring-0 ring-white ring-offset-0 text-[#0f172a] py-4 text-start rounded-lg border-2 border-[#b4b4b4] justify-center items-center gap-2.5 inline-flex"
               value={content}
               onChange={(e) => setContent(e.target.value)}
               required
@@ -119,38 +155,21 @@ export const ReviewForm = () => {
                 Give us Rating out of 5-Stars
               </div>
               <div className="flex gap-1 items-center">
-                <Image
-                  className="w-2 h-2 lg:w-4 lg:h-4"
-                  src={Ratings}
-                  alt="Rating"
-                />
-                <Image
-                  className="w-2 h-2 lg:w-4 lg:h-4"
-                  src={Ratings}
-                  alt="Rating"
-                />
-                <Image
-                  className="w-2 h-2 lg:w-4 lg:h-4"
-                  src={Ratings}
-                  alt="Rating"
-                />
-                <Image
-                  className="w-2 h-2 lg:w-4 lg:h-4"
-                  src={Ratings}
-                  alt="Rating"
-                />
-                <Image
-                  className="w-2 h-2 lg:w-4 lg:h-4"
-                  src={Ratings}
-                  alt="Rating"
-                />
+                {[...Array(5)].map((_, index) => (
+                  <Image
+                    key={index}
+                    className="w-2 h-2 lg:w-4 lg:h-4"
+                    src={Ratings}
+                    alt="Rating"
+                  />
+                ))}
               </div>
             </div>
             <Input
               type="number"
               placeholder="Rating"
               value={rating}
-              className="border-2 focus-within:ring-0 ring-offset-0 focus-visible:ring-0 ring-white border-[#b4b4b4] "
+              className="border-2 focus-within:ring-0 ring-offset-0 focus-visible:ring-0 ring-white border-[#b4b4b4]"
               onChange={(e) => setRating(e.target.value)}
               min="1"
               max="5"
@@ -165,9 +184,11 @@ export const ReviewForm = () => {
         className="clarabutton bg-red hover:bg-hoverRed"
         type="submit"
       >
-        {/* Submit Review */}
-        {isLoading ? "Submitting..." : "Submit Review"}{" "}
-        {/* Change text based on loading */}
+        {isLoading ? (
+          <span className="loader"></span> // Add a simple loading spinner or text
+        ) : (
+          "Submit Review"
+        )}
       </Button>
       {message && <p>{message}</p>}
     </form>
@@ -246,11 +267,11 @@ export default function ProductDetailPage({ params }) {
   return (
     <>
       <section className="w-full h-auto bg-[#F5F5F5] lg:bg-[#eaeaf5] items-center justify-center py-4 plg:pb-32 flex flex-col md:flex-row gap-[20px]">
-        <div className="claracontainer p-4 md:p-2 lg:p-4 w-full flex flex-col overflow-hidden gap-8">
+        <div className="claracontainer p-4 md:p-2 lg:p-4 w-full flex flex-col overflow-hidden gap-8 lg:gap-20">
           {/* Row 1 */}
           <div className="flex w-full flex-col md:flex-col lg:flex-row xl:flex-row gap-8 justify-between items-start">
             {/* column1 */}
-            <div className="claracontainer py-0 flex flex-col max-w-full lg:max-w-[60%] justify-between items-start gap-8 sticky top-0 h-fit lg:h-[calc(100vh-32px)]">
+            <div className="claracontainer py-0 flex flex-col max-w-full lg:max-w-[60%] justify-between  items-start gap-8 sticky top-0 h-fit ">
               <ProductImages
                 images={product.productImages.map((img) => img.url)}
                 video={videoUrl}
@@ -258,7 +279,7 @@ export default function ProductDetailPage({ params }) {
               />
             </div>
             {/* col 2 */}
-            <div className="claracontainer lg:max-h-[600px] py-0 flex w-full flex-col scrollbar-hide lg:max-w-[48%] justify-between items-start gap-4 overflow-y-auto  h-fit lg:h-[calc(100vh-32px)]">
+            <div className="claracontainer lg:max-h-[600px] py-0 flex w-full flex-col scrollbar-hide lg:max-w-[48%]  justify-between items-start gap-4 overflow-y-auto  h-fit ">
               <div className="w-full hidden md:hidden lg:flex text-[#3f3a64] text-[32px] leading-normal font-semibold font-fredoka capitalize">
                 {product.title}
               </div>
@@ -397,7 +418,7 @@ export default function ProductDetailPage({ params }) {
                       </div>
                     </DialogTitle>
                     <DialogDescription>
-                      <ReviewForm />
+                      <ReviewForm params={params} />
                     </DialogDescription>
                   </DialogHeader>
                 </DialogContent>
