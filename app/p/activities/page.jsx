@@ -92,7 +92,7 @@ export default function ActivitiesPage() {
     "Problem-solving & Independence",
     "Social Play",
     "Fine Motor",
-    "GROSS MOTOR",
+    "Gross Motor",
     "Pretend Play",
     "Crafts",
     "Exploring the Seasons",

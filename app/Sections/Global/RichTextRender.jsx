@@ -8,18 +8,36 @@ const RichTextRender = ({ content }) => {
         renderers={{
           // Headings
           h1: ({ children }) => (
-            <h1 className="text-4xl font-bold my-6 text-red">{children}</h1>
+            <h1 className="text-5xl font-extrabold my-8 text-red">
+              {children}
+            </h1>
           ),
           h2: ({ children }) => (
-            <h2 className="text-3xl font-semibold my-5 text-red">{children}</h2>
+            <h2 className="text-4xl font-bold my-7 text-red">{children}</h2>
           ),
           h3: ({ children }) => (
-            <h3 className="text-2xl font-medium my-4 text-red">{children}</h3>
+            <h3 className="text-3xl font-semibold my-6 text-red">{children}</h3>
+          ),
+          h4: ({ children }) => (
+            <h4 className="text-2xl font-medium my-5 text-red">{children}</h4>
+          ),
+          h5: ({ children }) => (
+            <h5 className="text-xl font-normal my-4 text-red">{children}</h5>
+          ),
+          h6: ({ children }) => (
+            <h6 className="text-lg font-light my-3 text-red">{children}</h6>
           ),
 
           // Paragraphs
-          brand: ({ children }) => <p className="my-2 text-red">{children}</p>,
-          p: ({ children }) => <p className="my-2 text-gray-700">{children}</p>,
+          brand: ({ children }) => <p className="my-3 text-red">{children}</p>,
+          p: ({ children }) => <p className="my-3 ">{children}</p>,
+
+          // Blockquote
+          blockquote: ({ children }) => (
+            <blockquote className="my-4 pl-6 border-l-4 border-gray-400 italic text-gray-700">
+              {children}
+            </blockquote>
+          ),
 
           // Lists
           ul: ({ children }) => (
@@ -30,9 +48,16 @@ const RichTextRender = ({ content }) => {
           ),
           li: ({ children }) => <li className="mb-2">{children}</li>,
 
+          // Inline Code
+          code: ({ children }) => (
+            <code className="bg-gray-200 px-2 py-1 rounded text-sm font-mono">
+              {children}
+            </code>
+          ),
+
           // Bold & Italic Text
           bold: ({ children }) => (
-            <strong className="font-bold ">{children}</strong>
+            <strong className="font-bold">{children}</strong>
           ),
           italic: ({ children }) => <em className="italic">{children}</em>,
 

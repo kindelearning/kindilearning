@@ -2,18 +2,11 @@
 
 import NotFound from "@/app/not-found";
 import { getStoryData } from "@/lib/hygraph";
-import {
-  BookOpen,
-  HowItWorkVideo,
-  ParentwithKindi,
-  ProfessionalThumb,
-  PWKOne,
-  PWKTwo,
-} from "@/public/Images";
+import { BookOpen, PWKOne, PWKTwo } from "@/public/Images";
 import Image from "next/image";
-import { useRef, useState } from "react";
-import { ThreeDGallery } from ".";
 import Claras3DGallery from "./ClaraGallery";
+import RichTextRender from "../Global/RichTextRender";
+import { useEffect, useState } from "react";
 
 const InternalChip = ({
   image,
@@ -33,118 +26,30 @@ const InternalChip = ({
   );
 };
 
-const Gallery = () => {
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [startX, setStartX] = useState(0);
-  const [isDragging, setIsDragging] = useState(false);
-  const galleryRef = useRef(null);
-  const images = [ParentwithKindi, ProfessionalThumb, HowItWorkVideo]; // Replace with your image imports
-
-  const handleMouseDown = (e) => {
-    setStartX(e.clientX);
-    setIsDragging(true);
-  };
-  const handleMouseMove = (e) => {
-    if (!isDragging) return;
-
-    const currentX = e.clientX;
-    const diffX = currentX - startX;
-
-    // Check for drag threshold
-    if (Math.abs(diffX) > 50) {
-      if (diffX > 0) {
-        // Swipe right
-        handleSlide(-1);
-      } else {
-        // Swipe left
-        handleSlide(1);
-      }
-      setIsDragging(false); // Reset dragging
-    }
-  };
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
-  const handleTouchStart = (e) => {
-    setStartX(e.touches[0].clientX);
-    setIsDragging(true);
-  };
-  const handleTouchMove = (e) => {
-    if (!isDragging) return;
-
-    const currentX = e.touches[0].clientX;
-    const diffX = currentX - startX;
-
-    if (Math.abs(diffX) > 50) {
-      if (diffX > 0) {
-        handleSlide(-1);
-      } else {
-        handleSlide(1);
-      }
-      setIsDragging(false);
-    }
-  };
-  const handleSlide = (direction) => {
-    setCurrentImageIndex((prevIndex) => {
-      if (direction === 1) {
-        return (prevIndex + 1) % images.length; // Next image
-      } else if (direction === -1) {
-        return (prevIndex - 1 + images.length) % images.length; // Previous image
-      }
-      return prevIndex;
-    });
-  };
-
-  return (
-    <>
-      <div
-        className="relative cursor-move lg:max-w-[400px] w-full max-w-lg mx-auto"
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseUp} // To handle mouse leave
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleMouseUp}
-      >
-        {/* Top Image */}
-        <div className="absolute top-0 left-0 right-0 z-10 transition-transform duration-300 ease-in-out transform">
-          <Image
-            src={images[currentImageIndex]} // Use the current image based on the index
-            alt="Top Image"
-            className="w-full lg:w-[400px] h-[600px] cursor-move object-cover rounded-[20px] border-8 border-white shadow-lg"
-          />
-        </div>
-
-        {/* Hidden Images */}
-        <div className="flex justify-between">
-          <div className="relative z-0 transform translate-y-0 transition-transform duration-300 ease-in-out">
-            <Image
-              src={images[(currentImageIndex + 1) % images.length]} // Next image
-              alt="Hidden Image 1"
-              className="w-full lg:w-[400px] cursor-menu h-[600px] object-cover rounded-[20px] border-8 border-white shadow-lg"
-            />
-          </div>
-          <div className="relative z-0 transform translate-y-0 transition-transform duration-300 ease-in-out">
-            <Image
-              src={images[(currentImageIndex + 2) % images.length]} // Next to next image
-              alt="Hidden Image 2"
-              className="w-full lg:w-[400px] cursor-move h-[600px] object-cover rounded-[20px] border-8 border-white shadow-lg"
-            />
-          </div>
-        </div>
-      </div>
-    </>
-  );
-};
-
 export default async function ParentWithKindi() {
-  const stories = await getStoryData();
-  // console.log("Story Page Data (in component):", stories);
-  if (!stories || !stories[0]?.parentWithKindi) {
-    console.error("Error: Stories data is missing or incomplete.");
-    return <NotFound />;
+  const [storyData, setStoryData] = useState(null);
+
+  // Fetch story data
+  useEffect(() => {
+    const fetchStoryData = async () => {
+      const data = await getStoryData();
+      setStoryData(data);
+    };
+
+    fetchStoryData();
+  }, []);
+
+  if (!storyData) {
+    return <div>Loading...</div>;
   }
+
+  // const stories = await getStoryData();
+  // console.log("Our stories:", stories);
+  // // console.log("Story Page Data (in component):", stories);
+  // if (!stories || !stories[0]?.parentWithKindi) {
+  //   console.error("Error: Stories data is missing or incomplete.");
+  //   return <NotFound />;
+  // }
 
   return (
     <>
@@ -162,10 +67,13 @@ export default async function ParentWithKindi() {
                 </span>
               </div>
               <div className="flex w-full container justify-start px-0 items-center flex-col">
-                <div className="w-full px-0 text-start clarabodyTwo text-[white] font-medium font-fredoka">
-               
-                  <p>{stories[0].parentWithKindi}</p>
-                </div>
+                {storyData.map((story) => (
+                  <div className="w-full px-0 text-start clarabodyTwo text-[white] font-medium font-fredoka">
+                    {story.parentWithKindi?.json && (
+                      <RichTextRender content={story.parentWithKindi.json} />
+                    )}
+                  </div>
+                ))}
               </div>
             </div>
             <div className="py-3 w-full flex-col justify-start items-center gap-1 inline-flex">

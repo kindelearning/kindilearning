@@ -1,3 +1,5 @@
+"use client";
+
 import NotFound from "@/app/not-found";
 import { getHIWData } from "@/lib/hygraph";
 import {
@@ -8,9 +10,11 @@ import {
   AgeRangeArrow,
   User,
 } from "@/public/Images";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
+import { useRef } from "react";
 
 const AgeCard = ({ bgImage, image, title, body, link }) => {
   return (
@@ -50,6 +54,93 @@ const AgeCard = ({ bgImage, image, title, body, link }) => {
   );
 };
 
+const AgeRangeWidget = () => {
+  const scrollRef = useRef(null); // Create a reference for the scroll container
+
+  // Function to handle scroll
+  const handleScroll = (direction) => {
+    if (scrollRef.current) {
+      const scrollAmount = 200; // Amount to scroll on each click
+      scrollRef.current.scrollBy({
+        left: direction === "left" ? -scrollAmount : scrollAmount,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  return (
+    <div className="relative w-full lg:max-w-[1180px] px-4 min-h-[400px] py-6 flex justify-center items-center">
+      {/* Left Arrow Button */}
+      <button
+        className="absolute w-[32px] h-[32px] hidden lg:flex justify-center items-center left-0  transform -translate-y-1/2 bg-[#6f6f6f] bg-opacity-30 backdrop-blur-lg text-[#000000] p-2 rounded-full z-10"
+        onClick={() => handleScroll("left")}
+        aria-label="Scroll Left"
+      >
+        <ChevronLeft />
+      </button>
+
+      {/* Scrollable Container */}
+      <div
+        ref={scrollRef} // Attach the ref to the scrollable container
+        className="w-full flex-row justify-start items-center gap-[2px] flex overflow-x-auto scrollbar-hidden"
+        style={{
+          scrollBehavior: "smooth", // Enable smooth scroll
+        }}
+      >
+        <AgeCard
+          image={AgeCardOne}
+          bgImage="/Images/AgeRangeOne.svg"
+          title="Beginners (0+ YEARS)"
+          body="Sensory play activities tailored for very young little ones, but appeal to all young children."
+        />
+        <Image
+          src={AgeRangeArrow}
+          alt="Kindi"
+          className="w-[50px] h-[50px] -mx-3"
+        />
+        <AgeCard
+          image={AgeCardTwo}
+          bgImage="/Images/AgeRangeTwo.svg"
+          body="Our learning activities help toddlers develop essential language, social, motor and cognitive skills — but babies and pre-schoolers can enjoy the fun, too!"
+          title="Explorers (18+ MONTHS)"
+        />
+        <Image
+          src={AgeRangeArrow}
+          alt="Kindi"
+          className="w-[50px] h-[50px] -mx-3"
+        />
+        <AgeCard
+          image={AgeCardThree}
+          bgImage="/Images/AgeRangeThree.svg"
+          body="Fun learning activities for children approaching the beginning of their school careers; these activities will also appeal to toddlers and babies."
+          title="Discoverers (2.5+ YEARS)"
+        />
+        <Image
+          src={AgeRangeArrow}
+          alt="Kindi"
+          className="w-[50px] h-[50px] -mx-3"
+        />
+        <AgeCard
+          image={AgeCardFour}
+          bgImage="/Images/AgeRangeFour.svg"
+          title="Adventurers (4+ YEARS)"
+          body="Fun and engaging early years development activities for kindergarteners — Tailored developmental stages for toddlers, babies and pre-schoolers alike."
+        />
+      </div>
+
+      {/* Right Arrow Button */}
+      <button
+        // className="absolute right-0 z-10 bg-gray-500 bg-opacity-30 rounded-full p-2"
+        className="absolute w-[32px] h-[32px] hidden lg:flex justify-center items-center right-0 transform -translate-y-1/2 bg-[#6f6f6f] bg-opacity-30 backdrop-blur-lg text-[#000000] p-2 rounded-full z-10"
+        onClick={() => handleScroll("right")}
+        aria-label="Scroll Right"
+      >
+        <ChevronRight />
+      </button>
+    </div>
+  );
+};
+
 const AgeRanges = async () => {
   const stories = await getHIWData();
   // console.log("Story Page Data (in component):", stories);
@@ -78,7 +169,7 @@ const AgeRanges = async () => {
             </div>
           </div>
           {/* Row Two */}
-          <div className="w-full lg:max-w-[1180px] px-4 min-h-[400px] overflow-x-scroll scrollbar-hidden h-full py-6 flex-row justify-start items-center gap-[2px] flex ">
+          {/* <div className="w-full lg:max-w-[1180px] px-4 min-h-[400px] overflow-x-scroll scrollbar-hidden h-full py-6 flex-row justify-start items-center gap-[2px] flex ">
             <AgeCard
               image={AgeCardOne}
               bgImage="/Images/AgeRangeOne.svg"
@@ -118,7 +209,8 @@ const AgeRanges = async () => {
               title="Adventurers (4+ YEARS)"
               body="Fun and engaging early years development activities for kindergarteners — Tailored developmental stages for toddlers, babies and pre-schoolers alike."
             />
-          </div>
+          </div> */}
+          <AgeRangeWidget />
         </div>
       </section>
     </>
