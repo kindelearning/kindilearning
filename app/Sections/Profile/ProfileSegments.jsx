@@ -1185,7 +1185,7 @@ export default function ProfileSegments() {
         <div className="claracontainer bg-[#F5F5F5] md:bg-[#EAEAF5] -mt-4 rounded-t-[12px] z-2 lg:m-12 px-4 py-6 rounded-xl md:px-2 lg:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-[20px]">
           {/* Top Profile Card */}
           <div className="w-full flex bg-[white] rounded-[24px] p-2 md:p-4 justify-start items-start gap-[4px] lg:gap-[12px] lg:items-center">
-            <div className="w-fit lg:max-w-[160px] lg:w-full items-center flex justify-start">
+            <div className="w-full lg:max-w-[160px] lg:w-full items-center flex justify-center">
               {user && hygraphUser ? (
                 <>
                   <div className="relative w-20 h-20 lg:w-36 lg:h-36 p-1 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600">
