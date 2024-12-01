@@ -220,6 +220,14 @@
   .slider.touched .slide {
     transform: scale(0.98); /* Slightly shrink slides */
   }
+  body, .draggable {
+    user-select: none;
+  }
+  
+  /* Re-enable text selection once dragging is done */
+  body.draggable-active, .draggable-active {
+    user-select: text;
+  }
   
   @media (min-width: 640px) {
     .claracontainer {

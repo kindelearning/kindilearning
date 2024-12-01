@@ -118,14 +118,22 @@ const Slider = () => {
 
   let touchStartX = 0;
   let touchEndX = 0;
+  let startX = 0;
+  let moveX = 0;
+  let isDragging = false;
 
   const handleTouchStart = (e) => {
     setIsTouched(true); // Show touch indication
     touchStartX = e.touches[0].clientX;
+    startX = e.touches[0].clientX;
+    isDragging = true;
+    document.body.classList.add('draggable');
   };
 
   const handleTouchMove = (e) => {
     touchEndX = e.touches[0].clientX;
+    if (!isDragging) return;
+    moveX = e.touches[0].clientX;
   };
 
   const handleTouchEnd = () => {
@@ -139,6 +147,16 @@ const Slider = () => {
     }
     touchStartX = 0;
     touchEndX = 0;
+    document.body.classList.remove('draggable');
+    if (!isDragging) return;
+    isDragging = false;
+    if (startX - moveX > 50) {
+      // Swipe left
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    } else if (startX - moveX < -50) {
+      // Swipe right
+      setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
+    }
   };
 
   useEffect(() => {
@@ -158,6 +176,25 @@ const Slider = () => {
     };
   }, [isHovered, slides.length]);
 
+  const handleMouseDown = (e) => {
+    startX = e.clientX;
+    isDragging = true;
+  };
+  const handleMouseMove = (e) => {
+    if (!isDragging) return;
+    moveX = e.clientX;
+  };
+  const handleMouseUp = () => {
+    if (!isDragging) return;
+    isDragging = false;
+    if (startX - moveX > 50) {
+      // Swipe left
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    } else if (startX - moveX < -50) {
+      // Swipe right
+      setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
+    }
+  };
   const handleMouseEnter = () => {
     setIsHovered(true);
   };
@@ -179,7 +216,7 @@ const Slider = () => {
   return (
     <>
       <section
-        className={`w-full h-auto bg-purple py-12 md:pt-16 md:pb-4 items-center justify-center flex flex-col gap-[20px] ${
+        className={`w-full h-auto cursor-grab bg-purple py-12 md:pt-16 md:pb-4 items-center justify-center flex flex-col gap-[20px] ${
           loaded ? "loaded" : "loading"
         }`}
         style={{
@@ -190,6 +227,9 @@ const Slider = () => {
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
       >
         <div
           className={`claracontainer w-full flex flex-col-reverse md:flex-col-reverse md:justify-center md:items-center lg:flex-row-reverse xl:flex-row-reverse gap-8 md:gap-8 ${
