@@ -1,6 +1,6 @@
 "use client";
 
-import { getUserDataByEmail } from "@/lib/hygraph";
+import { getAllActivities, getUserDataByEmail } from "@/lib/hygraph";
 import { Confidence } from "@/public/Icons";
 import { KindiHeart } from "@/public/Images";
 import { useSession } from "next-auth/react";
@@ -88,83 +88,81 @@ const MyCompletedActivity = ({ userID, onCompletedActivitiesFetched }) => {
   return null; // This component now only fetches data, no need to render anything
 };
 
-const getAllActivities = async () => {
-  const query = `
-    query {
-      activities {
-        id
-        title
-        setUpTime
-        themeName
-        skills
-        focusAge
-        activityDate
-        content {
-          html
-        }
-        thumbnail {
-          url
-        }
-      }
-    }
-  `;
+// const getAllActivities = async () => {
+//   const query = `
+//     query {
+//       activities(first: 10000, skip: 0) {
+//         id
+//         title
+//         setUpTime
+//         themeName
+//         skills
+//         focusAge
+//         activityDate
+//         content {
+//           html
+//           markdown
+//           raw
+//           json
+//         }
+//         thumbnail {
+//           url
+//         }
+//       }
+//     }
+//   `;
 
-  try {
-    const res = await fetch(HYGRAPH_ENDPOINT, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${HYGRAPH_TOKEN}`,
-      },
-      body: JSON.stringify({ query }),
-    });
+//   try {
+//     const res = await fetch(HYGRAPH_ENDPOINT, {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//         Authorization: `Bearer ${HYGRAPH_TOKEN}`,
+//       },
+//       body: JSON.stringify({ query }),
+//     });
 
-    if (!res.ok) {
-      throw new Error(`Error fetching data from Hygraph: ${res.statusText}`);
-    }
+//     if (!res.ok) {
+//       throw new Error(`Error fetching data from Hygraph: ${res.statusText}`);
+//     }
 
-    const jsonData = await res.json();
+//     const jsonData = await res.json();
 
-    if (jsonData.errors) {
-      console.error("GraphQL Errors:", jsonData.errors);
-      throw new Error("Failed to fetch activities due to GraphQL errors.");
-    }
+//     if (jsonData.errors) {
+//       console.error("GraphQL Errors:", jsonData.errors);
+//       throw new Error("Failed to fetch activities due to GraphQL errors.");
+//     }
 
-    // Transform the data to match the event format
-    const activities = jsonData.data?.activities.map((activity) => ({
-      id: activity.id,
-      date: new Date(activity.activityDate), // Ensure to parse the date correctly
-      title: activity.title,
-      description: activity.content.html, // Assuming you want the HTML content
-      thumbnail: activity.thumbnail
-        ? {
-            url: activity.thumbnail.url,
-          }
-        : null,
-    }));
-    console.log("Activity Data:", activities);
+//     // Transform the data to match the event format
+//     const activities = jsonData.data?.activities.map((activity) => ({
+//       id: activity.id,
+//       date: new Date(activity.activityDate), // Ensure to parse the date correctly
+//       title: activity.title,
+//       description: activity.content.html, // Assuming you want the HTML content
+//       thumbnail: activity.thumbnail
+//         ? {
+//             url: activity.thumbnail.url,
+//           }
+//         : null,
+//     }));
+//     console.log("Activity Data:", activities);
 
-    return activities || [];
-  } catch (error) {
-    console.error("Error fetching activities:", error);
-    return [];
-  }
-};
+//     return activities || [];
+//   } catch (error) {
+//     console.error("Error fetching activities:", error);
+//     return [];
+//   }
+// };
 
 export default function Calendar() {
+  // const [completedIds, setCompletedIds] = useState([]);
+  const { data: session } = useSession();
   const [currentDate, setCurrentDate] = useState(new Date());
   const today = new Date();
 
   const { user, loading } = useAuth();
   const router = useRouter();
   const [hygraphUser, setHygraphUser] = useState(null);
-
-  // Adding the Action button and border for future events
-  const isFutureEvent = (eventDate) => {
-    const currentDate = new Date();
-    const eventDateObj = new Date(eventDate);
-    return eventDateObj >= currentDate; // True if the event is today or in the future
-  };
 
   useEffect(() => {
     if (user && user.email) {
@@ -187,6 +185,7 @@ export default function Calendar() {
 
   // Save events to localStorage whenever they change
   useEffect(() => {
+    console.log("Current events data:", events);
     localStorage.setItem("events", JSON.stringify(events));
   }, [events]);
 
@@ -195,37 +194,15 @@ export default function Calendar() {
     const fetchActivities = async () => {
       try {
         const activitiesFromHygraph = await getAllActivities();
-        console.log("Activities fetched from Hygraph:", activitiesFromHygraph);
-        // Check if the response is valid and contains the expected data
-        if (!Array.isArray(activitiesFromHygraph)) {
-          throw new Error(
-            "Activities from Hygraph are not in the expected format (array)."
-          );
+        console.log(
+          "Activities fetch from Hygraph Laptop:",
+          activitiesFromHygraph
+        );
+
+        if (events.length === 0) {
+          // Only set events from Hygraph if local storage is empty
+          setEvents(activitiesFromHygraph);
         }
-
-        // Filter out any invalid activities (e.g., missing 'html' property or null/undefined values)
-        // const validActivities = activitiesFromHygraph.filter(
-        //   (activity) => activity && activity.html
-        // );
-
-        // console.log("Valid activities:", validActivities);
-
-        const savedEvents = localStorage.getItem("events");
-        const localEvents = savedEvents ? JSON.parse(savedEvents) : [];
-
-        // Combine events from localStorage and Hygraph, ensuring no duplicates by event ID
-        const combinedEvents = [
-          ...localEvents,
-          ...activitiesFromHygraph.filter(
-            (hygraphEvent) =>
-              !localEvents.some(
-                (localEvent) => localEvent.id === hygraphEvent.id
-              )
-          ),
-        ];
-
-        // Set the events state with combined events
-        setEvents(combinedEvents);
       } catch (error) {
         console.error("Error fetching activities from Hygraph:", error);
       }
@@ -233,6 +210,23 @@ export default function Calendar() {
 
     fetchActivities();
   }, []);
+
+  // Fetch user data when session changes
+  useEffect(() => {
+    if (session && session.user) {
+      fetchUserData(session.user.email);
+    }
+  }, [session]);
+
+  const fetchUserData = async (email) => {
+    try {
+      const data = await client.request(GET_ACCOUNT_BY_EMAIL, { email });
+      console.log("User Data:", data);
+      setProfileData(data.account);
+    } catch (error) {
+      console.error("Error fetching profile data:", error);
+    }
+  };
 
   const handlePrevMonth = () => {
     const newDate = new Date(
@@ -269,65 +263,29 @@ export default function Calendar() {
 
     const totalDaysToShow = firstDayOfWeek + daysInMonth > 35 ? 42 : 35;
 
-    // Calculate the last day of the previous month
-    const prevMonthEnd = new Date(
-      currentDate.getFullYear(),
-      currentDate.getMonth(),
-      0
-    ).getDate();
-
-    // Create an array for previous month's days to fill the first part of the grid
-    const prevMonthDaysToAdd = Array.from(
-      { length: firstDayOfWeek },
-      (_, i) => {
+    const totalDays = Array.from({ length: totalDaysToShow }, (_, i) => {
+      if (i < firstDayOfWeek) {
+        // Days from the previous month
+        const prevMonthEnd = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth(),
+          0
+        ).getDate();
         return {
           day: prevMonthEnd - (firstDayOfWeek - 1 - i),
           isCurrentMonth: false,
-          isNextMonth: false,
-          date: new Date(
-            currentDate.getFullYear(),
-            currentDate.getMonth() - 1, // Ensure the date is from the previous month
-            prevMonthEnd - (firstDayOfWeek - 1 - i) // Get the correct day from the previous month
-          ),
+        };
+      } else if (i >= daysInMonth + firstDayOfWeek) {
+        return {
+          day: i - (daysInMonth + firstDayOfWeek) + 1,
+          isCurrentMonth: false,
         };
       }
-    );
-
-    // Create the days for the current month
-    const currentMonthDays = Array.from({ length: daysInMonth }, (_, i) => {
       return {
-        day: i + 1,
+        day: i - firstDayOfWeek + 1,
         isCurrentMonth: true,
-        isNextMonth: false,
-        date: new Date(
-          currentDate.getFullYear(),
-          currentDate.getMonth(),
-          i + 1
-        ),
       };
     });
-
-    // Calculate the first 7 days of the next month (for filling the calendar)
-    const nextMonthFirstWeek = Array.from({ length: 7 }, (_, i) => {
-      return {
-        day: i + 1,
-        isCurrentMonth: false,
-        isNextMonth: true,
-        date: new Date(
-          currentDate.getFullYear(),
-          currentDate.getMonth() + 1,
-          i + 1
-        ),
-      };
-    });
-
-    // Combine previous month days, current month days, and next month's first week
-    const totalDays = prevMonthDaysToAdd.concat(currentMonthDays);
-
-    // If the total number of days exceeds 35, add the first week of the next month
-    if (totalDays.length < totalDaysToShow) {
-      return totalDays.concat(nextMonthFirstWeek);
-    }
 
     return totalDays;
   };
@@ -351,43 +309,26 @@ export default function Calendar() {
 
   const handleDrop = (e, dayObj) => {
     e.preventDefault();
-
-    // Get the eventId from the dragged event
     const eventId = e.dataTransfer.getData("eventId");
+    const targetDate = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      dayObj.day
+    );
 
-    // Determine the target date. If it's a day from the current month
-    // or the first week of the next month, we use the dayObj's information
-    let targetDate;
-    if (dayObj.isNextMonth) {
-      // If the day is from the next month, use its full date
-      targetDate = new Date(
-        currentDate.getFullYear(),
-        currentDate.getMonth() + 1, // Next month
-        dayObj.day
-      );
-    } else {
-      // If the day is from the current month
-      targetDate = new Date(
-        currentDate.getFullYear(),
-        currentDate.getMonth(),
-        dayObj.day
-      );
-    }
-
-    // Check if the drop target is valid (e.g., not in the past)
     if (
-      (dayObj.isNextMonth || dayObj.isCurrentMonth) &&
-      (targetDate >= today || targetDate.getDate() === today.getDate())
+      !dayObj.isCurrentMonth ||
+      (targetDate < today && targetDate.getDate() !== today.getDate())
     ) {
-      // Update the events with the new date
-      const updatedEvents = events.map((event) =>
-        event.id === eventId ? { ...event, date: targetDate } : event
-      );
-
-      // Update state and localStorage with the updated events
-      setEvents(updatedEvents);
-      localStorage.setItem("events", JSON.stringify(updatedEvents));
+      return;
     }
+
+    const updatedEvents = events.map((event) =>
+      event.id === eventId ? { ...event, date: targetDate } : event
+    );
+
+    setEvents(updatedEvents);
+    localStorage.setItem("events", JSON.stringify(updatedEvents));
   };
 
   const handleDragOver = (e, dayObj) => {
@@ -454,18 +395,22 @@ export default function Calendar() {
         </button>
       </div>
 
+      {/* {user && hygraphUser ? (
+        <MyCompletedActivity userID={hygraphUser.id} />
+      ) : (
+        <p>User not found</p>
+      )} */}
+
       {/* Calendar Top Weekdays  */}
       <div className="flex-col flex lg:grid font-fredoka p-0 lg:p-4 bg-[#eaeaf5] lg:bg-[#DCDCE8] rounded-[20px] w-full grid-cols-7 gap-0 text-center">
-        {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => {
-          return (
-            <div
-              key={day}
-              className="font-semibold w-full justify-center items-center text-center hidden uppercase lg:flex font-fredoka text-[#3F3A64] py-2 gap-0"
-            >
-              {day}
-            </div>
-          );
-        })}
+        {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
+          <div
+            key={day}
+            className="font-semibold w-full justify-center items-center text-center hidden uppercase lg:flex font-fredoka text-[#3F3A64] py-2 gap-0"
+          >
+            {day}
+          </div>
+        ))}
 
         {/* Monthly Calendar Date View  */}
         {days.map((dayObj, index) => {
@@ -487,9 +432,7 @@ export default function Calendar() {
                 !dayObj.isCurrentMonth
                   ? "bg-[#EFEFEF] text-[#8C8C8C] cursor-not-allowed"
                   : isToday
-                  ? "bg-[#DCDCE8] text-[#000000] "
-                  : dayObj.isNextMonth
-                  ? "bg-[#EFEFEF] text-[#3b82f6] cursor-pointer" // Next month days (active)
+                  ? "bg-[#ffd9d9] text-[#000000] "
                   : dayObj.day < today.getDate() &&
                     currentDate.getMonth() === today.getMonth()
                   ? "bg-[#DCDCE8] text-[#999] cursor-not-allowed" // Past dates in the current month
@@ -513,40 +456,20 @@ export default function Calendar() {
                   target="_blank"
                   key={event.id}
                   draggable
-                  className={`w-full ${
-                    isFutureEvent(event.date) ? "border-2" : "border-0"
-                  } border-red bg-white shadow-md rounded-lg p-2 text-sm`}
+                  className="w-full bg-white shadow-md rounded-lg p-2 text-sm"
                   onDragStart={(e) => handleDragStart(e, event.id)}
                 >
                   {/* Show only the title if there are multiple events, otherwise show title and description */}
                   {eventCount > 1 ? (
-                    <p className="font-semibold text-[14px]  border-white border-2 leading-[16px] lg:leading-[12px] lg:text-[12px] text-start">
+                    <p className="font-semibold text-[14px] leading-[16px] lg:leading-[12px] lg:text-[12px] text-start">
                       {event.title}
                     </p>
                   ) : (
                     <>
-                      <div
-                        className={`-mt-[32px] ${
-                          isFutureEvent(event.date) ? "flex" : "hidden"
-                        } w-full justify-between items-center`}
-                      >
-                        <div />
-                        <Link
-                          target="_blank"
-                          href={`/p/activities/${event.id}`}
-                          className={`w-fit px-[6px] py-[2px]  bg-red text-white shadow-md rounded-lg p-2 text-sm`}
-                        >
-                          <p className="font-semibold flex items-center text-[14px] leading-[16px] lg:leading-[12px] lg:text-[12px] text-start">
-                            Lets Start &nbsp; <ArrowRight />
-                          </p>
-                        </Link>
-                      </div>
                       <div className="flex flex-col w-full gap-1 justify-between items-start">
                         <div className="flex w-full justify-between gap-1 lg:gap-0 items-start">
                           <p className="font-semibold  text-[14px] leading-[16px] lg:text-[12px] lg:leading-[12px] text-start">
-                            {event.title.length > 30
-                              ? event.title.slice(0, 28) + "..."
-                              : event.title}
+                            {event.title}
                           </p>
                           {/* Drag icon */}
                           <div className="cursor-grab text-gray-500 items-start">

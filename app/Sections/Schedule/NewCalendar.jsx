@@ -1,5 +1,5 @@
 "use client";
-import { GET_ACCOUNT_BY_EMAIL } from "@/lib/hygraph";
+import { GET_ACCOUNT_BY_EMAIL, getAllActivities } from "@/lib/hygraph";
 import { Confidence } from "@/public/Icons";
 import { GraphQLClient } from "graphql-request";
 import { KindiHeart } from "@/public/Images";
@@ -38,68 +38,68 @@ const client = new GraphQLClient(HYGRAPH_ENDPOINT, {
   },
 });
 
-const getAllActivities = async () => {
-  const query = `
-    query {
-      activities {
-        id
-        title
-        setUpTime
-        themeName
-        skills
-        focusAge
-        activityDate
-        content {
-          html
-        }
-        thumbnail {
-          url
-        }
-      }
-    }
-  `;
+// const getAllActivities = async () => {
+//   const query = `
+//     query {
+//       activities {
+//         id
+//         title
+//         setUpTime
+//         themeName
+//         skills
+//         focusAge
+//         activityDate
+//         content {
+//           html
+//         }
+//         thumbnail {
+//           url
+//         }
+//       }
+//     }
+//   `;
 
-  try {
-    const res = await fetch(HYGRAPH_ENDPOINT, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${HYGRAPH_TOKEN}`,
-      },
-      body: JSON.stringify({ query }),
-    });
+//   try {
+//     const res = await fetch(HYGRAPH_ENDPOINT, {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//         Authorization: `Bearer ${HYGRAPH_TOKEN}`,
+//       },
+//       body: JSON.stringify({ query }),
+//     });
 
-    if (!res.ok) {
-      throw new Error(`Error fetching data from Hygraph: ${res.statusText}`);
-    }
+//     if (!res.ok) {
+//       throw new Error(`Error fetching data from Hygraph: ${res.statusText}`);
+//     }
 
-    const jsonData = await res.json();
+//     const jsonData = await res.json();
 
-    if (jsonData.errors) {
-      console.error("GraphQL Errors:", jsonData.errors);
-      throw new Error("Failed to fetch activities due to GraphQL errors.");
-    }
+//     if (jsonData.errors) {
+//       console.error("GraphQL Errors:", jsonData.errors);
+//       throw new Error("Failed to fetch activities due to GraphQL errors.");
+//     }
 
-    // Transform the data to match the event format
-    const activities = jsonData.data?.activities.map((activity) => ({
-      id: activity.id,
-      date: new Date(activity.activityDate), // Ensure to parse the date correctly
-      title: activity.title,
-      description: activity.content.html, // Assuming you want the HTML content
-      thumbnail: activity.thumbnail
-        ? {
-            url: activity.thumbnail.url,
-          }
-        : null,
-    }));
-    console.log("Activity Data:", activities);
+//     // Transform the data to match the event format
+//     const activities = jsonData.data?.activities.map((activity) => ({
+//       id: activity.id,
+//       date: new Date(activity.activityDate), // Ensure to parse the date correctly
+//       title: activity.title,
+//       description: activity.content.html, // Assuming you want the HTML content
+//       thumbnail: activity.thumbnail
+//         ? {
+//             url: activity.thumbnail.url,
+//           }
+//         : null,
+//     }));
+//     console.log("Activity Data:", activities);
 
-    return activities || [];
-  } catch (error) {
-    console.error("Error fetching activities:", error);
-    return [];
-  }
-};
+//     return activities || [];
+//   } catch (error) {
+//     console.error("Error fetching activities:", error);
+//     return [];
+//   }
+// };
 
 export default function NewCalendar() {
   const { data: session } = useSession();
@@ -132,7 +132,10 @@ export default function NewCalendar() {
     const fetchActivities = async () => {
       try {
         const activitiesFromHygraph = await getAllActivities();
-        console.log("Activities fetched from Hygraph:", activitiesFromHygraph);
+        console.log(
+          "Activities fetch from Hygraph Mobile:",
+          activitiesFromHygraph
+        );
 
         if (events.length === 0) {
           // Only set events from Hygraph if local storage is empty
