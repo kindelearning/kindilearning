@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  pricingDetails,
   pricingDetailsFamily,
   pricingDetailsFamilyPlus,
   pricingDetailsProfessional,
@@ -19,13 +18,8 @@ import {
   getHomeData,
   getMonthlyPricingData,
 } from "@/lib/hygraph";
-import {
-  FamilyPlusThumb,
-  PricingThumb,
-  ProfessionalThumb,
-} from "@/public/Images";
+import { PricingThumb } from "@/public/Images";
 import { Check, ChevronDown, ChevronUp, CircleHelp, Minus } from "lucide-react";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
@@ -163,11 +157,17 @@ const PricingCard = ({
   );
 };
 
-const OurPricing = async () => {
+const PricingTabs = () => {
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
-  const [selectedTab, setSelectedTab] = useState("Monthly"); // Default to Monthly
+  const [activeTab, setActiveTab] = useState("monthly");
+  const [monthlyPricing, setMonthlyPricing] = useState([]);
+  const [annualPricing, setAnnualPricing] = useState([]);
   const [pricingData, setPricingData] = useState(null);
   const [monthlyPricingData, setMonthlyPricingData] = useState(null);
+
+  const toggleAccordion = () => {
+    setIsAccordionOpen((prev) => !prev);
+  };
 
   useEffect(() => {
     const fetchPricingData = async () => {
@@ -176,6 +176,11 @@ const OurPricing = async () => {
           getAnnualPricingData(),
           getMonthlyPricingData(),
         ]);
+
+        const monthlyDataTwo = await getMonthlyPricingData();
+        const annualDataTwo = await getAnnualPricingData();
+        setMonthlyPricing(monthlyDataTwo);
+        setAnnualPricing(annualDataTwo);
         setPricingData(annualData);
         setMonthlyPricingData(monthlyData);
         console.log("Annual Pricing Data:", annualData);
@@ -186,21 +191,217 @@ const OurPricing = async () => {
     };
 
     fetchPricingData();
-  }, []); // Only
+  }, []);
 
   if (!pricingData || !monthlyPricingData) {
     return <p>Data not found</p>;
   }
-  const toggleAccordion = () => {
-    setIsAccordionOpen((prev) => !prev);
-  };
-  const handleTabChange = (tab) => {
-    setSelectedTab(tab);
-  };
+  return (
+    <div
+      className="w-full h-auto bg-[#EAEAF5] pt-12 pb-[120px] items-center justify-center flex flex-col gap-[20px] transition-all duration-500"
+      style={{
+        animation: "fadeIn 1s ease-in-out",
+        animationFillMode: "forwards",
+      }}
+    >
+      <div
+        className="flex bg-[white] rounded-[20px] px-2 w-[max-content] py-2 justify-center items-center gap-2"
+        style={{
+          animation: "slideInUp 1s ease-in-out 2s",
+          animationFillMode: "forwards",
+        }}
+      >
+        <div className="flex justify-center space-x-4">
+          <button
+            onClick={() => setActiveTab("monthly")}
+            // className={`py-2 px-4 rounded-lg ${
+            //   activeTab === "monthly" ? "bg-red text-white" : "bg-gray-200"
+            // }`}
+            className={`text-[#3F3D91] rounded-[10px]  font-medium flex px-6 justify-center items-center p-2 ${
+              activeTab === "monthly"
+                ? "bg-[#3F3D91] text-[#ffffff]"
+                : "bg-[white]  text-[#3F3D91]"
+            } transition-all duration-500`}
+          >
+            Monthly
+          </button>
+          <button
+            onClick={() => setActiveTab("yearly")}
+            // className={`py-2 px-4 rounded-lg ${
+            //   activeTab === "yearly" ? "bg-red text-white" : "bg-gray-200"
+            // }`}
+            className={`text-[#3F3D91] rounded-[10px] font-medium flex flex-col px-6 justify-center items-center py-2  ${
+              activeTab === "yearly"
+                ? "bg-[#3F3D91] text-[#ffffff]"
+                : "bg-[white]  text-[#3F3D91]"
+            } transition-all duration-500`}
+          >
+            Annually
+          </button>
+        </div>
+      </div>
 
-  const toggleTab = (tab) => {
-    setSelectedTab(tab); // Change the selected tab
-  };
+      {/* Tab Content */}
+      <div className="flex px-4 flex-col items-center justify-center w-full gap-8">
+        {activeTab === "monthly" && (
+          <>
+            <div
+              className="flex flex-nowrap overflow-x-auto justify-start md:justify-start lg:justify-center lg:items-start items-start scrollbar-hidden px-0 w-full claracontainer gap-2 md:gap-4 scrollbar-hidden"
+              style={{
+                transition: "transform 0.5s ease-in-out",
+              }}
+            >
+              {monthlyPricingData.planAThumb &&
+                monthlyPricingData.planAThumb.url && (
+                  <PricingCard
+                    title="Family"
+                    paymentLink="https://buy.stripe.com/6oEbKT0yJa5qbPG28h"
+                    description="No more guesswork! Unlock your child's full potential with our affordable Milestone Tracker—an essential tool for every parent. Ensure your child gets the right support when they need it, keeping them on track and maximizing their brain growth effortlessly."
+                    price={monthlyPricingData.planA.toFixed(2)}
+                    duration="/Yearly"
+                    pricingDetails={pricingDetailsFamily}
+                    isOpen={isAccordionOpen} // Pass the state here
+                    toggleAccordion={toggleAccordion} // Pass toggle function
+                    image={monthlyPricingData.planAThumb.url}
+                  />
+                )}
+              {monthlyPricingData.planBThumb &&
+                monthlyPricingData.planBThumb.url && (
+                  <PricingCard
+                    title="Family Plus"
+                    paymentLink="https://buy.stripe.com/aEU6qz6X7elG1b2aEI"
+                    description="Unlock the secrets to child success with our engaging learning activities that turn playtime into brain time. Expertly designed to stimulate brain development through easy-to-follow guided play, you’ll build a strong foundation for lifelong success. Watch your child thrive with confidence—start today!"
+                    price={monthlyPricingData.planB.toFixed(2)}
+                    duration="/Yearly"
+                    pricingDetails={pricingDetailsFamilyPlus}
+                    isOpen={isAccordionOpen} // Pass the state here
+                    toggleAccordion={toggleAccordion} // Pass toggle function
+                    image={monthlyPricingData.planBThumb.url}
+                  />
+                )}
+              {monthlyPricingData.planCThumb &&
+                monthlyPricingData.planCThumb.url && (
+                  <PricingCard
+                    image={monthlyPricingData.planCThumb.url}
+                    paymentLink="https://buy.stripe.com/fZe2ajepz3H2cTKbIO"
+                    title="Professional"
+                    description="Enhance children's development and simplify your workload with Kindi Professional. Our ready-to-use, play-based education activities and professional development resources equip educators to provide every child and family with the outstanding support they need for a bright and successful future."
+                    price={monthlyPricingData.planC.toFixed(2)}
+                    duration="/Yearly"
+                    pricingDetails={pricingDetailsProfessional}
+                    isOpen={isAccordionOpen} // Pass the state here
+                    toggleAccordion={toggleAccordion} // Pass toggle function
+                  />
+                )}
+            </div>
+          </>
+        )}
+        {activeTab === "yearly" && (
+          <div
+            className="flex flex-nowrap overflow-x-auto justify-start md:justify-start lg:justify-center lg:items-start items-start scrollbar-hidden px-0 w-full claracontainer gap-4 scrollbar-hidden"
+            style={{
+              transition: "transform 0.5s ease-in-out",
+            }}
+          >
+            {pricingData.planAThumb && pricingData.planAThumb.url && (
+              <PricingCard
+                title="Annual Family Plus"
+                paymentLink="https://buy.stripe.com/5kAdT14OZelG9HydQY"
+                description="No more guesswork! Unlock your child's full potential with our affordable Milestone Tracker—an essential tool for every parent. Ensure your child gets the right support when they need it, keeping them on track and maximizing their brain growth effortlessly."
+                price={pricingData.planA.toFixed(2)}
+                duration="/Yearly"
+                pricingDetails={pricingDetailsFamily}
+                isOpen={isAccordionOpen}
+                toggleAccordion={toggleAccordion}
+                image={pricingData.planAThumb?.url}
+                style={{
+                  transition: "transform 0.5s ease-in-out",
+                  animation: "slideInUp 1s ease-in-out 3s",
+                  animationFillMode: "forwards",
+                }}
+              />
+            )}
+            {pricingData.planBThumb && pricingData.planBThumb.url && (
+              <PricingCard
+                paymentLink="https://buy.stripe.com/00g02bgxH7Xi6vm8wB"
+                image={pricingData.planBThumb?.url}
+                title="Annual Family"
+                description="Enhance children's development and simplify your workload with Kindi Professional. Our ready-to-use, play-based education activities and professional development resources equip educators to provide every child and family with the outstanding support they need for a bright and successful future."
+                price={pricingData.planC.toFixed(2)}
+                duration="/Yearly"
+                pricingDetails={pricingDetailsProfessional}
+                isOpen={isAccordionOpen}
+                toggleAccordion={toggleAccordion}
+                style={{
+                  transition: "transform 0.5s ease-in-out",
+                  animation: "slideInUp 1s ease-in-out 4s",
+                  animationFillMode: "forwards",
+                }}
+              />
+            )}
+            {pricingData.planBThumb && pricingData.planBThumb.url && (
+              <PricingCard
+                title="Annual Professional"
+                description="Enhance children's development and simplify your workload with Kindi Professional. Our ready-to-use, play-based education activities and professional development resources equip educators to provide every child and family with the outstanding support they need for a bright and successful future."
+                price={pricingData.planA.toFixed(2)}
+                duration="/Yearly"
+                paymentLink="https://buy.stripe.com/4gw7uD1CNgtOf1SdQX"
+                pricingDetails={pricingDetailsFamilyPlus}
+                isOpen={isAccordionOpen}
+                toggleAccordion={toggleAccordion}
+                image={pricingData.planCThumb?.url}
+                style={{
+                  transition: "transform 0.5s ease-in-out",
+                  animation: "slideInUp 1s ease-in-out 3.5s",
+                  animationFillMode: "forwards",
+                }}
+              />
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+const OurPricing = async () => {
+  // const [isAccordionOpen, setIsAccordionOpen] = useState(false);
+  // const [selectedTab, setSelectedTab] = useState("Monthly"); // Default to Monthly
+  // const [pricingData, setPricingData] = useState(null);
+  // const [monthlyPricingData, setMonthlyPricingData] = useState(null);
+
+  // useEffect(() => {
+  //   const fetchPricingData = async () => {
+  //     try {
+  //       const [annualData, monthlyData] = await Promise.all([
+  //         getAnnualPricingData(),
+  //         getMonthlyPricingData(),
+  //       ]);
+  //       setPricingData(annualData);
+  //       setMonthlyPricingData(monthlyData);
+  //       console.log("Annual Pricing Data:", annualData);
+  //       console.log("Monthly Pricing Data:", monthlyData);
+  //     } catch (error) {
+  //       console.error("Error fetching pricing data:", error);
+  //     }
+  //   };
+
+  //   fetchPricingData();
+  // }, []); // Only
+
+  // if (!pricingData || !monthlyPricingData) {
+  //   return <p>Data not found</p>;
+  // }
+  // const toggleAccordion = () => {
+  //   setIsAccordionOpen((prev) => !prev);
+  // };
+  // const handleTabChange = (tab) => {
+  //   setSelectedTab(tab);
+  // };
+
+  // const toggleTab = (tab) => {
+  //   setSelectedTab(tab); // Change the selected tab
+  // };
 
   const homeData = await getHomeData();
   // console.log("Home Page Data (in component):", homeData);
@@ -253,8 +454,8 @@ const OurPricing = async () => {
             </div>
           </div>
         </div>
-
-        <div
+        {/* Tabs  */}
+        {/* <div
           className="flex bg-[white] rounded-[20px] px-2 w-[max-content] py-2 justify-center items-center gap-2"
           style={{
             animation: "slideInUp 1s ease-in-out 2s",
@@ -281,9 +482,9 @@ const OurPricing = async () => {
           >
             Annually
           </div>
-        </div>
-
-        <div
+        </div> */}
+        {/* Tabs Data */}
+        {/* <div
           className="scrollable-pricing px-2 lg:px-4 md:px-2 w-full claracontainer gap-4"
           style={{
             animation: "fadeIn 1s ease-in-out 2.5s",
@@ -406,7 +607,8 @@ const OurPricing = async () => {
               )}
             </div>
           )}
-        </div>
+        </div> */}
+        <PricingTabs />
       </section>
     </>
   );
