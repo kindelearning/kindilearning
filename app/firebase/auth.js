@@ -65,23 +65,31 @@ const CREATE_USER_MUTATION = `
 const handleHygraphUser = async (email, name) => {
   try {
     // Step 1: Check if the user already exists in Hygraph
-    const userCheckResponse = await request(HYGRAPH_MAIN_ENDPOINT, CHECK_USER_EXISTENCE_QUERY, { email });
-    
+    const userCheckResponse = await request(
+      HYGRAPH_MAIN_ENDPOINT,
+      CHECK_USER_EXISTENCE_QUERY,
+      { email }
+    );
+
     if (userCheckResponse.users.length > 0) {
       // User exists, return the user data
-      console.log('User already exists:', userCheckResponse.users[0]);
+      console.log("User already exists:", userCheckResponse.users[0]);
       return userCheckResponse.users[0];
     } else {
       // Step 2: If user does not exist, create a new user
-      console.log('User does not exist, creating new user...');
-      const createUserResponse = await request(HYGRAPH_MAIN_TOKEN, CREATE_USER_MUTATION, { email, name });
-      
-      console.log('New user created:', createUserResponse.createAccount);
+      console.log("User does not exist, creating new user...");
+      const createUserResponse = await request(
+        HYGRAPH_MAIN_TOKEN,
+        CREATE_USER_MUTATION,
+        { email, name }
+      );
+
+      console.log("New user created:", createUserResponse.createAccount);
       return createUserResponse.createAccount;
     }
   } catch (error) {
-    console.error('Error handling Hygraph user:', error);
-    throw new Error('Failed to handle Hygraph user');
+    console.error("Error handling Hygraph user:", error);
+    throw new Error("Failed to handle Hygraph user");
   }
 };
 
@@ -100,88 +108,89 @@ export const linkGoogleAccount = async () => {
   }
 };
 
-export const signUpWithEmail = async (email, password, name) => {
-  try {
-    // Step 1: Create user in Firebase
-    const userCredential = await createUserWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
+// export const signUpWithEmail = async (email, password, name) => {
+//   try {
+//     // Step 1: Create user in Firebase
+//     const userCredential = await createUserWithEmailAndPassword(
+//       auth,
+//       email,
+//       password
+//     );
 
-    // Step 2: Prepare data for Hygraph
-    const variables = {
-      email: userCredential.user.email,
-      name: name || userCredential.user.displayName || "Kindi User",
-      password: password,
-    };
+//     // Step 2: Prepare data for Hygraph
+//     const variables = {
+//       email: userCredential.user.email,
+//       name: name || userCredential.user.displayName || "Kindi User",
+//       password: password,
+//     };
 
-    // Step 3: Create user in Hygraph
-    const response = await hygraphClient.request(
-      CREATE_ACCOUNT_MUTATION,
-      variables
-    );
+//     // Step 3: Create user in Hygraph
+//     const response = await hygraphClient.request(
+//       CREATE_ACCOUNT_MUTATION,
+//       variables
+//     );
 
-    const userId = response.createAccount.id;
+//     const userId = response.createAccount.id;
 
-    // Step 4: Publish the user
-    await hygraphClient.request(PUBLISH_USER_MUTATION, { id: userId });
+//     // Step 4: Publish the user
+//     await hygraphClient.request(PUBLISH_USER_MUTATION, { id: userId });
 
-    console.log("User created and published in Hygraph:", response);
-    return { success: true };
-  } catch (error) {
-    console.error("Error during email signup:", error);
-    if (error.response) {
-      console.error("GraphQL Error Response:", error.response.errors);
-    }
-    return {
-      success: false,
-      message: error.message || "An unknown error occurred",
-    };
-  }
-};
+//     console.log("User created and published in Hygraph:", response);
+//     return { success: true };
+//   } catch (error) {
+//     console.error("Error during email signup:", error);
+//     if (error.response) {
+//       console.error("GraphQL Error Response:", error.response.errors);
+//     }
+//     return {
+//       success: false,
+//       message: error.message || "An unknown error occurred",
+//     };
+//   }
+// };
 
-export const signUpWithGoogle = async () => {
-  const provider = new GoogleAuthProvider();
+// export const signUpWithGoogle = async () => {
+//   const provider = new GoogleAuthProvider();
 
-  try {
-    // Step 1: Sign in with Google
-    const userCredential = await signInWithPopup(auth, provider);
-    const user = userCredential.user;
+//   try {
+//     // Step 1: Sign in with Google
+//     const userCredential = await signInWithPopup(auth, provider);
+//     const user = userCredential.user;
 
-    // Step 2: Prepare data for Hygraph
-    const variables = {
-      email: user.email,
-      name: user.displayName || "Kindi User",
-      password: "GoogleSignIn", // Placeholder for Google password
-    };
+//     // Step 2: Prepare data for Hygraph
+//     const variables = {
+//       email: user.email,
+//       name: user.displayName || "Kindi User",
+//       password: "GoogleSignIn", // Placeholder for Google password
+//     };
 
-    // Step 3: Create user in Hygraph
-    const response = await hygraphClient.request(
-      CREATE_ACCOUNT_MUTATION,
-      variables
-    );
+//     // Step 3: Create user in Hygraph
+//     const response = await hygraphClient.request(
+//       CREATE_ACCOUNT_MUTATION,
+//       variables
+//     );
 
-    const userId = response.createAccount.id;
+//     const userId = response.createAccount.id;
 
-    // Step 4: Publish the user
-    await hygraphClient.request(PUBLISH_USER_MUTATION, { id: userId });
+//     // Step 4: Publish the user
+//     await hygraphClient.request(PUBLISH_USER_MUTATION, { id: userId });
 
-    console.log("User created and published in Hygraph:", response);
-    return { success: true };
-  } catch (error) {
-    console.error("Error during Google signup:", error);
-    if (error.response) {
-      console.error("GraphQL Error Response:", error.response.errors);
-    }
-    return {
-      success: false,
-      message: error.message || "An unknown error occurred",
-    };
-  }
-};
+//     console.log("User created and published in Hygraph:", response);
+//     return { success: true };
+//   } catch (error) {
+//     console.error("Error during Google signup:", error);
+//     if (error.response) {
+//       console.error("GraphQL Error Response:", error.response.errors);
+//     }
+//     return {
+//       success: false,
+//       message: error.message || "An unknown error occurred",
+//     };
+//   }
+// };
 
 // Function to Login with Email and Password
+
 export const loginWithEmail = async (email, password) => {
   try {
     const userCredential = await signInWithEmailAndPassword(
@@ -213,78 +222,78 @@ export const signInWithGoogle = async () => {
  * @Old_COde
  */
 // Function to sign up with email and password
-// export const signUpWithEmail = async (email, password, name) => {
-//   try {
-//     // Step 1: Create user in Firebase
-//     const userCredential = await createUserWithEmailAndPassword(
-//       auth,
-//       email,
-//       password
-//     );
+export const signUpWithEmail = async (email, password, name) => {
+  try {
+    // Step 1: Create user in Firebase
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
 
-//     // Step 2: Prepare data for Hygraph
-//     const variables = {
-//       email: userCredential.user.email,
-//       name: name || userCredential.user.displayName || "Kindi User",
-//       password: password, // Use the same password used for Firebase
-//     };
+    // Step 2: Prepare data for Hygraph
+    const variables = {
+      email: userCredential.user.email,
+      name: name || userCredential.user.displayName || "Kindi User",
+      password: password, // Use the same password used for Firebase
+    };
 
-//     // Step 3: Create user in Hygraph
-//     const response = await hygraphClient.request(
-//       CREATE_ACCOUNT_MUTATION,
-//       variables
-//     );
+    // Step 3: Create user in Hygraph
+    const response = await hygraphClient.request(
+      CREATE_ACCOUNT_MUTATION,
+      variables
+    );
 
-//     console.log("User created in Hygraph:", response);
-//     return { success: true };
-//   } catch (error) {
-//     console.error("Error during email signup:", error);
-//     if (error.response) {
-//       console.error("GraphQL Error Response:", error.response.errors);
-//     }
-//     return {
-//       success: false,
-//       message: error.message || "An unknown error occurred",
-//     };
-//   }
-// };
+    console.log("User created in Hygraph:", response);
+    return { success: true };
+  } catch (error) {
+    console.error("Error during email signup:", error);
+    if (error.response) {
+      console.error("GraphQL Error Response:", error.response.errors);
+    }
+    return {
+      success: false,
+      message: error.message || "An unknown error occurred",
+    };
+  }
+};
 
 /**
  * @Old_COde
  */
 
 // Function to sign up with Google
-// export const signUpWithGoogle = async () => {
-//   const provider = new GoogleAuthProvider();
+export const signUpWithGoogle = async () => {
+  const provider = new GoogleAuthProvider();
 
-//   try {
-//     // Step 1: Sign in with Google
-//     const userCredential = await signInWithPopup(auth, provider);
-//     const user = userCredential.user;
+  try {
+    // Step 1: Sign in with Google
+    const userCredential = await signInWithPopup(auth, provider);
+    const user = userCredential.user;
 
-//     // Step 2: Prepare data for Hygraph
-//     const variables = {
-//       email: user.email,
-//       name: user.displayName || "Kindi User",
-//       password: "GoogleSignIn", // Use a placeholder as you can't retrieve Google password
-//     };
+    // Step 2: Prepare data for Hygraph
+    const variables = {
+      email: user.email,
+      name: user.displayName || "Kindi User",
+      password: "GoogleSignIn", // Use a placeholder as you can't retrieve Google password
+    };
 
-//     // Step 3: Create user in Hygraph
-//     const response = await hygraphClient.request(
-//       CREATE_ACCOUNT_MUTATION,
-//       variables
-//     );
+    // Step 3: Create user in Hygraph
+    const response = await hygraphClient.request(
+      CREATE_ACCOUNT_MUTATION,
+      variables
+    );
 
-//     console.log("User created in Hygraph:", response);
-//     return { success: true };
-//   } catch (error) {
-//     console.error("Error during Google signup:", error);
-//     if (error.response) {
-//       console.error("GraphQL Error Response:", error.response.errors);
-//     }
-//     return {
-//       success: false,
-//       message: error.message || "An unknown error occurred",
-//     };
-//   }
-// };
+    console.log("User created in Hygraph:", response);
+    return { success: true };
+  } catch (error) {
+    console.error("Error during Google signup:", error);
+    if (error.response) {
+      console.error("GraphQL Error Response:", error.response.errors);
+    }
+    return {
+      success: false,
+      message: error.message || "An unknown error occurred",
+    };
+  }
+};

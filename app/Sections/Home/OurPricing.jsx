@@ -14,7 +14,11 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { getHomeData } from "@/lib/hygraph";
+import {
+  getAnnualPricingData,
+  getHomeData,
+  getMonthlyPricingData,
+} from "@/lib/hygraph";
 import {
   FamilyPlusThumb,
   PricingThumb,
@@ -24,7 +28,7 @@ import { Check, ChevronDown, ChevronUp, CircleHelp, Minus } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const AccordianList = ({
   text = "I am the List item",
@@ -90,6 +94,8 @@ const PricingCard = ({
     <div className="w-full min-w-[300px] md:min-w-[340px] lg:min-w-[300px] max-w-[360px] h-auto bg-[#ffffff] rounded-[32px] items-start justify-center flex flex-col gap-[20px] ">
       <div className="flex w-full rounded-t-[32px] h-full min-h-[260px] max-h-[260px] object-cover overflow-clip">
         <Image
+          width={600}
+          height={300}
           src={image || PricingThumb}
           alt="Pricing Image"
           className="min-h-[260px] object-cover h-full w-full"
@@ -160,7 +166,31 @@ const PricingCard = ({
 const OurPricing = async () => {
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
   const [selectedTab, setSelectedTab] = useState("Monthly"); // Default to Monthly
+  const [pricingData, setPricingData] = useState(null);
+  const [monthlyPricingData, setMonthlyPricingData] = useState(null);
 
+  useEffect(() => {
+    const fetchPricingData = async () => {
+      try {
+        const [annualData, monthlyData] = await Promise.all([
+          getAnnualPricingData(),
+          getMonthlyPricingData(),
+        ]);
+        setPricingData(annualData);
+        setMonthlyPricingData(monthlyData);
+        console.log("Annual Pricing Data:", annualData);
+        console.log("Monthly Pricing Data:", monthlyData);
+      } catch (error) {
+        console.error("Error fetching pricing data:", error);
+      }
+    };
+
+    fetchPricingData();
+  }, []); // Only
+
+  if (!pricingData || !monthlyPricingData) {
+    return <p>Data not found</p>;
+  }
   const toggleAccordion = () => {
     setIsAccordionOpen((prev) => !prev);
   };
@@ -267,39 +297,51 @@ const OurPricing = async () => {
                 transition: "transform 0.5s ease-in-out",
               }}
             >
-              <PricingCard 
-                title="Family"
-                paymentLink="https://buy.stripe.com/6oEbKT0yJa5qbPG28h"
-                description="No more guesswork! Unlock your child's full potential with our affordable Milestone Tracker—an essential tool for every parent. Ensure your child gets the right support when they need it, keeping them on track and maximizing their brain growth effortlessly."
-                price="$19.99"
-                duration="/Yearly"
-                pricingDetails={pricingDetailsFamily}
-                isOpen={isAccordionOpen} // Pass the state here
-                toggleAccordion={toggleAccordion} // Pass toggle function
-                image={PricingThumb}
-              />
-              <PricingCard
-                title="Family Plus"
-                paymentLink="https://buy.stripe.com/aEU6qz6X7elG1b2aEI"
-                description="Unlock the secrets to child success with our engaging learning activities that turn playtime into brain time. Expertly designed to stimulate brain development through easy-to-follow guided play, you’ll build a strong foundation for lifelong success. Watch your child thrive with confidence—start today!"
-                price="$19.99"
-                duration="/Yearly"
-                pricingDetails={pricingDetailsFamilyPlus}
-                isOpen={isAccordionOpen} // Pass the state here
-                toggleAccordion={toggleAccordion} // Pass toggle function
-                image={FamilyPlusThumb}
-              />
-              <PricingCard
-                image={ProfessionalThumb}
-                paymentLink="https://buy.stripe.com/fZe2ajepz3H2cTKbIO"
-                title="Professional"
-                description="Enhance children's development and simplify your workload with Kindi Professional. Our ready-to-use, play-based education activities and professional development resources equip educators to provide every child and family with the outstanding support they need for a bright and successful future."
-                price="$19.99"
-                duration="/Yearly"
-                pricingDetails={pricingDetailsProfessional}
-                isOpen={isAccordionOpen} // Pass the state here
-                toggleAccordion={toggleAccordion} // Pass toggle function
-              />
+              {monthlyPricingData.planAThumb &&
+                monthlyPricingData.planAThumb.url && (
+                  <PricingCard
+                    title="Family"
+                    paymentLink="https://buy.stripe.com/6oEbKT0yJa5qbPG28h"
+                    description="No more guesswork! Unlock your child's full potential with our affordable Milestone Tracker—an essential tool for every parent. Ensure your child gets the right support when they need it, keeping them on track and maximizing their brain growth effortlessly."
+                    price={monthlyPricingData.planA.toFixed(2)}
+                    duration="/Yearly"
+                    pricingDetails={pricingDetailsFamily}
+                    isOpen={isAccordionOpen} // Pass the state here
+                    toggleAccordion={toggleAccordion} // Pass toggle function
+                    // image={PricingThumb}
+                    image={monthlyPricingData.planAThumb.url}
+                  />
+                )}
+              {monthlyPricingData.planBThumb &&
+                monthlyPricingData.planBThumb.url && (
+                  <PricingCard
+                    title="Family Plus"
+                    paymentLink="https://buy.stripe.com/aEU6qz6X7elG1b2aEI"
+                    description="Unlock the secrets to child success with our engaging learning activities that turn playtime into brain time. Expertly designed to stimulate brain development through easy-to-follow guided play, you’ll build a strong foundation for lifelong success. Watch your child thrive with confidence—start today!"
+                    price={monthlyPricingData.planB.toFixed(2)}
+                    duration="/Yearly"
+                    pricingDetails={pricingDetailsFamilyPlus}
+                    isOpen={isAccordionOpen} // Pass the state here
+                    toggleAccordion={toggleAccordion} // Pass toggle function
+                    // image={FamilyPlusThumb}
+                    image={monthlyPricingData.planBThumb.url}
+                  />
+                )}
+              {monthlyPricingData.planCThumb &&
+                monthlyPricingData.planCThumb.url && (
+                  <PricingCard
+                    // image={ProfessionalThumb}
+                    image={monthlyPricingData.planCThumb.url}
+                    paymentLink="https://buy.stripe.com/fZe2ajepz3H2cTKbIO"
+                    title="Professional"
+                    description="Enhance children's development and simplify your workload with Kindi Professional. Our ready-to-use, play-based education activities and professional development resources equip educators to provide every child and family with the outstanding support they need for a bright and successful future."
+                    price={monthlyPricingData.planC.toFixed(2)}
+                    duration="/Yearly"
+                    pricingDetails={pricingDetailsProfessional}
+                    isOpen={isAccordionOpen} // Pass the state here
+                    toggleAccordion={toggleAccordion} // Pass toggle function
+                  />
+                )}
             </div>
           ) : (
             <div
@@ -308,54 +350,60 @@ const OurPricing = async () => {
                 transition: "transform 0.5s ease-in-out",
               }}
             >
-              <PricingCard
-                title="Annual Family Plus"
-                paymentLink="https://buy.stripe.com/5kAdT14OZelG9HydQY"
-                description="No more guesswork! Unlock your child's full potential with our affordable Milestone Tracker—an essential tool for every parent. Ensure your child gets the right support when they need it, keeping them on track and maximizing their brain growth effortlessly."
-                price="$19.99"
-                duration="/Yearly"
-                pricingDetails={pricingDetailsFamily}
-                isOpen={isAccordionOpen} // Pass the state here
-                toggleAccordion={toggleAccordion} // Pass toggle function
-                image={PricingThumb}
-                style={{
-                  transition: "transform 0.5s ease-in-out",
-                  animation: "slideInUp 1s ease-in-out 3s",
-                  animationFillMode: "forwards",
-                }}
-              />
-              <PricingCard
-                title="Annual Professional"
-                description="Enhance children's development and simplify your workload with Kindi Professional. Our ready-to-use, play-based education activities and professional development resources equip educators to provide every child and family with the outstanding support they need for a bright and successful future."
-                price="$19.99"
-                duration="/Yearly"
-                paymentLink="https://buy.stripe.com/4gw7uD1CNgtOf1SdQX"
-                pricingDetails={pricingDetailsFamilyPlus}
-                isOpen={isAccordionOpen} // Pass the state here
-                toggleAccordion={toggleAccordion} // Pass toggle function
-                image={FamilyPlusThumb}
-                style={{
-                  transition: "transform 0.5s ease-in-out",
-                  animation: "slideInUp 1s ease-in-out 3.5s",
-                  animationFillMode: "forwards",
-                }}
-              />
-              <PricingCard
-                paymentLink="https://buy.stripe.com/00g02bgxH7Xi6vm8wB"
-                image={ProfessionalThumb}
-                title="Annual Family"
-                description="Enhance children's development and simplify your workload with Kindi Professional. Our ready-to-use, play-based education activities and professional development resources equip educators to provide every child and family with the outstanding support they need for a bright and successful future."
-                price="$19.99"
-                duration="/Yearly"
-                pricingDetails={pricingDetailsProfessional}
-                isOpen={isAccordionOpen} // Pass the state here
-                toggleAccordion={toggleAccordion} // Pass toggle function
-                style={{
-                  transition: "transform 0.5s ease-in-out",
-                  animation: "slideInUp 1s ease-in-out 4s",
-                  animationFillMode: "forwards",
-                }}
-              />
+              {pricingData.planAThumb && pricingData.planAThumb.url && (
+                <PricingCard
+                  title="Annual Family Plus"
+                  paymentLink="https://buy.stripe.com/5kAdT14OZelG9HydQY"
+                  description="No more guesswork! Unlock your child's full potential with our affordable Milestone Tracker—an essential tool for every parent. Ensure your child gets the right support when they need it, keeping them on track and maximizing their brain growth effortlessly."
+                  price={pricingData.planA.toFixed(2)}
+                  duration="/Yearly"
+                  pricingDetails={pricingDetailsFamily}
+                  isOpen={isAccordionOpen} // Pass the state here
+                  toggleAccordion={toggleAccordion} // Pass toggle function
+                  image={pricingData.planAThumb?.url}
+                  style={{
+                    transition: "transform 0.5s ease-in-out",
+                    animation: "slideInUp 1s ease-in-out 3s",
+                    animationFillMode: "forwards",
+                  }}
+                />
+              )}
+              {pricingData.planBThumb && pricingData.planBThumb.url && (
+                <PricingCard
+                  paymentLink="https://buy.stripe.com/00g02bgxH7Xi6vm8wB"
+                  image={pricingData.planBThumb?.url}
+                  title="Annual Family"
+                  description="Enhance children's development and simplify your workload with Kindi Professional. Our ready-to-use, play-based education activities and professional development resources equip educators to provide every child and family with the outstanding support they need for a bright and successful future."
+                  price={pricingData.planC.toFixed(2)}
+                  duration="/Yearly"
+                  pricingDetails={pricingDetailsProfessional}
+                  isOpen={isAccordionOpen} // Pass the state here
+                  toggleAccordion={toggleAccordion} // Pass toggle function
+                  style={{
+                    transition: "transform 0.5s ease-in-out",
+                    animation: "slideInUp 1s ease-in-out 4s",
+                    animationFillMode: "forwards",
+                  }}
+                />
+              )}
+              {pricingData.planBThumb && pricingData.planBThumb.url && (
+                <PricingCard
+                  title="Annual Professional"
+                  description="Enhance children's development and simplify your workload with Kindi Professional. Our ready-to-use, play-based education activities and professional development resources equip educators to provide every child and family with the outstanding support they need for a bright and successful future."
+                  price={pricingData.planA.toFixed(2)}
+                  duration="/Yearly"
+                  paymentLink="https://buy.stripe.com/4gw7uD1CNgtOf1SdQX"
+                  pricingDetails={pricingDetailsFamilyPlus}
+                  isOpen={isAccordionOpen} // Pass the state here
+                  toggleAccordion={toggleAccordion} // Pass toggle function
+                  image={pricingData.planCThumb?.url}
+                  style={{
+                    transition: "transform 0.5s ease-in-out",
+                    animation: "slideInUp 1s ease-in-out 3.5s",
+                    animationFillMode: "forwards",
+                  }}
+                />
+              )}
             </div>
           )}
         </div>
