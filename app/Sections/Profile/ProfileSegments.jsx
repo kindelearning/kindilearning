@@ -1121,12 +1121,12 @@ const RandomImageComponent = () => {
   const randomImage = getRandomImage();
 
   return (
-    <div className="relative w-20  -mx-[32px] h-20 lg:w-36 lg:h-36 p-1 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600">
-      <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
+    <div className="relative w-20 -mx-[32px] h-20 lg:w-36 lg:h-36 p-1 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600">
+      <div className="w-fit h-20 lg:w-36 lg:h-36   bg-white rounded-full flex overflow-clip items-center justify-center">
         <Image
           src={randomImage}
           alt="Random Profile Placeholder"
-          className="w-[72px] h-[72px] lg:w-36 lg:h-36 object-cover overflow-clip rounded-full"
+          className="w-20 h-20 lg:w-36 lg:h-36 object-cover overflow-clip rounded-full"
         />
       </div>
     </div>
@@ -1184,8 +1184,8 @@ export default function ProfileSegments() {
         </div>
         <div className="claracontainer bg-[#F5F5F5] md:bg-[#EAEAF5] -mt-4 rounded-t-[12px] z-2 lg:m-12 px-4 py-6 rounded-xl md:px-2 lg:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-[20px]">
           {/* Top Profile Card */}
-          <div className="w-full flex bg-[white] rounded-[24px] p-2 md:p-4 justify-start items-start gap-[4px] lg:gap-[12px] lg:items-center">
-            <div className="w-full lg:max-w-[160px] lg:w-full items-center flex justify-center">
+          <div className="w-full flex bg-[white] rounded-[24px] gap-2 p-2 md:p-4 justify-start items-start lg:gap-[12px] lg:items-center">
+            <div className="w-fit min-w-20 lg:w-full lg:max-w-[160px] items-center flex justify-center">
               {user && hygraphUser ? (
                 <>
                   <div className="relative w-20 h-20 lg:w-36 lg:h-36 p-1 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600">
@@ -1208,7 +1208,7 @@ export default function ProfileSegments() {
               )}
             </div>
 
-            <div className="w-full gap-4 flex flex-col justify-center">
+            <div className="w-full gap-4 flex flex-col justify-center items-center">
               <div className="flex flex-row justify-between items-start w-full">
                 {user && hygraphUser ? (
                   <div className="flex flex-col w-full justify-start items-start">

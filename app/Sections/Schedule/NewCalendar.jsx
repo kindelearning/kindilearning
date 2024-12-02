@@ -124,6 +124,7 @@ export default function NewCalendar() {
 
   // Save events to localStorage whenever they change
   useEffect(() => {
+    console.log("Current events data Mobile:", events);
     localStorage.setItem("events", JSON.stringify(events));
   }, [events]);
 
@@ -230,12 +231,15 @@ export default function NewCalendar() {
 
   const checkEventForDate = (day) => {
     return events.filter((event) => {
-      const eventDate = new Date(event.date).setHours(0, 0, 0, 0);
+      const eventDate = new Date(event.activityDate).setHours(0, 0, 0, 0);
       const currentDay = new Date(
         currentDate.getFullYear(),
         currentDate.getMonth(),
         day
       ).setHours(0, 0, 0, 0);
+
+      console.log("Event Date:", eventDate, "Current Day:", currentDay); // For debugging
+
       return eventDate === currentDay;
     });
   };
@@ -358,7 +362,7 @@ export default function NewCalendar() {
               key={day}
               className="font-semibold w-full justify-center items-center text-center hidden uppercase lg:flex font-fredoka text-[#3F3A64] py-2 gap-0"
             >
-              {day}
+              {day} 
             </div>
           );
         })}

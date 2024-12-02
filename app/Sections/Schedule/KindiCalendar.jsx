@@ -311,44 +311,49 @@ export default function Calendar() {
   };
 
   const handleDrop = (e, dayObj) => {
-    e.preventDefault();
-    const eventId = e.dataTransfer.getData("eventId");
+    e.preventDefault(); // Prevent default behavior (browser handling)
+
+    const eventId = e.dataTransfer.getData("eventId"); // Get event ID from drag data
+
     const targetDate = new Date(
       currentDate.getFullYear(),
       currentDate.getMonth(),
       dayObj.day
     );
 
+    // Ensure drop is only on valid days (current month and not in the past)
     if (
       !dayObj.isCurrentMonth ||
       (targetDate < today && targetDate.getDate() !== today.getDate())
     ) {
-      return;
+      return; // Invalid drop, do nothing
     }
 
+    // Update event date in the state
     const updatedEvents = events.map((event) =>
       event.id === eventId ? { ...event, date: targetDate } : event
     );
 
-    setEvents(updatedEvents);
-    localStorage.setItem("events", JSON.stringify(updatedEvents));
+    setEvents(updatedEvents); // Update state
+    localStorage.setItem("events", JSON.stringify(updatedEvents)); // Save to localStorage
   };
 
   const handleDragOver = (e, dayObj) => {
+    console.log('handle drop ccalled')
     const targetDate = new Date(
       currentDate.getFullYear(),
       currentDate.getMonth(),
       dayObj.day
     );
+
+    // Prevent drop if invalid (past date or outside current month)
     if (
       !dayObj.isCurrentMonth ||
       (targetDate < today && targetDate.getDate() !== today.getDate())
     ) {
-      // alert("You cannot drop the event on this date. Please choose a valid date.");
-
-      e.preventDefault();
+      e.preventDefault(); // Allow drop only on valid days
     } else {
-      e.preventDefault();
+      e.preventDefault(); // Allow drop on valid days
     }
   };
 
@@ -446,7 +451,7 @@ export default function Calendar() {
               </div>
 
               {/* Show events if they exist */}
-              {eventsForDay.map((event, index) => (
+              {eventsForDay.map((event) => (
                 <Link
                   href={`/p/activities/${event.id}`}
                   target="_blank"
@@ -457,7 +462,7 @@ export default function Calendar() {
                 >
                   {/* Show only the title if there are multiple events, otherwise show title and description */}
                   {eventCount > 1 ? (
-                    <p className="font-semibold text-[14px] leading-[16px] lg:leading-[12px] lg:text-[12px] text-start">
+                      <p className="font-semibold text-[14px] leading-[16px] lg:leading-[12px] lg:text-[12px] text-start">
                       {event.title}
                     </p>
                   ) : (
