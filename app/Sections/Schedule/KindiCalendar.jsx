@@ -292,12 +292,15 @@ export default function Calendar() {
 
   const checkEventForDate = (day) => {
     return events.filter((event) => {
-      const eventDate = new Date(event.date).setHours(0, 0, 0, 0);
+      const eventDate = new Date(event.activityDate).setHours(0, 0, 0, 0);
       const currentDay = new Date(
         currentDate.getFullYear(),
         currentDate.getMonth(),
         day
       ).setHours(0, 0, 0, 0);
+
+      // console.log("Event Date:", eventDate, "Current Day:", currentDay); // For debugging
+
       return eventDate === currentDay;
     });
   };
@@ -395,12 +398,6 @@ export default function Calendar() {
         </button>
       </div>
 
-      {/* {user && hygraphUser ? (
-        <MyCompletedActivity userID={hygraphUser.id} />
-      ) : (
-        <p>User not found</p>
-      )} */}
-
       {/* Calendar Top Weekdays  */}
       <div className="flex-col flex lg:grid font-fredoka p-0 lg:p-4 bg-[#eaeaf5] lg:bg-[#DCDCE8] rounded-[20px] w-full grid-cols-7 gap-0 text-center">
         {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
@@ -419,7 +416,6 @@ export default function Calendar() {
             dayObj.day === today.getDate() &&
             currentDate.getMonth() === today.getMonth() &&
             currentDate.getFullYear() === today.getFullYear();
-
           const eventsForDay = checkEventForDate(dayObj.day);
           const eventCount = eventsForDay.length;
 
@@ -490,13 +486,12 @@ export default function Calendar() {
                           <div className="flex w-full justify-between flex-col items-start">
                             <div className="flex gap-1 items-center ">
                               <div className="text-[#0a1932] text-[12px] leading-[14px] lg:text-[9px] lg:leading-[10px] font-semibold font-fredoka">
-                                {event.focusAge || "Toddles"}
-                                {/* Tag 1 */}
+                                {/* {event.focusAge || "Toddles"} */}
+                                {event.focusAge.split(" ")[0] || "Toddles"}
                               </div>
                               <span className="flex items-center">•</span>
                               <div className="text-[#0a1932] text-[12px] leading-[14px] lg:text-[9px] lg:leading-[10px] font-semibold font-fredoka">
-                                {event.themeName || "Winter"}
-                                {/* Tag 2 */}
+                                {event.themeName.split(" ")[0] || "Winter"}
                               </div>
                             </div>
                             <div className="flex flex-row justify-start items-center  w-full gap-[4px]">
