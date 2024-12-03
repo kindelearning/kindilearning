@@ -523,13 +523,12 @@ export default function DisplayAllMileStone({ passThecurrentUserId }) {
 
         {/* Subcategory Filter as Badge/Chip (conditionally rendered) */}
         {selectedCategory !== "All" && (
-          <div className="subcategory-filter mt-4">
-            <div className="flex overflow-x-scroll scrollbar-hidden flex-wrap gap-2">
+            <div className="flex w-full overflow-x-scroll scrollbar-hidden gap-1">
               {subCategories.map((subCategory) => (
                 <span
                   key={subCategory}
                   onClick={() => setSelectedSubCategory(subCategory)}
-                  className={`cursor-pointer border-white border-2 duration-200 px-4 py-1 rounded-full ${
+                  className={`cursor-pointer min-w-[max-content] border-white border-2 duration-200 px-4 py-1 rounded-full ${
                     selectedSubCategory === subCategory
                       ? "bg-red text-white"
                       : "bg-gray-200 text-gray-800"
@@ -540,7 +539,7 @@ export default function DisplayAllMileStone({ passThecurrentUserId }) {
                 </span>
               ))}
             </div>
-          </div>
+         
         )}
       </section>
       <TrigSnakeCurve

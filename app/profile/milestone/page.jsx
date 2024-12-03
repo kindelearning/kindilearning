@@ -107,7 +107,7 @@ export default function MileStone() {
               <TabsContent value="CurrentUser">
                 <>
                   {hygraphUser ? (
-                    <div className="flex flex-col justify-center items-center gap-2 lg:gap-4 px-4 lg:px-0 overflow-x-scroll scrollbar-hidden w-full">
+                    <div className="flex flex-col justify-center items-center gap-2 lg:gap-4 px-2 lg:px-0 overflow-x-scroll scrollbar-hidden w-full">
                       <div className="w-full text-center text-[#0a1932] text-[40px] font-semibold font-fredoka leading-normal">
                         {hygraphUser.name}
                       </div>
