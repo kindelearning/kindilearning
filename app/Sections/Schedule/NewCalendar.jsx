@@ -1,32 +1,12 @@
 "use client";
 import { GET_ACCOUNT_BY_EMAIL, getAllActivities } from "@/lib/hygraph";
-import { Confidence } from "@/public/Icons";
 import { GraphQLClient } from "graphql-request";
-import { KindiHeart } from "@/public/Images";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-
-const icons = [
-  {
-    icon: KindiHeart,
-    color: "#c42797",
-  },
-  {
-    icon: Confidence,
-    color: "#029871",
-  },
-  {
-    icon: KindiHeart,
-    color: "#3f3a64",
-  },
-  {
-    icon: Confidence,
-    color: "#ff8e00",
-  },
-];
+import { icons } from "@/app/constant/standard";
 
 const HYGRAPH_ENDPOINT =
   "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";
@@ -37,69 +17,6 @@ const client = new GraphQLClient(HYGRAPH_ENDPOINT, {
     Authorization: `Bearer ${HYGRAPH_TOKEN}`,
   },
 });
-
-// const getAllActivities = async () => {
-//   const query = `
-//     query {
-//       activities {
-//         id
-//         title
-//         setUpTime
-//         themeName
-//         skills
-//         focusAge
-//         activityDate
-//         content {
-//           html
-//         }
-//         thumbnail {
-//           url
-//         }
-//       }
-//     }
-//   `;
-
-//   try {
-//     const res = await fetch(HYGRAPH_ENDPOINT, {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//         Authorization: `Bearer ${HYGRAPH_TOKEN}`,
-//       },
-//       body: JSON.stringify({ query }),
-//     });
-
-//     if (!res.ok) {
-//       throw new Error(`Error fetching data from Hygraph: ${res.statusText}`);
-//     }
-
-//     const jsonData = await res.json();
-
-//     if (jsonData.errors) {
-//       console.error("GraphQL Errors:", jsonData.errors);
-//       throw new Error("Failed to fetch activities due to GraphQL errors.");
-//     }
-
-//     // Transform the data to match the event format
-//     const activities = jsonData.data?.activities.map((activity) => ({
-//       id: activity.id,
-//       date: new Date(activity.activityDate), // Ensure to parse the date correctly
-//       title: activity.title,
-//       description: activity.content.html, // Assuming you want the HTML content
-//       thumbnail: activity.thumbnail
-//         ? {
-//             url: activity.thumbnail.url,
-//           }
-//         : null,
-//     }));
-//     console.log("Activity Data:", activities);
-
-//     return activities || [];
-//   } catch (error) {
-//     console.error("Error fetching activities:", error);
-//     return [];
-//   }
-// };
 
 export default function NewCalendar() {
   const { data: session } = useSession();
@@ -362,7 +279,7 @@ export default function NewCalendar() {
               key={day}
               className="font-semibold w-full justify-center items-center text-center hidden uppercase lg:flex font-fredoka text-[#3F3A64] py-2 gap-0"
             >
-              {day} 
+              {day}
             </div>
           );
         })}

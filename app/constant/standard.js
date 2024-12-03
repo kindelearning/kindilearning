@@ -1,3 +1,4 @@
+import { Confidence } from "@/public/Icons";
 import {
   Filters01,
   Filters02,
@@ -9,6 +10,7 @@ import {
   Filters08,
   Filters09,
   Filters10,
+  KindiHeart,
 } from "@/public/Images";
 
 export const cardGroupData = [
@@ -94,6 +96,25 @@ export const pricingDetailsFamily = [
     helpText:
       "Stay updated on industry changes and new educational play techniques through member-only articles, videos, webinars, interviews, and podcasts.",
     isActive: false,
+  },
+];
+
+export const icons = [
+  {
+    icon: KindiHeart,
+    color: "#c42797",
+  },
+  {
+    icon: Confidence,
+    color: "#029871",
+  },
+  {
+    icon: KindiHeart,
+    color: "#3f3a64",
+  },
+  {
+    icon: Confidence,
+    color: "#ff8e00",
   },
 ];
 
