@@ -1,12 +1,6 @@
-"use client";
-
 import { KindiHeart } from "@/public/Images";
 import { Minus, Plus } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-
 const ToggleCard = ({
   title,
   description,
@@ -17,12 +11,6 @@ const ToggleCard = ({
   link = "#",
   linkText = "Read More",
 }) => {
-  // const [isOpen, setIsOpen] = useState(false);
-
-  // const router = useRouter();
-  // const handleNavigation = () => {
-  //   router.push("#area_of_learning");
-  // };
   return (
     <div
       className={`w-full min-w-[320px] md:min-w-[200px] max-w-md p-4 rounded-[16px] shadow-md`}

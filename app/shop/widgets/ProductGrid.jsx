@@ -10,7 +10,31 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 export default function ProductGrid() {
   const [products, setProducts] = useState([]); // State to store fetched products
   const [loading, setLoading] = useState(true); // State for loading status
-  const scrollContainerRef = useRef(null);
+  // const scrollContainerRef = useRef(null);
+  const scrollRef = useRef(null); // Create a reference for the scroll container
+
+  // Mouse dragging state and refs
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
+
+  const handleMouseDown = (e) => {
+    setIsDragging(true);
+    setStartX(e.pageX - scrollRef.current.offsetLeft);
+    setScrollLeft(scrollRef.current.scrollLeft);
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    const x = e.pageX - scrollRef.current.offsetLeft;
+    const walk = (x - startX) * 1.5; // Scroll speed
+    scrollRef.current.scrollLeft = scrollLeft - walk;
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
 
   // Fetch products using useEffect
   useEffect(() => {
@@ -30,8 +54,8 @@ export default function ProductGrid() {
 
   // Function to scroll right with smooth animation
   const scrollRight = () => {
-    if (scrollContainerRef.current) {
-      const container = scrollContainerRef.current;
+    if (scrollRef.current) {
+      const container = scrollRef.current;
       const scrollAmount = container.clientWidth;
       container.scrollTo({
         left: container.scrollLeft + scrollAmount,
@@ -41,9 +65,9 @@ export default function ProductGrid() {
   };
 
   // Function to scroll left with smooth animation
-  const scrollLeft = () => {
-    if (scrollContainerRef.current) {
-      const container = scrollContainerRef.current;
+  const scrollmeLeft = () => {
+    if (scrollRef.current) {
+      const container = scrollRef.current;
       const scrollAmount = container.clientWidth;
       container.scrollTo({
         left: container.scrollLeft - scrollAmount,
@@ -67,14 +91,19 @@ export default function ProductGrid() {
         {/* Left Arrow */}
         <button
           className="absolute w-[32px] h-[32px] hidden lg:flex justify-center items-center left-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-30 backdrop-blur-lg text-[#000000] p-2 rounded-full z-10"
-          onClick={scrollLeft}
+          onClick={scrollmeLeft}
         >
           <ChevronLeft />
         </button>
 
         {/* Product Grid */}
         <div
-          ref={scrollContainerRef}
+          ref={scrollRef}
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          onMouseLeave={handleMouseUp}
+          style={{ cursor: isDragging ? "grabbing" : "grab" }}
           className="w-full flex gap-2 scrollbar-hidden overflow-x-scroll"
         >
           {products.map((product) => (

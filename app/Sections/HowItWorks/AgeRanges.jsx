@@ -13,8 +13,7 @@ import {
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
-import { useRef } from "react";
+import React, { useRef, useState } from "react";
 
 const AgeCard = ({ bgImage, image, title, body, link }) => {
   return (
@@ -68,6 +67,30 @@ const AgeRangeWidget = () => {
     }
   };
 
+
+  // Mouse dragging state and refs
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
+
+  const handleMouseDown = (e) => {
+    setIsDragging(true);
+    setStartX(e.pageX - scrollRef.current.offsetLeft);
+    setScrollLeft(scrollRef.current.scrollLeft);
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    const x = e.pageX - scrollRef.current.offsetLeft;
+    const walk = (x - startX) * 1.5; // Scroll speed
+    scrollRef.current.scrollLeft = scrollLeft - walk;
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
   return (
     <div className="relative w-full lg:max-w-[1180px] px-4 min-h-[400px] py-6 flex justify-center items-center">
       {/* Left Arrow Button */}
@@ -81,11 +104,16 @@ const AgeRangeWidget = () => {
 
       {/* Scrollable Container */}
       <div
-        ref={scrollRef} // Attach the ref to the scrollable container
+       ref={scrollRef}
+       onMouseDown={handleMouseDown}
+       onMouseMove={handleMouseMove}
+       onMouseUp={handleMouseUp}
+       onMouseLeave={handleMouseUp}
+       style={{ cursor: isDragging ? "grabbing" : "grab" }}
         className="w-full flex-row justify-start items-center gap-[2px] flex overflow-x-auto scrollbar-hidden"
-        style={{
-          scrollBehavior: "smooth", // Enable smooth scroll
-        }}
+        // style={{
+        //   scrollBehavior: "smooth", // Enable smooth scroll
+        // }}
       >
         <AgeCard
           image={AgeCardOne}
@@ -148,6 +176,7 @@ const AgeRanges = async () => {
     console.error("Error: Stories data is missing or incomplete.");
     return <NotFound />;
   }
+
   return (
     <>
       <section className="w-full h-auto bg-[#EAEAF5] items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">
@@ -169,47 +198,6 @@ const AgeRanges = async () => {
             </div>
           </div>
           {/* Row Two */}
-          {/* <div className="w-full lg:max-w-[1180px] px-4 min-h-[400px] overflow-x-scroll scrollbar-hidden h-full py-6 flex-row justify-start items-center gap-[2px] flex ">
-            <AgeCard
-              image={AgeCardOne}
-              bgImage="/Images/AgeRangeOne.svg"
-              title="Beginners (0+ YEARS)"
-              body="Sensory play activities tailored for very young little ones, but appeal to all young children."
-            />
-            <Image
-              src={AgeRangeArrow}
-              alt="Kindi"
-              className="w-[50px] h-[50px] -mx-3"
-            />
-            <AgeCard
-              image={AgeCardTwo}
-              bgImage="/Images/AgeRangeTwo.svg"
-              body="Our learning activities help toddlers develop essential language, social, motor and cognitive skills — but babies and pre-schoolers can enjoy the fun, too!"
-              title="Explorers (18+ MONTHS)"
-            />
-            <Image
-              src={AgeRangeArrow}
-              alt="Kindi"
-              className="w-[50px] h-[50px] -mx-3"
-            />
-            <AgeCard
-              image={AgeCardThree}
-              bgImage="/Images/AgeRangeThree.svg"
-              body="Fun learning activities for children approaching the beginning of their school careers; these activities will also appeal to toddlers and babies."
-              title="Discoverers (2.5+ YEARS)"
-            />
-            <Image
-              src={AgeRangeArrow}
-              alt="Kindi"
-              className="w-[50px] h-[50px] -mx-3"
-            />
-            <AgeCard
-              image={AgeCardFour}
-              bgImage="/Images/AgeRangeFour.svg"
-              title="Adventurers (4+ YEARS)"
-              body="Fun and engaging early years development activities for kindergarteners — Tailored developmental stages for toddlers, babies and pre-schoolers alike."
-            />
-          </div> */}
           <AgeRangeWidget />
         </div>
       </section>

@@ -193,6 +193,33 @@ const cardData = [
     backgroundColor: "BF69CB",
   },
 ];
+
+const ToggleCardGrid = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  // Function to toggle the shared state
+  const handleCardClick = () => {
+    setIsOpen((prev) => !prev); // Toggle the state
+  };
+
+  return (
+    <div className="claracontainer px-4 md:pl-0  flex flex-row overflow-x-scroll scrollbar-hidden md:grid md:grid-cols-3 lg:grid lg:grid-cols-4 xl:grid xl:grid-cols-4 gap-4 justify-between">
+      {cardData.map((card, index) => (
+        <MyToggleCard
+          key={index}
+          title={card.title}
+          description={card.description}
+          backgroundColor={card.backgroundColor}
+          isOpen={isOpen}
+          setIsOpen={handleCardClick}
+          color={card.color || "white"}
+          icon={card.icon}
+        />
+      ))}
+    </div>
+  );
+};
+
+
 const KindiSkillsCategories = async () => {
   const [isOpen, setIsOpen] = useState(false);
   const stories = await getHIWData();
@@ -224,20 +251,7 @@ const KindiSkillsCategories = async () => {
             </div>
           </div>
         </div>
-
-        <div className="claracontainer px-4 md:pl-0 flex flex-row overflow-x-scroll scrollbar-hidden md:grid md:grid-cols-3 lg:grid lg:grid-cols-4 xl:grid xl:grid-cols-4 gap-4 justify-between">
-          {cardData.map((card, index) => (
-            <MyToggleCard
-              key={index}
-              isOpen={isOpen}
-              setIsOpen={setIsOpen}
-              title={card.title}
-              description={card.description}
-              backgroundColor={card.backgroundColor}
-              icon={card.icon}
-            />
-          ))}
-        </div>
+        <ToggleCardGrid />
       </div>
     </section>
   );

@@ -1,17 +1,7 @@
 import NotFound from "@/app/not-found";
-import Activity from "@/app/Widgets/Card/Activity";
 import PopularActivityCarousel from "@/app/Widgets/Carousel/PopularActivityCarousel";
 import { getAllActivities, getHomeData } from "@/lib/hygraph";
-import { Confidence } from "@/public/Icons";
-import {
-  DiscoveringOurWorldActivity,
-  ExperimentsMathActivity,
-  KindiHeart,
-  ReadingWritingActivity,
-  SpeechLanguageActivity,
-} from "@/public/Images";
-import Image from "next/image";
-import Link from "next/link";
+
 
 const PopularActivity = async () => {
   const homeData = await getHomeData();

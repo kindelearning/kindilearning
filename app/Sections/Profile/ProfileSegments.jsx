@@ -507,7 +507,7 @@ const PartnerList = ({ userId }) => {
                     <Image
                       src={
                         hygraphUser.myAvatar.profileAvatar.url ||
-                        'https://ap-south-1.graphassets.com/cm1dom2gf0lqw07pi72v8797k/cm3jnqto60fx008o0ctpfoiaq'
+                        "https://ap-south-1.graphassets.com/cm1dom2gf0lqw07pi72v8797k/cm3jnqto60fx008o0ctpfoiaq"
                       }
                       alt="Profile Image"
                       width={64}
@@ -1172,7 +1172,6 @@ export default function ProfileSegments() {
       <head>
         <title>Profile - Kindilearning</title>
         <meta name="description" content="Your profile page on Kindilearning" />
-        
       </head>
 
       <section className="w-full h-auto bg-[#F5F5F5] md:bg-[#EAEAF5] items-center justify-center flex flex-col md:flex-row px-0">
@@ -1193,7 +1192,7 @@ export default function ProfileSegments() {
                       <Image
                         src={
                           hygraphUser.myAvatar.profileAvatar.url ||
-                          'https://ap-south-1.graphassets.com/cm1dom2gf0lqw07pi72v8797k/cm3jnqto60fx008o0ctpfoiaq'
+                          "https://ap-south-1.graphassets.com/cm1dom2gf0lqw07pi72v8797k/cm3jnqto60fx008o0ctpfoiaq"
                         }
                         alt="User DP"
                         width={100}
@@ -1346,7 +1345,7 @@ export default function ProfileSegments() {
                   title="Orders"
                 />
               </DialogTrigger>
-              <DialogContent className="bg-[#EAEAF5] max-w-[96%] max-h-[70%] overflow-scroll p-0 overflow-x-hidden rounded-[16px] w-full claracontainer">
+              <DialogContent className="bg-[#EAEAF5] max-w-[96%] flex flex-col justify-between max-h-[70%] min-h-[300px] lg:min-h-[600px] overflow-y-scroll p-0 overflow-x-hidden rounded-[16px] w-full claracontainer">
                 <DialogHeader className="p-4">
                   <div className="flex flex-row justify-center items-center w-full">
                     <DialogTitle>
@@ -1362,7 +1361,7 @@ export default function ProfileSegments() {
                   </div>
                 </DialogHeader>
                 <DialogDescription className="flex w-full px-4 claracontainer flex-col justify-start items-center">
-                  <div className="grid grid-cols-1 md:grid-cols-4 h-auto w-full claracontainer gap-4">
+                  {/* <div className="grid grid-cols-1 md:grid-cols-4 h-auto w-full claracontainer gap-4">
                     <ProductCard data={data} />
                     <ProductCard data={data} />
                     <ProductCard data={data} />
@@ -1372,9 +1371,9 @@ export default function ProfileSegments() {
                     <ProductCard data={data} />
                     <ProductCard data={data} />
                     <ProductCard data={data} />
-                  </div>
+                  </div> */}
                 </DialogDescription>
-                <DialogFooter className="sticky  rounded-t-[16px] bottom-0 m-0 w-full bg-[#ffffff]">
+                <DialogFooter className="sticky lg:max-h-[52px] flex items-center rounded-t-[16px] bottom-0 m-0 w-full bg-[#ffffff]">
                   <PopupFooter PrimaryText="Save and Continue" />
                 </DialogFooter>
               </DialogContent>

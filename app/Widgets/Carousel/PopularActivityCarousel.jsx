@@ -1,5 +1,5 @@
 "use client";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 import {
   DiscoveringOurWorldActivity,
@@ -14,11 +14,35 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 
 const PopularActivityCarousel = ({ activities }) => {
-  const containerRef = useRef(null);
+  const scrollRef = useRef(null); // Create a reference for the scroll container
 
-  const scrollLeft = () => {
-    if (containerRef.current) {
-      containerRef.current.scrollBy({
+
+
+  // Mouse dragging state and refs
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
+
+  const handleMouseDown = (e) => {
+    setIsDragging(true);
+    setStartX(e.pageX - scrollRef.current.offsetLeft);
+    setScrollLeft(scrollRef.current.scrollLeft);
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    const x = e.pageX - scrollRef.current.offsetLeft;
+    const walk = (x - startX) * 1.5; // Scroll speed
+    scrollRef.current.scrollLeft = scrollLeft - walk;
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+  const scrollmeLeft = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({
         left: -200, // Adjust scroll amount as needed
         behavior: "smooth",
       });
@@ -26,8 +50,8 @@ const PopularActivityCarousel = ({ activities }) => {
   };
 
   const scrollRight = () => {
-    if (containerRef.current) {
-      containerRef.current.scrollBy({
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({
         left: 200, // Adjust scroll amount as needed
         behavior: "smooth",
       });
@@ -41,11 +65,17 @@ const PopularActivityCarousel = ({ activities }) => {
           className=" w-[32px] cursor-pointer hover:bg-purple hover:text-white  h-[32px] hidden lg:flex justify-center items-center left-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-30 backdrop-blur-lg text-[#000000] p-2 rounded-full z-10"
           
 
-          onClick={scrollLeft}
+          onClick={scrollmeLeft}
         />
 
         <div
-          ref={containerRef}
+          // ref={containerRef}
+          ref={scrollRef}
+       onMouseDown={handleMouseDown}
+       onMouseMove={handleMouseMove}
+       onMouseUp={handleMouseUp}
+       onMouseLeave={handleMouseUp}
+       style={{ cursor: isDragging ? "grabbing" : "grab" }}
           className="flex mx-1 overflow-x-auto py-2 scrollbar-hidden px-4 lg:px-0 w-full claracontainer gap-4 scrollbar-hidden"
         >
           {activities.map((activity) => (
