@@ -101,6 +101,7 @@ export default function Calendar() {
   };
 
   // Generate monthly calendar
+  // Generate monthly calendar
   const generateCalendar = () => {
     const startOfMonth = new Date(
       currentDate.getFullYear(),
@@ -146,16 +147,20 @@ export default function Calendar() {
 
   const checkEventForDate = (day) => {
     return events.filter((event) => {
-      const eventDate = new Date(event.activityDate).setHours(0, 0, 0, 0);
+      const eventDate = new Date(event.activityDate);
+
+      if (isNaN(eventDate.getTime())) {
+        console.error("Invalid event date:", event.activityDate);
+        return false; // Skip if invalid
+      }
+
       const currentDay = new Date(
         currentDate.getFullYear(),
         currentDate.getMonth(),
         day
-      ).setHours(0, 0, 0, 0);
+      ).toISOString(); // Convert currentDay to ISO string for comparison
 
-      // console.log("Event Date:", eventDate, "Current Day:", currentDay); // For debugging
-
-      return eventDate === currentDay;
+      return eventDate.toISOString().split("T")[0] === currentDay.split("T")[0]; // Compare dates only (ignore time)
     });
   };
 
@@ -164,36 +169,26 @@ export default function Calendar() {
     e.dataTransfer.setData("eventId", eventId);
   };
 
-  const handleDrop = (e, dayObj) => {
-    e.preventDefault(); // Prevent default behavior (browser handling)
+  const handleDrop = (e, day) => {
+    e.preventDefault();
 
-    const eventId = e.dataTransfer.getData("eventId"); // Get event ID from drag data
+    const eventData = JSON.parse(e.dataTransfer.getData("event"));
+    console.log("Dropped event data:", eventData);
+    console.log("handleDrop called");
 
-    const targetDate = new Date(
+    // Update the event's date to the new day
+    eventData.activityDate = new Date(
       currentDate.getFullYear(),
       currentDate.getMonth(),
-      dayObj.day
-    );
+      day
+    ).toISOString();
 
-    // Ensure drop is only on valid days (current month and not in the past)
-    if (
-      !dayObj.isCurrentMonth ||
-      (targetDate < today && targetDate.getDate() !== today.getDate())
-    ) {
-      return; // Invalid drop, do nothing
-    }
-
-    // Update event date in the state
-    const updatedEvents = events.map((event) =>
-      event.id === eventId ? { ...event, date: targetDate } : event
-    );
-
-    setEvents(updatedEvents); // Update state
-    localStorage.setItem("events", JSON.stringify(updatedEvents)); // Save to localStorage
+    // Update the event list or state with the new event data
+    updateEvent(eventData); // Replace with your actual update logic
   };
 
   const handleDragOver = (e, dayObj) => {
-    console.log("handle drop ccalled");
+    console.log(" handleDragOver called");
     const targetDate = new Date(
       currentDate.getFullYear(),
       currentDate.getMonth(),
@@ -281,7 +276,9 @@ export default function Calendar() {
           return (
             <div
               key={index}
-              onDrop={(e) => handleDrop(e, dayObj)}
+              data-day={dayObj.day}
+              // onDrop={(e) => handleDrop(e, dayObj)}
+              onDrop={(e) => handleDrop(e, dayObj.day)} //
               onDragOver={(e) => handleDragOver(e, dayObj)}
               className={`p-2 gap-[2px] flex flex-col font-fredoka justify-start items-start border-[1.2px] border-[white] w-full min-h-[40px] h-fit lg:h-[140px] ${
                 !dayObj.isCurrentMonth
@@ -347,10 +344,12 @@ export default function Calendar() {
                               <div className="text-[#0a1932] text-[12px] leading-[14px] lg:text-[9px] lg:leading-[10px] font-semibold font-fredoka">
                                 {/* {event.focusAge || "Toddles"} */}
                                 {event.focusAge.split(" ")[0] || "Toddles"}
+                                {/* {(event.focusAge || "Toddles").split(" ")[0]} */}
                               </div>
                               <span className="flex items-center">•</span>
                               <div className="text-[#0a1932] text-[12px] leading-[14px] lg:text-[9px] lg:leading-[10px] font-semibold font-fredoka">
                                 {event.themeName.split(" ")[0] || "Winter"}
+                                {/* {(event.themeName || "Winter").split(" ")[0]} */}
                               </div>
                             </div>
                             <div className="flex flex-row justify-start items-center  w-full gap-[4px]">
