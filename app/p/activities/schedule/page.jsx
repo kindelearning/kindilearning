@@ -1,7 +1,7 @@
 "use client";
 
 import { KindiCalendar, OurPricing } from "@/app/Sections";
-import NewCalendar from "@/app/Sections/Schedule/NewCalendar";
+import NewCalendar, { NewCalendarTwo } from "@/app/Sections/Schedule/NewCalendar";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import Loading from "@/app/loading";
@@ -69,12 +69,13 @@ export default function Schedule() {
                   </div>
                   {hygraphUser.isVerified ? (
                     <div className="claracontainer md:p-0 p-0 py-4 w-full flex flex-col overflow-hidden gap-8">
-                      <div className="flex lg:hidden">
-                        <NewCalendar />
+                        <NewCalendarTwo />
+                      {/* <div className="flex lg:hidden">
+                        <NewCalendar /> 
                       </div>
                       <div className="lg:flex hidden">
                         <KindiCalendar />
-                      </div>
+                      </div> */}
                     </div>
                   ) : (
                     <div className="claracontainer md:p-0 p-0 py-4 w-full flex flex-col overflow-hidden gap-8">
