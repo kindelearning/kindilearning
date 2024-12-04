@@ -23,16 +23,25 @@ const hygraphClient = new GraphQLClient(HYGRAPH_MAIN_ENDPOINT, {
 
 // GraphQL mutation to create a new user in Hygraph
 const CREATE_ACCOUNT_MUTATION = `
-  mutation CreateUser($email: String!, $name: String!, $password: String!) {
-    createAccount(data: { 
-      email: $email, 
-      name: $name, 
-      password: $password 
-    }) {
+  mutation CreateUserWithAvatar($email: String!, $name: String!, $password: String!, $avatarId: ID!) {
+    createAccount(
+      data: {
+        email: $email,
+        name: $name,
+        password: $password,
+        myAvatar: { connect: { id: $avatarId } }
+      }
+    ) {
       id
+      email
+      name
+      myAvatar {
+        id
+      }
     }
   }
 `;
+
 
 const PUBLISH_USER_MUTATION = ` 
 mutation PublishUser($id: ID!) {
@@ -108,35 +117,65 @@ export const linkGoogleAccount = async () => {
   }
 };
 
+const checkUserExistence = async (email) => {
+  const query = `
+    query CheckUserByEmail($email: String!) {
+      users(where: { email: $email }) {
+        id
+      }
+    }
+  `;
+
+  const variables = { email };
+
+  try {
+    const response = await hygraphClient.request(query, variables);
+    return response.users.length > 0; // If user exists, return true
+  } catch (error) {
+    console.error("Error checking user existence:", error);
+    return false; // Return false if there's an error during the check
+  }
+};
+
+const DEFAULT_AVATAR_ID = "cm3jnu9oi0ghm07o7xrh0ho89";
 export const signUpWithEmail = async (email, password, name) => {
   try {
-    // Step 1: Create user in Firebase
-    const userCredential = await createUserWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
+    // Step 1: Check if the user already exists in Hygraph
+    const userExists = await checkUserExistence(email);
 
-    // Step 2: Prepare data for Hygraph
-    const variables = {
-      email: userCredential.user.email,
-      name: name || userCredential.user.displayName || "Kindi User",
-      password: password,
-    };
+    if (userExists) {
+      // Step 2: If user exists, log them in (You can customize this step as per your login logic)
+      console.log("User already exists. Proceeding with login...");
+      return { success: true, message: "User logged in successfully" };
+    } else {
+      // Step 3: Create user in Firebase if they don't exist
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
 
-    // Step 3: Create user in Hygraph
-    const response = await hygraphClient.request(
-      CREATE_ACCOUNT_MUTATION,
-      variables
-    );
+      // Step 4: Prepare data for Hygraph
+      const variables = {
+        email: userCredential.user.email,
+        name: name || userCredential.user.displayName || "Kindians",
+        password: password,
+        avatarId: DEFAULT_AVATAR_ID, // Pass the default avatar ID
+      };
 
-    const userId = response.createAccount.id;
+      // Step 5: Create user in Hygraph with avatar ID
+      const response = await hygraphClient.request(
+        CREATE_ACCOUNT_MUTATION,
+        variables
+      );
+      const userId = response.createAccount.id;
 
-    // Step 4: Publish the user
-    await hygraphClient.request(PUBLISH_USER_MUTATION, { id: userId });
+      // Step 6: Publish the user in Hygraph
+      await hygraphClient.request(PUBLISH_USER_MUTATION, { id: userId });
 
-    console.log("User created and published in Hygraph:", response);
-    return { success: true };
+      console.log("User created and published in Hygraph:", response);
+      return { success: true, message: "User created successfully" };
+    }
   } catch (error) {
     console.error("Error during email signup:", error);
     if (error.response) {

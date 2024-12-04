@@ -97,14 +97,6 @@ export default function Signup() {
                 placeholder="Email"
                 required
               />
-
-              {/* <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Password"
-                required
-              /> */}
               <div className="relative w-full">
                 <Input
                   type={showPassword ? "text" : "password"}
