@@ -936,7 +936,7 @@ export function NewCalendarTwo() {
                   draggable
                   className={`w-full ${
                     isFutureEvent(event.date) ? " border-0" : "border-0"
-                  } bg- white shadow-md rounded-lg  text-sm`}
+                  } bg- white  rounded-lg  text-sm`}
                   onDragStart={(e) => onDragStart(e, event)}
                   onTouchStart={(e) => onTouchStart(e, event)}
                   onTouchMove={onTouchMove}
