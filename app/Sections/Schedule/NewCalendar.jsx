@@ -420,7 +420,7 @@ export default function NewCalendar() {
   );
 }
 
-import { GET_ACCOUNT_BY_EMAIL } from "@/lib/hygraph";
+import { GET_ACCOUNT_BY_EMAIL, getAllActivities } from "@/lib/hygraph";
 import { Confidence } from "@/public/Icons";
 import { GraphQLClient, gql } from "graphql-request";
 import { KindiHeart, ScheduleEvent } from "@/public/Images";
@@ -527,68 +527,68 @@ const client = new GraphQLClient(HYGRAPH_ENDPOINT, {
 //   return <pre>{jsonOutput}</pre>; // Display JSON data
 // };
 
-const getAllActivities = async () => {
-  const query = `
-    query {
-      activities {
-        id
-        title
-        setUpTime
-        themeName
-        skills
-        focusAge
-        activityDate
-        content {
-          html
-        }
-        thumbnail {
-          url
-        }
-      }
-    }
-  `;
+// const getAllActivities = async () => {
+//   const query = `
+//     query {
+//       activities {
+//         id
+//         title
+//         setUpTime
+//         themeName
+//         skills
+//         focusAge
+//         activityDate
+//         content {
+//           html
+//         }
+//         thumbnail {
+//           url
+//         }
+//       }
+//     }
+//   `;
 
-  try {
-    const res = await fetch(HYGRAPH_ENDPOINT, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${HYGRAPH_TOKEN}`,
-      },
-      body: JSON.stringify({ query }),
-    });
+//   try {
+//     const res = await fetch(HYGRAPH_ENDPOINT, {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//         Authorization: `Bearer ${HYGRAPH_TOKEN}`,
+//       },
+//       body: JSON.stringify({ query }),
+//     });
 
-    if (!res.ok) {
-      throw new Error(`Error fetching data from Hygraph: ${res.statusText}`);
-    }
+//     if (!res.ok) {
+//       throw new Error(`Error fetching data from Hygraph: ${res.statusText}`);
+//     }
 
-    const jsonData = await res.json();
+//     const jsonData = await res.json();
 
-    if (jsonData.errors) {
-      console.error("GraphQL Errors:", jsonData.errors);
-      throw new Error("Failed to fetch activities due to GraphQL errors.");
-    }
+//     if (jsonData.errors) {
+//       console.error("GraphQL Errors:", jsonData.errors);
+//       throw new Error("Failed to fetch activities due to GraphQL errors.");
+//     }
 
-    // Transform the data to match the event format
-    const activities = jsonData.data?.activities.map((activity) => ({
-      id: activity.id,
-      date: new Date(activity.activityDate), // Ensure to parse the date correctly
-      title: activity.title,
-      description: activity.content.html, // Assuming you want the HTML content
-      thumbnail: activity.thumbnail
-        ? {
-            url: activity.thumbnail.url,
-          }
-        : null,
-    }));
-    console.log("Activity Data:", activities);
+//     // Transform the data to match the event format
+//     const activities = jsonData.data?.activities.map((activity) => ({
+//       id: activity.id,
+//       date: new Date(activity.activityDate), // Ensure to parse the date correctly
+//       title: activity.title,
+//       description: activity.content.html, // Assuming you want the HTML content
+//       thumbnail: activity.thumbnail
+//         ? {
+//             url: activity.thumbnail.url,
+//           }
+//         : null,
+//     }));
+//     console.log("Activity Data:", activities);
 
-    return activities || [];
-  } catch (error) {
-    console.error("Error fetching activities:", error);
-    return [];
-  }
-};
+//     return activities || [];
+//   } catch (error) {
+//     console.error("Error fetching activities:", error);
+//     return [];
+//   }
+// };
 
 export function NewCalendarTwo() {
   const { data: session } = useSession();
@@ -731,17 +731,37 @@ export function NewCalendarTwo() {
     return totalDays;
   };
 
+
   const checkEventForDate = (day) => {
     return events.filter((event) => {
-      const eventDate = new Date(event.date).setHours(0, 0, 0, 0);
+      const eventDate = new Date(event.activityDate);
+
+      if (isNaN(eventDate.getTime())) {
+        console.error("Invalid event date:", event.activityDate);
+        return false; // Skip if invalid
+      }
+
       const currentDay = new Date(
         currentDate.getFullYear(),
         currentDate.getMonth(),
         day
-      ).setHours(0, 0, 0, 0);
-      return eventDate === currentDay;
+      ).toISOString(); // Convert currentDay to ISO string for comparison
+
+      return eventDate.toISOString().split("T")[0] === currentDay.split("T")[0]; // Compare dates only (ignore time)
     });
   };
+
+  // const checkEventForDate = (day) => {
+  //   return events.filter((event) => {
+  //     const eventDate = new Date(event.date).setHours(0, 0, 0, 0);
+  //     const currentDay = new Date(
+  //       currentDate.getFullYear(),
+  //       currentDate.getMonth(),
+  //       day
+  //     ).setHours(0, 0, 0, 0);
+  //     return eventDate === currentDay;
+  //   });
+  // };
 
   const onDragStart = (e, event) => {
     e.dataTransfer.setData("text/plain", event.id);
@@ -945,7 +965,7 @@ export function NewCalendarTwo() {
                   {/* Show only the title if there are multiple events, otherwise show title and description */}
                   {eventCount > 1 ? (
                     <p
-                      className={`font-semibold ${
+                      className={`font-semibold bg-white p-2 rounded-[4px] ${
                         isFutureEvent(event.date)
                           ? "border-2 p-2 rounded-lg border-white bg-white"
                           : "border-0"
