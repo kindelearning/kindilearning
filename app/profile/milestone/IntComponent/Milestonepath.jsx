@@ -45,10 +45,6 @@ export function CurvePath({ milestones = [], currentUserId }) {
       day: "numeric",
     });
     setCurrentDate(formattedDate);
-    const savedMessage = localStorage.getItem("milestoneMessage");
-    if (savedMessage) {
-      setMessage(savedMessage);
-    }
   }, []);
 
   // Dynamically set container height based on the number of nodes
@@ -114,14 +110,16 @@ export function CurvePath({ milestones = [], currentUserId }) {
         <Dialog className="p-2 lg:p-4">
           <DialogTrigger>
             <button className="transition duration-300 ease-in-out hover:scale-[1.03] font-fredoka tracking-wider font-bold text-[10px] md:text-[16px] hover:bg-purple hover:border-2 hover:border-[#ffffff] border-transparent md:px-6 border-2 rounded-[12px] bg-red px-4 py-2 hover:shadow text-white">
-              {milestone.title}
+              {/* {milestone.title} */}
+              {(milestone.title?.length > 28 ? milestone.title.substring(0, 28) + "..." : milestone.title) || "Action"}
+
             </button>
           </DialogTrigger>
           <DialogContent className="w-full bg-[#eaeaf5] p-0 lg:min-w-[800px] ">
             <DialogHeader className="p-4">
               <DialogTitle></DialogTitle>
               <DialogDescription className="w-full p-4 flex flex-col gap-4 justify-start items-start">
-                <div className="text-[#0a1932] claraheading">
+                <div className="text-[#0a1932] text-[32px] font-semibold leading-8 font-fredoka">
                   {milestone.title}
                 </div>
                 <div className="w-full text-[#4a4a4a] clarabodyTwo justify-center items-center">
@@ -253,10 +251,6 @@ export const TrigSnakeCurve = ({
       day: "numeric",
     });
     setCurrentDate(formattedDate);
-    const savedMessage = localStorage.getItem("milestoneMessage");
-    if (savedMessage) {
-      setMessage(savedMessage);
-    }
   }, []);
 
   if (!mileStoneCustomData || mileStoneCustomData.length === 0) {
@@ -330,14 +324,16 @@ export const TrigSnakeCurve = ({
           <Dialog className="p-2 lg:p-4">
             <DialogTrigger>
               <button className="text-[12px] min-w-[60px] max-w-[80px] w-full rounded-sm px-2 bg-red text-white">
-                {mileStoneCustomData[index]?.title || "Action"}
+                {(mileStoneCustomData[index]?.title?.length > 20
+                  ? mileStoneCustomData[index]?.title.substring(0, 14) + "..."
+                  : mileStoneCustomData[index]?.title) || "Action"}
               </button>
             </DialogTrigger>
             <DialogContent className="w-full bg-[#eaeaf5] p-0 lg:min-w-[800px]">
               <DialogHeader className="p-4">
                 <DialogTitle></DialogTitle>
                 <DialogDescription className="w-full p-4 flex flex-col gap-4 justify-start items-start">
-                  <div className="text-[#0a1932] claraheading">
+                  <div className="text-[#0a1932] w-full text-start font-fredoka text-[20px] font-[600]">
                     {mileStoneCustomData[index]?.title}
                   </div>
                   <div className="w-full text-start text-[#4a4a4a] clarabodyTwo justify-center items-center">
@@ -459,9 +455,18 @@ export default function DisplayAllMileStone({ passThecurrentUserId }) {
     const fetchMilestones = async () => {
       try {
         const data = await getPublishedMileStone();
+        if (!Array.isArray(data)) {
+          throw new Error("Fetched data is not an array.");
+        }
         console.log("Fetched milestones:", data);
-        setMilestones(data);
+        const trimmedData = data.map((milestone) => ({
+          ...milestone,
+          category: milestone.category?.trim() || "Uncategorized",
+          subCategory: milestone.subCategory?.trim() || "Unspecified",
+        }));
+        setMilestones(trimmedData);
       } catch (err) {
+        console.error("Error fetching milestones:", err);
         setError("Error fetching milestones.");
       } finally {
         setLoading(false);
@@ -490,6 +495,7 @@ export default function DisplayAllMileStone({ passThecurrentUserId }) {
           ),
         ];
 
+  console.log("Subcategories: ", subCategories);
   // Filter milestones based on selected category and subcategory
   const filteredMilestones = milestones.filter((milestone) => {
     const matchesCategory =
@@ -499,6 +505,18 @@ export default function DisplayAllMileStone({ passThecurrentUserId }) {
       milestone.subCategory === selectedSubCategory;
     return matchesCategory && matchesSubCategory;
   });
+  // milestones.forEach((milestone) => {
+  //   console.log("Processing milestone:", milestone);
+  //   console.log(
+  //     "Matches category:",
+  //     selectedCategory === "All" || milestone.category === selectedCategory
+  //   );
+  //   console.log(
+  //     "Matches subcategory:",
+  //     selectedSubCategory === "All" ||
+  //       milestone.subCategory === selectedSubCategory
+  //   );
+  // });
 
   if (!Array.isArray(milestones)) {
     return <p>Error: Expected milestones to be an array.</p>;
@@ -523,23 +541,22 @@ export default function DisplayAllMileStone({ passThecurrentUserId }) {
 
         {/* Subcategory Filter as Badge/Chip (conditionally rendered) */}
         {selectedCategory !== "All" && (
-            <div className="flex w-full overflow-x-scroll scrollbar-hidden gap-1">
-              {subCategories.map((subCategory) => (
-                <span
-                  key={subCategory}
-                  onClick={() => setSelectedSubCategory(subCategory)}
-                  className={`cursor-pointer min-w-[max-content] border-white border-2 duration-200 px-4 py-1 rounded-full ${
-                    selectedSubCategory === subCategory
-                      ? "bg-red text-white"
-                      : "bg-gray-200 text-gray-800"
-                  } hover:bg-red hover:text-white`}
-                  style={{ display: "inline-block", margin: "0.2rem" }}
-                >
-                  {subCategory}
-                </span>
-              ))}
-            </div>
-         
+          <div className="flex w-full overflow-x-scroll scrollbar-hidden gap-1">
+            {subCategories.map((subCategory) => (
+              <span
+                key={subCategory}
+                onClick={() => setSelectedSubCategory(subCategory)}
+                className={`cursor-pointer min-w-[max-content] border-white border-2 duration-200 px-4 py-1 rounded-full ${
+                  selectedSubCategory === subCategory
+                    ? "bg-red text-white"
+                    : "bg-gray-200 text-gray-800"
+                } hover:bg-red hover:text-white`}
+                style={{ display: "inline-block", margin: "0.2rem" }}
+              >
+                {subCategory}
+              </span>
+            ))}
+          </div>
         )}
       </section>
       <TrigSnakeCurve
