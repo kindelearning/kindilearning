@@ -42,7 +42,6 @@ const CREATE_ACCOUNT_MUTATION = `
   }
 `;
 
-
 const PUBLISH_USER_MUTATION = ` 
 mutation PublishUser($id: ID!) {
   publishAccount(where: { id: $id }) {
@@ -196,14 +195,27 @@ export const signUpWithGoogle = async () => {
     const userCredential = await signInWithPopup(auth, provider);
     const user = userCredential.user;
 
-    // Step 2: Prepare data for Hygraph
+    // Step 2: Check if the user already exists in Hygraph
+    const existingUser = await checkUserExistence(user.email);
+    if (existingUser) {
+      console.log("User already exists, skipping creation:", existingUser);
+      return {
+        success: true,
+        message: "User already exists",
+        user: existingUser,
+      };
+    }
+
+    // Step 3: Prepare data for Hygraph
+    const avatarId = "cm3jnu9oi0ghm07o7xrh0ho89"; // Default avatar ID
     const variables = {
       email: user.email,
       name: user.displayName || "Kindi User",
       password: "GoogleSignIn", // Placeholder for Google password
+      avatarId, // Default avatar ID
     };
 
-    // Step 3: Create user in Hygraph
+    // Step 4: Create user in Hygraph
     const response = await hygraphClient.request(
       CREATE_ACCOUNT_MUTATION,
       variables
@@ -211,11 +223,15 @@ export const signUpWithGoogle = async () => {
 
     const userId = response.createAccount.id;
 
-    // Step 4: Publish the user
+    // Step 5: Publish the user
     await hygraphClient.request(PUBLISH_USER_MUTATION, { id: userId });
 
     console.log("User created and published in Hygraph:", response);
-    return { success: true };
+    return {
+      success: true,
+      message: "User created successfully",
+      userId: userId,
+    };
   } catch (error) {
     console.error("Error during Google signup:", error);
     if (error.response) {
