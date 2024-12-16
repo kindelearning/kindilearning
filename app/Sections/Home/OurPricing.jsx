@@ -183,8 +183,8 @@ const PricingTabs = () => {
         setAnnualPricing(annualDataTwo);
         setPricingData(annualData);
         setMonthlyPricingData(monthlyData);
-        console.log("Annual Pricing Data:", annualData);
-        console.log("Monthly Pricing Data:", monthlyData);
+        // console.log("Annual Pricing Data:", annualData);
+        // console.log("Monthly Pricing Data:", monthlyData);
       } catch (error) {
         console.error("Error fetching pricing data:", error);
       }

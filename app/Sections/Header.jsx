@@ -25,7 +25,7 @@ import { useEffect, useState } from "react";
 import { signOut } from "next-auth/react";
 import Loading from "../loading";
 import { useCart } from "../context/CartContext";
-import { GoogleTranslate } from "./GoogleTranslate";
+// import { GoogleTranslate } from "./GoogleTranslate";
 import { useAuth } from "../lib/useAuth";
 import { useRouter } from "next/navigation";
 import { getUserDataByEmail } from "@/lib/hygraph";
@@ -217,9 +217,9 @@ const Header = () => {
                     </div>
                   </div>
                   <div className="flex w-full flex-col gap-2">
-                    <div className="flex w-full">
+                    {/* <div className="flex w-full">
                       <GoogleTranslate />
-                    </div>
+                    </div> */}
                     {hygraphUser ? (
                       <div className="flex w-full gap-2 justify-start items-center">
                         <div className="flex">

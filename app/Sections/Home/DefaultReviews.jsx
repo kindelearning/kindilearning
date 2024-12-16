@@ -12,7 +12,7 @@ const DefaultReviews = () => {
   useEffect(() => {
     const fetchData = async () => {
       const fetchedData = await getDefaultReview();
-      console.log("Default review data:", fetchedData);
+      // console.log("Default review data:", fetchedData);
       setData(fetchedData);
       setLoading(false);
     };

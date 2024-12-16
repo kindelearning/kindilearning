@@ -224,9 +224,9 @@ const ShopHeader = () => {
                     </div>
                   </div>
                   <div className="flex w-full flex-col gap-2">
-                    <div className="flex w-full">
+                    {/* <div className="flex w-full">
                       <GoogleTranslate />
-                    </div>
+                    </div> */}
                     {user && hygraphUser ? (
                       <div className="flex w-full gap-2 justify-start items-center">
                         <div className="flex">
