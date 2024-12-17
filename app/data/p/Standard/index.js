@@ -21,29 +21,6 @@ export async function fetchInvestmentOpportunity() {
   }
 }
 
-export async function fetchPrivacyPolicy() {
-  try {
-    const response = await fetch(
-      "http://localhost:1337/api/privacypolicy?populate=*"
-    );
-    if (!response.ok) {
-      throw new Error(`Error fetching data: ${response.statusText}`);
-    }
-
-    const data = await response.json();
-    console.log("Privacy Policy Data:", data); // Debug: Log the response
-
-    if (!data || !data.data || !data.data.Content) {
-      throw new Error("No content available in the API response");
-    }
-
-    return data.data.Content; // Return the nested Content object
-  } catch (error) {
-    console.error("Error fetching Privacy Policy:", error);
-    return null;
-  }
-}
-
 export async function fetchTnc() {
   try {
     const response = await fetch("http://localhost:1337/api/tnc?populate=*");
@@ -109,28 +86,49 @@ export async function fetchFaq() {
   }
 }
 
-export async function fetchQualityControl() {
+export async function fetchPrivacyPolicy() {
   try {
-    const response = await fetch("http://localhost:1337/api/qualitycontrol?populate=*");
-
-    // Log the response status for debugging
-    console.log("API Status:", response.status);
-
+    const response = await fetch(
+      "http://localhost:1337/api/privacypolicy?populate=*"
+    );
     if (!response.ok) {
-      console.error(`API Error: ${response.status} - ${response.statusText}`);
-      return null;
+      throw new Error(`Error fetching data: ${response.statusText}`);
     }
 
     const data = await response.json();
-    console.log("Fetched Data:", data);
+    console.log("Privacy Policy Data:", data); // Debug: Log the response
 
-    // Ensure data structure matches expectations
-    if (!data || !data.data) {
-      console.error("No data found in the API response.");
-      return null;
+    if (!data || !data.data || !data.data.Content) {
+      throw new Error("No content available in the API response");
     }
 
-    return data.data;
+    return data.data.Content; // Return the nested Content object
+  } catch (error) {
+    console.error("Error fetching Privacy Policy:", error);
+    return null;
+  }
+}
+
+export async function fetchQualityControl() {
+  try {
+    const response = await fetch(
+      "http://localhost:1337/api/qualitycontrol?populate=*"
+    );
+
+    if (!response.ok) {
+      throw new Error(`Error fetching data: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    console.log("Quality Control Data:", data);
+
+    // Ensure data structure matches expectations
+    if (!data || !data.data || !data.data.Content) {
+      console.error("No data found in the API response.");
+      throw new Error("No content available in the API response");
+    }
+
+    return data.data.Content; //
   } catch (error) {
     console.error("Error fetching QualityControl:", error.message);
     return null;
