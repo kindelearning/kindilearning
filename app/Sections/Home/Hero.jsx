@@ -60,20 +60,18 @@ export default async function Hero() {
           </div>
           <div className="w-full flex md:min-w-[300px] items-start justify-center h-fit min-h-[400px] md:w-[300px] lg:w-full">
             <div className="w-full h-fit md:h-[460px] animate-fade-in md:max-w-[500px] flex items-end justify-end">
-              <div className="hero-video-container">
-                {heroMediaUrl ? (
-                  heroMediaUrl.endsWith(".mp4") ? (
-                    <video autoPlay loop muted>
-                      <source src={heroMediaUrl} type="video/mp4" />
-                      Your browser does not support the video.
-                    </video>
-                  ) : (
-                    <Image src={heroMediaUrl} alt="Hero" />
-                  )
+              {heroMediaUrl ? (
+                heroMediaUrl.endsWith(".mp4") ? (
+                  <video autoPlay loop muted>
+                    <source src={heroMediaUrl} type="video/mp4" />
+                    Your browser does not support the video.
+                  </video>
                 ) : (
-                  <p>No media available</p>
-                )}
-              </div>
+                  <Image src={heroMediaUrl} alt="Hero" />
+                )
+              ) : (
+                <p>No media available</p>
+              )}
             </div>
           </div>
         </div>
