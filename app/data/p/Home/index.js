@@ -81,32 +81,20 @@ export async function fetchEarlyLearningExpert() {
 
 export async function fetchPopularLearning() {
   try {
-    const res = await fetch(
-      "http://localhost:1337/api/popularlearning?populate=*"
-    );
-    console.log("Response from API:", res);
-
-    if (!res.ok) {
-      throw new Error(`Error: ${res.status} - ${res.statusText}`);
+    const response = await fetch('http://localhost:1337/api/popularlearning?populate=*');
+    
+    if (!response.ok) {
+      throw new Error(`Error fetching Popular Learning: ${response.statusText}`);
     }
-
-    const data = await res.json();
-    console.log("Data from API:", data); // Log the data
-
-    if (!data || !data.data) {
-      throw new Error("No data found for Popular Learning section");
-    }
-
-    // Extract content
-    const content = data.data.attributes; // Assuming the content is inside `attributes`
-    console.log("Content extracted:", content);
-
-    return content;
+    
+    const data = await response.json();
+    return data?.data || null;
   } catch (error) {
-    console.error("Error fetching Popular Learning data:", error.message);
+    console.error('Error fetching Popular Learning:', error);
     return null;
   }
 }
+
 
 export async function fetchHowItWorksData() {
   try {
