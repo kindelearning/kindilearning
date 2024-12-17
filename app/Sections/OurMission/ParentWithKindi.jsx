@@ -1,12 +1,7 @@
-"use client";
-
-import NotFound from "@/app/not-found";
-import { getStoryData } from "@/lib/hygraph";
 import { BookOpen, PWKOne, PWKTwo } from "@/public/Images";
 import Image from "next/image";
 import Claras3DGallery from "./ClaraGallery";
-import RichTextRender from "../Global/RichTextRender";
-import { useEffect, useState } from "react";
+import { fetchOurMission } from "@/app/data/p/OurMission";
 
 const InternalChip = ({
   image,
@@ -27,29 +22,11 @@ const InternalChip = ({
 };
 
 export default async function ParentWithKindi() {
-  const [storyData, setStoryData] = useState(null);
+  const data = await fetchOurMission();
 
-  // Fetch story data
-  useEffect(() => {
-    const fetchStoryData = async () => {
-      const data = await getStoryData();
-      setStoryData(data);
-    };
-
-    fetchStoryData();
-  }, []);
-
-  if (!storyData) {
-    return <div>Loading...</div>;
+  if (!data) {
+    return <div>No content available.</div>;
   }
-
-  // const stories = await getStoryData();
-  // console.log("Our stories:", stories);
-  // // console.log("Story Page Data (in component):", stories);
-  // if (!stories || !stories[0]?.parentWithKindi) {
-  //   console.error("Error: Stories data is missing or incomplete.");
-  //   return <NotFound />;
-  // }
 
   return (
     <>
@@ -60,20 +37,27 @@ export default async function ParentWithKindi() {
             {/* Top Heading Section */}
             <div className="flex-col flex justify-center heading items-start">
               <div className="text-start w-full">
-                <span className="text-red claraheading">Be Confident: </span>
-                <br className="flex md:hidden lg:flex" />
+                <span className="text-red claraheading">
+                  {data.Parentwithkindi.featuredText && (
+                    <p>{data.Parentwithkindi.featuredText}</p>
+                  )}{" "}
+                </span>
+                {/* <br className="flex md:hidden lg:flex" /> */}
                 <span className="text-white claraheading">
-                  Parent With Kindi
+                  {data.Parentwithkindi.Title}
                 </span>
               </div>
               <div className="flex w-full container justify-start px-0 items-center flex-col">
-                {storyData.map((story, id) => (
+                {/* {storyData.map((story, id) => (
                   <div key={id} className="w-full px-0 text-start clarabodyTwo text-[white] font-medium font-fredoka">
                     {story.parentWithKindi?.json && (
                       <RichTextRender content={story.parentWithKindi.json} />
                     )}
                   </div>
-                ))}
+                ))} */}
+                <div className="w-full px-0 text-start clarabodyTwo text-[white] font-medium font-fredoka">
+                  {data.Parentwithkindi.Body}
+                </div>
               </div>
             </div>
             <div className="py-3 w-full flex-col justify-start items-center gap-1 inline-flex">
