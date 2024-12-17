@@ -96,9 +96,7 @@ export async function fetchFaq() {
     }
 
     const data = await response.json();
-    console.log("FAQ Data:", data); // Debug: Log the response for verification
 
-    // Ensure the response contains the expected attributes
     if (!data || !data.data || !data.data.Content) {
       throw new Error("No FAQ content available in the API response");
     }
@@ -107,6 +105,34 @@ export async function fetchFaq() {
     return data.data.Content;
   } catch (error) {
     console.error("Error fetching FAQ:", error);
+    return null;
+  }
+}
+
+export async function fetchQualityControl() {
+  try {
+    const response = await fetch("http://localhost:1337/api/qualitycontrol?populate=*");
+
+    // Log the response status for debugging
+    console.log("API Status:", response.status);
+
+    if (!response.ok) {
+      console.error(`API Error: ${response.status} - ${response.statusText}`);
+      return null;
+    }
+
+    const data = await response.json();
+    console.log("Fetched Data:", data);
+
+    // Ensure data structure matches expectations
+    if (!data || !data.data) {
+      console.error("No data found in the API response.");
+      return null;
+    }
+
+    return data.data;
+  } catch (error) {
+    console.error("Error fetching QualityControl:", error.message);
     return null;
   }
 }

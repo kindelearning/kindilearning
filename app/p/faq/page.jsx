@@ -1,11 +1,7 @@
-"use client";
-
 import { fetchFaq } from "@/app/data/p/Standard";
 import Accordion from "@/app/Sections/Global/MyAccordion";
-import { useEffect, useState } from "react";
 
 export default async function FaqPage() {
-  // Fetch FAQ data directly on the server
   const faqContent = await fetchFaq();
 
   if (!faqContent || faqContent.length === 0) {
