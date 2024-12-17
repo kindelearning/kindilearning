@@ -78,3 +78,72 @@ export async function fetchEarlyLearningExpert() {
     return null;
   }
 }
+
+export async function fetchPopularLearning() {
+  try {
+    const res = await fetch(
+      "http://localhost:1337/api/popularlearning?populate=*"
+    );
+    console.log("Response from API:", res);
+
+    if (!res.ok) {
+      throw new Error(`Error: ${res.status} - ${res.statusText}`);
+    }
+
+    const data = await res.json();
+    console.log("Data from API:", data); // Log the data
+
+    if (!data || !data.data) {
+      throw new Error("No data found for Popular Learning section");
+    }
+
+    // Extract content
+    const content = data.data.attributes; // Assuming the content is inside `attributes`
+    console.log("Content extracted:", content);
+
+    return content;
+  } catch (error) {
+    console.error("Error fetching Popular Learning data:", error.message);
+    return null;
+  }
+}
+
+export async function fetchHowItWorksData() {
+  try {
+    const res = await fetch(
+      `http://localhost:1337/api/howitwork?populate=*`
+    );
+    if (!res.ok) {
+      throw new Error("Failed to fetch How It Works data");
+    }
+    const data = await res.json();
+    if (!data || !data.data) {
+      throw new Error("No data found for Popular Learning section");
+    }
+    return data?.data || null;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return null;
+  }
+}
+
+export async function fetchMonthlyTheme() {
+  try {
+    const res = await fetch('http://localhost:1337/api/monthlytheme?populate=*');
+
+    if (!res.ok) {
+      throw new Error(`Error: ${res.status} - ${res.statusText}`);
+    }
+
+    const data = await res.json();
+
+    if (!data || !data.data) {
+      throw new Error("No data found for Monthly Theme section");
+    }
+
+    return data.data; // Return the entire content of Monthly Theme
+  } catch (error) {
+    console.error("Error fetching Monthly Theme data:", error.message);
+    return null;
+  }
+}

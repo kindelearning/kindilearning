@@ -1,15 +1,11 @@
-// "use client";
 
 import { fetchChildDevelopmentUnlock } from "@/app/data/p/Home";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-// import { useEffect, useState } from "react";
 
 export default async function PromotionalSection() {
-  // Fetch data directly on the server
   const content = await fetchChildDevelopmentUnlock();
 
-  // If no content, show a fallback message
   if (!content) {
     return <p>No data available</p>;
   }
