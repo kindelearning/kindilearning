@@ -159,3 +159,24 @@ export async function fetchDefaultReview() {
     return null;
   }
 }
+
+export async function fetchPricingData() {
+  try {
+    const response = await fetch(
+      "http://localhost:1337/api/ourpricing?populate=*"
+    );
+
+    if (!response.ok) {
+      throw new Error(`Error fetching Pricing Data: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    if (!data || !data.data) {
+      throw new Error("No data found for Pricing section");
+    }
+    return data?.data || null;
+  } catch (error) {
+    console.error("Error fetching Pricing Data:", error);
+    return null;
+  }
+}
