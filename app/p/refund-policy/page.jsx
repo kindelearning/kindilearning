@@ -1,21 +1,34 @@
+"use client";
+
 import { fetchRefundPolicy } from "@/app/data/p/Standard";
 import RichTextRender from "@/app/Sections/Global/RichTextRender";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-export default async function RefundPolicy() {
-  const content = await fetchRefundPolicy();
+export default function RefundPolicy() {
+  const [content, setContent] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  if (!content) {
-    return (
-      <div>
-        <p>No data available.</p>
-        <p>Data was expected from the Refund Policy API. Please check the API response and ensure it is working.</p>
-      </div>
-    );
+  // Fetch the refund policy when the component mounts
+  useEffect(() => {
+    const getRefundPolicyData = async () => {
+      const data = await fetchRefundPolicy();
+      console.log("Fetched Data:", data); // Log the data to check if it's set correctly
+      setContent(data);
+      setLoading(false);
+    };
+
+    getRefundPolicyData();
+  }, []);
+
+  if (loading) {
+    return <p>Loading...</p>;
   }
 
-  // Destructure fields from the fetched content
+  if (!content) {
+    return <p>No data available</p>;
+  }
+
   const { Title, Body, Pagecontent, Lastupdated } = content;
 
   return (
@@ -50,7 +63,7 @@ export default async function RefundPolicy() {
             )}
           </div>
           {Lastupdated ? (
-            <div className="text-purple clarabodyTwo animate-fade-in">
+            <div className="text-purple w-full justify-center items-center flex text-center clarabodyTwo animate-fade-in">
               Last updated: {new Date(Lastupdated).toLocaleDateString()}
             </div>
           ) : null}
@@ -70,50 +83,6 @@ export default async function RefundPolicy() {
           )}
         </div>
       </section>
-      {/* <section className="w-full bg-[#EAEAF5] flex flex-col gap-0 justify-center items-center">
-        <div className="claracontainer px-4 md:px-2 lg:px-4 pb-24 pt-8 w-full bg-[#eaeaf5] flex flex-col overflow-hidden gap-8">
-          <div className="claracontainer w-full flex flex-col overflow-hidden gap-4">
-            <div className="w-full text-center">
-              <span className="text-[#3f3a64] claraheading uppercase">
-                Kindi
-              </span>{" "}
-              <span className="text-red claraheading uppercase"> Refund</span>{" "}
-              <span className="text-[#3f3a64] claraheading uppercase">
-                {" "}
-                Policy
-              </span>
-            </div>
-            <div className="justify-center flex items-center text-center">
-              <span className="text-black text-xs font-medium font-['Fredoka']">
-                Last Updated:
-              </span>
-              <span className="text-black text-xs font-normal font-['Fredoka']">
-                {" "}
-                September 2024
-              </span>
-            </div>
-            <span className="text-[#3f3a64] text-base font-normal font-fredoka leading-tight">
-              At <span className="font-semibold">Kindi</span> , we strive to
-              provide the best experience possible with our educational play
-              activities and resources. However, we understand that
-              circumstances may arise where you need a refund. This Refund
-              Policy explains the terms under which refunds are offered for
-              Kindi’s ser
-            </span>
-          </div>
-          <div className="h-[1.5px] bg-[black] rounded-full my-4" />
-          <div className="items-center w-full justify-center flex flex-col gap-4">
-            {standardPages?.refundPolicy?.html ? (
-              <div className="w-full text-gray-700 text-[20px] font-medium font-fredoka leading-[24px]">
-                <RichTextRender content={standardPages?.refundPolicy?.json} />
-              </div>
-            ) : (
-              <p>No content found</p>
-            )}
-          </div>
-         
-        </div>
-      </section> */}
     </>
   );
 }
