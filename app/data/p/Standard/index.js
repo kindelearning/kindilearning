@@ -64,9 +64,12 @@ export async function fetchTnc() {
     return null;
   }
 }
+
 export async function fetchRefundPolicy() {
   try {
-    const response = await fetch("http://localhost:1337/api/refundpolicy?populate=*");
+    const response = await fetch(
+      "http://localhost:1337/api/refundpolicy?populate=*"
+    );
     if (!response.ok) {
       throw new Error(`Error fetching data: ${response.statusText}`);
     }
@@ -81,6 +84,29 @@ export async function fetchRefundPolicy() {
     return data.data.Content; // Return the nested Content object
   } catch (error) {
     console.error("Error fetching Privacy Policy:", error);
+    return null;
+  }
+}
+
+export async function fetchFaq() {
+  try {
+    const response = await fetch("http://localhost:1337/api/faq?populate=*");
+    if (!response.ok) {
+      throw new Error(`Error fetching data: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    console.log("FAQ Data:", data); // Debug: Log the response for verification
+
+    // Ensure the response contains the expected attributes
+    if (!data || !data.data || !data.data.Content) {
+      throw new Error("No FAQ content available in the API response");
+    }
+
+    // Return the array of FAQ items
+    return data.data.Content;
+  } catch (error) {
+    console.error("Error fetching FAQ:", error);
     return null;
   }
 }
