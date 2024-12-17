@@ -1,19 +1,15 @@
-import RichTextRender from "@/app/Sections/Global/RichTextRender";
-import { getStandardPagesContent } from "@/lib/hygraph";
-import { RichText } from "@graphcms/rich-text-react-renderer";
-import Link from "next/link";
-import React from "react";
+import { fetchInvestmentOpportunity } from "@/app/data/p/Standard";
+// import RichTextRender from "@/app/Sections/Global/RichTextRender";
 
-const Page = async () => {
-  const standardPages = await getStandardPagesContent();
-  // console.log("Standard Pages Content: ", standardPages);
-  if (
-    !standardPages ||
-    !standardPages.refundPolicy ||
-    !standardPages.refundPolicy.html
-  ) {
-    return <p>No content found</p>;
+export default async function InvestmentOpportunity() {
+  const content = await fetchInvestmentOpportunity();
+
+  if (!content) {
+    return <p>No data available</p>;
   }
+
+  // Destructure fields from the fetched content
+  const { Title, Body, Pagecontent, Lastupdated } = content;
   return (
     <>
       <section className="w-full bg-[#EAEAF5] flex flex-col gap-0 justify-center items-center">
@@ -21,42 +17,52 @@ const Page = async () => {
           <div className="claracontainer w-full flex flex-col overflow-hidden gap-4">
             <div className="w-full text-center">
               <span className="text-red claraheading uppercase">
-                {" "}
-                Investment
+                {Title.length > 2
+                  ? Title.split(" ").slice(0, 1).join(" ")
+                  : Title}
               </span>{" "}
               <span className="text-[#3f3a64] claraheading uppercase">
                 {" "}
-                Opportunities
+                {Title.length > 2
+                  ? Title.split(" ").slice(1, 2).join(" ")
+                  : Title}
               </span>
             </div>
-            <span className="text-[#3f3a64] text-base font-normal font-fredoka leading-tight">
-              Welcome to{" "}
-              <span className="font-semibold">
-                Kindi&apos;s Investor Relations
-              </span>{" "}
-              page. Here at Kindi, we believe in the transformative power of
-              early childhood development and education, and we are dedicated to
-              creating meaningful opportunities for investors who share our
-              vision of building a brighter future for young minds.
-            </span>
-          </div>
-          {/* The Divider */}
-          <div className="h-[1.5px] bg-[black] rounded-full my-4" />
-          <div className="items-center w-full justify-center flex flex-col gap-4">
-            {standardPages?.termsConditions?.html ? (
-              <div className="w-full text-[20px] text-gray-700 font-medium font-fredoka leading-[24px]">
-                <RichTextRender
-                  content={standardPages?.termsConditions?.json}
-                />
+            {Body ? (
+              <div className="flex flex-col w-full justify-start items-start heading animate-fade-in">
+                <span className="text-[#3f3a64] text-base font-normal font-fredoka leading-tight">
+                  {Body}
+                </span>
               </div>
             ) : (
-              <p>No content found</p>
+              <div className="flex flex-col w-full justify-start items-start heading animate-fade-in">
+                <span className="text-[#3f3a64] claraheading capitalize">
+                  No Body Content Available
+                </span>
+              </div>
             )}
           </div>
+          {Lastupdated ? (
+            <div className="text-purple clarabodyTwo animate-fade-in">
+              Last updated: {new Date(Lastupdated).toLocaleDateString()}
+            </div>
+          ) : null}
+          <div className="h-[1.5px] bg-[black] rounded-full my-4" />
+
+          {Pagecontent ? (
+            <span
+              className="w-full text-[20px] text-gray-700 font-medium font-fredoka leading-[24px]"
+              dangerouslySetInnerHTML={{
+                __html: Pagecontent, // Render markdown or rich text content
+              }}
+            />
+          ) : (
+            <div className="text-[#3f3a64] text-base font-normal font-fredoka leading-tight">
+              No Additional Content Available
+            </div>
+          )}
         </div>
       </section>
     </>
   );
-};
-
-export default Page;
+}
