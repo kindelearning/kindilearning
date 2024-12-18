@@ -40,7 +40,7 @@ export default function PricingTabs() {
   useEffect(() => {
     const loadPricingData = async () => {
       const fetchedData = await fetchPricingDataFeatures();
-      console.log("Fetched Data:", fetchedData); // Log data here
+    //   console.log("Fetched Data:", fetchedData); // Log data here
 
       if (fetchedData) {
         setPricingDataFeature(fetchedData);
@@ -57,7 +57,7 @@ export default function PricingTabs() {
   useEffect(() => {
     const loadPricingDataTwo = async () => {
       const fetchedDataTwo = await fetchMonthlyPricingDataFeatures();
-      console.log("Fetched Data:", fetchedDataTwo); // Log data here
+    //   console.log("Fetched Data:", fetchedDataTwo); // Log data here
 
       if (fetchedDataTwo) {
         setMonthlyPricingDataFeature(fetchedDataTwo);

@@ -1,11 +1,10 @@
-
 import { fetchChildDevelopmentUnlock } from "@/app/data/p/Home";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
 export default async function PromotionalSection() {
   const content = await fetchChildDevelopmentUnlock();
-
+  console.log(content);
   if (!content) {
     return <p>No data available</p>;
   }
@@ -25,23 +24,16 @@ export default async function PromotionalSection() {
 
               <div className="flex flex-col w-full justify-start items-start heading /* gap-4 md:gap-6 lg:gap-7 xl:gap-8 */ animate-fade-in">
                 <span className="text-white claraheading capitalize animate-fade-in">
-                  {content.title || "No Title Available"}
+                  {content.Title || "No Title Available"}
                 </span>
-                {content.BodyDescription?.map((desc, index) => (
-                  <span
-                    className="w-full h-auto  text-white clarabodyTwo animate-fade-in"
-                    key={index}
-                  >
-                    {desc.children[0]?.text || "No body description available"}
-                  </span>
-                ))}
-               
+                <span className="w-full h-auto  text-white clarabodyTwo animate-fade-in">
+                  {content.Body || "No Title Available"}
+                </span>
               </div>
             </div>
             <div className="w-auto hover:pl-[4px] duration-200 h-auto animate-fade-in">
               <Button className="bg-[#ffffff] hover:bg-red hover:text-white text-[#029871] clarabutton">
                 Get Started
-                {/* {session ? "Upgrade" : "Get Started"} */}
               </Button>
             </div>
           </div>
