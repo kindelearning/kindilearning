@@ -8,7 +8,7 @@ export async function fetchInvestmentOpportunity() {
     }
 
     const data = await response.json();
-    console.log("Fetched Data:", data); // Debug: Log the response
+    // console.log("Fetched Data:", data); // Debug: Log the response
 
     if (!data || !data.data || !data.data.Content) {
       throw new Error("No content available in the API response");

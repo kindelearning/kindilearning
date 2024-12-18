@@ -3,27 +3,6 @@ import { fetchOurMission } from "@/app/data/p/OurMission";
 import { Button } from "@/components/ui/button";
 
 export default async function OurStory() {
-  // const { data: session, status } = useSession();
-
-  // const standardPages = await getStandardPagesContent();
-  // // console.log("Standard Pages Content: ", standardPages);
-
-  // if (
-  //   !standardPages ||
-  //   !standardPages.featuredVideo ||
-  //   standardPages.featuredVideo.length === 0
-  // ) {
-  //   return <NotFound />;
-  // }
-
-  // const stories = await getStoryData();
-  // // console.log("Story Page Data (in component):", stories);
-  // if (!stories || !stories[0]?.ourStory) {
-  //   console.error("Error: Stories data is missing or incomplete.");
-  //   return <NotFound />;
-  // }
-  // const videoUrl = standardPages.featuredVideo[0].url;
-
   const data = await fetchOurMission();
 
   if (!data) {
@@ -66,7 +45,6 @@ export default async function OurStory() {
                     {data.OurStory.Title.split(" ").slice(1, 2).join(" ")}
                   </span>
                 </div>
-                {/* <div className="w-auto h-auto text-white animate-fadeIn animate-delay-150 font-montserrat"> */}
                 <div className="w-auto h-auto text-white clarabodyTwo animate-fadeIn animate-delay-150 ">
                   {data.OurStory.Body}
                 </div>

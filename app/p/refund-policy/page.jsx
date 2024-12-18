@@ -13,7 +13,7 @@ export default function RefundPolicy() {
   useEffect(() => {
     const getRefundPolicyData = async () => {
       const data = await fetchRefundPolicy();
-      console.log("Fetched Data:", data); // Log the data to check if it's set correctly
+      // console.log("Fetched Data:", data); // Log the data to check if it's set correctly
       setContent(data);
       setLoading(false);
     };
