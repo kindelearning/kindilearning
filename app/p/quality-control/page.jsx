@@ -2,7 +2,7 @@ import { fetchQualityControl } from "@/app/data/p/Standard";
 
 export default async function QualityControll() {
   const content = await fetchQualityControl();
-  console.log("Quality Controls Content:", content); // Debug: Log the content
+  // console.log("Quality Controls Content:", content); // Debug: Log the content
 
   if (!content) {
     return <p>No data available</p>;

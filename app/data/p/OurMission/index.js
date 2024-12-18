@@ -8,7 +8,7 @@ export async function fetchOurMission() {
     }
 
     const data = await response.json();
-    console.log("Our Mission Data:", data); // Log the full API response
+    // console.log("Our Mission Data:", data); // Log the full API response
 
     if (!data || !data.data) {
       console.error("No data found in the API response.");

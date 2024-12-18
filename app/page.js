@@ -11,9 +11,9 @@ import {
   PopularActivity,
   PromotionalSection,
   PromotionalSectionTwo,
-  Slider,
+  Slider, 
 } from "./Sections";
-
+ 
 export default async function Home() {
   return (
     <>

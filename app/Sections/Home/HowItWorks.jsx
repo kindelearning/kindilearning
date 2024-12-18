@@ -86,13 +86,15 @@ export default async function HowItWorks() {
                   </div>
                 </div>
                 <div className="w-full h-[460px] animate-fade-in md:max-w-[500px] flex items-end justify-end">
-                  {/* <Image
+                  {section.Media && section.Media.url ? (
+                    <img
+                      src={`http://localhost:1337${section.Media.url}`}
                       alt="Kindi"
                       width={100}
                       height={100}
-                      src={homeData[0]?.hiwOne?.url}
                       className="w-full h-full object-contain"
-                    /> */}
+                    />
+                  ) : null}
                 </div>
               </div>
             ))}
@@ -116,6 +118,15 @@ export default async function HowItWorks() {
                       src={homeData[0]?.hiwOne?.url}
                       className="w-full h-full object-contain"
                     /> */}
+                  {section.Media && section.Media.url ? (
+                    <img
+                      src={`http://localhost:1337${section.Media.url}`}
+                      alt="Kindi"
+                      width={100}
+                      height={100}
+                      className="w-full h-full object-contain"
+                    />
+                  ) : null}
                 </div>
                 <div className="min-h-[300px] animate-fade-in  flex flex-col md:flex-row w-full justify-start items-start gap-4">
                   <div className="text-white text-6xl md:text-[50px] p-0 animate-fade-in font-semibold font-fredoka uppercase leading-10">
@@ -213,6 +224,15 @@ export default async function HowItWorks() {
                   </div>
                 </div>
                 <div className="w-full h-[460px] animate-fade-in md:max-w-[500px] flex items-end justify-end">
+                  {section.Media && section.Media.url ? (
+                    <img
+                      src={`http://localhost:1337${section.Media.url}`}
+                     alt="Kindi"
+                      width={100}
+                      height={100}
+                      className="w-full h-full object-contain"
+                    />
+                  ) : null}
                   {/* <Image
                       alt="Kindi"
                       width={100}

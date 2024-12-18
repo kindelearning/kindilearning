@@ -27,28 +27,39 @@ export async function fetchHeroSection() {
     console.error("Error fetching Hero Section data:", error.message);
     return null;
   }
-}
+} 
 
 export async function fetchChildDevelopmentUnlock() {
   try {
     const res = await fetch(
-      `http://localhost:1337/api/childdevelopmentunlock?populate=*`
+      "http://localhost:1337/api/childdevelopmentunlock?populate=Content.Media",
+      { next: { revalidate: 60 } } // Optional revalidation for ISR
     );
 
     if (!res.ok) {
-      throw new Error(`Error: ${res.status} - ${res.statusText}`);
+      throw new Error(`HTTP error! status: ${res.status}`);
     }
 
     const data = await res.json();
-    console.log(data);
 
-    if (!data || !data.data || !data.data.Content) {
-      throw new Error("No data found for Child Development section");
+    if (!data?.data?.Content) {
+      throw new Error("No content found for Child Development Unlock.");
     }
 
-    return data.data.Content; // Extra
+    const content = data.data.Content;
+
+    const mediaUrl = content.Media?.[0]?.url
+      ? `http://localhost:1337${content.Media[0].url}`
+      : null;
+
+    return {
+      title: content.Title || "No Title",
+      body: content.Body || "No Body",
+      featuredText: content.featuredText || "No Featured Text",
+      media: mediaUrl || null,
+    };
   } catch (error) {
-    console.error("Error fetching Child Development data:", error.message);
+    console.error("Error fetching data:", error.message);
     return null;
   }
 }
@@ -56,7 +67,7 @@ export async function fetchChildDevelopmentUnlock() {
 export async function fetchEarlyLearningExpert() {
   try {
     const res = await fetch(
-      `http://localhost:1337/api/early-learning-expert?populate=*`
+      `http://localhost:1337/api/early-learning-expert?populate=Content.Media`
     );
 
     if (!res.ok) {
@@ -72,6 +83,12 @@ export async function fetchEarlyLearningExpert() {
     // Extracting content
     const content = data.data.Content;
 
+
+    const mediaUrl = content.Media?.[0]?.url
+    ? `http://localhost:1337${content.Media[0].url}`
+    : null;
+
+    
     return content; // Return the content data
   } catch (error) {
     console.error("Error fetching Early Learning Expert data:", error.message);
@@ -97,11 +114,11 @@ export async function fetchPopularLearning() {
     console.error("Error fetching Popular Learning:", error);
     return null;
   }
-}
+} 
 
 export async function fetchHowItWorksData() {
   try {
-    const res = await fetch(`http://localhost:1337/api/howitwork?populate=*`);
+    const res = await fetch(`http://localhost:1337/api/howitwork?populate=HIWSection.Media`);
     if (!res.ok) {
       throw new Error("Failed to fetch How It Works data");
     }

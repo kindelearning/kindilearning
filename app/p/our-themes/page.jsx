@@ -1,19 +1,15 @@
+import { fetchOurThemes } from "@/app/data/p/Dynamic/OurTheme";
 import { CategoryCard } from "@/app/Widgets";
-import { getThemes } from "@/lib/hygraph";
+import Image from "next/image";
 import Link from "next/link";
 
 export default async function Page() {
-  const themes = await getThemes();
-  const { launchTime } = themes;
-  const formattedLaunchTime = themes.launchTime
-    ? new Date(launchTime).toLocaleString()
-    : "No launch date available";
-
-  if (!themes || themes.length === 0) {
-    console.log("No themes found");
-    return <div>No blogs found!</div>;
+  const pageContent = await fetchOurThemes();
+  if (!pageContent) {
+    return <div>Error: No data available</div>;
   }
 
+  // const imageUrl = `http://localhost:1337/uploads/${Thumbnail.url}`;
   return (
     <>
       <section className="w-full h-auto bg-[#EAEAF5] items-center pb-32 justify-center flex flex-col gap-[20px]">
@@ -23,23 +19,23 @@ export default async function Page() {
               Upcoming Themes
             </div>
             <div className="grid gap-[12px] grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 w-full claracontainer">
-              {themes.map((theme) => (
-                <div key={theme.id}>
-                  <Link
-                    key={theme.id}
-                    target="_blank"
-                    href={`/p/our-themes/${theme.id}`}
-                  >
-                    <article className="rounded-lg">
-                      <CategoryCard
-                        schedulesDate={theme.launchTime}
-                        image={theme.thumbnail.url}
-                        description={theme.metaDesc.slice(0, 100)}
-                        header={theme.title}
-                      />
-                    </article>
-                  </Link>
-                </div>
+              {pageContent.map((item) => (
+                <Link
+                  key={item.id}
+                  target="_blank"
+                  href={`/p/our-themes/${item.id}`}
+                >
+                  <article className="rounded-lg">
+                    <CategoryCard
+                      schedulesDate={item.LaunchTime}
+                      image={`http://localhost:1337${item.Thumbnail.url}`}
+                      // image={item.Thumbnail.url}
+                      description={item.metaDesc.slice(0, 100)}
+                      header={item.Title}
+                      // mainContent={item.MainContent}
+                    />
+                  </article>
+                </Link>
               ))}
             </div>
           </div>

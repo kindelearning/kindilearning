@@ -1,5 +1,5 @@
 "use client";
-
+ 
 import {
   fetchMonthlyPricingDataFeatures,
   fetchPricingData,
@@ -7,7 +7,6 @@ import {
 } from "@/app/data/p/Home";
 import { useEffect, useState } from "react";
 import PricingCard from "./PricingCard";
-import { pricingDetailsFamily } from "@/app/constant/standard";
 
 export default function PricingTabs() {
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);

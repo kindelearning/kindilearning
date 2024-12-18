@@ -13,7 +13,7 @@ const CategoryCard = ({
     <div className="flex cursor-pointer flex-col justify-end relative">
       <div className="bg-white shadow-md rounded-lg">
         <div className="flex rounded-t-lg  overflow-clip">
-          <Image
+          <img
             width={400}
             height={300}
             src={image || ThemeDummy}

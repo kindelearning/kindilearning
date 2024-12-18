@@ -9,7 +9,7 @@ export async function fetchDynamicPageContent() {
     }
 
     const data = await response.json();
-    console.log("Dynamic Data:", data);
+    // console.log("Dynamic Data:", data);
 
     // Ensure data structure matches expectations
     if (!data || !data.data) {

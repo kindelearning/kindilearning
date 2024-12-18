@@ -11,7 +11,6 @@ export default async function MonthlyThemes() {
     return <p>No data available</p>;
   }
   const themes = await getThemes();
-  console.log("Home Page Data (in component):", themes);
   if (!themes || themes.length === 0) {
     return <NotFound />;
   }

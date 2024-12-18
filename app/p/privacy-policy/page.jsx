@@ -2,7 +2,7 @@ import { fetchPrivacyPolicy } from "@/app/data/p/Standard";
 
 export default async function PrivacyPolicy() {
   const content = await fetchPrivacyPolicy();
-  console.log("Privacy Policy Content:", content); // Debug: Log the content
+  // console.log("Privacy Policy Content:", content); // Debug: Log the content
 
   if (!content) {
     return <p>No data available</p>;

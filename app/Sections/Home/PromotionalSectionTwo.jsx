@@ -14,7 +14,7 @@ export default async function PromotionalSectionTwo() {
   const mediaUrl = Media?.url ? `http://localhost:1337${Media.url}` : null;
 
   // Log the media URL to check
-  console.log("Media URL:", mediaUrl);
+  // console.log("Media URL:", mediaUrl);
 
   return (
     <section className="w-full h-auto bg-[#eaeaf5] items-center justify-center py-4 flex flex-col md:flex-row gap-4 transition-all duration-300 animate-fade-in">
