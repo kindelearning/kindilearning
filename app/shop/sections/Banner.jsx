@@ -1,4 +1,12 @@
-export default function Banner() {
+import { fetchDynamicPageContent } from "@/app/data/p/Dynamic";
+
+export default async function Banner() {
+  const data = await fetchDynamicPageContent();
+  if (!data) {
+    return <div>Error loading page content</div>;
+  }
+
+  const { featuredText, Title, Body, Media } = data.Shop;
   return (
     <>
       <section className="w-full claracontainer h-full px-4 bg-[#EAEAF5] items-center justify-center py-2 flex flex-col md:flex-row gap-[20px]">
@@ -13,10 +21,10 @@ export default function Banner() {
         >
           <div className="flex flex-col items-start lg:max-w-[50%] justify-start py-4 lg:p-4 lg:pt-12 w-full">
             <div className=" text-white text-start text-[12px] leading-[16px] lg:text-4xl font-semibold font-fredoka">
-              Imagination & educationunite one toy at a time
+              {featuredText}
             </div>
             <div className="w-full font-fredoka text-[8px] leading-[10px] lg:text-2xl flex justify-start text-start text-white">
-              Unlock joy, learn through play today!
+              {Title}
             </div>
           </div>
           <div className="min-w-[40%] lg:min-w-[30%]">.</div>

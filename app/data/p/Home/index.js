@@ -164,6 +164,48 @@ export async function fetchPricingData() {
   try {
     const response = await fetch(
       "http://localhost:1337/api/ourpricing?populate=*"
+      // "http://localhost:1337/api/ourpricing?populate[AnnualPlans][populate]=Features&[MonthlyPlans][populate]=Features"
+    );
+
+    if (!response.ok) {
+      throw new Error(`Error fetching Pricing Data: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    if (!data || !data.data) {
+      throw new Error("No data found for Pricing section");
+    }
+    return data?.data || null;
+  } catch (error) {
+    console.error("Error fetching Pricing Data:", error);
+    return null;
+  }
+}
+export async function fetchPricingDataFeatures() {
+  try {
+    const response = await fetch(
+      "http://localhost:1337/api/ourpricing?populate[AnnualPlans][populate]=Features&[MonthlyPlans][populate]=Features"
+    );
+
+    if (!response.ok) {
+      throw new Error(`Error fetching Pricing Data: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    if (!data || !data.data) {
+      throw new Error("No data found for Pricing section");
+    }
+    return data?.data || null;
+  } catch (error) {
+    console.error("Error fetching Pricing Data:", error);
+    return null;
+  }
+}
+
+export async function fetchMonthlyPricingDataFeatures() {
+  try {
+    const response = await fetch(
+      "http://localhost:1337/api/ourpricing?populate[MonthlyPlans][populate]=Features"
     );
 
     if (!response.ok) {
