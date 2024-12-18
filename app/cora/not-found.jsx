@@ -12,7 +12,7 @@ export default function NotFound() {
             <div className="flex flex-col w-full justify-start items-start gap-4">
               <div className="w-full">
                 <span className="text-[#3f3a64] text-4xl font-normal font-fredoka leading-[45px]">
-                  404 Error!
+                  404 Error! Cora not found
                   <br />
                 </span>
                 <span className="text-red text-4xl font-normal font-fredoka leading-[45px]">

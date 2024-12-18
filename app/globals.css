@@ -29,6 +29,14 @@
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
   .dark {
@@ -56,6 +64,14 @@
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
   }
 }
 
@@ -99,7 +115,7 @@
   .claracontainer {
     width: 100%;
   }
-  
+
   .milestone-dot {
     width: 16px;
     height: 16px;
@@ -207,28 +223,30 @@
   .slider {
     transition: background-color 0.3s, box-shadow 0.3s;
   }
-  
+
   .slider.touched {
     background-color: rgba(0, 0, 0, 0.1); /* Light gray overlay */
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.3); /* Slight shadow effect */
   }
-  
+
   .slide {
     transition: transform 0.3s ease;
   }
-  
+
   .slider.touched .slide {
     transform: scale(0.98); /* Slightly shrink slides */
   }
-  body, .draggable {
+  body,
+  .draggable {
     user-select: none;
   }
-  
+
   /* Re-enable text selection once dragging is done */
-  body.draggable-active, .draggable-active {
+  body.draggable-active,
+  .draggable-active {
     user-select: text;
   }
-  
+
   @media (min-width: 640px) {
     .claracontainer {
       max-width: 640px;
@@ -254,7 +272,6 @@
       max-width: 1536px;
     }
   }
-
 
   .claraShadow:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1);
@@ -362,5 +379,14 @@
   }
   .rbc-day-bg {
     @apply border-2 border-white;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
   }
 }
