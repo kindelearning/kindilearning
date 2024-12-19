@@ -32,7 +32,7 @@ export default function EditRefund() {
     const fetchContent = async () => {
       try {
         const response = await fetch(
-          "http://localhost:1337/api/privacypolicy?populate=*"
+          "http://localhost:1337/api/qualitycontrol?populate=*"
         );
         const data = await response.json();
 
@@ -61,7 +61,7 @@ export default function EditRefund() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await fetch("http://localhost:1337/api/privacypolicy", {
+    const response = await fetch("http://localhost:1337/api/qualitycontrol", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -107,7 +107,7 @@ export default function EditRefund() {
     <div className="container mx-auto px-8 py-12 font-poppins">
       <div className="mb-8">
         <h1 className="text-3xl font-semibold text-gray-800">
-          Edit Your Refund Policy Page
+          Edit Your Quality Control Page
         </h1>
         <p className="text-lg text-gray-600 mt-2">
           Make necessary changes and save.

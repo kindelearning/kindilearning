@@ -32,7 +32,7 @@ export default function EditRefund() {
     const fetchContent = async () => {
       try {
         const response = await fetch(
-          "http://localhost:1337/api/privacypolicy?populate=*"
+          "http://localhost:1337/api/investmentoppertunite?populate=*"
         );
         const data = await response.json();
 
@@ -61,7 +61,7 @@ export default function EditRefund() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await fetch("http://localhost:1337/api/privacypolicy", {
+    const response = await fetch("http://localhost:1337/api/investmentoppertunite", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

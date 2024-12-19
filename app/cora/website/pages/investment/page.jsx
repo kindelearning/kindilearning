@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import LocalHeader from "../../test/Topbar";
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 export default function ReadContent() {
   const [content, setContent] = useState(null);
@@ -13,7 +15,7 @@ export default function ReadContent() {
     const fetchContent = async () => {
       try {
         const response = await fetch(
-          "http://localhost:1337/api/privacypolicy?populate=*"
+          "http://localhost:1337/api/investmentoppertunite?populate=*"
         );
         const data = await response.json();
 
@@ -51,7 +53,7 @@ export default function ReadContent() {
         <div className="flex justify-end">
           <Link
             className="border-gray-300 text-gray-700 hover:bg-gray-200 focus:ring-2 focus:ring-gray-500 rounded-lg px-6 py-2"
-            href="/cora/website/pages/privacypolicy/update"
+            href="/cora/website/pages/investment/update"
           >
             Edit
           </Link>
@@ -79,7 +81,9 @@ export default function ReadContent() {
 
           {/* Page Content Section */}
           <div className="mb-6">
-            <h2 className="text-xl font-medium text-gray-600">Page Content:</h2>
+            <h2 className="text-xl font-medium text-gray-600">
+              Page Content:
+            </h2>
             <div
               className="text-lg text-gray-600 leading-relaxed mb-6"
               dangerouslySetInnerHTML={{ __html: content.Pagecontent }}

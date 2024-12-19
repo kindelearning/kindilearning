@@ -18,7 +18,9 @@ export const SidebarLink = ({ href, icon, label, isCollapsed }) => {
     <Link href={href}>
       <div className="flex items-center space-x-4 py-2 px-4 hover:bg-gray-700 rounded-lg">
         <div className="text-xl">{icon}</div>
-        {!isCollapsed && <span className="text-white font-fredoka">{label}</span>}
+        {!isCollapsed && (
+          <span className="text-white font-fredoka">{label}</span>
+        )}
       </div>
     </Link>
   );
@@ -83,13 +85,25 @@ export default function Sidebar() {
         <SidebarLink
           href="/cora/website/pages/refund"
           icon={<FileText />}
-          label="refund"
+          label="Refund Policy"
           isCollapsed={isCollapsed}
         />
         <SidebarLink
           href="/cora/website/pages/privacypolicy"
           icon={<FileText />}
-          label="privacy policy"
+          label="Privacy Policy"
+          isCollapsed={isCollapsed}
+        />
+        <SidebarLink
+          href="/cora/website/pages/quality"
+          icon={<FileText />}
+          label="Quality Control"
+          isCollapsed={isCollapsed}
+        />
+        <SidebarLink
+          href="/cora/website/pages/investment"
+          icon={<FileText />}
+          label="Investment"
           isCollapsed={isCollapsed}
         />
         <SidebarLink
