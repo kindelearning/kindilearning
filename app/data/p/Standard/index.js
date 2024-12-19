@@ -29,7 +29,7 @@ export async function fetchTnc() {
     }
 
     const data = await response.json();
-    console.log("Privacy Policy Data:", data); // Debug: Log the response
+    // console.log("Privacy Policy Data:", data); // Debug: Log the response
 
     if (!data || !data.data || !data.data.Content) {
       throw new Error("No content available in the API response");
@@ -96,7 +96,7 @@ export async function fetchPrivacyPolicy() {
     }
 
     const data = await response.json();
-    console.log("Privacy Policy Data:", data); // Debug: Log the response
+    // console.log("Privacy Policy Data:", data); // Debug: Log the response
 
     if (!data || !data.data || !data.data.Content) {
       throw new Error("No content available in the API response");

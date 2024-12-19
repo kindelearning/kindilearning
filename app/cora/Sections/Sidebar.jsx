@@ -33,7 +33,7 @@ export default function Sidebar() {
 
   return (
     <div
-      className={`transition-all duration-300 bg-gray-900 text-white h-full ${
+      className={`transition-all duration-300 bg-gray-900 text-white h-full  ${
         isCollapsed ? "w-16" : "w-64"
       }`}
     >

@@ -46,7 +46,7 @@ export default async function TermsAndCondition() {
             </div>
           ) : null}
           <div className="h-[1.5px] bg-[black] rounded-full my-4" />
-          {Pagecontent ? (
+          {/* {Pagecontent ? (
             <span
               className="w-full text-[20px] text-gray-700 font-medium font-fredoka leading-[24px]"
               dangerouslySetInnerHTML={{
@@ -57,7 +57,8 @@ export default async function TermsAndCondition() {
             <div className="text-[#3f3a64] text-base font-normal font-fredoka leading-tight">
               No Additional Content Available
             </div>
-          )}
+          )} */}
+          {Pagecontent}
         </div>
       </section>
     </>

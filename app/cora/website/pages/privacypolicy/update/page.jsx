@@ -15,7 +15,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-export default function EditTnc() {
+export default function EditRefund() {
   const [content, setContent] = useState({
     Title: "",
     Body: "",
@@ -32,7 +32,7 @@ export default function EditTnc() {
     const fetchContent = async () => {
       try {
         const response = await fetch(
-          "http://localhost:1337/api/tnc?populate=*"
+          "http://localhost:1337/api/refundpolicy?populate=*"
         );
         const data = await response.json();
 
@@ -61,7 +61,7 @@ export default function EditTnc() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await fetch("http://localhost:1337/api/tnc", {
+    const response = await fetch("http://localhost:1337/api/refundpolicy", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -134,6 +134,23 @@ export default function EditTnc() {
               className="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
+          {/* Body field */}
+          <div>
+            <label
+              htmlFor="Body"
+              className="block text-lg font-medium text-gray-700"
+            >
+              Body
+            </label>
+            <Textarea
+              id="Body"
+              name="Body"
+              value={content.Body || ""}
+              onChange={handleChange}
+              rows="6"
+              className="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            />
+          </div>
 
           {/* Pagecontent field */}
           <div>
@@ -186,7 +203,7 @@ export default function EditTnc() {
       {/* ShadCN Dialog */}
       <Dialog open={openDialog} onOpenChange={setOpenDialog}>
         <DialogContent className="font-fredoka">
-          <DialogHeader >
+          <DialogHeader>
             <DialogTitle className="text-[24px] font-medium">
               {dialogType === "success" ? "Success" : "Error"}
             </DialogTitle>
@@ -214,7 +231,7 @@ export default function EditTnc() {
 //     const fetchContent = async () => {
 //       try {
 //         const response = await fetch(
-//           "http://localhost:1337/api/tnc?populate=*"
+//           "http://localhost:1337/api/refundpolicy?populate=*"
 //         );
 //         const data = await response.json();
 
@@ -243,7 +260,7 @@ export default function EditTnc() {
 //   const handleSubmit = async (e) => {
 //     e.preventDefault();
 
-//     const response = await fetch("http://localhost:1337/api/tnc", {
+//     const response = await fetch("http://localhost:1337/api/refundpolicy", {
 //       method: "PUT",
 //       headers: {
 //         "Content-Type": "application/json",
@@ -312,23 +329,23 @@ export default function EditTnc() {
 //             />
 //           </div>
 
-//           {/* Body field */}
-//           {/* <div>
-//             <label
-//               htmlFor="Body"
-//               className="block text-lg font-medium text-gray-700"
-//             >
-//               Body
-//             </label>
-//             <Textarea
-//               id="Body"
-//               name="Body"
-//               value={content.Body || ""}
-//               onChange={handleChange}
-//               rows="6"
-//               className="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-//             />
-//           </div> */}
+// {/* Body field */}
+// {/* <div>
+//   <label
+//     htmlFor="Body"
+//     className="block text-lg font-medium text-gray-700"
+//   >
+//     Body
+//   </label>
+//   <Textarea
+//     id="Body"
+//     name="Body"
+//     value={content.Body || ""}
+//     onChange={handleChange}
+//     rows="6"
+//     className="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+//   />
+// </div> */}
 
 //           {/* Pagecontent field */}
 //           <div>

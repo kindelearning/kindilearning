@@ -17,7 +17,7 @@ export default function RootLayout({ children }) {
         <div className="flex w-full h-full ">
           {/* Sidebar */}
           <div
-            className={`transition-all duration-300 ${
+            className={`transition-all  duration-300 ${
               isSidebarCollapsed ? "max-w-16" : "max-w-64"
             } min-h-screen overflow-y-hidden w-fit bg-white z-10 shadow-md`}
           >
