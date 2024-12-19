@@ -1,20 +1,43 @@
+"use client";
+
+import { useState } from "react";
 import "../../globals.css";
 import { Header, Sidebar } from "../Sections";
 
 export default function RootLayout({ children }) {
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+
+  const toggleSidebarCollapse = () => {
+    setIsSidebarCollapsed(!isSidebarCollapsed);
+  };
+
   return (
-    <>
-      <html lang="en" >
-        <section className="w-full h-full bg-[#EAEAF5] items-center pb-32 justify-center flex flex-col gap-[20px]">
-          <div className="flex w-full flex-row claracontainer">
-            <Sidebar />
-            <body className="w-full">
-              <Header />
-              {children}
-            </body>
+    <html lang="en">
+      <body className="w-full h-full bg-[#EAEAF5]">
+        <div className="flex w-full h-full ">
+          {/* Sidebar */}
+          <div
+            className={`transition-all duration-300 ${
+              isSidebarCollapsed ? "max-w-16" : "max-w-64"
+            } min-h-screen overflow-y-hidden w-fit bg-white z-10 shadow-md`}
+          >
+            <Sidebar
+              isCollapsed={isSidebarCollapsed}
+              toggleCollapse={toggleSidebarCollapse}
+            />
           </div>
-        </section>
-      </html>
-    </>
+
+          {/* Main Content */}
+          <div
+            className={`flex-1 flex w-full flex-col overflow-y-scroll transition-all duration-300 ${
+              isSidebarCollapsed ? "ml-1" : "ml-1"
+            }`}
+          >
+            <Header />
+            <main className="">{children}</main>
+          </div>
+        </div>
+      </body>
+    </html>
   );
 }

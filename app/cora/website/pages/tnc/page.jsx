@@ -1,174 +1,77 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import LocalHeader from "../../test/Topbar";
+import Link from "next/link";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
-// Define the form data types
-const initialFormState = {
-  title: "",
-  body: "",
-  pageContent: "",
-};
-
-export default function TncForm({ tncId }) {
-  const [formData, setFormData] = useState(initialFormState);
+export default function ReadContent() {
+  const [content, setContent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const router = useRouter();
 
-  // Fetch Tnc data to pre-fill form (for updating)
   useEffect(() => {
-    if (tncId) {
-      const fetchData = async () => {
-        try {
-          const response = await fetch(`/api/tncs/${tncId}`);
-          const data = await response.json();
-          if (data) {
-            setFormData({
-              title: data.data.attributes.Title || "",
-              body: data.data.attributes.Body || "",
-              pageContent: data.data.attributes.Pagecontent || "",
-            });
-          }
-        } catch (error) {
-          setError("Failed to fetch Tnc data");
-        } finally {
-          setLoading(false);
+    const fetchContent = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:1337/api/tnc?populate=*"
+        );
+        const data = await response.json();
+
+        if (response.ok) {
+          setContent(data.data.Content); // Extracting the nested content data
+        } else {
+          setError("Failed to fetch content");
         }
-      };
-      fetchData();
-    } else {
-      setLoading(false); // No Tnc ID, so it's a new entry
-    }
-  }, [tncId]);
-
-  // Handle form input changes
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  // Handle form submission for POST or PUT
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-
-    const requestData = {
-      data: {
-        Title: formData.title,
-        Body: formData.body,
-        Pagecontent: formData.pageContent,
-      },
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    try {
-      let response;
-      if (tncId) {
-        // Update existing Tnc (PUT request)
-        response = await fetch(`/api/tncs/${tncId}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(requestData),
-        });
-      } else {
-        // Create new Tnc (POST request)
-        response = await fetch("/api/tncs", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(requestData),
-        });
-      }
+    fetchContent();
+  }, []);
 
-      const data = await response.json();
-      if (data.error) {
-        setError(data.error);
-      } else {
-        router.push("/admin/tncs"); // Redirect to the Tnc list page after successful submission
-      }
-    } catch (error) {
-      setError("Error submitting the form");
-    } finally {
-      setLoading(false);
-    }
-  };
+  if (loading) {
+    return <div className="text-center">Loading...</div>;
+  }
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>{error}</p>;
+  if (error) {
+    return <div className="text-center text-red-500">{error}</div>;
+  }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="space-y-6 p-6 bg-white shadow-md rounded-lg"
-    >
-      <div className="mb-4">
-        <label
-          htmlFor="title"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Title
-        </label>
-        <input
-          type="text"
-          id="title"
-          name="title"
-          value={formData.title}
-          onChange={handleChange}
-          className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md"
-          required
-        />
+    <div className="container font-fredoka mx-auto px-8 py-12 font-poppins">
+      {/* Header Section */}
+      <div className="flex justify-between items-center mb-10">
+        <div>
+          <h2 className="text-xl font-medium text-gray-600">Last Updated:</h2>
+          <p className="text-lg text-gray-500">{content.Lastupdated}</p>
+        </div>
+        <div className="flex justify-end">
+          <Link
+         
+            className="border-gray-300 text-gray-700 hover:bg-gray-200 focus:ring-2 focus:ring-gray-500 rounded-lg px-6 py-2"
+            href="/cora/website/pages/tnc/update"
+          >
+            Edit
+          </Link>
+        </div>
       </div>
 
-      <div className="mb-4">
-        <label
-          htmlFor="body"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Body
-        </label>
-        <input
-          type="text"
-          id="body"
-          name="body"
-          value={formData.body}
-          onChange={handleChange}
-          className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md"
-          required
-        />
+      {/* Main Content */}
+      <div className="space-y-8">
+        <Card className="p-8 bg-gray-50 shadow-xl rounded-lg hover:shadow-2xl transition duration-300 ease-in-out">
+          <h1 className="text-4xl font-semibold text-gray-800 mb-6">
+            {content.Title}
+          </h1>
+          <p className="text-lg text-gray-600 leading-relaxed mb-6">
+            {content.Pagecontent}
+          </p>
+        </Card>
       </div>
-
-      <div className="mb-4">
-        <label
-          htmlFor="pageContent"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Page Content
-        </label>
-        <textarea
-          id="pageContent"
-          name="pageContent"
-          value={formData.pageContent}
-          onChange={handleChange}
-          rows="4"
-          className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md"
-          required
-        ></textarea>
-      </div>
-
-      <div className="flex justify-end">
-        <button
-          type="submit"
-          className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-          disabled={loading}
-        >
-          {tncId ? "Update" : "Create"} Tnc
-        </button>
-      </div>
-    </form>
+    </div>
   );
 }

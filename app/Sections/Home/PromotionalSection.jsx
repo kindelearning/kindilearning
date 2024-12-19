@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export default async function PromotionalSection() {
   const content = await fetchChildDevelopmentUnlock();
-  console.log("Content:", content);
+  // console.log("Content:", content);
   console.log(content);
   if (!content) {
     return <p>No data available</p>;

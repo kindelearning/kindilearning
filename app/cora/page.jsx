@@ -26,14 +26,14 @@ export default function Cora() {
           <div className="text-1xl font-fredoka text-center font-medium text-gray-900">
             Choose Admin Panel
           </div>
-          <div className="flex flex-col font-fredoka gap-6">
+          <div className="flex flex-col px-4 lg:px-0 md:flex-row font-fredoka gap-6">
             {cardData.map((card) => (
               <Link
                 target="_blank"
                 key={card.id}
                 href={card.link}
                 passHref
-                className="w-full flex justify-between p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-all cursor-pointer"
+                className="w-full flex flex-col justify-between p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-all cursor-pointer"
               >
                 <div className="flex items-center space-x-4">
                   <span className="text-4xl">{card.icon}</span>
