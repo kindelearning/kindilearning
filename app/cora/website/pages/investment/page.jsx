@@ -1,10 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import LocalHeader from "../../test/Topbar";
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 
 export default function ReadContent() {
   const [content, setContent] = useState(null);
@@ -81,9 +79,7 @@ export default function ReadContent() {
 
           {/* Page Content Section */}
           <div className="mb-6">
-            <h2 className="text-xl font-medium text-gray-600">
-              Page Content:
-            </h2>
+            <h2 className="text-xl font-medium text-gray-600">Page Content:</h2>
             <div
               className="text-lg text-gray-600 leading-relaxed mb-6"
               dangerouslySetInnerHTML={{ __html: content.Pagecontent }}

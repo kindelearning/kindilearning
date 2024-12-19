@@ -113,6 +113,12 @@ export default function Sidebar() {
           isCollapsed={isCollapsed}
         />
         <SidebarLink
+          href="/cora/website/faq"
+          icon={<AppWindow />}
+          label="FAQs"
+          isCollapsed={isCollapsed}
+        />
+        <SidebarLink
           href="/cora/website/themes"
           icon={<AppWindow />}
           label="Themes"
