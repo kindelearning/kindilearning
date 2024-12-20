@@ -11,7 +11,7 @@ async function fetchThemeById(documentId) {
 
   return data.data;
 }
-
+ 
 export default async function ThemePage({ params }) {
   const { id } = params;
   const themeData = await fetchThemeById(id);

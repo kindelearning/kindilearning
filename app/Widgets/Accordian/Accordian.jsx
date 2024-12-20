@@ -47,7 +47,8 @@ const Accordian = ({ title, description }) => {
       {isOpen && (
         <div className="pb-4">
           <div className="w-full text-[#757575] text-[20px] font-medium font-fredoka leading-[24px]">
-            <RichTextRender content={description} />
+            {/* <RichTextRender content={description} /> */}
+            {description}
           </div>
           {/* <p className="text-base font-medium text-[#0A1932]">{description}</p> */}
         </div>

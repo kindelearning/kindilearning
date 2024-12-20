@@ -7,7 +7,7 @@ export default async function Page() {
   const pageContent = await fetchOurThemes();
   if (!pageContent) {
     return <div>Error: No data available</div>;
-  }
+  } 
 
   return (
     <>

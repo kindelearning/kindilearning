@@ -5,7 +5,7 @@ export async function fetchOurThemes() {
       if (!response.ok) {
         throw new Error(`Error fetching data: ${response.statusText}`);
       }
-  
+   
       const data = await response.json();
   
       // Ensure data structure matches expectations
