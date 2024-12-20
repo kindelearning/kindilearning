@@ -2,51 +2,42 @@
 import { useState, useEffect } from "react";
 import LocalHeader from "../Topbar";
 
-export default function DeleteContent({ contentId, onDelete }) {
-  const [loading, setLoading] = useState(false);
+const DeleteContent = ({ documentId, onDelete }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
 
   const handleDelete = async () => {
-    setLoading(true);
+    setIsLoading(true);
     setError(null);
-    setSuccess(null);
 
     try {
-      const response = await fetch(
-        `http://localhost:1337/api/contents/${contentId}`,
-        {
-          method: "DELETE",
-        }
-      );
+      const response = await fetch(`http://localhost:1337/api/contents/${documentId}`, {
+        method: 'DELETE',
+      });
 
+      // Check if the response was successful
       if (response.ok) {
-        setSuccess("Content deleted successfully!");
-        onDelete(contentId); // Callback to remove content from UI
+        onDelete(documentId); // Notify the parent to remove the item from the list
       } else {
-        setError("Failed to delete content");
+        const errorData = await response.json();
+        setError(errorData.message || "Failed to delete content");
       }
     } catch (err) {
-      setError(err.message);
+      setError(err.message || "Error occurred while deleting");
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
   return (
-    <div>
-            {/* <LocalHeader /> */}
-      
-      <button
-        onClick={handleDelete}
-        disabled={loading}
-        style={{ backgroundColor: "red", color: "white" }}
-      >
-        {loading ? "Deleting..." : "Delete"}
-      </button>
-
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      {success && <p style={{ color: "green" }}>{success}</p>}
-    </div>
+    <button
+      onClick={handleDelete}
+      disabled={isLoading}
+      className="text-red-600 hover:text-red-700 font-medium"
+    >
+      {isLoading ? "Deleting..." : "Delete"}
+    </button>
   );
-}
+};
+
+export default DeleteContent;

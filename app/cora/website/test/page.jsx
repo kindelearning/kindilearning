@@ -35,8 +35,14 @@ export default function ContentList() {
     fetchContent();
   }, []);
 
-  const handleDelete = (id) => {
-    setContent((prevContent) => prevContent.filter((item) => item.id !== id));
+  const handleDelete = (documentId) => {
+    // Log the documentId being deleted
+    console.log("Deleting documentId:", documentId);
+
+    // Remove the deleted item from the UI
+    setContent((prevContent) =>
+      prevContent.filter((item) => item.documentId !== documentId)
+    );
   };
 
   const handleUpdateClick = (item) => {
@@ -52,7 +58,7 @@ export default function ContentList() {
 
     try {
       const response = await fetch(
-        `http://localhost:1337/api/contents/${selectedContent.id}`,
+        `http://localhost:1337/api/contents/${selectedContent.documentId}`,
         {
           method: "PUT",
           headers: {
@@ -69,16 +75,17 @@ export default function ContentList() {
       );
 
       const data = await response.json();
-      console.log("Response data:", data); // Log the full response
+      console.log("Response data:", data);
 
       if (response.ok) {
-        // Update the content list with the updated data
         setContent((prevContent) =>
           prevContent.map((item) =>
-            item.id === selectedContent.id ? { ...item, ...data.data } : item
+            item.documentId === selectedContent.documentId
+              ? { ...item, ...data.data }
+              : item
           )
         );
-        setIsDialogOpen(false); // Close the dialog after successful update
+        setIsDialogOpen(false);
         setSuccess("Content updated successfully!");
       } else {
         setError(`Failed to update content: ${data.message}`);
@@ -116,7 +123,7 @@ export default function ContentList() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl">
           {content.map((item) => (
             <div
-              key={item.id}
+              key={item.documentId}
               className="border rounded-xl shadow-lg hover:shadow-xl transition-shadow p-6 flex flex-col space-y-4 bg-white"
             >
               <h2 className="text-2xl font-bold text-gray-700">{item.Title}</h2>
@@ -131,7 +138,10 @@ export default function ContentList() {
                 >
                   Update
                 </button>
-                <DeleteContent contentId={item.id} onDelete={handleDelete} />
+                <DeleteContent
+                  documentId={item.documentId}
+                  onDelete={handleDelete}
+                />
               </div>
             </div>
           ))}
