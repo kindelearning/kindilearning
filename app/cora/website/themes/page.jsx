@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -19,6 +20,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function AdminThemes() {
@@ -112,22 +114,34 @@ export default function AdminThemes() {
     <>
       <section className="p-8 font-fredoka bg-gray-100">
         <div className="container mx-auto">
-          <div className="flex items-center mb-4">
-            <label htmlFor="rows-per-page" className="mr-2 text-xl font-medium">
-              Rows per page:
-            </label>
-            <select
-              id="rows-per-page"
-              value={rowsPerPage}
-              onChange={(e) => setRowsPerPage(parseInt(e.target.value))}
-              className="p-2 border rounded-md"
+          <div className="flex w-full justify-between items-center">
+            <div className="flex items-center mb-4">
+              <label
+                htmlFor="rows-per-page"
+                className="mr-2 text-xl font-medium"
+              >
+                Rows per page:
+              </label>
+              <select
+                id="rows-per-page"
+                value={rowsPerPage}
+                onChange={(e) => setRowsPerPage(parseInt(e.target.value))}
+                className="p-2 border rounded-md"
+              >
+                {[5, 10, 15, 20].map((size) => (
+                  <option key={size} value={size}>
+                    {size}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <Link
+              target="_blank"
+              className="text-purple hover:scale-105 duration-150"
+              href="/cora/website/themes/create"
             >
-              {[5, 10, 15, 20].map((size) => (
-                <option key={size} value={size}>
-                  {size}
-                </option>
-              ))}
-            </select>
+              Create New Theme
+            </Link>
           </div>
 
           <Input
@@ -152,6 +166,7 @@ export default function AdminThemes() {
                   Launch Time {sortDirection === "asc" ? "↑" : "↓"}
                 </TableHead>
                 <TableHead>Actions</TableHead>
+                <TableHead>Created At</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -172,7 +187,6 @@ export default function AdminThemes() {
                   <TableCell>
                     {new Date(theme.LaunchTime).toLocaleString()}
                   </TableCell>
-
                   <TableCell>
                     <Dialog>
                       <DialogTrigger>
@@ -264,11 +278,21 @@ export default function AdminThemes() {
 
                           {/* Dialog Close Button */}
                         </DialogDescription>
-                        <Button variant="secondary" onClick={handleCloseDialog}>
-                          Close
-                        </Button>
+                        <DialogFooter className="sm:justify-start">
+                          <DialogClose asChild>
+                            <Button
+                              variant="secondary"
+                              onClick={handleCloseDialog}
+                            >
+                              Close
+                            </Button>
+                          </DialogClose>
+                        </DialogFooter>
                       </DialogContent>
                     </Dialog>
+                  </TableCell>
+                  <TableCell>
+                    {new Date(theme.createdAt).toLocaleString()}
                   </TableCell>
                 </TableRow>
               ))}
