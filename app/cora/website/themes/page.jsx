@@ -95,6 +95,7 @@ export default function AdminThemes() {
       prevContent.filter((theme) => theme.documentId !== documentId)
     );
   };
+
   const filteredThemes = themes.filter((theme) =>
     theme.Title.toLowerCase().includes(searchQuery.toLowerCase())
   );

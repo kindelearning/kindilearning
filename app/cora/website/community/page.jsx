@@ -21,6 +21,8 @@ import {
 } from "@/components/ui/table";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import DeleteContent from "./delete/page";
+import { Eye } from "lucide-react";
 
 export default function AdminBlogs() {
   const [blogs, setBlogs] = useState([]);
@@ -82,7 +84,15 @@ export default function AdminBlogs() {
       console.error("Failed to update status");
     }
   };
+  const handleDelete = (documentId) => {
+    // Log the documentId being deleted
+    console.log("Deleting documentId:", documentId);
 
+    // Remove the deleted item from the UI
+    setBlogs((prevContent) =>
+      prevContent.filter((blog) => blog.documentId !== documentId)
+    );
+  };
   const filteredBlogs = blogs.filter(
     (blog) =>
       blog.Text && blog.Text.toLowerCase().includes(searchQuery.toLowerCase())
@@ -186,14 +196,18 @@ export default function AdminBlogs() {
                   <TableCell>
                     {new Date(blog.createdAt).toLocaleString()}
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="flex">
+                    <DeleteContent
+                      documentId={blog.documentId}
+                      onDelete={handleDelete}
+                    />
                     <Dialog>
                       <DialogTrigger>
                         <Button
                           variant="primary"
                           onClick={() => handlePreview(blog)}
                         >
-                          Preview
+                          <Eye className="text-[#7f7f7f]  w-5 h-5 duration-300 ease-in-out hover:text-black" />
                         </Button>
                       </DialogTrigger>
                       <DialogContent className="max-h-[600px] font-fredoka max-w-[1000px] overflow-y-scroll">
