@@ -22,7 +22,7 @@ export default async function Page() {
                 <Link
                   key={item.id}
                   target="_blank"
-                  href={`/p/our-themes/${item.id}`}
+                  href={`/p/our-themes/${item.documentId}`}
                 >
                   <article className="rounded-lg">
                     <CategoryCard

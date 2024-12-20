@@ -8,7 +8,7 @@ const getRandomNumber = (min, max) => {
 };
 
 const BlogCard = ({
-  // slug,
+  publishedAt,
   image,
   title = "Blog Title",
   metsDesc = "Blog metsDesc",
@@ -23,7 +23,7 @@ const BlogCard = ({
     <div>
       <div className="bg-white shadow-md cursor-pointer rounded-lg overflow-hidden">
         <div className="flex overflow-clip">
-          <Image
+          <img
             width={400}
             height={300}
             src={image || BlogThumb}
