@@ -10,6 +10,7 @@ import {
   User,
   ChevronRight,
   ChevronLeft,
+  Folder,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -28,9 +29,12 @@ export const SidebarLink = ({ href, icon, label, isCollapsed }) => {
 
 export default function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
-
+  const [isPagesOpen, setIsPagesOpen] = useState(false); //
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed);
+  };
+  const togglePagesDropdown = () => {
+    setIsPagesOpen(!isPagesOpen);
   };
 
   return (
@@ -70,42 +74,66 @@ export default function Sidebar() {
           label="Products"
           isCollapsed={isCollapsed}
         />
-        <SidebarLink
-          href="/cora/website/pages"
-          icon={<FileText />}
-          label="Pages"
-          isCollapsed={isCollapsed}
-        />
-        <SidebarLink
-          href="/cora/website/pages/tnc"
-          icon={<FileText />}
-          label="Terms and Conditions"
-          isCollapsed={isCollapsed}
-        />
-        <SidebarLink
-          href="/cora/website/pages/refund"
-          icon={<FileText />}
-          label="Refund Policy"
-          isCollapsed={isCollapsed}
-        />
-        <SidebarLink
-          href="/cora/website/pages/privacypolicy"
-          icon={<FileText />}
-          label="Privacy Policy"
-          isCollapsed={isCollapsed}
-        />
-        <SidebarLink
-          href="/cora/website/pages/quality"
-          icon={<FileText />}
-          label="Quality Control"
-          isCollapsed={isCollapsed}
-        />
-        <SidebarLink
-          href="/cora/website/pages/investment"
-          icon={<FileText />}
-          label="Investment"
-          isCollapsed={isCollapsed}
-        />
+
+        {/* Pages Dropdown */}
+        <div className="space-y-2">
+          <div
+            className="flex items-center cursor-pointer hover:bg-gray-700 p-2 rounded-lg"
+            onClick={togglePagesDropdown}
+          >
+            <Folder className="mr-2" />
+            <span className={`${isCollapsed ? "text-xs" : "text-base"}`}>
+              All Pages
+            </span>
+          </div>
+          {isPagesOpen && (
+            <div className="pl-8 space-y-2">
+              <SidebarLink
+                href="/cora/website/home"
+                icon={<Home />}
+                label="Home Page"
+                isCollapsed={isCollapsed}
+              />
+              <SidebarLink
+                href="/cora/website/pages"
+                icon={<FileText />}
+                label="Pages"
+                isCollapsed={isCollapsed}
+              />
+              <SidebarLink
+                href="/cora/website/pages/tnc"
+                icon={<FileText />}
+                label="Terms and Conditions"
+                isCollapsed={isCollapsed}
+              />
+              <SidebarLink
+                href="/cora/website/pages/refund"
+                icon={<FileText />}
+                label="Refund Policy"
+                isCollapsed={isCollapsed}
+              />
+              <SidebarLink
+                href="/cora/website/pages/privacypolicy"
+                icon={<FileText />}
+                label="Privacy Policy"
+                isCollapsed={isCollapsed}
+              />
+              <SidebarLink
+                href="/cora/website/pages/quality"
+                icon={<FileText />}
+                label="Quality Control"
+                isCollapsed={isCollapsed}
+              />
+              <SidebarLink
+                href="/cora/website/pages/investment"
+                icon={<FileText />}
+                label="Investment"
+                isCollapsed={isCollapsed}
+              />
+            </div>
+          )}
+        </div>
+
         <SidebarLink
           href="/cora/website/community"
           icon={<List />}

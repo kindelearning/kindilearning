@@ -35,7 +35,7 @@ export default function DeleteContent({ contentId, onDelete }) {
 
   return (
     <div>
-            <LocalHeader />
+            {/* <LocalHeader /> */}
       
       <button
         onClick={handleDelete}

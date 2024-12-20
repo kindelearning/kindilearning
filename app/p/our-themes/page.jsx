@@ -9,7 +9,6 @@ export default async function Page() {
     return <div>Error: No data available</div>;
   }
 
-  // const imageUrl = `http://localhost:1337/uploads/${Thumbnail.url}`;
   return (
     <>
       <section className="w-full h-auto bg-[#EAEAF5] items-center pb-32 justify-center flex flex-col gap-[20px]">
@@ -29,10 +28,8 @@ export default async function Page() {
                     <CategoryCard
                       schedulesDate={item.LaunchTime}
                       image={`http://localhost:1337${item.Thumbnail.url}`}
-                      // image={item.Thumbnail.url}
                       description={item.metaDesc.slice(0, 100)}
                       header={item.Title}
-                      // mainContent={item.MainContent}
                     />
                   </article>
                 </Link>
