@@ -118,9 +118,6 @@ import LocalHeader from "../Topbar";
 //   );
 // }
 
-("use client");
-import { useState, useEffect } from "react";
-import LocalHeader from "./Topbar";
 
 export default function ContentList() {
   const [content, setContent] = useState([]);

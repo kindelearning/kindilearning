@@ -1,85 +1,158 @@
 import { RichText } from "@graphcms/rich-text-react-renderer";
+import { BlocksRenderer } from "@strapi/blocks-react-renderer";
 
 const RichTextRender = ({ content }) => {
   return (
     <div className="rich-text-container font-fredoka">
-      <RichText
+      {/* // heading: ({ children, level }) => {
+      //   const HeadingTag = `h${level}`;
+      //   return <HeadingTag style={{ color: "red" }}>{children}</HeadingTag>;
+      // }, */}
+      <BlocksRenderer
         content={content}
-        renderers={{
-          // Headings
-          h1: ({ children }) => (
-            <h1 className="text-5xl font-extrabold my-8 text-red">
-              {children}
-            </h1>
-          ),
+        blocks={{
+          // Heading 1
+          heading: ({ children, level }) => {
+            const HeadingTag = `h${level}`;
+            return (
+              <HeadingTag
+                style={{
+                  color: "#F05C5C",
+                  fontSize: "2rem",
+                  fontWeight: "bold",
+                  margin: "1rem 0",
+                }}
+              >
+                {children}
+              </HeadingTag>
+            );
+          },
+
+          // Heading 2
           h2: ({ children }) => (
-            <h2 className="text-4xl font-bold my-7 text-red">{children}</h2>
+            <h2
+              style={{
+                color: "blue",
+                fontSize: "1.75rem",
+                fontWeight: "bold",
+                margin: "1rem 0",
+              }}
+            >
+              {children}
+            </h2>
           ),
+
+          // Heading 3
           h3: ({ children }) => (
-            <h3 className="text-3xl font-semibold my-6 text-red">{children}</h3>
-          ),
-          h4: ({ children }) => (
-            <h4 className="text-2xl font-medium my-5 text-red">{children}</h4>
-          ),
-          h5: ({ children }) => (
-            <h5 className="text-xl font-normal my-4 text-red">{children}</h5>
-          ),
-          h6: ({ children }) => (
-            <h6 className="text-lg font-light my-3 text-red">{children}</h6>
-          ),
-
-          // Paragraphs
-          brand: ({ children }) => <p className="my-3 text-red">{children}</p>,
-          p: ({ children }) => <p className="my-3 ">{children}</p>,
-
-          // Blockquote
-          blockquote: ({ children }) => (
-            <blockquote className="my-4 pl-6 border-l-4 border-gray-400 italic text-gray-700">
+            <h3
+              style={{
+                color: "green",
+                fontSize: "1.5rem",
+                fontWeight: "600",
+                margin: "1rem 0",
+              }}
+            >
               {children}
-            </blockquote>
+            </h3>
           ),
 
-          // Lists
-          ul: ({ children }) => (
-            <ul className="list-disc pl-6 my-4 text-gray-700">{children}</ul>
-          ),
-          ol: ({ children }) => (
-            <ol className="list-decimal pl-6 my-4 text-gray-700">{children}</ol>
-          ),
-          li: ({ children }) => <li className="mb-2">{children}</li>,
-
-          // Inline Code
-          code: ({ children }) => (
-            <code className="bg-gray-200 px-2 py-1 rounded text-sm font-mono">
+          // Paragraph
+          p: ({ children }) => (
+            <p
+              style={{
+                fontSize: "1rem",
+                color: "#333",
+                margin: "1rem 0",
+                lineHeight: "1.6",
+              }}
+            >
               {children}
-            </code>
+            </p>
           ),
 
-          // Bold & Italic Text
-          bold: ({ children }) => (
-            <strong className="font-bold">{children}</strong>
-          ),
-          italic: ({ children }) => <em className="italic">{children}</em>,
-
-          // Links
+          // Link
           a: ({ href, children }) => (
             <a
               href={href}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-red underline hover:text-hoverRed"
+              style={{
+                color: "blue",
+                textDecoration: "underline",
+                fontWeight: "bold",
+              }}
             >
               {children}
             </a>
           ),
 
-          // Images
-          img: ({ src, altText }) => (
-            <img
-              src={src}
-              alt={altText || "Image"}
-              className="my-4 rounded-lg shadow-md max-w-full h-auto"
-            />
+          // Unordered List
+          ul: ({ children }) => (
+            <ul
+              style={{
+                paddingLeft: "1.5rem",
+                margin: "1rem 0",
+                listStyleType: "disc",
+              }}
+            >
+              {children}
+            </ul>
+          ),
+
+          // Ordered List
+          ol: ({ children }) => (
+            <ol
+              style={{
+                paddingLeft: "1.5rem",
+                margin: "1rem 0",
+                listStyleType: "decimal",
+              }}
+            >
+              {children}
+            </ol>
+          ),
+
+          // List Item
+          li: ({ children }) => (
+            <li
+              style={{
+                marginBottom: "0.5rem",
+                fontSize: "1rem",
+                color: "#333",
+              }}
+            >
+              {children}
+            </li>
+          ),
+
+          // Blockquote
+          blockquote: ({ children }) => (
+            <blockquote
+              style={{
+                margin: "1rem 0",
+                paddingLeft: "1.5rem",
+                borderLeft: "4px solid gray",
+                fontStyle: "italic",
+                color: "#555",
+              }}
+            >
+              {children}
+            </blockquote>
+          ),
+
+          // Code Block
+          code: ({ children }) => (
+            <code
+              style={{
+                backgroundColor: "#f0f0f0",
+                padding: "0.2rem 0.5rem",
+                fontSize: "0.9rem",
+                borderRadius: "4px",
+                fontFamily: "monospace",
+              }}
+            >
+              {children}
+            </code>
           ),
         }}
       />

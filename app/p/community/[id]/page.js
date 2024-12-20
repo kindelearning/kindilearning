@@ -15,6 +15,7 @@ import CommentForm from "../comments/CommentForm";
 import Head from "next/head";
 import RichTextRender from "@/app/Sections/Global/RichTextRender";
 import { notFound } from "next/navigation";
+import { BlocksRenderer } from "@strapi/blocks-react-renderer";
 
 const scrollToCommentSection = () => {
   const commentSection = document.getElementById("comment_Section");
@@ -311,7 +312,7 @@ export default async function BlogDetailPage({ params }) {
     <>
       <section className="w-full h-auto py-0 lg:py-12 bg-[#EAEAF5] items-center justify-center pb-24 flex flex-col gap-[20px]">
         <div className="flex overflow-clip lg:rounded-xl lg:max-w-[960px] w-full">
-          <Image
+          <img
             width={1400}
             height={600}
             src={
@@ -319,6 +320,7 @@ export default async function BlogDetailPage({ params }) {
                 ? `http://localhost:1337${FeaturedImage.url}`
                 : BlogThumb // Default fallback image
             }
+            // src={`http://localhost:1337${FeaturedImage.url}`}
             alt={`Featured Image for ${Text}`}
             className="w-full hover:scale-105 duration-300 lg:max-w-[960px] lg:rounded-xl h-60 md:h-[400px] lg:h-[400px] object-cover"
           />
@@ -365,12 +367,8 @@ export default async function BlogDetailPage({ params }) {
               <div className="w-full text-[#0a1932] text-2xl font-normal font-fredoka leading-[28px]">
                 {Description}
               </div>
-              <div className="content py-4 flex flex-col gap-2 justify-center">
-                {Content.map((block, index) => {
-                  return block.type === "paragraph" ? (
-                    <p key={index}>{block.children[0].text}</p>
-                  ) : null;
-                })}{" "}
+              <div className="content prose font-fredoka py-4 flex flex-col gap-2 justify-center">
+                <RichTextRender content={Content} />
               </div>
             </div>
           </div>
