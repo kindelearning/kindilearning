@@ -33,6 +33,18 @@ import { useAuth } from "@/app/lib/useAuth";
 import { activityIcons } from "@/app/constant/activity";
 import ActivityResources from "../ActivityResources";
 
+async function fetchActivityByDocumentId(documentId) {
+  const res = await fetch(
+    `http://localhost:1337/api/activities/${documentId}?populate=*`
+  );
+  const data = await res.json();
+  if (!data || !data.data) {
+    return null; // If data is not found
+  }
+
+  return data.data;
+}
+
 // /**
 //  * @Main_account_Credentials
 //  */
@@ -482,7 +494,6 @@ export default async function ActivityDetailPage({ params }) {
                   Skills{" "}
                 </div>
                 <ul className="text-[#0a1932] px-4 text-[16px] font-normal font-fredoka list-disc leading-none">
-                 
                   {Skills.map((skill, index) => (
                     <li key={index}>{skill.children[0]?.text}</li>
                   ))}
@@ -713,95 +724,84 @@ export default async function ActivityDetailPage({ params }) {
     </>
   );
 }
-async function fetchActivityByDocumentId(documentId) {
-  const res = await fetch(
-    `http://localhost:1337/api/activities/${documentId}?populate=*`
-  );
-  const data = await res.json();
-  if (!data || !data.data) {
-    return null; // If data is not found
-  }
 
-  return data.data;
-}
+// export async function ActivityPage({ params }) {
+//   const { id } = params;
+//   const activityData = await fetchActivityByDocumentId(id);
 
-export async function ActivityPage({ params }) {
-  const { id } = params;
-  const activityData = await fetchActivityByDocumentId(id);
+//   // Handle case where activity is not found
+//   if (!activityData) {
+//     // notFound();
+//     console.log("not found activity");
+//   }
 
-  // Handle case where activity is not found
-  if (!activityData) {
-    // notFound();
-    console.log("not found activity");
-  }
+//   const {
+//     Title,
+//     Skills,
+//     Theme,
+//     FocusAge,
+//     ActivityDate,
+//     LearningArea,
+//     SetUpTime,
+//     Gallery,
+//     Accordions,
+//   } = activityData;
 
-  const {
-    Title,
-    Skills,
-    Theme,
-    FocusAge,
-    ActivityDate,
-    LearningArea,
-    SetUpTime,
-    Gallery,
-    Accordions,
-  } = activityData;
+//   return (
+//     <section className="p-6 bg-gray-100">
+//       <div className="container mx-auto">
+//         <h1 className="text-4xl font-bold">{Title}</h1>
+//         <p className="text-gray-700">Theme: {Theme}</p>
+//         <p className="text-gray-700">Focus Age: {FocusAge}</p>
+//         <p className="text-gray-700">
+//           Date: {new Date(ActivityDate).toDateString()}
+//         </p>
+//         <p className="text-gray-700">Learning Area: {LearningArea}</p>
+//         <p className="text-gray-700">Setup Time: {SetUpTime}</p>
 
-  return (
-    <section className="p-6 bg-gray-100">
-      <div className="container mx-auto">
-        <h1 className="text-4xl font-bold">{Title}</h1>
-        <p className="text-gray-700">Theme: {Theme}</p>
-        <p className="text-gray-700">Focus Age: {FocusAge}</p>
-        <p className="text-gray-700">
-          Date: {new Date(ActivityDate).toDateString()}
-        </p>
-        <p className="text-gray-700">Learning Area: {LearningArea}</p>
-        <p className="text-gray-700">Setup Time: {SetUpTime}</p>
+//         {/* Skills */}
+//         <div className="mt-6">
+//           <h2 className="text-2xl font-semibold">Skills</h2>
+//           <ul className="list-disc pl-6">
+//             {Skills.map((skill, index) => (
+//               <li key={index}>{skill.children[0]?.text}</li>
+//             ))}
+//           </ul>
+//         </div>
 
-        {/* Skills */}
-        <div className="mt-6">
-          <h2 className="text-2xl font-semibold">Skills</h2>
-          <ul className="list-disc pl-6">
-            {Skills.map((skill, index) => (
-              <li key={index}>{skill.children[0]?.text}</li>
-            ))}
-          </ul>
-        </div>
+//         {/* Gallery */}
+//         <div className="mt-6">
+//           <h2 className="text-2xl font-semibold">Gallery</h2>
+//           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+//             {Gallery.map((item, index) => (
+//               <div key={index} className="relative">
+//                 {item.mime.includes("image") ? (
+//                   <img
+//                     src={`http://localhost:1337${item.url}`}
+//                     alt={item.name}
+//                     className="w-full h-40 object-cover rounded-lg"
+//                   />
+//                 ) : (
+//                   <video
+//                     controls
+//                     className="w-full h-40 object-cover rounded-lg"
+//                   >
+//                     <source
+//                       src={`http://localhost:1337${item.url}`}
+//                       type={item.mime}
+//                     />
+//                   </video>
+//                 )}
+//               </div>
+//             ))}
+//           </div>
+//         </div>
 
-        {/* Gallery */}
-        <div className="mt-6">
-          <h2 className="text-2xl font-semibold">Gallery</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {Gallery.map((item, index) => (
-              <div key={index} className="relative">
-                {item.mime.includes("image") ? (
-                  <img
-                    src={`http://localhost:1337${item.url}`}
-                    alt={item.name}
-                    className="w-full h-40 object-cover rounded-lg"
-                  />
-                ) : (
-                  <video
-                    controls
-                    className="w-full h-40 object-cover rounded-lg"
-                  >
-                    <source
-                      src={`http://localhost:1337${item.url}`}
-                      type={item.mime}
-                    />
-                  </video>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Accordions */}
-        <div className="mt-6">
-          <h2 className="text-2xl font-semibold">Details</h2>
-        </div>
-      </div>
-    </section>
-  );
-}
+//         {/* Accordions */}
+//         <div className="mt-6">
+//           <h2 className="text-2xl font-semibold">Details</h2>
+//         </div>
+//       </div>
+//     </section>
+//   );
+// }
