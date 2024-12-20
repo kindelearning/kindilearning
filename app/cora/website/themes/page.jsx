@@ -22,6 +22,8 @@ import {
 } from "@/components/ui/table";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import DeleteContent from "./delete/page";
+import { Eye } from "lucide-react";
 
 export default function AdminThemes() {
   const [themes, setThemes] = useState([]);
@@ -84,6 +86,15 @@ export default function AdminThemes() {
     }
   };
 
+  const handleDelete = (documentId) => {
+    // Log the documentId being deleted
+    console.log("Deleting documentId:", documentId);
+
+    // Remove the deleted item from the UI
+    setThemes((prevContent) =>
+      prevContent.filter((theme) => theme.documentId !== documentId)
+    );
+  };
   const filteredThemes = themes.filter((theme) =>
     theme.Title.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -165,8 +176,8 @@ export default function AdminThemes() {
                 >
                   Launch Time {sortDirection === "asc" ? "↑" : "↓"}
                 </TableHead>
-                <TableHead>Actions</TableHead>
                 <TableHead>Created At</TableHead>
+                <TableHead>Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -188,13 +199,20 @@ export default function AdminThemes() {
                     {new Date(theme.LaunchTime).toLocaleString()}
                   </TableCell>
                   <TableCell>
+                    {new Date(theme.createdAt).toLocaleString()}
+                  </TableCell>
+                  <TableCell className="flex">
+                    <DeleteContent
+                      documentId={theme.documentId}
+                      onDelete={handleDelete}
+                    />
                     <Dialog>
                       <DialogTrigger>
                         <Button
                           variant="primary"
                           onClick={() => handlePreview(theme)}
                         >
-                          Preview
+                          <Eye className="text-[#7f7f7f]  w-5 h-5 duration-300 ease-in-out hover:text-black" />
                         </Button>
                       </DialogTrigger>
                       <DialogContent className="max-h-[600px] font-fredoka max-w-[1000px] overflow-y-scroll">
@@ -290,9 +308,6 @@ export default function AdminThemes() {
                         </DialogFooter>
                       </DialogContent>
                     </Dialog>
-                  </TableCell>
-                  <TableCell>
-                    {new Date(theme.createdAt).toLocaleString()}
                   </TableCell>
                 </TableRow>
               ))}
