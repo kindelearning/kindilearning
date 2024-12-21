@@ -11,6 +11,7 @@ export default function ContentList() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedContent, setSelectedContent] = useState(null);
   const [updateLoading, setUpdateLoading] = useState(false);
+  const [success, setSuccess] = useState(null);
 
   useEffect(() => {
     const fetchContent = async () => {
@@ -36,10 +37,7 @@ export default function ContentList() {
   }, []);
 
   const handleDelete = (documentId) => {
-    // Log the documentId being deleted
     console.log("Deleting documentId:", documentId);
-
-    // Remove the deleted item from the UI
     setContent((prevContent) =>
       prevContent.filter((item) => item.documentId !== documentId)
     );
@@ -56,28 +54,32 @@ export default function ContentList() {
 
     console.log("Updating content:", selectedContent);
 
+    // Filter out default fields like 'id', 'createdAt', 'updatedAt'
+    const { id, createdAt, updatedAt, ...updateData } = selectedContent;
+
+    // Log the updateData to ensure it's correctly structured
+    console.log("Update Data:", updateData);
+
     try {
+      // Make the request to the Strapi endpoint with the content ID
       const response = await fetch(
-        `http://localhost:1337/api/contents/${selectedContent.documentId}`,
+        `http://localhost:1337/api/contents/${selectedContent.id}`,
         {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            data: {
-              Title: selectedContent.Title,
-              Body: selectedContent.Body,
-              Date: selectedContent.Date,
-            },
+            data: updateData, // Wrap the custom fields in the 'data' object
           }),
         }
       );
 
       const data = await response.json();
-      console.log("Response data:", data);
+      console.log("API Response:", data);
 
       if (response.ok) {
+        // Update content in state
         setContent((prevContent) =>
           prevContent.map((item) =>
             item.documentId === selectedContent.documentId
@@ -85,11 +87,12 @@ export default function ContentList() {
               : item
           )
         );
-        setIsDialogOpen(false);
+      
         setSuccess("Content updated successfully!");
       } else {
-        setError(`Failed to update content: ${data.message}`);
-        console.error("Failed to update content:", data);
+        setError(
+          `Failed to update content: ${data?.message || "Unknown error"}`
+        );
       }
     } catch (err) {
       setError(`Error occurred: ${err.message}`);
@@ -154,57 +157,37 @@ export default function ContentList() {
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-lg w-full">
             <h2 className="text-xl font-bold mb-4">Update Content</h2>
             <form onSubmit={handleUpdateSubmit} className="space-y-4">
-              <div>
-                <label
-                  htmlFor="title"
-                  className="block text-gray-700 font-medium"
-                >
-                  Title
-                </label>
-                <input
-                  type="text"
-                  id="title"
-                  name="Title"
-                  value={selectedContent.Title}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-              <div>
-                <label
-                  htmlFor="body"
-                  className="block text-gray-700 font-medium"
-                >
-                  Body
-                </label>
-                <textarea
-                  id="body"
-                  name="Body"
-                  value={selectedContent.Body}
-                  onChange={handleInputChange}
-                  required
-                  rows="4"
-                  className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-              <div>
-                <label
-                  htmlFor="date"
-                  className="block text-gray-700 font-medium"
-                >
-                  Date
-                </label>
-                <input
-                  type="date"
-                  id="date"
-                  name="Date"
-                  value={selectedContent.Date}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
+              {/* Dynamically render fields */}
+              {Object.keys(selectedContent).map((field) => {
+                if (
+                  field !== "documentId" &&
+                  field !== "id" &&
+                  field !== "createdAt" &&
+                  field !== "updatedAt"
+                ) {
+                  return (
+                    <div key={field}>
+                      <label
+                        htmlFor={field}
+                        className="block text-gray-700 font-medium"
+                      >
+                        {field.charAt(0).toUpperCase() + field.slice(1)}
+                      </label>
+                      <input
+                        type={field === "Date" ? "date" : "text"}
+                        id={field}
+                        name={field}
+                        value={selectedContent[field]}
+                        onChange={handleInputChange}
+                        required
+                        className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+                  );
+                }
+                return null;
+              })}
+
               <div className="flex justify-end space-x-4">
                 <button
                   type="button"
@@ -226,6 +209,7 @@ export default function ContentList() {
                 </button>
               </div>
             </form>
+            {success && <div className="text-green-500 mt-4">{success}</div>}
           </div>
         </div>
       )}
