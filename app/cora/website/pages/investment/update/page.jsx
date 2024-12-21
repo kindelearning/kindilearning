@@ -15,7 +15,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-export default function EditRefund() {
+export default function EditInvestment() {
   const [content, setContent] = useState({
     Title: "",
     Body: "",
@@ -107,7 +107,7 @@ export default function EditRefund() {
     <div className="container mx-auto px-8 py-12 font-poppins">
       <div className="mb-8">
         <h1 className="text-3xl font-semibold text-gray-800">
-          Edit Your Refund Policy Page
+          Edit Your Investment Policy Page
         </h1>
         <p className="text-lg text-gray-600 mt-2">
           Make necessary changes and save.

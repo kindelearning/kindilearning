@@ -1,4 +1,5 @@
 import { Bell, Search } from "lucide-react";
+import Link from "next/link";
 
 export default function Header() {
   return (
@@ -30,12 +31,16 @@ export default function Header() {
           </button>
 
           {/* Profile Section */}
-          <div className="flex items-center space-x-2">
+          <Link
+            href="/cora/profile"
+            targert="_blank"
+            className="flex items-center space-x-2"
+          >
             <div className="w-8 h-8 bg-gray-300 rounded-full"></div>
             <span className="hidden md:block text-gray-700 font-medium">
               Admin
             </span>
-          </div>
+          </Link>
         </div>
       </div>
     </header>
