@@ -35,10 +35,11 @@ export default async function FaqPage() {
                   description={
                     Answer ? (
                       <div className="flex flex-col w-full justify-start items-start heading animate-fade-in">
-                        <span
+                        {/* <span
                           className="text-[#3f3a64] text-base font-normal font-fredoka leading-tight"
                           dangerouslySetInnerHTML={{ __html: Answer }}
-                        />
+                        /> */}
+                        {Answer}
                       </div>
                     ) : (
                       <div className="flex flex-col w-full justify-start items-start heading animate-fade-in">

@@ -2,50 +2,33 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-
-function Accordion({ title, description }) {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <div className="w-full bg-[white] px-4 rounded-[12px] claracontainer">
-      <div
-        className="flex bg-[white] py-[6px] duration-300 justify-between w-full items-center cursor-pointer"
-        onClick={() => setIsOpen(!isOpen)}
-      >
-        <h2 className="text-[#414141] text-[20px] font-medium clarabodyTwo font-fredoka">
-          {title}
-        </h2>
-        <span
-          className={`text-lg text-red ${
-            isOpen ? "rotate-90" : ""
-          } transition-transform duration-300 transition-max-height`}
-        >
-          ❯
-        </span>
-      </div>
-      {isOpen && (
-        <div className="pb-4 transition-max-height duration-500">
-          <p className="clarabodyTwo text-[#7d7d7d]">{description}</p>
-        </div>
-      )}
-    </div>
-  );
-}
+import { Accordion } from "../../Sections/Accordion";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 export default function FAQSection() {
   const [faqs, setFaqs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [newFaq, setNewFaq] = useState({ Question: "", Answer: "" });
+  const [openDialog, setOpenDialog] = useState(false); // Manage dialog state
 
   useEffect(() => {
     const fetchFAQs = async () => {
       try {
-        const response = await fetch("http://localhost:1337/api/faq?populate=*");
+        const response = await fetch(
+          "http://localhost:1337/api/faqs?populate=*"
+        );
         const data = await response.json();
 
-        // Check if the data structure matches and if Content is available
-        if (data?.data?.Content) {
-          setFaqs(data.data.Content); // Set the Content array directly
+        if (data?.data) {
+          setFaqs(data.data);
         } else {
           setError("No FAQ data found");
         }
@@ -58,6 +41,57 @@ export default function FAQSection() {
 
     fetchFAQs();
   }, []);
+
+  const handleCreateFAQ = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch("http://localhost:1337/api/faqs", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          data: {
+            Question: newFaq.Question,
+            Answer: newFaq.Answer,
+          },
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to create FAQ.");
+      }
+
+      // Close dialog after submission and reset form
+      setOpenDialog(false);
+      setNewFaq({ Question: "", Answer: "" });
+
+      // Refresh FAQ list after successful submission
+      const updatedData = await response.json();
+      setFaqs((prevFaqs) => [...prevFaqs, updatedData.data]);
+    } catch (err) {
+      setError("Error creating FAQ: " + err.message);
+    }
+  };
+
+  const deleteFAQ = async (faqId) => {
+    try {
+      // Send DELETE request to Strapi to remove the FAQ
+      const response = await fetch(`http://localhost:1337/api/faqs/${faqId}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete FAQ.");
+      }
+
+      // Remove the FAQ from the local state after deletion
+      setFaqs(faqs.filter((faq) => faq.id !== faqId));
+    } catch (err) {
+      setError("Error deleting FAQ: " + err.message);
+    }
+  };
 
   // Show loading message while fetching
   if (loading) {
@@ -72,17 +106,62 @@ export default function FAQSection() {
   return (
     <div className="container mx-auto font-fredoka px-8 py-12">
       <div className="flex justify-between items-center mb-10">
-      <h2 className="text-3xl font-medium mb-8">FAQs</h2>
+        <h2 className="text-3xl font-medium mb-8">FAQs</h2>
         <div className="flex justify-end">
-          <Link
-            className="border-gray-300 text-gray-700 hover:bg-gray-200 focus:ring-2 focus:ring-gray-500 rounded-lg px-6 py-2"
-            href="/cora/website/faq/update"
-          >
-            Edit
-          </Link>
+          <Dialog open={openDialog} onOpenChange={setOpenDialog}>
+            <DialogTrigger className="border-gray-300 text-gray-700 hover:bg-gray-200 focus:ring-2 focus:ring-gray-500 rounded-lg px-6 py-2">
+              Add New FAQ
+            </DialogTrigger>
+
+            <DialogContent className="w-full max-w-md p-6 bg-white rounded-md shadow-md">
+              <DialogHeader>
+                <DialogTitle>Create New FAQ</DialogTitle>
+                <DialogDescription>
+                  Fill out the details to create a new FAQ entry.
+                </DialogDescription>
+              </DialogHeader>
+
+              <form onSubmit={handleCreateFAQ} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium mb-1">
+                    Question
+                  </label>
+                  <input
+                    type="text"
+                    value={newFaq.Question}
+                    onChange={(e) =>
+                      setNewFaq({ ...newFaq, Question: e.target.value })
+                    }
+                    className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">
+                    Answer
+                  </label>
+                  <textarea
+                    value={newFaq.Answer}
+                    onChange={(e) =>
+                      setNewFaq({ ...newFaq, Answer: e.target.value })
+                    }
+                    className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                    rows="5"
+                    required
+                  ></textarea>
+                </div>
+                <button
+                  type="submit"
+                  className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 focus:ring-2 focus:ring-blue-400"
+                >
+                  Add FAQ
+                </button>
+              </form>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
-      
+
       <div className="w-full h-fit gap-2 flex flex-col">
         {faqs.length === 0 ? (
           <p>No FAQs available</p>
@@ -90,13 +169,8 @@ export default function FAQSection() {
           faqs.map((faq) => (
             <Accordion
               key={faq.id}
-              title={faq.Question}
-              description={
-                <div
-                  className="text-gray-600 mt-2"
-                  dangerouslySetInnerHTML={{ __html: faq.Answer }}
-                />
-              }
+              faq={faq}
+              deleteFAQ={deleteFAQ} // Pass the delete function to Accordion
             />
           ))
         )}

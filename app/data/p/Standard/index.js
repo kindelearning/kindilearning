@@ -67,19 +67,19 @@ export async function fetchRefundPolicy() {
 
 export async function fetchFaq() {
   try {
-    const response = await fetch("http://localhost:1337/api/faq?populate=*");
+    const response = await fetch("http://localhost:1337/api/faqs?populate=*");
     if (!response.ok) {
       throw new Error(`Error fetching data: ${response.statusText}`);
     }
 
     const data = await response.json();
 
-    if (!data || !data.data || !data.data.Content) {
+    if (!data || !data.data) {
       throw new Error("No FAQ content available in the API response");
     }
 
     // Return the array of FAQ items
-    return data.data.Content;
+    return data.data;
   } catch (error) {
     console.error("Error fetching FAQ:", error);
     return null;
