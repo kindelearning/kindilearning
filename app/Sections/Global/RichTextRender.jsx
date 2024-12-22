@@ -4,10 +4,7 @@ import { BlocksRenderer } from "@strapi/blocks-react-renderer";
 const RichTextRender = ({ content }) => {
   return (
     <div className="rich-text-container font-fredoka">
-      {/* // heading: ({ children, level }) => {
-      //   const HeadingTag = `h${level}`;
-      //   return <HeadingTag style={{ color: "red" }}>{children}</HeadingTag>;
-      // }, */}
+      
       <BlocksRenderer
         content={content}
         blocks={{

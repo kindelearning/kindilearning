@@ -86,7 +86,7 @@ export default function HomepageHeroSectionPageUpdate() {
 
     try {
       const response = await fetch(
-        `http://localhost:1337/api/homepage-hero-section/${heroSection.id}`,
+        `http://localhost:1337/api/y832y4kynif9jk6pn5y9sdxw`,
         {
           method: "PUT",
           body: formData,

@@ -1,146 +1,113 @@
 "use client";
 
-import Link from "next/link";
 import { useState, useEffect } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import HomepageHeroSectionPageUpdate from "./HomepageHeroSectionPageUpdate";
+import { BlocksRenderer } from "@strapi/blocks-react-renderer";
 
-export default function HomepageHeroSectionPage() {
-  const [heroSection, setHeroSection] = useState(null);
+export default function HomepageHeroSection() {
+  const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
-  // Fetch the HomepageHeroSection data
   useEffect(() => {
-    const fetchHeroSectionData = async () => {
+    const fetchData = async () => {
       try {
         const response = await fetch(
           "http://localhost:1337/api/homepage-hero-section?populate=*"
         );
-        const data = await response.json();
+        const result = await response.json();
 
-        if (data?.data) {
-          setHeroSection(data.data); // Set the fetched data
+        if (result.data) {
+          setData(result.data); // result.data is where the content is located
         } else {
-          setError("No hero section data found.");
+          console.error("No data found");
         }
-      } catch (err) {
-        setError("Error fetching hero section data: " + err.message);
+      } catch (error) {
+        console.error("Error fetching data:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchHeroSectionData();
+    fetchData();
   }, []);
 
   if (loading) {
-    return (
-      <div className="text-center text-xl">
-        Loading homepage hero section...
-      </div>
-    );
+    return <div>Loading...</div>;
   }
 
-  if (error) {
-    return <div className="text-center text-red-500">{error}</div>;
+  if (!data) {
+    return <div>No data available</div>;
   }
 
-  // Extract BodyDescription text
-  const bodyDescription = heroSection?.BodyDescription?.map((block) =>
-    block?.children?.map((child) => child?.text).join(" ")
-  ).join("\n");
+  // Destructure the fields from the fetched data
+  const { featuredText, HeroTitle, BodyDescription, Image } = data;
+
+  // Check if Image exists in the data and get the media URL
+  const heroMediaUrl = Image?.data?.attributes?.url || null;
+
+  // Function to get file extension
+  const getFileExtension = (url) => {
+    return url ? url.split(".").pop().toLowerCase() : null;
+  };
+
+  // Check for media type (image or video)
+  const fileExtension = heroMediaUrl ? getFileExtension(heroMediaUrl) : null;
+  const isImage =
+    fileExtension &&
+    ["jpg", "jpeg", "png", "gif", "webp"].includes(fileExtension);
+  const isVideo =
+    fileExtension && ["mp4", "webm", "ogg"].includes(fileExtension);
 
   return (
-    <div className="container mx-auto px-6 py-16 bg-white rounded-lg shadow-lg">
-      <div className="flex justify-between items-center mb-10">
-        <h2 className="text-2xl font-semibold text-gray-800 mb-10 text-start">
-          Homepage Hero Section
-        </h2>
-        <div className="flex justify-end">
-          <Dialog>
-            <DialogTrigger>
-              <div className="border-gray-300 text-gray-700 hover:bg-gray-200 focus:ring-2 focus:ring-gray-500 rounded-lg px-6 py-2">
-                Edit
-              </div>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Are you absolutely sure?</DialogTitle>
-                <DialogDescription>
-                  <HomepageHeroSectionPageUpdate />
-                </DialogDescription>
-              </DialogHeader>
-            </DialogContent>
-          </Dialog>
+    <section className="homepage-hero-section bg-gray-100 py-16 px-6 sm:px-12 md:px-16">
+      <div className="max-w-6xl flex mx-auto text-center">
+        <div className="hero-text max-w-[60%] mb-12">
+        <p className="text-lg text-start sm:text-xl text-gray-600 mb-2">
+            {featuredText}
+          </p>
+          <h1 className="text-3xl text-start font-bold text-gray-700 mb-6">
+            {HeroTitle}
+          </h1>
+
+          {/* Render BodyDescription if available */}
+          <div className="rich-text text-start prose text-lg sm:text-xl text-gray-700 leading-relaxed">
+            {BodyDescription ? (
+              <BlocksRenderer content={BodyDescription} />
+            ) : (
+              <p>No description available</p>
+            )}
+          </div>
         </div>
+
+        {/* Render media (image or video) based on file extension */}
+        {heroMediaUrl ? (
+          isVideo ? (
+            <video
+              autoPlay
+              loop
+              muted
+              className="w-full max-w-4xl mx-auto rounded-lg shadow-md"
+            >
+              <source
+                src={`http://localhost:1337${heroMediaUrl}`}
+                type="video/mp4"
+              />
+              Your browser does not support the video.
+            </video>
+          ) : isImage ? (
+            <Image
+              src={`http://localhost:1337${heroMediaUrl}`}
+              alt="Hero"
+              width={1200} // Specify width for Image component
+              height={800} // Specify height
+              className="w-full max-w-4xl mx-auto rounded-lg shadow-md"
+            />
+          ) : (
+            <p className="text-gray-600">Unsupported media type</p>
+          )
+        ) : (
+          <p className="text-gray-600">No media available</p>
+        )}
       </div>
-
-      <div className="flex flex-wrap justify-between items-start space-y-8 md:space-y-0">
-        <div className="flex flex-col w-full gap-0 space-y-6 md:w-1/2">
-          {/* Featured Text */}
-          <div className="bg-white p-6 rounded-lg  ">
-            <h3 className="text-xl font-semibold text-gray-700">
-              Featured Text
-            </h3>
-            <p className="text-gray-600 text-lg mt-2">
-              {heroSection?.featuredText || "No featured text available"}
-            </p>
-          </div>
-
-          {/* Hero Title */}
-          <div className="bg-white p-6 rounded-lg  ">
-            <h3 className="text-xl font-semibold text-gray-700">Hero Title</h3>
-            <p className="text-gray-600 text-lg mt-2">
-              {heroSection?.HeroTitle || "No hero title available"}
-            </p>
-          </div>
-
-          {/* Body Description */}
-          <div className="bg-white p-6 rounded-lg  ">
-            <h3 className="text-xl font-semibold text-gray-700">
-              Body Description
-            </h3>
-            <div className="prose mt-4">
-              {/* Render the BodyDescription content */}
-              <p className="text-gray-600">
-                {bodyDescription || "No body description available"}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Image or Video */}
-        <div className="md:w-1/2">
-          <div className="bg-white p-6 rounded-lg  ">
-            {/* <h3 className="text-xl font-semibold text-gray-700">Hero Media</h3> */}
-            <div className="mt-4">
-              {heroSection?.Image?.mime?.includes("video") ? (
-                <video
-                  controls
-                  className="w-full rounded-lg shadow-lg"
-                  src={`http://localhost:1337${heroSection?.Image?.url}`}
-                  alt="Hero Section Video"
-                />
-              ) : (
-                <img
-                  src={`http://localhost:1337${heroSection?.Image?.url}`}
-                  alt="Hero Section Image"
-                  className="w-full rounded-lg shadow-lg"
-                />
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    </section>
   );
 }

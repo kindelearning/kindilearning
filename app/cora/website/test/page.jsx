@@ -47,56 +47,49 @@ export default function ContentList() {
     setSelectedContent(item);
     setIsDialogOpen(true);
   };
-
   const handleUpdateSubmit = async (e) => {
     e.preventDefault();
     setUpdateLoading(true);
 
-    console.log("Updating content:", selectedContent);
-
-    // Filter out default fields like 'id', 'createdAt', 'updatedAt'
-    const { id, createdAt, updatedAt, ...updateData } = selectedContent;
-
-    // Log the updateData to ensure it's correctly structured
-    console.log("Update Data:", updateData);
+    // Exclude fields like documentId, createdAt, updatedAt, publishedAt, and id
+    const { documentId, createdAt, updatedAt, publishedAt, id, ...updateData } =
+      selectedContent;
 
     try {
-      // Make the request to the Strapi endpoint with the content ID
       const response = await fetch(
-        `http://localhost:1337/api/contents/${selectedContent.id}`,
+        `http://localhost:1337/api/contents/${documentId}`,
         {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            data: updateData, // Wrap the custom fields in the 'data' object
+            data: updateData, // Send only the fields that need to be updated
           }),
         }
       );
 
-      const data = await response.json();
-      console.log("API Response:", data);
+      const responseData = await response.json();
+      console.log("Update Response:", responseData);
 
       if (response.ok) {
-        // Update content in state
+        // Update the local state with updated data
         setContent((prevContent) =>
           prevContent.map((item) =>
-            item.documentId === selectedContent.documentId
-              ? { ...item, ...data.data }
+            item.documentId === documentId
+              ? { ...item, ...responseData.data }
               : item
           )
         );
-      
         setSuccess("Content updated successfully!");
       } else {
         setError(
-          `Failed to update content: ${data?.message || "Unknown error"}`
+          `Update failed: ${responseData?.error?.message || "Unknown error"}`
         );
       }
     } catch (err) {
-      setError(`Error occurred: ${err.message}`);
-      console.error("Error occurred:", err);
+      setError(`An error occurred: ${err.message}`);
+      console.error("Update Error:", err);
     } finally {
       setUpdateLoading(false);
     }
@@ -163,7 +156,8 @@ export default function ContentList() {
                   field !== "documentId" &&
                   field !== "id" &&
                   field !== "createdAt" &&
-                  field !== "updatedAt"
+                  field !== "updatedAt" &&
+                  field !== "publishedAt"
                 ) {
                   return (
                     <div key={field}>
@@ -188,28 +182,28 @@ export default function ContentList() {
                 return null;
               })}
 
-              <div className="flex justify-end space-x-4">
-                <button
-                  type="button"
-                  onClick={() => setIsDialogOpen(false)}
-                  className="py-2 px-4 bg-gray-300 rounded-lg hover:bg-gray-400"
-                >
-                  Cancel
-                </button>
+              <div className="flex justify-between items-center mt-4">
                 <button
                   type="submit"
                   disabled={updateLoading}
-                  className={`py-2 px-4 text-white rounded-lg ${
-                    updateLoading
-                      ? "bg-blue-300 cursor-not-allowed"
-                      : "bg-blue-500 hover:bg-blue-600"
-                  }`}
+                  className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-400"
                 >
                   {updateLoading ? "Updating..." : "Update"}
                 </button>
+                <button
+                  type="button"
+                  onClick={() => setIsDialogOpen(false)}
+                  className="text-red-600 hover:text-red-700"
+                >
+                  Cancel
+                </button>
               </div>
+
+              {success && (
+                <p className="text-green-500 mt-4 text-sm">{success}</p>
+              )}
+              {error && <p className="text-red-500 mt-4 text-sm">{error}</p>}
             </form>
-            {success && <div className="text-green-500 mt-4">{success}</div>}
           </div>
         </div>
       )}
