@@ -1,51 +1,27 @@
 "use client";
 
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useState } from "react";
 
-export default function ContactForm() {
+export default function CreateContactFormPage() {
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    message: "",
-    inquiryType: "",
-    subject: "",
-    phoneNumber: "", // Add phoneNumber here
+    Name: "",
+    Email: "",
+    Phone: "",
+    Subject: "",
+    Message: "",
+    EnquiryType: "",
   });
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [successMessage, setSuccessMessage] = useState("");
-
-
-  const inquiryOptions = [
-    "Career Opportunities",
-    "Partnership or Collaboration Opportunity",
-    "Investment Opportunities",
-    "Compliment or Praise",
-    "Press or Media Inquiry",
-    "Product Suggestions or Recommendations",
-    "Custom Orders or Special Requests",
-    "Wholesale or Bulk Order Inquiry",
-    "Events",
-    "Subscription or Service Questions",
-    "Billing or Payment",
-    "Website Bug or Technical Issue",
-    "Technical Assistance",
-    "Returns, Exchanges, or Refunds",
-    "Order Status",
-    "Product Information Request",
-    "Account Login or Password Help",
-    "Feedback or Complaint",
-    "Developer Support (API, Integration)",
-  ];
+  const [success, setSuccess] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
+    setFormData((prevState) => ({
+      ...prevState,
       [name]: value,
     }));
   };
@@ -54,33 +30,36 @@ export default function ContactForm() {
     e.preventDefault();
     setLoading(true);
     setError(null);
+    setSuccess(false);
 
     try {
-      const response = await fetch("/api/contact", {
+      const res = await fetch("http://localhost:1337/api/contact-forms", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          data: formData,
+        }),
       });
 
-      const data = await response.json();
-      if (data.success) {
-        setSuccessMessage("Message sent successfully!");
+      if (res.ok) {
+        setSuccess(true);
         setFormData({
-          name: "",
-          email: "",
-          message: "",
-          subject: "",
-          inquiryType: "",
-          phoneNumber: "",
+          Name: "",
+          Email: "",
+          Phone: "",
+          Subject: "",
+          Message: "",
+          EnquiryType: "",
         });
+        // Redirect to the form submission success page or back to contact list
+        // setTimeout(() => router.push("/p/contact-us"), 1500);
       } else {
-        setError("Failed to send the message. Please try again.");
+        throw new Error("Failed to create contact form entry");
       }
     } catch (error) {
-      console.error("Error submitting contact form:", error);
-      setError("Error submitting contact form.");
+      setError(error.message);
     } finally {
       setLoading(false);
     }
@@ -106,87 +85,137 @@ export default function ContactForm() {
             child&apos;s early-years development?
           </div>
         </div>
-        {/* Form */}
+        {error && <p className="text-red-500">{error}</p>}
 
-        <div className="flex flex-col items-center justify-center">
-          {successMessage && (
-            <p className="text-green-800 pb-4">{successMessage}</p>
-          )}
-          {error && <p className="text-red pb-4">{error}</p>}
-          <form
-            onSubmit={handleSubmit}
-            className="flex justify-center items-center flex-col gap-2 lg:gap-4 w-full"
-          >
-            <div className="flex w-full flex-col lg:flex-row gap-2 lg:gap-1">
-              <Input
-                type="text"
-                name="name"
-                value={formData.name}
-                className="border p-2"
-                placeholder="Your Name"
-                onChange={handleChange}
-                required
-              />
+        <form
+          onSubmit={handleSubmit}
+          className="flex justify-center items-center flex-col gap-2 lg:gap-4 w-full"
+        >
+          <Input
+            type="text"
+            id="Name"
+            name="Name"
+            value={formData.Name}
+            onChange={handleChange}
+            required
+            placeholder="Enter your full name"
+            className="w-full p-2 border border-gray-300 rounded-md"
+          />
 
-              <Input
-                type="email"
-                name="email"
-                className="border p-2"
-                value={formData.email}
-                placeholder="Your Email"
-                onChange={handleChange}
-                required
-              />
-            </div>
+          <Input
+            type="email"
+            id="Email"
+            name="Email"
+            value={formData.Email}
+            onChange={handleChange}
+            required
+            placeholder="Enter your email address"
+            className="w-full p-2 border border-gray-300 rounded-md"
+          />
 
+          <div className="flex w-full gap-2">
             <Input
               type="tel"
-              name="phoneNumber"
-              className="border p-2"
-              value={formData.phoneNumber}
-              required
-              placeholder="Your Mobile Number"
+              id="Phone"
+              name="Phone"
+              value={formData.Phone}
               onChange={handleChange}
+              required
+              placeholder="Enter your phone number"
+              className="w-full p-2 border border-gray-300 rounded-md"
             />
+
             <Input
-              name="subject"
-              value={formData.subject}
-              placeholder="Enter Subject"
+              type="text"
+              id="Subject"
+              name="Subject"
+              value={formData.Subject}
               onChange={handleChange}
-              className="border p-2"
               required
+              placeholder="Enter subject of your enquiry"
+              className="w-full p-2 border border-gray-300 rounded-md"
             />
-            <select
-              name="inquiryType"
-              value={formData.inquiryType}
-              onChange={handleChange}
-              required
-              className="border p-2 font-fredoka text-[#7f8896] rounded-[8px] w-full"
-            >
-              <option className="text-black" value="">Select Inquiry Type</option>
-              {inquiryOptions.map((option, index) => (
-                <option className="text-black" key={index} value={option}>
-                  {option}
-                </option>
-              ))}
-            </select>
-            <Textarea
-              name="message"
-              value={formData.message}
-              placeholder="Your Message"
-              onChange={handleChange}
-              className="border p-2"
-              required
-            />
-            <Button
-              type="submit"
-              disabled={loading}
-              className="clarabutton w-[200px] lg:w-[300px] bg-red hover:bg-hoverRed text-white p-2"
-            >
-              {loading ? "Sending..." : "Submit"}
-            </Button>
-          </form>
-        </div>
+          </div>
+
+          <Textarea
+            id="Message"
+            name="Message"
+            value={formData.Message}
+            onChange={handleChange}
+            required
+            placeholder="Enter your message or enquiry"
+            className="w-full p-2 border border-gray-300 rounded-md"
+            rows="4"
+          />
+
+          <select
+            id="EnquiryType"
+            name="EnquiryType"
+            value={formData.EnquiryType}
+            onChange={handleChange}
+            required
+            className="w-full p-2 border border-gray-300 rounded-md"
+          >
+            <option value="">Select Enquiry Type</option>
+            <option value="General">General</option>
+            <option value="Support">Support</option>
+            <option value="Sales">Sales</option>
+            <option value="Career Opportunities">Career Opportunities</option>
+            <option value="Partnership or Collaboration Opportunity">
+              Partnership or Collaboration Opportunity
+            </option>
+            <option value="Investment Opportunities">
+              Investment Opportunities
+            </option>
+            <option value="Compliment or Praise">Compliment or Praise</option>
+            <option value="Press or Media Inquiry">
+              Press or Media Inquiry
+            </option>
+            <option value="Product Suggestions or Recommendations">
+              Product Suggestions or Recommendations
+            </option>
+            <option value="Custom Orders or Special Requests">
+              Custom Orders or Special Requests
+            </option>
+            <option value="Wholesale or Bulk Order Inquiry">
+              Wholesale or Bulk Order Inquiry
+            </option>
+            <option value="Events">Events</option>
+            <option value="Subscription or Service Questions">
+              Subscription or Service Questions
+            </option>
+            <option value="Billing or Payment">Billing or Payment</option>
+            <option value="Website Bug or Technical Issue">
+              Website Bug or Technical Issue
+            </option>
+            <option value="Technical Assistance">Technical Assistance</option>
+            <option value="Returns, Exchanges, or Refunds">
+              Returns, Exchanges, or Refunds
+            </option>
+            <option value="Order Status">Order Status</option>
+            <option value="Product Information Request">
+              Product Information Request
+            </option>
+            <option value="Account Login or Password Help">
+              Account Login or Password Help
+            </option>
+            <option value="Feedback or Complaint">Feedback or Complaint</option>
+            <option value="Developer Support (API, Integration)">
+              Developer Support (API, Integration)
+            </option>
+          </select>
+
+          <Button
+            type="submit"
+            disabled={loading}
+            className="clarabutton w-[200px] lg:w-[300px] bg-red hover:bg-hoverRed text-white p-2"
+          >
+            {loading ? "Submitting..." : "Submit"}
+          </Button>
+          {success && (
+            <p className="text-green-500">Form submitted successfully!</p>
+          )}
+        </form>
       </div>
     </section>
   );

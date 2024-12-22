@@ -11,16 +11,19 @@ import {
   ChevronRight,
   ChevronLeft,
   Folder,
+  FormInput,
 } from "lucide-react";
 import { useState } from "react";
 
 export const SidebarLink = ({ href, icon, label, isCollapsed }) => {
   return (
     <Link href={href}>
-      <div className="flex items-center space-x-4 py-2 px-4 hover:bg-gray-700 rounded-lg">
-        <div className="text-xl">{icon}</div>
+      <div className="flex items-center space-x-4 py-2 px-4 hover:bg-gray-800 rounded-lg transition-colors duration-200">
+        <div className="text-xl text-gray-400">{icon}</div>
         {!isCollapsed && (
-          <span className="text-white font-fredoka">{label}</span>
+          <span className="text-gray-200 font-medium font-fredoka">
+            {label}
+          </span>
         )}
       </div>
     </Link>
@@ -29,17 +32,19 @@ export const SidebarLink = ({ href, icon, label, isCollapsed }) => {
 
 export default function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [isPagesOpen, setIsPagesOpen] = useState(false); //
+  const [isPagesOpen, setIsPagesOpen] = useState(false);
+
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed);
   };
+
   const togglePagesDropdown = () => {
     setIsPagesOpen(!isPagesOpen);
   };
 
   return (
     <div
-      className={`transition-all duration-300 bg-gray-900 text-white h-full  ${
+      className={`transition-all duration-300 bg-gray-900 text-white h-full shadow-xl ${
         isCollapsed ? "w-16" : "w-64"
       }`}
     >
@@ -48,7 +53,7 @@ export default function Sidebar() {
         {!isCollapsed && <h2 className="text-xl font-semibold">Admin Panel</h2>}
         <button
           onClick={toggleSidebar}
-          className="p-2 rounded-full hover:bg-gray-700"
+          className="p-2 rounded-full hover:bg-gray-700 transition-colors duration-200"
         >
           {isCollapsed ? <ChevronRight /> : <ChevronLeft />}
         </button>
@@ -78,13 +83,15 @@ export default function Sidebar() {
         {/* Pages Dropdown */}
         <div className="space-y-2">
           <div
-            className="flex items-center cursor-pointer hover:bg-gray-700 p-2 rounded-lg"
+            className="flex items-center cursor-pointer hover:bg-gray-800 p-2 rounded-lg transition-colors duration-200"
             onClick={togglePagesDropdown}
           >
-            <Folder className="mr-2" />
-            <span className={`${isCollapsed ? "text-xs" : "text-base"}`}>
-              All Pages
-            </span>
+            <Folder className="mr-2 text-gray-400" />
+            {!isCollapsed && (
+              <span className="text-base font-medium text-gray-200">
+                All Pages
+              </span>
+            )}
           </div>
           {isPagesOpen && (
             <div className="pl-8 space-y-2">
@@ -150,6 +157,12 @@ export default function Sidebar() {
           href="/cora/website/themes"
           icon={<AppWindow />}
           label="Themes"
+          isCollapsed={isCollapsed}
+        />
+        <SidebarLink
+          href="/cora/website/forms"
+          icon={<FormInput />}
+          label="ClaraForms"
           isCollapsed={isCollapsed}
         />
         <SidebarLink
