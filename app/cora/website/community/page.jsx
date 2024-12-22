@@ -22,7 +22,9 @@ import {
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import DeleteContent from "./delete/page";
-import { Eye } from "lucide-react";
+import { Eye, FilePenLine } from "lucide-react";
+import EditContent, { EditBlog } from "./update/page";
+import UpdateBlog from "./update/page";
 
 export default function AdminBlogs() {
   const [blogs, setBlogs] = useState([]);
@@ -197,10 +199,12 @@ export default function AdminBlogs() {
                     {new Date(blog.createdAt).toLocaleString()}
                   </TableCell>
                   <TableCell className="flex">
+                    {/* delete */}
                     <DeleteContent
                       documentId={blog.documentId}
                       onDelete={handleDelete}
                     />
+                    {/* Preview */}
                     <Dialog>
                       <DialogTrigger>
                         <Button
@@ -295,6 +299,102 @@ export default function AdminBlogs() {
                           </div>
 
                           {/* Dialog Close Button */}
+                        </DialogDescription>
+                        <DialogFooter className="sm:justify-start">
+                          <DialogClose asChild>
+                            <Button
+                              variant="secondary"
+                              onClick={handleCloseDialog}
+                            >
+                              Close
+                            </Button>
+                          </DialogClose>
+                        </DialogFooter>
+                      </DialogContent>
+                    </Dialog>
+                    {/* Edit */}
+                    <Dialog>
+                      <DialogTrigger>
+                        <Button
+                          variant="primary"
+                          // onClick={() => handlePreview(blog)}
+                        >
+                          <FilePenLine className="text-[#7f7f7f]  w-5 h-5 duration-300 ease-in-out hover:text-black" />
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="max-h-[600px] font-fredoka max-w-[1000px] overflow-y-scroll">
+                        <DialogTitle>{selectedBlog?.Text}</DialogTitle>
+                        <DialogDescription>
+                          {/* <div className="w-full flex flex-col">
+                            <div className="flex w-full gap-4 justify-between items-start">
+                              <img
+                                src={`http://localhost:1337${selectedBlog?.FeaturedImage?.url}`}
+                                alt={selectedBlog?.Text}
+                                className="w-full h-[300px] object-cover rounded-lg mb-6"
+                              />
+                              <div className="flex w-full flex-col justify-start items-start">
+                                <div>
+                                  <strong className="text-xl font-medium">
+                                    Text
+                                  </strong>
+                                  <p className="text-gray-600 text-sm mt-2">
+                                    {selectedBlog?.Text}
+                                  </p>
+                                </div>
+                                <div>
+                                  <strong className="text-xl font-medium">
+                                    Meta Description
+                                  </strong>
+                                  <p className="text-gray-600 text-sm mt-2">
+                                    {selectedBlog?.MetaDescription}
+                                  </p>
+                                </div>
+                                <div>
+                                  <strong className="text-xl font-medium">
+                                    Created At
+                                  </strong>
+                                  <p className="text-gray-600 text-sm mt-2">
+                                    {new Date(
+                                      selectedBlog?.createdAt
+                                    ).toLocaleString()}
+                                  </p>
+                                </div>
+                                <div className="mt-4">
+                                  <Button
+                                    variant={
+                                      selectedBlog?.status === "published"
+                                        ? "success"
+                                        : "warning"
+                                    }
+                                    onClick={() =>
+                                      toggleStatus(
+                                        selectedBlog?.id,
+                                        selectedBlog?.status
+                                      )
+                                    }
+                                  >
+                                    {selectedBlog?.status === "published"
+                                      ? "Switch to Draft"
+                                      : "Switch to Publish"}
+                                  </Button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="mt-4">
+                            <strong className="text-xl font-medium">
+                              Content
+                            </strong>
+                            {selectedBlog?.Content.map((block, index) => {
+                              return block.type === "paragraph" ? (
+                                <p key={index}>{block.children[0].text}</p>
+                              ) : null;
+                            })}{" "}
+                           
+                          </div> */}
+                          {/* <EditBlog  /> */}
+                          <UpdateBlog blogId={blog.documentId} />
                         </DialogDescription>
                         <DialogFooter className="sm:justify-start">
                           <DialogClose asChild>
