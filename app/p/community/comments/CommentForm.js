@@ -50,7 +50,7 @@ export function CommentForm({ blogId, onCommentAdded }) {
 
   return (
     <>
-      <div className="bg-[#80808000] font-fredoka w-full rounded-full p-6  mx-auto">
+      <div className="bg-[#80808000] font-fredoka w-full rounded-full  mx-auto">
         <form onSubmit={handleSubmit} className="relative">
           <div className="flex items-center bg-white rounded-full border shadow-sm">
             <textarea
