@@ -2,157 +2,48 @@
 
 import Link from "next/link";
 import { fetchShopProducts } from "../data/p/Dynamic/Shop";
-
 import Banner from "./sections/Banner";
-import { Ratings } from "@/public/Images";
+import { Header } from "../Sections";
+import ProductCard from "./sections/ProductCard";
 
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTrigger,
-} from "@/components/ui/drawer";
-import { Button } from "@/components/ui/button";
-// import { getProducts } from "@/lib/hygraph";
-import Image from "next/image";
-import NotFound from "../not-found";
-import { useEffect, useRef, useState } from "react";
-import { BottomNavigation, Header, Newsletter } from "../Sections";
-import ProductsList from "./ProductsList";
-import { cardGroupData } from "../constant/standard";
-
-function SearchInput({ value, onChange }) {
+export default async function ShopPage() {
+  const pageContent = await fetchShopProducts();
+  console.log("fetchShopProducts", pageContent);
+  if (!pageContent) {
+    return <div>Error: No data available</div>;
+  }
   return (
-    <div className="flex w-full items-center bg-white rounded-full border border-gray-200">
-      <span className="px-3 text-gray-400">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-6 w-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-          />
-        </svg>
-      </span>
-      <input
-        type="text"
-        placeholder="Search for products..."
-        value={value}
-        onChange={onChange}
-        className="w-full border-0 rounded-full focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0   focus:border-0 focus-within:border-0 px-3 py-2"
-      />
-    </div>
+    <>
+      <Header className="sticky" />
+      <section className="w-full pb-32 bg-[#EAEAF5] flex flex-col gap-0 justify-center items-start">
+        <div className="flex w-full justify-center items-center">
+          <Banner />
+        </div>
+        <div className="w-full h-auto bg-[#eaeaf5] items-center justify-center py-2  flex flex-col md:flex-row gap-[20px]">
+          <div className="claracontainer py-4 w-full bg-[#eaeaf5] flex flex-row overflow-hidden gap-8">
+            <div className="w-full lg:grid lg:grid-cols-3 pl-4 md:pl-2 lg:px-0 flex flex-row overflow-x-scroll scrollbar-hidden gap-2">
+              {pageContent.map((product) => {
+                return (
+                  <div key={product.id} className="product-card">
+                    <Link target="_blank" href={`/shop/${product.documentId}`}>
+                      <>
+                        <ProductCard
+                          image={`http://localhost:1337${product?.FeaturedImage[0]?.url}`}
+                          price={product.DiscountPrice}
+                          title={product.Name}
+                        />
+                      </>
+                    </Link>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
   );
 }
-const ProductCard = ({ image, title, price }) => {
-  const [rating, setRating] = useState(0);
-  useEffect(() => {
-    // Function to generate a random number between 3 and 4.8, rounded to 1 decimal place
-    const generateRandomRating = () => {
-      const min = 3;
-      const max = 4.8;
-      const randomRating = (Math.random() * (max - min) + min).toFixed(1);
-      return randomRating;
-    };
-
-    setRating(generateRandomRating());
-  }, []);
-
-  return (
-    // <div className="flex max-w-[300px] min-w-[240px] w-full flex-col rounded-[24px] items-center gap-4 bg-white  hover:shadow-md">
-    <div className="flex min-w-[170px] max-w-[176px] md:min-w-full lg:min-w-full lg:w-full w-full flex-col rounded-[24px] lg:rounded-[24px] items-center gap-2 lg:gap-4 bg-white hover:shadow-md">
-      <div className="flex rounded-t-[24px] overflow-clip w-full">
-        <img
-          src={image}
-          alt={title}
-          width={200}
-          height={200}
-          className="w-full hover:scale-110 duration-300 h-[160px] md:h-[260px] lg:h-[260px] rounded-t-[12px] object-cover"
-        />
-      </div>
-      <div className="claracontainer flex flex-col justify-start items-center w-full gap-2">
-        <div className="flex items-center  px-4 w-full justify-between gap-2">
-          <h1 className="flex text-[24px] leading-tight font-semibold text-[#0A1932] font-fredoka">
-            $ {price || "29"}
-          </h1>
-          <div className="flex flex-row justify-center gap-[2px] items-center">
-            <Image
-              alt="Kindi"
-              src={Ratings}
-              className="text-yellow-400 w-4 h-4"
-            />
-            <span className="text-right text-[#0a1932] clarabodyTwo">
-              {rating}+
-            </span>
-          </div>
-        </div>
-        <h3 className="text-start hidden md:flex text-[#0a1932] text-[10px] font-fredoka w-full px-4 pb-4 pt-2 text-base font-medium leading-[20px]">
-          {title.length > 50 ? `${title.slice(0, 44)}...` : title}
-        </h3>
-        <h3 className="text-start flex md:hidden text-[#0a1932] text-[10px] font-fredoka w-full px-4 pb-4 pt-2 text-base font-medium leading-[20px]">
-          {title.length > 24 ? `${title.slice(0, 22)}...` : title}
-        </h3>
-      </div>
-    </div>
-  );
-};
-export const MobileProductCard = ({ image, title, price }) => {
-  const [rating, setRating] = useState(0);
-  useEffect(() => {
-    // Function to generate a random number between 3 and 4.8, rounded to 1 decimal place
-    const generateRandomRating = () => {
-      const min = 3;
-      const max = 4.8;
-      const randomRating = (Math.random() * (max - min) + min).toFixed(1);
-      return randomRating;
-    };
-
-    setRating(generateRandomRating());
-  }, []);
-
-  return (
-    <div className="flex lg:max-w-[300px] min-w-[170px] max-w-full lg:min-w-[240px] w-full flex-col rounded-[12px] items-center gap-2 lg:gap-4 bg-white hover:shadow-md">
-      <div className="flex rounded-t-[12px] overflow-clip w-full">
-        <Image
-          src={image}
-          alt={title}
-          width={200}
-          height={200}
-          className="w-full hover:scale-110 duration-300 h-[160px] md:h-[220px] rounded-t-[12px] object-cover"
-        />
-      </div>
-      <div className="claracontainer flex flex-col justify-start min-h-[100px] items-start  w-full gap-2">
-        <div className="flex items-center px-2 w-full justify-between gap-2">
-          <h1 className="flex text-[24px] leading-tight font-semibold text-[#0A1932] font-fredoka">
-            $ {price || "29"}
-          </h1>
-          <div className="flex flex-row justify-center gap-[2px] items-center">
-            <Image
-              alt="Kindi"
-              src={Ratings}
-              className="text-yellow-400 w-4 h-4"
-            />
-            <span className="text-right text-[#0a1932] clarabodyTwo">
-              {rating}+
-            </span>
-          </div>
-        </div>
-        <h3 className="text-start text-[#0a1932] clarabodyTwo font-medium w-full px-2 pb-4 lg:pb-0">
-          {title.length > 30 ? `${title.slice(0, 24)}...` : title}
-        </h3>
-      </div>
-    </div>
-  );
-};
 
 // export function ShopPage() {
 //   const [products, setProducts] = useState([]);
@@ -1052,51 +943,3 @@ export const MobileProductCard = ({ image, title, price }) => {
 //     </>
 //   );
 // }
-
-export default async function Page() {
-  const pageContent = await fetchShopProducts();
-  if (!pageContent) {
-    return <div>Error: No data available</div>;
-  }
-  return (
-    <>
-      <Header className="sticky" />
-      <section className="w-full pb-32 bg-[#EAEAF5] flex flex-col gap-0 justify-center items-start">
-        <div className="flex w-full justify-center items-center">
-          <Banner />
-        </div>
-        <div className="w-full h-auto bg-[#eaeaf5] items-center justify-center py-2  flex flex-col md:flex-row gap-[20px]">
-          <div className="claracontainer py-4 w-full bg-[#eaeaf5] flex flex-row overflow-hidden gap-8">
-            <div className="w-full lg:grid lg:grid-cols-3 pl-4 md:pl-2 lg:px-0 flex flex-row overflow-x-scroll scrollbar-hidden gap-2">
-              {pageContent.map((product) => {
-                const imageUrl = `http://localhost:1337${product.FeaturedImage?.url}`; // Ensure the image URL is properly formed
-
-                return (
-                  <div key={product.id} className="product-card">
-                    <Link target="_blank" href={`/shop/${product.documentId}`}>
-                      <>
-                        <ProductCard
-                          image={
-                            <img
-                              src={imageUrl}
-                              alt={product.Name}
-                              width={300} // Specify the width and height for the image
-                              height={300}
-                              layout="intrinsic" // Use intrinsic layout for responsiveness
-                            />
-                          }
-                          price={product.DiscountPrice}
-                          title={product.Name}
-                        />
-                      </>
-                    </Link>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-      </section>
-    </>
-  );
-}

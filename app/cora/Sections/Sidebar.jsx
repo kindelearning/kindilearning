@@ -14,6 +14,8 @@ import {
   FormInput,
 } from "lucide-react";
 import { useState } from "react";
+import Image from "next/image";
+import { KindiVector } from "@/public/Images";
 
 export const SidebarLink = ({ href, icon, label, isCollapsed }) => {
   return (
@@ -50,7 +52,12 @@ export default function Sidebar() {
     >
       {/* Sidebar Header */}
       <div className="flex items-center justify-between px-4 py-4 border-b border-gray-700">
-        {!isCollapsed && <h2 className="text-xl font-semibold">Admin Panel</h2>}
+        {!isCollapsed && (
+          <div className="w-full flex flex-col justify-between">
+            <Image src={KindiVector} className="w-[100px] h-[40px] justify-start"/>
+            {/* <h2 className="text-xl font-semibold">Admin Panel</h2> */}
+          </div>
+        )}
         <button
           onClick={toggleSidebar}
           className="p-2 rounded-full hover:bg-gray-700 transition-colors duration-200"

@@ -1,16 +1,16 @@
 "use client";
 
-import { ProductCard } from "..";
 import { getProducts } from "@/lib/hygraph";
 import NotFound from "@/app/not-found";
 import Link from "next/link";
 import { useEffect, useState, useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { fetchShopProducts } from "@/app/data/p/Dynamic/Shop";
+import ProductCard from "../sections/ProductCard";
 
 export default function ProductGrid() {
   const [products, setProducts] = useState([]); // State to store fetched products
   const [loading, setLoading] = useState(true); // State for loading status
-  // const scrollContainerRef = useRef(null);
   const scrollRef = useRef(null); // Create a reference for the scroll container
 
   // Mouse dragging state and refs
@@ -40,7 +40,7 @@ export default function ProductGrid() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const fetchedProducts = await getProducts();
+        const fetchedProducts = await fetchShopProducts();
         setProducts(fetchedProducts);
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -108,11 +108,11 @@ export default function ProductGrid() {
         >
           {products.map((product) => (
             <div key={product.id}>
-              <Link href={`/shop/${product.id}`}>
+              <Link href={`/shop/${product.documentId}`}>
                 <ProductCard
-                  image={product.thumbnail.url}
-                  title={product.title.slice(0, 18) + "..."}
-                  price={product.salePrice}
+                  image={`http://localhost:1337${product?.FeaturedImage[0]?.url}`}
+                  price={product.DiscountPrice}
+                  title={product.Name}
                 />
               </Link>
             </div>

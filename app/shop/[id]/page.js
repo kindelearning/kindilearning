@@ -1,7 +1,7 @@
 "use client";
 
-import { creditCard, Ratings, ShopImage } from "@/public/Images";
-import { ProductGrid, ProductImages, ReviewGrid } from "..";
+import { creditCard, Ratings } from "@/public/Images";
+import { ProductGrid, ReviewGrid } from "..";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,24 +12,24 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { getProductById, submitReview } from "@/lib/hygraph";
 import NotFound from "@/app/not-found";
 import { useEffect, useState } from "react";
-import { Input } from "@/components/ui/input";
 import { useCart } from "@/app/context/CartContext";
-import { useParams, useRouter } from "next/navigation";
-import { Textarea } from "@/components/ui/textarea";
-import RichTextRender from "@/app/Sections/Global/RichTextRender";
+import { useRouter } from "next/navigation";
 import { ReviewForm } from "../sections/ReviewForm";
+import ProductMedia from "../sections/ProductMedia";
 
 async function fetchProductById(documentId) {
-  const res = await fetch(`http://localhost:1337/api/products/${documentId}`);
-
+  const res = await fetch(
+    `http://localhost:1337/api/products/${documentId}?populate=Gallery&populate=FeaturedImage`
+  );
+  // http://localhost:1337/api/products/${documentId}?populate=Gallery&populate=FeaturedImage
   if (!res.ok) {
     return null;
   }
 
   const data = await res.json();
+  console.log("Prducrt Data", data);
   return data.data; // Return the product data
 }
 
@@ -97,52 +97,12 @@ export default function ProductDetailPage({ params }) {
   if (!product) {
     return (
       <div>
-        <NotFound />
+        Loading...
       </div>
     );
   }
-  const videoUrl = product.featuredVideo?.url || "";
   return (
     <>
-      {/* <div className="product-detail-container">
-        <h1>{product.Name}</h1>
-
-        <img
-          src={`http://localhost:1337${product.FeaturedImage?.url}`}
-          alt={product.Name}
-          width={500}
-          height={500}
-          layout="intrinsic"
-        />
-
-        <p>{product.Description}</p>
-
-        <div>
-          <h3>Long Description</h3>
-          <p>{product.LongDescription}</p>
-        </div>
-
-        <div className="pricing">
-          <p>Price: ${product.DiscountPrice}</p>
-          {product.DiscountPrice < product.Price && (
-            <p className="original-price">Original Price: ${product.Price}</p>
-          )}
-        </div>
-
-        <div>
-          <h4>SEO Meta Description</h4>
-          <p>{product.MetaDescription}</p>
-
-          <h4>SEO Keywords</h4>
-          <p>{product.SEOKeywords}</p>
-        </div>
-
-        <div>
-          <h4>Stock Status</h4>
-          <p>{product.inStock ? "In Stock" : "Out of Stock"}</p>
-        </div>
-      </div> */}
-
       {/* Main Layout */}
       <section className="w-full h-auto bg-[#F5F5F5] lg:bg-[#eaeaf5] items-center justify-center py-4 plg:pb-32 flex flex-col md:flex-row gap-[20px]">
         <div className="claracontainer p-4 md:p-2 lg:p-4 w-full flex flex-col overflow-hidden gap-8 lg:gap-20">
@@ -150,10 +110,7 @@ export default function ProductDetailPage({ params }) {
           <div className="flex w-full flex-col md:flex-col lg:flex-row xl:flex-row gap-8 justify-between items-start">
             {/* column1 */}
             <div className="claracontainer py-0 flex flex-col max-w-full lg:max-w-[60%] justify-between  items-start gap-8 sticky top-0 h-fit ">
-              {/* <ProductImages
-                images={product.productImages.map((img) => img.url)}
-                video={videoUrl}
-              /> */}
+              <ProductMedia gallery={product.Gallery} />
             </div>
             {/* col 2 */}
             <div className="claracontainer lg:max-h-[600px] py-0 flex w-full flex-col scrollbar-hide lg:max-w-[48%]  justify-between items-start gap-4 overflow-y-auto  h-fit ">
@@ -277,7 +234,7 @@ export default function ProductDetailPage({ params }) {
             <ProductGrid />
           </div>
           {/* Row- 3 | Add Review */}
-          {/* <div className="flex w-full flex-col justify-start items-center">
+          <div className="flex w-full flex-col justify-start items-center">
             <div className="flex justify-between w-full items-center">
               <div className="text-[#0a1932] text-[20px] lg:text-[28px]  font-semibold font-fredoka text-start w-full leading-loose">
                 Customer Reviews
@@ -304,7 +261,7 @@ export default function ProductDetailPage({ params }) {
             </div>
 
             <ReviewGrid />
-          </div> */}
+          </div>
           {/* Row- 4 | Similar Product*/}
           <div className="flex w-full pb-20 flex-col justify-start items-center">
             <div className="text-[#0a1932] text-[20px] lg:text-[28px]  font-semibold font-fredoka text-start w-full leading-loose">
