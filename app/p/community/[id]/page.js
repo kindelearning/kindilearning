@@ -1,28 +1,11 @@
 "use client";
 
-import { ShareButton } from "@/app/Widgets";
-import { fetchProfilePictures, getBlogById, likeBlogPost } from "@/lib/hygraph";
-import {
-  BlogThumb,
-  CommentIcon,
-  LikeIcon,
-  ProfilePlaceholder01,
-  ProfilePlaceHolderOne,
-} from "@/public/Images";
+import { fetchProfilePictures } from "@/lib/hygraph";
+import { BlogThumb, LikeIcon, ProfilePlaceholder01 } from "@/public/Images";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import CommentForm from "../comments/CommentForm";
-import Head from "next/head";
 import RichTextRender from "@/app/Sections/Global/RichTextRender";
-import { notFound } from "next/navigation";
-import { BlocksRenderer } from "@strapi/blocks-react-renderer";
-
-const scrollToCommentSection = () => {
-  const commentSection = document.getElementById("comment_Section");
-  if (commentSection) {
-    commentSection.scrollIntoView({ behavior: "smooth" });
-  }
-};
+import { CommentForm } from "../comments/CommentForm";
 
 const getRandomPastDate = () => {
   // Set the range for the random date
@@ -36,14 +19,6 @@ const getRandomPastDate = () => {
     Math.random() * (now.getTime() - oneYearAgo.getTime());
 
   return new Date(randomTimestamp);
-};
-
-const formatDate = (date) => {
-  return date.toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
 };
 
 const getRandomLikes = (min = 0, max = 100) => {
@@ -136,11 +111,6 @@ const LikeButton = () => {
       />
     </div>
   );
-};
-
-// Helper function to generate random numbers within a range
-const getRandomNumber = (min, max) => {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
 // export default async function BlogDetailPage({ params }) {
@@ -288,131 +258,100 @@ const getRandomNumber = (min, max) => {
 // }
 
 async function fetchBlogById(documentId) {
-  const res = await fetch(`http://localhost:1337/api/blogs/${documentId}`);
+  const res = await fetch(
+    `http://localhost:1337/api/blogs/${documentId}?populate=FeaturedImage&populate=comments`
+  );
   const data = await res.json();
-
   if (!data || !data.data) {
     return null; // If data is not found
   }
-
   return data.data;
 }
 
-export default async function BlogDetailPage({ params }) {
+export default function BlogDetailPage({ params }) {
   const { id } = params;
-  const blogData = await fetchBlogById(id);
-  // console.log("object found", blogData);
+  const [blogData, setBlogData] = useState(null);
+  const [comments, setComments] = useState([]);
+
+  // Fetch the blog data and comments
+  const fetchBlogData = async () => {
+    const res = await fetch(
+      `http://localhost:1337/api/blogs/${id}?populate=comments&populate=FeaturedImage`
+    );
+    const data = await res.json();
+
+    if (data && data.data) {
+      setBlogData(data.data);
+      setComments(data.data.comments || []); // Set the initial comments
+    }
+  };
+
+  useEffect(() => {
+    fetchBlogData(); // Fetch blog data on mount
+  }, [id]);
+
+  const handleCommentAdded = (newComment) => {
+    // Add new comment to the list of comments
+    setComments((prevComments) => [...prevComments, newComment]);
+  };
+
+  // Check if blogData exists
   if (!blogData) {
-    notFound(); // If the theme is not found, show the 404 page
+    return <p>Loading...</p>; // Show loading text while fetching data
   }
-  const { Text, Description, Content, FeaturedImage, documentId } = blogData;
-  const blogUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/p/community/${documentId}`;
+
+  const { Text, Description, Content, FeaturedImage } = blogData;
 
   return (
-    <>
-      <section className="w-full h-auto py-0 lg:py-12 bg-[#EAEAF5] items-center justify-center pb-24 flex flex-col gap-[20px]">
-        <div className="flex overflow-clip lg:rounded-xl lg:max-w-[960px] w-full">
-          <img
-            width={1400}
-            height={600}
-            src={
-              FeaturedImage?.url
-                ? `http://localhost:1337${FeaturedImage.url}`
-                : BlogThumb // Default fallback image
-            }
-            // src={`http://localhost:1337${FeaturedImage.url}`}
-            alt={`Featured Image for ${Text}`}
-            className="w-full hover:scale-105 duration-300 lg:max-w-[960px] lg:rounded-xl h-60 md:h-[400px] lg:h-[400px] object-cover"
-          />
-        </div>
-        <div className="claracontainer p-4 md:p-2 lg:p-4 w-full flex flex-col overflow-hidden gap-8">
-          <div className="w-full mx-auto flex flex-col gap-4 justify-center items-center">
-            <div className="flex max-w-4xl w-full mx-auto justify-start items-start">
-              <div className="flex w-full justify-between gap-4 items-center">
-                {/* <div className="flex gap-4 items-center justify-start">
-                  <div className="flex items-center">
-                    <button
-                      className={`text-red bg-[#FBCECE] rounded-full p-2 hover:text-[#da4848] ${
-                        isLiking ? "opacity-50" : ""
-                      }`}
-                      onClick={handleLikeClick}
-                    >
-                      <Image alt="Kindi" src={LikeIcon} />
-                    </button>
-                    <span className="ml-2 text-[#0a1932] font-fredoka font-medium">
-                      {randomLikes}
-                    </span>
-                  </div>
-                  <button href="#comment_Section" className="flex items-center">
-                    <button
-                      onClick={scrollToCommentSection}
-                      className="text-[#0a1932] bg-[#f8f8f8] rounded-full p-2 hover:text-[#0a1932]"
-                    >
-                      <Image alt="Kindi" src={CommentIcon || "129"} />
-                    </button>
-                    {randomComments}+
-                  </button>
-                </div> */}
-
-                <div className="flex items-center">
-                  <ShareButton url={blogUrl} />
-                </div>
-              </div>
-            </div>
-            <div className="flex max-w-4xl w-full flex-col gap-4">
-              <hr className="border-1 my-3 rounded-full w-full h-[2px] border-[#000000]" />
-              <div className="w-full text-[#3f3a64] font-semibold font-fredoka capitalize text-[32px] md:text-[36px] md:leading-[40px] lg:text-[48px] lg:leading-[54px]">
-                {Text}
-              </div>{" "}
-              <div className="w-full text-[#0a1932] text-2xl font-normal font-fredoka leading-[28px]">
-                {Description}
-              </div>
-              <div className="content prose font-fredoka py-4 flex flex-col gap-2 justify-center">
-                <RichTextRender content={Content} />
-              </div>
-            </div>
+    <section className="w-full h-auto py-0 lg:py-12 bg-[#EAEAF5] items-center justify-center pb-24 flex flex-col gap-[20px]">
+      {/* Blog content */}
+      <div className="w-full flex overflow-clip lg:rounded-xl lg:max-w-[960px] w-full">
+        <img
+          width={1400}
+          height={600}
+          src={
+            FeaturedImage?.url
+              ? `http://localhost:1337${FeaturedImage.url}`
+              : BlogThumb // Default fallback image
+          }
+          alt={`Featured Image for ${Text}`}
+          className="w-full hover:scale-105 duration-300 lg:max-w-[960px] lg:rounded-xl h-60 md:h-[400px] lg:h-[400px] object-cover"
+        />
+      </div>
+      <div className="claracontainer p-4 md:p-2 lg:p-4 w-full flex flex-col overflow-hidden gap-8">
+        <div className="w-full mx-auto flex flex-col gap-4 justify-center items-center">
+          <div className="w-full text-[#3f3a64] font-semibold font-fredoka capitalize text-[32px] md:text-[36px] md:leading-[40px] lg:text-[48px] lg:leading-[54px]">
+            {Text}
           </div>
-        </div>
-        <hr className="border-1 my-3 rounded-full w-full h-[2px] border-[#c7c7c7]" />
-
-        {/* <div className="w-full claracontainer  md:p-2 lg:p-4 flex flex-col justify-start items-start py-5 px-4 ">
-          <div className="flex flex-col max-w-4xl w-full mx-auto justify-start items-start gap-4">
-            <div className="text-[#0a1932] leading-[46px] text-[44px] font-semibold font-fredoka">
-              Comments
-            </div>
-            {blog.comments && blog.comments.length > 0 ? (
-              <div className="w-full flex flex-col gap-2 justify-end items-end">
-                {blog.comments.map((comment) => (
-                  <div
-                    className="w-full lg:min-w-[500px] lg:max-w-[700px] flex flex-col justify-normal items-start bg-white gap-4 rounded-[8px] p-2 lg:p-4"
-                    key={comment.id}
-                  >
-                    <div className="w-full flex gap-2 justify-start items-start">
-                      <ProfilePictureComponent />
-                      <div className="w-fit flex flex-col justify-start items-start gap-2">
-                        <div className="text-[#0a1932] text-xs font-semibold font-fredoka leading-none">
-                          {comment.name}
-                        </div>
-                        <div className="w-[115px] text-[#b4b4b4] text-[10px] font-normal font-fredoka leading-none">
-                          {formatDate(randomDate)}{" "}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="w-full flex-wrap text-[#0a1932] text-xs font-normal font-fredoka leading-[14px]">
-                      {comment.content}
-                    </div>
-                    <LikeButton />
-                  </div>
-                ))}
-              </div>
+          <div className="w-full text-[#0a1932] text-2xl font-normal font-fredoka leading-[28px]">
+            {Description}
+          </div>
+          <div className="content prose font-fredoka py-4 flex flex-col gap-2 justify-center">
+            {Content ? (
+              <RichTextRender content={Content} />
             ) : (
-              <p>No comments yet.</p>
+              <p>No content available</p>
             )}
-
-            <CommentForm className="pt-6" id="comment_Section" blogId={id} />
           </div>
-        </div> */}
-      </section>
-    </>
+        </div>
+
+        {/* Comment Form */}
+        <CommentForm blogId={id} onCommentAdded={handleCommentAdded} />
+
+        {/* Display Comments */}
+        <div className="comments-section">
+          <h3>Comments:</h3>
+          {comments.length > 0 ? (
+            comments.map((comment) => (
+              <div key={comment.id} className="comment">
+                <p>{comment.Text}</p>
+              </div>
+            ))
+          ) : (
+            <p>No comments yet.</p>
+          )}
+        </div>
+      </div>
+    </section>
   );
 }

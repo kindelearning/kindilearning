@@ -1,6 +1,56 @@
 import { fetchOurBlogs } from "@/app/data/p/Dynamic/Community";
-import Link from "next/link";
 import { BlogCard } from "@/app/Widgets";
+
+export default async function Page() {
+  const pageContent = await fetchOurBlogs();
+  if (!pageContent) {
+    return <div>Error: No data available</div>;
+  }
+
+  return (
+    <>
+      <section className="w-full h-auto bg-[#EAEAF5] items-center pb-32 justify-center flex flex-col gap-[20px]">
+        <div className="claracontainer w-full flex flex-col overflow-hidden gap-8">
+          <div className="claracontainer p-4 w-full flex flex-col items-center justify-center overflow-hidden gap-4 lg:gap-12">
+            <div className="claracontainer w-full flex flex-col overflow-hidden gap-2 md:gap-4">
+              <div className="w-full text-center">
+                <span className="text-[#3f3a64] text-[32px] tracking-tight font-semibold font-fredoka uppercase leading-10">
+                  The Kindi{" "}
+                </span>
+                <span className="text-[#f05c5c] text-[32px] font-semibold font-fredoka uppercase leading-10">
+                  Connect
+                </span>
+              </div>
+              <div className="w-full text-center px-0 md:px-12 lg:px-24 xl:px-28 text-[#3f3a64] clarabodyTwo">
+                Here&apos;s where you&apos;ll discover your daily educational
+                play activities. Utilize our drag-and-drop feature to rearrange
+                learning, ensuring development seamlessly fits your schedule.
+                Additionally, sync your schedule with your child&apos;s nursery
+                for a smooth and integrated learning experience.
+              </div>
+            </div>
+
+            <div className="claracontainer lg:max-w-[1200px] w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 overflow-hidden gap-4">
+              {pageContent.map((item) => (
+                <article key={item.id} className="rounded-lg">
+                  <BlogCard
+                    documentId={item.documentId}
+                    addUrl={`/p/community/${item.documentId}`}
+                    metsDesc={item.MetaDescription}
+                    title={item.Text}
+                    image={`http://localhost:1337${item.FeaturedImage.url}`}
+                    initialLikes={item.likes || 0} // Replace with actual value from your CMS
+                    initialDislikes={item.dislikes || 0} // Replace with actual value from your CMS
+                  />
+                </article>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
 // "use client";
 
 // import NotFound from "@/app/not-found";
@@ -43,7 +93,7 @@ import { BlogCard } from "@/app/Widgets";
 
 // export default function Community() {
 //   const [blogs, setBlogs] = useState([]); // Initialize as an empty array
-//   const [searchTerm, setSearchTerm] = useState("");
+// const [searchTerm, setSearchTerm] = useState("");
 //   const [filteredBlogs, setFilteredBlogs] = useState([]); // Initialize as an empty array
 
 //   // Fetch blogs on component mount
@@ -88,13 +138,13 @@ import { BlogCard } from "@/app/Widgets";
 //       Connect
 //     </span>
 //   </div>
-//   <div className="w-full text-center px-0 md:px-12 lg:px-24 xl:px-28 text-[#3f3a64] clarabodyTwo">
-//     Here&apos;s where you&apos;ll discover your daily educational play
-//     activities. Utilize our drag-and-drop feature to rearrange
-//     learning, ensuring development seamlessly fits your schedule.
-//     Additionally, sync your schedule with your child&apos;s nursery
-//     for a smooth and integrated learning experience.
-//   </div>
+// <div className="w-full text-center px-0 md:px-12 lg:px-24 xl:px-28 text-[#3f3a64] clarabodyTwo">
+//   Here&apos;s where you&apos;ll discover your daily educational play
+//   activities. Utilize our drag-and-drop feature to rearrange
+//   learning, ensuring development seamlessly fits your schedule.
+//   Additionally, sync your schedule with your child&apos;s nursery
+//   for a smooth and integrated learning experience.
+// </div>
 // </div>
 
 //           {/* Search Input */}
@@ -162,55 +212,3 @@ import { BlogCard } from "@/app/Widgets";
 //     </>
 //   );
 // }
-
-export default async function Page() {
-  const pageContent = await fetchOurBlogs();
-  if (!pageContent) {
-    return <div>Error: No data available</div>;
-  }
-
-  return (
-    <>
-      <section className="w-full h-auto bg-[#EAEAF5] items-center pb-32 justify-center flex flex-col gap-[20px]">
-        <div className="claracontainer w-full flex flex-col overflow-hidden gap-8">
-          <div className="claracontainer p-4 w-full flex flex-col items-center justify-center overflow-hidden gap-4 lg:gap-12">
-            <div className="claracontainer w-full flex flex-col overflow-hidden gap-2 md:gap-4">
-              <div className="w-full text-center">
-                <span className="text-[#3f3a64] text-[32px] tracking-tight font-semibold font-fredoka uppercase leading-10">
-                  The Kindi{" "}
-                </span>
-                <span className="text-[#f05c5c] text-[32px] font-semibold font-fredoka uppercase leading-10">
-                  Connect
-                </span>
-              </div>
-              <div className="w-full text-center px-0 md:px-12 lg:px-24 xl:px-28 text-[#3f3a64] clarabodyTwo">
-                Here&apos;s where you&apos;ll discover your daily educational
-                play activities. Utilize our drag-and-drop feature to rearrange
-                learning, ensuring development seamlessly fits your schedule.
-                Additionally, sync your schedule with your child&apos;s nursery
-                for a smooth and integrated learning experience.
-              </div>
-            </div>
-            <div className="claracontainer lg:max-w-[1000px] w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 overflow-hidden gap-4">
-              {pageContent.map((item) => (
-                <Link
-                  href={`/p/community/${item.documentId}`}
-                  target="_blank"
-                  key={item.id}
-                >
-                  <article className="rounded-lg">
-                    <BlogCard
-                      metsDesc={item.MetaDescription}
-                      title={item.Text}
-                      image={`http://localhost:1337${item.FeaturedImage.url}`}
-                    />
-                  </article>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-    </>
-  );
-}
