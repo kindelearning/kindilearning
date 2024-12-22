@@ -22,8 +22,7 @@ import {
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import DeleteContent from "./delete/page";
-import { Eye, FilePenLine } from "lucide-react";
-import EditContent, { EditBlog } from "./update/page";
+import { Eye, FilePenLine, MessageCircleMore, ThumbsUp } from "lucide-react";
 import UpdateBlog from "./update/page";
 
 export default function AdminBlogs() {
@@ -35,16 +34,32 @@ export default function AdminBlogs() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [sortDirection, setSortDirection] = useState("asc");
+  const [comments, setComments] = useState([]);
 
   // Fetch all blogs
   const fetchBlogs = async () => {
-    const res = await fetch("http://localhost:1337/api/blogs?populate=*");
-    const data = await res.json();
+    try {
+      const res = await fetch(
+        "http://localhost:1337/api/blogs?populate=comments&populate=FeaturedImage"
+      );
+      const data = await res.json();
+      console.log("API Response:", data);
 
-    if (data && data.data) {
-      setBlogs(data.data);
+      if (data && data.data) {
+        // Extract comments from all blog entries
+        const allComments = data.data.flatMap((blog) => blog.comments || []);
+        setComments(
+          allComments.sort(
+            (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+          )
+        );
+        setBlogs(data.data);
+      }
+    } catch (error) {
+      console.error("Error fetching blogs:", error);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   useEffect(() => {
@@ -67,13 +82,16 @@ export default function AdminBlogs() {
   const toggleStatus = async (id, currentStatus) => {
     const newStatus = currentStatus === "published" ? "draft" : "published"; // Toggle status between published and draft
 
-    const res = await fetch(`http://localhost:1337/api/blogs/${id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ status: newStatus }),
-    });
+    const res = await fetch(
+      `http://localhost:1337/api/blogs/${id}?populate=comments&populate=FeaturedImage`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ status: newStatus }),
+      }
+    );
 
     if (res.ok) {
       setBlogs((prevBlogs) =>
@@ -121,7 +139,27 @@ export default function AdminBlogs() {
 
     setBlogs(sortedBlogs);
   };
+  const handleDeleteComment = async (documentId) => {
+    try {
+      const response = await fetch(
+        `http://localhost:1337/api/comments/${documentId}`,
+        {
+          method: "DELETE",
+        }
+      );
 
+      if (response.ok) {
+        console.log(
+          `Comment with Document ID: ${documentId} deleted successfully.`
+        );
+        // Update your state/UI here
+      } else {
+        console.error("Failed to delete comment", response.status);
+      }
+    } catch (error) {
+      console.error("Error deleting comment:", error);
+    }
+  };
   return (
     <>
       <section className="p-8 font-fredoka bg-gray-100">
@@ -171,6 +209,7 @@ export default function AdminBlogs() {
                 <TableHead className="w-[100px]">Featured Image</TableHead>
                 <TableHead>Text</TableHead>
                 <TableHead>Meta Description</TableHead>
+                <TableHead>Likes</TableHead>
                 <TableHead
                   className="cursor-pointer"
                   onClick={() => handleSort("createdAt")}
@@ -178,6 +217,7 @@ export default function AdminBlogs() {
                   Created At {sortDirection === "asc" ? "↑" : "↓"}
                 </TableHead>
                 <TableHead>Actions</TableHead>
+                <TableHead>Comments</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -195,9 +235,16 @@ export default function AdminBlogs() {
                   </TableCell>
                   <TableCell>{blog.Text}</TableCell>
                   <TableCell>{blog.MetaDescription.slice(0, 100)}...</TableCell>
+                  {/* likes */}
+                  <TableCell className="flex gap-1 ">
+                    {blog.Likes} <ThumbsUp className="w-4 h-4" />
+                  </TableCell>
+
+                  {/* date */}
                   <TableCell>
                     {new Date(blog.createdAt).toLocaleString()}
                   </TableCell>
+                  {/* actions */}
                   <TableCell className="flex">
                     {/* delete */}
                     <DeleteContent
@@ -288,14 +335,6 @@ export default function AdminBlogs() {
                                 <p key={index}>{block.children[0].text}</p>
                               ) : null;
                             })}{" "}
-                            {/* <div
-                              className="text-sm text-gray-700 mt-2"
-                              dangerouslySetInnerHTML={{
-                                __html:
-                                  selectedBlog?.Content ||
-                                  "No content available",
-                              }}
-                            /> */}
                           </div>
 
                           {/* Dialog Close Button */}
@@ -315,86 +354,66 @@ export default function AdminBlogs() {
                     {/* Edit */}
                     <Dialog>
                       <DialogTrigger>
-                        <Button
-                          variant="primary"
-                          // onClick={() => handlePreview(blog)}
-                        >
-                          <FilePenLine className="text-[#7f7f7f]  w-5 h-5 duration-300 ease-in-out hover:text-black" />
-                        </Button>
+                        <FilePenLine className="text-[#7f7f7f]  w-5 h-5 duration-300 ease-in-out hover:text-black" />
                       </DialogTrigger>
                       <DialogContent className="max-h-[600px] font-fredoka max-w-[1000px] overflow-y-scroll">
                         <DialogTitle>{selectedBlog?.Text}</DialogTitle>
                         <DialogDescription>
-                          {/* <div className="w-full flex flex-col">
-                            <div className="flex w-full gap-4 justify-between items-start">
-                              <img
-                                src={`http://localhost:1337${selectedBlog?.FeaturedImage?.url}`}
-                                alt={selectedBlog?.Text}
-                                className="w-full h-[300px] object-cover rounded-lg mb-6"
-                              />
-                              <div className="flex w-full flex-col justify-start items-start">
-                                <div>
-                                  <strong className="text-xl font-medium">
-                                    Text
-                                  </strong>
-                                  <p className="text-gray-600 text-sm mt-2">
-                                    {selectedBlog?.Text}
-                                  </p>
-                                </div>
-                                <div>
-                                  <strong className="text-xl font-medium">
-                                    Meta Description
-                                  </strong>
-                                  <p className="text-gray-600 text-sm mt-2">
-                                    {selectedBlog?.MetaDescription}
-                                  </p>
-                                </div>
-                                <div>
-                                  <strong className="text-xl font-medium">
-                                    Created At
-                                  </strong>
-                                  <p className="text-gray-600 text-sm mt-2">
-                                    {new Date(
-                                      selectedBlog?.createdAt
-                                    ).toLocaleString()}
-                                  </p>
-                                </div>
-                                <div className="mt-4">
-                                  <Button
-                                    variant={
-                                      selectedBlog?.status === "published"
-                                        ? "success"
-                                        : "warning"
-                                    }
-                                    onClick={() =>
-                                      toggleStatus(
-                                        selectedBlog?.id,
-                                        selectedBlog?.status
-                                      )
-                                    }
-                                  >
-                                    {selectedBlog?.status === "published"
-                                      ? "Switch to Draft"
-                                      : "Switch to Publish"}
-                                  </Button>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="mt-4">
-                            <strong className="text-xl font-medium">
-                              Content
-                            </strong>
-                            {selectedBlog?.Content.map((block, index) => {
-                              return block.type === "paragraph" ? (
-                                <p key={index}>{block.children[0].text}</p>
-                              ) : null;
-                            })}{" "}
-                           
-                          </div> */}
-                          {/* <EditBlog  /> */}
                           <UpdateBlog blogId={blog.documentId} />
+                        </DialogDescription>
+                        <DialogFooter className="sm:justify-start">
+                          <DialogClose asChild>
+                            <Button
+                              variant="secondary"
+                              onClick={handleCloseDialog}
+                            >
+                              Close
+                            </Button>
+                          </DialogClose>
+                        </DialogFooter>
+                      </DialogContent>
+                    </Dialog>
+                  </TableCell>
+                  {/* comments */}
+                  <TableCell>
+                    <Dialog>
+                      <DialogTrigger>
+                        <MessageCircleMore />
+                      </DialogTrigger>
+                      <DialogContent className="max-h-[600px] font-fredoka max-w-[1000px] overflow-y-scroll">
+                        <DialogTitle>{selectedBlog?.Text}</DialogTitle>
+                        <DialogDescription>
+                          <div className="comment-section grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                            {comments.length > 0 ? (
+                              comments.map((comment) => (
+                                <div
+                                  key={comment.id}
+                                  className="bg-white shadow-md rounded-md p-4 relative"
+                                >
+                                  <p className="text-gray-700 mb-2">
+                                    {comment.Text}
+                                  </p>
+                                  <span className="text-sm text-gray-500">
+                                    {new Date(
+                                      comment.createdAt
+                                    ).toLocaleDateString()}
+                                  </span>
+                                  <button
+                                    onClick={() =>
+                                      handleDeleteComment(comment.documentId)
+                                    }
+                                    className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded hover:bg-red-600"
+                                  >
+                                    Delete
+                                  </button>
+                                </div>
+                              ))
+                            ) : (
+                              <p className="text-gray-500">
+                                No comments available
+                              </p>
+                            )}
+                          </div>
                         </DialogDescription>
                         <DialogFooter className="sm:justify-start">
                           <DialogClose asChild>
