@@ -1,6 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 export default function AgeGroupSection() {
   const [content, setContent] = useState(null);
@@ -87,5 +97,212 @@ export default function AgeGroupSection() {
         ))}
       </div>
     </section>
+  );
+}
+
+export function UpdateAgeGroupSection() {
+  const [content, setContent] = useState({
+    AreaoflearningTitle: "",
+    ArealearningBody: "",
+    KindiSkillsCategoriesTitle: "",
+    KindiSkillsCategoriesBody: "",
+    AgeGroup: null, // Start with null or an empty object
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [dialogMessage, setDialogMessage] = useState("");
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  useEffect(() => {
+    // Fetch initial content data to pre-fill the form
+    const fetchContent = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:1337/api/how-it-work-page?populate[AgeGroup][populate]=Content.Icon"
+        );
+        const data = await response.json();
+        setContent({
+          AreaoflearningTitle: data.data.AreaoflearningTitle,
+          ArealearningBody: data.data.ArealearningBody,
+          KindiSkillsCategoriesTitle: data.data.KindiSkillsCategoriesTitle,
+          KindiSkillsCategoriesBody: data.data.KindiSkillsCategoriesBody,
+          AgeGroup: data.data.AgeGroup, // Store the AgeGroup object
+        });
+      } catch (err) {
+        setError("Error fetching content");
+      }
+    };
+
+    fetchContent();
+  }, []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const updatedContent = {
+      data: {
+        AreaoflearningTitle: content.AreaoflearningTitle,
+        ArealearningBody: content.ArealearningBody,
+        KindiSkillsCategoriesTitle: content.KindiSkillsCategoriesTitle,
+        KindiSkillsCategoriesBody: content.KindiSkillsCategoriesBody,
+        AgeGroup: content.AgeGroup, // Include AgeGroup data
+      },
+    };
+
+    try {
+      const response = await fetch(
+        `http://localhost:1337/api/how-it-work-page?populate[AgeGroup][populate]=Content.Icon`, // Correct URL with query parameter for documentId
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedContent),
+        }
+      );
+
+      const result = await response.json();
+      if (response.ok) {
+        setDialogMessage("Content updated successfully!");
+      } else {
+        console.error("Error response:", result);
+        setDialogMessage(
+          `Error updating content: ${result.message || response.statusText}`
+        );
+      }
+    } catch (err) {
+      console.error("Error:", err);
+      setDialogMessage(`Error updating content: ${err.message}`);
+    } finally {
+      setIsDialogOpen(true);
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="container mx-auto p-4">
+      <h2 className="text-2xl font-semibold mb-4">Edit Content</h2>
+
+      {error && <div className="text-red-500">{error}</div>}
+
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Area of Learning Title */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
+            Area of Learning Title
+          </label>
+          <input
+            type="text"
+            value={content.AreaoflearningTitle}
+            onChange={(e) =>
+              setContent({ ...content, AreaoflearningTitle: e.target.value })
+            }
+            className="w-full p-2 border border-gray-300 rounded-md"
+          />
+        </div>
+
+        {/* Area of Learning Body */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
+            Area of Learning Body
+          </label>
+          <textarea
+            value={content.ArealearningBody}
+            onChange={(e) =>
+              setContent({ ...content, ArealearningBody: e.target.value })
+            }
+            className="w-full p-2 border border-gray-300 rounded-md"
+            rows="5"
+          />
+        </div>
+
+        {/* Kindi Skills Categories Title */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
+            Kindi Skills Categories Title
+          </label>
+          <input
+            type="text"
+            value={content.KindiSkillsCategoriesTitle}
+            onChange={(e) =>
+              setContent({
+                ...content,
+                KindiSkillsCategoriesTitle: e.target.value,
+              })
+            }
+            className="w-full p-2 border border-gray-300 rounded-md"
+          />
+        </div>
+
+        {/* Kindi Skills Categories Body */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
+            Kindi Skills Categories Body
+          </label>
+          <textarea
+            value={content.KindiSkillsCategoriesBody}
+            onChange={(e) =>
+              setContent({
+                ...content,
+                KindiSkillsCategoriesBody: e.target.value,
+              })
+            }
+            className="w-full p-2 border border-gray-300 rounded-md"
+            rows="5"
+          />
+        </div>
+
+        {/* Age Group Content */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
+            Age Group Content
+          </label>
+          {content.AgeGroup?.Content &&
+          Array.isArray(content.AgeGroup.Content) ? (
+            content.AgeGroup.Content.map((item, index) => (
+              <div key={index} className="mb-4">
+                <h3 className="text-lg font-semibold">{item.Title}</h3>
+                <p>{item.Body}</p>
+                <img
+                  src={` http://localhost:1337${item.Icon.url} `}
+                  alt={item.Title}
+                  width={79}
+                  height={79}
+                />
+              </div>
+            ))
+          ) : (
+            <p>No age group content available</p>
+          )}
+        </div>
+
+        <div className="flex items-center justify-center">
+          <button
+            type="submit"
+            disabled={loading}
+            className="px-4 py-2 bg-red text-white rounded-md disabled:bg-gray-400"
+          >
+            {loading ? "Updating..." : "Update Content"}
+          </button>
+        </div>
+      </form>
+
+      {/* Shadcn Dialog for Success/Error Message */}
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Update Status</DialogTitle>
+            <DialogDescription>{dialogMessage}</DialogDescription>
+          </DialogHeader>
+          <DialogClose
+            onClick={() => setIsDialogOpen(false)}
+            className="bg-red text-white rounded-md px-4 py-2"
+          >
+            Close
+          </DialogClose>
+        </DialogContent>
+      </Dialog>
+    </div>
   );
 }

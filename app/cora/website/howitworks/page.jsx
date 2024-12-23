@@ -9,16 +9,16 @@ import {
 } from "@/components/ui/table";
 
 import HeroSectionForm from "../../Sections/Home/HomepageHeroSectionPageUpdate";
-import ChildDevelopmentUnlock from "../../Sections/Home/ChilddevUnlockedSection";
 import HowItWorksSection from "../../Sections/Home/HowItWorksSection";
-import Monthlytheme from "../../Sections/Home/Monthlytheme";
-import EarlyLearningExpert from "../../Sections/Home/EarlyLearningExpert";
-import PopularActivities from "../../Sections/Home/PopularActivities";
+import Monthlytheme, { UpdateMonthlytheme } from "../../Sections/Home/Monthlytheme";
+import PopularActivities, { UpdatePopularLearningForm } from "../../Sections/Home/PopularActivities";
 import { SectionRow } from "../../Sections/SectionRow";
-import HowItWorks from "../../Sections/horItWorks/HowItWorkshero";
-import AreaOfLearning from "../../Sections/horItWorks/Areaoflearning";
+import HowItWorks, {
+  UpdateHowItWorkSection,
+} from "../../Sections/horItWorks/HowItWorkshero";
+import AreaOfLearning, { UpdateAreaOfLearning } from "../../Sections/horItWorks/Areaoflearning";
 import KindiSkillsCategoriesCards from "../../Sections/horItWorks/KindiSkillsCategoriesCards";
-import AgeGroupSection from "../../Sections/horItWorks/AgeGroupSection";
+import AgeGroupSection, { UpdateAgeGroupSection } from "../../Sections/horItWorks/AgeGroupSection";
 
 export default function HomePage() {
   return (
@@ -39,13 +39,15 @@ export default function HomePage() {
               {/* Hero Secton */}
               <SectionRow
                 serialNo={1}
+                page="How It Works"
                 sectionName="HERO"
                 ComponentPreview={HowItWorks}
-                ComponentForm={HeroSectionForm}
+                ComponentForm={UpdateHowItWorkSection}
               />
               {/* How It Works */}
               <SectionRow
                 serialNo={2}
+                page="How It Works"
                 sectionName="How It Works"
                 ComponentPreview={HowItWorksSection}
                 ComponentForm={HeroSectionForm} // Replace with an actual update form if necessary
@@ -53,37 +55,42 @@ export default function HomePage() {
               {/* Monthlytheme */}
               <SectionRow
                 serialNo={5}
+                page="How It Works"
                 sectionName="Area Of Learning"
                 ComponentPreview={AreaOfLearning}
-                ComponentForm={HeroSectionForm} // Replace with an actual update form if necessary
+                ComponentForm={UpdateAreaOfLearning} // Replace with an actual update form if necessary
               />
               {/* Kindi Skills CategoriesCards */}
               <SectionRow
                 serialNo={6}
-                sectionName="Kindi Skills CategoriesCards"
+                page="How It Works"
+                sectionName="Kindi Skills Categories"
                 ComponentPreview={KindiSkillsCategoriesCards}
                 ComponentForm={HeroSectionForm} // Replace with an actual update form if necessary
               />
               {/* Monthlytheme */}
               <SectionRow
+                page="How It Works"
                 serialNo={7}
                 sectionName="Monthly theme"
                 ComponentPreview={Monthlytheme}
-                ComponentForm={HeroSectionForm} // Replace with an actual update form if necessary
+                ComponentForm={UpdateMonthlytheme} // Replace with an actual update form if necessary
               />
               {/* PopularActivities */}
               <SectionRow
+                page="How It Works"
                 serialNo={8}
                 sectionName="Popular Activities"
                 ComponentPreview={PopularActivities}
-                ComponentForm={HeroSectionForm} // Replace with an actual update form if necessary
+                ComponentForm={UpdatePopularLearningForm} // Replace with an actual update form if necessary
               />
               {/* AgeGroupSection */}
               <SectionRow
                 serialNo={8}
+                page="How It Works"
                 sectionName="Age Group Section"
                 ComponentPreview={AgeGroupSection}
-                ComponentForm={HeroSectionForm} // Replace with an actual update form if necessary
+                ComponentForm={UpdateAgeGroupSection} // Replace with an actual update form if necessary
               />
             </TableBody>
           </Table>
