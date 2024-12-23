@@ -1336,13 +1336,13 @@ export default function ActivitiesData() {
                               <div className="claracontainer w-full flex-col justify-start items-center gap-7 inline-flex">
                                 <div className="w-full max-w-full md:min-w-full lg:max-w-full h-auto">
                                   <div className="flex max-h-[180px] min-h-[150px] h-[150px] md:min-h-[200px] md:h-full lg:min-h-[276px] lg:h-full lg:max-h-[276px] md:max-h-[300px] overflow-clip rounded-t-3xl">
-                                    {/* <Image
+                                    <img
                                       width={280}
                                       height={250}
                                       alt={activity.title}
                                       className="w-full max-h-[180px] duration-300 hover:scale-105 lg:min-h-[276px] lg:h-full lg:max-h-[276px] md:max-h-[300px] object-cover rounded-t-3xl"
-                                      src={activity.thumbnail.url}
-                                    /> */}
+                                      src={` http://localhost:1337${activity.Gallery[0].url} `}
+                                    />
                                   </div>
                                   <div className="w-full p-2 md:p-4  flex-col justify-start lg:p-4 items-start flex gap-2 md:gap-2 lg:gap-4">
                                     <div className="flex-col w-full gap-[6px] justify-start items-start">
@@ -1440,13 +1440,13 @@ export default function ActivitiesData() {
                                 <div className="claracontainer w-full flex-col justify-start items-center gap-7 inline-flex">
                                   <div className="w-full max-w-full md:min-w-full lg:max-w-full h-auto">
                                     <div className="flex max-h-[180px] min-h-[150px] h-[150px] md:min-h-[200px] md:h-full lg:min-h-[276px] lg:h-full lg:max-h-[276px] md:max-h-[300px] overflow-clip rounded-t-3xl">
-                                      {/* <Image
-                                        width={280}
-                                        height={250}
-                                        alt={activity.title}
-                                        className="w-full max-h-[180px] duration-300 hover:scale-105 lg:min-h-[276px] lg:h-full lg:max-h-[276px] md:max-h-[300px] object-cover rounded-t-3xl"
-                                        src={activity.thumbnail.url}
-                                      /> */}
+                                    <img
+                                      width={280}
+                                      height={250}
+                                      alt={activity.title}
+                                      className="w-full max-h-[180px] duration-300 hover:scale-105 lg:min-h-[276px] lg:h-full lg:max-h-[276px] md:max-h-[300px] object-cover rounded-t-3xl"
+                                      src={` http://localhost:1337${activity.Gallery[0].url} `}
+                                    />
                                     </div>
                                     <div className="w-full p-2 md:p-4  flex-col justify-start lg:p-4 items-start flex gap-2 md:gap-2 lg:gap-4">
                                       <div className="flex-col w-full gap-[6px] justify-start items-start">

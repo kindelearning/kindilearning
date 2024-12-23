@@ -32,6 +32,7 @@ import Link from "next/link";
 import { useAuth } from "@/app/lib/useAuth";
 import { activityIcons } from "@/app/constant/activity";
 import ActivityResources from "../ActivityResources";
+import ProductMedia from "@/app/shop/sections/ProductMedia";
 
 async function fetchActivityByDocumentId(documentId) {
   const res = await fetch(
@@ -44,35 +45,6 @@ async function fetchActivityByDocumentId(documentId) {
 
   return data.data;
 }
-
-// /**
-//  * @Main_account_Credentials
-//  */
-// const HYGRAPH_ENDPOINT =
-//   "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";
-// const HYGRAPH_TOKEN =
-//   "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImdjbXMtbWFpbi1wcm9kdWN0aW9uIn0.eyJ2ZXJzaW9uIjozLCJpYXQiOjE3MjcwNjQxNzcsImF1ZCI6WyJodHRwczovL2FwaS1hcC1zb3V0aC0xLmh5Z3JhcGguY29tL3YyL2NtMWRvbTFoaDAzeTEwN3V3d3hydXRwbXovbWFzdGVyIiwibWFuYWdlbWVudC1uZXh0LmdyYXBoY21zLmNvbSJdLCJpc3MiOiJodHRwczovL21hbmFnZW1lbnQtYXAtc291dGgtMS5oeWdyYXBoLmNvbS8iLCJzdWIiOiI2Yzg4NjI5YS1jMmU5LTQyYjctYmJjOC04OTI2YmJlN2YyNDkiLCJqdGkiOiJjbTFlaGYzdzYwcmZuMDdwaWdwcmpieXhyIn0.YMoI_XTrCZI-C7v_FX-oKL5VVtx95tPmOFReCdUcP50nIpE3tTjUtYdApDqSRPegOQai6wbyT0H8UbTTUYsZUnBbvaMd-Io3ru3dqT1WdIJMhSx6007fl_aD6gQcxb-gHxODfz5LmJdwZbdaaNnyKIPVQsOEb-uVHiDJP3Zag2Ec2opK-SkPKKWq-gfDv5JIZxwE_8x7kwhCrfQxCZyUHvIHrJb9VBPrCIq1XE-suyA03bGfh8_5PuCfKCAof7TbH1dtvaKjUuYY1Gd54uRgp8ELZTf13i073I9ZFRUU3PVjUKEOUoCdzNLksKc-mc-MF8tgLxSQ946AfwleAVkFCXduIAO7ASaWU3coX7CsXmZLGRT_a82wOORD8zihfJa4LG8bB-FKm2LVIu_QfqIHJKq-ytuycpeKMV_MTvsbsWeikH0tGPQxvAA902mMrYJr9wohOw0gru7mg_U6tLOwG2smcwuXBPnpty0oGuGwXWt_D6ryLwdNubLJpIWV0dOWF8N5D6VubNytNZlIbyFQKnGcPDw6hGRLMw2B7-1V2RpR6F3RibLFJf9GekI60UYdsXthAFE6Xzrlw03Gv5BOKImBoDPyMr0DCzneyAj9KDq4cbNNcihbHl1iA6lUCTNY3vkCBXmyujXZEcLu_Q0gvrAW3OvZMHeHY__CtXN6JFA";
-
-// const client = new GraphQLClient(HYGRAPH_ENDPOINT, {
-//   headers: {
-//     Authorization: `Bearer ${HYGRAPH_TOKEN}`,
-//   },
-// });
-
-// const GET_ACCOUNT_BY_EMAIL = gql`
-//   query GetAccountByEmail($email: String!) {
-//     account(where: { email: $email }) {
-//       id
-//       name
-//       username
-//       email
-//       profilePicture {
-//         url
-//       }
-//       isVerified
-//     }
-//   }
-// `;
 
 const ActivityCompleteButton = ({ activityId, userId }) => {
   const [loading, setLoading] = useState(false);
@@ -398,30 +370,10 @@ export default async function ActivityDetailPage({ params }) {
           <div className="claracontainer lg:min-w-[60%] lg:w-full bg-[#ffffff] md:bg-[#ffffff] pb-4 lg:bg-[#eaeaf5] py-0 flex flex-col justify-start items-start gap-4">
             {/* Row 1(C1) */}
             <div className="claracontainer py-0 flex flex-col justify-between items-start gap-8">
-              <ProductImages
-                images={Gallery.map((item, index) => (
-                  <div key={index} className="relative">
-                    {item.mime.includes("image") ? (
-                      <img
-                        src={`http://localhost:1337${item.url}`}
-                        alt={item.name}
-                        className="w-full h-40 object-cover rounded-lg"
-                      />
-                    ) : (
-                      <video
-                        controls
-                        className="w-full h-40 object-cover rounded-lg"
-                      >
-                        <source
-                          src={`http://localhost:1337${item.url}`}
-                          type={item.mime}
-                        />
-                      </video>
-                    )}
-                  </div>
-                ))}
-              />
-              <div className="flex w-full">
+              <ProductMedia gallery={Gallery} />
+
+             
+              {/* <div className="flex w-full">
                 {Gallery.map((item, index) => (
                   <div key={index} className="relative">
                     {item.mime.includes("image") ? (
@@ -443,7 +395,7 @@ export default async function ActivityDetailPage({ params }) {
                     )}
                   </div>
                 ))}
-              </div>
+              </div> */}
             </div>
             {/* Row 1(R2) */}
             <div className="claracontainer lg:hidden w-full flex flex-col px-4 lg:px-0 justify-start items-start gap-4">
