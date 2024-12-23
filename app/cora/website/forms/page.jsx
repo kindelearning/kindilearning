@@ -128,7 +128,7 @@ export default function ContactFormPage() {
                     <TableHead>Email</TableHead>
                     <TableHead>Phone</TableHead>
                     <TableHead>Subject</TableHead>
-                    <TableHead>Message</TableHead>
+                    {/* <TableHead>Message</TableHead> */}
                     <TableHead>Enquiry Type</TableHead>
                     <TableHead>Date Created</TableHead>
                     <TableHead>Actions</TableHead>
@@ -145,13 +145,13 @@ export default function ContactFormPage() {
                         <TableCell>{form.Email}</TableCell>
                         <TableCell>{form.Phone}</TableCell>
                         <TableCell>{form.Subject}</TableCell>
-                        <TableCell>
+                        {/* <TableCell>
                           {Array.isArray(form.Message) ? (
                             <RichTextRender content={form.Message} />
                           ) : (
                             <p>{form.Message}</p> // If it's not an array, just display the string
                           )}
-                        </TableCell>
+                        </TableCell> */}
                         <TableCell>{form.EnquiryType}</TableCell>
                         <TableCell>{formatDate(form.createdAt)}</TableCell>
                         <TableCell>
