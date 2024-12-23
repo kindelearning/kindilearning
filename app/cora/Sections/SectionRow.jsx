@@ -9,12 +9,13 @@ export function SectionRow({
   sectionName,
   ComponentPreview,
   ComponentForm,
+  page
 }) {
   return (
     <TableRow>
       <TableCell>{serialNo}</TableCell>
       <TableCell>{sectionName}</TableCell>
-      <TableCell>Home</TableCell>
+      <TableCell>{page || "Home"}</TableCell>
       <TableCell className="flex">
         {/* Preview Dialog */}
         <Dialog>

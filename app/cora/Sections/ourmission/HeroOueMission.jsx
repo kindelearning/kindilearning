@@ -1,4 +1,18 @@
+"use client";
 import { fetchOurMission } from "@/app/data/p/OurMission";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { useEffect, useState } from "react";
+
+
 
 export default async function HeroOueMission() {
   const data = await fetchOurMission();
@@ -33,5 +47,168 @@ export default async function HeroOueMission() {
         </div>
       </section>
     </>
+  );
+}
+
+
+export function UpdateHeroSection() {
+  const [content, setContent] = useState({
+    Hero: {
+      Body: '',
+      featuredText: '',
+      Title: '',
+      Media: null, // Handle media if required
+    },
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [dialogMessage, setDialogMessage] = useState('');
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  useEffect(() => {
+    // Fetch initial data for the Hero section
+    const fetchContent = async () => {
+      try {
+        const response = await fetch(
+          'http://localhost:1337/api/our-mission?populate[Hero][populate]=*'
+        );
+        const data = await response.json();
+        setContent({
+          Hero: data.data.Hero || {},
+        });
+      } catch (err) {
+        setError('Error fetching content');
+      }
+    };
+
+    fetchContent();
+  }, []);
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    // Prepare the data for submission
+    const updatedContent = {
+      data: {
+        Hero: {
+          Body: content.Hero.Body,
+          featuredText: content.Hero.featuredText,
+          Title: content.Hero.Title,
+          Media: content.Hero.Media, // If you want to handle media as well
+        },
+      },
+    };
+
+    try {
+      const response = await fetch('http://localhost:1337/api/our-mission', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedContent),
+      });
+
+      const result = await response.json();
+      if (response.ok) {
+        setDialogMessage('Hero section updated successfully!');
+      } else {
+        setDialogMessage(
+          `Error updating content: ${result.message || response.statusText}`
+        );
+      }
+    } catch (err) {
+      setDialogMessage(`Error updating content: ${err.message}`);
+    } finally {
+      setIsDialogOpen(true);
+      setLoading(false);
+    }
+  };
+
+  // Handle input change for the Hero fields
+  const handleChange = (field, value) => {
+    setContent((prevContent) => ({
+      ...prevContent,
+      Hero: {
+        ...prevContent.Hero,
+        [field]: value,
+      },
+    }));
+  };
+
+  return (
+    <div className="container mx-auto p-4">
+      <h2 className="text-2xl font-semibold mb-4">Edit Hero Section</h2>
+
+      {error && <div className="text-red-500">{error}</div>}
+
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Title</label>
+          <input
+            type="text"
+            value={content.Hero.Title}
+            onChange={(e) => handleChange('Title', e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded-md"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Featured Text</label>
+          <input
+            type="text"
+            value={content.Hero.featuredText}
+            onChange={(e) => handleChange('featuredText', e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded-md"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Body</label>
+          <textarea
+            value={content.Hero.Body}
+            onChange={(e) => handleChange('Body', e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded-md"
+            rows="5"
+          />
+        </div>
+
+        <div>
+          <label className=" hidden text-sm font-medium text-gray-700">Media (optional)</label>
+          <input
+            type="file"
+            onChange={(e) => handleChange('Media', e.target.files[0])}
+            className="w-full hidden p-2 border border-gray-300 rounded-md"
+          />
+        </div>
+
+        <div className="flex items-center justify-center">
+          <button
+            type="submit"
+            disabled={loading}
+            className="px-4 py-2 bg-red text-white rounded-md disabled:bg-gray-400"
+          >
+            {loading ? 'Updating...' : 'Update Hero Section'}
+          </button>
+        </div>
+      </form>
+
+      {/* Shadcn Dialog for Success/Error Message */}
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Update Status</DialogTitle>
+            <DialogDescription>{dialogMessage}</DialogDescription>
+          </DialogHeader>
+          <DialogClose
+            onClick={() => setIsDialogOpen(false)}
+            className="bg-red text-white rounded-md px-4 py-2"
+          >
+            Close
+          </DialogClose>
+        </DialogContent>
+      </Dialog>
+    </div>
   );
 }

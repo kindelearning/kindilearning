@@ -1,4 +1,13 @@
 "use client";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 import { useEffect, useState } from "react";
 
@@ -85,6 +94,189 @@ export default function AnnualPriceing() {
           </div>
         ))}
       </div>
+    </div>
+  );
+}
+
+export async function getPricingData() {
+  const response = await fetch('http://localhost:1337/api/ourpricing?populate[MonthlyPlans][populate][0]=Features&populate[MonthlyPlans][populate][1]=Thumbnail');
+  const data = await response.json();
+  return data.data;
+}
+
+export  function EditPricing({ pricingData }) {
+  const [formData, setFormData] = useState(pricingData);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handlePlanChange = (index, e) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => {
+      const updatedPlans = [...prevState.MonthlyPlans];
+      updatedPlans[index][name] = value;
+      return {
+        ...prevState,
+        MonthlyPlans: updatedPlans,
+      };
+    });
+  };
+
+  const handleFeatureChange = (planIndex, featureIndex, e) => {
+    const { name, value, type, checked } = e.target;
+    const updatedPricingData = { ...formData };
+    const updatedFeature = updatedPricingData.MonthlyPlans[planIndex].Features[featureIndex];
+
+    if (type === 'checkbox') {
+      updatedFeature[name] = checked;
+    } else {
+      updatedFeature[name] = value;
+    }
+
+    setFormData(updatedPricingData);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch(`http://localhost:1337/api/ourpricing/${formData.documentId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          data: formData,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update pricing');
+      }
+
+      alert('Pricing updated successfully');
+    } catch (error) {
+      alert(error.message || 'Failed to update pricing');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <div>
+      <h1>Edit Pricing</h1>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label htmlFor="SectionTitle">Section Title</label>
+          <input
+            type="text"
+            id="SectionTitle"
+            name="SectionTitle"
+            value={formData.SectionTitle || ''}
+            onChange={handleChange}
+          />
+        </div>
+        <div>
+          <label htmlFor="SectionBody">Section Body</label>
+          <textarea
+            id="SectionBody"
+            name="SectionBody"
+            value={formData.SectionBody || ''}
+            onChange={handleChange}
+          />
+        </div>
+        <div>
+          <label htmlFor="featuredText">Featured Text</label>
+          <input
+            type="text"
+            id="featuredText"
+            name="featuredText"
+            value={formData.featuredText || ''}
+            onChange={handleChange}
+          />
+        </div>
+
+        <h2>Monthly Plans</h2>
+        {formData.MonthlyPlans.map((plan, index) => (
+          <div key={plan.id}>
+            <div>
+              <label htmlFor={`PriceTitle-${index}`}>Plan Title</label>
+              <input
+                type="text"
+                id={`PriceTitle-${index}`}
+                name="PriceTitle"
+                value={plan.PriceTitle || ''}
+                onChange={(e) => handlePlanChange(index, e)}
+              />
+            </div>
+            <div>
+              <label htmlFor={`PriceBody-${index}`}>Plan Description</label>
+              <textarea
+                id={`PriceBody-${index}`}
+                name="PriceBody"
+                value={plan.PriceBody || ''}
+                onChange={(e) => handlePlanChange(index, e)}
+              />
+            </div>
+            <div>
+              <label htmlFor={`Price-${index}`}>Price</label>
+              <input
+                type="number"
+                id={`Price-${index}`}
+                name="Price"
+                value={plan.Price || ''}
+                onChange={(e) => handlePlanChange(index, e)}
+              />
+            </div>
+
+            <h3>Features</h3>
+            {plan.Features.map((feature, featureIndex) => (
+              <div key={feature.id}>
+                <div>
+                  <label htmlFor={`FeatureTitle-${feature.id}`}>Feature Title</label>
+                  <input
+                    type="text"
+                    id={`FeatureTitle-${feature.id}`}
+                    name="Title"
+                    value={feature.Title || ''}
+                    onChange={(e) => handleFeatureChange(index, featureIndex, e)}
+                  />
+                </div>
+                <div>
+                  <label htmlFor={`FeatureHelpText-${feature.id}`}>Feature Help Text</label>
+                  <textarea
+                    id={`FeatureHelpText-${feature.id}`}
+                    name="HelpText"
+                    value={feature.HelpText || ''}
+                    onChange={(e) => handleFeatureChange(index, featureIndex, e)}
+                  />
+                </div>
+                <div>
+                  <label htmlFor={`FeatureIsIncluded-${feature.id}`}>Is Included?</label>
+                  <input
+                    type="checkbox"
+                    id={`FeatureIsIncluded-${feature.id}`}
+                    name="isIncluded"
+                    checked={feature.isIncluded || false}
+                    onChange={(e) => handleFeatureChange(index, featureIndex, e)}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        ))}
+
+        <button type="submit" disabled={isSubmitting}>
+          {isSubmitting ? 'Saving...' : 'Save Changes'}
+        </button>
+      </form>
     </div>
   );
 }

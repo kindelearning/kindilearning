@@ -11,6 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+
 export default function Ourpricing() {
   const [content, setContent] = useState(null); // To store the fetched data
   const [loading, setLoading] = useState(true);
@@ -65,7 +66,7 @@ export default function Ourpricing() {
         </div>
       </div>
       <div className="flex w-fit justify-between items-center gap-4">
-        <div className="mt-8">
+        <div className="mt-8 flex gap-1">
           <Link
             href="home/annual"
             target="_blank"
@@ -73,14 +74,28 @@ export default function Ourpricing() {
           >
             Annual
           </Link>
+          <Link
+            href="home/editannual"
+            target="_blank"
+            className="text-purple hover:scale-105 duration-200 hover:underline"
+          >
+            Edit Annual
+          </Link>
         </div>
-        <div className="mt-8">
+        <div className="mt-8 flex gap-1">
           <Link
             href="home/monthly"
             target="_blank"
             className="text-red hover:scale-105 duration-200 hover:underline"
           >
             Monthly
+          </Link>
+          <Link
+            href="home/editannual"
+            target="_blank"
+            className="text-purple hover:scale-105 duration-200 hover:underline"
+          >
+            Edit Monthly
           </Link>
         </div>
       </div>

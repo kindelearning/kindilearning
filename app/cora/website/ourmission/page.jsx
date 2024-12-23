@@ -8,18 +8,23 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import HeroSectionForm from "../../Sections/Home/HomepageHeroSectionPageUpdate";
-import ChildDevelopmentUnlock from "../../Sections/Home/ChilddevUnlockedSection";
-import HowItWorksSection from "../../Sections/Home/HowItWorksSection";
-import Monthlytheme from "../../Sections/Home/Monthlytheme";
-import EarlyLearningExpert from "../../Sections/Home/EarlyLearningExpert";
 import { SectionRow } from "../../Sections/SectionRow";
-import OurMissionHero from "../../Sections/ourmission/TeamSection";
+import OurMissionHero, {
+  UpdateTeamSection,
+} from "../../Sections/ourmission/TeamSection";
 import TeamSection from "../../Sections/ourmission/TeamSection";
-import HeroOueMission from "../../Sections/ourmission/HeroOueMission";
-import ParentWithKindi from "../../Sections/ParentWithKindi";
-import PopularActivities from "../../Sections/Home/PopularActivities";
-import OurStory from "../../Sections/ourmission/OurStory";
+import HeroOueMission, {
+  UpdateHeroSection,
+} from "../../Sections/ourmission/HeroOueMission";
+import ParentWithKindi, {
+  UpdateParentWithKindiSection,
+} from "../../Sections/ParentWithKindi";
+import PopularActivities, {
+  UpdatePopularLearningForm,
+} from "../../Sections/Home/PopularActivities";
+import OurStory, {
+  UpdateOurStorySection,
+} from "../../Sections/ourmission/OurStory";
 
 export default function HomePage() {
   return (
@@ -40,36 +45,40 @@ export default function HomePage() {
               {/* TeamSection */}
               <SectionRow
                 serialNo={1}
+                page="Our Mission"
                 sectionName="TeamSection"
                 ComponentPreview={TeamSection}
-                ComponentForm={HeroSectionForm}
+                ComponentForm={UpdateTeamSection}
               />
               {/* Child Development Unlocked*/}
               <SectionRow
                 serialNo={2}
+                page="Our Mission"
                 sectionName="Hero "
                 ComponentPreview={HeroOueMission}
-                ComponentForm={HeroSectionForm}
+                ComponentForm={UpdateHeroSection}
               />
-              {/* Slider*/}
               <SectionRow
+                page="Our Mission"
                 serialNo={3}
                 sectionName="Parent With Kindi"
                 ComponentPreview={ParentWithKindi}
-                ComponentForm={HeroSectionForm}
+                ComponentForm={UpdateParentWithKindiSection}
               />
               {/* How It Works */}
               <SectionRow
                 serialNo={4}
+                page="Our Mission"
                 sectionName="Popular Activities"
                 ComponentPreview={PopularActivities}
-                ComponentForm={HeroSectionForm} // Replace with an actual update form if necessary
+                ComponentForm={UpdatePopularLearningForm} // Replace with an actual update form if necessary
               />
               <SectionRow
                 serialNo={5}
+                page="Our Mission"
                 sectionName="Our Story"
                 ComponentPreview={OurStory}
-                ComponentForm={HeroSectionForm} // Replace with an actual update form if necessary
+                ComponentForm={UpdateOurStorySection} // Replace with an actual update form if necessary
               />
             </TableBody>
           </Table>
