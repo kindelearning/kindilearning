@@ -39,7 +39,7 @@ export default function PricingTabs() {
   useEffect(() => {
     const loadPricingData = async () => {
       const fetchedData = await fetchPricingDataFeatures();
-    //   console.log("Fetched Data:", fetchedData); // Log data here
+      console.log("Fetched Data:", fetchedData); // Log data here
 
       if (fetchedData) {
         setPricingDataFeature(fetchedData);
@@ -98,7 +98,7 @@ export default function PricingTabs() {
   return (
     <>
       <div
-        className="w-full h-auto bg-[#EAEAF5] pt-12 pb-[120px] items-center justify-center flex flex-col gap-[20px] transition-all duration-500"
+        className="w-full h-auto bg-[#EAEAF5] px-4 pt-12 pb-[120px] items-center justify-center flex flex-col gap-[20px] transition-all duration-500"
         style={{
           animation: "fadeIn 1s ease-in-out",
           animationFillMode: "forwards",
@@ -135,34 +135,7 @@ export default function PricingTabs() {
           </div>
         </div>
 
-        {/* <div className="grid grid-cols-3">
-          {pricingDataFeature?.AnnualPlans?.length > 0 ? (
-            pricingDataFeature.AnnualPlans.slice(0, 10).map((plan, index) => (
-              <PricingCard
-                key={index}
-                title={plan.PriceTitle}
-                paymentLink="https://buy.stripe.com/6oEbKT0yJa5qbPG28h"
-                description={
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: plan.PriceBody, // Render Markdown or Rich Text
-                    }}
-                  />
-                }
-                price={plan.Price}
-                duration="/Yearly"
-                pricingDetails={transformFeaturesToPricingDetailsFamily(
-                  plan.Features
-                )}
-                isOpen={isAccordionOpen} // Pass the state here
-                toggleAccordion={toggleAccordion} // Pass toggle function
-                image={plan.Thumbnail?.url}
-              />
-            ))
-          ) : (
-            <p>No Annual Plans available.</p>
-          )}
-        </div> */}
+     
         {/* Tab Content */}
         <div className="flex flex-nowrap overflow-x-auto justify-start md:justify-start lg:justify-center lg:items-start items-start scrollbar-hidden px-0 w-full claracontainer gap-2 md:gap-4 scrollbar-hidden">
           {activeTab === "monthly" && (
@@ -170,33 +143,7 @@ export default function PricingTabs() {
               {pricingData.MonthlyPlans &&
                 pricingData.MonthlyPlans.length > 0 && (
                   <>
-                    {/* {pricingData.MonthlyPlans.map((plan, index) => (
-                      <div
-                        style={{
-                          transition: "transform 0.5s ease-in-out",
-                        }}
-                        key={index}
-                        className="flex "
-                      >
-                        <PricingCard
-                          title={plan.PriceTitle}
-                          paymentLink="https://buy.stripe.com/6oEbKT0yJa5qbPG28h"
-                          description={
-                            <div
-                              dangerouslySetInnerHTML={{
-                                __html: plan.PriceBody, // Render Markdown or Rich Text
-                              }}
-                            />
-                          }
-                          price={plan.Price}
-                          duration="/Yearly"
-                          pricingDetails={pricingDetailsFamily}
-                          isOpen={isAccordionOpen} // Pass the state here
-                          toggleAccordion={toggleAccordion} // Pass toggle function
-                          image={plan.Thumbnail?.url}
-                        />
-                      </div>
-                    ))} */}
+                   
                     {monthlypricingDataFeature?.MonthlyPlans?.length > 0 ? (
                       monthlypricingDataFeature.MonthlyPlans.slice(0, 10).map(
                         (plan, index) => (
@@ -218,7 +165,8 @@ export default function PricingTabs() {
                             )}
                             isOpen={isAccordionOpen} // Pass the state here
                             toggleAccordion={toggleAccordion} // Pass toggle function
-                            image={plan.Thumbnail?.url}
+                            image={`http://localhost:1337${plan.Thumbnail?.url}`}
+                            // image={plan.Thumbnail?.url}
                           />
                         )
                       )
@@ -255,7 +203,7 @@ export default function PricingTabs() {
                             )}
                             isOpen={isAccordionOpen} // Pass the state here
                             toggleAccordion={toggleAccordion} // Pass toggle function
-                            image={plan.Thumbnail?.url}
+                            image={`http://localhost:1337${plan.Thumbnail?.url}`}
                           />
                         )
                       )

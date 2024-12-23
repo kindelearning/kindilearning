@@ -27,7 +27,7 @@ export async function fetchHeroSection() {
     console.error("Error fetching Hero Section data:", error.message);
     return null;
   }
-} 
+}
 
 export async function fetchChildDevelopmentUnlock() {
   try {
@@ -83,12 +83,10 @@ export async function fetchEarlyLearningExpert() {
     // Extracting content
     const content = data.data.Content;
 
-
     const mediaUrl = content.Media?.[0]?.url
-    ? `http://localhost:1337${content.Media[0].url}`
-    : null;
+      ? `http://localhost:1337${content.Media[0].url}`
+      : null;
 
-    
     return content; // Return the content data
   } catch (error) {
     console.error("Error fetching Early Learning Expert data:", error.message);
@@ -114,11 +112,13 @@ export async function fetchPopularLearning() {
     console.error("Error fetching Popular Learning:", error);
     return null;
   }
-} 
+}
 
 export async function fetchHowItWorksData() {
   try {
-    const res = await fetch(`http://localhost:1337/api/howitwork?populate=HIWSection.Media`);
+    const res = await fetch(
+      `http://localhost:1337/api/howitwork?populate=HIWSection.Media`
+    );
     if (!res.ok) {
       throw new Error("Failed to fetch How It Works data");
     }
@@ -201,7 +201,8 @@ export async function fetchPricingData() {
 export async function fetchPricingDataFeatures() {
   try {
     const response = await fetch(
-      "http://localhost:1337/api/ourpricing?populate[AnnualPlans][populate]=Features&[MonthlyPlans][populate]=Features"
+      // "http://localhost:1337/api/ourpricing?populate[AnnualPlans][populate]=Features&[MonthlyPlans][populate]=Features"
+      "http://localhost:1337/api/ourpricing?populate[MonthlyPlans][populate][0]=Features&populate[MonthlyPlans][populate][1]=Thumbnail&populate[AnnualPlans][populate][0]=Features&populate[AnnualPlans][populate][1]=Thumbnail"
     );
 
     if (!response.ok) {

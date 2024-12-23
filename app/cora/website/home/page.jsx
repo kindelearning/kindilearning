@@ -7,17 +7,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Eye, FilePenLine } from "lucide-react";
 import HeroSectionForm from "../../Sections/Home/HomepageHeroSectionPageUpdate";
 import ChildDevelopmentUnlock from "../../Sections/Home/ChilddevUnlockedSection";
 import HowItWorksSection from "../../Sections/Home/HowItWorksSection";
@@ -25,8 +14,7 @@ import Monthlytheme from "../../Sections/Home/Monthlytheme";
 import EarlyLearningExpert from "../../Sections/Home/EarlyLearningExpert";
 import PopularActivities from "../../Sections/Home/PopularActivities";
 import { SectionRow } from "../../Sections/SectionRow";
-
-
+import Ourpricing from "../../Sections/Home/Ourpricing";
 
 export default function HomePage() {
   return (
@@ -79,15 +67,22 @@ export default function HomePage() {
                 ComponentPreview={Monthlytheme}
                 ComponentForm={HeroSectionForm} // Replace with an actual update form if necessary
               />
+              {/* Our Pricing */}
               <SectionRow
                 serialNo={6}
+                sectionName="Our Pricing"
+                ComponentPreview={Ourpricing}
+                ComponentForm={HeroSectionForm} // Replace with an actual update form if necessary
+              />
+              <SectionRow
+                serialNo={7}
                 sectionName="Popular Activities"
                 ComponentPreview={PopularActivities}
                 ComponentForm={HeroSectionForm} // Replace with an actual update form if necessary
               />
               {/* EarlyLearningExpert */}
               <SectionRow
-                serialNo={7}
+                serialNo={8}
                 sectionName="Early Learning Expert"
                 ComponentPreview={EarlyLearningExpert}
                 ComponentForm={HeroSectionForm} // Replace with an actual update form if necessary
