@@ -40,14 +40,6 @@ export default async function Hero() {
                   <div className="w-full text-start text-[#696969] text-[16px] leading-[20px] md:text-[18px] md:leading-[22px] lg:text-[22px] lg:leading-[24px] xl:text-[22px] xl:leading-[24px] font-medium font-fredoka animate-slideInLeft animate-delay-3000">
                     {data.Hero.Body}
                     <br />
-                    {/* <span className="italic">
-                    “The first five years have so much to do with how the next
-                    80 turn out.”
-                  </span>
-                  <br />
-                  <span className="font-semibold">
-                    — Bill Gates American businessman, investor, philanthropist.
-                  </span> */}
                   </div>
                 </div>
               </div>

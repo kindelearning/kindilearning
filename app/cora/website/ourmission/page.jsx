@@ -17,6 +17,9 @@ import { SectionRow } from "../../Sections/SectionRow";
 import OurMissionHero from "../../Sections/ourmission/TeamSection";
 import TeamSection from "../../Sections/ourmission/TeamSection";
 import HeroOueMission from "../../Sections/ourmission/HeroOueMission";
+import ParentWithKindi from "../../Sections/ParentWithKindi";
+import PopularActivities from "../../Sections/Home/PopularActivities";
+import OurStory from "../../Sections/ourmission/OurStory";
 
 export default function HomePage() {
   return (
@@ -51,29 +54,21 @@ export default function HomePage() {
               {/* Slider*/}
               <SectionRow
                 serialNo={3}
-                sectionName="Slider"
-                ComponentPreview={HomepageHeroSectionPage}
+                sectionName="Parent With Kindi"
+                ComponentPreview={ParentWithKindi}
                 ComponentForm={HeroSectionForm}
               />
               {/* How It Works */}
               <SectionRow
                 serialNo={4}
-                sectionName="How It Works"
-                ComponentPreview={HowItWorksSection}
+                sectionName="Popular Activities"
+                ComponentPreview={PopularActivities}
                 ComponentForm={HeroSectionForm} // Replace with an actual update form if necessary
               />
-              {/* Monthlytheme */}
               <SectionRow
                 serialNo={5}
-                sectionName="Monthly Theme"
-                ComponentPreview={Monthlytheme}
-                ComponentForm={HeroSectionForm} // Replace with an actual update form if necessary
-              />
-              {/* EarlyLearningExpert */}
-              <SectionRow
-                serialNo={6}
-                sectionName="Early Learning Expert"
-                ComponentPreview={EarlyLearningExpert}
+                sectionName="Our Story"
+                ComponentPreview={OurStory}
                 ComponentForm={HeroSectionForm} // Replace with an actual update form if necessary
               />
             </TableBody>

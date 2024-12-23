@@ -5,7 +5,7 @@ export default async function AgeRanges() {
   const data = await fetchHowItWorks();
   if (!data) {
     return <div>Error loading page content</div>;
-  }
+  } 
 
   return (
     <>

@@ -60,7 +60,7 @@ const RichTextRender = ({ content }) => {
                 fontSize: "1rem",
                 color: "#333",
                 margin: "1rem 0",
-                lineHeight: "1.6",
+                lineHeight: "",
               }}
             >
               {children}

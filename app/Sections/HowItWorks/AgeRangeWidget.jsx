@@ -19,7 +19,7 @@ const AgeCard = ({ bgImage, image, title, body, link }) => {
         className="w-full min-h-[390px] h-[390px] border-t-2 border-b-2 min-w-[280px]  flex flex-col bg-[#ffffff00] rounded-[24px] justify-between items-start px-8 py-4"
       >
         <div className="flex w-full items-center justify-start flex-col">
-          <Image
+          <img
             alt="Kindi"
             src={image}
             className="w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24"
@@ -50,7 +50,7 @@ export default function AgeRangeWidget() {
     const fetchHowItWorks = async () => {
       try {
         const response = await fetch(
-          "http://localhost:1337/api/how-it-work-page?populate[AgeGroup][populate]=Content"
+          "http://localhost:1337/api/how-it-work-page?populate[AgeGroup][populate]=Content.Icon"
         );
         if (!response.ok) {
           throw new Error(`Error fetching data: ${response.statusText}`);
@@ -129,9 +129,6 @@ export default function AgeRangeWidget() {
           onMouseLeave={handleMouseUp}
           style={{ cursor: isDragging ? "grabbing" : "grab" }}
           className="w-full flex-row justify-start items-center gap-[2px] flex overflow-x-auto scrollbar-hidden"
-          // style={{
-          //   scrollBehavior: "smooth", // Enable smooth scroll
-          // }}
         >
           {data?.data?.AgeGroup?.Content &&
           data.data.AgeGroup.Content.length > 0 ? (
@@ -139,17 +136,7 @@ export default function AgeRangeWidget() {
               {data.data.AgeGroup.Content.slice(0, 1).map((content, index) => (
                 <AgeCard
                   key={index}
-                  // image={AgeCardOne}
-                  image={
-                    content?.Icon?.url && (
-                      <Image
-                        src={content.Icon.url}
-                        alt={content?.Title}
-                        width={50}
-                        height={50}
-                      />
-                    )
-                  }
+                  image={`http://localhost:1337${content.Icon.url}`}
                   bgImage="/Images/AgeRangeOne.svg"
                   title={content?.Title}
                   body={content?.Body}
@@ -165,23 +152,14 @@ export default function AgeRangeWidget() {
             alt="Kindi"
             className="w-[50px] h-[50px] -mx-3"
           />
+
           {data?.data?.AgeGroup?.Content &&
           data.data.AgeGroup.Content.length > 0 ? (
             <>
-              {data.data.AgeGroup.Content.slice(0, 1).map((content, index) => (
+              {data.data.AgeGroup.Content.slice(1, 2).map((content, index) => (
                 <AgeCard
                   key={index}
-                  // image={AgeCardOne}
-                  image={
-                    content?.Icon?.url && (
-                      <Image
-                        src={content.Icon.url}
-                        alt={content?.Title}
-                        width={50}
-                        height={50}
-                      />
-                    )
-                  }
+                  image={`http://localhost:1337${content.Icon.url}`}
                   bgImage="/Images/AgeRangeTwo.svg"
                   title={content?.Title}
                   body={content?.Body}
@@ -201,20 +179,11 @@ export default function AgeRangeWidget() {
           {data?.data?.AgeGroup?.Content &&
           data.data.AgeGroup.Content.length > 0 ? (
             <>
-              {data.data.AgeGroup.Content.slice(0, 1).map((content, index) => (
+              {data.data.AgeGroup.Content.slice(2, 3).map((content, index) => (
                 <AgeCard
                   key={index}
                   // image={AgeCardOne}
-                  image={
-                    content?.Icon?.url && (
-                      <Image
-                        src={content.Icon.url}
-                        alt={content?.Title}
-                        width={50}
-                        height={50}
-                      />
-                    )
-                  }
+                  image={`http://localhost:1337${content.Icon.url}`}
                   bgImage="/Images/AgeRangeThree.svg"
                   title={content?.Title}
                   body={content?.Body}
@@ -232,20 +201,11 @@ export default function AgeRangeWidget() {
           {data?.data?.AgeGroup?.Content &&
           data.data.AgeGroup.Content.length > 0 ? (
             <>
-              {data.data.AgeGroup.Content.slice(0, 1).map((content, index) => (
+              {data.data.AgeGroup.Content.slice(3, 4).map((content, index) => (
                 <AgeCard
                   key={index}
                   // image={AgeCardOne}
-                  image={
-                    content?.Icon?.url && (
-                      <Image
-                        src={content.Icon.url}
-                        alt={content?.Title}
-                        width={50}
-                        height={50}
-                      />
-                    )
-                  }
+                  image={`http://localhost:1337${content.Icon.url}`}
                   bgImage="/Images/AgeRangeFour.svg"
                   title={content?.Title}
                   body={content?.Body}

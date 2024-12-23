@@ -54,7 +54,10 @@ export default function Sidebar() {
       <div className="flex items-center justify-between px-4 py-4 border-b border-gray-700">
         {!isCollapsed && (
           <div className="w-full flex flex-col justify-between">
-            <Image src={KindiVector} className="w-[100px] h-[40px] justify-start"/>
+            <Image
+              src={KindiVector}
+              className="w-[100px] h-[40px] justify-start"
+            />
             {/* <h2 className="text-xl font-semibold">Admin Panel</h2> */}
           </div>
         )}
@@ -111,7 +114,13 @@ export default function Sidebar() {
               <SidebarLink
                 href="/cora/website/ourmission"
                 icon={<Home />}
-                label="Our Mission Page"
+                label="Our Mission "
+                isCollapsed={isCollapsed}
+              />
+              <SidebarLink
+                href="/cora/website/howitworks"
+                icon={<Home />}
+                label="How It Works "
                 isCollapsed={isCollapsed}
               />
               <SidebarLink

@@ -7,17 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Eye, FilePenLine } from "lucide-react";
+
 import HeroSectionForm from "../../Sections/Home/HomepageHeroSectionPageUpdate";
 import ChildDevelopmentUnlock from "../../Sections/Home/ChilddevUnlockedSection";
 import HowItWorksSection from "../../Sections/Home/HowItWorksSection";
@@ -25,8 +15,10 @@ import Monthlytheme from "../../Sections/Home/Monthlytheme";
 import EarlyLearningExpert from "../../Sections/Home/EarlyLearningExpert";
 import PopularActivities from "../../Sections/Home/PopularActivities";
 import { SectionRow } from "../../Sections/SectionRow";
-
-
+import HowItWorks from "../../Sections/horItWorks/HowItWorkshero";
+import AreaOfLearning from "../../Sections/horItWorks/Areaoflearning";
+import KindiSkillsCategoriesCards from "../../Sections/horItWorks/KindiSkillsCategoriesCards";
+import AgeGroupSection from "../../Sections/horItWorks/AgeGroupSection";
 
 export default function HomePage() {
   return (
@@ -48,26 +40,12 @@ export default function HomePage() {
               <SectionRow
                 serialNo={1}
                 sectionName="HERO"
-                ComponentPreview={HomepageHeroSectionPage}
-                ComponentForm={HeroSectionForm}
-              />
-              {/* Child Development Unlocked*/}
-              <SectionRow
-                serialNo={2}
-                sectionName="Child Development Unlocked"
-                ComponentPreview={ChildDevelopmentUnlock}
-                ComponentForm={HeroSectionForm}
-              />
-              {/* Slider*/}
-              <SectionRow
-                serialNo={3}
-                sectionName="Slider"
-                ComponentPreview={HomepageHeroSectionPage}
+                ComponentPreview={HowItWorks}
                 ComponentForm={HeroSectionForm}
               />
               {/* How It Works */}
               <SectionRow
-                serialNo={4}
+                serialNo={2}
                 sectionName="How It Works"
                 ComponentPreview={HowItWorksSection}
                 ComponentForm={HeroSectionForm} // Replace with an actual update form if necessary
@@ -75,21 +53,36 @@ export default function HomePage() {
               {/* Monthlytheme */}
               <SectionRow
                 serialNo={5}
-                sectionName="Monthly Theme"
+                sectionName="Area Of Learning"
+                ComponentPreview={AreaOfLearning}
+                ComponentForm={HeroSectionForm} // Replace with an actual update form if necessary
+              />
+              {/* Kindi Skills CategoriesCards */}
+              <SectionRow
+                serialNo={6}
+                sectionName="Kindi Skills CategoriesCards"
+                ComponentPreview={KindiSkillsCategoriesCards}
+                ComponentForm={HeroSectionForm} // Replace with an actual update form if necessary
+              />
+              {/* Monthlytheme */}
+              <SectionRow
+                serialNo={7}
+                sectionName="Monthly theme"
                 ComponentPreview={Monthlytheme}
                 ComponentForm={HeroSectionForm} // Replace with an actual update form if necessary
               />
+              {/* PopularActivities */}
               <SectionRow
-                serialNo={6}
+                serialNo={8}
                 sectionName="Popular Activities"
                 ComponentPreview={PopularActivities}
                 ComponentForm={HeroSectionForm} // Replace with an actual update form if necessary
               />
-              {/* EarlyLearningExpert */}
+              {/* AgeGroupSection */}
               <SectionRow
-                serialNo={7}
-                sectionName="Early Learning Expert"
-                ComponentPreview={EarlyLearningExpert}
+                serialNo={8}
+                sectionName="Age Group Section"
+                ComponentPreview={AgeGroupSection}
                 ComponentForm={HeroSectionForm} // Replace with an actual update form if necessary
               />
             </TableBody>
