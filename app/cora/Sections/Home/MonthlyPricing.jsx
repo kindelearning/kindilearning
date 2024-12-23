@@ -88,3 +88,152 @@ export default function MonthlyPricing() {
     </div>
   );
 }
+
+
+export  function MonthlyPricingUpdate() {
+  const [content, setContent] = useState(null); // To store the fetched data
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Fetch data when the component mounts
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:1337/api/ourpricing?populate[MonthlyPlans][populate][0]=Features&populate[MonthlyPlans][populate][1]=Thumbnail"
+        );
+        const data = await response.json();
+        if (data?.data) {
+          setContent(data.data); // Set the fetched data
+        } else {
+          setError("No content found.");
+        }
+      } catch (err) {
+        setError("Error fetching data: " + err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch("http://localhost:1337/api/ourpricing", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          data: content, // Send the updated content
+        }),
+      });
+
+      const updatedData = await response.json();
+      if (updatedData) {
+        alert("Content updated successfully!");
+      }
+    } catch (error) {
+      alert("Failed to update content");
+    }
+  };
+
+  if (loading) {
+    return <div>Loading content...</div>;
+  }
+
+  if (error) {
+    return <div className="text-red-500">{error}</div>;
+  }
+
+  return (
+    <div className="container mx-auto px-8 py-12">
+      <h2 className="text-3xl font-bold mb-4">Update Pricing Content</h2>
+      
+      {/* Section Title */}
+      <div className="mb-4">
+        <label htmlFor="SectionTitle" className="block font-medium">
+          Section Title
+        </label>
+        <input
+          type="text"
+          id="SectionTitle"
+          value={content?.SectionTitle || ""}
+          onChange={(e) => setContent({ ...content, SectionTitle: e.target.value })}
+          className="w-full p-2 border border-gray-300 rounded"
+        />
+      </div>
+
+      {/* Featured Text */}
+      <div className="mb-4">
+        <label htmlFor="featuredText" className="block font-medium">
+          Featured Text
+        </label>
+        <textarea
+          id="featuredText"
+          value={content?.featuredText || ""}
+          onChange={(e) => setContent({ ...content, featuredText: e.target.value })}
+          className="w-full p-2 border border-gray-300 rounded"
+        />
+      </div>
+
+      {/* Monthly Plans */}
+      <div className="mb-6">
+        <h3 className="text-2xl font-semibold mb-2">Monthly Plans</h3>
+        {content?.MonthlyPlans?.map((plan, index) => (
+          <div key={plan.id} className="border p-4 mb-4 rounded">
+            <div className="mb-2">
+              <label className="font-medium">Price Title</label>
+              <input
+                type="text"
+                value={plan.PriceTitle}
+                onChange={(e) => {
+                  const updatedPlans = [...content.MonthlyPlans];
+                  updatedPlans[index].PriceTitle = e.target.value;
+                  setContent({ ...content, MonthlyPlans: updatedPlans });
+                }}
+                className="w-full p-2 border border-gray-300 rounded"
+              />
+            </div>
+            <div className="mb-2">
+              <label className="font-medium">Price Body</label>
+              <textarea
+                value={plan.PriceBody}
+                onChange={(e) => {
+                  const updatedPlans = [...content.MonthlyPlans];
+                  updatedPlans[index].PriceBody = e.target.value;
+                  setContent({ ...content, MonthlyPlans: updatedPlans });
+                }}
+                className="w-full p-2 border border-gray-300 rounded"
+              />
+            </div>
+            <div className="mb-2">
+              <label className="font-medium">Price</label>
+              <input
+                type="number"
+                value={plan.Price}
+                onChange={(e) => {
+                  const updatedPlans = [...content.MonthlyPlans];
+                  updatedPlans[index].Price = e.target.value;
+                  setContent({ ...content, MonthlyPlans: updatedPlans });
+                }}
+                className="w-full p-2 border border-gray-300 rounded"
+              />
+            </div>
+            {/* Optionally, handle the Thumbnail and Features as well */}
+          </div>
+        ))}
+      </div>
+
+      {/* Submit Button */}
+      <button
+        onClick={handleUpdate}
+        className="bg-blue-500 text-white px-6 py-2 rounded"
+      >
+        Update Content
+      </button>
+    </div>
+  );
+}

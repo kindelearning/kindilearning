@@ -8,13 +8,19 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import HeroSectionForm from "../../Sections/Home/HomepageHeroSectionPageUpdate";
-import ChildDevelopmentUnlock from "../../Sections/Home/ChilddevUnlockedSection";
+import ChildDevelopmentUnlock, {
+  UpdateChildDevelopmentContent,
+} from "../../Sections/Home/ChilddevUnlockedSection";
 import HowItWorksSection from "../../Sections/Home/HowItWorksSection";
-import Monthlytheme from "../../Sections/Home/Monthlytheme";
-import EarlyLearningExpert from "../../Sections/Home/EarlyLearningExpert";
-import PopularActivities from "../../Sections/Home/PopularActivities";
+import Monthlytheme, {
+  UpdateMonthlytheme,
+} from "../../Sections/Home/Monthlytheme";
+import EarlyLearningExpert, { UpdateEarlyLearningExpert } from "../../Sections/Home/EarlyLearningExpert";
+import PopularActivities, {
+  UpdatePopularLearningForm,
+} from "../../Sections/Home/PopularActivities";
 import { SectionRow } from "../../Sections/SectionRow";
-import Ourpricing from "../../Sections/Home/Ourpricing";
+import Ourpricing, { UpdatePricingForm } from "../../Sections/Home/Ourpricing";
 
 export default function HomePage() {
   return (
@@ -44,7 +50,7 @@ export default function HomePage() {
                 serialNo={2}
                 sectionName="Child Development Unlocked"
                 ComponentPreview={ChildDevelopmentUnlock}
-                ComponentForm={HeroSectionForm}
+                ComponentForm={UpdateChildDevelopmentContent}
               />
               {/* Slider*/}
               <SectionRow
@@ -58,34 +64,34 @@ export default function HomePage() {
                 serialNo={4}
                 sectionName="How It Works"
                 ComponentPreview={HowItWorksSection}
-                ComponentForm={HeroSectionForm} // Replace with an actual update form if necessary
+                ComponentForm={HowItWorksSection} // Replace with an actual update form if necessary
               />
               {/* Monthlytheme */}
               <SectionRow
                 serialNo={5}
                 sectionName="Monthly Theme"
                 ComponentPreview={Monthlytheme}
-                ComponentForm={HeroSectionForm} // Replace with an actual update form if necessary
+                ComponentForm={UpdateMonthlytheme} // Replace with an actual update form if necessary
               />
               {/* Our Pricing */}
               <SectionRow
                 serialNo={6}
                 sectionName="Our Pricing"
                 ComponentPreview={Ourpricing}
-                ComponentForm={HeroSectionForm} // Replace with an actual update form if necessary
+                ComponentForm={UpdatePricingForm} // Replace with an actual update form if necessary
               />
               <SectionRow
                 serialNo={7}
                 sectionName="Popular Activities"
                 ComponentPreview={PopularActivities}
-                ComponentForm={HeroSectionForm} // Replace with an actual update form if necessary
+                ComponentForm={UpdatePopularLearningForm} // Replace with an actual update form if necessary
               />
               {/* EarlyLearningExpert */}
               <SectionRow
                 serialNo={8}
                 sectionName="Early Learning Expert"
                 ComponentPreview={EarlyLearningExpert}
-                ComponentForm={HeroSectionForm} // Replace with an actual update form if necessary
+                ComponentForm={UpdateEarlyLearningExpert} // Replace with an actual update form if necessary
               />
             </TableBody>
           </Table>

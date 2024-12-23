@@ -72,6 +72,12 @@ export default function Sidebar() {
       {/* Sidebar Links */}
       <div className="mt-6 space-y-4">
         <SidebarLink
+          href="/cora/website/media"
+          icon={<Home />}
+          label="Media"
+          isCollapsed={isCollapsed}
+        />
+        <SidebarLink
           href="/cora/website/test"
           icon={<Home />}
           label="Test"

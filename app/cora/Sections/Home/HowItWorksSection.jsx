@@ -50,16 +50,21 @@ export default function HowItWorksSection() {
             className="how-it-works-section bg-white rounded-lg p-8 gap-4 flex items-start"
           >
             {/* Image */}
-            <img
-              className="rounded-lg max-w-[300px] h-[300px] w-full  object-contain"
-              src={`http://localhost:1337${section.Media.url}`}
-              alt={section.Media.name}
-            />
+            {section.Media ? (
+              <img
+                className="rounded-lg max-w-[300px] h-[300px] w-full object-contain"
+                src={`http://localhost:1337${section.Media.url}`}
+                alt={section.Media.name || "How it works image"}
+              />
+            ) : (
+              <div className="w-full h-[300px] bg-gray-300 rounded-lg flex items-center justify-center">
+                <span>No Image Available</span>
+              </div>
+            )}
             <div className="flex flex-col justify-start items-start">
               {/* Title and Featured Text */}
               <span className="text-2xl font-semibold text-gray-800 mb-4 text-center">
-                {section.title} {" "}
-                {section.featuredText}
+                {section.title} {section.featuredText}
               </span>
 
               {/* Body Description */}

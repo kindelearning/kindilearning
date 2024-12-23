@@ -2,7 +2,15 @@
 
 import RichTextRender from "@/app/Sections/Global/RichTextRender";
 import { useEffect, useState } from "react";
-
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 export default function Monthlytheme() {
   const [content, setContent] = useState(null); // To store the fetched data
   const [loading, setLoading] = useState(true);
@@ -68,6 +76,180 @@ export default function Monthlytheme() {
       ) : (
         <p>No media available.</p>
       )}
+    </div>
+  );
+}
+export function UpdateMonthlytheme() {
+  const [content, setContent] = useState({
+    title: "",
+    BodyDescription: "",
+    featuredText: "",
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [dialogMessage, setDialogMessage] = useState("");
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  useEffect(() => {
+    // Fetch initial content data to pre-fill the form
+    const fetchContent = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:1337/api/Monthlytheme?populate=Content.Media"
+        );
+        const data = await response.json();
+        setContent({
+          title: data.data.Content.title,
+          BodyDescription: data.data.Content.BodyDescription,
+          featuredText: data.data.Content.featuredText,
+        });
+      } catch (err) {
+        setError("Error fetching content");
+      }
+    };
+
+    fetchContent();
+  }, []);
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    // Ensure BodyDescription is an array with the required structure
+    const formattedBodyDescription = [
+      {
+        type: "paragraph",
+        children: [
+          {
+            type: "text",
+            text: content.BodyDescription, // Assuming BodyDescription is a string
+          },
+        ],
+      },
+    ];
+
+    const updatedContent = {
+      data: {
+        Content: {
+          title: content.title,
+          BodyDescription: formattedBodyDescription, // Ensure it's an array
+          featuredText: content.featuredText,
+          // Include Media field if required, if not, leave it out or use null
+          Media: content.Media || null, // Assuming content.Media can be null or an array
+        },
+      },
+    };
+
+    const documentId = "xo438fcvi4mstxwt3vsyowgw"; // Replace this with the actual documentId
+
+    try {
+      // Log the payload to verify the structure before sending
+      // console.log("Request Payload:", updatedContent);
+
+      const response = await fetch(
+        `http://localhost:1337/api/Monthlytheme?${documentId}`, // Correct URL with query parameter for documentId
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedContent),
+        }
+      );
+
+      const result = await response.json();
+      if (response.ok) {
+        setDialogMessage("Content updated successfully!");
+      } else {
+        // Log and display more detailed error
+        console.error("Error response:", result);
+        setDialogMessage(
+          `Error updating content: ${result.message || response.statusText}`
+        );
+      }
+    } catch (err) {
+      console.error("Error:", err); // More detailed error logging
+      setDialogMessage(`Error updating content: ${err.message}`);
+    } finally {
+      setIsDialogOpen(true);
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="container mx-auto p-4">
+      <h2 className="text-2xl font-semibold mb-4">Edit Content</h2>
+
+      {error && <div className="text-red-500">{error}</div>}
+
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
+            Title
+          </label>
+          <input
+            type="text"
+            value={content.title}
+            onChange={(e) => setContent({ ...content, title: e.target.value })}
+            className="w-full p-2 border border-gray-300 rounded-md"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
+            Body
+          </label>
+          <textarea
+            value={content.BodyDescription}
+            onChange={(e) =>
+              setContent({ ...content, BodyDescription: e.target.value })
+            }
+            className="w-full p-2 border border-gray-300 rounded-md"
+            rows="5"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
+            Featured Text
+          </label>
+          <input
+            type="text"
+            value={content.featuredText}
+            onChange={(e) =>
+              setContent({ ...content, featuredText: e.target.value })
+            }
+            className="w-full p-2 border border-gray-300 rounded-md"
+          />
+        </div>
+
+        <div className="flex items-center justify-center">
+          <button
+            type="submit"
+            disabled={loading}
+            className="px-4 py-2 bg-red text-white rounded-md disabled:bg-gray-400"
+          >
+            {loading ? "Updating..." : "Update Content"}
+          </button>
+        </div>
+      </form>
+
+      {/* Shadcn Dialog for Success/Error Message */}
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Update Status</DialogTitle>
+            <DialogDescription>{dialogMessage}</DialogDescription>
+          </DialogHeader>
+          <DialogClose
+            onClick={() => setIsDialogOpen(false)}
+            className="bg-red text-white rounded-md px-4 py-2"
+          >
+            Close
+          </DialogClose>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
