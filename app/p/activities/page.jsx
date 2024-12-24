@@ -16,6 +16,7 @@ import Loading from "@/app/loading";
 import { fetchAllActivities } from "@/app/data/p/Dynamic/Activity";
 import ActivityCard from "./Sections/ActivityCard";
 import { activityIcons } from "@/app/constant/menu";
+import Image from "next/image";
 
 // FilterSelect Component
 const FilterSelect = ({ id, label, value, onChange, options }) => {
@@ -263,14 +264,23 @@ export default function ActivitiesData() {
     (filteredActivities?.length || 0) / itemsPerPage
   );
 
-  const startIndex = (currentPage - 1) * itemsPerPage;
   // Ensure filteredActivities is an array before calling .slice()
+  const startIndex = (currentPage - 1) * itemsPerPage;
   const currentActivities = Array.isArray(filteredActivities)
     ? filteredActivities.slice(startIndex, startIndex + itemsPerPage)
     : [];
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
+  };
+
+  // Function to get the icon for each skill based on title
+  const getIconForSkill = (skillTitle) => {
+    const foundIcon = activityIcons.find(
+      (iconData) => iconData.title === skillTitle
+    );
+    // return foundIcon ? foundIcon.icon : null; // Return the icon or null if not found
+    return foundIcon ? foundIcon.iconUrl : null; // Return the icon URL or null if not found
   };
 
   if (!filteredActivities) {
@@ -391,11 +401,13 @@ export default function ActivitiesData() {
             {/* Activity grid */}
             <div className="grid grid-cols-2 gap-6 w-full">
               {currentActivities.map((activity) => (
-                <ActivityCard
-                  key={activity.documentId}
-                  activityUrl={`/p/activities/${activity.documentId}`}
-                  activity={activity}
-                />
+                <>
+                  <ActivityCard
+                    key={activity.documentId}
+                    activityUrl={`/p/activities/${activity.documentId}`}
+                    activity={activity}
+                  />
+                </>
               ))}
             </div>
             {/* Pagination Controls */}

@@ -1,8 +1,15 @@
+import { activityIcons } from "@/app/constant/menu";
 import { ActivityImage } from "@/public/Images";
 import Image from "next/image";
 import Link from "next/link";
-
-export default function ActivityCard({ activity, activityUrl }) {
+const getIconForSkill = (skillTitle) => {
+  const foundIcon = activityIcons.find(
+    (iconData) => iconData.title === skillTitle
+  );
+  //   console.log("foundIcon", foundIcon);
+  return foundIcon ? foundIcon.icon : null; // Return the icon URL or null if not found
+};
+export default function ActivityCard({ activity, activityUrl, icons }) {
   const {
     Title,
     Skills,
@@ -55,7 +62,30 @@ export default function ActivityCard({ activity, activityUrl }) {
                   </div>
                 </div>
               </div>
-              <div className="items-center justify-center gap-2 md:gap-4 grid grid-cols-5"></div>
+              {/* <div className="items-center justify-center gap-2 md:gap-4 grid grid-cols-5"></div> */}
+              <div className="items-center justify-center gap-2 md:gap-4 grid grid-cols-5">
+                {/* Skill Icons Section */}
+                {Skills?.slice(0, 4).map((skill, index) => {
+                  const skillTitle = skill.children?.[0]?.text; // Extract skill title
+                  const iconUrl = getIconForSkill(skillTitle, icons); // Get icon URL using the passed prop
+                  return (
+                    <div
+                      key={index}
+                      className="activity-icon  flex items-center gap-2"
+                    >
+                      {iconUrl && (
+                        <img
+                          src={iconUrl.src}
+                          alt={skillTitle}
+                          className="w-6 lg:w-10 lg:h-10 h-6"
+                          width={iconUrl.width} // Optionally set width and height
+                          height={iconUrl.height}
+                        />
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>
