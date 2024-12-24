@@ -14,7 +14,6 @@ import Link from "next/link";
 import { Eye, PencilLine, Trash } from "lucide-react";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -23,8 +22,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import DeleteContent from "../community/delete/page";
-import CreateActivity from "./create/page";
 import EditActivityForm from "./update/page";
 
 export default function ActivitiesPage() {

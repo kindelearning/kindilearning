@@ -90,6 +90,18 @@ export default function Sidebar() {
           isCollapsed={isCollapsed}
         />
         <SidebarLink
+          href="/cora/website/forms"
+          icon={<FormInput />}
+          label="ClaraForms"
+          isCollapsed={isCollapsed}
+        />
+        <SidebarLink
+          href="/cora/website/activities"
+          icon={<Settings />}
+          label="Activity"
+          isCollapsed={isCollapsed}
+        />
+        <SidebarLink
           href="/cora/website/shop"
           icon={<List />}
           label="Products"
@@ -187,18 +199,7 @@ export default function Sidebar() {
           label="Themes"
           isCollapsed={isCollapsed}
         />
-        <SidebarLink
-          href="/cora/website/forms"
-          icon={<FormInput />}
-          label="ClaraForms"
-          isCollapsed={isCollapsed}
-        />
-        <SidebarLink
-          href="/cora/website/activities"
-          icon={<Settings />}
-          label="Activity"
-          isCollapsed={isCollapsed}
-        />
+
         <SidebarLink
           href="/cora/website/scheduler"
           icon={<Settings />}
