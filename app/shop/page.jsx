@@ -5,13 +5,37 @@ import { fetchShopProducts } from "../data/p/Dynamic/Shop";
 import Banner from "./sections/Banner";
 import { Header } from "../Sections";
 import ProductCard from "./sections/ProductCard";
+import { useEffect, useState } from "react";
 
-export default async function ShopPage() {
-  const pageContent = await fetchShopProducts();
-  console.log("fetchShopProducts", pageContent);
-  if (!pageContent) {
-    return <div>Error: No data available</div>;
+export default function ShopPage() {
+  const [products, setProducts] = useState([]); // State to hold the products
+  const [loading, setLoading] = useState(true); // State to track loading state
+  const [error, setError] = useState(null); // State to track errors
+
+  // Fetch products when component mounts
+  useEffect(() => {
+    async function getProducts() {
+      const fetchedProducts = await fetchShopProducts();
+      if (fetchedProducts.length === 0) {
+        setError("No products available.");
+      } else {
+        setProducts(fetchedProducts);
+      }
+      setLoading(false);
+    }
+
+    getProducts(); // Trigger product fetching
+  }, []); // Empty dependency array ensures it runs only once when the component mounts
+
+
+  if (loading) {
+    return <div>Loading...</div>;
   }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
+
   return (
     <>
       <Header className="sticky" />
@@ -19,24 +43,28 @@ export default async function ShopPage() {
         <div className="flex w-full justify-center items-center">
           <Banner />
         </div>
-        <div className="w-full h-auto bg-[#eaeaf5] items-center justify-center py-2  flex flex-col md:flex-row gap-[20px]">
+        <div className="w-full h-auto bg-[#eaeaf5] items-center justify-center py-2 flex flex-col md:flex-row gap-[20px]">
           <div className="claracontainer py-4 w-full bg-[#eaeaf5] flex flex-row overflow-hidden gap-8">
+            {/* Filters Sidebar */}
+            <div className="hidden lg:flex max-w-[25%] bg-[gray] w-full">
+
+            </div>
+            {/* Main Products Grid */}
             <div className="w-full lg:grid lg:grid-cols-3 pl-4 md:pl-2 lg:px-0 flex flex-row overflow-x-scroll scrollbar-hidden gap-2">
-              {pageContent.map((product) => {
-                return (
-                  <div key={product.id} className="product-card">
-                    <Link target="_blank" href={`/shop/${product.documentId}`}>
-                      <>
-                        <ProductCard
-                          image={`http://localhost:1337${product?.FeaturedImage[0]?.url}`}
-                          price={product.DiscountPrice}
-                          title={product.Name}
-                        />
-                      </>
-                    </Link>
-                  </div>
-                );
-              })}
+              {products.map((product) => (
+                <div key={product.id} className="product-card">
+                  <Link target="_blank" href={`/shop/${product.documentId}`}>
+                    <ProductCard
+                      image={`http://localhost:1337${
+                        product?.FeaturedImage?.[0]?.url ||
+                        "/uploads/default-image.webp"
+                      }`}
+                      price={product.DiscountPrice || product.Price}
+                      title={product.Name}
+                    />
+                  </Link>
+                </div>
+              ))}
             </div>
           </div>
         </div>

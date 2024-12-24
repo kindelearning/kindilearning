@@ -1,11 +1,12 @@
 "use client";
 
-import { Ratings } from "@/public/Images";
+import { ProductImage, Ratings } from "@/public/Images";
 import Image from "next/image";
+import Link from "next/link";
 
 const { useState, useEffect } = require("react");
 
-export default function ProductCard({ image, title, price }) {
+export default function ProductCard({ image, title, productUrl, price }) {
   const [rating, setRating] = useState(0);
   useEffect(() => {
     // Function to generate a random number between 3 and 4.8, rounded to 1 decimal place
@@ -20,11 +21,10 @@ export default function ProductCard({ image, title, price }) {
   }, []);
 
   return (
-    // <div className="flex max-w-[300px] min-w-[240px] w-full flex-col rounded-[24px] items-center gap-4 bg-white  hover:shadow-md">
-    <div className="flex min-w-[170px]  lg:min-w-[240px]  max-w-[176px] md:min-w-full lg:w-full w-full flex-col rounded-[24px] lg:rounded-[24px] items-center gap-2 lg:gap-4 bg-white hover:shadow-md">
+    <Link href={productUrl} target="_blank" className="flex min-w-[170px] lg:min-w-[280px] lg:max-w-[300px] xl:min-w-[320px]  max-w-[176px] md:min-w-full lg:w-full w-full flex-col rounded-[24px] lg:rounded-[24px] items-center gap-2 lg:gap-4 bg-white hover:shadow-md">
       <div className="flex rounded-t-[24px] overflow-clip w-full">
         <img
-          src={image}
+          src={image || ProductImage}
           alt={title}
           width={200}
           height={200}
@@ -54,7 +54,7 @@ export default function ProductCard({ image, title, price }) {
           {title.length > 24 ? `${title.slice(0, 22)}...` : title}
         </h3>
       </div>
-    </div>
+    </Link>
   );
 }
 export const MobileProductCard = ({ image, title, price }) => {

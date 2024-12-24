@@ -24,6 +24,8 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import DeleteContent from "../community/delete/page";
+import CreateActivity from "./create/page";
+import EditActivityForm from "./update/page";
 
 export default function ActivitiesPage() {
   const [activities, setActivities] = useState([]);
@@ -89,28 +91,6 @@ export default function ActivitiesPage() {
     fetchActivities();
   }, []);
 
-  const handleDelete = async (documentId) => {
-    try {
-      const res = await fetch(
-        `http://localhost:1337/api/activities/${documentId}`,
-        {
-          method: "DELETE",
-        }
-      );
-      if (res.ok) {
-        setActivities(contactForms.filter((entry) => entry.id !== id));
-        // setFilteredProducts((prevProducts) =>
-        //   prevProducts.filter((product) => product.documentId !== documentId)
-        // );
-        setIsDialogOpen(false); // Close the dialog after successful deletion
-      } else {
-        throw new Error("Failed to delete product");
-      }
-    } catch (error) {
-      setError(error.message);
-    }
-  };
-
   if (loading) return <div>Loading...</div>;
   if (error) return <div className="text-red-500">{error}</div>;
 
@@ -169,22 +149,54 @@ export default function ActivitiesPage() {
     });
   };
 
+  const handleDelete = async (documentId) => {
+    try {
+      const response = await fetch(
+        `http://localhost:1337/api/activities/${documentId}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (response.ok) {
+        // Filter out the deleted activity from the state
+        setActivities((prevActivities) =>
+          prevActivities.filter(
+            (activity) => activity.documentId !== documentId
+          )
+        );
+        // alert("Activity deleted successfully.");
+      } else {
+        throw new Error("Failed to delete the activity.");
+      }
+    } catch (error) {
+      console.error("Error deleting activity:", error);
+      alert("An error occurred while deleting the activity.");
+    }
+  };
+
   return (
     <div className="gap-4 font-fredoka flex w-full flex-col p-8">
       <h1 className="text-2xl font-bold mb-6">Activities</h1>
 
+      {/* Search Bar */}
+      <div className="flex w-full justify-between rounded-lg items-center">
+        <input
+          type="text"
+          placeholder="Search by Title"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="border rounded-lg w-full px-2 py-1  "
+        />
+      </div>
       <div className="flex w-full gap-4 justify-between">
-        {/* Search Bar */}
-        <div className="flex w-full justify-between rounded-lg items-center">
-          <input
-            type="text"
-            placeholder="Search by Title"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="border rounded-lg w-full px-2 py-1  "
-          />
-        </div>
-
+        <Link
+          target="_blank"
+          href="http://localhost:3000/cora/website/activities/create"
+          className="text-[#414141] hover:text-black px-4 py-2 rounded-md text-[16px] font-medium duration-200 ease-in-out"
+        >
+          Create New Activity
+        </Link>
         {/* Filters */}
         <div className="flex space-x-4">
           <select
@@ -295,6 +307,7 @@ export default function ActivitiesPage() {
                     (sortConfig.direction === "asc" ? " ↑" : " ↓")}
                 </button>
               </TableHead>
+              <TableHead>Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -308,7 +321,7 @@ export default function ActivitiesPage() {
                         key={index}
                         src={`http://localhost:1337${image.url}`}
                         alt={`Gallery ${index}`}
-                        className="w-16 h-16 object-cover rounded-md"
+                        className="min-w-16 rounded-md h-16 object-cover"
                       />
                     ))}
                   </div>
@@ -346,34 +359,51 @@ export default function ActivitiesPage() {
                   >
                     <Eye className="text-[#717171] w-4 h-4  duration-200 ease-ease-in-out hover:text-black" />
                   </Link>
-                  {/* Trash Icon: Delete with confirmation */}
+                  {/* Delete Feature */}
                   <Dialog>
                     <DialogTrigger asChild>
                       <Trash className="text-[#717171] w-4 h-4  duration-200 ease-ease-in-out hover:text-black" />
                     </DialogTrigger>
                     <DialogContent>
                       <DialogHeader>
-                        <DialogTitle>Delete Activity</DialogTitle>
+                        <DialogTitle>Confirm Deletion</DialogTitle>
                         <DialogDescription>
-                          Are you sure you want to delete this activity?
+                          Are you sure you want to delete this activity? This
+                          action cannot be undone.
                         </DialogDescription>
                       </DialogHeader>
                       <DialogFooter>
-                        <DialogClose asChild>
-                          <Button variant="outline">Cancel</Button>
-                        </DialogClose>
                         <Button
-                          className="bg-red-500 hover:bg-[#b2b2b2] text-red"
+                          variant="outline"
+                          onClick={() => console.log("Cancel")}
+                        >
+                          Cancel
+                        </Button>
+                        <Button
+                          variant="destructive"
                           onClick={() => handleDelete(activity.documentId)}
                         >
-                          Confirm Delete
+                          Delete
                         </Button>
-
-                        {/* <DeleteContent documentId={activity.documentId} /> */}
                       </DialogFooter>
                     </DialogContent>
                   </Dialog>
+                  {/* Update feature */}
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <PencilLine className="text-[#717171] w-4 h-4  duration-200 ease-ease-in-out hover:text-black" />
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Confirm Deletion</DialogTitle>
+                        <DialogDescription>
+                          <EditActivityForm documentId={activity.documentId} />
+                        </DialogDescription>
+                      </DialogHeader>
+                    </DialogContent>
+                  </Dialog>
                 </TableCell>
+                {/* <TableCell></TableCell> */}
               </TableRow>
             ))}
           </TableBody>
