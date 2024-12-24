@@ -15,7 +15,89 @@ import { Button } from "@/components/ui/button";
 import Loading from "@/app/loading";
 import { fetchAllActivities } from "@/app/data/p/Dynamic/Activity";
 import ActivityCard from "./Sections/ActivityCard";
+import { activityIcons } from "@/app/constant/menu";
 
+// FilterSelect Component
+const FilterSelect = ({ id, label, value, onChange, options }) => {
+  return (
+    <div className="flex flex-col gap-2 w-full">
+      <select
+        id={id}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="border-2 w-full cursor-pointer hover:bg-gray-200 duration-300 ease-ease-out pr-2 rounded-full border-[#3f3a64] text-[#3f3a64] bg-white text-base font-fredoka leading-[13px] font-medium p-2"
+      >
+        <option value="All" disabled>
+          Select {label}
+        </option>
+        {options.map((option) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+};
+
+const SelectFilter = ({ id, value, onChange, options, label }) => (
+  <div className="flex flex-col justify-start items-start gap-2 w-full">
+    <div className="text-purple clarabodyTwo">{label}</div>
+    <select
+      id={id}
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      className="border-2 w-full cursor-pointer hover:bg-gray-200 duration-300 ease-ease-out pr-2 rounded-full border-[#3f3a64] text-[#3f3a64] bg-white text-base font-fredoka leading-[13px] font-medium p-2"
+    >
+      <option value="All" disabled>
+        Select {label}
+      </option>
+      {options.map((option) => (
+        <option key={option} value={option}>
+          {option}
+        </option>
+      ))}
+    </select>
+  </div>
+);
+
+const FilterDrawer = ({ title, onSubmit, onCancel, children }) => (
+  <Drawer className="w-full flex justify-center items-center">
+    <DrawerTrigger className="w-full">
+      <Button className="bg-[#f8f8f8] w-full hover:bg-white rounded-[100px] border-2 border-red flex-col justify-center items-center gap-2 inline-flex text-red text-sm font-medium font-fredoka leading-tight">
+        {title}
+      </Button>
+    </DrawerTrigger>
+    <DrawerContent className="w-full justify-center overflow-clip h-fit items-center flex">
+      <DrawerHeader className="w-full h-full md:h-fit">
+        <DrawerDescription className="flex h-full md:h-fit flex-col pb-6 overflow-y-scroll justify-start items-start w-full gap-2">
+          <div className="text-red text-2xl font-semibold text-start font-fredoka capitalize leading-[28px]">
+            {title} based on Preferred Week Days
+          </div>
+          <div className="flex flex-col justify-start gap-2 items-start w-full">
+            {children}
+          </div>
+        </DrawerDescription>
+      </DrawerHeader>
+      <DrawerFooter className="shadow-upper w-full h-full md:h-fit rounded-t-[12px]">
+        <DrawerClose className="flex w-full justify-between items-center gap-2">
+          <Button
+            onClick={onSubmit}
+            className="bg-[#3f3a64] w-full rounded-2xl shadow border-2 border-white text-center text-white text-xs font-semibold font-fredoka leading-none"
+          >
+            Submit
+          </Button>
+          <Button
+            onClick={onCancel}
+            className="bg-red w-full rounded-2xl shadow border-2 border-white text-center text-white text-xs font-semibold font-fredoka leading-none"
+          >
+            Cancel
+          </Button>
+        </DrawerClose>
+      </DrawerFooter>
+    </DrawerContent>
+  </Drawer>
+);
 
 export default function ActivitiesData() {
   const [activities, setActivities] = useState(null); // All activities fetched from API
@@ -34,6 +116,10 @@ export default function ActivitiesData() {
 
   // Weekdays state
   const [selectedWeekdays, setSelectedWeekdays] = useState([]); // Tracks selected weekdays
+
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1); // Current page
+  const itemsPerPage = 24; // Number of items per page
 
   const weekdays = [
     "Monday",
@@ -172,6 +258,21 @@ export default function ActivitiesData() {
     setSelectedWeekdays([]);
   };
 
+  // Pagination logic
+  const totalPages = Math.ceil(
+    (filteredActivities?.length || 0) / itemsPerPage
+  );
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  // Ensure filteredActivities is an array before calling .slice()
+  const currentActivities = Array.isArray(filteredActivities)
+    ? filteredActivities.slice(startIndex, startIndex + itemsPerPage)
+    : [];
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
   if (!filteredActivities) {
     return <div>Loading...</div>;
   }
@@ -212,124 +313,181 @@ export default function ActivitiesData() {
           </div>
         </div>
 
+        {/* Mobile Filters */}
+        <div className="claracontainer p-0 w-full flex flex-col lg:hidden overflow-hidden gap-2">
+          <div className="flex w-full justify-between items-center gap-1">
+            {/* Sort Drawer */}
+            <FilterDrawer
+              title="Sort"
+              onSubmit={() => console.log("Sort submitted")}
+              onCancel={() => console.log("Sort canceled")}
+            >
+              {weekdays.map((day) => (
+                <label key={day} className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    className="text-red border-2 bg-[white] border-red w-[24px] h-[24px]"
+                    value={day}
+                    checked={selectedWeekdays.includes(day)}
+                    onChange={() => handleWeekdayChange(day)}
+                  />
+                  <label
+                    htmlFor={`day-${day}`}
+                    className="w-full text-[#3f3a64] text-base font-fredoka leading-[13px] font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    {day}
+                  </label>
+                </label>
+              ))}
+            </FilterDrawer>
+
+            {/* Filter Drawer */}
+            <FilterDrawer
+              title="Filter"
+              onSubmit={() => console.log("Filter submitted")}
+              onCancel={() => console.log("Filter canceled")}
+            >
+              <SelectFilter
+                id="focusAge-filter"
+                value={selectedFocusAge}
+                onChange={setSelectedFocusAge}
+                options={focusAges}
+                label="Select an age group"
+              />
+              <SelectFilter
+                id="setupTime-filter"
+                value={selectedSetUpTime}
+                onChange={setSelectedSetUpTime}
+                options={setupTimes}
+                label="Select an Setup Times"
+              />
+              <SelectFilter
+                id="theme-filter"
+                value={selectedTheme}
+                onChange={setSelectedTheme}
+                options={themes}
+                label="Select a theme"
+              />
+              <SelectFilter
+                id="focusAge-filter"
+                value={selectedFocusAge}
+                onChange={setSelectedFocusAge}
+                options={focusAges}
+                label=" Select an age group"
+              />
+              <SelectFilter
+                id="setupTime-filter"
+                value={selectedSetUpTime}
+                onChange={setSelectedSetUpTime}
+                options={setupTimes}
+                label="Select an Setup Times"
+              />
+            </FilterDrawer>
+          </div>
+        </div>
         {/* Main Activities Content */}
         <div className="flex w-full gap-4">
-          {/* Activity grid */}
-          <div className="grid grid-cols-2 gap-6 w-full">
-            {filteredActivities.map((activity) => (
-              <ActivityCard
-                key={activity.documentId}
-                activityUrl={`/p/activities/${activity.documentId}`}
-                activity={activity}
-              />
-            ))}
+          <div className="flex flex-col w-full gap-4 justify-center items-start">
+            {/* Activity grid */}
+            <div className="grid grid-cols-2 gap-6 w-full">
+              {currentActivities.map((activity) => (
+                <ActivityCard
+                  key={activity.documentId}
+                  activityUrl={`/p/activities/${activity.documentId}`}
+                  activity={activity}
+                />
+              ))}
+            </div>
+            {/* Pagination Controls */}
+            <div className="flex justify-center mt-6 gap-4">
+              <button
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+                className="px-4 py-2 bg-gray-200 text-[#3f3a64] rounded-lg"
+              >
+                Previous
+              </button>
+              {[...Array(totalPages)].map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => handlePageChange(index + 1)}
+                  className={`px-4 py-2 rounded-lg ${
+                    currentPage === index + 1
+                      ? "bg-red text-white"
+                      : "bg-gray-200 text-[#3f3a64]"
+                  }`}
+                >
+                  {index + 1}
+                </button>
+              ))}
+              <button
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                className="px-4 py-2 bg-gray-200 text-[#3f3a64] rounded-lg"
+              >
+                Next
+              </button>
+            </div>
           </div>
           {/* Filter Dropdowns */}
           <div className="lg:flex flex-col hidden min-w-[30%] max-w-[36%] gap-8 w-full justify-start items-start">
             <div className="flex w-full flex-col gap-4 items-start justify-start">
               <div className="text-[#3f3a64] text-2xl font-semibold text-start font-fredoka uppercase leading-[28px]">
-                FILTER ACTI VITIES BY FEATURE
+                FILTER ACTIVITIES BY FEATURE
               </div>
               <div className="flex flex-col gap-2 items-center justify-center w-full">
                 {/* Theme Filter */}
-                <div className="flex flex-col gap-2 w-full">
-                  <select
-                    id="theme-filter"
-                    value={selectedTheme}
-                    onChange={(e) => setSelectedTheme(e.target.value)}
-                    className="border-2 w-full cursor-pointer hover:bg-gray-200 duration-300 ease-ease-out rounded-full border-[#3f3a64] text-[#3f3a64] bg-white text-base font-fredoka leading-[13px] font-medium p-2"
-                  >
-                    <option value="All" disabled>
-                      Select a theme
-                    </option>
-                    {themes.map((theme) => (
-                      <option key={theme} value={theme}>
-                        {theme}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+                <FilterSelect
+                  id="theme-filter"
+                  label="Theme"
+                  value={selectedTheme}
+                  onChange={setSelectedTheme}
+                  options={themes}
+                />
 
                 {/* Focus Age Filter */}
-                <div className="flex flex-col gap-2 w-full">
-                  <select
-                    id="focusAge-filter"
-                    value={selectedFocusAge}
-                    onChange={(e) => setSelectedFocusAge(e.target.value)}
-                    className="border-2 w-full cursor-pointer hover:bg-gray-200 duration-300 ease-ease-out pr-2 rounded-full border-[#3f3a64] text-[#3f3a64] bg-white text-base font-fredoka leading-[13px] font-medium p-2"
-                  >
-                    <option value="All" disabled>
-                      Select an age group
-                    </option>
-                    {focusAges.map((age) => (
-                      <option key={age} value={age}>
-                        {age}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+                <FilterSelect
+                  id="focusAge-filter"
+                  label="Age Group"
+                  value={selectedFocusAge}
+                  onChange={setSelectedFocusAge}
+                  options={focusAges}
+                />
 
                 {/* Learning Area Filter */}
-                <div className="flex flex-col gap-2 w-full">
-                  <select
-                    id="learningArea-filter"
-                    value={selectedLearningArea}
-                    onChange={(e) => setSelectedLearningArea(e.target.value)}
-                    className="border-2 w-full cursor-pointer hover:bg-gray-200 duration-300 ease-ease-out pr-2 rounded-full border-[#3f3a64] text-[#3f3a64] bg-white text-base font-fredoka leading-[13px] font-medium p-2"
-                  >
-                    <option value="All" disabled>
-                      Select an learning Areas
-                    </option>
-                    {learningAreas.map((area) => (
-                      <option key={area} value={area}>
-                        {area}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+                <FilterSelect
+                  id="learningArea-filter"
+                  label="Learning Areas"
+                  value={selectedLearningArea}
+                  onChange={setSelectedLearningArea}
+                  options={learningAreas}
+                />
 
                 {/* SetUp Time Filter */}
-                <div className="flex flex-col gap-2 w-full">
-                  <select
-                    id="setupTime-filter"
-                    value={selectedSetUpTime}
-                    onChange={(e) => setSelectedSetUpTime(e.target.value)}
-                    className="border-2 w-full cursor-pointer  hover:bg-gray-200 duration-300 ease-ease-out pr-2 rounded-full border-[#3f3a64] text-[#3f3a64] bg-white text-base font-fredoka leading-[13px] font-medium p-2"
-                  >
-                    <option value="All" disabled>
-                      Select an Setup Times
-                    </option>
-                    {setupTimes.map((time) => (
-                      <option key={time} value={time}>
-                        {time}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+                <FilterSelect
+                  id="setupTime-filter"
+                  label="Setup Times"
+                  value={selectedSetUpTime}
+                  onChange={setSelectedSetUpTime}
+                  options={setupTimes}
+                />
+
                 {/* Skill Category Filter */}
-                <div className="flex flex-col gap-2 w-full">
-                  <select
-                    id="skillCategory-filter"
-                    value={selectedSkillCategory}
-                    onChange={(e) => setSelectedSkillCategory(e.target.value)}
-                    className="border-2 w-full cursor-pointer  hover:bg-gray-200 duration-300 ease-ease-out pr-2 rounded-full border-[#3f3a64] text-[#3f3a64] bg-white text-base font-fredoka leading-[13px] font-medium p-2"
-                  >
-                    <option value="All" disabled>
-                      Select an Skill Categories
-                    </option>
-                    {skillCategories.map((category) => (
-                      <option key={category} value={category}>
-                        {category}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+                <FilterSelect
+                  id="skillCategory-filter"
+                  label="Skill Categories"
+                  value={selectedSkillCategory}
+                  onChange={setSelectedSkillCategory}
+                  options={skillCategories}
+                />
               </div>
             </div>
+
             <div className="flex w-full flex-col gap-4 items-start justify-start">
               <div className="text-[#3f3a64] text-2xl font-semibold text-start font-fredoka uppercase leading-[28px]">
-                FILTER ACTI VITIES BY Days
+                FILTER ACTIVITIES BY Days
               </div>
+
               {/* Weekdays Filter */}
               <div className="grid grid-cols-2 justify-between gap-2 items-center w-full">
                 {weekdays.map((day) => (
@@ -341,7 +499,6 @@ export default function ActivitiesData() {
                       checked={selectedWeekdays.includes(day)}
                       onChange={() => handleWeekdayChange(day)}
                     />
-                    {/* {day} */}
                     <label
                       htmlFor={`day-${day}`}
                       className="w-full text-[#3f3a64] text-base font-fredoka leading-[13px] font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
