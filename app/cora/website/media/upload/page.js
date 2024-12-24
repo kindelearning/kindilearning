@@ -1,0 +1,171 @@
+"use client";
+
+import React, { useState } from "react";
+
+const UploadMediaPage = () => {
+  const [file, setFile] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  const [uploadedFileUrl, setUploadedFileUrl] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [dragOver, setDragOver] = useState(false);
+
+  // Handle file selection (image or video)
+  const handleFileChange = (event) => {
+    const selectedFile = event.target.files[0];
+    setFile(selectedFile);
+    setErrorMessage(""); // Reset error message when a new file is selected
+
+    // Validate file type and size
+    if (selectedFile) {
+      const validTypes = [
+        "image/jpeg",
+        "image/png",
+        "image/gif",
+        "video/mp4",
+        "video/quicktime",
+        "image/svg+xml",
+        "image/webp", // Add SVG and WebP file types
+      ];
+      if (!validTypes.includes(selectedFile.type)) {
+        setErrorMessage(
+          "Please select a valid image or video file (JPEG, PNG, GIF, MP4, SVG, WebP)."
+        );
+        setFile(null); // Clear file if invalid
+      } else if (selectedFile.size > 10 * 1024 * 1024) {
+        // Limit file size to 10MB
+        setErrorMessage("File size should be under 10MB.");
+        setFile(null); // Clear file if too large
+      }
+    }
+  };
+
+  // Handle drag over
+  const handleDragOver = (event) => {
+    event.preventDefault();
+    setDragOver(true);
+  };
+
+  // Handle drop event
+  const handleDrop = (event) => {
+    event.preventDefault();
+    setDragOver(false);
+    const droppedFile = event.dataTransfer.files[0];
+    setFile(droppedFile);
+    handleFileChange({ target: { files: [droppedFile] } });
+  };
+
+  // Upload file to Strapi
+  const handleUpload = async () => {
+    if (!file) {
+      setErrorMessage("Please select a file");
+      return;
+    }
+
+    setUploading(true);
+    setErrorMessage(""); // Reset error message on upload
+
+    const formData = new FormData();
+    formData.append("files", file);
+
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/upload`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to upload the media");
+      }
+
+      const data = await response.json();
+      console.log("Uploaded file data:", data);
+
+      // Extract the file URL from the response and store it
+      const uploadedFileUrl = data[0]?.url; // Assuming Strapi returns a list of files
+      setUploadedFileUrl(uploadedFileUrl);
+    } catch (error) {
+      console.error("Error uploading file", error);
+      setErrorMessage("An error occurred while uploading the media.");
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  return (
+    <div className="p-6 max-w-2xl mx-auto">
+      <h1 className="text-2xl font-semibold mb-4">
+        Upload Media (Image or Video)
+      </h1>
+
+      {/* Error Message */}
+      {errorMessage && <div className="text-red-500 mb-4">{errorMessage}</div>}
+
+      {/* File upload container */}
+      <div
+        className={`border-2 border-dashed rounded-lg p-6 h-[300px] justify-center items-center flex flex-col mb-4 ${
+          dragOver
+            ? "bg-gray-100 border-red -500"
+            : "bg-gray-50 border-gray-300"
+        }`}
+        onDragOver={handleDragOver}
+        onDragLeave={() => setDragOver(false)}
+        onDrop={handleDrop}
+      >
+        <div className="text-center">
+          <p className="text-gray-500 text-sm">
+            Drag & Drop your file here, or
+          </p>
+          <input
+            type="file"
+            accept="image/*,video/mp4,video/quicktime"
+            onChange={handleFileChange}
+            className="hidden"
+            id="file-input"
+          />
+          <label
+            htmlFor="file-input"
+            className=" text-red px-6 py-3 rounded-full cursor-pointer text-sm"
+          >
+            Click to Select File
+          </label>
+        </div>
+      </div>
+
+      {/* Upload button */}
+      <button
+        onClick={handleUpload}
+        disabled={uploading}
+        className="w-full bg-blue-500 text-white py-3 rounded-md disabled:bg-gray-300 hover:bg-blue-600 transition duration-200"
+      >
+        {uploading ? <span className="animate-spin">⏳</span> : "Upload Media"}
+      </button>
+
+      {/* Display uploaded image or video */}
+      {uploadedFileUrl && (
+        <div className="mt-6">
+          <h2 className="text-xl font-semibold">Uploaded Media</h2>
+          {file && file.type.startsWith("image") ? (
+            <img
+              src={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${uploadedFileUrl}`}
+              alt="Uploaded Media"
+              className="mt-4 rounded-lg max-w-full h-auto"
+            />
+          ) : file && file.type.startsWith("video") ? (
+            <video controls className="mt-4 rounded-lg max-w-full">
+              <source
+                src={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${uploadedFileUrl}`}
+                type={file.type}
+              />
+              Your browser does not support the video tag.
+            </video>
+          ) : null}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default UploadMediaPage;

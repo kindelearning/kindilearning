@@ -15,22 +15,30 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import { Link } from "lucide-react";
+import { Link, PencilIcon, TrashIcon } from "lucide-react";
+import UploadMediaPage from "./upload/page";
 
 export default function MediaPage() {
   const [mediaAssets, setMediaAssets] = useState([]);
   const [filteredAssets, setFilteredAssets] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [filterType, setFilterType] = useState("all"); // all, video, image
+  const [filterType, setFilterType] = useState("all");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [isDialogOpen, setIsDialogOpen] = useState(false); // Track dialog state
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [documentIdToDelete, setDocumentIdToDelete] = useState(null);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false); // New state for edit modal
+  const [editTitle, setEditTitle] = useState(""); // State to store the edited title
+  const [editAltText, setEditAltText] = useState(""); // State to store the edited alt text
+  const [documentIdToEdit, setDocumentIdToEdit] = useState(null); // Store the documentId of the asset being edited
   const itemsPerPage = 20;
 
   // Fetch media assets from Strapi
@@ -60,7 +68,6 @@ export default function MediaPage() {
   useEffect(() => {
     let updatedAssets = mediaAssets;
 
-    // Filter by type
     if (filterType === "video") {
       updatedAssets = updatedAssets.filter(
         (asset) => asset.mime === "video/mp4"
@@ -71,7 +78,6 @@ export default function MediaPage() {
       );
     }
 
-    // Search by name
     if (searchQuery) {
       updatedAssets = updatedAssets.filter((asset) =>
         asset.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -101,13 +107,117 @@ export default function MediaPage() {
   const copyToClipboard = (url) => {
     navigator.clipboard.writeText(url).then(
       () => {
-        setIsDialogOpen(true); // Open custom dialog on success
-        setTimeout(() => setIsDialogOpen(false), 500); // Auto-close dialog after 2 seconds
+        setIsDialogOpen(true);
+        setTimeout(() => setIsDialogOpen(false), 500);
       },
       () => {
         alert("Failed to copy URL.");
       }
     );
+  };
+
+  // Delete media asset functionality
+  const deleteMediaAsset = async (documentId) => {
+    try {
+      const response = await fetch(
+        `http://localhost:1337/api/upload/files/${documentId}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (response.ok) {
+        // Filter out the deleted asset from the media list
+        const updatedAssets = mediaAssets.filter(
+          (asset) => asset.id !== documentId
+        );
+        setMediaAssets(updatedAssets);
+        setFilteredAssets(updatedAssets);
+      } else {
+        alert("Failed to delete the asset.");
+      }
+    } catch (err) {
+      alert("Error deleting asset.");
+    }
+  };
+
+  // Show confirmation dialog
+  const handleDeleteClick = (documentId) => {
+    setDocumentIdToDelete(documentId);
+    setConfirmDelete(true); // Open confirmation dialog
+  };
+
+  // Handle confirmation
+  const handleConfirmDelete = () => {
+    if (documentIdToDelete) {
+      deleteMediaAsset(documentIdToDelete);
+      setConfirmDelete(false); // Close the confirmation dialog
+      setDocumentIdToDelete(null); // Reset the documentId
+    }
+  };
+
+  // Handle cancellation
+  const handleCancelDelete = () => {
+    setConfirmDelete(false); // Close the confirmation dialog
+    setDocumentIdToDelete(null); // Reset the documentId
+  };
+
+  // Open edit dialog
+  const handleEditClick = (documentId, name, altText) => {
+    setDocumentIdToEdit(documentId);
+    setEditTitle(name);
+    setEditAltText(altText);
+    setIsEditDialogOpen(true);
+  };
+
+  // Handle update media asset
+  const updateMediaAsset = async () => {
+    console.log("Updating asset", documentIdToEdit, editTitle, editAltText); // Log values
+    try {
+      const response = await fetch(
+        `http://localhost:1337/api/upload/${documentIdToEdit}`,
+        {
+          method: "PATCH", // Use PATCH instead of PUT
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            data: {
+              name: editTitle,
+              alternativeText: editAltText,
+            },
+          }),
+        }
+      );
+
+      if (response.ok) {
+        // Update the asset locally
+        const updatedAssets = mediaAssets.map((asset) =>
+          asset.id === documentIdToEdit
+            ? { ...asset, name: editTitle, alternativeText: editAltText }
+            : asset
+        );
+        console.log("Updated assets:", updatedAssets); // Check updated assets
+        setMediaAssets(updatedAssets);
+        setFilteredAssets(updatedAssets);
+        setIsEditDialogOpen(false); // Close the edit dialog
+        setDocumentIdToEdit(null); // Reset the documentId
+      } else {
+        const errorData = await response.json();
+        alert(
+          `Failed to update the asset: ${errorData.message || "Unknown error"}`
+        );
+      }
+    } catch (err) {
+      alert("Error updating asset.");
+      console.error("Error updating asset:", err);
+    }
+  };
+
+  // Handle canceling the edit
+  const handleCancelEdit = () => {
+    setIsEditDialogOpen(false);
+    setDocumentIdToEdit(null); // Reset the documentId
   };
 
   if (loading) {
@@ -124,24 +234,42 @@ export default function MediaPage() {
         Kindi Media Assets
       </h1>
 
-      {/* Search and Filter Section */}
-      <div className="flex items-center rounded-lg w-fit justify-between bg-white gap-4 mb-4">
-        <input
-          type="text"
-          placeholder="Search by name..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full rounded-lg px-4 py-2 focus:outline-none focus:ring-0"
-        />
-        <select
-          value={filterType}
-          onChange={(e) => setFilterType(e.target.value)}
-          className="rounded-lg px-4 py-2 focus:outline-none focus:ring-0"
-        >
-          <option value="all">All</option>
-          <option value="video">Videos</option>
-          <option value="image">Images</option>
-        </select>
+      <div className="flex w-full justify-between">
+        {/* Search and Filter Section */}
+        <div className="flex items-center rounded-lg w-fit justify-between bg-white gap-4 mb-4">
+          <input
+            type="text"
+            placeholder="Search by name..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full rounded-lg px-4 py-2 focus:outline-none focus:ring-0"
+          />
+          <select
+            value={filterType}
+            onChange={(e) => setFilterType(e.target.value)}
+            className="rounded-lg px-4 py-2 focus:outline-none focus:ring-0"
+          >
+            <option value="all">All</option>
+            <option value="video">Videos</option>
+            <option value="image">Images</option>
+          </select>
+        </div>
+
+        <Dialog>
+          <DialogTrigger>
+            <div className="text-[#414141] hover:text-black px-4 py-2 rounded-md text-[16px] font-medium duration-200 ease-in-out">
+              Upload New
+            </div>
+          </DialogTrigger>
+          <DialogContent className="max-w-[800px] max-h-[600px] overflow-y-scroll">
+            <DialogHeader>
+              <DialogTitle>Are you absolutely sure?</DialogTitle>
+              <DialogDescription>
+                <UploadMediaPage />
+              </DialogDescription>
+            </DialogHeader>
+          </DialogContent>
+        </Dialog>
       </div>
 
       {/* Media Table */}
@@ -154,7 +282,7 @@ export default function MediaPage() {
             <TableHead>Type</TableHead>
             <TableHead>Size (KB)</TableHead>
             <TableHead>Uploaded At</TableHead>
-            <TableHead>Copy URL</TableHead>
+            <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -183,14 +311,34 @@ export default function MediaPage() {
                   {new Date(asset.createdAt).toLocaleDateString()}
                 </TableCell>
                 <TableCell>
-                  <button
-                    onClick={() =>
-                      copyToClipboard(`http://localhost:1337${asset.url}`)
-                    }
-                    className="text-[#515151] hover:underline"
-                  >
-                    <Link />
-                  </button>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() =>
+                        copyToClipboard(`http://localhost:1337${asset.url}`)
+                      }
+                      className="text-[#515151] hover:underline"
+                    >
+                      <Link />
+                    </button>
+                    {/* <button
+                      onClick={() =>
+                        handleEditClick(
+                          asset.id,
+                          asset.name,
+                          asset.alternativeText
+                        )
+                      }
+                      className="text-blue-500 hover:text-blue-700"
+                    >
+                      <PencilIcon className="w-5 h-5" />
+                    </button> */}
+                    <button
+                      onClick={() => handleDeleteClick(asset.id)}
+                      className="text-red-500 hover:text-red-700"
+                    >
+                      <TrashIcon className="w-5 h-5" />
+                    </button>
+                  </div>
                 </TableCell>
               </TableRow>
             ))
@@ -223,17 +371,75 @@ export default function MediaPage() {
         </button>
       </div>
 
-      {/* Custom Dialog */}
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+      {/* Confirmation Dialog */}
+      <Dialog open={confirmDelete} onClose={handleCancelDelete}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Copied!</DialogTitle>
+            <DialogTitle>Are you sure?</DialogTitle>
             <DialogDescription>
-              The media URL has been successfully copied to your clipboard.
+              Are you sure you want to delete this media asset? This action
+              cannot be undone.
             </DialogDescription>
           </DialogHeader>
+          <DialogFooter>
+            <button
+              onClick={handleCancelDelete}
+              className="px-4 py-2 bg-gray-200 text-gray-700 rounded mr-4"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleConfirmDelete}
+              className="px-4 py-2 bg-red-500 text-white rounded"
+            >
+              Confirm
+            </button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Edit Dialog */}
+      {/* <Dialog open={isEditDialogOpen} onClose={handleCancelEdit}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Edit Media Asset</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium">Title (Name)</label>
+              <input
+                type="text"
+                value={editTitle}
+                onChange={(e) => setEditTitle(e.target.value)}
+                className="w-full rounded-lg px-4 py-2"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium">Alt Text</label>
+              <input
+                type="text"
+                value={editAltText}
+                onChange={(e) => setEditAltText(e.target.value)}
+                className="w-full rounded-lg px-4 py-2"
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <button
+              onClick={handleCancelEdit}
+              className="px-4 py-2 bg-gray-200 text-gray-700 rounded mr-4"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={updateMediaAsset}
+              className="px-4 py-2 bg-blue-500 text-white rounded"
+            >
+              Save
+            </button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog> */}
     </div>
   );
 }
