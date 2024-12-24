@@ -9,7 +9,7 @@ const UploadMediaPage = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [dragOver, setDragOver] = useState(false);
 
-  // Handle file selection (image or video)
+  // Handle file selection
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
     setFile(selectedFile);
@@ -24,11 +24,13 @@ const UploadMediaPage = () => {
         "video/mp4",
         "video/quicktime",
         "image/svg+xml",
-        "image/webp", // Add SVG and WebP file types
+        "image/webp",
+        "application/pdf",
+        "application/zip",
       ];
       if (!validTypes.includes(selectedFile.type)) {
         setErrorMessage(
-          "Please select a valid image or video file (JPEG, PNG, GIF, MP4, SVG, WebP)."
+          "Please select a valid file (JPEG, PNG, GIF, MP4, SVG, WebP, PDF, ZIP)."
         );
         setFile(null); // Clear file if invalid
       } else if (selectedFile.size > 10 * 1024 * 1024) {
@@ -45,7 +47,7 @@ const UploadMediaPage = () => {
     setDragOver(true);
   };
 
-  // Handle drop event
+  // Handle drop
   const handleDrop = (event) => {
     event.preventDefault();
     setDragOver(false);
@@ -97,7 +99,7 @@ const UploadMediaPage = () => {
   return (
     <div className="p-6 max-w-2xl mx-auto">
       <h1 className="text-2xl font-semibold mb-4">
-        Upload Media (Image or Video)
+        Upload Media (Image, Video, PDF, ZIP)
       </h1>
 
       {/* Error Message */}
@@ -105,9 +107,9 @@ const UploadMediaPage = () => {
 
       {/* File upload container */}
       <div
-        className={`border-2 border-dashed rounded-lg p-6 h-[300px] justify-center items-center flex flex-col mb-4 ${
+        className={`border-2 border-dashed rounded-lg p-6 h-[300px] justify-center items-center flex flex-col mb-4 mb-4 ${
           dragOver
-            ? "bg-gray-100 border-red -500"
+            ? "bg-gray-100 border-blue-500"
             : "bg-gray-50 border-gray-300"
         }`}
         onDragOver={handleDragOver}
@@ -120,7 +122,7 @@ const UploadMediaPage = () => {
           </p>
           <input
             type="file"
-            accept="image/*,video/mp4,video/quicktime"
+            accept="image/*,video/mp4,video/quicktime,image/svg+xml,image/webp,application/pdf,application/zip"
             onChange={handleFileChange}
             className="hidden"
             id="file-input"
@@ -138,12 +140,12 @@ const UploadMediaPage = () => {
       <button
         onClick={handleUpload}
         disabled={uploading}
-        className="w-full bg-blue-500 text-white py-3 rounded-md disabled:bg-gray-300 hover:bg-blue-600 transition duration-200"
+        className="w-full bg-red text-white py-3 rounded-md disabled:bg-gray-300 hover:bg-hoverRed transition duration-200"
       >
         {uploading ? <span className="animate-spin">⏳</span> : "Upload Media"}
       </button>
 
-      {/* Display uploaded image or video */}
+      {/* Display uploaded media */}
       {uploadedFileUrl && (
         <div className="mt-6">
           <h2 className="text-xl font-semibold">Uploaded Media</h2>
@@ -161,6 +163,23 @@ const UploadMediaPage = () => {
               />
               Your browser does not support the video tag.
             </video>
+          ) : file && file.type === "application/pdf" ? (
+            <a
+              href={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${uploadedFileUrl}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-500 underline mt-4"
+            >
+              View PDF
+            </a>
+          ) : file && file.type === "application/zip" ? (
+            <a
+              href={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${uploadedFileUrl}`}
+              download
+              className="text-blue-500 underline mt-4"
+            >
+              Download ZIP File
+            </a>
           ) : null}
         </div>
       )}

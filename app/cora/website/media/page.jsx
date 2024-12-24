@@ -162,64 +162,6 @@ export default function MediaPage() {
     setDocumentIdToDelete(null); // Reset the documentId
   };
 
-  // Open edit dialog
-  const handleEditClick = (documentId, name, altText) => {
-    setDocumentIdToEdit(documentId);
-    setEditTitle(name);
-    setEditAltText(altText);
-    setIsEditDialogOpen(true);
-  };
-
-  // Handle update media asset
-  const updateMediaAsset = async () => {
-    console.log("Updating asset", documentIdToEdit, editTitle, editAltText); // Log values
-    try {
-      const response = await fetch(
-        `http://localhost:1337/api/upload/${documentIdToEdit}`,
-        {
-          method: "PATCH", // Use PATCH instead of PUT
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            data: {
-              name: editTitle,
-              alternativeText: editAltText,
-            },
-          }),
-        }
-      );
-
-      if (response.ok) {
-        // Update the asset locally
-        const updatedAssets = mediaAssets.map((asset) =>
-          asset.id === documentIdToEdit
-            ? { ...asset, name: editTitle, alternativeText: editAltText }
-            : asset
-        );
-        console.log("Updated assets:", updatedAssets); // Check updated assets
-        setMediaAssets(updatedAssets);
-        setFilteredAssets(updatedAssets);
-        setIsEditDialogOpen(false); // Close the edit dialog
-        setDocumentIdToEdit(null); // Reset the documentId
-      } else {
-        const errorData = await response.json();
-        alert(
-          `Failed to update the asset: ${errorData.message || "Unknown error"}`
-        );
-      }
-    } catch (err) {
-      alert("Error updating asset.");
-      console.error("Error updating asset:", err);
-    }
-  };
-
-  // Handle canceling the edit
-  const handleCancelEdit = () => {
-    setIsEditDialogOpen(false);
-    setDocumentIdToEdit(null); // Reset the documentId
-  };
-
   if (loading) {
     return <div>Loading media...</div>;
   }
@@ -257,13 +199,12 @@ export default function MediaPage() {
 
         <Dialog>
           <DialogTrigger>
-            <div className="text-[#414141] hover:text-black px-4 py-2 rounded-md text-[16px] font-medium duration-200 ease-in-out">
+            <div className="text-red hover:text-black px-4 py-2 rounded-md text-[16px] font-medium duration-200 ease-in-out">
               Upload New
             </div>
           </DialogTrigger>
           <DialogContent className="max-w-[800px] max-h-[600px] overflow-y-scroll">
             <DialogHeader>
-              <DialogTitle>Are you absolutely sure?</DialogTitle>
               <DialogDescription>
                 <UploadMediaPage />
               </DialogDescription>
@@ -277,6 +218,8 @@ export default function MediaPage() {
         <TableCaption>A list of all uploaded media assets.</TableCaption>
         <TableHeader>
           <TableRow>
+            <TableHead className="w-[50px]">#</TableHead>{" "}
+            {/* Serial Number Header */}
             <TableHead className="w-[200px]">Preview</TableHead>
             <TableHead>Name</TableHead>
             <TableHead>Type</TableHead>
@@ -287,8 +230,12 @@ export default function MediaPage() {
         </TableHeader>
         <TableBody>
           {paginatedAssets.length > 0 ? (
-            paginatedAssets.map((asset) => (
+            paginatedAssets.map((asset, index) => (
               <TableRow key={asset.id}>
+                <TableCell>
+                  {(currentPage - 1) * itemsPerPage + index + 1}
+                </TableCell>{" "}
+                {/* Serial Number */}
                 <TableCell>
                   {asset.mime === "video/mp4" ? (
                     <video
@@ -390,16 +337,21 @@ export default function MediaPage() {
             </button>
             <button
               onClick={handleConfirmDelete}
-              className="px-4 py-2 bg-red-500 text-white rounded"
+              className="px-4 py-2 bg-red-500 text-red rounded"
             >
               Confirm
             </button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
-
-      {/* Edit Dialog */}
-      {/* <Dialog open={isEditDialogOpen} onClose={handleCancelEdit}>
+    </div>
+  );
+}
+{
+  /* Edit Dialog */
+}
+{
+  /* <Dialog open={isEditDialogOpen} onClose={handleCancelEdit}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Edit Media Asset</DialogTitle>
@@ -439,7 +391,5 @@ export default function MediaPage() {
             </button>
           </DialogFooter>
         </DialogContent>
-      </Dialog> */}
-    </div>
-  );
+      </Dialog> */
 }
