@@ -1,10 +1,8 @@
 "use client";
-
 import { ProductImage, Ratings } from "@/public/Images";
 import Image from "next/image";
 import Link from "next/link";
-
-const { useState, useEffect } = require("react");
+import { useEffect, useState } from "react";
 
 export default function ProductCard({ image, title, productUrl, price }) {
   const [rating, setRating] = useState(0);
@@ -21,14 +19,18 @@ export default function ProductCard({ image, title, productUrl, price }) {
   }, []);
 
   return (
-    <Link href={productUrl} target="_blank" className="flex min-w-[170px] lg:min-w-[280px] lg:max-w-[300px] xl:min-w-[320px]  max-w-[176px] md:min-w-full lg:w-full w-full flex-col rounded-[24px] lg:rounded-[24px] items-center gap-2 lg:gap-4 bg-white hover:shadow-md">
+    <Link
+      href={productUrl}
+      target="_blank"
+      className="flex min-w-[190px] lg:min-w-[280px] lg:max-w-full xl:min-w-[280px] xl:max-w-full  max-w-[176px] md:min-w-full lg:w-full w-full flex-col rounded-[24px] lg:rounded-[24px] items-center gap-2 lg:gap-4 bg-white hover:shadow-md"
+    >
       <div className="flex rounded-t-[24px] overflow-clip w-full">
         <img
           src={image || ProductImage}
           alt={title}
           width={200}
           height={200}
-          className="w-full hover:scale-110 duration-300 h-[160px] md:h-[260px] lg:h-[260px] rounded-t-[12px] object-cover"
+          className="w-full hover:scale-110 duration-300 md:min-w-[200px] h-full min-h-[148px] max-h-[148px] md:h-[260px] lg:max-h-[200px] rounded-t-[12px] object-cover"
         />
       </div>
       <div className="claracontainer flex flex-col justify-start items-center w-full gap-2">
