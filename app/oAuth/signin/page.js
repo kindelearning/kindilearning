@@ -10,7 +10,6 @@ import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { Eye, EyeOff } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 const auth = getAuth(app); // Use the initialized app here
 
@@ -22,7 +21,6 @@ export default function LoginPage() {
   const [message, setMessage] = useState(null);
   const [loading, setLoading] = useState(false); // New state for loading
   const [error, setError] = useState("");
-  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
@@ -30,6 +28,28 @@ export default function LoginPage() {
     setFormData({ ...formData, [name]: value });
   };
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   try {
+  //     const response = await fetch("http://localhost:1337/api/auth/local", {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify(formData),
+  //     });
+
+  //     const data = await response.json();
+  //     if (response.ok) {
+  //       setMessage("Login successful!");
+  //       console.log("JWT Token:", data.jwt); // Save this token for authenticated requests
+  //       // router.push("/profile"); // Redirect to activity page or any desired page
+  //     } else {
+  //       setMessage(data.error.message || "Login failed");
+  //     }
+  //   } catch (error) {
+  //     setMessage("An error occurred: " + error.message);
+  //   }
+  // };
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -43,8 +63,13 @@ export default function LoginPage() {
       const data = await response.json();
       if (response.ok) {
         setMessage("Login successful!");
-        console.log("JWT Token:", data.jwt); // Save this token for authenticated requests
-        router.push("/profile"); // Redirect to activity page or any desired page
+        console.log("JWT Token:", data.jwt);
+
+        // Save the token to localStorage
+        localStorage.setItem("jwt", data.jwt);
+
+        // Optionally redirect to the profile page or another page
+        window.open("/profile", "_blank");
       } else {
         setMessage(data.error.message || "Login failed");
       }
@@ -65,7 +90,7 @@ export default function LoginPage() {
       // You can now use user data (e.g., user.displayName, user.email) as needed
 
       // Redirect or handle the login success here, e.g., storing user data in state
-      router.push("/profile"); // Redirect to activity page or any desired page
+      window.open("/profile", "_blank");
     } catch (err) {
       setError(err.message);
       console.error("Google login error:", err);

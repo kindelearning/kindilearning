@@ -10,6 +10,7 @@ import { Eye, EyeOff } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { GoogleSignInButton } from "../Sections/GoogleSignInButton";
 
 export default function SignupPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -36,22 +37,25 @@ export default function SignupPage() {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
+          body: JSON.stringify({
+            username: formData.username,
+            email: formData.email,
+            password: formData.password,
+          }),
         }
       );
 
       const data = await response.json();
+
       if (response.ok) {
-        setLoading(true); // Set loading to true when submitting starts
         setMessage("Signup successful!");
         setError("");
       } else {
-        setError(response.message);
-        setMessage(data.error.message || "Signup failed");
+        setError(data.error?.message || "Signup failed");
       }
     } catch (error) {
-      setMessage("An error occurred: " + error.message);
-      setLoading(false); // Set loading to true when submitting starts
+      console.error("Error during signup:", error);
+      setError("An error occurred. Please try again.");
     }
   };
 
@@ -134,6 +138,7 @@ export default function SignupPage() {
                 <button onClick={handleGoogleSignUp}>
                   <Image alt="Kindi" className="cursor-pointer" src={Google} />
                 </button>
+                <GoogleSignInButton />
               </div>
             </div>
             <div className="w-[max-content] justify-end items-start text-center">
