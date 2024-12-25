@@ -1,61 +1,32 @@
-"use client";
-
-import { KindiCalendar, OurPricing } from "@/app/Sections";
-import NewCalendar, { NewCalendarTwo } from "@/app/Sections/Schedule/NewCalendar";
-import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
-import Loading from "@/app/loading";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { useAuth } from "@/app/lib/useAuth";
-import { useRouter } from "next/navigation";
-import { getUserDataByEmail } from "@/lib/hygraph";
+import Calendar from "../Sections/Calendar";
 
 export default function Schedule() {
-  const { user, loading } = useAuth();
-  const router = useRouter();
-  const [hygraphUser, setHygraphUser] = useState(null);
-
-  useEffect(() => {
-    if (user && user.email) {
-      getUserDataByEmail(user.email).then((data) => {
-        setHygraphUser(data);
-      });
-    }
-  }, [user, loading, router]);
-
-  if (loading) {
-    return (
-      <div className="w-full h-screen flex justify-center items-center">
-        <Loading />
-      </div>
-    );
-  }
   return (
     <>
       <section className="w-full h-auto bg-[#EAEAF5] pb-24 items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">
         <div className="claracontainer p-4 md:px-0 md:py-4 lg:p-4 w-full flex flex-col overflow-hidden gap-8">
-          {user && hygraphUser ? (
+          <div className="claracontainer w-full flex flex-col overflow-hidden gap-2">
+            <div className="w-full text-center">
+              <span className="text-[#3f3a64] claraheading uppercase">
+                THE KINDI{" "}
+              </span>
+              <span className="text-red claraheading uppercase">
+                ACTI VITY SCHEDULE
+              </span>
+            </div>
+            <div className="w-full text-center text-[#3f3a64] clarabodyTwo">
+              Here&apos;s where you&apos;ll discover your daily educational play
+              activities. Utilize our drag-and-drop feature to rearrange
+              learning, ensuring development seamlessly fits your schedule.
+              Additionally, sync your schedule with your child&apos;s nursery
+              for a smooth and integrated learning experience.
+            </div>
+          </div>
+          <div className="claracontainer md:p-0 p-0 py-4 w-full flex flex-col overflow-hidden gap-8">
+            <Calendar />
+          </div>
+          {/* {user && hygraphUser ? (
             <>
-              <div className="claracontainer w-full flex flex-col overflow-hidden gap-2">
-                <div className="w-full text-center">
-                  <span className="text-[#3f3a64] claraheading uppercase">
-                    THE KINDI{" "}
-                  </span>
-                  <span className="text-red claraheading uppercase">
-                    ACTI VITY SCHEDULE
-                  </span>
-                </div>
-                <div className="w-full text-center text-[#3f3a64] clarabodyTwo">
-                  Here&apos;s where you&apos;ll discover your daily educational
-                  play activities. Utilize our drag-and-drop feature to
-                  rearrange learning, ensuring development seamlessly fits your
-                  schedule. Additionally, sync your schedule with your
-                  child&apos;s nursery for a smooth and integrated learning
-                  experience.
-                </div>
-              </div>
-
               {hygraphUser ? (
                 <>
                   <div className="w-full text-center text-[#3f3a64] clarabodyTwo">
@@ -69,13 +40,7 @@ export default function Schedule() {
                   </div>
                   {hygraphUser.isVerified ? (
                     <div className="claracontainer md:p-0 p-0 py-4 w-full flex flex-col overflow-hidden gap-8">
-                        <NewCalendarTwo />
-                      {/* <div className="flex lg:hidden">
-                        <NewCalendar /> 
-                      </div>
-                      <div className="lg:flex hidden">
-                        <KindiCalendar />
-                      </div> */}
+                      <NewCalendarTwo />
                     </div>
                   ) : (
                     <div className="claracontainer md:p-0 p-0 py-4 w-full flex flex-col overflow-hidden gap-8">
@@ -135,7 +100,7 @@ export default function Schedule() {
                 </div>
               </section>
             </>
-          )}
+          )} */}
         </div>
       </section>
     </>
