@@ -1,19 +1,14 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import ProfileSegments from "../Sections/Profile/ProfileSegments";
 import { useEffect, useState } from "react";
 import { fetchUserDetails } from "./api";
+import TopProfileCard from "./Sections/TopProfileCard";
+import QuickNavigation from "./Sections/QuickNavigation";
 
-// export default function ProfilePage() {
-//   return (
-//     <>
-//       <section className="w-full pb-32 bg-[#EAEAF5] flex flex-col gap-0 justify-center items-start">
-//         <ProfileSegments />
-//       </section>
-//     </>
-//   );
-// }
+import IndividualTabs from "./Sections/IndividualTabs";
+import { LogoutButton } from "../oAuth/Sections/Logout";
+
 export default function ProfilePage() {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -56,28 +51,27 @@ export default function ProfilePage() {
   if (loading) return <p>Loading...</p>;
 
   return (
-    <div className="profile-container">
-      <h1>User Profile</h1>
-      {userData && (
-        <>
-          <div>
-            <h2>{userData.username}</h2>
-            <p>{userData.email}</p>
-
-            {userData.profilepic?.url && (
-              <img
-                src={userData.profilepic.url}
-                alt="Profile Picture"
-                style={{ width: "100px", height: "100px", borderRadius: "50%" }}
-              />
-            )}
-
-            <button onClick={() => router.push("/auth/sign-out")}>
-              Logout
-            </button>
+    <>
+      <head>
+        <title>Profile - Kindilearning</title>
+        <meta name="description" content="Your profile page on Kindilearning" />
+      </head>
+      <section className="w-full h-auto bg-[#F5F5F5] md:bg-[#EAEAF5] items-center justify-center flex flex-col md:flex-row px-0">
+        {/* Topbar */}
+        <div className="w-full flex pt-4 pb-7 md:hidden bg-red">
+          <div className="text-center w-full text-white text-[20px] font-semibold font-fredoka leading-tight">
+            Profile
           </div>
-        </>
-      )}
-    </div>
+        </div>
+
+        {/* Profile Main Body */}
+        <div className="claracontainer bg-[#F5F5F5] md:bg-[#EAEAF5] -mt-4 rounded-t-[12px] z-2 lg:m-12 px-4 py-6 rounded-xl md:px-2 lg:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-[20px]">
+          <TopProfileCard userData={userData} />
+          <QuickNavigation />
+          <IndividualTabs userData={userData} />
+          <LogoutButton />
+        </div>
+      </section>
+    </>
   );
 }

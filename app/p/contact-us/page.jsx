@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
-export default function CreateContactFormPage() {
+export function CreateContactForm() {
   const [formData, setFormData] = useState({
     Name: "",
     Email: "",
@@ -53,8 +53,6 @@ export default function CreateContactFormPage() {
           Message: "",
           EnquiryType: "",
         });
-        // Redirect to the form submission success page or back to contact list
-        // setTimeout(() => router.push("/p/contact-us"), 1500);
       } else {
         throw new Error("Failed to create contact form entry");
       }
@@ -68,25 +66,7 @@ export default function CreateContactFormPage() {
   return (
     <section className="w-full h-auto pb-24 bg-[#EAEAF5] items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">
       <div className="claracontainer p-4 md:py-8 md:px-2 lg:p-12 w-full flex flex-col overflow-hidden gap-8">
-        <div className="claracontainer w-full flex flex-col overflow-hidden gap-2 md:gap-4">
-          <div className="w-full text-center">
-            <span className="text-[#3f3a64] text-[32px] tracking-tight font-semibold font-fredoka uppercase leading-10">
-              CONTACT{" "}
-            </span>
-            <span className="text-[#f05c5c] text-[32px] font-semibold font-fredoka uppercase leading-10">
-              Us
-            </span>
-          </div>
-          <div className="w-full text-center px-0 md:px-12 lg:px-24 xl:px-28 text-[#3f3a64] clarabodyTwo">
-            At Kindi, we&apos;re committed to continuous improvement in our
-            pursuit of enjoyable and impactful learning experiences. Each month,
-            we retire play activities to introduce enhanced learning for the
-            upcoming month. Which one will you select to elevate your
-            child&apos;s early-years development?
-          </div>
-        </div>
         {error && <p className="text-red-500">{error}</p>}
-
         <form
           onSubmit={handleSubmit}
           className="flex justify-center items-center flex-col gap-2 lg:gap-4 w-full"
@@ -216,6 +196,33 @@ export default function CreateContactFormPage() {
             <p className="text-green-500">Form submitted successfully!</p>
           )}
         </form>
+      </div>
+    </section>
+  );
+}
+
+export default function CreateContactFormPage() {
+  return (
+    <section className="w-full h-auto pb-24 bg-[#EAEAF5] items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">
+      <div className="claracontainer p-4 md:py-8 md:px-2 lg:p-12 w-full flex flex-col overflow-hidden gap-8">
+        <div className="claracontainer w-full flex flex-col overflow-hidden gap-2 md:gap-4">
+          <div className="w-full text-center">
+            <span className="text-[#3f3a64] text-[32px] tracking-tight font-semibold font-fredoka uppercase leading-10">
+              CONTACT{" "}
+            </span>
+            <span className="text-[#f05c5c] text-[32px] font-semibold font-fredoka uppercase leading-10">
+              Us
+            </span>
+          </div>
+          <div className="w-full text-center px-0 md:px-12 lg:px-24 xl:px-28 text-[#3f3a64] clarabodyTwo">
+            At Kindi, we&apos;re committed to continuous improvement in our
+            pursuit of enjoyable and impactful learning experiences. Each month,
+            we retire play activities to introduce enhanced learning for the
+            upcoming month. Which one will you select to elevate your
+            child&apos;s early-years development?
+          </div>
+        </div>
+        <CreateContactForm />
       </div>
     </section>
   );

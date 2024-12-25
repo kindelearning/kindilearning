@@ -2,7 +2,8 @@
 
 export const fetchUserDetails = async (token) => {
     try {
-      const response = await fetch('http://localhost:1337/api/users/me', {
+      // const response = await fetch('http://localhost:1337/api/users/me?populate=profilepic', {
+      const response = await fetch('http://localhost:1337/api/users/me?populate[profilepic]=true&populate[myKids]=true', {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,

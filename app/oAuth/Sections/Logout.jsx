@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation"; // Assuming you're using Next.js for routing
 import { useState } from "react";
 
@@ -25,7 +26,7 @@ export function LogoutButton() {
       });
 
       // Redirect user to login page or homepage
-      router.push("/auth/sign-in"); // Redirect to login page after logout
+      router.push("/oAuth/signin"); // Redirect to login page after logout
     } catch (error) {
       console.error("Logout failed:", error);
     } finally {
@@ -34,12 +35,14 @@ export function LogoutButton() {
   };
 
   return (
-    <button
-      onClick={handleLogout}
-      disabled={loading}
-      className="bg-red-500 text-white p-2 rounded"
-    >
-      {loading ? "Logging out..." : "Log out"}
-    </button>
+    <div className="w-full justify-start items-center flex">
+      <Button
+        onClick={handleLogout}
+        disabled={loading}
+        className="clarabutton max-w-[300px] bg-red hover:bg-hoverRed"
+      >
+        {loading ? "Logging out..." : "Log out"}
+      </Button>
+    </div>
   );
 }

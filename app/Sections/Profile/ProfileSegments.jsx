@@ -1166,7 +1166,7 @@ export default function ProfileSegments() {
       console.error("Logout error:", error);
     }
   };
-
+ 
   return (
     <>
       <head>
