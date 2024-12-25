@@ -6,24 +6,38 @@ export default function Calendar() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedMonth, setSelectedMonth] = useState(currentDate.getMonth());
   const [selectedYear, setSelectedYear] = useState(currentDate.getFullYear());
-
-  const events = [
-    { date: 5, title: "Meeting with John", description: "Discuss project" },
-    { date: 8, title: "Doctor's Appointment", description: "Annual checkup" },
-    { date: 8, title: "Doctor's Appointment", description: "Annual checkup" },
-    { date: 8, title: "Doctor's Appointment", description: "Annual checkup" },
-    { date: 8, title: "Doctor's Appointment", description: "Annual checkup" },
+  const [events, setEvents] = useState([
     {
+      id: 1,
+      date: 5,
+      title: "Meeting with John",
+      description: "Discuss project",
+    },
+    {
+      id: 2,
+      date: 8,
+      title: "Doctor's Appointment",
+      description: "Annual checkup",
+    },
+    {
+      id: 5,
+      date: 8,
+      title: "Doctor's Appointment",
+      description: "Annual checkup",
+    },
+    {
+      id: 3,
       date: 15,
       title: "Team Workshop",
       description: "Design brainstorming session",
     },
     {
+      id: 4,
       date: 22,
       title: "Birthday Party",
       description: "Celebrate Mike's birthday",
     },
-  ];
+  ]);
 
   // Get the first day of the current month
   const getFirstDayOfMonth = (date) => {
@@ -88,6 +102,44 @@ export default function Calendar() {
   const handleSpecificMonthYear = () => {
     const newDate = new Date(selectedYear, selectedMonth);
     setCurrentDate(newDate);
+  };
+
+  // Handle drag start
+  const handleDragStart = (event, draggedEvent) => {
+    event.dataTransfer.setData("eventId", draggedEvent.id);
+  };
+
+  // Handle drop
+  const handleDrop = (event, day) => {
+    event.preventDefault();
+
+    // Get today's date
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Set time to midnight for accurate comparison
+
+    // Get the target drop date
+    const targetDate = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      day
+    );
+
+    // Prevent dropping on past dates
+    if (targetDate < today) {
+      alert("You cannot drop events on past dates.");
+      return;
+    }
+
+    // Proceed with dropping
+    const eventId = parseInt(event.dataTransfer.getData("eventId"));
+    setEvents((prevEvents) =>
+      prevEvents.map((e) => (e.id === eventId ? { ...e, date: day } : e))
+    );
+  };
+
+  // Allow drop
+  const handleDragOver = (event) => {
+    event.preventDefault();
   };
 
   // Handle year selection from the dropdown
@@ -183,13 +235,16 @@ export default function Calendar() {
       {/* Calendar Grid */}
       <div className="flex flex-col lg:grid lg:grid-cols-7 gap-2 text-center">
         {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day, index) => (
-          <div key={index} className=" hidden lg:block font-semibold text-gray-600">
+          <div
+            key={index}
+            className=" hidden lg:block font-semibold text-gray-600"
+          >
             {day}
           </div>
         ))}
         {calendarDays.map((day, index) => {
           const dayEvents = getEventsForDay(day.day); // Fetch events for the day
-          const displayedEvents = dayEvents.slice(0, 2); // Only show the first two events
+          // const displayedEvents = dayEvents.slice(0, 2); // Only show the first two events
           const extraEventCount = dayEvents.length - 2; // Calculate the number of additional events
 
           return (
@@ -200,6 +255,8 @@ export default function Calendar() {
                   ? "bg-gray-100 text-gray-400 cursor-not-allowed"
                   : "bg-[#eaeaf5] text-gray-700 hover:bg-gray-200"
               }`}
+              onDragOver={handleDragOver}
+              onDrop={(e) => handleDrop(e, day.day)}
               onClick={() => {
                 if (!day.isPast) {
                   alert(`Selected day: ${day.day}`);
@@ -216,9 +273,11 @@ export default function Calendar() {
               </div>
 
               <div className="mt-4 p-2 overflow-clip">
-                {displayedEvents.map((event, eventIndex) => (
+                {dayEvents.map((event, eventIndex) => (
                   <div
                     key={eventIndex}
+                    draggable
+                    onDragStart={(e) => handleDragStart(e, event)}
                     className="bg-blue-100 p-1 mb-1 rounded-md"
                   >
                     <h5 className="font-semibold text-sm truncate">

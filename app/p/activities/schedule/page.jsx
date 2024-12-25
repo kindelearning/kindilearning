@@ -1,4 +1,5 @@
 import Calendar from "../Sections/Calendar";
+import CalendarwithComp from "../Sections/CalendarwithComp";
 
 export default function Schedule() {
   return (
@@ -23,7 +24,7 @@ export default function Schedule() {
             </div>
           </div>
           <div className="claracontainer md:p-0 p-0 py-4 w-full flex flex-col overflow-hidden gap-8">
-            <Calendar />
+            <CalendarwithComp />
           </div>
           {/* {user && hygraphUser ? (
             <>
