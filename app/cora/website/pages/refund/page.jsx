@@ -85,7 +85,7 @@ export default function ReadContent() {
               Page Content:
             </h2>
             <div
-              className="text-lg text-gray-600 leading-relaxed mb-6"
+              className="text-lg text-gray-600 prose leading-relaxed mb-6"
               dangerouslySetInnerHTML={{ __html: content.Pagecontent }}
             />
           </div>

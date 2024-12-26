@@ -14,7 +14,7 @@ const modules = {
       { header: "1" },
       { header: "2" },
       { header: "3" },
-    
+      { size: ["small", "normal", "large", "huge"] },
       { align: [] },
     ],
     ["bold", "italic", "underline", "strike"],
@@ -30,11 +30,11 @@ const modules = {
 };
 
 // Custom function to handle table creation
-const insertTable = (editor) => {
-  const tableHtml = `<table><tr><td>Cell 1</td><td>Cell 2</td></tr><tr><td>Cell 3</td><td>Cell 4</td></tr></table>`;
-  const range = editor.getSelection();
-  editor.clipboard.dangerouslyPasteHTML(range.index, tableHtml);
-};
+// const insertTable = (editor) => {
+//   const tableHtml = `<table><tr><td>Cell 1</td><td>Cell 2</td></tr><tr><td>Cell 3</td><td>Cell 4</td></tr></table>`;
+//   const range = editor.getSelection();
+//   editor.clipboard.dangerouslyPasteHTML(range.index, tableHtml);
+// };
 
 const ClaraMarkdownRichEditor = ({
   value,
@@ -52,7 +52,7 @@ const ClaraMarkdownRichEditor = ({
       const toolbar = quill.getModule("toolbar");
 
       // Ensure the table button handler is properly added
-      toolbar.addHandler("table", () => insertTable(quill));
+      // toolbar.addHandler("table", () => insertTable(quill));
     }
   }, []);
 

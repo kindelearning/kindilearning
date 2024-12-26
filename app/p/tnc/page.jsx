@@ -1,6 +1,5 @@
 import { fetchTnc } from "@/app/data/p/Standard";
 
-// const Page = async () => {
 export default async function TermsAndCondition() {
   const content = await fetchTnc();
 
@@ -22,7 +21,6 @@ export default async function TermsAndCondition() {
                 </span>{" "}
                 <span className="text-red claraheading uppercase"> And</span>{" "}
                 <span className="text-[#3f3a64] claraheading uppercase">
-                  {" "}
                   Condition
                 </span>
               </div>
@@ -41,24 +39,24 @@ export default async function TermsAndCondition() {
             )}
           </div>
           {Lastupdated ? (
-            <div className="text-purple clarabodyTwo animate-fade-in">
+            <div className="text-purple  clarabodyTwo animate-fade-in">
               Last updated: {new Date(Lastupdated).toLocaleDateString()}
             </div>
           ) : null}
-          <div className="h-[1.5px] bg-[black] rounded-full my-4" />
-          {/* {Pagecontent ? (
-            <span
-              className="w-full text-[20px] text-gray-700 font-medium font-fredoka leading-[24px]"
+          <div className="h-[1.5px] prose bg-[black] rounded-full my-4" />
+          {Pagecontent ? (
+            <div
               dangerouslySetInnerHTML={{
-                __html: Pagecontent, // Render markdown or rich text content
+                __html:
+                  Pagecontent.replace(/\n/g, "<br />") ||
+                  "<p>No additional content available</p>",
               }}
             />
           ) : (
             <div className="text-[#3f3a64] text-base font-normal font-fredoka leading-tight">
               No Additional Content Available
             </div>
-          )} */}
-          {Pagecontent}
+          )}
         </div>
       </section>
     </>

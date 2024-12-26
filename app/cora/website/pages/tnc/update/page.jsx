@@ -14,6 +14,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import ClaraMarkdownRichEditor from "@/app/cora/Sections/TextEditor/ClaraMarkdownRichEditor";
 
 export default function EditTnc() {
   const [content, setContent] = useState({
@@ -57,6 +58,7 @@ export default function EditTnc() {
       [e.target.name]: e.target.value,
     });
   };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -104,9 +106,9 @@ export default function EditTnc() {
   }
 
   return (
-    <div className="container mx-auto px-8 py-12 font-poppins">
+    <div className="container font-fredoka mx-auto px-8 py-12 font-poppins">
       <div className="mb-8">
-        <h1 className="text-3xl font-semibold text-gray-800">
+        <h1 className="text-3xl font-medium text-gray-800">
           Edit Terms and Condition Page
         </h1>
         <p className="text-lg text-gray-600 mt-2">
@@ -117,56 +119,62 @@ export default function EditTnc() {
       {/* Form Card */}
       <Card className="p-8 bg-white shadow-xl rounded-lg">
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Title field - Disabled */}
-          <div>
-            <label
-              htmlFor="Title"
-              className="block text-lg font-medium text-gray-700"
-            >
-              Title
-            </label>
-            <Input
-              id="Title"
-              type="text"
-              name="Title"
-              value={content.Title}
-              disabled
-              className="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            />
+          <div className="flex w-full gap-2 justify-between">
+            {/* Title field - Disabled */}
+            <div className="flex w-full flex-col">
+              <label
+                htmlFor="Title"
+                className="block text-lg font-medium text-gray-700"
+              >
+                Title
+              </label>
+              <Input
+                id="Title"
+                type="text"
+                name="Title"
+                value={content.Title}
+                disabled
+                className="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+            {/* Lastupdated field */}
+            <div className="flex w-full flex-col">
+              <label
+                htmlFor="Lastupdated"
+                className="block text-lg font-medium text-gray-700"
+              >
+                Last Updated
+              </label>
+              <Input
+                id="Lastupdated"
+                type="text"
+                name="Lastupdated"
+                value={new Date(content.Lastupdated).toLocaleString()}
+                disabled
+                className="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
           </div>
 
           {/* Pagecontent field */}
-          <div>
+          <div className="flex w-full flex-col">
             <label
               htmlFor="Pagecontent"
               className="block text-lg font-medium text-gray-700"
             >
               Page Content
             </label>
-            <Textarea
+            {/* <Textarea
               id="Pagecontent"
               name="Pagecontent"
               value={content.Pagecontent || ""}
               onChange={handleChange}
               rows="20"
               className="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            />
-          </div>
-
-          {/* Lastupdated field */}
-          <div>
-            <label
-              htmlFor="Lastupdated"
-              className="block text-lg font-medium text-gray-700"
-            >
-              Last Updated
-            </label>
-            <Input
-              id="Lastupdated"
-              type="text"
-              name="Lastupdated"
-              value={new Date(content.Lastupdated).toLocaleString()}
-              disabled
+            /> */}
+            <ClaraMarkdownRichEditor
+              onChange={handleChange2}
+              value={content.Pagecontent || ""}
               className="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
@@ -186,7 +194,7 @@ export default function EditTnc() {
       {/* ShadCN Dialog */}
       <Dialog open={openDialog} onOpenChange={setOpenDialog}>
         <DialogContent className="font-fredoka">
-          <DialogHeader >
+          <DialogHeader>
             <DialogTitle className="text-[24px] font-medium">
               {dialogType === "success" ? "Success" : "Error"}
             </DialogTitle>

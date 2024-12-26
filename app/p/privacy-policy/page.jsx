@@ -2,7 +2,6 @@ import { fetchPrivacyPolicy } from "@/app/data/p/Standard";
 
 export default async function PrivacyPolicy() {
   const content = await fetchPrivacyPolicy();
-  // console.log("Privacy Policy Content:", content); // Debug: Log the content
 
   if (!content) {
     return <p>No data available</p>;
@@ -44,15 +43,6 @@ export default async function PrivacyPolicy() {
               </span>
             </div>
             <span className="text-[#3f3a64] text-base font-normal font-fredoka leading-tight">
-              {/* Your privacy is of utmost importance to us. This Privacy Policy
-              outlines how Kindi (&quot;we,&quot; &quot;us,&quot; or
-              &quot;our&quot;) collects, uses, discloses, and protects your
-              personal information when you use our website
-              www.kindilearning.com (the &quot;Platform&quot;) and related
-              services (the &quot;Services&quot;). By accessing or using the
-              Platform and our Services, you agree to this Privacy Policy and
-              our Terms of Use. If you do not agree with the terms of this
-              policy, please discontinue use of the Platform and Services. */}
               {Body || "No Body Content Available"}
             </span>
             <div className="h-[1.5px] bg-[black] rounded-full my-4" />

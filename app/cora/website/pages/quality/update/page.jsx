@@ -14,6 +14,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import ClaraMarkdownRichEditor from "@/app/cora/Sections/TextEditor/ClaraMarkdownRichEditor";
 
 export default function EditRefund() {
   const [content, setContent] = useState({
@@ -57,7 +58,12 @@ export default function EditRefund() {
       [e.target.name]: e.target.value,
     });
   };
-
+  const handleChange2 = (value, delta, source, editor) => {
+    setContent({
+      ...content,
+      Pagecontent: value, // Only update Pagecontent
+    });
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -104,116 +110,132 @@ export default function EditRefund() {
   }
 
   return (
-    <div className="container mx-auto px-8 py-12 font-poppins">
-      <div className="mb-8">
-        <h1 className="text-3xl font-semibold text-gray-800">
-          Edit Your Quality Control Page
-        </h1>
-        <p className="text-lg text-gray-600 mt-2">
-          Make necessary changes and save.
-        </p>
-      </div>
+    <>
+      <head>
+        <title>Quality Controls | Update</title>
+        <meta
+          name="description"
+          content="At Kindi, we blend cutting-edge technology with research-backed early childhood education practices to deliver a seamless, engaging, and effective learning experience for children, carers, and educators."
+        />
+      </head>
+      <div className="container mx-auto px-8 py-12 font-poppins">
+        <div className="mb-8">
+          <h1 className="text-3xl font-semibold text-gray-800">
+            Edit Your Quality Control Page
+          </h1>
+          <p className="text-lg text-gray-600 mt-2">
+            Make necessary changes and save.
+          </p>
+        </div>
 
-      {/* Form Card */}
-      <Card className="p-8 bg-white shadow-xl rounded-lg">
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Title field - Disabled */}
-          <div>
-            <label
-              htmlFor="Title"
-              className="block text-lg font-medium text-gray-700"
-            >
-              Title
-            </label>
-            <Input
-              id="Title"
-              type="text"
-              name="Title"
-              value={content.Title}
-              disabled
-              className="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            />
-          </div>
-          {/* Body field */}
-          <div>
-            <label
-              htmlFor="Body"
-              className="block text-lg font-medium text-gray-700"
-            >
-              Body
-            </label>
-            <Textarea
-              id="Body"
-              name="Body"
-              value={content.Body || ""}
-              onChange={handleChange}
-              rows="6"
-              className="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            />
-          </div>
+        {/* Form Card */}
+        <Card className="p-8 bg-white shadow-xl rounded-lg">
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="flex w-full gap-2 justify-between">
+              {/* Title field - Disabled */}
+              <div className="flex w-full flex-col">
+                <label
+                  htmlFor="Title"
+                  className="block text-lg font-medium text-gray-700"
+                >
+                  Title
+                </label>
+                <Input
+                  id="Title"
+                  type="text"
+                  name="Title"
+                  value={content.Title}
+                  disabled
+                  className="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                />
+              </div>
+              {/* Lastupdated field */}
+              <div className="flex w-full flex-col">
+                <label
+                  htmlFor="Lastupdated"
+                  className="block text-lg font-medium text-gray-700"
+                >
+                  Last Updated
+                </label>
+                <Input
+                  id="Lastupdated"
+                  type="text"
+                  name="Lastupdated"
+                  value={new Date(content.Lastupdated).toLocaleString()}
+                  disabled
+                  className="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                />
+              </div>
+            </div>
 
-          {/* Pagecontent field */}
-          <div>
-            <label
-              htmlFor="Pagecontent"
-              className="block text-lg font-medium text-gray-700"
-            >
-              Page Content
-            </label>
-            <Textarea
-              id="Pagecontent"
-              name="Pagecontent"
-              value={content.Pagecontent || ""}
-              onChange={handleChange}
-              rows="20"
-              className="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            />
-          </div>
+            {/* Body field */}
+            <div className="flex w-full flex-col">
+              <label
+                htmlFor="Body"
+                className="block text-lg font-medium text-gray-700"
+              >
+                Body
+              </label>
+              <Textarea
+                id="Body"
+                name="Body"
+                value={content.Body || ""}
+                onChange={handleChange}
+                rows="6"
+                className="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
 
-          {/* Lastupdated field */}
-          <div>
-            <label
-              htmlFor="Lastupdated"
-              className="block text-lg font-medium text-gray-700"
-            >
-              Last Updated
-            </label>
-            <Input
-              id="Lastupdated"
-              type="text"
-              name="Lastupdated"
-              value={new Date(content.Lastupdated).toLocaleString()}
-              disabled
-              className="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            />
-          </div>
+            {/* Pagecontent field */}
+            <div className="flex w-full flex-col">
+              <label
+                htmlFor="Pagecontent"
+                className="block text-lg font-medium text-gray-700"
+              >
+                Page Content
+              </label>
+              {/* <Textarea
+                id="Pagecontent"
+                name="Pagecontent"
+                value={content.Pagecontent || ""}
+                onChange={handleChange}
+                rows="20"
+                className="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              /> */}
+              <ClaraMarkdownRichEditor
+                onChange={handleChange2}
+                value={content.Pagecontent || ""}
+                className="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
 
-          <div className="flex justify-end">
-            <Button
-              variant="outline"
-              type="submit"
-              className="bg-blue-600 text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-lg px-6 py-3"
-            >
-              Save Changes
-            </Button>
-          </div>
-        </form>
-      </Card>
+            <div className="flex justify-end">
+              <Button
+                variant="outline"
+                type="submit"
+                className="bg-blue-600 text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-lg px-6 py-3"
+              >
+                Save Changes
+              </Button>
+            </div>
+          </form>
+        </Card>
 
-      {/* ShadCN Dialog */}
-      <Dialog open={openDialog} onOpenChange={setOpenDialog}>
-        <DialogContent className="font-fredoka">
-          <DialogHeader>
-            <DialogTitle className="text-[24px] font-medium">
-              {dialogType === "success" ? "Success" : "Error"}
-            </DialogTitle>
-            <DialogDescription>{dialogMessage}</DialogDescription>
-          </DialogHeader>
-          {/* <DialogFooter>
+        {/* ShadCN Dialog */}
+        <Dialog open={openDialog} onOpenChange={setOpenDialog}>
+          <DialogContent className="font-fredoka">
+            <DialogHeader>
+              <DialogTitle className="text-[24px] font-medium">
+                {dialogType === "success" ? "Success" : "Error"}
+              </DialogTitle>
+              <DialogDescription>{dialogMessage}</DialogDescription>
+            </DialogHeader>
+            {/* <DialogFooter>
             <Button onClick={() => setOpenDialog(false)}>Close</Button>
           </DialogFooter> */}
-        </DialogContent>
-      </Dialog>
-    </div>
+          </DialogContent>
+        </Dialog>
+      </div>
+    </>
   );
 }

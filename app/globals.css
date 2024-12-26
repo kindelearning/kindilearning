@@ -133,9 +133,6 @@
   .ql-toolbar {
     position: sticky;
     top: 0;
-    z-index: 1000; /* Ensures the toolbar stays on top of other content */
-    background-color: white; /* Optional: ensures the background is solid */
-    border-bottom: 1px solid #ddd; /* Optional: adds a subtle border */
   }
   .ql-snow {
     position: sticky;

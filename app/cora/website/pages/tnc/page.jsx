@@ -52,7 +52,6 @@ export default function ReadContent() {
         </div>
         <div className="flex justify-end">
           <Link
-         
             className="border-gray-300 text-gray-700 hover:bg-gray-200 focus:ring-2 focus:ring-gray-500 rounded-lg px-6 py-2"
             href="/cora/website/pages/tnc/update"
           >
@@ -67,7 +66,7 @@ export default function ReadContent() {
           <h1 className="text-4xl font-semibold text-gray-800 mb-6">
             {content.Title}
           </h1>
-          <p className="text-lg text-gray-600 leading-relaxed mb-6">
+          <p className="text-lg text-gray-600 prose leading-relaxed mb-6">
             {content.Pagecontent}
           </p>
         </Card>

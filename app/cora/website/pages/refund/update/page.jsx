@@ -14,6 +14,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import ClaraMarkdownRichEditor from "@/app/cora/Sections/TextEditor/ClaraMarkdownRichEditor";
 
 export default function EditRefund() {
   const [content, setContent] = useState({
@@ -55,6 +56,12 @@ export default function EditRefund() {
     setContent({
       ...content,
       [e.target.name]: e.target.value,
+    });
+  };
+  const handleChange2 = (value, delta, source, editor) => {
+    setContent({
+      ...content,
+      Pagecontent: value, // Only update Pagecontent
     });
   };
 
@@ -117,25 +124,44 @@ export default function EditRefund() {
       {/* Form Card */}
       <Card className="p-8 bg-white shadow-xl rounded-lg">
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Title field - Disabled */}
-          <div>
-            <label
-              htmlFor="Title"
-              className="block text-lg font-medium text-gray-700"
-            >
-              Title
-            </label>
-            <Input
-              id="Title"
-              type="text"
-              name="Title"
-              value={content.Title}
-              disabled
-              className="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            />
+          <div className="flex w-full gap-2 justify-between">
+            {/* Title field - Disabled */}
+            <div className="flex w-full flex-col">
+              <label
+                htmlFor="Title"
+                className="block text-lg font-medium text-gray-700"
+              >
+                Title
+              </label>
+              <Input
+                id="Title"
+                type="text"
+                name="Title"
+                value={content.Title}
+                disabled
+                className="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+            {/* Lastupdated field */}
+            <div className="flex w-full flex-col">
+              <label
+                htmlFor="Lastupdated"
+                className="block text-lg font-medium text-gray-700"
+              >
+                Last Updated
+              </label>
+              <Input
+                id="Lastupdated"
+                type="text"
+                name="Lastupdated"
+                value={new Date(content.Lastupdated).toLocaleString()}
+                disabled
+                className="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
           </div>
           {/* Body field */}
-          <div>
+          <div className="flex w-full flex-col">
             <label
               htmlFor="Body"
               className="block text-lg font-medium text-gray-700"
@@ -153,37 +179,24 @@ export default function EditRefund() {
           </div>
 
           {/* Pagecontent field */}
-          <div>
+          <div className="flex w-full flex-col">
             <label
               htmlFor="Pagecontent"
               className="block text-lg font-medium text-gray-700"
             >
               Page Content
             </label>
-            <Textarea
+            {/* <Textarea
               id="Pagecontent"
               name="Pagecontent"
               value={content.Pagecontent || ""}
               onChange={handleChange}
               rows="20"
               className="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            />
-          </div>
-
-          {/* Lastupdated field */}
-          <div>
-            <label
-              htmlFor="Lastupdated"
-              className="block text-lg font-medium text-gray-700"
-            >
-              Last Updated
-            </label>
-            <Input
-              id="Lastupdated"
-              type="text"
-              name="Lastupdated"
-              value={new Date(content.Lastupdated).toLocaleString()}
-              disabled
+            /> */}
+            <ClaraMarkdownRichEditor
+              onChange={handleChange2}
+              value={content.Pagecontent || ""}
               className="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             />
           </div>

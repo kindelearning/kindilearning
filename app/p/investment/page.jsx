@@ -51,7 +51,7 @@ export default async function InvestmentOpportunity() {
 
           {Pagecontent ? (
             <span
-              className="w-full text-[20px] text-gray-700 font-medium font-fredoka leading-[24px]"
+              className="w-full prose text-[20px] text-gray-700 font-medium font-fredoka leading-[24px]"
               dangerouslySetInnerHTML={{
                 __html: Pagecontent, // Render markdown or rich text content
               }}
