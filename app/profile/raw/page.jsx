@@ -3,9 +3,6 @@
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { fetchUserDetails } from "../api";
-import { VerifiedIcon } from "@/public/Images";
-import Image from "next/image";
-import PartnerInviteForm from "../Sections/PartnerInviteForm";
 
 export default function RawProfile() {
   const [userData, setUserData] = useState(null);
@@ -23,7 +20,7 @@ export default function RawProfile() {
     const fetchData = async () => {
       const token = localStorage.getItem("jwt"); // Get the JWT token from localStorage
       if (!token) {
-        router.push("/oAuth/signin"); // Redirect to login if there's an error fetching user data
+        // router.push("/oAuth/signin"); // Redirect to login if there's an error fetching user data
         return;
       }
 
@@ -38,7 +35,7 @@ export default function RawProfile() {
         });
       } catch (error) {
         console.error("Error fetching user data", error);
-        router.push("/oAuth/signin"); // Redirect to login if there's an error fetching user data
+        // router.push("/oAuth/signin"); // Redirect to login if there's an error fetching user data
       } finally {
         setLoading(false);
       }
@@ -51,7 +48,6 @@ export default function RawProfile() {
 
   return (
     <>
-    <PartnerInviteForm  />
       <section className="w-full h-auto bg-[#F5F5F5] md:bg-[#EAEAF5] items-center justify-center flex flex-col md:flex-row px-0">
         <div className="claracontainer bg-[#ffffff] md:bg-[#ffffff] -mt-4 rounded-t-[12px] z-2 lg:m-12 px-4 py-6 rounded-xl md:px-2 lg:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-[20px]">
           <h1>User Profile</h1>

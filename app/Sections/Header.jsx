@@ -1,17 +1,10 @@
 "use client";
 
-import {
-  Achievement,
-  Logo,
-  Milestone,
-  ProfilePlaceHolderOne,
-  ProfileProgress,
-} from "@/public/Images";
+import { Achievement, Logo, Milestone, ProfileProgress } from "@/public/Images";
 import Image from "next/image";
 import { NavMenu } from "../constant/menu";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { GraphQLClient, gql } from "graphql-request";
 import {
   Sheet,
   SheetContent,
@@ -22,13 +15,10 @@ import {
 import { ChevronRight, Menu, ShoppingBag } from "lucide-react";
 import { HomeLight } from "@/public/Icons";
 import { useEffect, useState } from "react";
-import { signOut } from "next-auth/react";
 import Loading from "../loading";
 import { useCart } from "../context/CartContext";
-// import { GoogleTranslate } from "./GoogleTranslate";
-import { useAuth } from "../lib/useAuth";
 import { useRouter } from "next/navigation";
-import { getUserDataByEmail } from "@/lib/hygraph";
+import { fetchUserDetails } from "../profile/api";
 
 const LocalNavitem = ({
   Link = "#",
@@ -109,55 +99,48 @@ const usePathname = () => {
   return pathname;
 };
 
-/**
- * @Main_account_Credentials
- */
-const HYGRAPH_ENDPOINT =
-  "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";
-const HYGRAPH_TOKEN =
-  "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImdjbXMtbWFpbi1wcm9kdWN0aW9uIn0.eyJ2ZXJzaW9uIjozLCJpYXQiOjE3MjcwNjQxNzcsImF1ZCI6WyJodHRwczovL2FwaS1hcC1zb3V0aC0xLmh5Z3JhcGguY29tL3YyL2NtMWRvbTFoaDAzeTEwN3V3d3hydXRwbXovbWFzdGVyIiwibWFuYWdlbWVudC1uZXh0LmdyYXBoY21zLmNvbSJdLCJpc3MiOiJodHRwczovL21hbmFnZW1lbnQtYXAtc291dGgtMS5oeWdyYXBoLmNvbS8iLCJzdWIiOiI2Yzg4NjI5YS1jMmU5LTQyYjctYmJjOC04OTI2YmJlN2YyNDkiLCJqdGkiOiJjbTFlaGYzdzYwcmZuMDdwaWdwcmpieXhyIn0.YMoI_XTrCZI-C7v_FX-oKL5VVtx95tPmOFReCdUcP50nIpE3tTjUtYdApDqSRPegOQai6wbyT0H8UbTTUYsZUnBbvaMd-Io3ru3dqT1WdIJMhSx6007fl_aD6gQcxb-gHxODfz5LmJdwZbdaaNnyKIPVQsOEb-uVHiDJP3Zag2Ec2opK-SkPKKWq-gfDv5JIZxwE_8x7kwhCrfQxCZyUHvIHrJb9VBPrCIq1XE-suyA03bGfh8_5PuCfKCAof7TbH1dtvaKjUuYY1Gd54uRgp8ELZTf13i073I9ZFRUU3PVjUKEOUoCdzNLksKc-mc-MF8tgLxSQ946AfwleAVkFCXduIAO7ASaWU3coX7CsXmZLGRT_a82wOORD8zihfJa4LG8bB-FKm2LVIu_QfqIHJKq-ytuycpeKMV_MTvsbsWeikH0tGPQxvAA902mMrYJr9wohOw0gru7mg_U6tLOwG2smcwuXBPnpty0oGuGwXWt_D6ryLwdNubLJpIWV0dOWF8N5D6VubNytNZlIbyFQKnGcPDw6hGRLMw2B7-1V2RpR6F3RibLFJf9GekI60UYdsXthAFE6Xzrlw03Gv5BOKImBoDPyMr0DCzneyAj9KDq4cbNNcihbHl1iA6lUCTNY3vkCBXmyujXZEcLu_Q0gvrAW3OvZMHeHY__CtXN6JFA";
-
-const client = new GraphQLClient(HYGRAPH_ENDPOINT, {
-  headers: {
-    Authorization: `Bearer ${HYGRAPH_TOKEN}`,
-  },
-});
-
-const GET_ACCOUNT_BY_EMAIL = gql`
-  query GetAccountByEmail($email: String!) {
-    account(where: { email: $email }) {
-      name
-      username
-      email
-      profilePicture {
-        url
-      }
-      isVerified
-    }
-  }
-`;
-
-const Header = () => {
+export default function Header() {
   const { cart } = useCart();
   const pathname = usePathname();
-  const { user, loading } = useAuth();
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    profilepic: null,
+  });
+
   const router = useRouter();
-  const [hygraphUser, setHygraphUser] = useState(null);
-  // const [avatarUrl, setAvatarUrl] = useState(null);
 
+  // Fetch user data when the component mounts
   useEffect(() => {
-    if (user && user.email) {
-      getUserDataByEmail(user.email).then((data) => {
-        setHygraphUser(data);
-      });
-    }
-  }, [user, loading, router]);
+    const fetchData = async () => {
+      const token = localStorage.getItem("jwt"); // Get the JWT token from localStorage
+      if (!token) {
+        router.push("/oAuth/signin"); // Redirect to login if there's an error fetching user data
+        return;
+      }
 
-  const handleSignOut = () => {
-    signOut({
-      callbackUrl: "/", // Optional: Redirect users to this URL after sign out
-    });
-  };
+      try {
+        const data = await fetchUserDetails(token); // Use the helper function to fetch user data
+        setUserData(data);
+        setFormData({
+          username: data.username,
+          email: data.email,
+          profilepic: data.profilepic?.url || "",
+        });
+      } catch (error) {
+        console.error("Error fetching user data", error);
+        router.push("/oAuth/signin"); // Redirect to login if there's an error fetching user data
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [router]);
+
+  if (loading) return <p>Loading...</p>;
 
   if (loading) {
     return (
@@ -217,10 +200,7 @@ const Header = () => {
                     </div>
                   </div>
                   <div className="flex w-full flex-col gap-2">
-                    {/* <div className="flex w-full">
-                      <GoogleTranslate />
-                    </div> */}
-                    {hygraphUser ? (
+                    {userData ? (
                       <div className="flex w-full gap-2 justify-start items-center">
                         <div className="flex">
                           <Link
@@ -235,7 +215,7 @@ const Header = () => {
                           </Link>
                         </div>
                         <Button
-                          onClick={handleSignOut}
+                          // onClick={handleSignOut}
                           className="bg-red hover:bg-hoverRed text-white clarabutton w-full"
                         >
                           Sign Out
@@ -308,7 +288,7 @@ const Header = () => {
         </div>
 
         <div className="hidden lg:flex space-x-4">
-          {user && hygraphUser ? (
+          {userData ? (
             <div className="flex flex-row justify-center items-center gap-2">
               <div className="flex z-12">
                 <Link
@@ -329,22 +309,15 @@ const Header = () => {
               >
                 <div className="relative w-full flex justify-center items-center p-[2px] border-2 border-red hover:border-hoverRed rounded-full">
                   <div className="w-full h-full bg-white rounded-full  flex items-center justify-center">
-                    {/* <Image
-                      src={
-                        hygraphUser.profilePicture?.url || ProfilePlaceHolderOne
-                      }
-                      className="w-[40px] h-[40px] object-cover rounded-full"
-                    /> */}
-                    <Image
-                      src={
-                        hygraphUser.myAvatar.profileAvatar.url ||
-                        'https://ap-south-1.graphassets.com/cm1dom2gf0lqw07pi72v8797k/cm3jnqto60fx008o0ctpfoiaq'
-                      }
-                      alt="User Avatar"
-                      width={40}
-                      height={40}
-                      className="w-[40px] h-[40px] object-cover rounded-full"
-                    />
+                    {userData.profilepic ? (
+                      <img
+                        src={`http://localhost:1337${userData.profilepic.url}`}
+                        alt="Profile Picture"
+                        className="w-[40px] h-[40px] object-cover rounded-full"
+                      />
+                    ) : (
+                      <p>No profile picture</p>
+                    )}
                   </div>
                 </div>
               </Link>
@@ -367,6 +340,137 @@ const Header = () => {
       </section>
     </header>
   );
-};
+}
+// export default function Header() {
+//   const { cart } = useCart();
+//   const { pathname, push } = useRouter();
+//   const [userData, setUserData] = useState(null);
+//   const [loading, setLoading] = useState(true);
 
-export default Header;
+//   useEffect(() => {
+//     const fetchData = async () => {
+//       const token = localStorage.getItem("jwt");
+//       if (!token) return push("/oAuth/signin");
+
+//       try {
+//         const data = await fetchUserDetails(token);
+//         setUserData(data);
+//       } catch (error) {
+//         console.error("Error fetching user data", error);
+//         push("/oAuth/signin");
+//       } finally {
+//         setLoading(false);
+//       }
+//     };
+
+//     fetchData();
+//   }, [push]);
+
+//   if (loading) return <Loading />;
+
+//   return (
+//     <header className="sticky top-0 z-50 w-full bg-white dark:bg-dark-blue-100 shadow-md py-4 px-4 flex justify-center items-center">
+//       <section className="max-w-[1400px] w-full flex justify-between items-center px-4">
+//         <Link href="/">
+//           <div className="logo">
+//             <Image src={Logo} alt="Logo" width={100} height={50} />
+//           </div>
+//         </Link>
+
+//         {/* Mobile Menu */}
+//         <div className="lg:hidden">
+//           <Sheet>
+//             <SheetTrigger>
+//               <Menu />
+//             </SheetTrigger>
+//             <SheetContent className="bg-[#F5F5F5] px-2">
+//               <SheetHeader>
+//                 <div className="flex flex-col gap-2 mt-4">
+//                   <NavMenuSection />
+//                   <ProgressSection />
+//                 </div>
+//                 <SheetDescription>#KindiLearning</SheetDescription>
+//               </SheetHeader>
+//             </SheetContent>
+//           </Sheet>
+//         </div>
+
+//         {/* Desktop Menu */}
+//         <div className="hidden lg:flex flex-row gap-[16px] items-center">
+//           <NavMenuLinks />
+//           <CartAndProfile userData={userData} cart={cart} />
+//         </div>
+//       </section>
+//     </header>
+//   );
+// }
+
+// const NavMenuSection = () => (
+//   <div className="flex flex-col gap-2">
+//     <div className="text-[#0a1932] font-medium">Quick Access</div>
+//     <div>
+//       {NavMenu?.map((item, index) => (
+//         <LocalNavitem key={index} IconSrc={item.icon} Link={item.link} Title={item.title} />
+//       ))}
+//     </div>
+//   </div>
+// );
+
+// const ProgressSection = () => (
+//   <div className="flex flex-col gap-2">
+//     <div className="text-[#0a1932] font-medium">My Progress</div>
+//     <div className="grid grid-cols-3 gap-1">
+//       <MileStone />
+//       <Progress />
+//       <Achievements />
+//     </div>
+//   </div>
+// );
+
+// const NavMenuLinks = () => {
+//   const { pathname } = useRouter();
+
+//   return (
+//     <div className="flex gap-4">
+//       {NavMenu.map((menuItem, index) => (
+//         <a
+//           key={index}
+//           href={menuItem.link}
+//           className={`text-lg font-semibold flex items-center gap-2 transition duration-300 ease-in-out ${pathname === menuItem.link ? "active text-black underline" : "text-gray-500"}`}
+//         >
+//           <Image src={pathname === menuItem.link ? menuItem.activeIcon : menuItem.icon} alt={menuItem.title} width={20} height={20} />
+//           <span>{menuItem.title}</span>
+//         </a>
+//       ))}
+//     </div>
+//   );
+// };
+
+// const CartAndProfile = ({ userData, cart }) => {
+//   return userData ? (
+//     <div className="flex items-center gap-4">
+//       <Link href="/shop/cart">
+//         <div className="relative">
+//           <p className="bg-[eaeaf5] border border-red text-red rounded-full w-6 h-6 text-center">{cart.length}</p>
+//           <ShoppingBag className="w-7 h-7 text-red" />
+//         </div>
+//       </Link>
+//       <Link href="/profile" className="relative">
+//         <img
+//           src={`http://localhost:1337${userData.profilepic?.url}`}
+//           alt="Profile"
+//           className="w-10 h-10 rounded-full object-cover"
+//         />
+//       </Link>
+//     </div>
+//   ) : (
+//     <div className="flex gap-4">
+//       <Link href="/auth/sign-in">
+//         <Button className="border-2 px-6 py-2 rounded-md">Log In</Button>
+//       </Link>
+//       <Link href="/auth/sign-up">
+//         <Button className="bg-red text-white border-2 px-6 py-2 rounded-md">Sign Up</Button>
+//       </Link>
+//     </div>
+//   );
+// };

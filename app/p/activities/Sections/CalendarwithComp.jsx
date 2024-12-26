@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 function CalendarHeader({
   currentDate,
@@ -95,6 +95,7 @@ function EventCard({ event, onDragStart }) {
   );
 }
 
+
 function CalendarGrid({
   calendarDays,
   getEventsForDay,
@@ -102,6 +103,7 @@ function CalendarGrid({
   onDrop,
   onDayClick,
   onDragStart,
+  onTouchStart,
 }) {
   return (
     <div className="flex flex-col lg:grid lg:grid-cols-7 gap-2 text-center">
@@ -146,6 +148,7 @@ function CalendarGrid({
                   key={eventIndex}
                   event={event}
                   onDragStart={onDragStart}
+                  onTouchStart={onTouchStart}
                 />
               ))}
             </div>
@@ -174,12 +177,6 @@ export default function CalendarwithComp() {
       description: "Annual checkup",
     },
     {
-      id: 5,
-      date: 8,
-      title: "Doctor's Appointment",
-      description: "Annual checkup",
-    },
-    {
       id: 3,
       date: 15,
       title: "Team Workshop",
@@ -191,52 +188,43 @@ export default function CalendarwithComp() {
       title: "Birthday Party",
       description: "Celebrate Mike's birthday",
     },
+    {
+      id: 5,
+      date: 25,
+      title: "Birthday Party",
+      description: "Celebrate Mike's birthday",
+    },
   ]);
 
-  // Get the first day of the current month
+  const draggedEventRef = useRef(null); // To store the dragged event reference
+
   const getFirstDayOfMonth = (date) => {
     const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
     return firstDay.getDay();
   };
 
-  // Get total days in the current month
   const getDaysInMonth = (date) => {
     return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
   };
 
-  // Generate the full calendar grid
   const generateCalendarGrid = (date) => {
     const daysInMonth = getDaysInMonth(date);
     const firstDay = getFirstDayOfMonth(date);
 
-    // Calculate previous month's days to fill the first row
-    const prevMonthDays = new Date(
-      date.getFullYear(),
-      date.getMonth(),
-      0
-    ).getDate();
+    const prevMonthDays = new Date(date.getFullYear(), date.getMonth(), 0).getDate();
     const prevMonthDaysToDisplay = firstDay === 0 ? 6 : firstDay - 1;
 
     let days = [];
-
-    // Add previous month's days
-    for (
-      let i = prevMonthDays - prevMonthDaysToDisplay;
-      i <= prevMonthDays;
-      i++
-    ) {
+    for (let i = prevMonthDays - prevMonthDaysToDisplay; i <= prevMonthDays; i++) {
       days.push({ day: i, isCurrentMonth: false, isPast: true });
     }
 
-    // Add current month's days
     for (let i = 1; i <= daysInMonth; i++) {
-      const isPast =
-        new Date(date.getFullYear(), date.getMonth(), i) < new Date();
+      const isPast = new Date(date.getFullYear(), date.getMonth(), i) < new Date();
       days.push({ day: i, isCurrentMonth: true, isPast });
     }
 
-    // Fill next month's days to complete the grid
-    const remainingDays = 42 - days.length; // We want 6 rows (7 days each)
+    const remainingDays = 42 - days.length;
     for (let i = 1; i <= remainingDays; i++) {
       days.push({ day: i, isCurrentMonth: false, isPast: false });
     }
@@ -244,7 +232,6 @@ export default function CalendarwithComp() {
     return days;
   };
 
-  // Change the month
   const handleMonthChange = (direction) => {
     const newDate = new Date(currentDate);
     newDate.setMonth(currentDate.getMonth() + direction);
@@ -252,31 +239,31 @@ export default function CalendarwithComp() {
     setSelectedMonth(newDate.getMonth());
   };
 
-  // Handle jumping to specific month and year
   const handleSpecificMonthYear = () => {
     const newDate = new Date(selectedYear, selectedMonth);
     setCurrentDate(newDate);
   };
 
-  // Handle drag start
-  const handleDragStart = (event, draggedEvent) => {
-    event.dataTransfer.setData("eventId", draggedEvent.id);
+  const handleDragStart = (e, event) => {
+    draggedEventRef.current = event; // Store the event that is being dragged
+    // For touch events, we don't use dataTransfer, so we store the data manually
+    e.dataTransfer.setData("eventId", event.id); // For desktop
   };
 
-  // Handle drop
-  const handleDrop = (event, day) => {
-    event.preventDefault();
+  const handleTouchStart = (e, event) => {
+    // Handle touchstart by storing the event in the ref
+    draggedEventRef.current = event;
+  };
+
+  const handleDrop = (e, day) => {
+    e.preventDefault();
 
     // Get today's date
     const today = new Date();
-    today.setHours(0, 0, 0, 0); // Set time to midnight for accurate comparison
+    today.setHours(0, 0, 0, 0);
 
     // Get the target drop date
-    const targetDate = new Date(
-      currentDate.getFullYear(),
-      currentDate.getMonth(),
-      day
-    );
+    const targetDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
 
     // Prevent dropping on past dates
     if (targetDate < today) {
@@ -284,15 +271,24 @@ export default function CalendarwithComp() {
       return;
     }
 
-    // Proceed with dropping
-    const eventId = parseInt(event.dataTransfer.getData("eventId"));
-    setEvents((prevEvents) =>
-      prevEvents.map((e) => (e.id === eventId ? { ...e, date: day } : e))
-    );
+    if (draggedEventRef.current) {
+      const eventId = draggedEventRef.current.id;
+      setEvents((prevEvents) =>
+        prevEvents.map((e) => (e.id === eventId ? { ...e, date: day } : e))
+      );
+    }
   };
-  // Generate the grid for the current month
-  const calendarDays = generateCalendarGrid(currentDate);
 
+  const handleTouchEnd = (e, day) => {
+    // Handle touch end event (drop)
+    handleDrop(e, day);
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+  };
+
+  const calendarDays = generateCalendarGrid(currentDate);
   const years = [];
   for (let i = selectedYear - 5; i <= selectedYear + 5; i++) {
     years.push(i);
@@ -314,10 +310,12 @@ export default function CalendarwithComp() {
       <CalendarGrid
         calendarDays={calendarDays}
         getEventsForDay={(day) => events.filter((event) => event.date === day)}
-        onDragOver={(e) => e.preventDefault()}
+        onDragOver={handleDragOver}
         onDrop={handleDrop}
         onDayClick={(day) => alert(`Selected day: ${day}`)}
         onDragStart={handleDragStart}
+        onTouchStart={handleTouchStart} // Add touchstart handler
+        onTouchEnd={handleTouchEnd} // Add touchend handler
       />
     </div>
   );
