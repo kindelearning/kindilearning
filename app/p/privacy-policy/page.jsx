@@ -58,7 +58,7 @@ export default async function PrivacyPolicy() {
             <div className="h-[1.5px] bg-[black] rounded-full my-4" />
           </div>
 
-          <div className="items-center w-full justify-center flex flex-col gap-4">
+          <div className="items-center font-fredoka prose w-full justify-center flex flex-col gap-4">
             <div
               dangerouslySetInnerHTML={{
                 __html:

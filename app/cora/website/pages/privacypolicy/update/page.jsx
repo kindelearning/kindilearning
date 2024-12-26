@@ -14,7 +14,31 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+// import "react-quill/dist/quill.snow.css"; // Include Quill's styles
+// import dynamic from "next/dynamic";
+import ClaraMarkdownRichEditor from "@/app/cora/Sections/TextEditor/ClaraMarkdownRichEditor";
 
+// Dynamically import ReactQuill to avoid SSR issues
+// const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+// const modules = {
+//   toolbar: [
+//     [
+//       { header: "1" },
+//       { header: "2" },
+//       { header: "3" },
+//       { header: "4" },
+//       { header: "5" },
+//       { header: "6" },
+//       { align: [] },
+//     ],
+//     ["bold", "italic", "underline", "strike"],
+//     [{ list: "ordered" }, { list: "bullet" }],
+//     [{ color: [] }], // Text color
+//     ["link", "image"],
+//     ["blockquote", "code-block"],
+//     ["clean"], // For clearing the content
+//   ],
+// };
 export default function EditRefund() {
   const [content, setContent] = useState({
     Title: "",
@@ -24,9 +48,10 @@ export default function EditRefund() {
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [openDialog, setOpenDialog] = useState(false); // State for controlling dialog visibility
-  const [dialogMessage, setDialogMessage] = useState(""); // Message to show in the dialog
-  const [dialogType, setDialogType] = useState(""); // Type of dialog: success or error
+  const [openDialog, setOpenDialog] = useState(false);
+  const [dialogMessage, setDialogMessage] = useState("");
+  const [dialogType, setDialogType] = useState("");
+  const [editorLoaded, setEditorLoaded] = useState(false);
 
   useEffect(() => {
     const fetchContent = async () => {
@@ -35,9 +60,10 @@ export default function EditRefund() {
           "http://localhost:1337/api/privacypolicy?populate=*"
         );
         const data = await response.json();
+        setEditorLoaded(true); // Set editorLoaded to true once the component is mounted
 
         if (response.ok) {
-          setContent(data.data.Content); // Access 'Content' directly
+          setContent(data.data.Content);
         } else {
           setError("Failed to fetch content");
         }
@@ -51,10 +77,10 @@ export default function EditRefund() {
     fetchContent();
   }, []);
 
-  const handleChange = (e) => {
+  const handleChange = (value, delta, source, editor) => {
     setContent({
       ...content,
-      [e.target.name]: e.target.value,
+      Pagecontent: value, // Only update Pagecontent
     });
   };
 
@@ -70,8 +96,8 @@ export default function EditRefund() {
         data: {
           Content: {
             Title: content.Title,
-            Body: content.Body,
-            Pagecontent: content.Pagecontent,
+            Body: content.Body, // Keep Body as plain text
+            Pagecontent: content.Pagecontent, // Save rich text for Pagecontent
             Lastupdated: new Date(),
           },
         },
@@ -79,32 +105,26 @@ export default function EditRefund() {
     });
 
     if (response.ok) {
-      setDialogMessage(
-        "Content updated successfully! Changes will reflect in a while"
-      );
+      setDialogMessage("Content updated successfully!");
       setDialogType("success");
     } else {
       setDialogMessage("Failed to update content.");
       setDialogType("error");
     }
 
-    setOpenDialog(true); // Open the dialog after submission
+    setOpenDialog(true);
   };
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="text-lg font-medium text-gray-600">Loading...</div>
-      </div>
-    );
+    return <div>Loading...</div>;
   }
 
   if (error) {
-    return <div className="text-center text-red-500">{error}</div>;
+    return <div>{error}</div>;
   }
 
   return (
-    <div className="container mx-auto px-8 py-12 font-poppins">
+    <div className="container font-fredoka mx-auto px-8 py-12 font-poppins">
       <div className="mb-8">
         <h1 className="text-3xl font-semibold text-gray-800">
           Edit Your Refund Policy Page
@@ -114,104 +134,104 @@ export default function EditRefund() {
         </p>
       </div>
 
-      {/* Form Card */}
       <Card className="p-8 bg-white shadow-xl rounded-lg">
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Title field - Disabled */}
-          <div>
-            <label
-              htmlFor="Title"
-              className="block text-lg font-medium text-gray-700"
-            >
-              Title
-            </label>
-            <Input
-              id="Title"
-              type="text"
-              name="Title"
-              value={content.Title}
-              disabled
-              className="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            />
-          </div>
-          {/* Body field */}
-          <div>
-            <label
-              htmlFor="Body"
-              className="block text-lg font-medium text-gray-700"
-            >
-              Body
-            </label>
-            <Textarea
-              id="Body"
-              name="Body"
-              value={content.Body || ""}
-              onChange={handleChange}
-              rows="6"
-              className="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            />
+          <div className="flex w-full gap-2 justify-between">
+            <div className="flex w-full flex-col">
+              <label
+                htmlFor="Title"
+                className="block text-lg font-medium text-gray-700"
+              >
+                Title
+              </label>
+              <Input
+                id="Title"
+                type="text"
+                name="Title"
+                value={content.Title}
+                disabled
+                className="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none"
+              />
+            </div>
+            <div className="flex w-full flex-col">
+              <label
+                htmlFor="Lastupdated"
+                className="block text-lg font-medium text-gray-700"
+              >
+                Last Updated
+              </label>
+              <Input
+                id="Lastupdated"
+                type="text"
+                name="Lastupdated"
+                value={new Date(content.Lastupdated).toLocaleString()}
+                disabled
+                className="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none"
+              />
+            </div>
           </div>
 
-          {/* Pagecontent field */}
-          <div>
-            <label
-              htmlFor="Pagecontent"
-              className="block text-lg font-medium text-gray-700"
-            >
-              Page Content
-            </label>
-            <Textarea
-              id="Pagecontent"
-              name="Pagecontent"
+          <label
+            htmlFor="Body"
+            className="block text-lg font-medium text-gray-700"
+          >
+            Body
+          </label>
+          <Textarea
+            id="Body"
+            name="Body"
+            value={content.Body || ""}
+            onChange={(e) => setContent({ ...content, Body: e.target.value })}
+            rows="6"
+            className="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none"
+          />
+
+          <label
+            htmlFor="Pagecontent"
+            className="block text-lg font-medium text-gray-700"
+          >
+            Page Content
+          </label>
+          {/* <ReactQuill
+            value={content.Pagecontent || ""}
+            onChange={handleChange}
+            modules={modules}
+            className="mt-2 w-full max-h-96 overflow-auto border border-gray-300 rounded-lg focus:outline-none"
+          /> */}
+          {editorLoaded ? (
+            // <ReactQuill
+            //   value={content.Pagecontent || ""}
+            //   onChange={handleChange}
+            //   modules={modules}
+            //   className="mt-2 w-full max-h-96 overflow-auto border border-gray-300 rounded-lg focus:outline-none"
+            // />
+            <ClaraMarkdownRichEditor
+              onChange={handleChange}
               value={content.Pagecontent || ""}
-              onChange={handleChange}
-              rows="20"
-              className="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="mt-2 w-full max-h-96 overflow-auto border border-gray-300 rounded-lg focus:outline-none"
             />
-          </div>
+          ) : (
+            <div className="p-4 border rounded-md">Loading editor...</div>
+          )}
 
-          {/* Lastupdated field */}
-          <div>
-            <label
-              htmlFor="Lastupdated"
-              className="block text-lg font-medium text-gray-700"
-            >
-              Last Updated
-            </label>
-            <Input
-              id="Lastupdated"
-              type="text"
-              name="Lastupdated"
-              value={new Date(content.Lastupdated).toLocaleString()}
-              disabled
-              className="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            />
-          </div>
 
           <div className="flex justify-end">
-            <Button
-              variant="outline"
-              type="submit"
-              className="bg-blue-600 text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-lg px-6 py-3"
-            >
+            <Button type="submit" className="bg-blue-600 text-white px-6 py-3">
               Save Changes
             </Button>
           </div>
         </form>
       </Card>
 
-      {/* ShadCN Dialog */}
+      {/* Dialog */}
       <Dialog open={openDialog} onOpenChange={setOpenDialog}>
-        <DialogContent className="font-fredoka">
+        <DialogContent>
           <DialogHeader>
-            <DialogTitle className="text-[24px] font-medium">
+            <DialogTitle>
               {dialogType === "success" ? "Success" : "Error"}
             </DialogTitle>
             <DialogDescription>{dialogMessage}</DialogDescription>
           </DialogHeader>
-          {/* <DialogFooter>
-            <Button onClick={() => setOpenDialog(false)}>Close</Button>
-          </DialogFooter> */}
         </DialogContent>
       </Dialog>
     </div>
