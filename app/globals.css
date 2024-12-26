@@ -75,7 +75,6 @@
   }
 }
 
-
 @layer components {
   .prose {
     max-width: 100%; /* Remove any max-width restriction */
@@ -131,7 +130,20 @@
     border-radius: 50%;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
   }
-
+  .ql-toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000; /* Ensures the toolbar stays on top of other content */
+    background-color: white; /* Optional: ensures the background is solid */
+    border-bottom: 1px solid #ddd; /* Optional: adds a subtle border */
+  }
+  .ql-snow {
+    position: sticky;
+    top: 0;
+    z-index: 1000; /* Ensures the toolbar stays on top of other content */
+    background-color: white; /* Optional: ensures the background is solid */
+    border-bottom: 1px solid #ddd; /* Optional: adds a subtle border */
+  }
   svg path {
     transition: stroke-dashoffset 0.3s ease-in-out;
   }
