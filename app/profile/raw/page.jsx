@@ -48,6 +48,8 @@ export default function RawProfile() {
 
   return (
     <>
+      <EditProfile />
+
       <section className="w-full h-auto bg-[#F5F5F5] md:bg-[#EAEAF5] items-center justify-center flex flex-col md:flex-row px-0">
         <div className="claracontainer bg-[#ffffff] md:bg-[#ffffff] -mt-4 rounded-t-[12px] z-2 lg:m-12 px-4 py-6 rounded-xl md:px-2 lg:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-[20px]">
           <h1>User Profile</h1>
@@ -121,3 +123,112 @@ export default function RawProfile() {
     </>
   );
 }
+
+const EditProfile = () => {
+  const [name, setName] = useState("");
+  const [error, setError] = useState("");
+  const [isUpdating, setIsUpdating] = useState(false);
+
+  const router = useRouter();
+
+  // Fetch current user data when the page loads
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const token = localStorage.getItem("jwt"); // Fetch the JWT token from localStorage
+
+      if (!token) {
+        return null;
+      }
+
+      try {
+        const response = await fetch("http://localhost:1337/api/users/me", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          setError("Failed to fetch user data. Please try again.");
+          return;
+        }
+
+        setName(data.name); // Set the initial value of the name field
+      } catch (error) {
+        console.error("Error fetching user data", error);
+        setError("Failed to fetch user data.");
+      }
+    };
+
+    fetchUserData();
+  }, [router]);
+
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+
+    const token = localStorage.getItem("jwt"); // Get JWT from localStorage
+    if (!token) {
+      setError("You need to be logged in to update your profile.");
+      return;
+    }
+
+    setIsUpdating(true); // Set loading state while updating
+
+    try {
+      const response = await fetch("http://localhost:1337/api/users/me", {
+        method: "PUT", // Use PUT to update user data
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: name, // Send the updated name field
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to update your profile.");
+      }
+
+      alert("Profile updated successfully!");
+      router.push("/profile"); // Redirect back to the profile page on success
+    } catch (error) {
+      console.error("Error details: ", error);
+      setError("Failed to update your profile. Please try again.");
+    } finally {
+      setIsUpdating(false); // Reset loading state
+    }
+  };
+
+  if (!name) {
+    return <p>Loading...</p>;
+  }
+
+  return (
+    <div className="edit-profile-container">
+      <h1>Edit Profile</h1>
+
+      {error && <p className="error">{error}</p>}
+
+      <form onSubmit={handleFormSubmit}>
+        <div>
+          <label htmlFor="name">Name</label>
+          <input
+            type="text"
+            id="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+        </div>
+
+        <button type="submit" disabled={isUpdating}>
+          {isUpdating ? "Updating..." : "Update Profile"}
+        </button>
+      </form>
+    </div>
+  );
+};

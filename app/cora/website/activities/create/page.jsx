@@ -4,194 +4,212 @@ import React, { useState } from "react";
 
 export default function CreateActivityForm() {
   const [formData, setFormData] = useState({
-    Title: "",
-    Theme: "",
-    FocusAge: "",
-    LearningArea: "",
-    Skills: [{ type: "paragraph", children: [{ type: "text", text: "" }] }],
-    ActivityDate: "",
-    SetUpTime: "",
-    Accordions: [{ Question: "", Answer: "" }],
+    title: "",
+    skills: "",
+    theme: "",
+    focusAge: "",
+    activityDate: "",
+    learningArea: "",
+    accordions: [{ question: "", answer: "" }], // Repeatable component
+    setUpTime: "",
+    skillCategory: "",
   });
 
-  // Handle input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Handle Skills/Accordions changes
-  const handleArrayChange = (e, arrayName, index, key) => {
-    const newArray = [...formData[arrayName]];
-    newArray[index][key] = e.target.value;
-    setFormData({
-      ...formData,
-      [arrayName]: newArray,
-    });
+  const handleAccordionChange = (index, field, value) => {
+    const updatedAccordions = formData.accordions.map((accordion, i) =>
+      i === index ? { ...accordion, [field]: value } : accordion
+    );
+    setFormData((prev) => ({ ...prev, accordions: updatedAccordions }));
   };
 
-  // Add new Skill or Accordion
-  const addNewItem = (arrayName) => {
-    const newItem =
-      arrayName === "Skills"
-        ? { type: "paragraph", children: [{ type: "text", text: "" }] }
-        : { Question: "", Answer: "" };
-    setFormData({
-      ...formData,
-      [arrayName]: [...formData[arrayName], newItem],
-    });
+  const addAccordion = () => {
+    setFormData((prev) => ({
+      ...prev,
+      accordions: [...prev.accordions, { question: "", answer: "" }],
+    }));
   };
 
-  // Submit the form data
+  const removeAccordion = (index) => {
+    setFormData((prev) => ({
+      ...prev,
+      accordions: prev.accordions.filter((_, i) => i !== index),
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    const payload = {
-      data: {
-        Title: formData.Title,
-        Theme: formData.Theme,
-        FocusAge: formData.FocusAge,
-        LearningArea: formData.LearningArea,
-        Skills: formData.Skills,
-        ActivityDate: formData.ActivityDate,
-        SetUpTime: formData.SetUpTime,
-        Accordions: formData.Accordions,
-      },
-    };
-  
     try {
-      const response = await fetch('http://localhost:1337/api/activities', {
-        method: 'POST',
+      const response = await fetch("http://localhost:1337/api/activities", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({
+          data: formData, // Ensure proper structure
+        }),
       });
-  
-      if (!response.ok) {
-        const errorData = await response.json();
-        console.error('Error response:', errorData);
-        alert(`Error: ${errorData.message || 'Unknown Error'}`);
+
+      if (response.ok) {
+        alert("Activity created successfully!");
+        setFormData({
+          title: "",
+          skills: "",
+          theme: "",
+          focusAge: "",
+          activityDate: "",
+          learningArea: "",
+          accordions: [{ question: "", answer: "" }],
+          setUpTime: "",
+          skillCategory: "",
+        });
       } else {
-        const data = await response.json();
-        alert('Activity Created Successfully');
-        console.log('Response:', data);
+        const errorData = await response.json();
+        console.error("Error creating activity:", errorData);
+        alert("Failed to create activity. Check the input data.");
       }
     } catch (error) {
-      console.error('Error:', error);
-      alert('An error occurred while submitting the form');
+      console.error("Error creating activity:", error);
+      alert("An error occurred while creating the activity.");
     }
   };
-  
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-6 bg-white p-6 rounded-lg shadow-md"
+    >
+      <h2 className="text-xl font-semibold text-gray-800">
+        Create New Activity
+      </h2>
+
+      {/* Title */}
       <div>
-        <label>Title</label>
+        <label className="block text-sm font-medium text-gray-700">Title</label>
         <input
           type="text"
-          name="Title"
-          value={formData.Title}
+          name="title"
+          value={formData.title}
           onChange={handleInputChange}
-        />
-      </div>
-      <div>
-        <label>Theme</label>
-        <input
-          type="text"
-          name="Theme"
-          value={formData.Theme}
-          onChange={handleInputChange}
-        />
-      </div>
-      <div>
-        <label>Focus Age</label>
-        <input
-          type="text"
-          name="FocusAge"
-          value={formData.FocusAge}
-          onChange={handleInputChange}
-        />
-      </div>
-      <div>
-        <label>Learning Area</label>
-        <input
-          type="text"
-          name="LearningArea"
-          value={formData.LearningArea}
-          onChange={handleInputChange}
-        />
-      </div>
-      <div>
-        <label>Activity Date</label>
-        <input
-          type="datetime-local"
-          name="ActivityDate"
-          value={formData.ActivityDate}
-          onChange={handleInputChange}
-        />
-      </div>
-      <div>
-        <label>Set Up Time</label>
-        <input
-          type="text"
-          name="SetUpTime"
-          value={formData.SetUpTime}
-          onChange={handleInputChange}
+          className="w-full mt-1 p-2 border rounded-lg"
         />
       </div>
 
+      {/* Skills */}
+      {/* <div>
+        <label className="block text-sm font-medium text-gray-700">
+          Skills
+        </label>
+        <textarea
+          name="skills"
+          value={formData.skills}
+          onChange={handleInputChange}
+          className="w-full mt-1 p-2 border rounded-lg"
+        ></textarea>
+      </div> */}
+
+      {/* Other fields */}
+      {["theme", "focusAge", "setUpTime", "skillCategory"].map((field) => (
+        <div key={field}>
+          <label className="block text-sm font-medium text-gray-700 capitalize">
+            {field}
+          </label>
+          <input
+            type="text"
+            name={field}
+            value={formData[field]}
+            onChange={handleInputChange}
+            className="w-full mt-1 p-2 border rounded-lg"
+          />
+        </div>
+      ))}
+
+      {/* Activity Date */}
       <div>
-        <label>Skills</label>
-        {formData.Skills.map((skill, index) => (
-          <div key={index}>
-            <textarea
-              value={skill.children[0].text}
+        <label className="block text-sm font-medium text-gray-700">
+          Activity Date
+        </label>
+        <input
+          type="date"
+          name="activityDate"
+          value={formData.activityDate}
+          onChange={handleInputChange}
+          className="w-full mt-1 p-2 border rounded-lg"
+        />
+      </div>
+
+      {/* Learning Area */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700">
+          Learning Area
+        </label>
+        <select
+          name="learningArea"
+          value={formData.learningArea}
+          onChange={handleInputChange}
+          className="w-full mt-1 p-2 border rounded-lg"
+        >
+          <option value="">Select</option>
+          <option value="math">Math</option>
+          <option value="science">Science</option>
+          {/* Add more options here */}
+        </select>
+      </div>
+
+      {/* Accordions */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700">
+          Accordions
+        </label>
+        {formData.accordions.map((accordion, index) => (
+          <div key={index} className="flex items-center space-x-4 mt-2">
+            <input
+              type="text"
+              placeholder="Question"
+              value={accordion.question}
               onChange={(e) =>
-                handleArrayChange(e, "Skills", index, "children[0].text")
+                handleAccordionChange(index, "question", e.target.value)
               }
+              className="w-1/2 p-2 border rounded-lg"
             />
+            <input
+              type="text"
+              placeholder="Answer"
+              value={accordion.answer}
+              onChange={(e) =>
+                handleAccordionChange(index, "answer", e.target.value)
+              }
+              className="w-1/2 p-2 border rounded-lg"
+            />
+            <button
+              type="button"
+              onClick={() => removeAccordion(index)}
+              className="text-red-500"
+            >
+              Remove
+            </button>
           </div>
         ))}
-        <button type="button" onClick={() => addNewItem("Skills")}>
-          Add Skill
-        </button>
-      </div>
-
-      <div>
-        <label>Accordions</label>
-        {formData.Accordions.map((accordion, index) => (
-          <div key={index}>
-            <div>
-              <label>Question</label>
-              <input
-                type="text"
-                value={accordion.Question}
-                onChange={(e) =>
-                  handleArrayChange(e, "Accordions", index, "Question")
-                }
-              />
-            </div>
-            <div>
-              <label>Answer</label>
-              <textarea
-                value={accordion.Answer}
-                onChange={(e) =>
-                  handleArrayChange(e, "Accordions", index, "Answer")
-                }
-              />
-            </div>
-          </div>
-        ))}
-        <button type="button" onClick={() => addNewItem("Accordions")}>
+        <button
+          type="button"
+          onClick={addAccordion}
+          className="mt-2 text-blue-500"
+        >
           Add Accordion
         </button>
       </div>
 
-      <button type="submit">Submit</button>
+      {/* Submit Button */}
+      <button
+        type="submit"
+        className="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700"
+      >
+        Create Activity
+      </button>
     </form>
   );
 }

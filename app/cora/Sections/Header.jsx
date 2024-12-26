@@ -11,7 +11,7 @@ export default function Header() {
         </div>
 
         {/* Center Section: Search */}
-        <div className="hidden md:flex items-center w-1/3">
+        {/* <div className="hidden md:flex items-center w-1/3">
           <div className="flex items-center w-full bg-gray-100 rounded-lg px-3 py-2">
             <Search className="text-gray-500" />
             <input
@@ -20,13 +20,13 @@ export default function Header() {
               className="bg-transparent w-full border-none outline-none text-gray-600 ml-2"
             />
           </div>
-        </div>
+        </div> */}
 
         {/* Right Section: Notifications and Profile */}
         <div className="flex items-center space-x-4">
           {/* Notification Icon */}
           <button className="relative p-2 rounded-full hover:bg-gray-100">
-            <Bell className="text-gray-600" />
+            {/* <Bell className="text-gray-600" /> */}
             <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
           </button>
 
@@ -36,10 +36,10 @@ export default function Header() {
             targert="_blank"
             className="flex items-center space-x-2"
           >
-            <div className="w-8 h-8 bg-gray-300 rounded-full"></div>
+            {/* <div className="w-8 h-8 bg-gray-300 rounded-full"></div>
             <span className="hidden md:block text-gray-700 font-medium">
               Admin
-            </span>
+            </span> */}
           </Link>
         </div>
       </div>
