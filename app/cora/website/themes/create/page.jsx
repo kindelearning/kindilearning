@@ -15,6 +15,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import { useRouter } from "next/navigation"; // To navigate to All Themes page
 import Link from "next/link";
+import ClaraMarkdownRichEditor from "@/app/cora/Sections/TextEditor/ClaraMarkdownRichEditor";
 
 export default function CreateTheme() {
   const [title, setTitle] = useState("");
@@ -57,7 +58,9 @@ export default function CreateTheme() {
   const handleMainContentChange = (e) => {
     setMainContent(e.target.value);
   };
-
+  const handleMainContentChange2 = (value) => {
+    setMainContent(value); // Update state with the rich text content
+  };
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -237,6 +240,11 @@ export default function CreateTheme() {
               onChange={handleMainContentChange}
               className="p-3 border border-gray-300 rounded-md w-full shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               rows={6}
+            />
+            <ClaraMarkdownRichEditor
+              onChange={handleMainContentChange2}
+              value={mainContent}
+              className="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
 

@@ -267,18 +267,7 @@ export default function MediaPage() {
                     >
                       <Link />
                     </button>
-                    {/* <button
-                      onClick={() =>
-                        handleEditClick(
-                          asset.id,
-                          asset.name,
-                          asset.alternativeText
-                        )
-                      }
-                      className="text-blue-500 hover:text-blue-700"
-                    >
-                      <PencilIcon className="w-5 h-5" />
-                    </button> */}
+
                     <button
                       onClick={() => handleDeleteClick(asset.id)}
                       className="text-red-500 hover:text-red-700"
@@ -346,50 +335,4 @@ export default function MediaPage() {
       </Dialog>
     </div>
   );
-}
-{
-  /* Edit Dialog */
-}
-{
-  /* <Dialog open={isEditDialogOpen} onClose={handleCancelEdit}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Edit Media Asset</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium">Title (Name)</label>
-              <input
-                type="text"
-                value={editTitle}
-                onChange={(e) => setEditTitle(e.target.value)}
-                className="w-full rounded-lg px-4 py-2"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">Alt Text</label>
-              <input
-                type="text"
-                value={editAltText}
-                onChange={(e) => setEditAltText(e.target.value)}
-                className="w-full rounded-lg px-4 py-2"
-              />
-            </div>
-          </div>
-          <DialogFooter>
-            <button
-              onClick={handleCancelEdit}
-              className="px-4 py-2 bg-gray-200 text-gray-700 rounded mr-4"
-            >
-              Cancel
-            </button>
-            <button
-              onClick={updateMediaAsset}
-              className="px-4 py-2 bg-blue-500 text-white rounded"
-            >
-              Save
-            </button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog> */
 }

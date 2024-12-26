@@ -177,7 +177,8 @@ export default function AdminThemes() {
                 >
                   Launch Time {sortDirection === "asc" ? "↑" : "↓"}
                 </TableHead>
-                <TableHead>Created At</TableHead>
+                <TableHead className=" cursor-pointer"
+                  onClick={() => handleSort("createdAt")}>Created At {sortDirection === "asc" ? "↑" : "↓"}</TableHead>
                 <TableHead>Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -286,7 +287,7 @@ export default function AdminThemes() {
                               Main Content
                             </strong>
                             <div
-                              className="text-sm text-gray-700 mt-2"
+                              className="text-sm prose text-gray-700 mt-2"
                               dangerouslySetInnerHTML={{
                                 __html:
                                   selectedTheme?.MainContent ||

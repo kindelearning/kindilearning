@@ -224,7 +224,12 @@ export default function BlogDetailPage({ params }) {
           </div>
           <div className="content prose font-fredoka py-4 flex flex-col gap-2 justify-center">
             {Content ? (
-              <RichTextRender content={Content} />
+              // <RichTextRender content={Content} />
+
+              <div
+                className="text-lg text-gray-600 prose leading-relaxed mb-6"
+                dangerouslySetInnerHTML={{ __html: Content }}
+              />
             ) : (
               <p>No content available</p>
             )}

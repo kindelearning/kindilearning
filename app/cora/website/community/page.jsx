@@ -330,11 +330,17 @@ export default function AdminBlogs() {
                             <strong className="text-xl font-medium">
                               Content
                             </strong>
-                            {selectedBlog?.Content.map((block, index) => {
+                            {/* {selectedBlog?.Content.map((block, index) => {
                               return block.type === "paragraph" ? (
                                 <p key={index}>{block.children[0].text}</p>
                               ) : null;
-                            })}{" "}
+                            })} */}
+                            <div
+                              className="text-lg text-gray-600 prose leading-relaxed mb-6"
+                              dangerouslySetInnerHTML={{
+                                __html: selectedBlog?.Content,
+                              }}
+                            />
                           </div>
 
                           {/* Dialog Close Button */}
