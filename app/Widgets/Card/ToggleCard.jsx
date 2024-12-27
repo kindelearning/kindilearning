@@ -13,7 +13,7 @@ const ToggleCard = ({
 }) => {
   return (
     <div
-      className={`w-full min-w-[320px] md:min-w-[200px] max-w-md p-4 rounded-[16px] shadow-md`}
+      className={`w-full  min-w-[320px] md:min-w-[200px] max-w-md p-4 rounded-[16px] shadow-md`}
       style={{ backgroundColor: `#${backgroundColor}` }}
     >
       <div className="flex justify-between h-full flex-col items-center">
@@ -29,11 +29,11 @@ const ToggleCard = ({
             />
           </div>
           <div
-            className={`my-4 h-full justify-between flex flex-col gap-2 w-full px-4 transition-all duration-1000 overflow-hidden ${
+            className={`my-4 h-full justify-between flex flex-col gap-2 w-full px-4 lg:px-0 transition-all duration-1000 overflow-hidden ${
               isOpen ? "max-h-screen" : "max-h-0"
             }`}
           >
-            <p className="text-white text-base font-medium font-montserrat leading-[20px]">
+            <p className="text-white prose font-fredoka items-start flex flex-col justify-start text-base font-medium font -montserrat leading-[20px]">
               {description}
             </p>
             <a

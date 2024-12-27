@@ -1,6 +1,6 @@
 "use client";
 
-import { AgeRangeArrow } from "@/public/Images";
+import { AgeRangeArrow, User } from "@/public/Images";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -16,18 +16,19 @@ const AgeCard = ({ bgImage, image, title, body, link }) => {
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
         }}
-        className="w-full min-h-[390px] h-[390px] border-t-2 border-b-2 min-w-[280px]  flex flex-col bg-[#ffffff00] rounded-[24px] justify-between items-start px-8 py-4"
+        className="w-full min-h-[390px] overflow-clip h-[390px] border-t-2 border-b-2 min-w-[280px]  flex flex-col bg-[#ffffff00] rounded-[24px] justify-between items-start px-8 py-4"
       >
         <div className="flex w-full items-center justify-start flex-col">
           <img
             alt="Kindi"
-            src={image}
+            src={image || User}
             className="w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24"
           />
           <h2 className="text-[#0a1932] w-full text-[18px] font-semibold font-fredoka text-start leading-[20px] mt-4">
             {title || "title"}
           </h2>
-          <p className="text-[#0a1932] w-full text-[16px] font-medium font-fredoka leading-[20px] text-start mt-2">
+
+          <p className="text-[#0a1932] prose w-full text-[16px] font-medium font-fredoka leading-[20px] text-start mt-2">
             {body || "Description"}
           </p>
         </div>
@@ -56,7 +57,7 @@ export default function AgeRangeWidget() {
           throw new Error(`Error fetching data: ${response.statusText}`);
         }
         const data = await response.json();
-        // console.log("Fetched data:", data);
+        console.log("Fetched data:", data);
 
         // Set fetched data and stop loading
         setData(data);
@@ -136,10 +137,13 @@ export default function AgeRangeWidget() {
               {data.data.AgeGroup.Content.slice(0, 1).map((content, index) => (
                 <AgeCard
                   key={index}
-                  image={`http://localhost:1337${content.Icon.url}`}
+                  // image={`http://localhost:1337${content.Icon.url}` || User}
                   bgImage="/Images/AgeRangeOne.svg"
                   title={content?.Title}
-                  body={content?.Body}
+                  body={
+                    <p dangerouslySetInnerHTML={{ __html: content?.Body }} />
+                  }
+                  // body={content?.Body}
                 />
               ))}
             </>
@@ -159,10 +163,13 @@ export default function AgeRangeWidget() {
               {data.data.AgeGroup.Content.slice(1, 2).map((content, index) => (
                 <AgeCard
                   key={index}
-                  image={`http://localhost:1337${content.Icon.url}`}
+                  // image={`http://localhost:1337${content.Icon.url}` || User}
                   bgImage="/Images/AgeRangeTwo.svg"
                   title={content?.Title}
-                  body={content?.Body}
+                  // body={content?.Body}
+                  body={
+                    <p dangerouslySetInnerHTML={{ __html: content?.Body }} />
+                  }
                 />
               ))}
             </>
@@ -183,10 +190,13 @@ export default function AgeRangeWidget() {
                 <AgeCard
                   key={index}
                   // image={AgeCardOne}
-                  image={`http://localhost:1337${content.Icon.url}`}
+                  // image={`http://localhost:1337${content.Icon.url}` || User}
                   bgImage="/Images/AgeRangeThree.svg"
                   title={content?.Title}
-                  body={content?.Body}
+                  // body={content?.Body}
+                  body={
+                    <p dangerouslySetInnerHTML={{ __html: content?.Body }} />
+                  }
                 />
               ))}
             </>
@@ -205,10 +215,13 @@ export default function AgeRangeWidget() {
                 <AgeCard
                   key={index}
                   // image={AgeCardOne}
-                  image={`http://localhost:1337${content.Icon.url}`}
+                  // image={`http://localhost:1337${content.Icon.url}` || User}
                   bgImage="/Images/AgeRangeFour.svg"
                   title={content?.Title}
-                  body={content?.Body}
+                  // body={content?.Body}
+                  body={
+                    <p dangerouslySetInnerHTML={{ __html: content?.Body }} />
+                  }
                 />
               ))}
             </>

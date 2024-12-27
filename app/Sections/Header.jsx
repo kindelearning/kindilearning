@@ -116,10 +116,10 @@ export default function Header() {
   useEffect(() => {
     const fetchData = async () => {
       const token = localStorage.getItem("jwt"); // Get the JWT token from localStorage
-      if (!token) {
-        router.push("/oAuth/signin"); // Redirect to login if there's an error fetching user data
-        return;
-      }
+      // if (!token) {
+      //   router.push("/oAuth/signin"); // Redirect to login if there's an error fetching user data
+      //   return;
+      // }
 
       try {
         const data = await fetchUserDetails(token); // Use the helper function to fetch user data
@@ -131,7 +131,7 @@ export default function Header() {
         });
       } catch (error) {
         console.error("Error fetching user data", error);
-        router.push("/oAuth/signin"); // Redirect to login if there's an error fetching user data
+        // router.push("/oAuth/signin"); // Redirect to login if there's an error fetching user data
       } finally {
         setLoading(false);
       }
@@ -324,12 +324,12 @@ export default function Header() {
             </div>
           ) : (
             <>
-              <Link href="/auth/sign-in">
+              <Link href="/oAuth/signin">
                 <Button className="bg-[#ffffff] border-purple text-purple hover:bg-[#ffffff] hover:border-[#2b2b2b] hover:text-dark-blue-100 px-[40px] border-2 rounded-[16px] transition duration-300 ease-in-out">
                   Log In
                 </Button>
               </Link>
-              <Link href="/auth/sign-up">
+              <Link href="/oAuth/signup">
                 <Button className="bg-red px-[40px] hover:text-white border-4 border-red hover:bg-hoverRed hover:border-hoverRed rounded-[16px] transition duration-300 ease-in-out">
                   Sign Up
                 </Button>

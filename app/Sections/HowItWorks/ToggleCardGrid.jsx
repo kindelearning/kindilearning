@@ -28,7 +28,10 @@ export default function ToggleCardGrid() {
           <MyToggleCard
             key={card.id}
             title={card.Title}
-            description={card.Body}
+            description={
+              <div dangerouslySetInnerHTML={{ __html: card.Body }} />
+            }
+            // description={card.Body}
             backgroundColor={card.bgcolor}
             isOpen={isOpen}
             setIsOpen={handleCardClick}
@@ -40,5 +43,3 @@ export default function ToggleCardGrid() {
     </>
   );
 }
-
-

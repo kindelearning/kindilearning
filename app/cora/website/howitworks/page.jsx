@@ -10,15 +10,21 @@ import {
 
 import HeroSectionForm from "../../Sections/Home/HomepageHeroSectionPageUpdate";
 import HowItWorksSection from "../../Sections/Home/HowItWorksSection";
-import Monthlytheme, { UpdateMonthlytheme } from "../../Sections/Home/Monthlytheme";
-import PopularActivities, { UpdatePopularLearningForm } from "../../Sections/Home/PopularActivities";
+import Monthlytheme, {
+  UpdateMonthlytheme,
+} from "../../Sections/Home/Monthlytheme";
+import PopularActivities, {
+  UpdatePopularLearningForm,
+} from "../../Sections/Home/PopularActivities";
 import { SectionRow } from "../../Sections/SectionRow";
 import HowItWorks, {
   UpdateHowItWorkSection,
 } from "../../Sections/horItWorks/HowItWorkshero";
 import AreaOfLearning, { UpdateAreaOfLearning } from "../../Sections/horItWorks/Areaoflearning";
-import KindiSkillsCategoriesCards from "../../Sections/horItWorks/KindiSkillsCategoriesCards";
-import AgeGroupSection, { UpdateAgeGroupSection } from "../../Sections/horItWorks/AgeGroupSection";
+import KindiSkillsCategoriesCards, { UpdateKindiSkillsCategoriesCards } from "../../Sections/horItWorks/KindiSkillsCategoriesCards";
+import AgeGroupSection, {
+  UpdateAgeGroupSection,
+} from "../../Sections/horItWorks/AgeGroupSection";
 
 export default function HomePage() {
   return (
@@ -52,7 +58,7 @@ export default function HomePage() {
                 ComponentPreview={HowItWorksSection}
                 ComponentForm={HeroSectionForm} // Replace with an actual update form if necessary
               />
-              {/* Monthlytheme */}
+              {/* Area Of Learning */}
               <SectionRow
                 serialNo={5}
                 page="How It Works"
@@ -66,7 +72,7 @@ export default function HomePage() {
                 page="How It Works"
                 sectionName="Kindi Skills Categories"
                 ComponentPreview={KindiSkillsCategoriesCards}
-                ComponentForm={HeroSectionForm} // Replace with an actual update form if necessary
+                ComponentForm={UpdateKindiSkillsCategoriesCards} // Replace with an actual update form if necessary
               />
               {/* Monthlytheme */}
               <SectionRow

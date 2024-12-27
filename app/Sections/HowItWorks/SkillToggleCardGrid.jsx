@@ -27,7 +27,7 @@ export default function SkillToggleCardGrid() {
         <MyToggleCard
           key={card.id}
           title={card.Title}
-          description={card.Body}
+          description={<div dangerouslySetInnerHTML={{ __html: card.Body }} />}
           backgroundColor={card.bgcolor}
           isOpen={isOpen}
           setIsOpen={handleCardClick}

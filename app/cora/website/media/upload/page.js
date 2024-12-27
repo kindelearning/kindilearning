@@ -107,7 +107,7 @@ const UploadMediaPage = () => {
 
       {/* File upload container */}
       <div
-        className={`border-2 border-dashed rounded-lg p-6 h-[300px] justify-center items-center flex flex-col mb-4 mb-4 ${
+        className={`border-2 border-dashed rounded-lg p-6 h-[300px] justify-center items-center flex flex-col mb-4 ${
           dragOver
             ? "bg-gray-100 border-blue-500"
             : "bg-gray-50 border-gray-300"

@@ -23,6 +23,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import ProductUpdateForm from "./update/page";
 
 export default function ShopPage() {
   const [products, setProducts] = useState([]);
@@ -32,13 +33,41 @@ export default function ShopPage() {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(12);
   const [totalPages, setTotalPages] = useState(1);
-
   const [searchTerm, setSearchTerm] = useState("");
   const [priceSortOption, setPriceSortOption] = useState("none");
   const [stockSortOption, setStockSortOption] = useState("none");
-
+  const [sortBy, setSortBy] = useState("createdAt"); // Sorting field
+  const [sortDirection, setSortDirection] = useState("asc"); // Sorting direction
   const [isDialogOpen, setIsDialogOpen] = useState(false); // State to manage the dialog visibility
   const [deleteProductId, setDeleteProductId] = useState(null); // Store the ID of the product to be deleted
+
+  const handleProductSort = (field) => {
+    // Toggle sorting direction
+    const direction = sortDirection === "asc" ? "desc" : "asc";
+    setSortDirection(direction);
+
+    // Sort products
+    const sortedProducts = [...products].sort((a, b) => {
+      const valueA = new Date(a[field]);
+      const valueB = new Date(b[field]);
+
+      // Validate dates or handle non-date fields gracefully
+      if (isNaN(valueA) || isNaN(valueB)) {
+        // For non-date fields, fall back to string comparison
+        const strA = a[field]?.toString() || "";
+        const strB = b[field]?.toString() || "";
+        return direction === "asc"
+          ? strA.localeCompare(strB)
+          : strB.localeCompare(strA);
+      }
+
+      // Perform date sorting based on direction
+      return direction === "asc" ? valueA - valueB : valueB - valueA;
+    });
+
+    // Update the products state with sorted data
+    setProducts(sortedProducts);
+  };
 
   // Fetch products from API
   useEffect(() => {
@@ -203,7 +232,12 @@ export default function ShopPage() {
                   <TableHead>Price</TableHead>
                   <TableHead>Sale Price</TableHead>
                   <TableHead>Stock</TableHead>
-                  <TableHead>Created At</TableHead>
+                  <TableHead onClick={() => handleProductSort("createdAt")}>
+                    Created At {sortDirection === "asc" ? "↑" : "↓"}
+                  </TableHead>
+                  <TableHead onClick={() => handleProductSort("updatedAt")}>
+                    Updated At {sortDirection === "asc" ? "↑" : "↓"}
+                  </TableHead>
                   <TableHead>Actions</TableHead>
                 </TableRow>
               </TableHeader>
@@ -224,6 +258,9 @@ export default function ShopPage() {
                       <TableCell>
                         {new Date(product.createdAt).toLocaleString()}
                       </TableCell>
+                      <TableCell>
+                        {new Date(product.updatedAt).toLocaleString()}
+                      </TableCell>
                       <TableCell className="flex w-fit gap-1">
                         <Link
                           target="_blank"
@@ -231,8 +268,23 @@ export default function ShopPage() {
                         >
                           <Eye className="text-[#717171] w-4 h-4  duration-200 ease-ease-in-out hover:text-black" />
                         </Link>
-                        {/* <View className="text-[#717171] w-4 h-4  duration-200 ease-ease-in-out hover:text-black" /> */}
-                        <PencilLine className="text-[#717171] w-4 h-4  duration-200 ease-ease-in-out hover:text-black" />
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button variant="primary">
+                              <PencilLine className="text-[#717171] w-4 h-4  duration-200 ease-ease-in-out hover:text-black" />
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent className="max-w-[1000px] max-h-[600px] overflow-y-scroll">
+                            <DialogHeader>
+                              <DialogDescription>
+                                <ProductUpdateForm
+                                  documentId={product.documentId}
+                                />
+                              </DialogDescription>
+                            </DialogHeader>
+                            <DialogFooter></DialogFooter>
+                          </DialogContent>
+                        </Dialog>{" "}
                         <Dialog>
                           <DialogTrigger asChild>
                             <Trash className="text-[#717171] w-4 h-4  duration-200 ease-ease-in-out hover:text-black" />

@@ -11,6 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import ClaraMarkdownRichEditor from "../TextEditor/ClaraMarkdownRichEditor";
 
 export default function AreaOfLearning() {
   const [content, setContent] = useState(null);
@@ -79,245 +80,193 @@ export default function AreaOfLearning() {
   );
 }
 
-export function UpdateAreaOfLearning() {
-  const [content, setContent] = useState({
-    AreaoflearningTitle: "",
-    ArealearningBody: "",
-    KindiSkillsCategoriesTitle: "",
-    KindiSkillsCategoriesBody: "",
-    AreaOflearningCards: [],
-  });
+export const UpdateAreaOfLearning = () => {
+  const [formData, setFormData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [openDialog, setOpenDialog] = useState(false);
 
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [dialogMessage, setDialogMessage] = useState("");
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-
-  // Fetch initial data for the "How It Works" page
+  // Fetch existing data
   useEffect(() => {
-    const fetchContent = async () => {
-      try {
-        const response = await fetch(
-          "http://localhost:1337/api/how-it-work-page?populate[AreaOflearningCards][populate]=Icon"
-        );
-        const data = await response.json();
-        if (data && data.data) {
-          setContent({
-            AreaoflearningTitle: data.data.AreaoflearningTitle || "",
-            ArealearningBody: data.data.ArealearningBody || "",
-            KindiSkillsCategoriesTitle:
-              data.data.KindiSkillsCategoriesTitle || "",
-            KindiSkillsCategoriesBody:
-              data.data.KindiSkillsCategoriesBody || "",
-            AreaOflearningCards: data.data.AreaOflearningCards || [],
-          });
-        }
-      } catch (err) {
-        setError("Error fetching content");
-      }
-    };
-
-    fetchContent();
+    fetch(
+      "http://localhost:1337/api/how-it-work-page?populate[AreaOflearningCards][populate]=Icon"
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setFormData(data.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setError("Failed to load data");
+      });
   }, []);
 
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
 
-    const updatedContent = {
+    // Prepare the payload
+    const payload = {
       data: {
-        AreaoflearningTitle: content.AreaoflearningTitle,
-        ArealearningBody: content.ArealearningBody,
-        KindiSkillsCategoriesTitle: content.KindiSkillsCategoriesTitle,
-        KindiSkillsCategoriesBody: content.KindiSkillsCategoriesBody,
-        AreaOflearningCards: content.AreaOflearningCards.map((card) => ({
-          id: card.id,
+        AreaoflearningTitle: formData.AreaoflearningTitle,
+        ArealearningBody: formData.ArealearningBody,
+        AreaOflearningCards: formData.AreaOflearningCards.map((card) => ({
           Title: card.Title,
           Body: card.Body,
-          bgcolor: card.bgcolor,
-          Icon: card.Icon, // Make sure Icon is sent here for file upload
+          bgcolor: card.bgcolor.replace("#", ""),
         })),
       },
     };
-
-    // Use FormData to handle file uploads
-    const formData = new FormData();
-    formData.append("data", JSON.stringify(updatedContent.data));
-
-    // Append files to FormData (for each card's Icon)
-    content.AreaOflearningCards.forEach((card, index) => {
-      if (card.Icon) {
-        formData.append(`files.icon_${index}`, card.Icon); // Assuming the icon files are in the "Icon" field
-      }
-    });
+    console.log("Sent Data", payload);
 
     try {
-      const response = await fetch(
-        "http://localhost:1337/api/how-it-work-page",
-        {
-          method: "PUT",
-          body: formData,
-        }
-      );
+      const res = await fetch("http://localhost:1337/api/how-it-work-page", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
 
-      if (response.ok) {
-        const result = await response.json();
-        setDialogMessage("Content updated successfully!");
+      if (res.ok) {
+        setOpenDialog(true); // Open the success dialog
       } else {
-        const result = await response.json();
-        setDialogMessage(
-          `Error updating content: ${result.message || response.statusText}`
-        );
+        const errorData = await res.json();
+        console.error("Error updating:", errorData);
+        alert(`Failed to update: ${errorData.error.message}`);
       }
     } catch (err) {
-      setDialogMessage(`Error updating content: ${err.message}`);
-    } finally {
-      setIsDialogOpen(true);
-      setLoading(false);
+      console.error(err);
+      setError("An unexpected error occurred.");
     }
   };
 
-  // Handle card updates
-  const handleCardChange = (index, field, value) => {
-    const updatedCards = [...content.AreaOflearningCards];
-    updatedCards[index] = { ...updatedCards[index], [field]: value };
-    setContent({ ...content, AreaOflearningCards: updatedCards });
+  // Handle form input changes
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
-  // Handle icon file upload
-  const handleIconChange = (index, file) => {
-    const updatedCards = [...content.AreaOflearningCards];
-    updatedCards[index] = { ...updatedCards[index], Icon: file };
-    setContent({ ...content, AreaOflearningCards: updatedCards });
+  const handleCardChange = (index, key, value) => {
+    const updatedCards = [...formData.AreaOflearningCards];
+    updatedCards[index][key] = value;
+    setFormData((prev) => ({
+      ...prev,
+      AreaOflearningCards: updatedCards,
+    }));
   };
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>{error}</p>;
 
   return (
-    <div className="container mx-auto p-4">
-      <h2 className="text-2xl font-semibold mb-4">Edit How It Works Page</h2>
-
-      {error && <div className="text-red-500 mb-4">{error}</div>}
-
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {/* General Section */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
+    <>
+      <form onSubmit={handleSubmit} className="space-y-6 p-6">
+        {/* Area of Learning Title */}
+        <div className="space-y-2">
+          <label
+            htmlFor="AreaoflearningTitle"
+            className="block text-lg font-semibold"
+          >
             Area of Learning Title
           </label>
           <input
             type="text"
-            value={content.AreaoflearningTitle}
-            onChange={(e) =>
-              setContent({ ...content, AreaoflearningTitle: e.target.value })
-            }
-            className="w-full p-2 border border-gray-300 rounded-md"
+            name="AreaoflearningTitle"
+            id="AreaoflearningTitle"
+            value={formData.AreaoflearningTitle || ""}
+            onChange={handleInputChange}
+            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
+        {/* Area of Learning Body */}
+        <div className="space-y-2">
+          <label
+            htmlFor="ArealearningBody"
+            className="block text-lg font-semibold"
+          >
             Area of Learning Body
           </label>
           <textarea
-            value={content.ArealearningBody}
-            onChange={(e) =>
-              setContent({ ...content, ArealearningBody: e.target.value })
-            }
-            className="w-full p-2 border border-gray-300 rounded-md"
-            rows="5"
+            name="ArealearningBody"
+            id="ArealearningBody"
+            value={formData.ArealearningBody || ""}
+            onChange={handleInputChange}
+            rows="2"
+            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Kindi Skills Categories Title
-          </label>
-          <input
-            type="text"
-            value={content.KindiSkillsCategoriesTitle}
-            onChange={(e) =>
-              setContent({
-                ...content,
-                KindiSkillsCategoriesTitle: e.target.value,
-              })
-            }
-            className="w-full p-2 border border-gray-300 rounded-md"
-          />
-        </div>
+        {/* Area of Learning Cards */}
+        <h3 className="text-xl font-semibold">Area of Learning Cards</h3>
+        <div className="grid w-full grid-cols-2 justify-between gap-2">
+          {formData.AreaOflearningCards.map((card, index) => (
+            <div
+              key={card.id}
+              className="space-y-4 p-4 border border-gray-300 rounded-lg"
+              style={{ backgroundColor: card.bgcolor }}
+            >
+              <h4 className="text-lg font-medium">Card {index + 1}</h4>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Kindi Skills Categories Body
-          </label>
-          <textarea
-            value={content.KindiSkillsCategoriesBody}
-            onChange={(e) =>
-              setContent({
-                ...content,
-                KindiSkillsCategoriesBody: e.target.value,
-              })
-            }
-            className="w-full p-2 border border-gray-300 rounded-md"
-            rows="5"
-          />
-        </div>
-
-        {/* Area of Learning Cards Section */}
-        <h3 className="text-xl font-semibold mt-6 mb-4">
-          Area of Learning Cards
-        </h3>
-        <div className="grid grid-cols-2 gap-3 w-full justify-between">
-          {content.AreaOflearningCards.map((card, index) => (
-            <div key={card.id} className="space-y-4 mb-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Card Title
+              <div className="space-y-2">
+                <label
+                  htmlFor={`card-title-${index}`}
+                  className="block text-sm font-medium"
+                >
+                  Title
                 </label>
                 <input
                   type="text"
-                  value={card.Title}
+                  id={`card-title-${index}`}
+                  value={card.Title || ""}
                   onChange={(e) =>
                     handleCardChange(index, "Title", e.target.value)
                   }
-                  className="w-full p-2 border border-gray-300 rounded-md"
+                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                 />
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Card Body
+              <div className="space-y-2">
+                <label
+                  htmlFor={`card-body-${index}`}
+                  className="block text-sm font-medium"
+                >
+                  Body
                 </label>
-                <textarea
-                  value={card.Body}
+                {/* <textarea
+                  id={`card-body-${index}`}
+                  value={card.Body || ""}
                   onChange={(e) =>
                     handleCardChange(index, "Body", e.target.value)
                   }
-                  className="w-full p-2 border border-gray-300 rounded-md"
-                  rows="4"
+                  rows="3"
+                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                /> */}
+                <ClaraMarkdownRichEditor
+                  value={card.Body}
+                  onChange={(value)=>handleCardChange(index, "Body", value)}
                 />
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
+              <div className="space-y-2">
+                <label
+                  htmlFor={`card-bgcolor-${index}`}
+                  className="block text-sm font-medium"
+                >
                   Background Color
                 </label>
                 <input
                   type="color"
-                  value={`#${card.bgcolor}`}
+                  id={`card-bgcolor-${index}`}
+                  value={card.bgcolor || "#000000"}
                   onChange={(e) =>
-                    handleCardChange(index, "bgcolor", e.target.value.slice(1))
+                    handleCardChange(index, "bgcolor", e.target.value)
                   }
-                  className="w-[40px] p-2 border border-gray-300 rounded-md"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Icon
-                </label>
-                <input
-                  type="file"
-                  onChange={(e) => handleIconChange(index, e.target.files[0])}
                   className="w-full p-2 border border-gray-300 rounded-md"
                 />
               </div>
@@ -325,33 +274,29 @@ export function UpdateAreaOfLearning() {
           ))}
         </div>
 
-        {/* Submit Button */}
-        <div className="flex items-center justify-center">
-          <button
-            type="submit"
-            disabled={loading}
-            className="px-4 py-2 bg-red text-white rounded-md disabled:bg-gray-400"
-          >
-            {loading ? "Updating..." : "Update Content"}
-          </button>
-        </div>
+        <button
+          type="submit"
+          className="w-full py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
+        >
+          Update
+        </button>
       </form>
-
-      {/* Success/Failure Dialog */}
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+      {/* Dialog for success message */}
+      <Dialog open={openDialog} onOpenChange={setOpenDialog}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>{dialogMessage}</DialogTitle>
+            <DialogTitle>Success!</DialogTitle>
+            <DialogDescription>
+              Your data has been updated successfully.
+            </DialogDescription>
           </DialogHeader>
           <DialogFooter>
             <DialogClose asChild>
-              <button className="px-4 py-2 bg-red-500 text-white rounded-md">
-                Close
-              </button>
+              <button className="btn-close">Close</button>
             </DialogClose>
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </div>
+    </>
   );
-}
+};

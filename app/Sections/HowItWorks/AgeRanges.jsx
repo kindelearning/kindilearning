@@ -25,7 +25,7 @@ export default async function AgeRanges() {
               </div>
             </div>
             <div className="flex w-full justify-start items-start flex-col">
-              <div className="w-full px-0 md:px-12 lg:px-32 text-start md:text-center text-[#3f3a64] clarbodyTwo">
+              <div className="w-full px-0 md:px-12 prose lg:px-32 text-start md:text-center text-[#3f3a64] clarbodyTwo">
                 <div
                   dangerouslySetInnerHTML={{ __html: data.AgeGroup?.Body }}
                 />

@@ -11,6 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import ClaraMarkdownRichEditor from "../TextEditor/ClaraMarkdownRichEditor";
 
 export default function AgeGroupSection() {
   const [content, setContent] = useState(null);
@@ -76,7 +77,10 @@ export default function AgeGroupSection() {
               </h4>
 
               {/* Age Group Body */}
-              <p className="text-gray-600 mt-4">{ageGroup.Body}</p>
+              <p
+                className="text-gray-600 prose mt-4"
+                dangerouslySetInnerHTML={{ __html: ageGroup.Body }}
+              />
             </div>
             {/* Age Group Icon */}
             {ageGroup.Icon && ageGroup.Icon.url && (
@@ -101,208 +105,187 @@ export default function AgeGroupSection() {
 }
 
 export function UpdateAgeGroupSection() {
-  const [content, setContent] = useState({
-    AreaoflearningTitle: "",
-    ArealearningBody: "",
-    KindiSkillsCategoriesTitle: "",
-    KindiSkillsCategoriesBody: "",
-    AgeGroup: null, // Start with null or an empty object
-  });
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [dialogMessage, setDialogMessage] = useState("");
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [formData, setFormData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [openDialog, setOpenDialog] = useState(false);
 
+  // Fetch existing data
   useEffect(() => {
-    // Fetch initial content data to pre-fill the form
-    const fetchContent = async () => {
-      try {
-        const response = await fetch(
-          "http://localhost:1337/api/how-it-work-page?populate[AgeGroup][populate]=Content.Icon"
-        );
-        const data = await response.json();
-        setContent({
-          AreaoflearningTitle: data.data.AreaoflearningTitle,
-          ArealearningBody: data.data.ArealearningBody,
-          KindiSkillsCategoriesTitle: data.data.KindiSkillsCategoriesTitle,
-          KindiSkillsCategoriesBody: data.data.KindiSkillsCategoriesBody,
-          AgeGroup: data.data.AgeGroup, // Store the AgeGroup object
-        });
-      } catch (err) {
-        setError("Error fetching content");
-      }
-    };
-
-    fetchContent();
+    fetch(
+      "http://localhost:1337/api/how-it-work-page?populate[AgeGroup][populate]=*"
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Fetched Data:", data);
+        setFormData(data.data.AgeGroup.Content || []);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setError("Failed to load data");
+      });
   }, []);
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
 
-    const updatedContent = {
+    // Prepare the payload
+    const payload = {
       data: {
-        AreaoflearningTitle: content.AreaoflearningTitle,
-        ArealearningBody: content.ArealearningBody,
-        KindiSkillsCategoriesTitle: content.KindiSkillsCategoriesTitle,
-        KindiSkillsCategoriesBody: content.KindiSkillsCategoriesBody,
-        AgeGroup: content.AgeGroup, // Include AgeGroup data
+        AgeGroup: {
+          Content: formData.map((card) => ({
+            Title: card.Title,
+            Body: card.Body,
+            featuredText: card.featuredText,
+          })),
+        },
       },
     };
 
-    try {
-      const response = await fetch(
-        `http://localhost:1337/api/how-it-work-page?populate[AgeGroup][populate]=Content.Icon`, // Correct URL with query parameter for documentId
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(updatedContent),
-        }
-      );
+    console.log("Sent Data", payload);
 
-      const result = await response.json();
-      if (response.ok) {
-        setDialogMessage("Content updated successfully!");
+    try {
+      const res = await fetch("http://localhost:1337/api/how-it-work-page", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (res.ok) {
+        setOpenDialog(true); // Open the success dialog
       } else {
-        console.error("Error response:", result);
-        setDialogMessage(
-          `Error updating content: ${result.message || response.statusText}`
-        );
+        const errorData = await res.json();
+        console.error("Error updating:", errorData);
+        alert(`Failed to update: ${errorData.error.message}`);
       }
     } catch (err) {
-      console.error("Error:", err);
-      setDialogMessage(`Error updating content: ${err.message}`);
-    } finally {
-      setIsDialogOpen(true);
-      setLoading(false);
+      console.error(err);
+      setError("An unexpected error occurred.");
     }
   };
 
+  // Handle form input changes
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleCardChange = (index, key, value) => {
+    console.log(`Updating card ${index}, key: ${key}, value: ${value}`); // Debugging log
+    const updatedCards = [...formData];
+    updatedCards[index][key] = value;
+    setFormData(updatedCards);
+  };
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>{error}</p>;
+  if (!formData || !Array.isArray(formData)) {
+    return <p>No Age Group content available</p>;
+  }
   return (
-    <div className="container mx-auto p-4">
-      <h2 className="text-2xl font-semibold mb-4">Edit Content</h2>
+    <>
+      <form onSubmit={handleSubmit} className="space-y-6 p-6">
+        {/* Area of Learning Cards */}
+        <h3 className="text-xl font-semibold">Area of Learning Cards</h3>
+        <div className="grid w-full grid-cols-2 justify-between gap-2">
+          {formData.map((card, index) => (
+            <div
+              key={card.id}
+              className="space-y-4 p-4 border border-gray-300 rounded-lg"
+            >
+              <h4 className="text-lg font-medium">Card {index + 1}</h4>
 
-      {error && <div className="text-red-500">{error}</div>}
-
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Area of Learning Title */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Area of Learning Title
-          </label>
-          <input
-            type="text"
-            value={content.AreaoflearningTitle}
-            onChange={(e) =>
-              setContent({ ...content, AreaoflearningTitle: e.target.value })
-            }
-            className="w-full p-2 border border-gray-300 rounded-md"
-          />
-        </div>
-
-        {/* Area of Learning Body */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Area of Learning Body
-          </label>
-          <textarea
-            value={content.ArealearningBody}
-            onChange={(e) =>
-              setContent({ ...content, ArealearningBody: e.target.value })
-            }
-            className="w-full p-2 border border-gray-300 rounded-md"
-            rows="5"
-          />
-        </div>
-
-        {/* Kindi Skills Categories Title */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Kindi Skills Categories Title
-          </label>
-          <input
-            type="text"
-            value={content.KindiSkillsCategoriesTitle}
-            onChange={(e) =>
-              setContent({
-                ...content,
-                KindiSkillsCategoriesTitle: e.target.value,
-              })
-            }
-            className="w-full p-2 border border-gray-300 rounded-md"
-          />
-        </div>
-
-        {/* Kindi Skills Categories Body */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Kindi Skills Categories Body
-          </label>
-          <textarea
-            value={content.KindiSkillsCategoriesBody}
-            onChange={(e) =>
-              setContent({
-                ...content,
-                KindiSkillsCategoriesBody: e.target.value,
-              })
-            }
-            className="w-full p-2 border border-gray-300 rounded-md"
-            rows="5"
-          />
-        </div>
-
-        {/* Age Group Content */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Age Group Content
-          </label>
-          {content.AgeGroup?.Content &&
-          Array.isArray(content.AgeGroup.Content) ? (
-            content.AgeGroup.Content.map((item, index) => (
-              <div key={index} className="mb-4">
-                <h3 className="text-lg font-semibold">{item.Title}</h3>
-                <p>{item.Body}</p>
-                <img
-                  src={` http://localhost:1337${item.Icon.url} `}
-                  alt={item.Title}
-                  width={79}
-                  height={79}
+              <div className="space-y-2">
+                <label
+                  htmlFor={`card-title-${index}`}
+                  className="block text-sm font-medium"
+                >
+                  Title
+                </label>
+                <input
+                  type="text"
+                  id={`card-title-${index}`}
+                  value={card.Title || ""}
+                  onChange={(e) =>
+                    handleCardChange(index, "Title", e.target.value)
+                  }
+                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                 />
               </div>
-            ))
-          ) : (
-            <p>No age group content available</p>
-          )}
+
+              <div className="space-y-2">
+                <label
+                  htmlFor={`card-body-${index}`}
+                  className="block text-sm font-medium"
+                >
+                  Body
+                </label>
+                {/* <textarea
+                  id={`card-body-${index}`}
+                  value={card.Body || ""}
+                  onChange={(e) =>
+                    handleCardChange(index, "Body", e.target.value)
+                  }
+                  rows="3"
+                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                /> */}
+                <ClaraMarkdownRichEditor
+                  value={card.Body}
+                  onChange={(value) => handleCardChange(index, "Body", value)}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label
+                  htmlFor={`card-featuredText-${index}`}
+                  className="block text-sm font-medium"
+                >
+                  Background Color
+                </label>
+                <input
+                  type="text"
+                  id={`card-featuredText-${index}`}
+                  value={card.featuredText || "#000000"}
+                  onChange={(e) =>
+                    handleCardChange(index, "featuredText", e.target.value)
+                  }
+                  className="w-full p-2 border border-gray-300 rounded-md"
+                />
+              </div>
+            </div>
+          ))}
         </div>
 
-        <div className="flex items-center justify-center">
-          <button
-            type="submit"
-            disabled={loading}
-            className="px-4 py-2 bg-red text-white rounded-md disabled:bg-gray-400"
-          >
-            {loading ? "Updating..." : "Update Content"}
-          </button>
-        </div>
+        <button
+          type="submit"
+          className="w-full py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
+        >
+          Update
+        </button>
       </form>
-
-      {/* Shadcn Dialog for Success/Error Message */}
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+      {/* Dialog for success message */}
+      <Dialog open={openDialog} onOpenChange={setOpenDialog}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Update Status</DialogTitle>
-            <DialogDescription>{dialogMessage}</DialogDescription>
+            <DialogTitle>Success!</DialogTitle>
+            <DialogDescription>
+              Your data has been updated successfully.
+            </DialogDescription>
           </DialogHeader>
-          <DialogClose
-            onClick={() => setIsDialogOpen(false)}
-            className="bg-red text-white rounded-md px-4 py-2"
-          >
-            Close
-          </DialogClose>
+          <DialogFooter>
+            <DialogClose asChild>
+              <button className="btn-close">Close</button>
+            </DialogClose>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
-    </div>
+    </>
   );
 }
