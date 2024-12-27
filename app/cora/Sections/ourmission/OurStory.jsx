@@ -11,6 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import ClaraMarkdownRichEditor from "../TextEditor/ClaraMarkdownRichEditor";
 
 export default function OurStory() {
   const [content, setContent] = useState(null);
@@ -64,7 +65,7 @@ export default function OurStory() {
             </p>
           )}
         </div>
-        <div className="w-full flex flex-col justify-start items-center animate-fadeIn animate-delay-500">
+        <div className="w-full flex flex-col justify-start items-start animate-fadeIn animate-delay-500">
           {/* Featured Text */}
           {OurStory?.featuredText && (
             <p className="text-[#1d1d1d] clarascript text-lg md:text-xl lg:text-2xl font-semibold animate-slideInLeft animate-delay-1000">
@@ -79,20 +80,21 @@ export default function OurStory() {
                 {OurStory.Title.split(" ").slice(0, 2).join(" ")}
               </span>
               <span className="mx-1">
-                {OurStory.Title.split(" ").slice(2, 3).join(" ")}
+                {OurStory.Title.split(" ").slice(2, 4).join(" ")}
               </span>
             </div>
           )}
 
           {/* Body */}
           {OurStory?.Body && (
-            <p className="text-center text-[#696969] text-base md:text-lg lg:text-xl mt-4 leading-relaxed animate-fadeIn animate-delay-2000">
-              {OurStory.Body}
-            </p>
+            <p
+              className="prose w-full text-start text-[#696969] text-base md:text-lg lg:text-xl mt-4 leading-relaxed  animate-fadeIn animate-delay-2000"
+              dangerouslySetInnerHTML={{ __html: OurStory.Body }}
+            />
           )}
         </div>
       </section>
-    </>
+    </> 
   );
 }
 
@@ -176,6 +178,21 @@ export function UpdateOurStorySection() {
       setLoading(false);
     }
   };
+  const handleChange = (e) => {
+    // Check if e.target is undefined or null
+    if (!e.target) {
+      console.error("e.target is undefined");
+      return;
+    }
+    const { name, value } = e.target;
+    setContent((prevState) => ({
+      ...prevState,
+      OurStory: {
+        ...prevState.OurStory,
+        [name]: value,
+      },
+    }));
+  };
 
   // Handle video file change
   const handleFileChange = (e) => {
@@ -258,7 +275,7 @@ export function UpdateOurStorySection() {
           <label className="block text-sm font-medium text-gray-700">
             Body
           </label>
-          <textarea
+          {/* <textarea
             value={content.OurStory.Body}
             onChange={(e) =>
               setContent({
@@ -268,6 +285,16 @@ export function UpdateOurStorySection() {
             }
             className="w-full p-2 border border-gray-300 rounded-md"
             rows="5"
+          /> */}
+          <ClaraMarkdownRichEditor
+            name="Body"
+            value={content.OurStory.Body}
+            onChange={(value) =>
+              setContent({
+                ...content,
+                OurStory: { ...content.OurStory, Body: value },
+              })
+            }
           />
         </div>
 

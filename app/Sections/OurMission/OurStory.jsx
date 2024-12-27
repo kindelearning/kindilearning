@@ -14,10 +14,20 @@ export default async function OurStory() {
         <div className="claracontainer px-4 md:px-0 lg:px-4 py-8 md:py-8 xl:py-12 w-full flex flex-col md:flex-col lg:flex-row xl:flex-row overflow-hidden gap-8">
           <div className="w-full flex justify-center items-start h-auto">
             <div className="w-full lg:w-[400px] rounded-xl  border-[12px] border-[#ffffff] xl:w-[500px] h-auto animate-fadeIn animate-delay-500">
-              <video className="w-full h-full " autoPlay loop muted>
-                <source src={`http://localhost:1337${data?.OurStory?.Media[0]?.url}`} type="video/mp4" />
-                Your browser does not support the video.
-              </video>
+              {data?.OurStory?.Media ? (
+                <video className="w-full h-full " autoPlay loop muted>
+                  <source
+                    src={`http://localhost:1337${data?.OurStory?.Media[0]?.url}`}
+                    type="video/mp4"
+                  />
+                  Your browser does not support the video.
+                </video>
+              ) : (
+                <video className="w-full h-full " autoPlay loop muted>
+                  <source src="/preloader.mp4" type="video/mp4" />
+                  Your browser does not support the video.
+                </video>
+              )}
             </div>
           </div>
           <div className="flex-col flex justify-center body items-start">
@@ -36,9 +46,13 @@ export default async function OurStory() {
                     {data.OurStory.Title.split(" ").slice(1, 2).join(" ")}
                   </span>
                 </div>
-                <div className="w-auto h-auto text-white clarabodyTwo animate-fadeIn animate-delay-150 ">
+                {/* <div className="w-auto h-auto text-white clarabodyTwo animate-fadeIn animate-delay-150 ">
                   {data.OurStory.Body}
-                </div>
+                </div> */}
+                <div
+                  className="w-auto prose h-auto text-white clarabodyTwo animate-fadeIn animate-delay-150 "
+                  dangerouslySetInnerHTML={{ __html: data.OurStory.Body }}
+                />
               </div>
             </div>
             <div className="w-full flex">

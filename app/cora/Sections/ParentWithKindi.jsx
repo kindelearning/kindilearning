@@ -11,7 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-
+import ClaraMarkdownRichEditor from "./TextEditor/ClaraMarkdownRichEditor";
 
 export default function ParentWithKindi() {
   const [content, setContent] = useState(null);
@@ -66,7 +66,7 @@ export default function ParentWithKindi() {
   }
 
   return (
-    <section className="bg-gradient-to-b from-white to-gray-100 py-16">
+    <section className="bg-gradient-to-b from-white to-gray-100">
       <div className="container mx-auto px-6 lg:px-20">
         <div className="bg-white rounded-lg overflow-hidden">
           <div className="p-8 md:p-12 lg:p-16">
@@ -75,9 +75,13 @@ export default function ParentWithKindi() {
             </h2>
 
             <div className="text-lg text-gray-700 space-y-6 leading-relaxed">
-              {content.Body.split("\n").map((line, index) => (
-                <p key={index}>{line}</p>
-              ))}
+             
+              <p
+                className="prose w-full px-0 text-start clarabodyTwo  font-medium font-fredoka"
+                dangerouslySetInnerHTML={{
+                  __html: content.Body,
+                }}
+              />
             </div>
           </div>
         </div>
@@ -86,19 +90,18 @@ export default function ParentWithKindi() {
   );
 }
 
-
 export function UpdateParentWithKindiSection() {
   const [content, setContent] = useState({
     Parentwithkindi: {
-      Body: '',
-      featuredText: '',
-      Title: '',
+      Body: "",
+      featuredText: "",
+      Title: "",
       Media: null, // Handle media if required
     },
   });
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [dialogMessage, setDialogMessage] = useState('');
+  const [error, setError] = useState("");
+  const [dialogMessage, setDialogMessage] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   useEffect(() => {
@@ -106,14 +109,14 @@ export function UpdateParentWithKindiSection() {
     const fetchContent = async () => {
       try {
         const response = await fetch(
-          'http://localhost:1337/api/our-mission?populate[Parentwithkindi][populate]=Media'
+          "http://localhost:1337/api/our-mission?populate[Parentwithkindi][populate]=Media"
         );
         const data = await response.json();
         setContent({
           Parentwithkindi: data.data.Parentwithkindi || {},
         });
       } catch (err) {
-        setError('Error fetching content');
+        setError("Error fetching content");
       }
     };
 
@@ -138,17 +141,17 @@ export function UpdateParentWithKindiSection() {
     };
 
     try {
-      const response = await fetch('http://localhost:1337/api/our-mission', {
-        method: 'PUT',
+      const response = await fetch("http://localhost:1337/api/our-mission", {
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(updatedContent),
       });
 
       const result = await response.json();
       if (response.ok) {
-        setDialogMessage('Parent With Kindi section updated successfully!');
+        setDialogMessage("Parent With Kindi section updated successfully!");
       } else {
         setDialogMessage(
           `Error updating content: ${result.message || response.statusText}`
@@ -175,46 +178,60 @@ export function UpdateParentWithKindiSection() {
 
   return (
     <div className="container mx-auto p-4">
-      <h2 className="text-2xl font-semibold mb-4">Edit Parent With Kindi Section</h2>
+      <h2 className="text-2xl font-semibold mb-4">
+        Edit Parent With Kindi Section
+      </h2>
 
       {error && <div className="text-red-500">{error}</div>}
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700">Title</label>
-          <input
-            type="text"
-            value={content.Parentwithkindi.Title}
-            onChange={(e) => handleChange('Title', e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded-md"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Featured Text</label>
+          <label className="block text-sm font-medium text-gray-700">
+            Text Red
+          </label>
           <input
             type="text"
             value={content.Parentwithkindi.featuredText}
-            onChange={(e) => handleChange('featuredText', e.target.value)}
+            onChange={(e) => handleChange("featuredText", e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded-md"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
+            Text White
+          </label>
+          <input
+            type="text"
+            value={content.Parentwithkindi.Title}
+            onChange={(e) => handleChange("Title", e.target.value)}
             className="w-full p-2 border border-gray-300 rounded-md"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">Body</label>
-          <textarea
+          <label className="block text-sm font-medium text-gray-700">
+            Body
+          </label>
+
+          <ClaraMarkdownRichEditor
+            name="Body"
             value={content.Parentwithkindi.Body}
-            onChange={(e) => handleChange('Body', e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded-md"
-            rows="5"
+            onChange={(value) =>
+              setContent({
+                ...content,
+                Parentwithkindi: { ...content.Parentwithkindi, Body: value },
+              })
+            }
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">Media (optional)</label>
+          <label className="block text-sm font-medium text-gray-700">
+            Media (optional)
+          </label>
           <input
             type="file"
-            onChange={(e) => handleChange('Media', e.target.files[0])}
+            onChange={(e) => handleChange("Media", e.target.files[0])}
             className="w-full p-2 border border-gray-300 rounded-md"
           />
         </div>
@@ -225,7 +242,7 @@ export function UpdateParentWithKindiSection() {
             disabled={loading}
             className="px-4 py-2 bg-red text-white rounded-md disabled:bg-gray-400"
           >
-            {loading ? 'Updating...' : 'Update Parent With Kindi Section'}
+            {loading ? "Updating..." : "Update Parent With Kindi Section"}
           </button>
         </div>
       </form>

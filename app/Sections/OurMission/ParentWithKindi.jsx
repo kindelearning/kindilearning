@@ -55,9 +55,15 @@ export default async function ParentWithKindi() {
                     )}
                   </div>
                 ))} */}
-                <div className="w-full px-0 text-start clarabodyTwo text-[white] font-medium font-fredoka">
+                {/* <div className="w-full px-0 text-start clarabodyTwo text-[white] font-medium font-fredoka">
                   {data.Parentwithkindi.Body}
-                </div>
+                </div> */}
+                <p
+                  className="prose w-full px-0 text-start clarabodyTwo text-[white] font-medium font-fredoka"
+                  dangerouslySetInnerHTML={{
+                    __html: data.Parentwithkindi.Body,
+                  }}
+                />
               </div>
             </div>
             <div className="py-3 w-full flex-col justify-start items-center gap-1 inline-flex">

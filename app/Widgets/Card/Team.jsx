@@ -30,7 +30,7 @@ const Team = ({
               </div>
             </div>
             <div className="h-[1px] w-full border border-white"></div>
-            <div className="text-white text-base font-medium font-montserrat leading-snug">
+            <div className="text-white prose text-base font-medium font-fredoka leading-snug">
               {description}
             </div>
           </div>

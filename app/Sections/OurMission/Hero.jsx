@@ -37,10 +37,11 @@ export default async function Hero() {
                   </span>
                 </div>
                 <div className="w-full text-start justify-start items-start px-0 animate-fadeIn animate-delay-2500">
-                  <div className="w-full text-start text-[#696969] text-[16px] leading-[20px] md:text-[18px] md:leading-[22px] lg:text-[22px] lg:leading-[24px] xl:text-[22px] xl:leading-[24px] font-medium font-fredoka animate-slideInLeft animate-delay-3000">
-                    {data.Hero.Body}
-                    <br />
-                  </div>
+               
+                  <div
+                    dangerouslySetInnerHTML={{ __html: data.Hero.Body }}
+                    className="w-full prose text-start text-[#696969] text-[16px] leading-[20px] md:text-[18px] md:leading-[22px] lg:text-[22px] lg:leading-[24px] xl:text-[22px] xl:leading-[24px] font-medium font-fredoka animate-slideInLeft animate-delay-3000"
+                  />
                 </div>
               </div>
             </div>

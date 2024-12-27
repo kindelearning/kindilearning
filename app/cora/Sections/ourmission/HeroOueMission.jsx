@@ -11,8 +11,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useEffect, useState } from "react";
-
-
+import ClaraMarkdownRichEditor from "../TextEditor/ClaraMarkdownRichEditor";
 
 export default async function HeroOueMission() {
   const data = await fetchOurMission();
@@ -38,10 +37,10 @@ export default async function HeroOueMission() {
               </span>
             </div>
             <div className="w-full text-start justify-start items-start px-0 animate-fadeIn animate-delay-2500">
-              <div className="w-full text-start text-[#696969] text-[16px] leading-[20px] md:text-[18px] md:leading-[22px] lg:text-[22px] lg:leading-[24px] xl:text-[22px] xl:leading-[24px] font-medium font-fredoka animate-slideInLeft animate-delay-3000">
-                {data.Hero.Body}
-                <br />
-              </div>
+              <div
+                dangerouslySetInnerHTML={{ __html: data.Hero.Body }}
+                className="w-full prose text-start text-[#696969] text-[16px] leading-[20px] md:text-[18px] md:leading-[22px] lg:text-[22px] lg:leading-[24px] xl:text-[22px] xl:leading-[24px] font-medium font-fredoka animate-slideInLeft animate-delay-3000"
+              />
             </div>
           </div>
         </div>
@@ -50,163 +49,147 @@ export default async function HeroOueMission() {
   );
 }
 
-
 export function UpdateHeroSection() {
-  const [content, setContent] = useState({
-    Hero: {
-      Body: '',
-      featuredText: '',
-      Title: '',
-      Media: null, // Handle media if required
-    },
+  const [formData, setFormData] = useState({
+    Title: "",
+    Body: "",
+    featuredText: "",
   });
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [dialogMessage, setDialogMessage] = useState('');
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [openDialog, setOpenDialog] = useState(false);
 
   useEffect(() => {
-    // Fetch initial data for the Hero section
-    const fetchContent = async () => {
-      try {
-        const response = await fetch(
-          'http://localhost:1337/api/our-mission?populate[Hero][populate]=*'
-        );
-        const data = await response.json();
-        setContent({
-          Hero: data.data.Hero || {},
-        });
-      } catch (err) {
-        setError('Error fetching content');
-      }
-    };
-
-    fetchContent();
+    fetch("http://localhost:1337/api/our-mission?populate=*")
+      .then((res) => res.json())
+      .then((data) => {
+        // Assuming the response structure is { data: { Hero: {...} } }
+        if (data?.data?.Hero) {
+          const { Title, Body, featuredText } = data.data.Hero;
+          setFormData({
+            Title,
+            Body,
+            featuredText,
+          });
+        } else {
+          setError("Hero data not found");
+        }
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setError("Failed to load data");
+      });
   }, []);
 
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
 
-    // Prepare the data for submission
-    const updatedContent = {
+    // Prepare the payload
+    const payload = {
       data: {
         Hero: {
-          Body: content.Hero.Body,
-          featuredText: content.Hero.featuredText,
-          Title: content.Hero.Title,
-          Media: content.Hero.Media, // If you want to handle media as well
+          Title: formData.Title,
+          Body: formData.Body,
+          featuredText: formData.featuredText,
         },
       },
     };
+    console.log("Sent Data", payload);
 
     try {
-      const response = await fetch('http://localhost:1337/api/our-mission', {
-        method: 'PUT',
+      const res = await fetch("http://localhost:1337/api/our-mission", {
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(updatedContent),
+        body: JSON.stringify(payload),
       });
 
-      const result = await response.json();
-      if (response.ok) {
-        setDialogMessage('Hero section updated successfully!');
+      if (res.ok) {
+        setOpenDialog(true); // Open the success dialog
       } else {
-        setDialogMessage(
-          `Error updating content: ${result.message || response.statusText}`
-        );
+        const errorData = await res.json();
+        console.error("Error updating:", errorData);
+        alert(`Failed to update: ${errorData.error.message}`);
       }
     } catch (err) {
-      setDialogMessage(`Error updating content: ${err.message}`);
-    } finally {
-      setIsDialogOpen(true);
-      setLoading(false);
+      console.error(err);
+      setError("An unexpected error occurred.");
     }
   };
 
-  // Handle input change for the Hero fields
-  const handleChange = (field, value) => {
-    setContent((prevContent) => ({
-      ...prevContent,
-      Hero: {
-        ...prevContent.Hero,
-        [field]: value,
-      },
+  // Handle form input changes
+  const handleChange = (e) => {
+    const { name, value } = e.target || e;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
     }));
   };
 
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>{error}</p>;
+
   return (
-    <div className="container mx-auto p-4">
-      <h2 className="text-2xl font-semibold mb-4">Edit Hero Section</h2>
-
-      {error && <div className="text-red-500">{error}</div>}
-
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Title</label>
+    <div>
+      <h2>Edit Hero</h2>
+      <form onSubmit={handleSubmit} className="space-y-6 p-6">
+        {/* Edit Title */}
+        <div className="space-y-2">
+          <label htmlFor="Title">Title:</label>
           <input
             type="text"
-            value={content.Hero.Title}
-            onChange={(e) => handleChange('Title', e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded-md"
+            name="Title"
+            value={formData.Title || ""}
+            onChange={handleChange}
+            placeholder="Edit Title"
+            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Featured Text</label>
+        {/* Edit Body */}
+        <div className="space-y-2">
+          <label htmlFor="Body">Body:</label>
+
+          <ClaraMarkdownRichEditor
+            onChange={(value) =>
+              handleChange({ target: { name: "Body", value } })
+            }
+            value={formData.Body || ""}
+          />
+        </div>
+
+        {/* Edit featuredText */}
+        <div className="space-y-2">
+          <label htmlFor="featuredText">Featured Text:</label>
           <input
             type="text"
-            value={content.Hero.featuredText}
-            onChange={(e) => handleChange('featuredText', e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded-md"
+            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+            name="featuredText"
+            value={formData.featuredText || ""}
+            onChange={handleChange}
+            placeholder="Edit Featured Text"
           />
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Body</label>
-          <textarea
-            value={content.Hero.Body}
-            onChange={(e) => handleChange('Body', e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded-md"
-            rows="5"
-          />
-        </div>
-
-        <div>
-          <label className=" hidden text-sm font-medium text-gray-700">Media (optional)</label>
-          <input
-            type="file"
-            onChange={(e) => handleChange('Media', e.target.files[0])}
-            className="w-full hidden p-2 border border-gray-300 rounded-md"
-          />
-        </div>
-
-        <div className="flex items-center justify-center">
-          <button
-            type="submit"
-            disabled={loading}
-            className="px-4 py-2 bg-red text-white rounded-md disabled:bg-gray-400"
-          >
-            {loading ? 'Updating...' : 'Update Hero Section'}
-          </button>
-        </div>
+        <button type="submit">Update Hero</button>
       </form>
-
-      {/* Shadcn Dialog for Success/Error Message */}
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+      {/* Dialog for success message */}
+      <Dialog open={openDialog} onOpenChange={setOpenDialog}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Update Status</DialogTitle>
-            <DialogDescription>{dialogMessage}</DialogDescription>
+            <DialogTitle>Success!</DialogTitle>
+            <DialogDescription>
+              Your data has been updated successfully.
+            </DialogDescription>
           </DialogHeader>
-          <DialogClose
-            onClick={() => setIsDialogOpen(false)}
-            className="bg-red text-white rounded-md px-4 py-2"
-          >
-            Close
-          </DialogClose>
+          <DialogFooter>
+            <DialogClose asChild>
+              <button className="btn-close">Close</button>
+            </DialogClose>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </div>

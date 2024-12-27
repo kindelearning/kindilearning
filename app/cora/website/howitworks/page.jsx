@@ -6,7 +6,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from "@/components/ui/table"; 
 
 import HeroSectionForm from "../../Sections/Home/HomepageHeroSectionPageUpdate";
 import HowItWorksSection from "../../Sections/Home/HowItWorksSection";

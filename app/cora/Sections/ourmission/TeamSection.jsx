@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import RichTextRender from "@/app/Sections/Global/RichTextRender";
 import { useEffect, useState } from "react";
+import ClaraMarkdownRichEditor from "../TextEditor/ClaraMarkdownRichEditor";
 
 export default function TeamSection() {
   const [content, setContent] = useState(null); // To store the fetched data
@@ -67,7 +68,13 @@ export default function TeamSection() {
             <div key={teamMember.id} className="mb-8">
               <h3 className="text-2xl font-bold">{teamMember.Name}</h3>
               <p className="text-xl font-medium">{teamMember.Degree}</p>
-              <div className="prose">{teamMember.About}</div>
+              {/* <div className="prose">{teamMember.About}</div> */}
+              <p
+                className="prose w-full px-0 text-start clarabodyTwo  font-medium font-fredoka"
+                dangerouslySetInnerHTML={{
+                  __html: teamMember.About,
+                }}
+              />
             </div>
           ))
         ) : (
@@ -198,13 +205,15 @@ export function UpdateTeamSection() {
               <label className="block text-sm font-medium text-gray-700">
                 About
               </label>
-              <textarea
+
+              <ClaraMarkdownRichEditor
+                name="Body"
                 value={teamMember.About}
-                onChange={(e) =>
-                  handleTeamChange(index, "About", e.target.value)
-                }
-                className="w-full p-2 border border-gray-300 rounded-md"
-                rows="5"
+                onChange={(value) => {
+                  const updatedTeam = [...content.OurTeam];
+                  updatedTeam[index].About = value;
+                  setContent({ ...content, OurTeam: updatedTeam });
+                }}
               />
             </div>
           </div>
