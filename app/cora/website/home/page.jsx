@@ -11,16 +11,21 @@ import HeroSectionForm from "../../Sections/Home/HomepageHeroSectionPageUpdate";
 import ChildDevelopmentUnlock, {
   UpdateChildDevelopmentContent,
 } from "../../Sections/Home/ChilddevUnlockedSection";
-import HowItWorksSection from "../../Sections/Home/HowItWorksSection";
+import HowItWorksSection, {
+  UpdateHowItWorks,
+} from "../../Sections/Home/HowItWorksSection";
 import Monthlytheme, {
   UpdateMonthlytheme,
 } from "../../Sections/Home/Monthlytheme";
-import EarlyLearningExpert, { UpdateEarlyLearningExpert } from "../../Sections/Home/EarlyLearningExpert";
+import EarlyLearningExpert, {
+  UpdateEarlyLearningExpert,
+} from "../../Sections/Home/EarlyLearningExpert";
 import PopularActivities, {
   UpdatePopularLearningForm,
 } from "../../Sections/Home/PopularActivities";
 import { SectionRow } from "../../Sections/SectionRow";
 import Ourpricing, { UpdatePricingForm } from "../../Sections/Home/Ourpricing";
+import SliderSection, { UpdateSliderSection } from "../../Sections/Home/Slider";
 
 export default function HomePage() {
   return (
@@ -56,15 +61,15 @@ export default function HomePage() {
               <SectionRow
                 serialNo={3}
                 sectionName="Slider"
-                ComponentPreview={HomepageHeroSectionPage}
-                ComponentForm={HeroSectionForm}
+                ComponentPreview={SliderSection}
+                ComponentForm={UpdateSliderSection}
               />
               {/* How It Works */}
               <SectionRow
                 serialNo={4}
                 sectionName="How It Works"
                 ComponentPreview={HowItWorksSection}
-                ComponentForm={HowItWorksSection} // Replace with an actual update form if necessary
+                ComponentForm={UpdateHowItWorks} // Replace with an actual update form if necessary
               />
               {/* Monthlytheme */}
               <SectionRow

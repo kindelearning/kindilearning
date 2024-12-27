@@ -12,6 +12,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import ClaraMarkdownRichEditor from "../TextEditor/ClaraMarkdownRichEditor";
 
 export default function EarlyLearningExpert() {
   const [content, setContent] = useState(null); // To store the fetched data
@@ -62,9 +63,12 @@ export default function EarlyLearningExpert() {
         </p>
 
         {/* Body */}
-        <div className="prose mb-6">
+        <div className="prose ">
           {/* Render the markdown content as HTML */}
-          <RichTextRender content={content?.BodyDescription} />
+          <p
+            className="prose w-full text-start text-[#696969] text-base md:text-lg lg:text-xl mt-4 leading-relaxed  animate-fadeIn animate-delay-2000"
+            dangerouslySetInnerHTML={{ __html: content?.BodyDescription }}
+          />
         </div>
       </div>
 
@@ -85,13 +89,11 @@ export default function EarlyLearningExpert() {
   );
 }
 
-
 export function UpdateEarlyLearningExpert() {
   const [content, setContent] = useState({
     title: "",
     BodyDescription: "",
     featuredText: "",
-   
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -138,7 +140,7 @@ export function UpdateEarlyLearningExpert() {
     try {
       // Use documentId in the PUT request URL
       const response = await fetch(
-        `http://localhost:1337/api/early-learning-expert?za7uo6hxwk2l7wbtijjbl2ti`,
+        `http://localhost:1337/api/early-learning-expert`,
         {
           method: "PUT",
           headers: {
@@ -180,21 +182,6 @@ export function UpdateEarlyLearningExpert() {
             className="w-full p-2 border border-gray-300 rounded-md"
           />
         </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Body Description
-          </label>
-          <textarea
-            value={content.BodyDescription || ""}
-            onChange={(e) =>
-              setContent({ ...content, BodyDescription: e.target.value })
-            }
-            className="w-full p-2 border border-gray-300 rounded-md"
-            rows="5"
-          />
-        </div>
-
         <div>
           <label className="block text-sm font-medium text-gray-700">
             Featured Text
@@ -207,6 +194,30 @@ export function UpdateEarlyLearningExpert() {
             }
             className="w-full p-2 border border-gray-300 rounded-md"
           />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
+            Body Description
+          </label>
+          {/* <textarea
+            value={content.BodyDescription || ""}
+            onChange={(e) =>
+              setContent({ ...content, BodyDescription: e.target.value })
+            }
+            className="w-full p-2 border border-gray-300 rounded-md"
+            rows="5"
+          /> */}
+
+          {content && (
+            <ClaraMarkdownRichEditor
+              name="BodyDescription"
+              value={content.BodyDescription || ""} // Ensure the value is always a string
+              onChange={(value) =>
+                setContent({ ...content, BodyDescription: value })
+              }
+            />
+          )}
         </div>
 
         <div className="flex items-center justify-center">

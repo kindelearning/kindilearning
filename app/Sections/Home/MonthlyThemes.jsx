@@ -45,15 +45,19 @@ export default async function MonthlyThemes() {
                   : "Monthly Theme d"}{" "}
               </span>
             </div>
+            <p
+              className="prose w-full md:w-[500px] xl:w-[800px] animate-fade-in  duration-150 text-start md:text-center text-purple clarabodyTwo"
+              dangerouslySetInnerHTML={{ __html: monthlyTheme.BodyDescription }}
+            />
 
-            {monthlyTheme.BodyDescription?.map((desc, index) => (
+            {/* {monthlyTheme.BodyDescription?.map((desc, index) => (
               <p
                 key={index}
                 className="w-full md:w-[500px] xl:w-[800px] animate-fade-in  duration-150 text-start md:text-center text-purple clarabodyTwo"
               >
                 {desc.children[0]?.text || "No description available"}
               </p>
-            ))}
+            ))} */}
           </div>
 
           <div className="lg:grid claracontainer w-full flex flex-row overflow-x-scroll scrollbar-hidden px-2 py-4 hover:px-2 gap-4 lg:grid-cols-2 xl:grid-cols-2">

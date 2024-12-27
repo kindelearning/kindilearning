@@ -11,9 +11,9 @@ import {
   PopularActivity,
   PromotionalSection,
   PromotionalSectionTwo,
-  Slider, 
+  Slider,
 } from "./Sections";
- 
+
 export default async function Home() {
   return (
     <>
@@ -29,9 +29,9 @@ export default async function Home() {
         <div className="w-full flex flex-col overflow-hidden gap-0">
           <Hero />
           <Slider />
+          <HowItWorks />
           <PromotionalSection />
           <PromotionalSectionTwo />
-          <HowItWorks />
           <MonthlyThemes />
           <PopularActivity />
           <DefaultReviews />

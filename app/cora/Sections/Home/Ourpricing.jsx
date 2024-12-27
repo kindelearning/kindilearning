@@ -11,6 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import ClaraMarkdownRichEditor from "../TextEditor/ClaraMarkdownRichEditor";
 
 export default function Ourpricing() {
   const [content, setContent] = useState(null); // To store the fetched data
@@ -62,7 +63,11 @@ export default function Ourpricing() {
           {featuredText || "Default Featured Text"}
         </p>
         <div className="prose mb-6">
-          {SectionBody || "Default Body Content"}
+          {/* {SectionBody || "Default Body Content"} */}
+          <p
+            className="prose w-full text-start text-[#696969] text-base md:text-lg lg:text-xl mt-4 leading-relaxed  animate-fadeIn animate-delay-2000"
+            dangerouslySetInnerHTML={{ __html: SectionBody }}
+          />
         </div>
       </div>
       <div className="flex w-fit justify-between items-center gap-4">
@@ -144,6 +149,13 @@ export function UpdatePricingForm() {
       [name]: value,
     }));
   };
+  const handleEditorChange = (value) => {
+    // Assuming ClaraMarkdownRichEditor returns a value instead of an event
+    setPricingData((prevData) => ({
+      ...prevData,
+      SectionBody: value, // Assuming SectionBody is the markdown content
+    }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -215,14 +227,11 @@ export function UpdatePricingForm() {
           >
             Section Body
           </label>
-          <textarea
-            id="SectionBody"
+          
+          <ClaraMarkdownRichEditor
             name="SectionBody"
-            value={pricingData.SectionBody}
-            onChange={handleChange}
-            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md"
-            rows="5"
-            required
+            value={pricingData.SectionBody || ""} // Ensure the value is always a string
+            onChange={handleEditorChange} // Handle change specific to the editor
           />
         </div>
 

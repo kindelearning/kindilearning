@@ -28,14 +28,18 @@ export default async function HowItWorks() {
                   : " Works"}{" "}
               </span>
             </div>
-            {MainBody?.map((desc, index) => (
+            {/* {MainBody?.map((desc, index) => (
               <p
                 key={index}
                 className="w-full md:w-[500px] xl:w-[800px] text-start md:text-center animate-fade-in text-white clarabodyTwo"
               >
                 {desc.children[0]?.text}
               </p>
-            ))}
+            ))} */}
+            <p
+              className="prose w-full md:w-[500px] xl:w-[800px] text-start md:text-center animate-fade-in text-white clarabodyTwo"
+              dangerouslySetInnerHTML={{ __html: MainBody }}
+            />
           </div>
 
           <div className="flex w-full justify-center items-center flex-col gap-12">
@@ -62,14 +66,20 @@ export default async function HowItWorks() {
                       {/* <div className="w-full text-white animate-fade-in clarabodyTwo">
                           <p>{homeData[0].howItWorksOne}</p>
                         </div> */}
-                      {section.BodyDescription?.map((desc, idx) => (
+                      {/* {section.BodyDescription?.map((desc, idx) => (
                         <p
                           className="w-full text-white animate-fade-in clarabodyTwo"
                           key={idx}
                         >
                           {desc.children[0]?.text}
                         </p>
-                      ))}
+                      ))} */}
+                      <p
+                        className="prose w-full text-start text-white clarabodyTwo"
+                        dangerouslySetInnerHTML={{
+                          __html: section.BodyDescription,
+                        }}
+                      />
                     </div>
                     <Link
                       href="/p/how-it-works#video"
@@ -145,14 +155,20 @@ export default async function HowItWorks() {
                       {/* <div className="w-full text-white animate-fade-in clarabodyTwo">
                           <p>{homeData[0].howItWorksOne}</p>
                         </div> */}
-                      {section.BodyDescription?.map((desc, idx) => (
+                      {/* {section.BodyDescription?.map((desc, idx) => (
                         <p
                           className="w-full text-white animate-fade-in clarabodyTwo"
                           key={idx}
                         >
                           {desc.children[0]?.text}
                         </p>
-                      ))}
+                      ))} */}
+                      <p
+                        className="prose w-full text-start text-white clarabodyTwo"
+                        dangerouslySetInnerHTML={{
+                          __html: section.BodyDescription,
+                        }}
+                      />
                     </div>
                     <Link
                       href="/p/how-it-works#video"
@@ -200,14 +216,20 @@ export default async function HowItWorks() {
                       {/* <div className="w-full text-white animate-fade-in clarabodyTwo">
                           <p>{homeData[0].howItWorksOne}</p>
                         </div> */}
-                      {section.BodyDescription?.map((desc, idx) => (
+                      {/* {section.BodyDescription?.map((desc, idx) => (
                         <p
                           className="w-full text-white animate-fade-in clarabodyTwo"
                           key={idx}
                         >
                           {desc.children[0]?.text}
                         </p>
-                      ))}
+                      ))} */}
+                      <p
+                        className="prose w-full text-start text-white clarabodyTwo"
+                        dangerouslySetInnerHTML={{
+                          __html: section.BodyDescription,
+                        }}
+                      />
                     </div>
                     <Link
                       href="/p/how-it-works#video"
@@ -227,7 +249,7 @@ export default async function HowItWorks() {
                   {section.Media && section.Media.url ? (
                     <img
                       src={`http://localhost:1337${section.Media.url}`}
-                     alt="Kindi"
+                      alt="Kindi"
                       width={100}
                       height={100}
                       className="w-full h-full object-contain"

@@ -67,11 +67,15 @@ export default function HomepageHeroSection() {
 
             {/* Render BodyDescription if available */}
             <div className="rich-text text-start prose text-lg sm:text-xl text-gray-700 leading-relaxed">
-              {data.BodyDescription ? (
+              {/* {data.BodyDescription ? (
                 <BlocksRenderer content={data.BodyDescription} />
               ) : (
                 <p>No description available</p>
-              )}
+              )} */}
+               <p
+                  className="prose text-start w-full h-auto clarabody animate-fade-in] text-base md:text-lg lg:text-xl mt-4 leading-relaxed  animate-fadeIn animate-delay-2000"
+                  dangerouslySetInnerHTML={{ __html: data.BodyDescription }}
+                />
             </div>
           </div>
 

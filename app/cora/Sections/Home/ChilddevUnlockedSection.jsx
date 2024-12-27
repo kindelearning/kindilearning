@@ -10,6 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import ClaraMarkdownRichEditor from "../TextEditor/ClaraMarkdownRichEditor";
 
 export default function ChildDevelopmentUnlock() {
   const [content, setContent] = useState(null); // To store the fetched data
@@ -63,7 +64,10 @@ export default function ChildDevelopmentUnlock() {
         <div className="prose mb-6">
           {/* Render the markdown content as HTML */}
           {content?.Body && (
-            <div dangerouslySetInnerHTML={{ __html: content?.Body }} />
+            <div
+              className="prose"
+              dangerouslySetInnerHTML={{ __html: content?.Body }}
+            />
           )}
         </div>
       </div>
@@ -181,11 +185,16 @@ export function UpdateChildDevelopmentContent() {
           <label className="block text-sm font-medium text-gray-700">
             Body
           </label>
-          <textarea
+          {/* <textarea
             value={content.Body}
             onChange={(e) => setContent({ ...content, Body: e.target.value })}
             className="w-full p-2 border border-gray-300 rounded-md"
             rows="5"
+          /> */}
+          <ClaraMarkdownRichEditor
+            name="Body"
+            value={content.Body || ""} // Ensure the value is always a string
+            onChange={(value) => setContent({ ...content, Body: value })}
           />
         </div>
 

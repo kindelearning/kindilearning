@@ -61,18 +61,10 @@ export default async function PromotionalSectionTwo() {
               </div>
               {BodyDescription && BodyDescription.length > 0 && (
                 <div>
-                  {BodyDescription.map((paragraph, index) => (
-                    <p key={index}>
-                      {paragraph.children.map((child, idx) => (
-                        <span
-                          className="w-full h-auto text-[#696969] clarabodyTwo animate-fade-in"
-                          key={idx}
-                        >
-                          {child.text}
-                        </span>
-                      ))}
-                    </p>
-                  ))}
+                  <p
+                    className="prose w-full text-start text-[#696969] text-base md:text-lg lg:text-xl mt-4 leading-relaxed  animate-fadeIn animate-delay-2000"
+                    dangerouslySetInnerHTML={{ __html: BodyDescription }}
+                  />
                 </div>
               )}
             </div>

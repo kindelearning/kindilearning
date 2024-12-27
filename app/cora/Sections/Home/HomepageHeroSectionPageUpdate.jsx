@@ -10,6 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import ClaraMarkdownRichEditor from "../TextEditor/ClaraMarkdownRichEditor";
 
 export default function HeroSectionForm() {
   const [featuredText, setFeaturedText] = useState("");
@@ -56,17 +57,7 @@ export default function HeroSectionForm() {
       data: {
         featuredText,
         HeroTitle: heroTitle,
-        BodyDescription: [
-          {
-            type: "paragraph",
-            children: [
-              {
-                type: "text",
-                text: bodyDescription,
-              },
-            ],
-          },
-        ],
+        BodyDescription: bodyDescription
       },
     };
 
@@ -137,14 +128,21 @@ export default function HeroSectionForm() {
 
         <div>
           <label className="block text-gray-700">Body Description</label>
-          <textarea
+          {/* <textarea
             value={bodyDescription}
             onChange={(e) => setBodyDescription(e.target.value)}
             className="w-full px-4 py-2 border border-gray-300 rounded-md"
             placeholder="Enter body description"
             rows="4"
             required
-          />
+          /> */}
+           <ClaraMarkdownRichEditor
+              name="BodyDescription"
+              value={bodyDescription || ""} // Ensure the value is always a string
+              onChange={(value) =>
+                setBodyDescription(value )
+              }
+            />
         </div>
 
         <div>

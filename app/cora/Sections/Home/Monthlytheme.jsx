@@ -11,6 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import ClaraMarkdownRichEditor from "../TextEditor/ClaraMarkdownRichEditor";
 export default function Monthlytheme() {
   const [content, setContent] = useState(null); // To store the fetched data
   const [loading, setLoading] = useState(true);
@@ -62,7 +63,11 @@ export default function Monthlytheme() {
         {/* Body */}
         <div className="prose mb-6">
           {/* Render the markdown content as HTML */}
-          <RichTextRender content={content?.BodyDescription} />
+          {/* <RichTextRender content={content?.BodyDescription} /> */}
+          <p
+            className="prose w-full text-start text-[#696969] text-base md:text-lg lg:text-xl mt-4 leading-relaxed  animate-fadeIn animate-delay-2000"
+            dangerouslySetInnerHTML={{ __html: content?.BodyDescription }}
+          />
         </div>
       </div>
 
@@ -116,24 +121,12 @@ export function UpdateMonthlytheme() {
     e.preventDefault();
     setLoading(true);
 
-    // Ensure BodyDescription is an array with the required structure
-    const formattedBodyDescription = [
-      {
-        type: "paragraph",
-        children: [
-          {
-            type: "text",
-            text: content.BodyDescription, // Assuming BodyDescription is a string
-          },
-        ],
-      },
-    ];
 
     const updatedContent = {
       data: {
         Content: {
           title: content.title,
-          BodyDescription: formattedBodyDescription, // Ensure it's an array
+          BodyDescription: content.BodyDescription, // Ensure it's an array
           featuredText: content.featuredText,
           // Include Media field if required, if not, leave it out or use null
           Media: content.Media || null, // Assuming content.Media can be null or an array
@@ -144,7 +137,6 @@ export function UpdateMonthlytheme() {
     const documentId = "xo438fcvi4mstxwt3vsyowgw"; // Replace this with the actual documentId
 
     try {
-      // Log the payload to verify the structure before sending
       // console.log("Request Payload:", updatedContent);
 
       const response = await fetch(
@@ -200,14 +192,23 @@ export function UpdateMonthlytheme() {
           <label className="block text-sm font-medium text-gray-700">
             Body
           </label>
-          <textarea
+          {/* <textarea
             value={content.BodyDescription}
             onChange={(e) =>
               setContent({ ...content, BodyDescription: e.target.value })
             }
             className="w-full p-2 border border-gray-300 rounded-md"
             rows="5"
-          />
+          /> */}
+          {content.BodyDescription && (
+            <ClaraMarkdownRichEditor
+              name="BodyDescription"
+              value={content.BodyDescription || ""} // Ensure the value is always a string
+              onChange={(value) =>
+                setContent({ ...content, BodyDescription: value })
+              }
+            />
+          )}
         </div>
 
         <div>

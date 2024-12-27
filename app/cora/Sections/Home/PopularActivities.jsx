@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import RichTextRender from "@/app/Sections/Global/RichTextRender";
 import { useEffect, useState } from "react";
+import ClaraMarkdownRichEditor from "../TextEditor/ClaraMarkdownRichEditor";
 
 export default function PopularActivities() {
   const [content, setContent] = useState(null); // To store the fetched data
@@ -59,8 +60,12 @@ export default function PopularActivities() {
         Title
         <h1 className="text-4xl font-bold mb-6">{content?.title}</h1>
         Body
-        <div className="prose ">
-          <RichTextRender content={content?.BodyDescription} />
+        <div className="prose">
+          {/* <RichTextRender content={content?.BodyDescription} /> */}
+          <p
+            className="prose w-full text-start text-[#696969] text-base md:text-lg lg:text-xl mt-4 leading-relaxed  animate-fadeIn animate-delay-2000"
+            dangerouslySetInnerHTML={{ __html: content?.BodyDescription }}
+          />
         </div>
       </div>
 
@@ -175,12 +180,23 @@ export function UpdatePopularLearningForm() {
           <label className="block text-sm font-medium text-gray-700">
             BodyDescription
           </label>
-          <textarea
+          {/* <textarea
             value={content.BodyDescription}
-            onChange={(e) => setContent({ ...content, BodyDescription: e.target.value })}
+            onChange={(e) =>
+              setContent({ ...content, BodyDescription: e.target.value })
+            }
             className="w-full p-2 border border-gray-300 rounded-md"
             rows="5"
+          /> */}
+          <ClaraMarkdownRichEditor
+            name="BodyDescription"
+            value={content.BodyDescription || ""} // Ensure the value is always a string
+            onChange={(value) =>
+              setContent({ ...content, BodyDescription: value })
+            }
           />
+          {/* {content.BodyDescription && (
+          )} */}
         </div>
 
         <div>

@@ -41,14 +41,18 @@ export default async function Hero() {
                       "No Hero Title available"}
                   </span>
                 </div>
-                {heroData.BodyDescription?.map((desc, index) => (
+                {/* {heroData.BodyDescription?.map((desc, index) => (
                   <div
                     className="w-full h-auto text-white clarabody animate-fade-in"
                     key={index}
                   >
                     {desc.children[0]?.text || "No body description available"}
                   </div>
-                ))}
+                ))} */}
+                <p
+                  className="prose text-start w-full h-auto text-white clarabody animate-fade-in] text-base md:text-lg lg:text-xl mt-4 leading-relaxed  animate-fadeIn animate-delay-2000"
+                  dangerouslySetInnerHTML={{ __html: heroData.BodyDescription }}
+                />
               </div>
             </div>
             <div className="w-auto animate-fade-in">

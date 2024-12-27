@@ -43,14 +43,10 @@ export default async function PopularActivity() {
               </span>
             </div>
 
-            {BodyDescription?.map((desc, index) => (
-              <p
-                key={index}
-                className="clarabodyTwo text-start md:text-center text-purple"
-              >
-                {desc.children[0]?.text || "No description available"}
-              </p>
-            ))}
+            <p
+              className="prose w-full clarabodyTwo text-start md:text-center text-purple text-base md:text-lg lg:text-xl mt-4 leading-relaxed  animate-fadeIn animate-delay-2000"
+              dangerouslySetInnerHTML={{ __html: BodyDescription }}
+            />
           </div>
         </div>
 
