@@ -3,6 +3,15 @@
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { fetchUserDetails } from "../api";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 export default function RawProfile() {
   const [userData, setUserData] = useState(null);
@@ -43,15 +52,20 @@ export default function RawProfile() {
 
     fetchData();
   }, [router]);
+  const handleProfileUpdate = (updatedData) => {
+    setUserData(updatedData); // Update the state with the new profile data
+  };
 
   if (loading) return <p>Loading...</p>;
 
   return (
     <>
-      <EditProfile />
-
       <section className="w-full h-auto bg-[#F5F5F5] md:bg-[#EAEAF5] items-center justify-center flex flex-col md:flex-row px-0">
         <div className="claracontainer bg-[#ffffff] md:bg-[#ffffff] -mt-4 rounded-t-[12px] z-2 lg:m-12 px-4 py-6 rounded-xl md:px-2 lg:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-[20px]">
+          <EditProfile
+            userData={userData}
+            onProfileUpdate={handleProfileUpdate}
+          />
           <h1>User Profile</h1>
           {userData && (
             <>
@@ -124,111 +138,139 @@ export default function RawProfile() {
   );
 }
 
-const EditProfile = () => {
-  const [name, setName] = useState("");
+export function EditProfile({ userData }) {
+  const [content, setContent] = useState({
+    id: userData.id || "",
+    username: userData.username || "",
+    Name: userData.Name || "",
+  });
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [isUpdating, setIsUpdating] = useState(false);
+  const [dialogMessage, setDialogMessage] = useState("");
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const router = useRouter();
-
-  // Fetch current user data when the page loads
   useEffect(() => {
-    const fetchUserData = async () => {
-      const token = localStorage.getItem("jwt"); // Fetch the JWT token from localStorage
-
-      if (!token) {
-        return null;
-      }
-
+    const fetchProfile = async () => {
       try {
-        const response = await fetch("http://localhost:1337/api/users/me", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-          setError("Failed to fetch user data. Please try again.");
+        const token = localStorage.getItem("jwt");
+        if (!token) {
+          setError("You are not logged in!");
           return;
         }
 
-        setName(data.name); // Set the initial value of the name field
-      } catch (error) {
-        console.error("Error fetching user data", error);
-        setError("Failed to fetch user data.");
+        const response = await fetch("http://localhost:1337/api/users/me", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (!response.ok) throw new Error("Failed to fetch profile data");
+
+        const data = await response.json();
+        setContent({
+          id: data.id, // Save the user ID
+          username: data.username || "",
+          Name: data.Name || "",
+        });
+      } catch (err) {
+        setError("Error fetching content");
       }
     };
 
-    fetchUserData();
-  }, [router]);
+    fetchProfile();
+  }, []);
 
-  const handleFormSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
-    const token = localStorage.getItem("jwt"); // Get JWT from localStorage
+    const token = localStorage.getItem("jwt");
     if (!token) {
-      setError("You need to be logged in to update your profile.");
+      setDialogMessage("You are not logged in!");
+      setIsDialogOpen(true);
+      setLoading(false);
       return;
     }
 
-    setIsUpdating(true); // Set loading state while updating
+    const updatedContent = {
+      username: content.username,
+      Name: content.Name,
+    };
 
     try {
-      const response = await fetch("http://localhost:1337/api/users/me", {
-        method: "PUT", // Use PUT to update user data
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: name, // Send the updated name field
-        }),
-      });
+      const response = await fetch(
+        `http://localhost:1337/api/users/${content.id}`,
+        {
+          // Use the user's ID
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(updatedContent),
+        }
+      );
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Failed to update your profile.");
+      const result = await response.json();
+      if (response.ok) {
+        setDialogMessage("Content updated successfully!");
+      } else {
+        setDialogMessage("Error updating content.");
       }
-
-      alert("Profile updated successfully!");
-      router.push("/profile"); // Redirect back to the profile page on success
-    } catch (error) {
-      console.error("Error details: ", error);
-      setError("Failed to update your profile. Please try again.");
+    } catch (err) {
+      setDialogMessage("Error updating content.");
     } finally {
-      setIsUpdating(false); // Reset loading state
+      setIsDialogOpen(true);
+      setLoading(false);
     }
   };
 
-  if (!name) {
-    return <p>Loading...</p>;
-  }
-
   return (
-    <div className="edit-profile-container">
-      <h1>Edit Profile</h1>
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+      {error && <p className="error-message">{error}</p>}
+      <label>
+        Username:
+        <input
+          type="text"
+          name="username"
+          value={content.username}
+          onChange={(e) => setContent({ ...content, username: e.target.value })}
+          required
+          className="input-field"
+        />
+      </label>
 
-      {error && <p className="error">{error}</p>}
+      <label>
+        Name:
+        <input
+          type="text"
+          name="Name"
+          value={content.Name}
+          onChange={(e) => setContent({ ...content, Name: e.target.value })}
+          required
+          className="input-field"
+        />
+      </label>
 
-      <form onSubmit={handleFormSubmit}>
-        <div>
-          <label htmlFor="name">Name</label>
-          <input
-            type="text"
-            id="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
-        </div>
+      <button type="submit" className="submit-button" disabled={loading}>
+        {loading ? "Updating..." : "Update Profile"}
+      </button>
 
-        <button type="submit" disabled={isUpdating}>
-          {isUpdating ? "Updating..." : "Update Profile"}
-        </button>
-      </form>
-    </div>
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogTrigger />
+        <DialogContent className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-6 bg-white rounded-md w-96">
+          <DialogHeader>
+            <DialogTitle>Profile Update</DialogTitle>
+            <DialogDescription>{dialogMessage}</DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <button
+              onClick={() => setIsDialogOpen(false)}
+              className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
+            >
+              Close
+            </button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </form>
   );
-};
+}

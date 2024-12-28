@@ -1,7 +1,16 @@
 "use client";
 
+import Image from "next/image";
+import Link from "next/link";
 import React, { useState, useEffect, useRef } from "react";
-
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 function CalendarHeader({
   currentDate,
   selectedMonth,
@@ -15,31 +24,59 @@ function CalendarHeader({
   return (
     <div>
       {/* Navigation */}
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex justify-center gap-4 w-full items-center">
         <button
           onClick={() => handleMonthChange(-1)}
-          className="text-lg font-semibold text-gray-700 hover:text-gray-900"
+          // className="text-lg font-semibold text-gray-700 hover:text-gray-900"
         >
-          &lt;
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="red"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="lucide lucide-square-chevron-left"
+          >
+            <rect width="18" height="18" x="3" y="3" rx="2" />
+            <path d="m14 16-4-4 4-4" />
+          </svg>
         </button>
-        <div className="text-[24px] font-semibold">
+        <h2 className="text-xl flex justify-center items-center text-center font-bold font-fredoka text-purple">
           {currentDate.toLocaleString("default", { month: "long" })}{" "}
           {selectedYear}
-        </div>
+        </h2>
         <button
           onClick={() => handleMonthChange(1)}
-          className="text-lg font-semibold text-gray-700 hover:text-gray-900"
+          // className="text-lg font-semibold text-gray-700 hover:text-gray-900"
         >
-          &gt;
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="red"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="lucide lucide-square-chevron-right"
+          >
+            <rect width="18" height="18" x="3" y="3" rx="2" />
+            <path d="m10 8 4 4-4 4" />
+          </svg>
         </button>
       </div>
 
       {/* Month and Year Selector */}
-      <div className="flex space-x-4 mb-4">
+      <div className="flex gap-2 justify-end mb-2 items-center">
         <select
           value={selectedMonth}
           onChange={handleMonthSelection}
-          className="p-2 border border-gray-300 rounded-md"
+          className="border border-gray-300 rounded-full px-4 py-2 text-gray-800 bg-gray-50 focus:ring focus:ring-gray-300 focus:outline-none transition"
         >
           {[
             "January",
@@ -63,7 +100,7 @@ function CalendarHeader({
         <select
           value={selectedYear}
           onChange={handleYearChange}
-          className="p-2 border border-gray-300 rounded-md"
+          className="border border-gray-300 rounded-full px-4 py-2 text-gray-800 bg-gray-50 focus:ring focus:ring-gray-300 focus:outline-none transition"
         >
           {years.map((year) => (
             <option key={year} value={year}>
@@ -73,7 +110,7 @@ function CalendarHeader({
         </select>
         <button
           onClick={handleSpecificMonthYear}
-          className="px-4 py-2 rounded-md bg-blue-500 text-white hover:bg-blue-600"
+          className="px-4 py-2 rounded-full bg-gray-800 text-white font-medium hover:bg-gray-700 focus:ring focus:ring-gray-300 focus:outline-none transition"
         >
           Go
         </button>
@@ -82,19 +119,74 @@ function CalendarHeader({
   );
 }
 
-function EventCard({ event, onDragStart }) {
+function EventCard({ event, onDragStart, activityUrl }) {
   return (
     <div
       draggable
       onDragStart={(e) => onDragStart(e, event)}
-      className="bg-blue-100 p-1 mb-1 rounded-md"
+      className="w-full bg-white shadow-md rounded-lg p-2 text-sm"
     >
-      <h5 className="font-semibold text-sm truncate">{event.title}</h5>
-      <p className="text-xs text-gray-600 truncate">{event.description}</p>
+      <div className="flex flex-col w-full gap-1 justify-between items-start">
+        <div className="flex w-full justify-between gap-1 lg:gap-0 items-start">
+          <div className="flex w-full flex-col justify-start items-start">
+            <p className="font-semibold  text-[14px] leading-[16px] lg:text-[12px] lg:leading-[12px] text-start">
+              {event.title}
+            </p>
+            <p className="font-medium  text-[10px] leading-[12px]  text-start">
+              {event.description}
+            </p>
+          </div>
+          {/* Drag icon */}
+          <div className="cursor-grab text-gray-500 items-start">
+            <span className="text-xl flex items-start">⋮⋮</span>{" "}
+          </div>
+        </div>
+        <div className="flex w-full gap-2 h-fit justify-between items-start">
+          <div className="flex w-full  rounded-[4px]  max-w-[32px] object-cover h-[32px] overflow-clip">
+            <img
+              src={`http://localhost:1337${event.Gallery[0].url} `} // Make sure this matches the actual property name
+              alt="ScheduleEvent"
+              className="w-[32px] rounded-[4px] object-cover h-[32px]"
+              width={32}
+              height={32}
+            />
+          </div>
+
+          <div className="flex w-full justify-between flex-col items-start">
+            <div className="flex gap-1 items-center ">
+              <div className="text-[#0a1932] text-[12px] leading-[14px] lg:text-[9px] lg:leading-[10px] font-semibold font-fredoka">
+                {event.focusAge || "Toddles"}
+              </div>
+              <span className="flex items-center">•</span>
+              <div className="text-[#0a1932] text-[12px] leading-[14px] lg:text-[9px] lg:leading-[10px] font-semibold font-fredoka">
+                {event.theme || "Winter"}
+              </div>
+              <span className="flex items-center">•</span>
+              <div className="text-[#0a1932] text-[12px] leading-[14px] lg:text-[9px] lg:leading-[10px] font-semibold font-fredoka">
+                {event.setUpTime || "5 min"}
+              </div>
+            </div>
+            {/* <div className="flex flex-row justify-start items-center  w-full gap-[4px]">
+              {icons.map((iconData, index) => (
+                <div
+                  key={index}
+                  className={`w-[20px] h-[20px] p-1 flex justify-center items-center rounded-[4px]`}
+                  style={{ backgroundColor: iconData.color }}
+                >
+                  <Image
+                    className="w-4 h-4"
+                    src={iconData.icon}
+                    alt={iconData.icon.name}
+                  />
+                </div>
+              ))}
+            </div> */}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
-
 
 function CalendarGrid({
   calendarDays,
@@ -106,11 +198,12 @@ function CalendarGrid({
   onTouchStart,
 }) {
   return (
-    <div className="flex flex-col lg:grid lg:grid-cols-7 gap-2 text-center">
+    // <div className="flex flex-col lg:grid lg:grid-cols-7 gap-2 text-center">
+    <div className="flex-col flex lg:grid font-fredoka p-0 lg:p-4 bg-[#eaeaf5] lg:bg-[#DCDCE8] rounded-[20px] w-full grid-cols-7 gap-0 text-center">
       {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day, index) => (
         <div
           key={index}
-          className="hidden lg:block font-semibold text-gray-600"
+          className="font-semibold w-full justify-center items-center text-center hidden uppercase lg:flex font-fredoka text-[#3F3A64] py-2 gap-0"
         >
           {day}
         </div>
@@ -118,27 +211,53 @@ function CalendarGrid({
 
       {calendarDays.map((day, index) => {
         const dayEvents = getEventsForDay(day.day);
-        const displayedEvents = dayEvents.slice(0, 2);
-        const extraEventCount = dayEvents.length - 2;
+        const displayedEvents = dayEvents.slice(0, 1);
+        // const extraEventCount = dayEvents.length - 1;
+        const extraEvents = dayEvents.slice(1); // Remaining events
+        const extraEventCount = extraEvents.length;
 
         return (
           <div
             key={index}
-            className={`relative py-2 rounded-md overflow-clip cursor-pointer h-[120px] ${
+            className={`relative py-2 bg-[#EaEaf5] border-[1.2px] border-[white] w-full rounded-md overflow-clip cursor-pointer h-[140px] ${
               day.isPast
-                ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                ? "bg-[#EaEaf5] text-[#8C8C8C] cursor-not-allowed"
                 : "bg-[#eaeaf5] text-gray-700 hover:bg-gray-200"
             }`}
             onDragOver={onDragOver}
             onDrop={(e) => onDrop(e, day.day)}
             onClick={() => !day.isPast && onDayClick(day.day)}
           >
-            <div className="absolute top-0 flex w-full justify-between left-0 right-0 text-xs font-semibold p-1 bg-gray-200 rounded-t-md">
+            <div className="absolute top-0 flex w-full text-[#000000] justify-between left-0 right-0 text-xs font-semibold p-1 bg-gray-200 rounded-t-md">
               {day.day}
               {extraEventCount > 0 && (
-                <div className="text-xs text-gray-500 mt-1">
-                  +{extraEventCount} more
-                </div>
+                <>
+                  <Dialog>
+                    <DialogTrigger>
+                      <div className="text-xs text-gray-500 mt-1">
+                        +{extraEventCount} more
+                      </div>
+                    </DialogTrigger>
+                    <DialogContent className="bg-[#eaeaf5] max-h-[600px] h-fit overflow-y-scroll p-4 font-fredoka">
+                      <DialogTitle>Extra Events on {day.day}</DialogTitle>
+                      <DialogHeader>
+                        Below are the additional events scheduled for this date:
+                      </DialogHeader>
+                      <DialogDescription className="w-full grid grid-cols-2 gap-2 justify-between">
+                        {extraEvents.map((event, idx) => (
+                          <>
+                            <EventCard
+                              key={idx}
+                              event={event}
+                              onDragStart={onDragStart}
+                              onTouchStart={onTouchStart}
+                            />
+                          </>
+                        ))}
+                      </DialogDescription>
+                    </DialogContent>
+                  </Dialog>
+                </>
               )}
             </div>
 
@@ -163,40 +282,43 @@ export default function CalendarwithComp() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedMonth, setSelectedMonth] = useState(currentDate.getMonth());
   const [selectedYear, setSelectedYear] = useState(currentDate.getFullYear());
-  const [events, setEvents] = useState([
-    {
-      id: 1,
-      date: 5,
-      title: "Meeting with John",
-      description: "Discuss project",
-    },
-    {
-      id: 2,
-      date: 8,
-      title: "Doctor's Appointment",
-      description: "Annual checkup",
-    },
-    {
-      id: 3,
-      date: 15,
-      title: "Team Workshop",
-      description: "Design brainstorming session",
-    },
-    {
-      id: 4,
-      date: 22,
-      title: "Birthday Party",
-      description: "Celebrate Mike's birthday",
-    },
-    {
-      id: 5,
-      date: 25,
-      title: "Birthday Party",
-      description: "Celebrate Mike's birthday",
-    },
-  ]);
+  const [events, setEvents] = useState([]); // Initially empty
 
   const draggedEventRef = useRef(null); // To store the dragged event reference
+
+  // Fetch data from the server
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:1337/api/activities?populate=*"
+        );
+        const data = await response.json();
+        console.log("Fetched activities:", data);
+
+        const formattedEvents = data.data.map((activity) => ({
+          id: activity.id,
+          documentid: activity.documentId,
+          title: activity.Title,
+          focusAge: activity.FocusAge,
+          setUpTime: activity.SetUpTime,
+          theme: activity.Theme,
+          learningArea: activity.LearningArea,
+          skillCategory: activity.SkillCategory,
+          Gallery: activity.Gallery,
+          description: activity.LearningArea,
+          activityDate: activity.ActivityDate,
+        }));
+        console.log("Formatted events before setting state:", formattedEvents);
+
+        setEvents(formattedEvents);
+      } catch (error) {
+        console.error("Error fetching activities:", error);
+      }
+    };
+
+    fetchData();
+  }, []); // Run on component mount
 
   const getFirstDayOfMonth = (date) => {
     const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
@@ -211,16 +333,25 @@ export default function CalendarwithComp() {
     const daysInMonth = getDaysInMonth(date);
     const firstDay = getFirstDayOfMonth(date);
 
-    const prevMonthDays = new Date(date.getFullYear(), date.getMonth(), 0).getDate();
+    const prevMonthDays = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      0
+    ).getDate();
     const prevMonthDaysToDisplay = firstDay === 0 ? 6 : firstDay - 1;
 
     let days = [];
-    for (let i = prevMonthDays - prevMonthDaysToDisplay; i <= prevMonthDays; i++) {
+    for (
+      let i = prevMonthDays - prevMonthDaysToDisplay;
+      i <= prevMonthDays;
+      i++
+    ) {
       days.push({ day: i, isCurrentMonth: false, isPast: true });
     }
 
     for (let i = 1; i <= daysInMonth; i++) {
-      const isPast = new Date(date.getFullYear(), date.getMonth(), i) < new Date();
+      const isPast =
+        new Date(date.getFullYear(), date.getMonth(), i) < new Date();
       days.push({ day: i, isCurrentMonth: true, isPast });
     }
 
@@ -246,8 +377,7 @@ export default function CalendarwithComp() {
 
   const handleDragStart = (e, event) => {
     draggedEventRef.current = event; // Store the event that is being dragged
-    // For touch events, we don't use dataTransfer, so we store the data manually
-    e.dataTransfer.setData("eventId", event.id); // For desktop
+    e.dataTransfer.setData("eventId", event.id);
   };
 
   const handleTouchStart = (e, event) => {
@@ -258,24 +388,39 @@ export default function CalendarwithComp() {
   const handleDrop = (e, day) => {
     e.preventDefault();
 
-    // Get today's date
     const today = new Date();
+    const targetDate = new Date(
+      currentDate.getFullYear(), // Use full year from currentDate
+      currentDate.getMonth(), // Use current month
+      day // Use the day passed to the drop handler
+    );
+
+    // Reset the time to 00:00:00 for both dates to ensure a full date comparison (DD/MM/YYYY)
     today.setHours(0, 0, 0, 0);
+    targetDate.setHours(0, 0, 0, 0);
+    console.log("Today date§", today);
+    console.log("targetDate date§", targetDate);
 
-    // Get the target drop date
-    const targetDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
-
-    // Prevent dropping on past dates
+    // Compare full dates (DD/MM/YYYY)
     if (targetDate < today) {
       alert("You cannot drop events on past dates.");
       return;
     }
 
+    // If the dragged event exists, update its date
     if (draggedEventRef.current) {
       const eventId = draggedEventRef.current.id;
+      const formattedTargetDate = targetDate.toISOString().split("T")[0]; // Format to YYYY-MM-DD
+
       setEvents((prevEvents) =>
-        prevEvents.map((e) => (e.id === eventId ? { ...e, date: day } : e))
+        prevEvents.map((event) =>
+          event.id === eventId
+            ? { ...event, activityDate: formattedTargetDate }
+            : event
+        )
       );
+
+      draggedEventRef.current = null; // Clear reference after drop
     }
   };
 
@@ -293,9 +438,24 @@ export default function CalendarwithComp() {
   for (let i = selectedYear - 5; i <= selectedYear + 5; i++) {
     years.push(i);
   }
+  const getEventsForDay = (day) => {
+    const targetDate = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      day
+    );
+    const formattedTargetDate = targetDate.toISOString().split("T")[0]; // Format to "YYYY-MM-DD"
+
+    return events.filter((event) => {
+      const eventDate = new Date(event.activityDate)
+        .toISOString()
+        .split("T")[0];
+      return eventDate === formattedTargetDate;
+    });
+  };
 
   return (
-    <div className="w-full mx-auto p-4 font-fredoka bg-[#ffffff] shadow-lg rounded-xl">
+    <div className="w-full mx-auto p-4 font-fredoka bg- [#ffffff] shadow-lg rounded-xl">
       <CalendarHeader
         currentDate={currentDate}
         selectedMonth={selectedMonth}
@@ -309,7 +469,7 @@ export default function CalendarwithComp() {
 
       <CalendarGrid
         calendarDays={calendarDays}
-        getEventsForDay={(day) => events.filter((event) => event.date === day)}
+        getEventsForDay={getEventsForDay}
         onDragOver={handleDragOver}
         onDrop={handleDrop}
         onDayClick={(day) => alert(`Selected day: ${day}`)}
@@ -320,3 +480,20 @@ export default function CalendarwithComp() {
     </div>
   );
 }
+
+// {events.map((card, id) => (
+//   <>
+//     <div key={id} className="mb-4 flex flex-col">
+//       {" | "} {card.documentid}
+//       {" | "} {card.id}
+//       {" | "} {card.title}
+//       {" | "} {card.description}
+//       {" | "} {card.activityDate}
+//       {" | "} {card.focusAge}
+//       {" | "} {card.setUpTime}
+//       {" | "} {card.theme}
+//       {" | "} {card.learningArea}
+//       {" | "} {card.skillCategory}
+//     </div>
+//   </>
+// ))}
