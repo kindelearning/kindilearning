@@ -81,13 +81,13 @@ export default function ProductDetailPage({ params }) {
     console.log("Adding to cart:", product);
     setLoading(true); // Set loading to true
     await new Promise((resolve) => setTimeout(resolve, 500)); // Simulate delay
-
+ 
     addToCart({
       id: product.id,
-      title: product.title,
-      description: product.description,
-      price: product.salePrice,
-      image: product.productImages[0]?.url,
+      title: product.Name,
+      description: product.Description,
+      price: product.DiscountPrice,
+      image: product.Gallery[0]?.url,
       quantity,
     });
     setLoading(false); // Set loading to false after adding to cart
@@ -231,7 +231,7 @@ export default function ProductDetailPage({ params }) {
             <div className="text-[#0a1932] text-[20px] lg:text-[28px] font-semibold font-fredoka text-start w-full ">
               Recently Viewed
             </div>
-            <ProductGrid />
+            {/* <ProductGrid /> */}
           </div>
           {/* Row- 3 | Add Review */}
           <div className="flex w-full flex-col justify-start items-center">
@@ -267,7 +267,7 @@ export default function ProductDetailPage({ params }) {
             <div className="text-[#0a1932] text-[20px] lg:text-[28px]  font-semibold font-fredoka text-start w-full leading-loose">
               You May also like
             </div>
-            <ProductGrid />
+            {/* <ProductGrid /> */}
           </div>
         </div>
       </section>

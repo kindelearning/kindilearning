@@ -15,8 +15,6 @@ export default function ProductMedia({ gallery }) {
       <div className="w-full overflow-clip rounded-lg h-[300px] max-h-[300px] lg:h-[400px] lg:max-h-[400px] mb-4">
         {currentMedia.mime.includes("image") ? (
           <img
-            // width={700}
-            // height={500}
             src={`http://localhost:1337${currentMedia.url}`}
             alt={currentMedia.name || "Product Media"}
             className="w-full h-auto object-cover  rounded-lg shadow-md"

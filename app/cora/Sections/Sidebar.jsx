@@ -123,7 +123,30 @@ export default function Sidebar() {
           label="Products"
           isCollapsed={isCollapsed}
         />
-
+        <SidebarLink
+          href="/cora/website/levels"
+          icon={<Flag />} // Mission icon (Flag for mission)
+          label="Levels"
+          isCollapsed={isCollapsed}
+        />
+        <SidebarLink
+          href="/cora/website/milestone"
+          icon={<Flag />} // Mission icon (Flag for mission)
+          label="Milestone"
+          isCollapsed={isCollapsed}
+        />
+        <SidebarLink
+          href="/cora/website/badge"
+          icon={<Flag />} // Mission icon (Flag for mission)
+          label="Badge"
+          isCollapsed={isCollapsed}
+        />
+        <SidebarLink
+          href="/cora/website/paymentmethod"
+          icon={<Flag />} // Mission icon (Flag for mission)
+          label="Payment Method"
+          isCollapsed={isCollapsed}
+        />
         {/* Pages Dropdown */}
         <div className="space-y-2">
           <div

@@ -36,13 +36,11 @@ export default function CartPage() {
     const data = await res.json();
 
     if (data.sessionId) {
+      // Use dynamic user data
+      const userId = user.id; // Get user ID from context
+      const userAddress = user.address; // Get user address from context
+      const paymentDetails = user.paymentMethod; // Get payment method from context
 
-       // Use dynamic user data
-       const userId = user.id; // Get user ID from context
-       const userAddress = user.address; // Get user address from context
-       const paymentDetails = user.paymentMethod; // Get payment method from context
-
-       
       // Format ordered products data
       const orderedProducts = cart.map((item) => ({
         title: item.title,
@@ -105,9 +103,10 @@ export default function CartPage() {
                 key={item.id}
                 className="flex gap-4 px-2 py-2 bg-white rounded-xl items-center shadow w-full border-gray-200"
               >
-                <Image
+                <img
                   alt={item.title}
-                  src={item.image}
+                  // src={item.image}
+                  src={`http://localhost:1337${item.image}`}
                   width={120}
                   height={90}
                   className="w-[80px] h-[76px] md:w-[100px] lg:h-[80px] rounded-[10px]"

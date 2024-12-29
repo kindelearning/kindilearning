@@ -57,20 +57,22 @@ export default function RawProfile() {
   };
 
   if (loading) return <p>Loading...</p>;
-
+  const kid = "19";
   return (
     <>
       <section className="w-full h-auto bg-[#F5F5F5] md:bg-[#EAEAF5] items-center justify-center flex flex-col md:flex-row px-0">
         <div className="claracontainer bg-[#ffffff] md:bg-[#ffffff] -mt-4 rounded-t-[12px] z-2 lg:m-12 px-4 py-6 rounded-xl md:px-2 lg:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-[20px]">
-          <EditProfile
+          {/* <EditProfile
             userData={userData}
             onProfileUpdate={handleProfileUpdate}
-          />
+          /> */}
+
+          <KidProfile kidId={kid} />
+
           <h1>User Profile</h1>
-          {userData && (
-            <>
-              {/* Displaying User Information */}
-              <div>
+          <div className=" w-full ">
+            {userData && (
+              <>
                 <h2>Username: {userData.username}</h2>
                 <p>Email: {userData.email}</p>
                 <p>Provider: {userData.provider}</p>
@@ -82,7 +84,6 @@ export default function RawProfile() {
                   {userData.role ? userData.role.name : "No role assigned"}
                 </p>
 
-                {/* Displaying Profile Picture */}
                 {userData.profilepic ? (
                   <img
                     src={`http://localhost:1337${userData.profilepic.url}`}
@@ -94,8 +95,8 @@ export default function RawProfile() {
                 )}
 
                 {/* Displaying Kids' Profiles */}
-                <div>
-                  <h3>Kids Profiles</h3>
+                <h3>Kids Profiles</h3>
+                <div className="grid w-full grid-cols-3 gap-4 justify-between">
                   {userData.myKids && userData.myKids.length > 0 ? (
                     userData.myKids.map((kid, index) => (
                       <div key={index} style={{ marginBottom: "20px" }}>
@@ -129,9 +130,9 @@ export default function RawProfile() {
                 <button onClick={() => router.push("/auth/sign-out")}>
                   Logout
                 </button>
-              </div>
-            </>
-          )}
+              </>
+            )}
+          </div>
         </div>
       </section>
     </>
@@ -143,12 +144,14 @@ export function EditProfile({ userData }) {
     id: userData.id || "",
     username: userData.username || "",
     Name: userData.Name || "",
+    myKids: userData.myKids || [], // Initializing kids data
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [dialogMessage, setDialogMessage] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
+  // Fetch the user profile data on initial load
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -158,9 +161,12 @@ export function EditProfile({ userData }) {
           return;
         }
 
-        const response = await fetch("http://localhost:1337/api/users/me", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const response = await fetch(
+          "http://localhost:1337/api/users/me?populate=*",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
 
         if (!response.ok) throw new Error("Failed to fetch profile data");
 
@@ -169,6 +175,7 @@ export function EditProfile({ userData }) {
           id: data.id, // Save the user ID
           username: data.username || "",
           Name: data.Name || "",
+          myKids: data.myKids || [], // Setting kids data
         });
       } catch (err) {
         setError("Error fetching content");
@@ -178,6 +185,7 @@ export function EditProfile({ userData }) {
     fetchProfile();
   }, []);
 
+  // Handling the form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -190,16 +198,37 @@ export function EditProfile({ userData }) {
       return;
     }
 
+    // Prepare the payload for the update
     const updatedContent = {
       username: content.username,
       Name: content.Name,
+      myKids: content.myKids.map((kid) => {
+        if (kid.id) {
+          return {
+            id: kid.id,
+            Name: kid.Name,
+            Age: kid.Age,
+            Gender: kid.Gender,
+            AttendingNursury: kid.AttendingNursury,
+          };
+        } else {
+          return {
+            Name: kid.Name,
+            Age: kid.Age,
+            Gender: kid.Gender,
+            AttendingNursury: kid.AttendingNursury,
+          };
+        }
+      }),
     };
+
+    // Log the request payload for debugging
+    console.log("Request payload:", updatedContent);
 
     try {
       const response = await fetch(
         `http://localhost:1337/api/users/${content.id}`,
         {
-          // Use the user's ID
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -213,26 +242,61 @@ export function EditProfile({ userData }) {
       if (response.ok) {
         setDialogMessage("Content updated successfully!");
       } else {
-        setDialogMessage("Error updating content.");
+        setDialogMessage("Error updating content: " + result.message);
       }
     } catch (err) {
-      setDialogMessage("Error updating content.");
+      setDialogMessage("Error updating content: " + err.message);
     } finally {
       setIsDialogOpen(true);
       setLoading(false);
     }
   };
 
+  // Handle changes in user data (Name, Username)
+  const handleUserChange = (e) => {
+    setContent({ ...content, [e.target.name]: e.target.value });
+  };
+
+  // Handle changes in kids' data (Name, Age, Gender)
+  const handleKidChange = (index, e) => {
+    const updatedKids = [...content.myKids];
+    updatedKids[index][e.target.name] = e.target.value;
+    setContent({ ...content, myKids: updatedKids });
+  };
+
+  // Add a new kid profile
+  const addKid = () => {
+    setContent({
+      ...content,
+      myKids: [
+        ...content.myKids,
+        {
+          Name: "",
+          Age: "",
+          Gender: "",
+          AttendingNursury: "",
+        },
+      ],
+    });
+  };
+
+  // Remove a kid profile
+  const removeKid = (index) => {
+    const updatedKids = content.myKids.filter((_, idx) => idx !== index);
+    setContent({ ...content, myKids: updatedKids });
+  };
+
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
       {error && <p className="error-message">{error}</p>}
+
       <label>
         Username:
         <input
           type="text"
           name="username"
           value={content.username}
-          onChange={(e) => setContent({ ...content, username: e.target.value })}
+          onChange={handleUserChange}
           required
           className="input-field"
         />
@@ -244,11 +308,71 @@ export function EditProfile({ userData }) {
           type="text"
           name="Name"
           value={content.Name}
-          onChange={(e) => setContent({ ...content, Name: e.target.value })}
+          onChange={handleUserChange}
           required
           className="input-field"
         />
       </label>
+
+      {/* Displaying kids as cards */}
+      <div className="kids-cards">
+        {content.myKids.length > 0 ? (
+          <>
+            {content.myKids.map((kid, index) => (
+              <div key={index} className="kid-card">
+                <h3>Kid {index + 1}</h3>
+
+                <label>
+                  Kid Name:
+                  <input
+                    type="text"
+                    name="Name"
+                    value={kid.Name}
+                    onChange={(e) => handleKidChange(index, e)}
+                    className="input-field"
+                  />
+                </label>
+
+                <label>
+                  Age:
+                  <input
+                    type="number"
+                    name="Age"
+                    value={kid.Age}
+                    onChange={(e) => handleKidChange(index, e)}
+                    className="input-field"
+                  />
+                </label>
+
+                <label>
+                  Gender:
+                  <input
+                    type="text"
+                    name="Gender"
+                    value={kid.Gender}
+                    onChange={(e) => handleKidChange(index, e)}
+                    className="input-field"
+                  />
+                </label>
+
+                <button
+                  type="button"
+                  onClick={() => removeKid(index)}
+                  className="remove-kid-button"
+                >
+                  Remove Kid
+                </button>
+              </div>
+            ))}
+          </>
+        ) : (
+          <p>No kids profiles available.</p>
+        )}
+      </div>
+
+      <button type="button" onClick={addKid} className="add-kid-button">
+        Add New Kid
+      </button>
 
       <button type="submit" className="submit-button" disabled={loading}>
         {loading ? "Updating..." : "Update Profile"}
@@ -274,3 +398,108 @@ export function EditProfile({ userData }) {
     </form>
   );
 }
+
+export const KidProfile = ({ kidId }) => {
+  const [userData, setUserData] = useState(null);
+  const [kidData, setKidData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Fetch user data from API
+  const fetchUserData = async () => {
+    try {
+      const token = localStorage.getItem("jwt"); // Retrieve token from storage
+      if (!token) {
+        setError("User is not authenticated");
+        setLoading(false);
+        return;
+      }
+
+      const response = await fetch(
+        "http://localhost:1337/api/users/me?populate=*",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Include token in Authorization header
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setUserData(data);
+      setLoading(false);
+    } catch (err) {
+      setError(err.message || "Failed to fetch user data");
+      setLoading(false);
+    }
+  };
+
+  // Fetch kid data based on kidId
+  const fetchKidData = () => {
+    console.log("Kid ID:", kidId); // Debug kidId
+    if (userData && userData.myKids) {
+      console.log("Kids Data:", userData.myKids); // Debug the kids data
+      const kid = userData.myKids.find((kid) => kid.id === parseInt(kidId, 10)); // Ensure type match
+      if (kid) {
+        console.log("Kid Data:", kid); // Debug found kid data
+        setKidData(kid);
+      } else {
+        console.error("Kid not found"); // Log error
+        setError("Kid not found");
+      }
+    } else {
+      console.error("User data or kids data is missing"); // Log missing data error
+      setError("No kids data available");
+    }
+  };
+  
+  
+
+  useEffect(() => {
+    fetchUserData(); // Fetch user data when the component mounts
+  }, []);
+
+  useEffect(() => {
+    if (userData) {
+      fetchKidData(); // Fetch kid data once user data is available
+    }
+  }, [userData]);
+
+  // Show loading state while fetching data
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  // Show error message if fetching data fails
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  return (
+    <div>
+      {kidData ? (
+        <div>
+          <h2>{kidData.Name}'s Profile</h2>
+          <p>
+            <strong>Age:</strong> {kidData.age}
+          </p>
+          <p>
+            <strong>Gender:</strong> {kidData.Gender}
+          </p>
+          <p>
+            <strong>Date of Birth:</strong> {kidData.dob}
+          </p>
+          <p>
+            <strong>Attending Nursery:</strong>{" "}
+            {kidData.AttendingNursury ? "Yes" : "No"}
+          </p>
+        </div>
+      ) : (
+        <div>No kid data available</div>
+      )}
+    </div>
+  );
+};
