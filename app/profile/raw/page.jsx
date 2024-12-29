@@ -12,6 +12,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 
 export default function RawProfile() {
   const [userData, setUserData] = useState(null);
@@ -60,12 +61,20 @@ export default function RawProfile() {
   const kid = "19";
   return (
     <>
-      <section className="w-full h-auto bg-[#F5F5F5] md:bg-[#EAEAF5] items-center justify-center flex flex-col md:flex-row px-0">
+      <section className="w-full h-auto bg-[#F5F5F5] md:bg-[#EAEAF5] items-center justify-center flex flex-col px-0">
         <div className="claracontainer bg-[#ffffff] md:bg-[#ffffff] -mt-4 rounded-t-[12px] z-2 lg:m-12 px-4 py-6 rounded-xl md:px-2 lg:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-[20px]">
-          {/* <EditProfile
-            userData={userData}
-            onProfileUpdate={handleProfileUpdate}
-          /> */}
+          <Dialog>
+            <DialogTrigger>Update Profile</DialogTrigger>
+            <DialogContent className="w-full max-w-[1000px] max-h-[600px] overflow-y-scroll">
+              <DialogDescription>
+                {/* <UpdateUserForm /> */}
+                <EditProfile
+                  userData={userData}
+                  onProfileUpdate={handleProfileUpdate}
+                />
+              </DialogDescription>
+            </DialogContent>
+          </Dialog>
 
           <KidProfile kidId={kid} />
 
@@ -125,6 +134,45 @@ export default function RawProfile() {
                     <p>No kids profiles available.</p>
                   )}
                 </div>
+                {/* Displaying Payment Methodd for the Main Accout */}
+                <h3>Payment Method</h3>
+                <div className="grid w-full grid-cols-3 gap-4 justify-between">
+                  {userData.myPayment && userData.myPayment.length > 0 ? (
+                    userData.myPayment.map((kid, index) => (
+                      <div key={index} style={{ marginBottom: "20px" }}>
+                        <p>
+                          <strong>ID:</strong> {kid.id}
+                        </p>
+                        <p>
+                          <strong>CVV:</strong> {kid.CVV}
+                        </p>
+                        <p>
+                          <strong>ExpiryDate:</strong> {kid.ExpiryDate}
+                        </p>
+                        <p>
+                          <strong>Name:</strong> {kid.Name}
+                        </p>
+                        <p>
+                          <strong>Number:</strong> {kid.Number}
+                        </p>
+                        <p>
+                          <strong>createdAt:</strong> {kid.createdAt}
+                        </p>
+                        <p>
+                          <strong>documentId:</strong> {kid.documentId}
+                        </p>
+                        <p>
+                          <strong>publishedAt:</strong> {kid.publishedAt}
+                        </p>
+                        <p>
+                          <strong>updatedAt:</strong> {kid.updatedAt}
+                        </p>
+                      </div>
+                    ))
+                  ) : (
+                    <p>No kids profiles available.</p>
+                  )}
+                </div>
 
                 {/* Logout Button */}
                 <button onClick={() => router.push("/auth/sign-out")}>
@@ -144,13 +192,19 @@ export function EditProfile({ userData }) {
     id: userData.id || "",
     username: userData.username || "",
     Name: userData.Name || "",
-    myKids: userData.myKids || [], // Initializing kids data
+    myPayment: userData.myPayment || [],
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [dialogMessage, setDialogMessage] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-
+  const [paymentMethod, setPaymentMethod] = useState({
+    Name: "",
+    Number: "",
+    ExpiryDate: "",
+    CVV: "",
+  });
+  const mytoken = localStorage.getItem("jwt");
   // Fetch the user profile data on initial load
   useEffect(() => {
     const fetchProfile = async () => {
@@ -175,7 +229,7 @@ export function EditProfile({ userData }) {
           id: data.id, // Save the user ID
           username: data.username || "",
           Name: data.Name || "",
-          myKids: data.myKids || [], // Setting kids data
+          myPayment: data.myPayment || [],
         });
       } catch (err) {
         setError("Error fetching content");
@@ -184,6 +238,11 @@ export function EditProfile({ userData }) {
 
     fetchProfile();
   }, []);
+
+  // Handle changes in user data (Name, Username)
+  const handleUserChange = (e) => {
+    setContent({ ...content, [e.target.name]: e.target.value });
+  };
 
   // Handling the form submission
   const handleSubmit = async (e) => {
@@ -202,24 +261,6 @@ export function EditProfile({ userData }) {
     const updatedContent = {
       username: content.username,
       Name: content.Name,
-      myKids: content.myKids.map((kid) => {
-        if (kid.id) {
-          return {
-            id: kid.id,
-            Name: kid.Name,
-            Age: kid.Age,
-            Gender: kid.Gender,
-            AttendingNursury: kid.AttendingNursury,
-          };
-        } else {
-          return {
-            Name: kid.Name,
-            Age: kid.Age,
-            Gender: kid.Gender,
-            AttendingNursury: kid.AttendingNursury,
-          };
-        }
-      }),
     };
 
     // Log the request payload for debugging
@@ -252,150 +293,188 @@ export function EditProfile({ userData }) {
     }
   };
 
-  // Handle changes in user data (Name, Username)
-  const handleUserChange = (e) => {
-    setContent({ ...content, [e.target.name]: e.target.value });
+  return (
+    <>
+      <CreatePaymentMethod
+        userDocumentId={content.documentId}
+        token={mytoken}
+      />
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        {error && <p className="error-message">{error}</p>}
+
+        <label>
+          Username:
+          <input
+            type="text"
+            name="username"
+            value={content.username}
+            onChange={handleUserChange}
+            required
+            className="input-field"
+          />
+        </label>
+
+        <label>
+          Name:
+          <input
+            type="text"
+            name="Name"
+            value={content.Name}
+            onChange={handleUserChange}
+            required
+            className="input-field"
+          />
+        </label>
+
+        <Button type="submit" className="submit-button" disabled={loading}>
+          {loading ? "Update..." : "Add Payment Method"}
+        </Button>
+
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogTrigger />
+          <DialogContent className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-6 bg-white rounded-md w-96">
+            <DialogHeader>
+              <DialogTitle>Profile Update</DialogTitle>
+              <DialogDescription>{dialogMessage}</DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+              <button
+                onClick={() => setIsDialogOpen(false)}
+                className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
+              >
+                Close
+              </button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </form>
+    </>
+  );
+}
+
+export function CreatePaymentMethod({ userDocumentId, token }) {
+  const [paymentMethod, setPaymentMethod] = useState({
+    Name: "",
+    Number: "",
+    ExpiryDate: "",
+    CVV: "",
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setPaymentMethod((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Handle changes in kids' data (Name, Age, Gender)
-  const handleKidChange = (index, e) => {
-    const updatedKids = [...content.myKids];
-    updatedKids[index][e.target.name] = e.target.value;
-    setContent({ ...content, myKids: updatedKids });
-  };
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  setLoading(true);
+  setError(null);
+  setSuccess(null);
 
-  // Add a new kid profile
-  const addKid = () => {
-    setContent({
-      ...content,
-      myKids: [
-        ...content.myKids,
-        {
-          Name: "",
-          Age: "",
-          Gender: "",
-          AttendingNursury: "",
+  try {
+    const response = await fetch(
+      "http://localhost:1337/api/payment-methods", // Strapi endpoint for Payment Method
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Correct token for authentication
         },
-      ],
-    });
-  };
+        body: JSON.stringify({
+          data: {
+            ...paymentMethod, // Your new payment method data
+            user: userDocumentId, // Ensure this is the user's documentId to link the payment method
+          },
+        }),
+      }
+    );
 
-  // Remove a kid profile
-  const removeKid = (index) => {
-    const updatedKids = content.myKids.filter((_, idx) => idx !== index);
-    setContent({ ...content, myKids: updatedKids });
-  };
+    const result = await response.json();
+    console.log(result); // Check if the result includes the new payment method
+
+    if (!response.ok) {
+      throw new Error(result.error?.message || "Failed to add payment method");
+    }
+
+    setSuccess("Payment method added successfully.");
+    setPaymentMethod({ Name: "", Number: "", ExpiryDate: "", CVV: "" });
+  } catch (err) {
+    setError(err.message);
+  } finally {
+    setLoading(false);
+  }
+};
+
+  
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-      {error && <p className="error-message">{error}</p>}
+    <div className="max-w-md mx-auto p-4 bg-white shadow rounded">
+      <h2 className="text-xl font-semibold mb-4">Add Payment Method</h2>
+      {error && <p className="text-red-500 mb-4">Error: {error}</p>}
+      {success && <p className="text-green-500 mb-4">{success}</p>}
 
-      <label>
-        Username:
-        <input
-          type="text"
-          name="username"
-          value={content.username}
-          onChange={handleUserChange}
-          required
-          className="input-field"
-        />
-      </label>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label className="block text-sm font-medium">Name on Card</label>
+          <input
+            type="text"
+            name="Name"
+            value={paymentMethod.Name}
+            onChange={handleChange}
+            required
+            className="w-full border border-gray-300 p-2 rounded"
+          />
+        </div>
 
-      <label>
-        Name:
-        <input
-          type="text"
-          name="Name"
-          value={content.Name}
-          onChange={handleUserChange}
-          required
-          className="input-field"
-        />
-      </label>
+        <div>
+          <label className="block text-sm font-medium">Card Number</label>
+          <input
+            type="text"
+            name="Number"
+            value={paymentMethod.Number}
+            onChange={handleChange}
+            maxLength={16}
+            className="w-full border border-gray-300 p-2 rounded"
+          />
+        </div>
 
-      {/* Displaying kids as cards */}
-      <div className="kids-cards">
-        {content.myKids.length > 0 ? (
-          <>
-            {content.myKids.map((kid, index) => (
-              <div key={index} className="kid-card">
-                <h3>Kid {index + 1}</h3>
+        <div className="flex space-x-4">
+          <div>
+            <label className="block text-sm font-medium">Expiry Date</label>
+            <input
+              type="date"
+              name="ExpiryDate"
+              value={paymentMethod.ExpiryDate}
+              onChange={handleChange}
+              className="w-full border border-gray-300 p-2 rounded"
+            />
+          </div>
 
-                <label>
-                  Kid Name:
-                  <input
-                    type="text"
-                    name="Name"
-                    value={kid.Name}
-                    onChange={(e) => handleKidChange(index, e)}
-                    className="input-field"
-                  />
-                </label>
+          <div>
+            <label className="block text-sm font-medium">CVV</label>
+            <input
+              type="text"
+              name="CVV"
+              value={paymentMethod.CVV}
+              onChange={handleChange}
+              maxLength={3}
+              className="w-full border border-gray-300 p-2 rounded"
+            />
+          </div>
+        </div>
 
-                <label>
-                  Age:
-                  <input
-                    type="number"
-                    name="Age"
-                    value={kid.Age}
-                    onChange={(e) => handleKidChange(index, e)}
-                    className="input-field"
-                  />
-                </label>
-
-                <label>
-                  Gender:
-                  <input
-                    type="text"
-                    name="Gender"
-                    value={kid.Gender}
-                    onChange={(e) => handleKidChange(index, e)}
-                    className="input-field"
-                  />
-                </label>
-
-                <button
-                  type="button"
-                  onClick={() => removeKid(index)}
-                  className="remove-kid-button"
-                >
-                  Remove Kid
-                </button>
-              </div>
-            ))}
-          </>
-        ) : (
-          <p>No kids profiles available.</p>
-        )}
-      </div>
-
-      <button type="button" onClick={addKid} className="add-kid-button">
-        Add New Kid
-      </button>
-
-      <button type="submit" className="submit-button" disabled={loading}>
-        {loading ? "Updating..." : "Update Profile"}
-      </button>
-
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogTrigger />
-        <DialogContent className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-6 bg-white rounded-md w-96">
-          <DialogHeader>
-            <DialogTitle>Profile Update</DialogTitle>
-            <DialogDescription>{dialogMessage}</DialogDescription>
-          </DialogHeader>
-          <DialogFooter>
-            <button
-              onClick={() => setIsDialogOpen(false)}
-              className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
-            >
-              Close
-            </button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-    </form>
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 disabled:opacity-50"
+        >
+          {loading ? "Adding..." : "Add Payment Method"}
+        </button>
+      </form>
+    </div>
   );
 }
 
@@ -455,8 +534,6 @@ export const KidProfile = ({ kidId }) => {
       setError("No kids data available");
     }
   };
-  
-  
 
   useEffect(() => {
     fetchUserData(); // Fetch user data when the component mounts
