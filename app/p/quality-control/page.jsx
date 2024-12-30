@@ -12,13 +12,7 @@ export default async function QualityControll() {
 
   return (
     <>
-      <head>
-        <title>Quality Controls | Kindi</title>
-        <meta
-          name="description"
-          content="At Kindi, we blend cutting-edge technology with research-backed early childhood education practices to deliver a seamless, engaging, and effective learning experience for children, carers, and educators."
-        />
-      </head>
+     
       <section className="w-full bg-[#EAEAF5] flex flex-col gap-0 justify-center items-center">
         <div className="claracontainer px-4 md:px-2 lg:px-4 pb-24 pt-8 w-full bg-[#eaeaf5] flex flex-col overflow-hidden gap-8">
           <div className="claracontainer w-full flex flex-col overflow-hidden gap-4">
