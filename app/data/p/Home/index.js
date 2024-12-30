@@ -18,7 +18,7 @@ export async function fetchHeroSection() {
     const heroData = data.data;
 
     // Construct the full URL for the media (Image/Video)
-    const heroMediaUrl = heroData.Image?.url ? `heroData.Image.url` : null;
+    const heroMediaUrl = heroData.Image?.url ? heroData.Image.url : null;
 
     return { heroData, heroMediaUrl }; // Return the data and the media URL
   } catch (error) {
