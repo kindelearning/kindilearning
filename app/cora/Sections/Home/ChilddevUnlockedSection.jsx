@@ -77,7 +77,8 @@ export default function ChildDevelopmentUnlock() {
         <div className="max-w-[400px]">
           {content.Media ? (
             <img
-              src={`https://proper-fun-404805c7d9.strapiapp.com${content.Media[0].url}`}
+              src={content.Media[0].url}
+              // src={`https://proper-fun-404805c7d9.strapiapp.com${content.Media[0].url}`}
               alt="Child Development Media"
               className="w-full h-auto"
             />

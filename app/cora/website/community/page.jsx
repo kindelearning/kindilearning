@@ -229,7 +229,8 @@ export default function AdminBlogs() {
                     </TableCell>
                     <TableCell>
                       <img
-                        src={`https://proper-fun-404805c7d9.strapiapp.com${blog?.FeaturedImage?.url}`}
+                        src={blog?.FeaturedImage?.url}
+                        // src={`https://proper-fun-404805c7d9.strapiapp.com${blog?.FeaturedImage?.url}`}
                         alt={blog?.Text}
                         className="w-[40px] border-2 border-[#333333] rounded-full h-[40px] object-cover"
                       />
@@ -281,7 +282,8 @@ export default function AdminBlogs() {
                               <div className="flex w-full prose gap-4 justify-between items-start">
                                 {/* Featured Image */}
                                 <img
-                                  src={`https://proper-fun-404805c7d9.strapiapp.com${selectedBlog?.FeaturedImage?.url}`}
+                                  src={selectedBlog?.FeaturedImage?.url}
+                                  // src={`https://proper-fun-404805c7d9.strapiapp.com${selectedBlog?.FeaturedImage?.url}`}
                                   alt={selectedBlog?.Text}
                                   className="w-full h-[300px] object-cover rounded-lg mb-6"
                                 />

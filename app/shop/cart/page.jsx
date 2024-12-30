@@ -105,8 +105,8 @@ export default function CartPage() {
               >
                 <img
                   alt={item.title}
-                  // src={item.image}
-                  src={`https://proper-fun-404805c7d9.strapiapp.com${item.image}`}
+                  src={item.image}
+                  // src={`https://proper-fun-404805c7d9.strapiapp.com${item.image}`}
                   width={120}
                   height={90}
                   className="w-[80px] h-[76px] md:w-[100px] lg:h-[80px] rounded-[10px]"

@@ -15,15 +15,16 @@ export default function ProductMedia({ gallery }) {
       <div className="w-full overflow-clip rounded-lg h-[300px] max-h-[300px] lg:h-[400px] lg:max-h-[400px] mb-4">
         {currentMedia.mime.includes("image") ? (
           <img
-            src={`https://proper-fun-404805c7d9.strapiapp.com${currentMedia.url}`}
+            src={currentMedia.url}
+            // src={`https://proper-fun-404805c7d9.strapiapp.com${currentMedia.url}`}
             alt={currentMedia.name || "Product Media"}
             className="w-full h-auto object-cover  rounded-lg shadow-md"
           />
         ) : currentMedia.mime.includes("video") ? (
           <video controls className="w-full h-auto rounded-lg shadow-md">
             <source
-              src={`https://proper-fun-404805c7d9.strapiapp.com${currentMedia.url}`}
-              type={currentMedia.mime}
+            src={currentMedia.url}
+            type={currentMedia.mime}
             />
             Your browser does not support the video tag.
           </video>
@@ -40,14 +41,18 @@ export default function ProductMedia({ gallery }) {
           >
             {item.mime.includes("image") ? (
               <img
-                src={`https://proper-fun-404805c7d9.strapiapp.com${item.url}`}
+                // src={`https://proper-fun-404805c7d9.strapiapp.com${item.url}`}
+            src={item.url}
+                
                 alt={item.name || "Thumbnail"}
                 className="w-full h-full object-cover rounded-lg"
               />
             ) : item.mime.includes("video") ? (
               <video className="w-full h-full object-cover rounded-lg pointer-events-none">
                 <source
-                  src={`https://proper-fun-404805c7d9.strapiapp.com${item.url}`}
+                  // src={`https://proper-fun-404805c7d9.strapiapp.com${item.url}`}
+            src={item.url}
+
                   type={item.mime}
                 />
               </video>

@@ -21,22 +21,22 @@ export default async function PlayForLife() {
         <div className="claracontainer px-4 md:px-2 lg:px-4 items-start justify-start-4 w-full flex flex-col md:flex-col lg:flex-row xl:flex-row overflow-hidden gap-8">
           <div className="w-full flex justify-center items-center h-auto">
             <div className="w-full lg:w-[400px] h-full lg:h-[340px] xl:w-[500px] animate-fadeIn animate-delay-500 duration-300">
-              {heroMediaUrl ? (
-                heroMediaUrl.endsWith(".mp4") ? (
+              {hero?.Media?.url ? (
+                hero?.Media?.url.endsWith(".mp4") ? (
                   <video autoPlay loop muted>
                     <source src={heroMediaUrl} type="video/mp4" />
                     Your browser does not support the video.
                   </video>
                 ) : (
                   <Image
-                    src={heroMediaUrl}
+                    src={hero?.Media?.url}
                     alt="Hero media"
                     width={800}
                     height={600}
                   />
                 )
               ) : (
-                <p>No media available</p>
+                <p>Your Browser doesnt support this video</p>
               )}
             </div>
           </div>

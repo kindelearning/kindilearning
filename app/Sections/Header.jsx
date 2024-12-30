@@ -311,7 +311,8 @@ export default function Header() {
                   <div className="w-full h-full bg-white rounded-full  flex items-center justify-center">
                     {userData.profilepic ? (
                       <img
-                        src={`https://proper-fun-404805c7d9.strapiapp.com${userData.profilepic.url}`}
+                        src={userData.profilepic.url}
+                        // src={`https://proper-fun-404805c7d9.strapiapp.com${userData.profilepic.url}`}
                         alt="Profile Picture"
                         className="w-[40px] h-[40px] object-cover rounded-full"
                       />

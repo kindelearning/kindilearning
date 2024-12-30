@@ -229,7 +229,8 @@ export default function MilestoneData() {
                   <TableCell className="w-[60px] h-[60px]">
                     {milestone.Thumbnail && (
                       <img
-                        src={`https://proper-fun-404805c7d9.strapiapp.com${milestone.Thumbnail.url}`}
+                        src={milestone.Thumbnail.url}
+                        // src={`https://proper-fun-404805c7d9.strapiapp.com${milestone.Thumbnail.url}`}
                         alt={milestone.Title}
                       />
                     )}

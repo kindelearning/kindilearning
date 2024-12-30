@@ -171,7 +171,8 @@ export default function BadgesTable() {
                 <TableCell>
                   {badge.Thumbnail?.url ? (
                     <img
-                      src={`https://proper-fun-404805c7d9.strapiapp.com${badge.Thumbnail.url}`}
+                      src={badge.Thumbnail.url}
+                      // src={`https://proper-fun-404805c7d9.strapiapp.com${badge.Thumbnail.url}`}
                       alt={badge.Thumbnail?.alternativeText || badge.Name}
                       className="w-10 h-10 rounded"
                     />

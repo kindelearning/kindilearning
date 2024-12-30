@@ -144,7 +144,8 @@ function EventCard({ event, onDragStart, activityUrl }) {
         <div className="flex w-full gap-2 h-fit justify-between items-start">
           <div className="flex w-full  rounded-[4px]  max-w-[32px] object-cover h-[32px] overflow-clip">
             <img
-              src={`https://proper-fun-404805c7d9.strapiapp.com${event.Gallery[0].url} `} // Make sure this matches the actual property name
+              src={event.Gallery[0].url} // Make sure this matches the actual property name
+              // src={`https://proper-fun-404805c7d9.strapiapp.com${event.Gallery[0].url} `} // Make sure this matches the actual property name
               alt="ScheduleEvent"
               className="w-[32px] rounded-[4px] object-cover h-[32px]"
               width={32}

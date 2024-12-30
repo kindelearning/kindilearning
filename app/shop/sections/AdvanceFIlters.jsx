@@ -130,9 +130,10 @@ export function ProductsWithPagination({ products }) {
           <ProductCard
             key={product.documentId}
             productUrl={`/shop/${product.documentId}`}
-            image={`https://proper-fun-404805c7d9.strapiapp.com${
-              product?.FeaturedImage?.[0]?.url || "/uploads/default-image.webp"
-            }`}
+            image={product?.FeaturedImage?.[0]?.url}
+            // image={`https://proper-fun-404805c7d9.strapiapp.com${
+            //   product?.FeaturedImage?.[0]?.url || "/uploads/default-image.webp"
+            // }`}
             price={product.DiscountPrice || product.Price}
             title={product.Name}
           />

@@ -86,7 +86,8 @@ export default function AgeGroupSection() {
             {ageGroup.Icon && ageGroup.Icon.url && (
               <div className="text-center mb-4">
                 <img
-                  src={`https://proper-fun-404805c7d9.strapiapp.com${ageGroup.Icon.url}`}
+                  src={ageGroup.Icon.url}
+                  // src={`https://proper-fun-404805c7d9.strapiapp.com${ageGroup.Icon.url}`}
                   alt={
                     ageGroup.Icon.alternativeText ||
                     `Icon for ${ageGroup.Title}`

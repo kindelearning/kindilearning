@@ -7,7 +7,8 @@ const ProductCard = ({ product }) => {
     <div className="flex items-start space-x-4 bg-gray-50 p-4 rounded-lg border border-gray-200 hover:bg-gray-100 transition-all">
       {/* Product Image */}
       <img
-        src={`https://proper-fun-404805c7d9.strapiapp.com${product.FeaturedImage}`} // Assuming the product image URL is under 'thumbnail'
+        src={product.FeaturedImage} // Assuming the product image URL is under 'thumbnail'
+        // src={`https://proper-fun-404805c7d9.strapiapp.com${product.FeaturedImage}`} // Assuming the product image URL is under 'thumbnail'
         alt={product.Name}
         className="w-16 h-16 object-cover rounded-lg"
       />

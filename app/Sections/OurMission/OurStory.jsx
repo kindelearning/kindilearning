@@ -17,7 +17,8 @@ export default async function OurStory() {
               {data?.OurStory?.Media ? (
                 <video className="w-full h-full " autoPlay loop muted>
                   <source
-                    src={`https://proper-fun-404805c7d9.strapiapp.com${data?.OurStory?.Media[0]?.url}`}
+                    src={data?.OurStory?.Media[0]?.url}
+                    // src={`https://proper-fun-404805c7d9.strapiapp.com${data?.OurStory?.Media[0]?.url}`}
                     type="video/mp4"
                   />
                   Your browser does not support the video.

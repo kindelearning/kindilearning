@@ -61,7 +61,8 @@ export default function HowItWorks() {
             <video
               autoPlay
               controls
-              src={`https://proper-fun-404805c7d9.strapiapp.com${Hero.Media[0].url}`}
+              src={Hero.Media[0].url}
+              // src={`https://proper-fun-404805c7d9.strapiapp.com${Hero.Media[0].url}`}
               className="w-full max-w-[800px] h-auto border-2 border-[#ddd] shadow-lg rounded-lg overflow-hidden"
             />
           ) : (

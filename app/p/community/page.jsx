@@ -38,7 +38,8 @@ export default async function Page() {
                     addUrl={`/p/community/${item.documentId}`}
                     metsDesc={item.MetaDescription}
                     title={item.Text}
-                    image={`https://proper-fun-404805c7d9.strapiapp.com${item.FeaturedImage.url}`}
+                    image={item.FeaturedImage.url}
+                    // image={`https://proper-fun-404805c7d9.strapiapp.com${item.FeaturedImage.url}`}
                     initialLikes={item.likes || 0} // Replace with actual value from your CMS
                     initialDislikes={item.dislikes || 0} // Replace with actual value from your CMS
                   />

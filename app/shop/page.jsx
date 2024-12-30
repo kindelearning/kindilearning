@@ -448,10 +448,11 @@ export default function ShopPage() {
                     <div key={product.id} className="product-card">
                       <ProductCard
                         productUrl={`/shop/${product.documentId}`}
-                        image={`https://proper-fun-404805c7d9.strapiapp.com${
-                          product?.FeaturedImage?.[0]?.url ||
-                          "/uploads/default-image.webp"
-                        }`}
+                        image={product?.FeaturedImage?.[0]?.url}
+                        // image={`https://proper-fun-404805c7d9.strapiapp.com${
+                        //   product?.FeaturedImage?.[0]?.url ||
+                        //   "/uploads/default-image.webp"
+                        // }`}
                         price={product.DiscountPrice || product.Price}
                         title={product.Name}
                       />
