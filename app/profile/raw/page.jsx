@@ -30,13 +30,20 @@ export default function RawProfile() {
     const fetchData = async () => {
       const token = localStorage.getItem("jwt"); // Get the JWT token from localStorage
       if (!token) {
-        // router.push("/oAuth/signin"); // Redirect to login if there's an error fetching user data
         return;
       }
 
       try {
-        const data = await fetchUserDetails(token); // Use the helper function to fetch user data
-        console.log("User data: ", data);
+        const res = await fetch(
+          "http://localhost:1337/api/users/me?populate[profilepic]=true&populate[myKids][populate][activity_completeds]=true&populate[myKids][populate][badge_completeds]=true&populate[myKids][populate][milestone_completeds]=true&populate[myPartners]=true&populate[myPayment]=true&populate[partnerOf]=true",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const data = await res.json();
+        console.log("User Data: ", data);
         setUserData(data);
         setFormData({
           username: data.username,
@@ -45,7 +52,6 @@ export default function RawProfile() {
         });
       } catch (error) {
         console.error("Error fetching user data", error);
-        // router.push("/oAuth/signin"); // Redirect to login if there's an error fetching user data
       } finally {
         setLoading(false);
       }
@@ -53,137 +59,197 @@ export default function RawProfile() {
 
     fetchData();
   }, [router]);
-  const handleProfileUpdate = (updatedData) => {
-    setUserData(updatedData); // Update the state with the new profile data
-  };
 
   if (loading) return <p>Loading...</p>;
-  const kid = "19";
+
   return (
-    <>
-      <section className="w-full h-auto bg-[#F5F5F5] md:bg-[#EAEAF5] items-center justify-center flex flex-col px-0">
-        <div className="claracontainer bg-[#ffffff] md:bg-[#ffffff] -mt-4 rounded-t-[12px] z-2 lg:m-12 px-4 py-6 rounded-xl md:px-2 lg:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-[20px]">
-          <Dialog>
-            <DialogTrigger>Update Profile</DialogTrigger>
-            <DialogContent className="w-full max-w-[1000px] max-h-[600px] overflow-y-scroll">
-              <DialogDescription>
-                {/* <UpdateUserForm /> */}
-                <EditProfile
-                  userData={userData}
-                  onProfileUpdate={handleProfileUpdate}
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl w-full space-y-8 bg-white p-8 rounded-lg shadow-md">
+        <h1 className="text-2xl font-bold text-gray-800">User Profile</h1>
+
+        {/* Displaying User Info */}
+        {userData && (
+          <div className="space-y-4">
+            <div>
+              <h2 className="text-xl font-semibold">General Information</h2>
+              <p>
+                <strong>Username:</strong> {userData.username}
+              </p>
+              <p>
+                <strong>Email:</strong> {userData.email}
+              </p>
+              <p>
+                <strong>Provider:</strong> {userData.provider}
+              </p>
+              <p>
+                <strong>Premium Status:</strong>{" "}
+                {userData.isPremium ? "Yes" : "No"}
+              </p>
+              <p>
+                <strong>Blocked:</strong> {userData.blocked ? "Yes" : "No"}
+              </p>
+              <p>
+                <strong>Confirmed:</strong> {userData.confirmed ? "Yes" : "No"}
+              </p>
+              <p>
+                <strong>Role:</strong>{" "}
+                {userData.role ? userData.role.name : "No role assigned"}
+              </p>
+            </div>
+
+            {/* Profile Picture */}
+            <div>
+              {userData.profilepic ? (
+                <img
+                  src={`http://localhost:1337${userData.profilepic.url}`}
+                  alt="Profile Picture"
+                  className="w-32 h-32 rounded-full object-cover"
                 />
-              </DialogDescription>
-            </DialogContent>
-          </Dialog>
+              ) : (
+                <p>No profile picture</p>
+              )}
+            </div>
 
-          <KidProfile kidId={kid} />
+            {/* Displaying Kids' Profiles */}
+            <div>
+              <h3 className="text-xl font-semibold">Kids Profiles</h3>
+              {userData.myKids && userData.myKids.length > 0 ? (
+                <div className="space-y-4">
+                  {userData.myKids.map((kid, index) => (
+                    <div key={index} className="bg-gray-100 p-4 rounded-lg">
+                      <p>
+                        <strong>Name:</strong> {kid.Name}
+                      </p>
+                      <p>
+                        <strong>Age:</strong> {kid.age}
+                      </p>
+                      <p>
+                        <strong>Gender:</strong> {kid.Gender}
+                      </p>
+                      <p>
+                        <strong>Date of Birth:</strong> {kid.dob}
+                      </p>
+                      <p>
+                        <strong>Attending Nursery:</strong>{" "}
+                        {kid.attendingNursury ? "Yes" : "No"}
+                      </p>
+                      {kid.activity_completeds &&
+                        kid.activity_completeds.length > 0 && (
+                          <div>
+                            <h4 className="font-semibold">
+                              Completed Activities:
+                            </h4>
+                            <ul className="list-disc pl-5">
+                              {kid.activity_completeds.map(
+                                (activity, index) => (
+                                  <li key={index}>{activity.Title}</li> // Assuming the activity object has a 'name' property
+                                )
+                              )}
+                            </ul>
+                          </div>
+                        )}
 
-          <h1>User Profile</h1>
-          <div className=" w-full ">
-            {userData && (
-              <>
-                <h2>Username: {userData.username}</h2>
-                <p>Email: {userData.email}</p>
-                <p>Provider: {userData.provider}</p>
-                <p>Premium Status: {userData.isPremium ? "Yes" : "No"}</p>
-                <p>Blocked: {userData.blocked ? "Yes" : "No"}</p>
-                <p>Confirmed: {userData.confirmed ? "Yes" : "No"}</p>
-                <p>
-                  Role:{" "}
-                  {userData.role ? userData.role.name : "No role assigned"}
-                </p>
+                      {/* Displaying Completed Badges */}
+                      {kid.badge_completeds &&
+                        kid.badge_completeds.length > 0 && (
+                          <div>
+                            <h4 className="font-semibold">Completed Badges:</h4>
+                            <ul className="list-disc pl-5">
+                              {kid.badge_completeds.map((badge, index) => (
+                                <li key={index}>{badge.Name}</li> // Assuming the badge object has a 'name' property
+                              ))}
+                            </ul>
+                          </div>
+                        )}
 
-                {userData.profilepic ? (
-                  <img
-                    src={`http://localhost:1337${userData.profilepic.url}`}
-                    alt="Profile Picture"
-                    className="profile-pic"
-                  />
-                ) : (
-                  <p>No profile picture</p>
-                )}
-
-                {/* Displaying Kids' Profiles */}
-                <h3>Kids Profiles</h3>
-                <div className="grid w-full grid-cols-3 gap-4 justify-between">
-                  {userData.myKids && userData.myKids.length > 0 ? (
-                    userData.myKids.map((kid, index) => (
-                      <div key={index} style={{ marginBottom: "20px" }}>
-                        <p>
-                          <strong>ID:</strong> {kid.id}
-                        </p>
-                        <p>
-                          <strong>Name:</strong> {kid.Name}
-                        </p>
-                        <p>
-                          <strong>Age:</strong> {kid.age}
-                        </p>
-                        <p>
-                          <strong>Gender:</strong> {kid.Gender}
-                        </p>
-                        <p>
-                          <strong>DoB:</strong> {kid.dob}
-                        </p>
-                        <p>
-                          <strong>Attending Nursery:</strong>{" "}
-                          {kid.attendingNursury ? "Yes" : "No"}
-                        </p>
-                      </div>
-                    ))
-                  ) : (
-                    <p>No kids profiles available.</p>
-                  )}
+                      {/* Displaying Completed Milestones */}
+                      {kid.milestone_completeds &&
+                        kid.milestone_completeds.length > 0 && (
+                          <div>
+                            <h4 className="font-semibold">
+                              Completed Milestones:
+                            </h4>
+                            <ul className="list-disc pl-5">
+                              {kid.milestone_completeds.map(
+                                (milestone, index) => (
+                                  <li key={index}>{milestone.Title}</li> // Assuming the milestone object has a 'name' property
+                                )
+                              )}
+                            </ul>
+                          </div>
+                        )}
+                    </div>
+                  ))}
                 </div>
-                {/* Displaying Payment Methodd for the Main Accout */}
-                <h3>Payment Method</h3>
-                <div className="grid w-full grid-cols-3 gap-4 justify-between">
-                  {userData.myPayment && userData.myPayment.length > 0 ? (
-                    userData.myPayment.map((kid, index) => (
-                      <div key={index} style={{ marginBottom: "20px" }}>
-                        <p>
-                          <strong>ID:</strong> {kid.id}
-                        </p>
-                        <p>
-                          <strong>CVV:</strong> {kid.CVV}
-                        </p>
-                        <p>
-                          <strong>ExpiryDate:</strong> {kid.ExpiryDate}
-                        </p>
-                        <p>
-                          <strong>Name:</strong> {kid.Name}
-                        </p>
-                        <p>
-                          <strong>Number:</strong> {kid.Number}
-                        </p>
-                        <p>
-                          <strong>createdAt:</strong> {kid.createdAt}
-                        </p>
-                        <p>
-                          <strong>documentId:</strong> {kid.documentId}
-                        </p>
-                        <p>
-                          <strong>publishedAt:</strong> {kid.publishedAt}
-                        </p>
-                        <p>
-                          <strong>updatedAt:</strong> {kid.updatedAt}
-                        </p>
-                      </div>
-                    ))
-                  ) : (
-                    <p>No kids profiles available.</p>
-                  )}
-                </div>
+              ) : (
+                <p>No kids profiles available.</p>
+              )}
+            </div>
 
-                {/* Logout Button */}
-                <button onClick={() => router.push("/auth/sign-out")}>
-                  Logout
-                </button>
-              </>
-            )}
+            {/* Displaying Payment Methods */}
+            <div>
+              <h3 className="text-xl font-semibold">Payment Methods</h3>
+              {userData.myPayment && userData.myPayment.length > 0 ? (
+                <div className="space-y-4">
+                  {userData.myPayment.map((payment, index) => (
+                    <div key={index} className="bg-gray-100 p-4 rounded-lg">
+                      <p>
+                        <strong>Name:</strong> {payment.Name}
+                      </p>
+                      <p>
+                        <strong>Number:</strong> {payment.Number}
+                      </p>
+                      <p>
+                        <strong>Expiry Date:</strong> {payment.ExpiryDate}
+                      </p>
+                      <p>
+                        <strong>CVV:</strong> {payment.CVV}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p>No payment methods available.</p>
+              )}
+            </div>
+
+            {/* Partners & Other Relations */}
+            <div>
+              <h3 className="text-xl font-semibold">Partners</h3>
+              {userData.myPartners && userData.myPartners.length > 0 ? (
+                <div className="space-y-4">
+                  {userData.myPartners.map((partner, index) => (
+                    <div key={index} className="bg-gray-100 p-4 rounded-lg">
+                      <p>
+                        <strong>Partner username:</strong> {partner.username}
+                      </p>
+                      <p>
+                        <strong>Partner Name:</strong> {partner.Name}
+                      </p>
+                      <p>
+                        <strong>Partner email:</strong> {partner.email}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p>No partners available.</p>
+              )}
+            </div>
+
+            {/* Logout Button */}
+            <div className="mt-4 text-center">
+              <button
+                onClick={() => router.push("/auth/sign-out")}
+                className="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600"
+              >
+                Logout
+              </button>
+            </div>
           </div>
-        </div>
-      </section>
-    </>
+        )}
+      </div>
+    </div>
   );
 }
 
@@ -368,47 +434,47 @@ export function CreatePaymentMethod({ userDocumentId, token }) {
     setPaymentMethod((prev) => ({ ...prev, [name]: value }));
   };
 
- const handleSubmit = async (e) => {
-  e.preventDefault();
-  setLoading(true);
-  setError(null);
-  setSuccess(null);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+    setSuccess(null);
 
-  try {
-    const response = await fetch(
-      "http://localhost:1337/api/payment-methods", // Strapi endpoint for Payment Method
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // Correct token for authentication
-        },
-        body: JSON.stringify({
-          data: {
-            ...paymentMethod, // Your new payment method data
-            user: userDocumentId, // Ensure this is the user's documentId to link the payment method
+    try {
+      const response = await fetch(
+        "http://localhost:1337/api/payment-methods", // Strapi endpoint for Payment Method
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Correct token for authentication
           },
-        }),
+          body: JSON.stringify({
+            data: {
+              ...paymentMethod, // Your new payment method data
+              user: userDocumentId, // Ensure this is the user's documentId to link the payment method
+            },
+          }),
+        }
+      );
+
+      const result = await response.json();
+      console.log(result); // Check if the result includes the new payment method
+
+      if (!response.ok) {
+        throw new Error(
+          result.error?.message || "Failed to add payment method"
+        );
       }
-    );
 
-    const result = await response.json();
-    console.log(result); // Check if the result includes the new payment method
-
-    if (!response.ok) {
-      throw new Error(result.error?.message || "Failed to add payment method");
+      setSuccess("Payment method added successfully.");
+      setPaymentMethod({ Name: "", Number: "", ExpiryDate: "", CVV: "" });
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
-
-    setSuccess("Payment method added successfully.");
-    setPaymentMethod({ Name: "", Number: "", ExpiryDate: "", CVV: "" });
-  } catch (err) {
-    setError(err.message);
-  } finally {
-    setLoading(false);
-  }
-};
-
-  
+  };
 
   return (
     <div className="max-w-md mx-auto p-4 bg-white shadow rounded">
