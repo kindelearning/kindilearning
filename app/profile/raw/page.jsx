@@ -13,9 +13,11 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import AddKidForm, { ManageKids, ProfilePage } from "./Widget";
 
 export default function RawProfile() {
   const [userData, setUserData] = useState(null);
+  const [user, setUser] = useState(null); // Store user data here (e.g., fetched from Strapi API)
   const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({
     username: "",
@@ -24,7 +26,15 @@ export default function RawProfile() {
   });
 
   const router = useRouter();
+  const mywebtoken = localStorage.getItem("jwt"); // Retrieve token from localStorage
+  const myuserId = "t0bpyl45xsmodzdkruyldcfr"; // Replace with the actual user ID
 
+
+
+  const handleSuccess = (updatedUser) => {
+    setUser(updatedUser);
+    // setIsKidFormOpen(false); // Close form after success
+  };
   // Fetch user data when the component mounts
   useEffect(() => {
     const fetchData = async () => {
@@ -67,9 +77,15 @@ export default function RawProfile() {
       <div className="max-w-4xl w-full space-y-8 bg-white p-8 rounded-lg shadow-md">
         <h1 className="text-2xl font-bold text-gray-800">User Profile</h1>
 
+        <ManageKids
+          token={mywebtoken} onSuccess={handleSuccess}
+          userId={myuserId}
+        />
+
         {/* Displaying User Info */}
         {userData && (
-          <div className="space-y-4">
+          <div className="space-y-8">
+            {/* General Information Section */}
             <div>
               <h2 className="text-xl font-semibold">General Information</h2>
               <p>
@@ -103,23 +119,24 @@ export default function RawProfile() {
                 <img
                   src={`http://localhost:1337${userData.profilepic.url}`}
                   alt="Profile Picture"
-                  className="w-32 h-32 rounded-full object-cover"
+                  className="w-32 h-32 rounded-full object-cover mx-auto"
                 />
               ) : (
-                <p>No profile picture</p>
+                <p className="text-center">No profile picture</p>
               )}
             </div>
 
-            {/* Displaying Kids' Profiles */}
+            {/* Kids Profiles - Using Grid Layout */}
             <div>
               <h3 className="text-xl font-semibold">Kids Profiles</h3>
               {userData.myKids && userData.myKids.length > 0 ? (
-                <div className="space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                   {userData.myKids.map((kid, index) => (
-                    <div key={index} className="bg-gray-100 p-4 rounded-lg">
-                      <p>
-                        <strong>Name:</strong> {kid.Name}
-                      </p>
+                    <div
+                      key={index}
+                      className="bg-gray-100 p-4 rounded-lg shadow-md"
+                    >
+                      <h4 className="font-semibold text-lg">{kid.Name}</h4>
                       <p>
                         <strong>Age:</strong> {kid.age}
                       </p>
@@ -133,46 +150,48 @@ export default function RawProfile() {
                         <strong>Attending Nursery:</strong>{" "}
                         {kid.attendingNursury ? "Yes" : "No"}
                       </p>
+
+                      {/* Activities */}
                       {kid.activity_completeds &&
                         kid.activity_completeds.length > 0 && (
                           <div>
-                            <h4 className="font-semibold">
+                            <h5 className="font-semibold">
                               Completed Activities:
-                            </h4>
+                            </h5>
                             <ul className="list-disc pl-5">
                               {kid.activity_completeds.map(
                                 (activity, index) => (
-                                  <li key={index}>{activity.Title}</li> // Assuming the activity object has a 'name' property
+                                  <li key={index}>{activity.Title}</li>
                                 )
                               )}
                             </ul>
                           </div>
                         )}
 
-                      {/* Displaying Completed Badges */}
+                      {/* Completed Badges */}
                       {kid.badge_completeds &&
                         kid.badge_completeds.length > 0 && (
                           <div>
-                            <h4 className="font-semibold">Completed Badges:</h4>
+                            <h5 className="font-semibold">Completed Badges:</h5>
                             <ul className="list-disc pl-5">
                               {kid.badge_completeds.map((badge, index) => (
-                                <li key={index}>{badge.Name}</li> // Assuming the badge object has a 'name' property
+                                <li key={index}>{badge.Name}</li>
                               ))}
                             </ul>
                           </div>
                         )}
 
-                      {/* Displaying Completed Milestones */}
+                      {/* Completed Milestones */}
                       {kid.milestone_completeds &&
                         kid.milestone_completeds.length > 0 && (
                           <div>
-                            <h4 className="font-semibold">
+                            <h5 className="font-semibold">
                               Completed Milestones:
-                            </h4>
+                            </h5>
                             <ul className="list-disc pl-5">
                               {kid.milestone_completeds.map(
                                 (milestone, index) => (
-                                  <li key={index}>{milestone.Title}</li> // Assuming the milestone object has a 'name' property
+                                  <li key={index}>{milestone.Title}</li>
                                 )
                               )}
                             </ul>
@@ -186,13 +205,16 @@ export default function RawProfile() {
               )}
             </div>
 
-            {/* Displaying Payment Methods */}
+            {/* Payment Methods - Display in Grid if Multiple Entries */}
             <div>
               <h3 className="text-xl font-semibold">Payment Methods</h3>
               {userData.myPayment && userData.myPayment.length > 0 ? (
-                <div className="space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                   {userData.myPayment.map((payment, index) => (
-                    <div key={index} className="bg-gray-100 p-4 rounded-lg">
+                    <div
+                      key={index}
+                      className="bg-gray-100 p-4 rounded-lg shadow-md"
+                    >
                       <p>
                         <strong>Name:</strong> {payment.Name}
                       </p>
@@ -213,13 +235,16 @@ export default function RawProfile() {
               )}
             </div>
 
-            {/* Partners & Other Relations */}
+            {/* Partners */}
             <div>
               <h3 className="text-xl font-semibold">Partners</h3>
               {userData.myPartners && userData.myPartners.length > 0 ? (
                 <div className="space-y-4">
                   {userData.myPartners.map((partner, index) => (
-                    <div key={index} className="bg-gray-100 p-4 rounded-lg">
+                    <div
+                      key={index}
+                      className="bg-gray-100 p-4 rounded-lg shadow-md"
+                    >
                       <p>
                         <strong>Partner username:</strong> {partner.username}
                       </p>
