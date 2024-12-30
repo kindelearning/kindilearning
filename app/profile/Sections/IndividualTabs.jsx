@@ -155,7 +155,7 @@ export default function IndividualTabs({ userData }) {
             </div>
             <div className="flex w-full flex-col justify-start items-start gap-4">
               <div className="text-[#757575] text-[16px] leading-[18px] md:text-2xl md:leading-[26px] font-normal font-fredoka">
-                Securely grant access to your child's progress, activities, and
+                Securely grant access to your child&apos;s progress, activities, and
                 milestones, ensuring both parents stay involved.
               </div>
             </div>

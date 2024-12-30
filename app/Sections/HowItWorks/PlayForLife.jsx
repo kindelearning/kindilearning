@@ -1,5 +1,6 @@
 import { fetchHowItWorks } from "@/app/data/p/HowItWorks";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 export default async function PlayForLife() {
   const data = await fetchHowItWorks();

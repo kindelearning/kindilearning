@@ -650,7 +650,7 @@ export const KidProfile = ({ kidId }) => {
     <div>
       {kidData ? (
         <div>
-          <h2>{kidData.Name}'s Profile</h2>
+          <h2>{kidData.Name} Profile</h2>
           <p>
             <strong>Age:</strong> {kidData.age}
           </p>

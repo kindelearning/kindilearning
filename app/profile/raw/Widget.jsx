@@ -353,7 +353,7 @@ export function ManageKids({ userId, token, onSuccess }) {
             htmlFor="kidName"
             className="block text-sm font-medium text-gray-700"
           >
-            Kid's Name
+            Kid&apos; Name
           </label>
           <input
             type="text"

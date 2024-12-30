@@ -21,7 +21,12 @@ const cardData = [
 export default function Cora() {
   return (
     <>
-      <section className="w-full h-screen bg-[#EAEAF5] items-center pb-32 justify-center flex flex-col gap-[20px]">
+      <section className="w-full h-screen  bg-[#EAEAF5] items-center pb-32 justify-center flex flex-col gap-[20px]">
+        <div className="flex items-center space-x-4">
+          Cora Works best in Laptop, Please open me on Larger screen
+        </div>
+      </section>
+      <section className="w-full h-screen  bg-[#EAEAF5] items-center pb-32 justify-center hidden lg:flex flex-col gap-[20px]">
         <div className="claracontainer w-full flex flex-col overflow-hidden gap-8">
           <div className="text-1xl font-fredoka text-center font-medium text-gray-900">
             Choose Admin Panel
