@@ -23,7 +23,7 @@ export default function PopularActivities() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "http://localhost:1337/api/popularlearning?populate=Content.Media"
+          "https://proper-fun-404805c7d9.strapiapp.com/api/popularlearning?populate=Content.Media"
         );
         const data = await response.json();
         console.log("popularlearning Database", data);
@@ -83,7 +83,7 @@ export default function PopularActivities() {
   );
 }
 
-// http://localhost:1337/api/popularlearning?ite9ryv5396fqmfyrmj29lv2
+// https://proper-fun-404805c7d9.strapiapp.com/api/popularlearning?ite9ryv5396fqmfyrmj29lv2
 export function UpdatePopularLearningForm() {
   const [content, setContent] = useState({
     title: "",
@@ -100,7 +100,7 @@ export function UpdatePopularLearningForm() {
     const fetchContent = async () => {
       try {
         const response = await fetch(
-          "http://localhost:1337/api/popularlearning?populate=*"
+          "https://proper-fun-404805c7d9.strapiapp.com/api/popularlearning?populate=*"
         );
         const data = await response.json();
         setContent({
@@ -133,7 +133,7 @@ export function UpdatePopularLearningForm() {
 
     try {
       const response = await fetch(
-        "http://localhost:1337/api/popularlearning?nxfbah0rlj4nhjo381vg7x8q",
+        "https://proper-fun-404805c7d9.strapiapp.com/api/popularlearning?nxfbah0rlj4nhjo381vg7x8q",
         {
           method: "PUT",
           headers: {

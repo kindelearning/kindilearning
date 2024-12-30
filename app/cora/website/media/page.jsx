@@ -45,7 +45,7 @@ export default function MediaPage() {
   useEffect(() => {
     const fetchMediaAssets = async () => {
       try {
-        const response = await fetch("http://localhost:1337/api/upload/files");
+        const response = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/upload/files");
         const result = await response.json();
 
         if (Array.isArray(result)) {
@@ -120,7 +120,7 @@ export default function MediaPage() {
   const deleteMediaAsset = async (documentId) => {
     try {
       const response = await fetch(
-        `http://localhost:1337/api/upload/files/${documentId}`,
+        `https://proper-fun-404805c7d9.strapiapp.com/api/upload/files/${documentId}`,
         {
           method: "DELETE",
         }

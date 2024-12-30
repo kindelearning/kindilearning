@@ -38,7 +38,7 @@ export default function CreateProductPage() {
     e.preventDefault();
 
     try {
-      const res = await fetch("http://localhost:1337/api/products", {
+      const res = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/products", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

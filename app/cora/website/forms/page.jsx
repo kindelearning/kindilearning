@@ -32,7 +32,7 @@ export default function ContactFormPage() {
   useEffect(() => {
     const fetchContactForms = async () => {
       const res = await fetch(
-        "http://localhost:1337/api/contact-forms?populate=*"
+        "https://proper-fun-404805c7d9.strapiapp.com/api/contact-forms?populate=*"
       );
       if (res.ok) {
         const data = await res.json();

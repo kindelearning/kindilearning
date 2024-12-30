@@ -60,7 +60,7 @@ export function UpdateHeroSection() {
   const [openDialog, setOpenDialog] = useState(false);
 
   useEffect(() => {
-    fetch("http://localhost:1337/api/our-mission?populate=*")
+    fetch("https://proper-fun-404805c7d9.strapiapp.com/api/our-mission?populate=*")
       .then((res) => res.json())
       .then((data) => {
         // Assuming the response structure is { data: { Hero: {...} } }
@@ -99,7 +99,7 @@ export function UpdateHeroSection() {
     console.log("Sent Data", payload);
 
     try {
-      const res = await fetch("http://localhost:1337/api/our-mission", {
+      const res = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/our-mission", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

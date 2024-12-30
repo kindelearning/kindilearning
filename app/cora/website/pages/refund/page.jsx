@@ -15,7 +15,7 @@ export default function ReadContent() {
     const fetchContent = async () => {
       try {
         const response = await fetch(
-          "http://localhost:1337/api/refundpolicy?populate=*"
+          "https://proper-fun-404805c7d9.strapiapp.com/api/refundpolicy?populate=*"
         );
         const data = await response.json();
 

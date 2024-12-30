@@ -38,7 +38,7 @@ export default function ProductWidgets() {
   // Function to fetch product data from the API
   const fetchProductData = async () => {
     try {
-      const response = await fetch("http://localhost:1337/api/products"); // Replace with the correct API endpoint for fetching all products
+      const response = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/products"); // Replace with the correct API endpoint for fetching all products
       const data = await response.json();
       setProductData(data.data); // Assuming the response structure has a 'data' field containing an array of products
     } catch (error) {
@@ -134,7 +134,7 @@ export function LatestProducts() {
   const fetchProducts = async () => {
     try {
       const response = await fetch(
-        "http://localhost:1337/api/products?populate=*"
+        "https://proper-fun-404805c7d9.strapiapp.com/api/products?populate=*"
       );
       const data = await response.json();
 

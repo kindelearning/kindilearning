@@ -18,7 +18,7 @@ export default function HowItWorksSection() {
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(
-        "http://localhost:1337/api/howitwork?populate=HIWSection.Media"
+        "https://proper-fun-404805c7d9.strapiapp.com/api/howitwork?populate=HIWSection.Media"
       );
       const result = await response.json();
       setData(result.data);
@@ -115,7 +115,7 @@ export function UpdateHowItWorks() {
 
 
   useEffect(() => {
-    fetch("http://localhost:1337/api/howitwork?populate=*")
+    fetch("https://proper-fun-404805c7d9.strapiapp.com/api/howitwork?populate=*")
       .then((res) => res.json())
       .then((data) => {
         setFormData(data.data);
@@ -142,7 +142,7 @@ export function UpdateHowItWorks() {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch(`http://localhost:1337/api/howitwork`, {
+      const response = await fetch(`https://proper-fun-404805c7d9.strapiapp.com/api/howitwork`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -189,7 +189,7 @@ export function UpdateHowItWorks() {
     console.log("Sent Data", payload);
 
     try {
-      const res = await fetch("http://localhost:1337/api/howitwork", {
+      const res = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/howitwork", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

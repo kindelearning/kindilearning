@@ -1,7 +1,7 @@
 export async function fetchShopProducts() {
   try {
     const response = await fetch(
-      "http://localhost:1337/api/products?populate=FeaturedImage"
+      "https://proper-fun-404805c7d9.strapiapp.com/api/products?populate=FeaturedImage"
     );
 
     if (!response.ok) {

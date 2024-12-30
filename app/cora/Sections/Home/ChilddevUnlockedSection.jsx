@@ -22,7 +22,7 @@ export default function ChildDevelopmentUnlock() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "http://localhost:1337/api/childdevelopmentunlock?populate=Content.Media"
+          "https://proper-fun-404805c7d9.strapiapp.com/api/childdevelopmentunlock?populate=Content.Media"
         );
         const data = await response.json();
         console.log("child development Database", data);
@@ -105,7 +105,7 @@ export function UpdateChildDevelopmentContent() {
     const fetchContent = async () => {
       try {
         const response = await fetch(
-          "http://localhost:1337/api/childdevelopmentunlock?populate=Content.Media"
+          "https://proper-fun-404805c7d9.strapiapp.com/api/childdevelopmentunlock?populate=Content.Media"
         );
         const data = await response.json();
         setContent({
@@ -138,7 +138,7 @@ export function UpdateChildDevelopmentContent() {
 
     try {
       const response = await fetch(
-        "http://localhost:1337/api/childdevelopmentunlock?nxfbah0rlj4nhjo381vg7x8q",
+        "https://proper-fun-404805c7d9.strapiapp.com/api/childdevelopmentunlock?nxfbah0rlj4nhjo381vg7x8q",
         {
           method: "PUT",
           headers: {

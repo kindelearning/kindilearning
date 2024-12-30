@@ -26,7 +26,7 @@ function UpdateThemeForm({ documentId }) {
     const fetchThemeData = async () => {
       try {
         const res = await fetch(
-          `http://localhost:1337/api/our-themes/${documentId}?populate=*`
+          `https://proper-fun-404805c7d9.strapiapp.com/api/our-themes/${documentId}?populate=*`
         );
         const data = await res.json();
         setExistingData(data.data);
@@ -54,7 +54,7 @@ function UpdateThemeForm({ documentId }) {
 
     try {
       const res = await fetch(
-        `http://localhost:1337/api/our-themes/${documentId}`,
+        `https://proper-fun-404805c7d9.strapiapp.com/api/our-themes/${documentId}`,
         {
           method: "PUT",
           body: formData,

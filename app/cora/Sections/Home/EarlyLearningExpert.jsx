@@ -24,7 +24,7 @@ export default function EarlyLearningExpert() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "http://localhost:1337/api/early-learning-expert?populate=Content.Media"
+          "https://proper-fun-404805c7d9.strapiapp.com/api/early-learning-expert?populate=Content.Media"
         );
         const data = await response.json();
         console.log("Monthlytheme Database", data);
@@ -105,7 +105,7 @@ export function UpdateEarlyLearningExpert() {
     const fetchContent = async () => {
       try {
         const response = await fetch(
-          "http://localhost:1337/api/early-learning-expert?populate=*"
+          "https://proper-fun-404805c7d9.strapiapp.com/api/early-learning-expert?populate=*"
         );
         const data = await response.json();
         setContent({
@@ -140,7 +140,7 @@ export function UpdateEarlyLearningExpert() {
     try {
       // Use documentId in the PUT request URL
       const response = await fetch(
-        `http://localhost:1337/api/early-learning-expert`,
+        `https://proper-fun-404805c7d9.strapiapp.com/api/early-learning-expert`,
         {
           method: "PUT",
           headers: {

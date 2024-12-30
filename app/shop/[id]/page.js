@@ -21,9 +21,9 @@ import ProductMedia from "../sections/ProductMedia";
 
 async function fetchProductById(documentId) {
   const res = await fetch(
-    `http://localhost:1337/api/products/${documentId}?populate=Gallery&populate=FeaturedImage`
+    `https://proper-fun-404805c7d9.strapiapp.com/api/products/${documentId}?populate=Gallery&populate=FeaturedImage`
   );
-  // http://localhost:1337/api/products/${documentId}?populate=Gallery&populate=FeaturedImage
+  // https://proper-fun-404805c7d9.strapiapp.com/api/products/${documentId}?populate=Gallery&populate=FeaturedImage
   if (!res.ok) {
     return null;
   }

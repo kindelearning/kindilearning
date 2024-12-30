@@ -57,7 +57,7 @@ export default function EditRefund() {
     const fetchContent = async () => {
       try {
         const response = await fetch(
-          "http://localhost:1337/api/privacypolicy?populate=*"
+          "https://proper-fun-404805c7d9.strapiapp.com/api/privacypolicy?populate=*"
         );
         const data = await response.json();
         setEditorLoaded(true); // Set editorLoaded to true once the component is mounted
@@ -87,7 +87,7 @@ export default function EditRefund() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await fetch("http://localhost:1337/api/privacypolicy", {
+    const response = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/privacypolicy", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

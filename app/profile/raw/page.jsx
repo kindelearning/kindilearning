@@ -45,7 +45,7 @@ export default function RawProfile() {
 
       try {
         const res = await fetch(
-          "http://localhost:1337/api/users/me?populate[profilepic]=true&populate[myKids][populate][activity_completeds]=true&populate[myKids][populate][badge_completeds]=true&populate[myKids][populate][milestone_completeds]=true&populate[myPartners]=true&populate[myPayment]=true&populate[partnerOf]=true",
+          "https://proper-fun-404805c7d9.strapiapp.com/api/users/me?populate[profilepic]=true&populate[myKids][populate][activity_completeds]=true&populate[myKids][populate][badge_completeds]=true&populate[myKids][populate][milestone_completeds]=true&populate[myPartners]=true&populate[myPayment]=true&populate[partnerOf]=true",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -307,7 +307,7 @@ export function EditProfile({ userData }) {
         }
 
         const response = await fetch(
-          "http://localhost:1337/api/users/me?populate=*",
+          "https://proper-fun-404805c7d9.strapiapp.com/api/users/me?populate=*",
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -359,7 +359,7 @@ export function EditProfile({ userData }) {
 
     try {
       const response = await fetch(
-        `http://localhost:1337/api/users/${content.id}`,
+        `https://proper-fun-404805c7d9.strapiapp.com/api/users/${content.id}`,
         {
           method: "PUT",
           headers: {
@@ -467,7 +467,7 @@ export function CreatePaymentMethod({ userDocumentId, token }) {
 
     try {
       const response = await fetch(
-        "http://localhost:1337/api/payment-methods", // Strapi endpoint for Payment Method
+        "https://proper-fun-404805c7d9.strapiapp.com/api/payment-methods", // Strapi endpoint for Payment Method
         {
           method: "POST",
           headers: {
@@ -586,7 +586,7 @@ export const KidProfile = ({ kidId }) => {
       }
 
       const response = await fetch(
-        "http://localhost:1337/api/users/me?populate=*",
+        "https://proper-fun-404805c7d9.strapiapp.com/api/users/me?populate=*",
         {
           headers: {
             Authorization: `Bearer ${token}`, // Include token in Authorization header

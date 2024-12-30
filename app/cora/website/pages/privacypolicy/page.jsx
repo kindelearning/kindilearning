@@ -13,7 +13,7 @@ export default function ReadContent() {
     const fetchContent = async () => {
       try {
         const response = await fetch(
-          "http://localhost:1337/api/privacypolicy?populate=*"
+          "https://proper-fun-404805c7d9.strapiapp.com/api/privacypolicy?populate=*"
         );
         const data = await response.json();
 

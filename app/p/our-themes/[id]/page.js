@@ -2,7 +2,7 @@ import { ThemeDummy } from "@/public/Images";
 import { notFound } from "next/navigation";
 
 async function fetchThemeById(documentId) {
-  const res = await fetch(`http://localhost:1337/api/our-themes/${documentId}`);
+  const res = await fetch(`https://proper-fun-404805c7d9.strapiapp.com/api/our-themes/${documentId}`);
   const data = await res.json();
 
   if (!data || !data.data) {

@@ -1,7 +1,7 @@
 export async function fetchAllActivities() {
   try {
     const response = await fetch(
-      "http://localhost:1337/api/activities?populate=*"
+      "https://proper-fun-404805c7d9.strapiapp.com/api/activities?populate=*"
     );
 
     if (!response.ok) {

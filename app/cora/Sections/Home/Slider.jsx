@@ -18,7 +18,7 @@ export default function SliderSection() {
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(
-        "http://localhost:1337/api/slider?populate=Content.Media"
+        "https://proper-fun-404805c7d9.strapiapp.com/api/slider?populate=Content.Media"
       );
       const result = await response.json();
       setData(result.data);
@@ -92,7 +92,7 @@ export function UpdateSliderSection() {
   const [openDialog, setOpenDialog] = useState(false);
 
   useEffect(() => {
-    fetch("http://localhost:1337/api/slider?populate=*")
+    fetch("https://proper-fun-404805c7d9.strapiapp.com/api/slider?populate=*")
       .then((res) => res.json())
       .then((data) => {
         setFormData(data.data);
@@ -122,7 +122,7 @@ export function UpdateSliderSection() {
     console.log("Sent Data", payload);
 
     try {
-      const res = await fetch("http://localhost:1337/api/slider", {
+      const res = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/slider", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

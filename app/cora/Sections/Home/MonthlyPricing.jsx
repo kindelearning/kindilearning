@@ -12,7 +12,7 @@ export default function MonthlyPricing() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "http://localhost:1337/api/ourpricing?populate[MonthlyPlans][populate][0]=Features&populate[MonthlyPlans][populate][1]=Thumbnail&populate[AnnualPlans][populate][0]=Features&populate[AnnualPlans][populate][1]=Thumbnail"
+          "https://proper-fun-404805c7d9.strapiapp.com/api/ourpricing?populate[MonthlyPlans][populate][0]=Features&populate[MonthlyPlans][populate][1]=Thumbnail&populate[AnnualPlans][populate][0]=Features&populate[AnnualPlans][populate][1]=Thumbnail"
         );
         const data = await response.json();
         console.log("Fetched data: ", data); // Log to inspect the structure
@@ -100,7 +100,7 @@ export  function MonthlyPricingUpdate() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "http://localhost:1337/api/ourpricing?populate[MonthlyPlans][populate][0]=Features&populate[MonthlyPlans][populate][1]=Thumbnail"
+          "https://proper-fun-404805c7d9.strapiapp.com/api/ourpricing?populate[MonthlyPlans][populate][0]=Features&populate[MonthlyPlans][populate][1]=Thumbnail"
         );
         const data = await response.json();
         if (data?.data) {
@@ -121,7 +121,7 @@ export  function MonthlyPricingUpdate() {
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:1337/api/ourpricing", {
+      const response = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/ourpricing", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

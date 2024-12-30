@@ -51,7 +51,7 @@ export default function AgeRangeWidget() {
     const fetchHowItWorks = async () => {
       try {
         const response = await fetch(
-          "http://localhost:1337/api/how-it-work-page?populate[AgeGroup][populate]=Content.Icon"
+          "https://proper-fun-404805c7d9.strapiapp.com/api/how-it-work-page?populate[AgeGroup][populate]=Content.Icon"
         );
         if (!response.ok) {
           throw new Error(`Error fetching data: ${response.statusText}`);

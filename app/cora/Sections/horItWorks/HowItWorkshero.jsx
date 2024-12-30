@@ -21,7 +21,7 @@ export default function HowItWorks() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "http://localhost:1337/api/how-it-work-page?populate[Hero][populate]=Media"
+          "https://proper-fun-404805c7d9.strapiapp.com/api/how-it-work-page?populate[Hero][populate]=Media"
         );
         const data = await response.json();
         console.log("HIW Data", data);
@@ -121,7 +121,7 @@ export function UpdateHowItWorkSection() {
     const fetchContent = async () => {
       try {
         const response = await fetch(
-          "http://localhost:1337/api/how-it-work-page?populate[Hero][populate]=Media"
+          "https://proper-fun-404805c7d9.strapiapp.com/api/how-it-work-page?populate[Hero][populate]=Media"
         );
         const data = await response.json();
         if (data && data.data) {
@@ -155,7 +155,7 @@ export function UpdateHowItWorkSection() {
 
     try {
       const response = await fetch(
-        "http://localhost:1337/api/how-it-work-page?populate[Hero][populate]=Media",
+        "https://proper-fun-404805c7d9.strapiapp.com/api/how-it-work-page?populate[Hero][populate]=Media",
         {
           method: "PUT",
           headers: {

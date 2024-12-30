@@ -77,7 +77,7 @@ export default function CreateTheme() {
     }
 
     try {
-      const res = await fetch("http://localhost:1337/api/our-themes", {
+      const res = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/our-themes", {
         method: "POST",
         body: formData,
       });

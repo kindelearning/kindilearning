@@ -18,7 +18,7 @@ export function LogoutButton() {
       // document.cookie = "jwt=; Max-Age=-99999999; path=/";
 
       // Optional: Send logout request to Strapi (if necessary)
-      await fetch("http://localhost:1337/api/auth/logout", {
+      await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/auth/logout", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("jwt")}`, // Send the JWT in the request headers if necessary

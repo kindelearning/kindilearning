@@ -22,7 +22,7 @@ export default function OurStory() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "http://localhost:1337/api/our-mission?populate[OurStory][populate]=Media"
+          "https://proper-fun-404805c7d9.strapiapp.com/api/our-mission?populate[OurStory][populate]=Media"
         );
         const data = await response.json();
         console.log("HIW Data", data);
@@ -117,7 +117,7 @@ export function UpdateOurStorySection() {
     const fetchContent = async () => {
       try {
         const response = await fetch(
-          "http://localhost:1337/api/our-mission?populate[OurStory][populate]=Media"
+          "https://proper-fun-404805c7d9.strapiapp.com/api/our-mission?populate[OurStory][populate]=Media"
         );
         const data = await response.json();
         if (data && data.data) {
@@ -152,7 +152,7 @@ export function UpdateOurStorySection() {
 
     try {
       const response = await fetch(
-        "http://localhost:1337/api/our-mission?populate[OurStory][populate]=Media",
+        "https://proper-fun-404805c7d9.strapiapp.com/api/our-mission?populate[OurStory][populate]=Media",
         {
           method: "PUT",
           headers: {
@@ -204,7 +204,7 @@ export function UpdateOurStorySection() {
       formData.append("refId", content.OurStory.id);
       formData.append("field", "Media");
 
-      fetch("http://localhost:1337/api/upload", {
+      fetch("https://proper-fun-404805c7d9.strapiapp.com/api/upload", {
         method: "POST",
         body: formData,
       })

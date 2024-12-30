@@ -74,7 +74,7 @@ export default function ShopPage() {
     const fetchProducts = async () => {
       try {
         const res = await fetch(
-          `http://localhost:1337/api/products?populate=*&pagination[page]=${page}&pagination[pageSize]=${pageSize}&sort=createdAt:desc`
+          `https://proper-fun-404805c7d9.strapiapp.com/api/products?populate=*&pagination[page]=${page}&pagination[pageSize]=${pageSize}&sort=createdAt:desc`
         );
         if (!res.ok) {
           throw new Error("Failed to fetch products");
@@ -98,7 +98,7 @@ export default function ShopPage() {
   const deleteProduct = async (documentId) => {
     try {
       const res = await fetch(
-        `http://localhost:1337/api/products/${documentId}`,
+        `https://proper-fun-404805c7d9.strapiapp.com/api/products/${documentId}`,
         {
           method: "DELETE",
         }

@@ -37,7 +37,7 @@ export default function PaymentMethodsTable() {
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(
-        "http://localhost:1337/api/payment-methods?populate=*"
+        "https://proper-fun-404805c7d9.strapiapp.com/api/payment-methods?populate=*"
       );
       const data = await response.json();
       setPaymentMethods(data.data || []);
@@ -54,7 +54,7 @@ export default function PaymentMethodsTable() {
     if (!selectedPaymentMethod) return;
 
     await fetch(
-      `http://localhost:1337/api/payment-methods/${selectedPaymentMethod.documentId}`,
+      `https://proper-fun-404805c7d9.strapiapp.com/api/payment-methods/${selectedPaymentMethod.documentId}`,
       {
         method: "DELETE",
       }

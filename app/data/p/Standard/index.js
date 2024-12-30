@@ -1,7 +1,7 @@
 export async function fetchInvestmentOpportunity() {
   try {
     const response = await fetch(
-      "http://localhost:1337/api/investmentoppertunite?populate=*"
+      "https://proper-fun-404805c7d9.strapiapp.com/api/investmentoppertunite?populate=*"
     );
     if (!response.ok) {
       throw new Error(`Error fetching data: ${response.statusText}`);
@@ -23,7 +23,7 @@ export async function fetchInvestmentOpportunity() {
 
 export async function fetchTnc() {
   try {
-    const response = await fetch("http://localhost:1337/api/tnc?populate=*");
+    const response = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/tnc?populate=*");
     if (!response.ok) {
       throw new Error(`Error fetching data: ${response.statusText}`);
     }
@@ -45,7 +45,7 @@ export async function fetchTnc() {
 export async function fetchRefundPolicy() {
   try {
     const response = await fetch(
-      "http://localhost:1337/api/refundpolicy?populate=*"
+      "https://proper-fun-404805c7d9.strapiapp.com/api/refundpolicy?populate=*"
     );
     if (!response.ok) {
       throw new Error(`Error fetching data: ${response.statusText}`);
@@ -67,7 +67,7 @@ export async function fetchRefundPolicy() {
 
 export async function fetchFaq() {
   try {
-    const response = await fetch("http://localhost:1337/api/faqs?populate=*");
+    const response = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/faqs?populate=*");
     if (!response.ok) {
       throw new Error(`Error fetching data: ${response.statusText}`);
     }
@@ -89,7 +89,7 @@ export async function fetchFaq() {
 export async function fetchPrivacyPolicy() {
   try {
     const response = await fetch(
-      "http://localhost:1337/api/privacypolicy?populate=*"
+      "https://proper-fun-404805c7d9.strapiapp.com/api/privacypolicy?populate=*"
     );
     if (!response.ok) {
       throw new Error(`Error fetching data: ${response.statusText}`);
@@ -112,7 +112,7 @@ export async function fetchPrivacyPolicy() {
 export async function fetchQualityControl() {
   try {
     const response = await fetch(
-      "http://localhost:1337/api/qualitycontrol?populate=*"
+      "https://proper-fun-404805c7d9.strapiapp.com/api/qualitycontrol?populate=*"
     );
 
     if (!response.ok) {

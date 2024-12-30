@@ -40,7 +40,7 @@ export default function AdminBlogs() {
   const fetchBlogs = async () => {
     try {
       const res = await fetch(
-        "http://localhost:1337/api/blogs?populate=comments&populate=FeaturedImage"
+        "https://proper-fun-404805c7d9.strapiapp.com/api/blogs?populate=comments&populate=FeaturedImage"
       );
       const data = await res.json();
       console.log("API Response:", data);
@@ -83,7 +83,7 @@ export default function AdminBlogs() {
     const newStatus = currentStatus === "published" ? "draft" : "published"; // Toggle status between published and draft
 
     const res = await fetch(
-      `http://localhost:1337/api/blogs/${id}?populate=comments&populate=FeaturedImage`,
+      `https://proper-fun-404805c7d9.strapiapp.com/api/blogs/${id}?populate=comments&populate=FeaturedImage`,
       {
         method: "PATCH",
         headers: {
@@ -142,7 +142,7 @@ export default function AdminBlogs() {
   const handleDeleteComment = async (documentId) => {
     try {
       const response = await fetch(
-        `http://localhost:1337/api/comments/${documentId}`,
+        `https://proper-fun-404805c7d9.strapiapp.com/api/comments/${documentId}`,
         {
           method: "DELETE",
         }

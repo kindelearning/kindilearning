@@ -22,7 +22,7 @@ export default function KindiSkillsCategoriesCards() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "http://localhost:1337/api/how-it-work-page?populate[KindiSkillsCategoriesCards][populate]=Icon"
+          "https://proper-fun-404805c7d9.strapiapp.com/api/how-it-work-page?populate[KindiSkillsCategoriesCards][populate]=Icon"
         );
         const data = await response.json();
         if (data?.data) {
@@ -93,7 +93,7 @@ export const UpdateKindiSkillsCategoriesCards = () => {
   // Fetch existing data
   useEffect(() => {
     fetch(
-      "http://localhost:1337/api/how-it-work-page?populate[KindiSkillsCategoriesCards][populate]=Icon"
+      "https://proper-fun-404805c7d9.strapiapp.com/api/how-it-work-page?populate[KindiSkillsCategoriesCards][populate]=Icon"
     )
       .then((res) => res.json())
       .then((data) => {
@@ -127,7 +127,7 @@ export const UpdateKindiSkillsCategoriesCards = () => {
     console.log("Sent Data", payload);
 
     try {
-      const res = await fetch("http://localhost:1337/api/how-it-work-page", {
+      const res = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/how-it-work-page", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

@@ -22,7 +22,7 @@ export default function Monthlytheme() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "http://localhost:1337/api/Monthlytheme?populate=Content.Media"
+          "https://proper-fun-404805c7d9.strapiapp.com/api/Monthlytheme?populate=Content.Media"
         );
         const data = await response.json();
         console.log("Monthlytheme Database", data);
@@ -100,7 +100,7 @@ export function UpdateMonthlytheme() {
     const fetchContent = async () => {
       try {
         const response = await fetch(
-          "http://localhost:1337/api/Monthlytheme?populate=Content.Media"
+          "https://proper-fun-404805c7d9.strapiapp.com/api/Monthlytheme?populate=Content.Media"
         );
         const data = await response.json();
         setContent({
@@ -140,7 +140,7 @@ export function UpdateMonthlytheme() {
       // console.log("Request Payload:", updatedContent);
 
       const response = await fetch(
-        `http://localhost:1337/api/Monthlytheme?${documentId}`, // Correct URL with query parameter for documentId
+        `https://proper-fun-404805c7d9.strapiapp.com/api/Monthlytheme?${documentId}`, // Correct URL with query parameter for documentId
         {
           method: "PUT",
           headers: {

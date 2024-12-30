@@ -22,7 +22,7 @@ export default function AgeGroupSection() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "http://localhost:1337/api/how-it-work-page?populate[AgeGroup][populate]=Content.Icon"
+          "https://proper-fun-404805c7d9.strapiapp.com/api/how-it-work-page?populate[AgeGroup][populate]=Content.Icon"
         );
         const data = await response.json();
         console.log("Age Group Data", data);
@@ -113,7 +113,7 @@ export function UpdateAgeGroupSection() {
   // Fetch existing data
   useEffect(() => {
     fetch(
-      "http://localhost:1337/api/how-it-work-page?populate[AgeGroup][populate]=*"
+      "https://proper-fun-404805c7d9.strapiapp.com/api/how-it-work-page?populate[AgeGroup][populate]=*"
     )
       .then((res) => res.json())
       .then((data) => {
@@ -147,7 +147,7 @@ export function UpdateAgeGroupSection() {
     console.log("Sent Data", payload);
 
     try {
-      const res = await fetch("http://localhost:1337/api/how-it-work-page", {
+      const res = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/how-it-work-page", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

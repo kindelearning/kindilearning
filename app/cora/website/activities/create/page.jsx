@@ -44,7 +44,7 @@ export default function CreateActivityForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:1337/api/activities", {
+      const response = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/activities", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -33,7 +33,7 @@ export function CreateContactForm() {
     setSuccess(false);
 
     try {
-      const res = await fetch("http://localhost:1337/api/contact-forms", {
+      const res = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/contact-forms", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

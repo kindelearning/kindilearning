@@ -28,7 +28,7 @@ export default function ProductUpdateForm({ documentId }) {
     const fetchProductData = async () => {
       try {
         const res = await fetch(
-          `http://localhost:1337/api/products/${documentId}?populate=*`
+          `https://proper-fun-404805c7d9.strapiapp.com/api/products/${documentId}?populate=*`
         );
         const data = await res.json();
         if (res.ok) {
@@ -66,7 +66,7 @@ export default function ProductUpdateForm({ documentId }) {
 
     try {
       const res = await fetch(
-        `http://localhost:1337/api/products/${documentId}`,
+        `https://proper-fun-404805c7d9.strapiapp.com/api/products/${documentId}`,
         {
           method: "PUT",
           body: formData,

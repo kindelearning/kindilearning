@@ -11,7 +11,7 @@ export function GoogleSignInButton() {
   const handleGoogleLogin = () => {
     setLoading(true);
     // Redirect the user to the Strapi Google OAuth2 login route
-    window.location.href = "http://localhost:1337/api/connect/google";
+    window.location.href = "https://proper-fun-404805c7d9.strapiapp.com/api/connect/google";
   };
 
   return (

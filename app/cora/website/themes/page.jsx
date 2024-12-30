@@ -38,7 +38,7 @@ export default function AdminThemes() {
 
   // Fetch all themes
   const fetchThemes = async () => {
-    const res = await fetch("http://localhost:1337/api/our-themes?populate=*");
+    const res = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/our-themes?populate=*");
     const data = await res.json();
 
     if (data && data.data) {
@@ -67,7 +67,7 @@ export default function AdminThemes() {
   const toggleStatus = async (id, currentStatus) => {
     const newStatus = currentStatus === "published" ? "draft" : "published"; // Toggle status between published and draft
 
-    const res = await fetch(`http://localhost:1337/api/our-themes/${id}`, {
+    const res = await fetch(`https://proper-fun-404805c7d9.strapiapp.com/api/our-themes/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",

@@ -51,7 +51,7 @@ export default function ActivitiesPage() {
     const fetchActivities = async () => {
       try {
         const response = await fetch(
-          "http://localhost:1337/api/activities?populate=*"
+          "https://proper-fun-404805c7d9.strapiapp.com/api/activities?populate=*"
         );
         const data = await response.json();
         setActivities(data.data);
@@ -149,7 +149,7 @@ export default function ActivitiesPage() {
   const handleDelete = async (documentId) => {
     try {
       const response = await fetch(
-        `http://localhost:1337/api/activities/${documentId}`,
+        `https://proper-fun-404805c7d9.strapiapp.com/api/activities/${documentId}`,
         {
           method: "DELETE",
         }

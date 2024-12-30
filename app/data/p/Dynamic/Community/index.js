@@ -1,6 +1,6 @@
 export async function fetchOurBlogs() {
   try {
-    const response = await fetch("http://localhost:1337/api/blogs?populate=*");
+    const response = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/blogs?populate=*");
 
     if (!response.ok) {
       throw new Error(`Error fetching data: ${response.statusText}`);

@@ -39,7 +39,7 @@ export default function MilestoneData() {
     const fetchMilestones = async () => {
       try {
         const response = await fetch(
-          `http://localhost:1337/api/milestones?populate=*&_limit=${itemsPerPage}&_start=${
+          `https://proper-fun-404805c7d9.strapiapp.com/api/milestones?populate=*&_limit=${itemsPerPage}&_start=${
             (currentPage - 1) * itemsPerPage
           }`
         );
@@ -117,7 +117,7 @@ export default function MilestoneData() {
   const handleDeleteConfirm = async () => {
     try {
       const response = await fetch(
-        `http://localhost:1337/api/milestones/${milestoneToDelete}`,
+        `https://proper-fun-404805c7d9.strapiapp.com/api/milestones/${milestoneToDelete}`,
         {
           method: "DELETE",
         }
@@ -348,7 +348,7 @@ export function UpdateMilestoneData({ documentId }) {
     // Fetch activity data using the documentId
     async function fetchData() {
       const res = await fetch(
-        `http://localhost:1337/api/milestones/${documentId}?populate=*`
+        `https://proper-fun-404805c7d9.strapiapp.com/api/milestones/${documentId}?populate=*`
       );
       const data = await res.json();
       const milestone = data.data;
@@ -378,7 +378,7 @@ export function UpdateMilestoneData({ documentId }) {
 
     try {
       const response = await fetch(
-        `http://localhost:1337/api/milestones/${documentId}`,
+        `https://proper-fun-404805c7d9.strapiapp.com/api/milestones/${documentId}`,
         {
           method: "PUT",
           headers: {
@@ -490,7 +490,7 @@ export function CreateMilestoneForm() {
     };
 
     try {
-      const response = await fetch("http://localhost:1337/api/milestones", {
+      const response = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/milestones", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

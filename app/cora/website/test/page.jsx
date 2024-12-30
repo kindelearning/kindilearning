@@ -27,7 +27,7 @@ export default function ContentList() {
     const fetchContent = async () => {
       try {
         const response = await fetch(
-          "http://localhost:1337/api/contents?populate=*"
+          "https://proper-fun-404805c7d9.strapiapp.com/api/contents?populate=*"
         );
         const data = await response.json();
 
@@ -67,7 +67,7 @@ export default function ContentList() {
 
     try {
       const response = await fetch(
-        `http://localhost:1337/api/contents/${documentId}`,
+        `https://proper-fun-404805c7d9.strapiapp.com/api/contents/${documentId}`,
         {
           method: "PUT",
           headers: {
@@ -246,7 +246,7 @@ export function UpdateContentForm({ contentId }) {
     const fetchContentData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:1337/api/contents/${contentId}?populate=*`
+          `https://proper-fun-404805c7d9.strapiapp.com/api/contents/${contentId}?populate=*`
         );
         const data = await response.json();
         const { Title, Body, Date, Media } = data.data[0];
@@ -267,7 +267,7 @@ export function UpdateContentForm({ contentId }) {
   useEffect(() => {
     const fetchMediaFiles = async () => {
       try {
-        const response = await fetch("http://localhost:1337/api/upload/files");
+        const response = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/upload/files");
         const data = await response.json();
 
         console.log("Fetched Media Files:", data);
@@ -306,7 +306,7 @@ export function UpdateContentForm({ contentId }) {
 
     try {
       const response = await fetch(
-        `http://localhost:1337/api/contents/${contentId}`,
+        `https://proper-fun-404805c7d9.strapiapp.com/api/contents/${contentId}`,
         {
           method: "PUT",
           headers: {
@@ -482,7 +482,7 @@ export function UpdateContentForm({ contentId }) {
 //     const fetchContentData = async () => {
 //       try {
 //         const response = await fetch(
-//           `http://localhost:1337/api/contents/${contentId}?populate=*`
+//           `https://proper-fun-404805c7d9.strapiapp.com/api/contents/${contentId}?populate=*`
 //         );
 //         const data = await response.json();
 //         const { Title, Body, Date, Media } = data.data[0];
@@ -520,7 +520,7 @@ export function UpdateContentForm({ contentId }) {
 
 //     try {
 //       const response = await fetch(
-//         `http://localhost:1337/api/contents/${contentId}`,
+//         `https://proper-fun-404805c7d9.strapiapp.com/api/contents/${contentId}`,
 //         {
 //           method: "PUT", // Use PUT for updating
 //           headers: {

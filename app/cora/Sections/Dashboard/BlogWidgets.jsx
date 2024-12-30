@@ -236,7 +236,7 @@ export function RecentBlogs() {
     const fetchBlogs = async () => {
       try {
         const response = await fetch(
-          "http://localhost:1337/api/blogs?populate=*"
+          "https://proper-fun-404805c7d9.strapiapp.com/api/blogs?populate=*"
         );
         const data = await response.json();
 
@@ -293,7 +293,7 @@ const CommentCard = ({ comment, onDelete }) => {
   const handleDelete = async () => {
     try {
       const response = await fetch(
-        `http://localhost:1337/api/comments/${comment.documentId}`,
+        `https://proper-fun-404805c7d9.strapiapp.com/api/comments/${comment.documentId}`,
         {
           method: "DELETE",
           headers: {
@@ -365,7 +365,7 @@ export function RecentComment() {
   useEffect(() => {
     const fetchComments = async () => {
       try {
-        const response = await fetch("http://localhost:1337/api/comments");
+        const response = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/comments");
         const data = await response.json();
 
         // Sort the comments by publishedAt to get the recent ones

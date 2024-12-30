@@ -18,7 +18,7 @@ export default function HomepageHeroSection() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "http://localhost:1337/api/homepage-hero-section?populate=Image"
+          "https://proper-fun-404805c7d9.strapiapp.com/api/homepage-hero-section?populate=Image"
         );
         const result = await response.json();
         console.log("Hero section", result);

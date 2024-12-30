@@ -17,7 +17,7 @@ export default function EditActivityForm({ documentId }) {
     // Fetch activity data using the documentId
     async function fetchData() {
       const res = await fetch(
-        `http://localhost:1337/api/activities/${documentId}?populate=*`
+        `https://proper-fun-404805c7d9.strapiapp.com/api/activities/${documentId}?populate=*`
       );
       const data = await res.json();
       const activity = data.data;
@@ -54,7 +54,7 @@ export default function EditActivityForm({ documentId }) {
 
     try {
       const response = await fetch(
-        `http://localhost:1337/api/activities/${documentId}`,
+        `https://proper-fun-404805c7d9.strapiapp.com/api/activities/${documentId}`,
         {
           method: "PUT",
           headers: {

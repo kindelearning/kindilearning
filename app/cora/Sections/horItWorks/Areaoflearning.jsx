@@ -22,7 +22,7 @@ export default function AreaOfLearning() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "http://localhost:1337/api/how-it-work-page?populate[AreaOflearningCards][populate]=Icon"
+          "https://proper-fun-404805c7d9.strapiapp.com/api/how-it-work-page?populate[AreaOflearningCards][populate]=Icon"
         );
         const data = await response.json();
         if (data?.data) {
@@ -89,7 +89,7 @@ export const UpdateAreaOfLearning = () => {
   // Fetch existing data
   useEffect(() => {
     fetch(
-      "http://localhost:1337/api/how-it-work-page?populate[AreaOflearningCards][populate]=Icon"
+      "https://proper-fun-404805c7d9.strapiapp.com/api/how-it-work-page?populate[AreaOflearningCards][populate]=Icon"
     )
       .then((res) => res.json())
       .then((data) => {
@@ -121,7 +121,7 @@ export const UpdateAreaOfLearning = () => {
     console.log("Sent Data", payload);
 
     try {
-      const res = await fetch("http://localhost:1337/api/how-it-work-page", {
+      const res = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/how-it-work-page", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

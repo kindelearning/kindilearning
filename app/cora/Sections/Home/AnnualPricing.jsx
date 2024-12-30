@@ -21,7 +21,7 @@ export default function AnnualPriceing() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "http://localhost:1337/api/ourpricing?populate[MonthlyPlans][populate][0]=Features&populate[MonthlyPlans][populate][1]=Thumbnail&populate[AnnualPlans][populate][0]=Features&populate[AnnualPlans][populate][1]=Thumbnail"
+          "https://proper-fun-404805c7d9.strapiapp.com/api/ourpricing?populate[MonthlyPlans][populate][0]=Features&populate[MonthlyPlans][populate][1]=Thumbnail&populate[AnnualPlans][populate][0]=Features&populate[AnnualPlans][populate][1]=Thumbnail"
         );
         const data = await response.json();
         console.log("Fetched data: ", data); // Log to inspect the structure
@@ -99,7 +99,7 @@ export default function AnnualPriceing() {
 }
 
 export async function getPricingData() {
-  const response = await fetch('http://localhost:1337/api/ourpricing?populate[MonthlyPlans][populate][0]=Features&populate[MonthlyPlans][populate][1]=Thumbnail');
+  const response = await fetch('https://proper-fun-404805c7d9.strapiapp.com/api/ourpricing?populate[MonthlyPlans][populate][0]=Features&populate[MonthlyPlans][populate][1]=Thumbnail');
   const data = await response.json();
   return data.data;
 }
@@ -147,7 +147,7 @@ export  function EditPricing({ pricingData }) {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch(`http://localhost:1337/api/ourpricing/${formData.documentId}`, {
+      const response = await fetch(`https://proper-fun-404805c7d9.strapiapp.com/api/ourpricing/${formData.documentId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

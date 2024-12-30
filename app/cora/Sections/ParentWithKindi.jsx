@@ -22,8 +22,8 @@ export default function ParentWithKindi() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "http://localhost:1337/api/our-mission?populate[Parentwithkindi][populate]=Media"
-          // http://localhost:1337/api/how-it-works?populate[Hero][populate]=Media&populate[AgeGroup]=*&populate[Content]=*&populate[AreaOflearningCards][populate]=*&populate[KindiSkillsCategoriesCards][populate]=*
+          "https://proper-fun-404805c7d9.strapiapp.com/api/our-mission?populate[Parentwithkindi][populate]=Media"
+          // https://proper-fun-404805c7d9.strapiapp.com/api/how-it-works?populate[Hero][populate]=Media&populate[AgeGroup]=*&populate[Content]=*&populate[AreaOflearningCards][populate]=*&populate[KindiSkillsCategoriesCards][populate]=*
         );
         const data = await response.json();
         console.log("Fetched Parentwithkindi data:", data); // Log the response structure
@@ -109,7 +109,7 @@ export function UpdateParentWithKindiSection() {
     const fetchContent = async () => {
       try {
         const response = await fetch(
-          "http://localhost:1337/api/our-mission?populate[Parentwithkindi][populate]=Media"
+          "https://proper-fun-404805c7d9.strapiapp.com/api/our-mission?populate[Parentwithkindi][populate]=Media"
         );
         const data = await response.json();
         setContent({
@@ -141,7 +141,7 @@ export function UpdateParentWithKindiSection() {
     };
 
     try {
-      const response = await fetch("http://localhost:1337/api/our-mission", {
+      const response = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/our-mission", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

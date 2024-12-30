@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-const STRAPI_API_URL = "http://localhost:1337/api/tnc?populate=*"; // Your Strapi API URL
+const STRAPI_API_URL = "https://proper-fun-404805c7d9.strapiapp.com/api/tnc?populate=*"; // Your Strapi API URL
 
 // Handle GET request to fetch Tnc content with populate
 export async function GET(req) {

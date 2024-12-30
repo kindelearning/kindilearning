@@ -26,7 +26,7 @@ export default function AddKidForm() {
 
   const fetchUserDetails = async (token) => {
     try {
-      const response = await fetch("http://localhost:1337/api/users/me", {
+      const response = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/users/me", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -42,7 +42,7 @@ export default function AddKidForm() {
 
   const fetchExistingKids = async (userId, token) => {
     try {
-      const response = await fetch(`http://localhost:1337/api/users${userId}`, {
+      const response = await fetch(`https://proper-fun-404805c7d9.strapiapp.com/api/users${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -68,7 +68,7 @@ export default function AddKidForm() {
     try {
       // Fetch the current user data
       const response = await fetch(
-        `http://localhost:1337/api/users/${userId}`,
+        `https://proper-fun-404805c7d9.strapiapp.com/api/users/${userId}`,
         {
           headers: {
             Authorization: `Bearer ${jwtToken}`,
@@ -82,7 +82,7 @@ export default function AddKidForm() {
 
       // Update the user profile with the new list of kids
       const updateResponse = await fetch(
-        `http://localhost:1337/api/users/${userId}`,
+        `https://proper-fun-404805c7d9.strapiapp.com/api/users/${userId}`,
         {
           method: "PUT",
           headers: {
@@ -222,7 +222,7 @@ export function ProfilePage() {
     try {
       // Fetch the current user details (user with `myKids` field)
       const response = await fetch(
-        `http://localhost:1337/api/users/${userId}`,
+        `https://proper-fun-404805c7d9.strapiapp.com/api/users/${userId}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("jwt")}`,
@@ -239,7 +239,7 @@ export function ProfilePage() {
 
       // Update the user with the new `myKids` field
       const updateResponse = await fetch(
-        `http://localhost:1337/api/users/${userId}`,
+        `https://proper-fun-404805c7d9.strapiapp.com/api/users/${userId}`,
         {
           method: "PUT",
           headers: {
@@ -318,7 +318,7 @@ export function ManageKids({ userId, token, onSuccess }) {
     };
 
     try {
-      const response = await fetch("http://localhost:1337/graphql", {
+      const response = await fetch("https://proper-fun-404805c7d9.strapiapp.com/graphql", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

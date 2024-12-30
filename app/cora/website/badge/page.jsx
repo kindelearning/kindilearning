@@ -43,7 +43,7 @@ export default function BadgesTable() {
     const fetchBadges = async () => {
       try {
         const response = await fetch(
-          "http://localhost:1337/api/badges?populate=*"
+          "https://proper-fun-404805c7d9.strapiapp.com/api/badges?populate=*"
         );
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -64,7 +64,7 @@ export default function BadgesTable() {
   const handleDelete = async () => {
     try {
       const response = await fetch(
-        `http://localhost:1337/api/badges/${deleteBadgeId}`,
+        `https://proper-fun-404805c7d9.strapiapp.com/api/badges/${deleteBadgeId}`,
         {
           method: "DELETE",
         }
@@ -291,7 +291,7 @@ export function UpdateBadgesTable({ documentId }) {
     // Fetch activity data using the documentId
     async function fetchData() {
       const res = await fetch(
-        `http://localhost:1337/api/badges/${documentId}?populate=*`
+        `https://proper-fun-404805c7d9.strapiapp.com/api/badges/${documentId}?populate=*`
       );
       const data = await res.json();
       const badge = data.data;
@@ -320,7 +320,7 @@ export function UpdateBadgesTable({ documentId }) {
 
     try {
       const response = await fetch(
-        `http://localhost:1337/api/badges/${documentId}`,
+        `https://proper-fun-404805c7d9.strapiapp.com/api/badges/${documentId}`,
         {
           method: "PUT",
           headers: {
@@ -408,7 +408,7 @@ export function CreateBadgeForm() {
     };
 
     try {
-      const response = await fetch("http://localhost:1337/api/badges", {
+      const response = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/badges", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

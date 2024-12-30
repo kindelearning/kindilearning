@@ -33,7 +33,7 @@ export default function SignupPage() {
 
     try {
       const response = await fetch(
-        "http://localhost:1337/api/auth/local/register",
+        "https://proper-fun-404805c7d9.strapiapp.com/api/auth/local/register",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

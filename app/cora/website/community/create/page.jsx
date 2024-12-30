@@ -75,7 +75,7 @@ export default function CreateBlog() {
     }
 
     try {
-      const res = await fetch("http://localhost:1337/api/blogs", {
+      const res = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/blogs", {
         method: "POST",
         body: formData,
       });

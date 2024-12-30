@@ -23,7 +23,7 @@ export default function TeamSection() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "http://localhost:1337/api/our-mission?populate[Hero][populate]=Media&populate[Parentwithkindi][populate]=Media&populate[OurStory][populate]=Media&populate[OurTeam][populate]=*"
+          "https://proper-fun-404805c7d9.strapiapp.com/api/our-mission?populate[Hero][populate]=Media&populate[Parentwithkindi][populate]=Media&populate[OurStory][populate]=Media&populate[OurTeam][populate]=*"
         );
         const data = await response.json();
         console.log("Fetched data:", data); // Log the response structure
@@ -99,7 +99,7 @@ export function UpdateTeamSection() {
     const fetchContent = async () => {
       try {
         const response = await fetch(
-          "http://localhost:1337/api/our-mission?populate[OurTeam][populate]"
+          "https://proper-fun-404805c7d9.strapiapp.com/api/our-mission?populate[OurTeam][populate]"
         );
         const data = await response.json();
         setContent({
@@ -131,7 +131,7 @@ export function UpdateTeamSection() {
 
     try {
       const response = await fetch(
-        `http://localhost:1337/api/our-mission`, // Remove the `populate` query here
+        `https://proper-fun-404805c7d9.strapiapp.com/api/our-mission`, // Remove the `populate` query here
         {
           method: "PUT",
           headers: {

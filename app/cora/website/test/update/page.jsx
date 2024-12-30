@@ -31,7 +31,7 @@ export default function EditContent() {
     const fetchContent = async () => {
       try {
         const response = await fetch(
-          "http://localhost:1337/api/content?populate=*"
+          "https://proper-fun-404805c7d9.strapiapp.com/api/content?populate=*"
         );
         const data = await response.json();
 
@@ -60,7 +60,7 @@ export default function EditContent() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await fetch("http://localhost:1337/api/content", {
+    const response = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/content", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

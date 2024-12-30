@@ -13,7 +13,7 @@ export default function ToggleCardGrid() {
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(
-        "http://localhost:1337/api/how-it-work-page?populate=*"
+        "https://proper-fun-404805c7d9.strapiapp.com/api/how-it-work-page?populate=*"
       );
       const data = await response.json();
       setCards(data.data.AreaOflearningCards);

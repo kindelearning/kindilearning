@@ -29,7 +29,7 @@ const BlogUpdateForm = ({ documentId }) => {
     const fetchBlogData = async () => {
       try {
         const res = await fetch(
-          `http://localhost:1337/api/blogs/${documentId}?populate=*`
+          `https://proper-fun-404805c7d9.strapiapp.com/api/blogs/${documentId}?populate=*`
         );
         const data = await res.json();
         setExistingData(data.data);
@@ -61,7 +61,7 @@ const BlogUpdateForm = ({ documentId }) => {
     formData.append("data[Dislikes]", dislikes);
 
     try {
-      const res = await fetch(`http://localhost:1337/api/blogs/${documentId}`, {
+      const res = await fetch(`https://proper-fun-404805c7d9.strapiapp.com/api/blogs/${documentId}`, {
         method: "PUT",
         body: formData,
       });
