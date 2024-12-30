@@ -1,6 +1,5 @@
 import { fetchChildDevelopmentUnlock } from "@/app/data/p/Home";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
 
 export default async function PromotionalSection() {
   const content = await fetchChildDevelopmentUnlock();
@@ -40,17 +39,18 @@ export default async function PromotionalSection() {
 
           <div className="w-full px-4 md:px-8 xl:px-12 md:w-[50%] flex justify-center items-center h-auto animate-fade-in">
             <div className="w-[400px] h-auto">
-              {content.media ? (
-                <img
-                  src={content.media?.[0]?.url}
-                  alt="Child Development"
-                  width={400}
-                  height={400}
-                  className="w-full object-cover"
-                />
+              <img
+                src={content[0]?.Media }
+                alt="Child Development"
+                width={400}
+                height={400}
+                className="w-full object-cover"
+              />
+              {/* {content.Media ? (
+                <></>
               ) : (
                 <p className="text-white">No Media Available</p>
-              )}
+              )} */}
             </div>
           </div>
         </div>

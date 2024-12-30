@@ -73,6 +73,7 @@ export async function fetchEarlyLearningExpert() {
     }
 
     const data = await res.json();
+    
 
     if (!data || !data.data) {
       throw new Error("No data found for Early Learning Expert section");

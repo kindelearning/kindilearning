@@ -34,7 +34,7 @@ export default async function PromotionalSectionTwo() {
                   Your browser does not support the video.
                 </video>
               ) : (
-                <Image src={Media.url} alt="Hero" width={540} height={360} />
+                <Image src={mediaUrl} alt="Hero" width={540} height={360} />
               )
             ) : (
               <p>No media available</p>
