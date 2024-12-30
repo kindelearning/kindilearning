@@ -165,7 +165,7 @@ export default function PricingTabs() {
                             )}
                             isOpen={isAccordionOpen} // Pass the state here
                             toggleAccordion={toggleAccordion} // Pass toggle function
-                            image={`https://proper-fun-404805c7d9.strapiapp.com${plan.Thumbnail?.url}`}
+                            image={plan.Thumbnail?.url}
                             // image={plan.Thumbnail?.url}
                           />
                         )
@@ -203,7 +203,7 @@ export default function PricingTabs() {
                             )}
                             isOpen={isAccordionOpen} // Pass the state here
                             toggleAccordion={toggleAccordion} // Pass toggle function
-                            image={`https://proper-fun-404805c7d9.strapiapp.com${plan.Thumbnail?.url}`}
+                            image={plan.Thumbnail?.url}
                           />
                         )
                       )

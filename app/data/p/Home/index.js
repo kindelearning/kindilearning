@@ -18,9 +18,7 @@ export async function fetchHeroSection() {
     const heroData = data.data;
 
     // Construct the full URL for the media (Image/Video)
-    const heroMediaUrl = heroData.Image?.url
-      ? `https://proper-fun-404805c7d9.strapiapp.com${heroData.Image.url}`
-      : null;
+    const heroMediaUrl = heroData.Image?.url ? `heroData.Image.url` : null;
 
     return { heroData, heroMediaUrl }; // Return the data and the media URL
   } catch (error) {
@@ -49,7 +47,7 @@ export async function fetchChildDevelopmentUnlock() {
     const content = data.data.Content;
 
     const mediaUrl = content.Media?.[0]?.url
-      ? `https://proper-fun-404805c7d9.strapiapp.com${content.Media[0].url}`
+      ? content.Media[0].url
       : null;
 
     return {
@@ -84,7 +82,7 @@ export async function fetchEarlyLearningExpert() {
     const content = data.data.Content;
 
     const mediaUrl = content.Media?.[0]?.url
-      ? `https://proper-fun-404805c7d9.strapiapp.com${content.Media[0].url}`
+      ? content.Media[0].url
       : null;
 
     return content; // Return the content data

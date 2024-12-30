@@ -98,7 +98,7 @@ export default async function HowItWorks() {
                 <div className="w-full h-[460px] animate-fade-in md:max-w-[500px] flex items-end justify-end">
                   {section.Media && section.Media.url ? (
                     <img
-                      src={`https://proper-fun-404805c7d9.strapiapp.com${section.Media.url}`}
+                      src={section.Media.url}
                       alt="Kindi"
                       width={100}
                       height={100}
@@ -130,7 +130,7 @@ export default async function HowItWorks() {
                     /> */}
                   {section.Media && section.Media.url ? (
                     <img
-                      src={`https://proper-fun-404805c7d9.strapiapp.com${section.Media.url}`}
+                      src={section.Media.url}
                       alt="Kindi"
                       width={100}
                       height={100}
@@ -248,7 +248,7 @@ export default async function HowItWorks() {
                 <div className="w-full h-[460px] animate-fade-in md:max-w-[500px] flex items-end justify-end">
                   {section.Media && section.Media.url ? (
                     <img
-                      src={`https://proper-fun-404805c7d9.strapiapp.com${section.Media.url}`}
+                      src={section.Media.url}
                       alt="Kindi"
                       width={100}
                       height={100}

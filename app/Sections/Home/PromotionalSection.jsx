@@ -42,7 +42,7 @@ export default async function PromotionalSection() {
             <div className="w-[400px] h-auto">
               {content.media ? (
                 <img
-                  src={content.media}
+                  src={content.media[0].url}
                   alt="Child Development"
                   width={400}
                   height={400}
