@@ -15,7 +15,7 @@
 /api/
 /app/api/
 
-
+/app/profile/raw
 # production
 /build
 /firebase
