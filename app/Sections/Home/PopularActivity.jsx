@@ -1,6 +1,10 @@
+// 'use cl'
+
+
+import { fetchAllActivities } from "@/app/data/p/Dynamic/Activity";
 import { fetchPopularLearning } from "@/app/data/p/Home";
 import PopularActivityCarousel from "@/app/Widgets/Carousel/PopularActivityCarousel";
-import { getAllActivities } from "@/lib/hygraph";
+// import { getAllActivities } from "@/lib/hygraph";
 
 export default async function PopularActivity() {
   // Fetch the content
@@ -12,7 +16,7 @@ export default async function PopularActivity() {
 
   const { featuredText, title, BodyDescription, Media } = content.Content;
 
-  const activities = await getAllActivities();
+  const activities = await fetchAllActivities();
 
   if (!activities || activities.length === 0) {
     return <div>No activities found!</div>;
