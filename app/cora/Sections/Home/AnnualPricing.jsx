@@ -62,7 +62,7 @@ export default function AnnualPriceing() {
             {plan.Thumbnail?.url && (
               <div className="thumbnail flex justify-center">
                 <img
-                  src={`http://localhost:1337${plan.Thumbnail?.url}`}
+                  src={`https://proper-fun-404805c7d9.strapiapp.com${plan.Thumbnail?.url}`}
                   alt={plan.Thumbnail?.name}
                   className="rounded-lg object-cover w-full h-48  "
                 />

@@ -137,7 +137,7 @@ export default function AgeRangeWidget() {
               {data.data.AgeGroup.Content.slice(0, 1).map((content, index) => (
                 <AgeCard
                   key={index}
-                  // image={`http://localhost:1337${content.Icon.url}` || User}
+                  // image={`https://proper-fun-404805c7d9.strapiapp.com${content.Icon.url}` || User}
                   bgImage="/Images/AgeRangeOne.svg"
                   title={content?.Title}
                   body={
@@ -163,7 +163,7 @@ export default function AgeRangeWidget() {
               {data.data.AgeGroup.Content.slice(1, 2).map((content, index) => (
                 <AgeCard
                   key={index}
-                  // image={`http://localhost:1337${content.Icon.url}` || User}
+                  // image={`https://proper-fun-404805c7d9.strapiapp.com${content.Icon.url}` || User}
                   bgImage="/Images/AgeRangeTwo.svg"
                   title={content?.Title}
                   // body={content?.Body}
@@ -190,7 +190,7 @@ export default function AgeRangeWidget() {
                 <AgeCard
                   key={index}
                   // image={AgeCardOne}
-                  // image={`http://localhost:1337${content.Icon.url}` || User}
+                  // image={`https://proper-fun-404805c7d9.strapiapp.com${content.Icon.url}` || User}
                   bgImage="/Images/AgeRangeThree.svg"
                   title={content?.Title}
                   // body={content?.Body}
@@ -215,7 +215,7 @@ export default function AgeRangeWidget() {
                 <AgeCard
                   key={index}
                   // image={AgeCardOne}
-                  // image={`http://localhost:1337${content.Icon.url}` || User}
+                  // image={`https://proper-fun-404805c7d9.strapiapp.com${content.Icon.url}` || User}
                   bgImage="/Images/AgeRangeFour.svg"
                   title={content?.Title}
                   // body={content?.Body}

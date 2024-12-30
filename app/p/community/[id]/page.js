@@ -118,7 +118,7 @@ export default function BlogDetailPage({ params }) {
           height={600}
           src={
             FeaturedImage?.url
-              ? `http://localhost:1337${FeaturedImage.url}`
+              ? `https://proper-fun-404805c7d9.strapiapp.com${FeaturedImage.url}`
               : BlogThumb
           }
           alt={`Featured Image for ${Text}`}
@@ -390,7 +390,7 @@ export default function BlogDetailPage({ params }) {
 //         <meta property="og:description" content={Description} />
 //         <meta
 //           property="og:image"
-//           content={`http://localhost:1337${FeaturedImage.url}`}
+//           content={`https://proper-fun-404805c7d9.strapiapp.com${FeaturedImage.url}`}
 //         />
 //         <meta property="og:url" content={window.location.href} />
 //         <meta property="og:type" content="article" />
@@ -401,7 +401,7 @@ export default function BlogDetailPage({ params }) {
 //         <meta name="twitter:description" content={Description} />
 //         <meta
 //           name="twitter:image"
-//           content={`http://localhost:1337${FeaturedImage.url}`}
+//           content={`https://proper-fun-404805c7d9.strapiapp.com${FeaturedImage.url}`}
 //         />
 //       </head>
 
@@ -412,7 +412,7 @@ export default function BlogDetailPage({ params }) {
 //             height={600}
 //             src={
 //               FeaturedImage?.url
-//                 ? `http://localhost:1337${FeaturedImage.url}`
+//                 ? `https://proper-fun-404805c7d9.strapiapp.com${FeaturedImage.url}`
 //                 : BlogThumb
 //             }
 //             alt={`Featured Image for ${Text}`}

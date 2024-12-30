@@ -316,7 +316,7 @@ export default function ActivitiesPage() {
                     {activity.Gallery.slice(0, 1).map((image, index) => (
                       <img
                         key={index}
-                        src={`http://localhost:1337${image.url}`}
+                        src={`https://proper-fun-404805c7d9.strapiapp.com${image.url}`}
                         alt={`Gallery ${index}`}
                         className="min-w-16 rounded-md h-16 object-cover"
                       />

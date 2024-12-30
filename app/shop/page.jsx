@@ -448,7 +448,7 @@ export default function ShopPage() {
                     <div key={product.id} className="product-card">
                       <ProductCard
                         productUrl={`/shop/${product.documentId}`}
-                        image={`http://localhost:1337${
+                        image={`https://proper-fun-404805c7d9.strapiapp.com${
                           product?.FeaturedImage?.[0]?.url ||
                           "/uploads/default-image.webp"
                         }`}
@@ -1308,7 +1308,7 @@ export default function ShopPage() {
 //                         <div key={product.id} className="border">
 //                           <Link href={`/shop/${product.documentId}`}>
 //                             <ProductCard
-//                               image={`http://localhost:1337${product.FeaturedImage.url}`}
+//                               image={`https://proper-fun-404805c7d9.strapiapp.com${product.FeaturedImage.url}`}
 //                               price={product.DiscountPrice}
 //                               title={product.Name}
 //                             />

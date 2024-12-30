@@ -311,7 +311,7 @@ export default function Header() {
                   <div className="w-full h-full bg-white rounded-full  flex items-center justify-center">
                     {userData.profilepic ? (
                       <img
-                        src={`http://localhost:1337${userData.profilepic.url}`}
+                        src={`https://proper-fun-404805c7d9.strapiapp.com${userData.profilepic.url}`}
                         alt="Profile Picture"
                         className="w-[40px] h-[40px] object-cover rounded-full"
                       />
@@ -457,7 +457,7 @@ export default function Header() {
 //       </Link>
 //       <Link href="/profile" className="relative">
 //         <img
-//           src={`http://localhost:1337${userData.profilepic?.url}`}
+//           src={`https://proper-fun-404805c7d9.strapiapp.com${userData.profilepic?.url}`}
 //           alt="Profile"
 //           className="w-10 h-10 rounded-full object-cover"
 //         />

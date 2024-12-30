@@ -70,7 +70,7 @@ export default function HowItWorksSection() {
             {section.Media ? (
               <img
                 className="rounded-lg max-w-[300px] h-[300px] w-full object-contain"
-                src={`http://localhost:1337${section.Media.url}`}
+                src={`https://proper-fun-404805c7d9.strapiapp.com${section.Media.url}`}
                 alt={section.Media.name || "How it works image"}
               />
             ) : (

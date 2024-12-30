@@ -30,10 +30,10 @@ export default async function ThemePage({ params }) {
           <img
             width={1400}
             height={600}
-            // src={`http://localhost:1337${Thumbnail?.url}`}
+            // src={`https://proper-fun-404805c7d9.strapiapp.com${Thumbnail?.url}`}
             src={
               Thumbnail?.url
-                ? `http://localhost:1337${Thumbnail.url}`
+                ? `https://proper-fun-404805c7d9.strapiapp.com${Thumbnail.url}`
                 : ThemeDummy
             }
             alt={`Thumbnail for ${Title}`}

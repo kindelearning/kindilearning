@@ -56,7 +56,7 @@ export default function OurStory() {
             <video
               autoPlay
               controls
-              src={`http://localhost:1337${OurStory.Media[0].url}`}
+              src={`https://proper-fun-404805c7d9.strapiapp.com${OurStory.Media[0].url}`}
               className="w-full max-w-[800px] h-auto border-2 border-[#ddd] shadow-lg rounded-lg overflow-hidden"
             />
           ) : (

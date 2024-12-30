@@ -76,7 +76,7 @@ export default function ThemeClientDetail({
           <img
             width={1400}
             height={600}
-            src={`http://localhost:1337${Thumbnail?.url}`}
+            src={`https://proper-fun-404805c7d9.strapiapp.com${Thumbnail?.url}`}
             alt={Title}
             className="w-full hover:scale-105 duration-300 lg:max-w-[960px] lg:rounded-xl h-60 md:h-[400px] lg:h-[400px] object-cover"
           />

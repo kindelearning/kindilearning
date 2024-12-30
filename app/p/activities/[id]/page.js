@@ -378,7 +378,7 @@ export default async function ActivityDetailPage({ params }) {
                   <div key={index} className="relative">
                     {item.mime.includes("image") ? (
                       <img
-                        src={`http://localhost:1337${item.url}`}
+                        src={`https://proper-fun-404805c7d9.strapiapp.com${item.url}`}
                         alt={item.name}
                         className="w-full h-40 object-cover rounded-lg"
                       />
@@ -388,7 +388,7 @@ export default async function ActivityDetailPage({ params }) {
                         className="w-full h-40 object-cover rounded-lg"
                       >
                         <source
-                          src={`http://localhost:1337${item.url}`}
+                          src={`https://proper-fun-404805c7d9.strapiapp.com${item.url}`}
                           type={item.mime}
                         />
                       </video>
@@ -729,7 +729,7 @@ export default async function ActivityDetailPage({ params }) {
 //               <div key={index} className="relative">
 //                 {item.mime.includes("image") ? (
 //                   <img
-//                     src={`http://localhost:1337${item.url}`}
+//                     src={`https://proper-fun-404805c7d9.strapiapp.com${item.url}`}
 //                     alt={item.name}
 //                     className="w-full h-40 object-cover rounded-lg"
 //                   />
@@ -739,7 +739,7 @@ export default async function ActivityDetailPage({ params }) {
 //                     className="w-full h-40 object-cover rounded-lg"
 //                   >
 //                     <source
-//                       src={`http://localhost:1337${item.url}`}
+//                       src={`https://proper-fun-404805c7d9.strapiapp.com${item.url}`}
 //                       type={item.mime}
 //                     />
 //                   </video>

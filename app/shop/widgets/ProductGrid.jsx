@@ -110,7 +110,7 @@ export default function ProductGrid() {
             <div key={product.id}>
               <Link href={`/shop/${product.documentId}`}>
                 <ProductCard
-                  image={`http://localhost:1337${product?.FeaturedImage[0]?.url}`}
+                  image={`https://proper-fun-404805c7d9.strapiapp.com${product?.FeaturedImage[0]?.url}`}
                   price={product.DiscountPrice}
                   title={product.Name}
                 />

@@ -444,7 +444,7 @@ export function UpdateContentForm({ contentId }) {
                   onClick={() => handleMediaSelect(media)}
                 >
                   <img
-                    src={`http://localhost:1337${media.url}`}
+                    src={`https://proper-fun-404805c7d9.strapiapp.com${media.url}`}
                     alt={media.name}
                     className="w-full h-32 object-cover"
                   />

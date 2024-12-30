@@ -145,7 +145,7 @@ function UpdateThemeForm({ documentId }) {
         {thumbnail ? (
           <div>
             <img
-              src={`http://localhost:1337${thumbnail.url}`}
+              src={`https://proper-fun-404805c7d9.strapiapp.com${thumbnail.url}`}
               alt="Thumbnail"
               className="w-32 h-32 object-cover mb-2"
             />

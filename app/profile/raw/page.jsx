@@ -117,7 +117,7 @@ export default function RawProfile() {
             <div>
               {userData.profilepic ? (
                 <img
-                  src={`http://localhost:1337${userData.profilepic.url}`}
+                  src={`https://proper-fun-404805c7d9.strapiapp.com${userData.profilepic.url}`}
                   alt="Profile Picture"
                   className="w-32 h-32 rounded-full object-cover mx-auto"
                 />

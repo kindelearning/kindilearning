@@ -202,7 +202,7 @@ export default function AdminThemes() {
                     </TableCell>
                     <TableCell>
                       <img
-                        src={`http://localhost:1337${theme?.Thumbnail?.url}`}
+                        src={`https://proper-fun-404805c7d9.strapiapp.com${theme?.Thumbnail?.url}`}
                         alt={theme?.Title}
                         className="w-[40px] border-2 border-[#333333] rounded-full h-[40px] object-cover"
                       />
@@ -268,7 +268,7 @@ export default function AdminThemes() {
                               <div className="flex w-full gap-4 justify-between items-start">
                                 {/* Thumbnail Image */}
                                 <img
-                                  src={`http://localhost:1337${selectedTheme?.Thumbnail?.url}`} // Assuming the image URL is in the 'image' property
+                                  src={`https://proper-fun-404805c7d9.strapiapp.com${selectedTheme?.Thumbnail?.url}`} // Assuming the image URL is in the 'image' property
                                   alt={selectedTheme?.Title}
                                   className="w-full h-[300px] object-cover rounded-lg  mb-6"
                                 />

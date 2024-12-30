@@ -10,7 +10,7 @@ export default async function PromotionalSection() {
     return <p>No data available</p>;
   }
   const mediaUrl = content.media?.[0]?.url
-    ? `http://localhost:1337${content.media[0].url}`
+    ? `https://proper-fun-404805c7d9.strapiapp.com${content.media[0].url}`
     : null;
   return (
     <>

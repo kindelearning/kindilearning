@@ -241,11 +241,13 @@ export default function MediaPage() {
                     <video
                       controls
                       className="w-24 rounded-[8px] bg-[#a0a0a0] h-16 object-cover"
-                      src={`http://localhost:1337${asset.url}`}
+                      src={asset.url}
+                      // src={`https://proper-fun-404805c7d9.strapiapp.com${asset.url}`}
                     />
                   ) : (
                     <img
-                      src={`http://localhost:1337${asset.url}`}
+                      src={asset.url}
+                      // src={`https://proper-fun-404805c7d9.strapiapp.com${asset.url}`}
                       alt={asset.name}
                       className="w-24 rounded-[8px] bg-[#a0a0a0] h-16 object-cover"
                     />
@@ -261,7 +263,7 @@ export default function MediaPage() {
                   <div className="flex gap-2">
                     <button
                       onClick={() =>
-                        copyToClipboard(`http://localhost:1337${asset.url}`)
+                        copyToClipboard(asset.url)
                       }
                       className="text-[#515151] hover:underline"
                     >

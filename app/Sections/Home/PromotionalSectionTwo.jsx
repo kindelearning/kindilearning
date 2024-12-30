@@ -11,7 +11,7 @@ export default async function PromotionalSectionTwo() {
   }
 
   const { featuredText, title, BodyDescription, Media } = content;
-  const mediaUrl = Media?.url ? `http://localhost:1337${Media.url}` : null;
+  const mediaUrl = Media?.url ? `https://proper-fun-404805c7d9.strapiapp.com${Media.url}` : null;
 
   // Log the media URL to check
   // console.log("Media URL:", mediaUrl);

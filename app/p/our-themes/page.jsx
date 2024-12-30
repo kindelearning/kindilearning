@@ -27,7 +27,7 @@ export default async function Page() {
                   <article className="rounded-lg">
                     <CategoryCard
                       schedulesDate={item.LaunchTime}
-                      image={`http://localhost:1337${item.Thumbnail.url}`}
+                      image={`https://proper-fun-404805c7d9.strapiapp.com${item.Thumbnail.url}`}
                       description={item.metaDesc.slice(0, 100)}
                       header={item.Title}
                     />
