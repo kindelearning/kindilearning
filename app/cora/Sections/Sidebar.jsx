@@ -99,12 +99,12 @@ export default function Sidebar() {
           label="Media"
           isCollapsed={isCollapsed}
         />
-        <SidebarLink
+        {/* <SidebarLink
           href="/cora/website/test"
           icon={<FlaskConicalIcon />} // Test icon (Flask icon for testing)
           label="Test"
           isCollapsed={isCollapsed}
-        />
+        /> */}
         <SidebarLink
           href="/cora/website/forms"
           icon={<FormInput />} // Form icon (for ClaraForms)
@@ -240,30 +240,30 @@ export default function Sidebar() {
           isCollapsed={isCollapsed}
         />
 
-        <SidebarLink
+        {/* <SidebarLink
           href="/cora/website/scheduler"
           icon={<Clock />} // Scheduler icon (Clock for scheduling)
           label="Scheduler"
           isCollapsed={isCollapsed}
-        />
-        <SidebarLink
+        /> */}
+        {/* <SidebarLink
           href="/cora/website/users"
           icon={<User />} // Users icon (User management)
           label="Users"
           isCollapsed={isCollapsed}
-        />
-        <SidebarLink
+        /> */}
+        {/* <SidebarLink
           href="/cora/website/profile"
           icon={<UserCog />} // Admin Profile icon (UserCog for settings)
           label="Admin Profile"
           isCollapsed={isCollapsed}
-        />
-        <SidebarLink
+        /> */}
+        {/* <SidebarLink
           href="/cora/app"
           icon={<AppWindow />} // App Switch icon (AppWindow)
           label="Switch to App"
           isCollapsed={isCollapsed}
-        />
+        /> */}
       </div>
     </div>
   );
