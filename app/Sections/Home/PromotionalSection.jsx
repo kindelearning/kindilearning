@@ -10,7 +10,7 @@ export default async function PromotionalSection() {
     return <p>No data available</p>;
   }
   const mediaUrl = content.media?.[0]?.url
-    ? `https://proper-fun-404805c7d9.strapiapp.com${content.media[0].url}`
+    ? content.media[0].url
     : null;
   return (
     <>
@@ -42,7 +42,7 @@ export default async function PromotionalSection() {
             <div className="w-[400px] h-auto">
               {content.media ? (
                 <img
-                  src={content.media[0].url}
+                  src={content.media?.[0]?.url}
                   alt="Child Development"
                   width={400}
                   height={400}
