@@ -13,6 +13,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import ClaraMarkdownRichEditor from "../../Sections/TextEditor/ClaraMarkdownRichEditor";
+
 export default function ContentList() {
   const [content, setContent] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -135,6 +136,12 @@ export default function ContentList() {
               className="border rounded-xl shadow-lg hover:shadow-xl transition-shadow p-6 flex flex-col space-y-4 bg-white"
             >
               <h2 className="text-2xl font-bold text-gray-700">{item.Title}</h2>
+              {item.Media && (
+                <img
+                  src={`http://localhost:1337${item.Media.url}`}
+                  className="w-24 h-24"
+                />
+              )}
               <p className="text-gray-600 line-clamp-3">{item.Body}</p>
               <p className="text-sm text-gray-400">
                 {new Date(item.Date).toLocaleDateString()}
@@ -146,7 +153,7 @@ export default function ContentList() {
                     <DialogHeader>
                       <DialogTitle>Are you absolutely sure?</DialogTitle>
                       <DialogDescription>
-                        <UpdateContentForm contentId={item.documentId} />
+                        <UpdateContentForm documentId={item.documentId} />
                       </DialogDescription>
                     </DialogHeader>
                   </DialogContent>
@@ -229,39 +236,38 @@ export default function ContentList() {
   );
 }
 
-export function UpdateContentForm({ contentId }) {
-  const [formData, setFormData] = useState({
-    Title: "",
-    Body: "",
-    Date: "",
-    Media: null,
-  });
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+export function UpdateContentForm({ documentId }) {
+  const [title, setTitle] = useState("");
+  const [body, setBody] = useState("");
+  const [date, setDate] = useState("");
+  const [media, setMedia] = useState(null); // Use `null` for initial media
+  const [openDialog, setOpenDialog] = useState(false);
   const [mediaFiles, setMediaFiles] = useState([]); // Initialize as an empty array
-  const [dialogMessage, setDialogMessage] = useState("");
-  const [dialogType, setDialogType] = useState("success");
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  // Fetch content data
+  // Fetch existing activity data based on documentId
   useEffect(() => {
-    const fetchContentData = async () => {
+    const fetchActivityData = async () => {
       try {
-        const response = await fetch(
-          `https://proper-fun-404805c7d9.strapiapp.com/api/contents/${contentId}?populate=*`
+        const res = await fetch(
+          `https://proper-fun-404805c7d9.strapiapp.com/api/contents/${documentId}?populate=Media`
         );
-        const data = await response.json();
-        const { Title, Body, Date, Media } = data.data[0];
-        setFormData({
-          Title,
-          Body,
-          Date,
-          Media,
-        });
-      } catch (error) {
-        console.error("Error fetching content data:", error);
+        const data = await res.json();
+
+        const content = data.data;
+        if (content) {
+          setTitle(content.Title || "");
+          setBody(content.Body || "");
+          setDate(content.Date || "");
+          setMedia(content.Media?.id || null); // Set media ID or null if no media
+        }
+      } catch (err) {
+        console.error("Error fetching activity data:", err);
       }
     };
-    fetchContentData();
-  }, [contentId]);
+
+    fetchActivityData();
+  }, [documentId]);
 
   // Fetch media files
   useEffect(() => {
@@ -270,12 +276,9 @@ export function UpdateContentForm({ contentId }) {
         const response = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/upload/files");
         const data = await response.json();
 
-        console.log("Fetched Media Files:", data);
-        // setMediaFiles(data.data || []);  // Ensure mediaFiles is always an array
         if (data && Array.isArray(data)) {
           setMediaFiles(data); // Set the media files directly into state
         }
-        console.log("Fetched Media Files(mediaFiles)", mediaFiles);
       } catch (error) {
         console.error("Error fetching media files:", error);
       }
@@ -283,71 +286,48 @@ export function UpdateContentForm({ contentId }) {
     fetchMediaFiles();
   }, []);
 
-  // Log media files when they change
-  useEffect(() => {
-    console.log("Updated Media Files:", mediaFiles);
-  }, [mediaFiles]); // This will log whenever mediaFiles changes
-  // Handle form input changes
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const updatedContent = {
-      Title: formData.Title,
-      Body: formData.Body,
-      Date: formData.Date,
-      Media: formData.Media ? { id: formData.Media.id } : null, // Handle media as an object with ID
+    const payload = {
+      data: {
+        Title: title,
+        Body: body,
+        Date: date,
+        Media: media ? { id: media } : null, // Only add media if it's selected
+      },
     };
 
     try {
-      const response = await fetch(
-        `https://proper-fun-404805c7d9.strapiapp.com/api/contents/${contentId}`,
+      const res = await fetch(
+        `https://proper-fun-404805c7d9.strapiapp.com/api/contents/${documentId}?populate=Media`,
         {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ data: updatedContent }),
+          body: JSON.stringify(payload),
         }
       );
 
-      const responseData = await response.json();
-
-      if (response.ok) {
-        setDialogMessage("Content updated successfully!");
-        setDialogType("success");
-      } else {
-        setDialogMessage(
-          "Failed to update content. Please check the input and try again."
-        );
-        setDialogType("error");
-        throw new Error("Failed to update content");
-      }
+      const data = await res.json();
+      console.log("Updated Content:", data);
+      setOpenDialog(true); // Show the success dialog
     } catch (error) {
-      console.error("Error:", error.message);
-      setDialogMessage(error.message);
-      setDialogType("error");
+      console.error("Error updating content:", error);
+      alert("Error updating content.");
     }
-
-    setIsDialogOpen(true); // Open dialog after submit
   };
 
-  // Handle media selection from dialog
-  const handleMediaSelect = (media) => {
-    setFormData((prev) => ({
-      ...prev,
-      Media: media, // Set selected media
-    }));
+  const handleMediaSelect = (selectedMedia) => {
+    console.log("Selected Media:", selectedMedia); // Log to inspect the structure
+    setMedia(selectedMedia); // Store only the media ID
     setIsDialogOpen(false); // Close the dialog after selection
   };
 
   return (
-    <div className="p-8 font-fredoka">
+    <div className="p-8">
+      <h1 className="text-2xl font-bold mb-6">Edit Content</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label htmlFor="Title" className="block">
@@ -357,10 +337,9 @@ export function UpdateContentForm({ contentId }) {
             type="text"
             id="Title"
             name="Title"
-            value={formData.Title}
-            onChange={handleInputChange}
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
             className="border p-2 w-full"
-            required
           />
         </div>
 
@@ -368,12 +347,13 @@ export function UpdateContentForm({ contentId }) {
           <label htmlFor="Body" className="block">
             Body
           </label>
-          <ClaraMarkdownRichEditor
+          <input
+            type="text"
             id="Body"
             name="Body"
-            value={formData.Body}
-            onChange={handleInputChange}
-            required
+            value={body}
+            onChange={(e) => setBody(e.target.value)}
+            className="border p-2 w-full"
           />
         </div>
 
@@ -385,10 +365,9 @@ export function UpdateContentForm({ contentId }) {
             type="date"
             id="Date"
             name="Date"
-            value={formData.Date}
-            onChange={handleInputChange}
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
             className="border p-2 w-full"
-            required
           />
         </div>
 
@@ -397,257 +376,93 @@ export function UpdateContentForm({ contentId }) {
             Media
           </label>
           <div>
-            {formData.Media ? (
+            {media && (
               <div>
-                <img
-                  src={formData.Media.url || formData.Media.previewUrl}
-                  alt="Selected Media"
-                  className="w-32 h-32 object-cover"
-                />
-                <p>{formData.Media.name}</p>
+                {media.url ? (
+                  <>
+                    <img
+                      src={`http://localhost:1337${media.url}`} // Access url directly from the media object
+                      alt="Selected Media"
+                      className="w-32 h-32 object-cover"
+                    />
+                    <p>{media.name}</p> {/* Use media name if needed */}
+                  </>
+                ) : (
+                  <p>No URL available for the selected media</p>
+                )}
               </div>
-            ) : (
-              <button
-                type="button"
-                onClick={() => setIsDialogOpen(true)}
-                className="px-4 py-2 border rounded"
-              >
-                Select Media
-              </button>
             )}
+
+            <button
+              type="button"
+              onClick={() => setIsDialogOpen(true)}
+              className="px-4 py-2 border rounded"
+            >
+              Select Media
+            </button>
           </div>
         </div>
 
         <button type="submit" className="px-4 py-2 bg-black text-white rounded">
           Update Content
         </button>
+
+        {/* Dialog for media selection */}
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogContent className="max-w-[1000px] max-h-[600px] overflow-y-scroll">
+            <DialogHeader>
+              <DialogTitle>Select Media</DialogTitle>
+              <DialogDescription>
+                Click on any image below to select it for the content.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="grid grid-cols-3 gap-4">
+              {mediaFiles && mediaFiles.length > 0 ? (
+                mediaFiles.map((mediaFile) => (
+                  <div
+                    key={mediaFile.id}
+                    className="cursor-pointer"
+                    onClick={() => handleMediaSelect(mediaFile)}
+                  >
+                    <img
+                      src={`http://localhost:1337${mediaFile.url}`}
+                      alt={mediaFile.name}
+                      className="w-full h-32 object-cover"
+                    />
+                    <p className="text-center">{mediaFile.name}</p>
+                  </div>
+                ))
+              ) : (
+                <p>No media available</p>
+              )}
+            </div>
+            <DialogClose asChild>
+              <button className="px-4 py-2 bg-black text-white rounded mt-4">
+                Close
+              </button>
+            </DialogClose>
+          </DialogContent>
+        </Dialog>
       </form>
 
-      {/* Dialog for media selection */}
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogTrigger asChild>
-          <button className="hidden">Open Dialog</button>
-        </DialogTrigger>
-        <DialogContent className="max-w-[1000px] max-h-[600px] overflow-y-scroll">
+      {/* Custom Success Dialog */}
+      <Dialog open={openDialog} onOpenChange={(open) => setOpenDialog(open)}>
+        <DialogContent>
           <DialogHeader>
-            <DialogTitle>Select Media</DialogTitle>
-            <DialogDescription>
-              Click on any image below to select it for the content.
-            </DialogDescription>
+            <DialogTitle>Success!</DialogTitle>
           </DialogHeader>
-          <div className="grid grid-cols-3 gap-4">
-            {mediaFiles && mediaFiles.length > 0 ? (
-              mediaFiles.map((media) => (
-                <div
-                  key={media.id}
-                  className="cursor-pointer"
-                  onClick={() => handleMediaSelect(media)}
-                >
-                  <img
-                    src={media.url}
-                    // src={`https://proper-fun-404805c7d9.strapiapp.com${media.url}`}
-                    alt={media.name}
-                    className="w-full h-32 object-cover"
-                  />
-                  <p className="text-center">{media.name}</p>
-                </div>
-              ))
-            ) : (
-              <p>No media available</p>
-            )}
-          </div>
-          <DialogClose asChild>
-            <button className="px-4 py-2 bg-black text-white rounded mt-4">
-              Close
-            </button>
-          </DialogClose>
+          <DialogDescription>
+            Your content has been successfully updated.
+          </DialogDescription>
+          <DialogFooter>
+            <DialogClose asChild>
+              <button className="bg-blue-500 text-white px-4 py-2 rounded-md">
+                Close
+              </button>
+            </DialogClose>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </div>
   );
 }
-
-// export function UpdateContentForm({ contentId }) {
-//   const [formData, setFormData] = useState({
-//     Title: "",
-//     Body: "",
-//     Date: "",
-//     Media: null,
-//   });
-//   const [isDialogOpen, setIsDialogOpen] = useState(false);
-//   const [dialogMessage, setDialogMessage] = useState("");
-//   const [dialogType, setDialogType] = useState("success");
-
-//   // Fetch existing content data on load
-//   useEffect(() => {
-//     const fetchContentData = async () => {
-//       try {
-//         const response = await fetch(
-//           `https://proper-fun-404805c7d9.strapiapp.com/api/contents/${contentId}?populate=*`
-//         );
-//         const data = await response.json();
-//         const { Title, Body, Date, Media } = data.data[0];
-
-//         setFormData({
-//           Title,
-//           Body,
-//           Date,
-//           Media,
-//         });
-//       } catch (error) {
-//         console.error("Error fetching content data:", error);
-//       }
-//     };
-
-//     fetchContentData();
-//   }, [contentId]);
-
-//   // Handle form input changes
-//   const handleInputChange = (e) => {
-//     const { name, value } = e.target;
-//     setFormData((prev) => ({ ...prev, [name]: value }));
-//   };
-
-//   // Handle form submission
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-
-//     const updatedContent = {
-//       Title: formData.Title,
-//       Body: formData.Body,
-//       Date: formData.Date,
-//       Media: formData.Media,
-//     };
-
-//     try {
-//       const response = await fetch(
-//         `https://proper-fun-404805c7d9.strapiapp.com/api/contents/${contentId}`,
-//         {
-//           method: "PUT", // Use PUT for updating
-//           headers: {
-//             "Content-Type": "application/json",
-//           },
-//           body: JSON.stringify({ data: updatedContent }),
-//         }
-//       );
-
-//       const responseData = await response.json();
-
-//       if (response.ok) {
-//         setDialogMessage("Content updated successfully!");
-//         setDialogType("success");
-//       } else {
-//         setDialogMessage(
-//           "Failed to update content. Please check the input and try again."
-//         );
-//         setDialogType("error");
-//         throw new Error("Failed to update content");
-//       }
-//     } catch (error) {
-//       console.error("Error:", error.message);
-//       setDialogMessage(error.message);
-//       setDialogType("error");
-//     }
-
-//     setIsDialogOpen(true); // Open dialog after submit
-//   };
-
-//   return (
-//     <div className="p-8 font-fredoka">
-//       <form onSubmit={handleSubmit} className="space-y-4">
-//         <div>
-//           <label htmlFor="Title" className="block">
-//             Title
-//           </label>
-//           <input
-//             type="text"
-//             id="Title"
-//             name="Title"
-//             value={formData.Title}
-//             onChange={handleInputChange}
-//             className="border p-2 w-full"
-//             required
-//           />
-//         </div>
-
-//         <div>
-//           <label htmlFor="Body" className="block">
-//             Body
-//           </label>
-//           {/* Use ClaraMarkdownRichEditor here */}
-//           <ClaraMarkdownRichEditor
-//             id="Body"
-//             name="Body"
-//             value={formData.Body}
-//             onChange={handleInputChange}
-//             required
-//           />
-//         </div>
-
-//         <div>
-//           <label htmlFor="Date" className="block">
-//             Date
-//           </label>
-//           <input
-//             type="date"
-//             id="Date"
-//             name="Date"
-//             value={formData.Date}
-//             onChange={handleInputChange}
-//             className="border p-2 w-full"
-//             required
-//           />
-//         </div>
-
-//         <div>
-//           <label htmlFor="Media" className="block">
-//             Media
-//           </label>
-//           <input
-//             type="file"
-//             id="Media"
-//             name="Media"
-//             onChange={(e) =>
-//               setFormData((prev) => ({ ...prev, Media: e.target.files[0] }))
-//             }
-//             className="border p-2 w-full"
-//           />
-//           {formData.Media && (
-//             <div className="mt-2">
-//               <img
-//                 src={formData.Media.previewUrl || formData.Media.url}
-//                 alt="Media"
-//               />
-//             </div>
-//           )}
-//         </div>
-
-//         <button type="submit" className="px-4 py-2 bg-black text-white rounded">
-//           Update Content
-//         </button>
-//       </form>
-
-//       {/* Dialog for showing success/error messages */}
-//       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-//         <DialogTrigger asChild>
-//           <button className="hidden">Open Dialog</button>
-//         </DialogTrigger>
-//         <DialogContent>
-//           <DialogHeader>
-//             <DialogTitle>{dialogMessage}</DialogTitle>
-//             <DialogDescription>
-//               {dialogType === "success"
-//                 ? "Content Updated Successfully"
-//                 : "Something went wrong"}
-//             </DialogDescription>
-//           </DialogHeader>
-//           <DialogClose asChild>
-//             <button className="px-4 py-2 bg-black text-white rounded">
-//               Close
-//             </button>
-//           </DialogClose>
-//         </DialogContent>
-//       </Dialog>
-//     </div>
-//   );
-// }

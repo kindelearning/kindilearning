@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import ReactQuill from "react-quill";
 import ClaraMarkdownRichEditor from "@/app/cora/Sections/TextEditor/ClaraMarkdownRichEditor";
-
+ 
 export default function EditActivityForm({ documentId }) {
   const [title, setTitle] = useState("");
   const [theme, setTheme] = useState("");

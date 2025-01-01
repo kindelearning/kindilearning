@@ -99,12 +99,12 @@ export default function Sidebar() {
           label="Media"
           isCollapsed={isCollapsed}
         />
-        {/* <SidebarLink
+        <SidebarLink
           href="/cora/website/test"
           icon={<FlaskConicalIcon />} // Test icon (Flask icon for testing)
           label="Test"
           isCollapsed={isCollapsed}
-        /> */}
+        />
         <SidebarLink
           href="/cora/website/forms"
           icon={<FormInput />} // Form icon (for ClaraForms)
