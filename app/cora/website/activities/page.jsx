@@ -54,6 +54,7 @@ export default function ActivitiesPage() {
           "https://proper-fun-404805c7d9.strapiapp.com/api/activities?populate=*"
         );
         const data = await response.json();
+        console.log("Data", data);
         setActivities(data.data);
 
         // Extract unique values for filters from the fetched data
@@ -172,10 +173,21 @@ export default function ActivitiesPage() {
     }
   };
 
+  console.log("Fetched Activity", activities);
+
   return (
     <div className="gap-4 font-fredoka flex w-full flex-col p-8">
-      <h1 className="text-2xl font-bold mb-6">Activities</h1>
+      <div className="flex w-full justify-between items-center">
 
+      <h1 className="text-2xl font-bold mb-6">Activities</h1>
+      <Link
+          target="_blank"
+          href="http://localhost:3000/cora/website/activities/create"
+          className="text-[#414141] hover:text-black px-4 py-2 rounded-md text-[16px] font-medium duration-200 ease-in-out"
+        >
+          Create New Activity
+        </Link>
+      </div>
       {/* Search Bar */}
       <div className="flex w-full justify-between rounded-lg items-center">
         <input
@@ -187,13 +199,7 @@ export default function ActivitiesPage() {
         />
       </div>
       <div className="flex w-full gap-4 justify-between">
-        <Link
-          target="_blank"
-          href="http://localhost:3000/cora/website/activities/create"
-          className="text-[#414141] hover:text-black px-4 py-2 rounded-md text-[16px] font-medium duration-200 ease-in-out"
-        >
-          Create New Activity
-        </Link>
+        
         {/* Filters */}
         <div className="flex space-x-4">
           <select
@@ -313,7 +319,18 @@ export default function ActivitiesPage() {
                 <TableCell>{indexOfFirstActivity + index + 1}</TableCell>
                 <TableCell>
                   <div className="flex space-x-2">
-                    {activity.Gallery.slice(0, 1).map((image, index) => (
+                    {activity.Gallery && activity.Gallery.length > 0
+                      ? activity.Gallery.slice(0, 1).map((image, index) => (
+                          <img
+                            key={index}
+                            src={image.url}
+                            alt={`Gallery ${index}`}
+                            className="min-w-16 rounded-md h-16 object-cover"
+                          />
+                        ))
+                      : null}
+
+                    {/* {activity.Gallery.slice(0, 1).map((image, index) => (
                       <img
                         key={index}
                         src={image.url}
@@ -321,7 +338,7 @@ export default function ActivitiesPage() {
                         alt={`Gallery ${index}`}
                         className="min-w-16 rounded-md h-16 object-cover"
                       />
-                    ))}
+                    ))} */}
                   </div>
                 </TableCell>
                 <TableCell>{activity.Title}</TableCell>
@@ -391,9 +408,8 @@ export default function ActivitiesPage() {
                     <DialogTrigger asChild>
                       <PencilLine className="text-[#717171] w-4 h-4  duration-200 ease-ease-in-out hover:text-black" />
                     </DialogTrigger>
-                    <DialogContent>
+                    <DialogContent className="max-w-[1000px] max-h-[600px] overflow-y-scroll">
                       <DialogHeader>
-                        <DialogTitle>Confirm Deletion</DialogTitle>
                         <DialogDescription>
                           <EditActivityForm documentId={activity.documentId} />
                         </DialogDescription>
