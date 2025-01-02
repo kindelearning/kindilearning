@@ -294,7 +294,7 @@ export function UpdateContentForm({ documentId }) {
         Title: title,
         Body: body,
         Date: date,
-        Media: media.id  // Only add media if it's selected
+        Media: media.id, // Only add media if it's selected
       },
     };
 
@@ -370,38 +370,21 @@ export function UpdateContentForm({ documentId }) {
             className="border p-2 w-full"
           />
         </div>
-
         <div>
-          <label htmlFor="Media" className="block">
-            Media
-          </label>
-          <div>
-            {media && (
-              <div>
-                {media.url ? (
-                  <>
-                    <img
-                      // src={media.url} // Access url directly from the media object
-                      src={`https://proper-fun-404805c7d9.strapiapp.com${media.url}`} // Access url directly from the media object
-                      alt="Selected Media"
-                      className="w-32 h-32 object-cover"
-                    />
-                    <p>{media.name}</p> {/* Use media name if needed */}
-                  </>
-                ) : (
-                  <p>No URL available for the selected media</p>
-                )}
-              </div>
-            )}
-
-            <button
-              type="button"
-              onClick={() => setIsDialogOpen(true)}
-              className="px-4 py-2 border rounded"
-            >
-              Select Media
-            </button>
-          </div>
+          <label>Media:</label>
+          {media ? (
+            <div className="mt-4">
+              <img
+                src={`https://proper-fun-404805c7d9.strapiapp.com${media.url}`}
+                alt={media.name}
+                className="w-32 h-32 object-cover"
+              />
+              <p>{media.name}</p>
+            </div>
+          ) : (
+            <p> Not selected anything</p>
+          )}
+          <MediaSelector onMediaSelect={handleMediaSelect} />
         </div>
 
         <button type="submit" className="px-4 py-2 bg-black text-white rounded">
@@ -409,7 +392,7 @@ export function UpdateContentForm({ documentId }) {
         </button>
 
         {/* Dialog for media selection */}
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        {/* <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogContent className="max-w-[1000px] max-h-[600px] overflow-y-scroll">
             <DialogHeader>
               <DialogTitle>Select Media</DialogTitle>
@@ -444,7 +427,7 @@ export function UpdateContentForm({ documentId }) {
               </button>
             </DialogClose>
           </DialogContent>
-        </Dialog>
+        </Dialog> */}
       </form>
 
       {/* Custom Success Dialog */}
@@ -468,3 +451,92 @@ export function UpdateContentForm({ documentId }) {
     </div>
   );
 }
+
+// const UpdateContentForm = ({ documentId }) => {
+//   const [title, setTitle] = useState("");
+//   const [body, setBody] = useState("");
+//   const [date, setDate] = useState("");
+//   const [media, setMedia] = useState(null); // Selected media
+
+//   const handleMediaSelect = (selectedMedia) => {
+//     setMedia(selectedMedia); // Update the selected media state
+//   };
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+
+//     const payload = {
+//       data: {
+//         Title: title,
+//         Body: body,
+//         Date: date,
+//         Media: media.id, // Include media ID if selected
+//       },
+//     };
+
+//     try {
+//       const res = await fetch(
+//         `https://proper-fun-404805c7d9.strapiapp.com/api/contents/${documentId}?populate=Media`,
+//         {
+//           method: "PUT",
+//           headers: { "Content-Type": "application/json" },
+//           body: JSON.stringify(payload),
+//         }
+//       );
+//       if (!res.ok) throw new Error("Failed to update content");
+//       alert("Content updated successfully!");
+//     } catch (error) {
+//       console.error("Error updating content:", error);
+//     }
+//   };
+
+//   return (
+//     <form onSubmit={handleSubmit}>
+//       <div>
+//         <label>Title:</label>
+//         <input
+//           type="text"
+//           value={title}
+//           onChange={(e) => setTitle(e.target.value)}
+//           className="border p-2 w-full"
+//         />
+//       </div>
+//       <div>
+//         <label>Body:</label>
+//         <textarea
+//           value={body}
+//           onChange={(e) => setBody(e.target.value)}
+//           className="border p-2 w-full"
+//         ></textarea>
+//       </div>
+//       <div>
+//         <label>Date:</label>
+//         <input
+//           type="date"
+//           value={date}
+//           onChange={(e) => setDate(e.target.value)}
+//           className="border p-2 w-full"
+//         />
+//       </div>
+
+//       <div>
+//         <label>Media:</label>
+//         <MediaSelector onMediaSelect={handleMediaSelect} />
+//         {media && (
+//           <div className="mt-4">
+//             <img
+//               src={`https://proper-fun-404805c7d9.strapiapp.com${media.url}`}
+//               alt={media.name}
+//               className="w-32 h-32 object-cover"
+//             />
+//             <p>{media.name}</p>
+//           </div>
+//         )}
+//       </div>
+
+//       <button type="submit" className="mt-4 px-4 py-2 bg-green-500 text-white rounded">
+//         Update Content
+//       </button>
+//     </form>
+//   );
+// };
