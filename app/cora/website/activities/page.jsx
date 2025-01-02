@@ -14,6 +14,7 @@ import Link from "next/link";
 import { Eye, PencilLine, Trash } from "lucide-react";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
