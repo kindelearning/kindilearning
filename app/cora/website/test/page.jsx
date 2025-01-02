@@ -13,6 +13,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import ClaraMarkdownRichEditor from "../../Sections/TextEditor/ClaraMarkdownRichEditor";
+import MediaSelector from "../media/Section/MediaSelector";
 
 export default function ContentList() {
   const [content, setContent] = useState([]);
@@ -137,11 +138,8 @@ export default function ContentList() {
             >
               <h2 className="text-2xl font-bold text-gray-700">{item.Title}</h2>
               {item.Media ? (
-                <img
-                  src={item.Media.url}
-                  className="w-24 h-24"
-                />
-              ):(
+                <img src={item.Media.url} className="w-24 h-24" />
+              ) : (
                 <p className="text-gray-600">No image available</p>
               )}
               <p className="text-gray-600 line-clamp-3">{item.Body}</p>
@@ -151,7 +149,7 @@ export default function ContentList() {
               <div className="flex justify-between items-center mt-auto">
                 <Dialog>
                   <DialogTrigger>Update</DialogTrigger>
-                  <DialogContent>
+                  <DialogContent className="max-w-[1000px] max-h-[600px] overflow-y-scroll">
                     <DialogHeader>
                       <DialogTitle>Are you absolutely sure?</DialogTitle>
                       <DialogDescription>
@@ -296,7 +294,7 @@ export function UpdateContentForm({ documentId }) {
         Title: title,
         Body: body,
         Date: date,
-        Media: media ? { id: media } : null, // Only add media if it's selected
+        Media: media.id  // Only add media if it's selected
       },
     };
 
@@ -383,8 +381,8 @@ export function UpdateContentForm({ documentId }) {
                 {media.url ? (
                   <>
                     <img
-                      src={media.url} // Access url directly from the media object
-                      // src={`http://localhost:1337${media.url}`} // Access url directly from the media object
+                      // src={media.url} // Access url directly from the media object
+                      src={`https://proper-fun-404805c7d9.strapiapp.com${media.url}`} // Access url directly from the media object
                       alt="Selected Media"
                       className="w-32 h-32 object-cover"
                     />
@@ -428,8 +426,8 @@ export function UpdateContentForm({ documentId }) {
                     onClick={() => handleMediaSelect(mediaFile)}
                   >
                     <img
-                      src={mediaFile.url}
-                      // src={`http://localhost:1337${mediaFile.url}`}
+                      // src={mediaFile.url}
+                      src={`https://proper-fun-404805c7d9.strapiapp.com${mediaFile.url}`}
                       alt={mediaFile.name}
                       className="w-full h-32 object-cover"
                     />
