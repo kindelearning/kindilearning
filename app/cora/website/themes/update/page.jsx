@@ -11,7 +11,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import MediaSelector from "../../media/Section/MediaSelector";
 
+
+// Thumbnail didnit worked
 function UpdateThemeForm({ documentId }) {
   const [title, setTitle] = useState("");
   const [metaDesc, setMetaDesc] = useState("");
@@ -20,6 +23,7 @@ function UpdateThemeForm({ documentId }) {
   const [thumbnail, setThumbnail] = useState(null);
   const [existingData, setExistingData] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
+  // const [thumbnail, setMedia] = useState(null); // Use `null` for initial media
 
   // Fetch the existing theme data
   useEffect(() => {
@@ -36,9 +40,10 @@ function UpdateThemeForm({ documentId }) {
         setMetaDesc(data.data.metaDesc || "");
         setMainContent(data.data.MainContent || "");
         setLaunchTime(data.data.LaunchTime || "");
+        setThumbnail(data.data.Thumbnail.id || null); // Set media ID or null if no media
       } catch (error) {
         console.error("Error fetching theme data:", error);
-      } 
+      }
     };
     fetchThemeData();
   }, [documentId]);
@@ -51,10 +56,11 @@ function UpdateThemeForm({ documentId }) {
     formData.append("data[metaDesc]", metaDesc);
     formData.append("data[MainContent]", mainContent);
     formData.append("data[LaunchTime]", launchTime);
+    // formData.append("data[Thumbnail]", thumbnail);
 
     try {
       const res = await fetch(
-        `https://proper-fun-404805c7d9.strapiapp.com/api/our-themes/${documentId}`,
+        `https://proper-fun-404805c7d9.strapiapp.com/api/our-themes/${documentId}?populate=Thumbnail`,
         {
           method: "PUT",
           body: formData,
@@ -69,12 +75,16 @@ function UpdateThemeForm({ documentId }) {
       alert("Error updating theme.");
     }
   };
-
+  const handleMediaSelect = (selectedMedia) => {
+    console.log("Selected Media:", selectedMedia); // Log to inspect the structure
+    setThumbnail(selectedMedia); // Store only the media ID
+    // setIsDialogOpen(false); // Close the dialog after selection
+  };
   return (
     <>
       <form
         onSubmit={handleSubmit}
-        className="max-w-2xl mx-auto p-6 bg-white shadow rounded"
+        className="w-full mx-auto p-6 bg-white shadow rounded"
       >
         <h2 className="text-2xl font-semibold mb-4">Edit Theme</h2>
 
@@ -139,9 +149,7 @@ function UpdateThemeForm({ documentId }) {
 
         {/* Thumbnail */}
         {/* <div className="mb-4">
-        <label htmlFor="Thumbnail" className="block font-medium mb-1">
-          Thumbnail
-        </label>
+      
         {thumbnail ? (
           <div>
             <img
@@ -168,6 +176,23 @@ function UpdateThemeForm({ documentId }) {
           className="w-full p-2 border border-gray-300 rounded"
         />
       </div> */}
+
+        <div>
+          <label>Media:</label>
+          {thumbnail ? (
+            <div className="mt-4">
+              <img
+                src={`https://proper-fun-404805c7d9.strapiapp.com${thumbnail.url}`}
+                alt={thumbnail.name}
+                className="w-32 h-32 object-cover"
+              />
+              <p>{thumbnail.name}</p>
+            </div>
+          ) : (
+            <p> Not selected anything</p>
+          )}
+          <MediaSelector onMediaSelect={handleMediaSelect} />
+        </div>
 
         <div className="mb-4">
           <button
