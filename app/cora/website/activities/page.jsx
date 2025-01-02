@@ -308,7 +308,7 @@ export default function ActivitiesPage() {
   useEffect(() => {
     const fetchActivities = async () => {
       try {
-        const response = await fetch(" /api/activities?populate=*");
+        const response = await fetch(" https://proper-fun-404805c7d9.strapiapp.com/api/activities?populate=*");
         const data = await response.json();
         console.log("Data", data);
         setActivities(data.data);

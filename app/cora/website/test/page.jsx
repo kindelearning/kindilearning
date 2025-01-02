@@ -136,11 +136,13 @@ export default function ContentList() {
               className="border rounded-xl shadow-lg hover:shadow-xl transition-shadow p-6 flex flex-col space-y-4 bg-white"
             >
               <h2 className="text-2xl font-bold text-gray-700">{item.Title}</h2>
-              {item.Media && (
+              {item.Media ? (
                 <img
-                  src={`http://localhost:1337${item.Media.url}`}
+                  src={item.Media.url}
                   className="w-24 h-24"
                 />
+              ):(
+                <p className="text-gray-600">No image available</p>
               )}
               <p className="text-gray-600 line-clamp-3">{item.Body}</p>
               <p className="text-sm text-gray-400">
@@ -381,7 +383,8 @@ export function UpdateContentForm({ documentId }) {
                 {media.url ? (
                   <>
                     <img
-                      src={`http://localhost:1337${media.url}`} // Access url directly from the media object
+                      src={media.url} // Access url directly from the media object
+                      // src={`http://localhost:1337${media.url}`} // Access url directly from the media object
                       alt="Selected Media"
                       className="w-32 h-32 object-cover"
                     />
@@ -425,7 +428,8 @@ export function UpdateContentForm({ documentId }) {
                     onClick={() => handleMediaSelect(mediaFile)}
                   >
                     <img
-                      src={`http://localhost:1337${mediaFile.url}`}
+                      src={mediaFile.url}
+                      // src={`http://localhost:1337${mediaFile.url}`}
                       alt={mediaFile.name}
                       className="w-full h-32 object-cover"
                     />
