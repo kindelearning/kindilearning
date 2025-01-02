@@ -261,7 +261,7 @@ export function EditActivityForm({ documentId }) {
       </form>
 
       {/* Custom Success Dialog */}
-      {/* <Dialog open={openDialog} onOpenChange={(open) => setOpenDialog(open)}>
+      <Dialog open={openDialog} onOpenChange={(open) => setOpenDialog(open)}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Success!</DialogTitle>
@@ -277,7 +277,7 @@ export function EditActivityForm({ documentId }) {
             </DialogClose>
           </DialogFooter>
         </DialogContent>
-      </Dialog> */}
+      </Dialog>
     </div>
   );
 }
