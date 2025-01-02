@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/table"; 
 
 import HeroSectionForm from "../../Sections/Home/HomepageHeroSectionPageUpdate";
-import HowItWorksSection from "../../Sections/Home/HowItWorksSection";
+import HowItWorksSection, { UpdateHowItWorks } from "../../Sections/Home/HowItWorksSection";
 import Monthlytheme, {
   UpdateMonthlytheme,
 } from "../../Sections/Home/Monthlytheme";
@@ -56,7 +56,7 @@ export default function HomePage() {
                 page="How It Works"
                 sectionName="How It Works"
                 ComponentPreview={HowItWorksSection}
-                ComponentForm={HeroSectionForm} // Replace with an actual update form if necessary
+                ComponentForm={UpdateHowItWorks} // Replace with an actual update form if necessary
               />
               {/* Area Of Learning */}
               <SectionRow

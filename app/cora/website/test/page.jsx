@@ -234,7 +234,7 @@ export default function ContentList() {
       )}
     </div>
   );
-}
+} 
 
 export function UpdateContentForm({ documentId }) {
   const [title, setTitle] = useState("");

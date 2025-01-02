@@ -11,6 +11,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import ClaraMarkdownRichEditor from "../TextEditor/ClaraMarkdownRichEditor";
+import MediaSelector from "../../website/media/Section/MediaSelector";
 
 export default function HeroSectionForm() {
   const [featuredText, setFeaturedText] = useState("");
@@ -20,6 +21,7 @@ export default function HeroSectionForm() {
   const [error, setError] = useState(null);
   const [dialogOpen, setDialogOpen] = useState(false); // State to control dialog visibility
   const [dialogMessage, setDialogMessage] = useState(""); // To control the message in the dialog
+  const [media, setMedia] = useState(null); // Use `null` for initial media
 
   // Fetch the current data when the component mounts
   useEffect(() => {
@@ -57,9 +59,12 @@ export default function HeroSectionForm() {
       data: {
         featuredText,
         HeroTitle: heroTitle,
-        BodyDescription: bodyDescription
+        BodyDescription: bodyDescription,
+        Image: media.id,
       },
     };
+
+    console.log("Payload: ", JSON.stringify(updatedData));
 
     try {
       const response = await fetch(
@@ -87,6 +92,11 @@ export default function HeroSectionForm() {
       setDialogMessage("Error submitting form: " + err.message);
       setDialogOpen(true); // Show error dialog
     }
+  };
+
+  const handleMediaSelect = (selectedMedia) => {
+    console.log("Selected Media:", selectedMedia); // Log to inspect the structure
+    setMedia(selectedMedia); // Store only the media ID
   };
 
   // Loading and error states
@@ -128,21 +138,29 @@ export default function HeroSectionForm() {
 
         <div>
           <label className="block text-gray-700">Body Description</label>
-          {/* <textarea
-            value={bodyDescription}
-            onChange={(e) => setBodyDescription(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md"
-            placeholder="Enter body description"
-            rows="4"
-            required
-          /> */}
-           <ClaraMarkdownRichEditor
-              name="BodyDescription"
-              value={bodyDescription || ""} // Ensure the value is always a string
-              onChange={(value) =>
-                setBodyDescription(value )
-              }
-            />
+          <ClaraMarkdownRichEditor
+            name="BodyDescription"
+            value={bodyDescription || ""} // Ensure the value is always a string
+            onChange={(value) => setBodyDescription(value)}
+          />
+        </div>
+
+        <div>
+          <label>Media:</label>
+          {media ? (
+            <div className="mt-4">
+              <video
+              autoPlay
+              controls
+                src={`https://proper-fun-404805c7d9.strapiapp.com${media.url}`}
+                className="w-[300px] h-[200px] rounded-lg object-cover"
+              />
+              <p>{media.name}</p>
+            </div>
+          ) : (
+            <p> Not selected anything</p>
+          )}
+          <MediaSelector onMediaSelect={handleMediaSelect} />
         </div>
 
         <div>

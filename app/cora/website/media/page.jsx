@@ -108,7 +108,9 @@ export default function MediaPage() {
     navigator.clipboard.writeText(url).then(
       () => {
         setIsDialogOpen(true);
-        setTimeout(() => setIsDialogOpen(false), 500);
+        setTimeout(() => setIsDialogOpen(true), 500);
+        alert("URL Copied successfully.");
+
       },
       () => {
         alert("Failed to copy URL.");

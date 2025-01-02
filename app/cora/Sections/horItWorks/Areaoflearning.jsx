@@ -12,6 +12,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import ClaraMarkdownRichEditor from "../TextEditor/ClaraMarkdownRichEditor";
+import MediaSelector from "../../website/media/Section/MediaSelector";
 
 export default function AreaOfLearning() {
   const [content, setContent] = useState(null);
@@ -79,12 +80,13 @@ export default function AreaOfLearning() {
     </section>
   );
 }
- 
+
 export const UpdateAreaOfLearning = () => {
   const [formData, setFormData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
+  const [media, setMedia] = useState(null); // Use `null` for initial media
 
   // Fetch existing data
   useEffect(() => {
@@ -115,11 +117,11 @@ export const UpdateAreaOfLearning = () => {
           Title: card.Title,
           Body: card.Body,
           bgcolor: card.bgcolor.replace("#", ""),
+          Icon: media.id,
         })),
       },
     };
     console.log("Sent Data", payload);
-
     try {
       const res = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/how-it-work-page", {
         method: "PUT",
@@ -142,6 +144,10 @@ export const UpdateAreaOfLearning = () => {
     }
   };
 
+  const handleMediaSelect = (selectedMedia) => {
+    console.log("Selected Media:", selectedMedia); // Log to inspect the structure
+    setMedia(selectedMedia); // Store only the media ID
+  };
   // Handle form input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -238,21 +244,27 @@ export const UpdateAreaOfLearning = () => {
                 >
                   Body
                 </label>
-                {/* <textarea
-                  id={`card-body-${index}`}
-                  value={card.Body || ""}
-                  onChange={(e) =>
-                    handleCardChange(index, "Body", e.target.value)
-                  }
-                  rows="3"
-                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-                /> */}
+
                 <ClaraMarkdownRichEditor
                   value={card.Body}
-                  onChange={(value)=>handleCardChange(index, "Body", value)}
+                  onChange={(value) => handleCardChange(index, "Body", value)}
                 />
               </div>
-
+              <div>
+                <label>Media:</label>
+                {media ? (
+                  <div className="mt-4">
+                    <img
+                      src={`https://proper-fun-404805c7d9.strapiapp.com${media.url}`}
+                      className="w-[300px] h-[200px] rounded-lg object-cover"
+                    />
+                    <p>{media.name}</p>
+                  </div>
+                ) : (
+                  <p> Not selected anything</p>
+                )}
+                <MediaSelector onMediaSelect={handleMediaSelect} />
+              </div>
               <div className="space-y-2">
                 <label
                   htmlFor={`card-bgcolor-${index}`}

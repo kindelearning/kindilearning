@@ -82,7 +82,7 @@ export default function MediaSelector({ onMediaSelect }) {
             Select Media
           </button>
         </DialogTrigger>
-        <DialogContent className="max-w-[1000px] max-h-[600px] overflow-y-scroll">
+        <DialogContent className="max-w-[1000px] max-h-[400px] overflow-y-scroll">
           <DialogHeader>
             <DialogTitle>Select Media</DialogTitle>
             <DialogDescription>

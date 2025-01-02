@@ -12,6 +12,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import ClaraMarkdownRichEditor from "../TextEditor/ClaraMarkdownRichEditor";
+import MediaSelector from "../../website/media/Section/MediaSelector";
 
 export default function KindiSkillsCategoriesCards() {
   const [content, setContent] = useState(null);
@@ -89,6 +90,7 @@ export const UpdateKindiSkillsCategoriesCards = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
+  const [media, setMedia] = useState(null); // Use `null` for initial media
 
   // Fetch existing data
   useEffect(() => {
@@ -120,6 +122,7 @@ export const UpdateKindiSkillsCategoriesCards = () => {
             Title: card.Title,
             Body: card.Body,
             bgcolor: card.bgcolor.replace("#", ""),
+            Icon: media.id,
           })
         ),
       },
@@ -156,7 +159,10 @@ export const UpdateKindiSkillsCategoriesCards = () => {
       [name]: value,
     }));
   };
-
+  const handleMediaSelect = (selectedMedia) => {
+    console.log("Selected Media:", selectedMedia); // Log to inspect the structure
+    setMedia(selectedMedia); // Store only the media ID
+  };
   const handleCardChange = (index, key, value) => {
     const updatedCards = [...formData.KindiSkillsCategoriesCards];
     updatedCards[index][key] = value;
@@ -267,6 +273,22 @@ export const UpdateKindiSkillsCategoriesCards = () => {
                   }
                   className="w-full p-2 border border-gray-300 rounded-md"
                 />
+              </div>
+
+              <div>
+                <label>Media:</label>
+                {media ? (
+                  <div className="mt-4">
+                    <img
+                      src={`https://proper-fun-404805c7d9.strapiapp.com${media.url}`}
+                      className="w-[300px] h-[200px] rounded-lg object-cover"
+                    />
+                    <p>{media.name}</p>
+                  </div>
+                ) : (
+                  <p> Not selected anything</p>
+                )}
+                <MediaSelector onMediaSelect={handleMediaSelect} />
               </div>
             </div>
           ))}

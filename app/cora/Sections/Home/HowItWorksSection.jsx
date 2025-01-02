@@ -11,6 +11,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import ClaraMarkdownRichEditor from "../TextEditor/ClaraMarkdownRichEditor";
+import MediaSelector from "../../website/media/Section/MediaSelector";
 
 export default function HowItWorksSection() {
   const [data, setData] = useState(null);
@@ -113,7 +114,7 @@ export function UpdateHowItWorks() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
-
+  const [media, setMedia] = useState(null); // Use `null` for initial media
 
   useEffect(() => {
     fetch("https://proper-fun-404805c7d9.strapiapp.com/api/howitwork?populate=*")
@@ -137,40 +138,7 @@ export function UpdateHowItWorks() {
     }));
   };
 
-  // Handle submitting the form
-  const handleSubmit2 = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
 
-    try {
-      const response = await fetch(`https://proper-fun-404805c7d9.strapiapp.com/api/howitwork`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          data: {
-            MainTitle: howItWorksData.MainTitle,
-            MainBody: howItWorksData.MainBody,
-            HIWSection: howItWorksData.HIWSection,
-          },
-        }),
-      });
-
-      if (response.ok) {
-        const updatedData = await response.json();
-        setHowItWorksData(updatedData.data);
-        alert("Data updated successfully!");
-      } else {
-        throw new Error("Failed to update data");
-      }
-    } catch (error) {
-      console.error("Error updating data:", error);
-      setError("Error updating data.");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -184,6 +152,7 @@ export function UpdateHowItWorks() {
           featuredText: card.featuredText,
           title: card.title,
           BodyDescription: card.BodyDescription,
+          Media: media.id,
         })),
       },
     };
@@ -209,6 +178,10 @@ export function UpdateHowItWorks() {
       console.error(err);
       setError("An unexpected error occurred.");
     }
+  };
+  const handleMediaSelect = (selectedMedia) => {
+    console.log("Selected Media:", selectedMedia); // Log to inspect the structure
+    setMedia(selectedMedia); // Store only the media ID
   };
 
   const handleCardChange = (index, key, value) => {
@@ -264,10 +237,6 @@ export function UpdateHowItWorks() {
             rows="5"
             required
           />
-          {/* <ClaraMarkdownRichEditor
-            value={formData.MainBody || ""}
-            onChange={handleInputChange}
-          /> */}
         </div>
 
         <div>
@@ -306,14 +275,6 @@ export function UpdateHowItWorks() {
                   id={`HIWSection_${index}_title`}
                   name="HIWSection"
                   value={card.title}
-                  // onChange={(e) => {
-                  //   const updatedHIWSection = [...howItWorksData.HIWSection];
-                  //   updatedHIWSection[index].title = e.target.value;
-                  //   setHowItWorksData((prevData) => ({
-                  //     ...prevData,
-                  //     HIWSection: updatedHIWSection,
-                  //   }));
-                  // }}
                   onChange={(e) =>
                     handleCardChange(index, "title", e.target.value)
                   }
@@ -329,31 +290,29 @@ export function UpdateHowItWorks() {
                 >
                   Body Description
                 </label>
-                {/* <textarea
-                  id={`HIWSection_${index}_BodyDescription`}
-                  name="BodyDescription"
-                  value={card.BodyDescription}
-                  // onChange={(e) => {
-                  //   const updatedHIWSection = [...howItWorksData.HIWSection];
-                  //   updatedHIWSection[index].BodyDescription = e.target.value;
-                  //   setHowItWorksData((prevData) => ({
-                  //     ...prevData,
-                  //     HIWSection: updatedHIWSection,
-                  //   }));
-                  // }}
-                  onChange={(e) =>
-                    handleCardChange(index, "BodyDescription", e.target.value)
-                  }
-                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md"
-                  rows="5"
-                  required
-                /> */}
+
                 <ClaraMarkdownRichEditor
                   value={card.BodyDescription}
                   onChange={(value) =>
                     handleCardChange(index, "BodyDescription", value)
                   }
                 />
+
+                <div>
+                  <label>Media:</label>
+                  {media ? (
+                    <div className="mt-4">
+                      <img
+                        src={`https://proper-fun-404805c7d9.strapiapp.com${media.url}`}
+                        className="w-[300px] h-[200px] rounded-lg object-cover"
+                      />
+                      <p>{media.name}</p>
+                    </div>
+                  ) : (
+                    <p> Not selected anything</p>
+                  )}
+                  <MediaSelector onMediaSelect={handleMediaSelect} />
+                </div>
               </div>
             </div>
           ))}

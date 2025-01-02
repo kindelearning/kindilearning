@@ -60,7 +60,7 @@ export default function HomePage() {
               {/* Slider*/}
               <SectionRow
                 serialNo={3}
-                sectionName="Slider"
+                sectionName="Slider Deprecated"
                 ComponentPreview={SliderSection}
                 ComponentForm={UpdateSliderSection}
               />
