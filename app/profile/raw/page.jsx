@@ -14,6 +14,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Condiment } from "next/font/google";
+import MyLevel from "../Sections/MyLevel";
 
 export default function RawProfile() {
   const [userData, setUserData] = useState(null);
@@ -63,6 +64,7 @@ export default function RawProfile() {
         <h1 className="text-2xl font-semibold text-center mb-6">
           User Profile
         </h1>
+        <MyLevel />
 
         <Dialog>
           <DialogTrigger className="text-purple">Invite a new Partner</DialogTrigger>

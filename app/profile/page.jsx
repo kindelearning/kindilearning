@@ -8,6 +8,7 @@ import QuickNavigation from "./Sections/QuickNavigation";
 
 import IndividualTabs from "./Sections/IndividualTabs";
 import { LogoutButton } from "../oAuth/Sections/Logout";
+import { LevelList } from "./Sections/MyLevel";
 
 export default function ProfilePage() {
   const [userData, setUserData] = useState(null);
@@ -65,7 +66,6 @@ export default function ProfilePage() {
             Profile
           </div>
         </div>
- 
         {/* Profile Main Body */}
         <div className="claracontainer bg-[#F5F5F5] md:bg-[#EAEAF5] -mt-4 rounded-t-[12px] z-2 lg:m-12 px-4 py-6 rounded-xl md:px-2 lg:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-[20px]">
           <TopProfileCard userData={userData} />

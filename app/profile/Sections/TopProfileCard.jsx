@@ -2,6 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { ProfileDP, VerifiedIcon } from "@/public/Images";
 import Image from "next/image";
 import Link from "next/link";
+import MyLevel from "./MyLevel";
 
 export default function TopProfileCard({ userData }) {
   return (
@@ -21,7 +22,7 @@ export default function TopProfileCard({ userData }) {
                 </div>
               </div>
             </>
-          ):(
+          ) : (
             <>
               <div className="relative w-20 h-20 lg:w-36 lg:h-36 p-1 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600">
                 <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
@@ -92,6 +93,7 @@ export default function TopProfileCard({ userData }) {
               {/* {user && hygraphUser ? (
                     <MyLevel userID={hygraphUser.id} />
                   ) : null} */}
+              <MyLevel />
             </div>
           </div>
         </div>

@@ -45,3 +45,25 @@ export const fetchKidDetails = async () => {
     throw error; // Rethrow error for handling in the component
   }
 };
+
+export const fetchLevelDetails = async () => {
+  try {
+    const response = await fetch(
+      "https://proper-fun-404805c7d9.strapiapp.com/api/levels?populate=*",
+      {
+        method: "GET",
+        
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch user details");
+    }
+
+    const data = await response.json();
+    return data; // Return user data
+  } catch (error) {
+    console.error(error.message);
+    throw error; // Rethrow error for handling in the component
+  }
+};
