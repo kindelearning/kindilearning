@@ -13,10 +13,7 @@
 /.next/
 /out/
 /api/
-# /app/api/
-# /app/cora/website/home/editannual
 
-# /app/profile/raw
 # production
 /build
 /firebase

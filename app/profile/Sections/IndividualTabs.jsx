@@ -32,6 +32,10 @@ import Link from "next/link";
 import RemoveKidButton from "./RemoveKidButton";
 import UpdateKidForm from "./UpdateKidForm";
 import AddKidForm from "./AddKidForm";
+import RemovePaymentMethodButton, {
+  AddPaymentMethodForm,
+  UpdatePaymentDataForm,
+} from "./RemovePaymentMethodButton";
 
 const CustomDialog = ({
   image,
@@ -86,7 +90,7 @@ const subscriptionLimits = {
 };
 
 export default function IndividualTabs({ userData }) {
-  const currentKidsCount = userData.myKids.length/2;
+  const currentKidsCount = userData.myKids.length / 2;
   const subscriptionLevel = userData.SubscriptionLevel;
   const maxKidsAllowed = subscriptionLimits[subscriptionLevel] || 0;
 
@@ -104,8 +108,13 @@ export default function IndividualTabs({ userData }) {
         >
           <>
             <p className="py-2 font-fredoka">
-              You have added <span className="font-medium text-red">{currentKidsCount} out of {maxKidsAllowed}</span>  kids
-              allowed for your <span className="font-medium text-red">{subscriptionLevel}</span>  subscription.
+              You have added{" "}
+              <span className="font-medium text-red">
+                {currentKidsCount} out of {maxKidsAllowed}
+              </span>{" "}
+              kids allowed for your{" "}
+              <span className="font-medium text-red">{subscriptionLevel}</span>{" "}
+              subscription.
             </p>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 w-full claracontainer gap-4">
@@ -185,8 +194,7 @@ export default function IndividualTabs({ userData }) {
             ) : (
               <p className="text-red-500">
                 You have reached the maximum limit of {maxKidsAllowed} kids for
-                your {" "}
-                {subscriptionLevel} subscription.
+                your {subscriptionLevel} subscription.
               </p>
             )}
           </>
@@ -244,12 +252,72 @@ export default function IndividualTabs({ userData }) {
           footerText="Settings"
         >
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 px-2 md:px-4 lg:px-6 py-6 w-full claracontainer gap-4">
-            {/* {userData ? (
-              <PaymentMethodsList userId={userData.documentId} />
+            {userData.myPaymentMethods &&
+            userData.myPaymentMethods.length > 0 ? (
+              userData.myPaymentMethods.map((kid, index) => (
+                <div
+                  key={index}
+                  className="p-4 h-[200px] flex flex-col  justify-between bg-gray-50 rounded-lg shadow-sm"
+                  style={{
+                    backgroundImage: `url('/Images/DebitCardBackground.svg')`,
+                    backgroundSize: "cover",
+                    backgroundRepeat: "no-repeat",
+                    backgroundPosition: "center",
+                  }}
+                >
+                  <div className="flex w-full justify-end items-center">
+                    <RemovePaymentMethodButton paymentId={kid.documentId} />
+                  </div>
+
+                  <div className="flex w-full flex-col justify-start items-start">
+                    <p>
+                      <strong>Id:</strong> {kid.id}
+                    </p>
+                    <p>
+                      <strong>Name:</strong> {kid.Name}
+                    </p>
+                    <p>
+                      <strong>Number:</strong> {kid.Number}
+                    </p>
+                    <p>
+                      <strong>ExpiryDate:</strong> {kid.ExpiryDate}
+                    </p>
+                    <p>
+                      <strong>CVV:</strong> {kid.CVV}
+                    </p>
+                    <Dialog>
+                      <DialogTrigger className="text-red font-fredoka">
+                        Update Payment Method
+                      </DialogTrigger>
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle>Are you absolutely sure?</DialogTitle>
+                          <DialogDescription>
+                            <UpdatePaymentDataForm
+                              paymentId={kid.documentId}
+                              parentId={userData.id}
+                            />
+                          </DialogDescription>
+                        </DialogHeader>
+                      </DialogContent>
+                    </Dialog>
+                  </div>
+                </div>
+              ))
             ) : (
-              <p> Please Login to use this feature!</p>
-            )} */}
+              <p>No kids profiles available.</p>
+            )}
           </div>
+          <Dialog>
+            <DialogTrigger className="font-fredoka text-red">Create Payment Method</DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogDescription>
+                  <AddPaymentMethodForm parentId={userData.id} />
+                </DialogDescription>
+              </DialogHeader>
+            </DialogContent>
+          </Dialog>
         </CustomDialog>
         {/* Settings Model */}
         <CustomDialog
