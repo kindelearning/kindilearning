@@ -38,7 +38,7 @@ import { fetchKidDetails } from "@/app/profile/api";
 
 async function fetchActivityByDocumentId(documentId) {
   const res = await fetch(
-    `https://proper-fun-404805c7d9.strapiapp.com//api/activities/${documentId}?populate=*`
+    `https://proper-fun-404805c7d9.strapiapp.com/api/activities/${documentId}?populate=*`
   );
   const data = await res.json();
   if (!data || !data.data) {
@@ -72,7 +72,7 @@ const ActivityAttribute = ({
   );
 };
 
-export const IconBadge = ({ icon, backgroundColor = "f05c5c" }) => {
+const IconBadge = ({ icon, backgroundColor = "f05c5c" }) => {
   return (
     <div
       className={`w-[50px] hover:scale-105 duration-200 ease-ease-out cursor-pointer h-[50px] flex justify-center items-center bg-[#${backgroundColor}] rounded-[16px]`}
@@ -89,9 +89,9 @@ const handlePrint = () => {
 export default async function ActivityDetailPage({ params }) {
   const { id } = params;
   const activityData = await fetchActivityByDocumentId(id);
-  const kidData = await fetchKidDetails();
+  // const kidData = await fetchKidDetails();
+  // console.log("Kids Data fetched", kidData);
 
-  console.log("Kids Data fetched", kidData);
   if (!activityData) {
     console.log("not found activity");
   }
@@ -102,7 +102,7 @@ export default async function ActivityDetailPage({ params }) {
     Theme,
     FocusAge,
     ActivityDate,
-    LearningArea,
+
     SetUpTime,
     Gallery,
     Accordions,
@@ -402,7 +402,7 @@ export default async function ActivityDetailPage({ params }) {
                 <div className="text-[#3f3a64] text-base font-semibold font-montserrat uppercase leading-[19px]">
                   Mark Activity as Complete{" "}
                 </div>
-                <MarkActivityCompleteForm activityId={activityData.id} />
+                <MarkActivityCompleteForm passactivityId={activityData.id} />
 
                 {/* <DynamicMarkActivityCompleteComponent activityId={id} /> */}
               </div>

@@ -125,7 +125,7 @@ export default function ActivitiesData() {
   const weekdays = [
     "Monday",
     "Tuesday",
-    "Wednesday",
+    "Wednesday", 
     "Thursday",
     "Friday",
     "Saturday",
