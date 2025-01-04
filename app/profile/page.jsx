@@ -48,6 +48,8 @@ export default function ProfilePage() {
     fetchData();
   }, [router]);
 
+  console.log('Fetched User Data', userData);
+
   if (loading) return <p>Loading...</p>;
 
   return (

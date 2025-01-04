@@ -29,6 +29,9 @@ import {
 } from "@/public/Images";
 import Image from "next/image";
 import Link from "next/link";
+import RemoveKidButton from "./RemoveKidButton";
+import UpdateKidForm from "./UpdateKidForm";
+import AddKidForm from "./AddKidForm";
 
 const CustomDialog = ({
   image,
@@ -76,7 +79,17 @@ const CustomDialog = ({
   );
 };
 
+const subscriptionLimits = {
+  Family: 5,
+  "Family Plus": 10,
+  Professional: 30,
+};
+
 export default function IndividualTabs({ userData }) {
+  const currentKidsCount = userData.myKids.length/2;
+  const subscriptionLevel = userData.SubscriptionLevel;
+  const maxKidsAllowed = subscriptionLimits[subscriptionLevel] || 0;
+
   return (
     <>
       <div className="flex w-full justify-center items-center gap-4 flex-col">
@@ -89,34 +102,94 @@ export default function IndividualTabs({ userData }) {
           dialogSubtitle="Profile"
           footerText="Save and Continue"
         >
-          <div className="grid grid-cols-1 lg:grid-cols-2 w-full claracontainer gap-4">
-            {userData.myKids.map((kid, index) => (
-              <div
-                className="w-full flex flex-row justify-between items-center p-2 bg-white rounded-xl"
-                key={index}
-              >
-                <div className="flex flex-row gap-2 w-full justify-start items-center">
-                  <div className="w-16 h-16 overflow-clip flex justify-center items-center">
-                    <Image
-                      src={ProfilePlaceholder01} // Ensure this is correctly imported
-                      alt="Profile Image"
-                      width={64}
-                      height={64}
-                      className="min-w-16 min-h-16 object-cover rounded-full"
-                    />
-                  </div>
-                  <div className="w-full flex-col justify-start items-start inline-flex">
-                    <div className="text-[#0a1932] w-full text-[28px] font-semibold font-fredoka leading-tight">
-                      {kid.Name}
+          <>
+            <p className="py-2 font-fredoka">
+              You have added <span className="font-medium text-red">{currentKidsCount} out of {maxKidsAllowed}</span>  kids
+              allowed for your <span className="font-medium text-red">{subscriptionLevel}</span>  subscription.
+            </p>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 w-full claracontainer gap-4">
+              {userData?.myKids?.length > 0 ? (
+                userData.myKids
+                  .filter((_, index) => index % 2 === 0) // Use `index % 2 === 0` for even entries, or `index % 2 !== 0` for odd entries
+                  .map((kid, index) => (
+                    <div
+                      className="w-full flex flex-row justify-between items-center p-2 bg-white rounded-xl"
+                      key={index}
+                    >
+                      <div className="flex flex-row gap-2 w-full justify-start items-center">
+                        <div className="w-16 h-16 overflow-clip flex justify-center items-center">
+                          <Image
+                            src={kid.profileImage || ProfilePlaceholder01} // Dynamic placeholder
+                            alt={`${kid.Name}'s Profile`}
+                            width={64}
+                            height={64}
+                            className="min-w-16 min-h-16 object-cover rounded-full"
+                          />
+                        </div>
+                        <div className="w-full flex-col justify-start items-start inline-flex">
+                          <div className="text-[#0a1932] w-full text-[28px] font-semibold font-fredoka leading-tight">
+                            {kid.Name}
+                          </div>
+                          <div className="text-[#757575] w-full clarabodyTwo">
+                            {kid.dob
+                              ? new Date(kid.dob).toLocaleDateString("en-US", {
+                                  year: "numeric",
+                                  month: "long",
+                                  day: "numeric",
+                                })
+                              : "Date not available"}
+                          </div>
+                        </div>
+
+                        <div className="flex flex-col w-fit items-center justify-between  gap-2">
+                          <Dialog>
+                            <DialogTrigger>
+                              {/* <Penci className="w-[24px] h-[24px] text-red"/> */}
+                            </DialogTrigger>
+                            <DialogContent>
+                              <DialogHeader>
+                                <DialogTitle>
+                                  Update Profile for {kid.Name}
+                                </DialogTitle>
+                                <DialogDescription>
+                                  <UpdateKidForm
+                                    kidId={kid.documentId}
+                                    parentId={userData.id}
+                                  />
+                                </DialogDescription>
+                              </DialogHeader>
+                            </DialogContent>
+                          </Dialog>
+
+                          <RemoveKidButton kidId={kid.documentId} />
+                        </div>
+                      </div>
                     </div>
-                    <div className="text-[#757575] w-full clarabodyTwo">
-                      {kid.dob}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+                  ))
+              ) : (
+                <p className="text-[#757575]">No kids available to display.</p>
+              )}
+            </div>
+            {currentKidsCount < maxKidsAllowed ? (
+              <Dialog>
+                <DialogTrigger>Add New Kid</DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogDescription>
+                      <AddKidForm parentId={userData.id} />
+                    </DialogDescription>
+                  </DialogHeader>
+                </DialogContent>
+              </Dialog>
+            ) : (
+              <p className="text-red-500">
+                You have reached the maximum limit of {maxKidsAllowed} kids for
+                your {" "}
+                {subscriptionLevel} subscription.
+              </p>
+            )}
+          </>
         </CustomDialog>
         {/* Orders Model */}
         <CustomDialog
@@ -155,8 +228,8 @@ export default function IndividualTabs({ userData }) {
             </div>
             <div className="flex w-full flex-col justify-start items-start gap-4">
               <div className="text-[#757575] text-[16px] leading-[18px] md:text-2xl md:leading-[26px] font-normal font-fredoka">
-                Securely grant access to your child&apos;s progress, activities, and
-                milestones, ensuring both parents stay involved.
+                Securely grant access to your child&apos;s progress, activities,
+                and milestones, ensuring both parents stay involved.
               </div>
             </div>
           </div>

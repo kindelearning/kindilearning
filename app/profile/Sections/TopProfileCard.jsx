@@ -1,5 +1,5 @@
 import { Badge } from "@/components/ui/badge";
-import { VerifiedIcon } from "@/public/Images";
+import { ProfileDP, VerifiedIcon } from "@/public/Images";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -8,12 +8,25 @@ export default function TopProfileCard({ userData }) {
     <>
       <div className="w-full flex bg-[white] rounded-[24px] gap-2 p-2 md:p-4 justify-start items-start lg:gap-[12px] lg:items-center">
         <div className="w-fit min-w-20 lg:w-full lg:max-w-[160px] items-center flex justify-center">
-          {userData.profilepic?.url && (
+          {userData.profilepic?.url ? (
             <>
               <div className="relative w-20 h-20 lg:w-36 lg:h-36 p-1 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600">
                 <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
                   <img
                     src={userData.profilepic.url}
+                    // src={`https://proper-fun-404805c7d9.strapiapp.com${userData.profilepic.url}`}
+                    alt="Profile Picture"
+                    className="w-[72px] h-[72px] lg:w-36 lg:h-36 object-cover overflow-clip rounded-full"
+                  />
+                </div>
+              </div>
+            </>
+          ):(
+            <>
+              <div className="relative w-20 h-20 lg:w-36 lg:h-36 p-1 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600">
+                <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
+                  <img
+                    src={ProfileDP}
                     // src={`https://proper-fun-404805c7d9.strapiapp.com${userData.profilepic.url}`}
                     alt="Profile Picture"
                     className="w-[72px] h-[72px] lg:w-36 lg:h-36 object-cover overflow-clip rounded-full"
