@@ -13,7 +13,7 @@ import DisplayAllMileStone from "./IntComponent/Milestonepath";
 import { fetchKidDetails, fetchUserDetails } from "../api";
 import { StockImages } from "@/app/constant/profile";
 
-const getRandomImage = () => {
+export const getRandomImage = () => {
   const randomIndex = Math.floor(Math.random() * StockImages.length);
   return StockImages[randomIndex].url;
 };

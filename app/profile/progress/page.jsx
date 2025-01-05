@@ -2,15 +2,10 @@
 
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import {
-  KindiHeart,
-  ProfilePlaceholder01,
-  ProfilePlaceHolderOne,
-} from "@/public/Images";
+import { KindiHeart, ProfilePlaceholder01 } from "@/public/Images";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ReferralCard from "@/app/Sections/Profile/ReferralCard";
-import Loading from "@/app/loading";
-import { activityIcons, progressData } from "@/app/constant/menu";
+import { progressData } from "@/app/constant/menu";
 import { getAllActivities, getUserDataByEmail } from "@/lib/hygraph";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/lib/useAuth";
@@ -23,6 +18,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { fetchKidDetails, fetchUserDetails } from "../api";
+import { getRandomImage } from "../milestone/page";
+import { fetchAllActivities } from "@/app/data/p/Dynamic/Activity";
 
 const HYGRAPH_ENDPOINT =
   "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";
@@ -41,7 +39,7 @@ const ActivitiesCount = () => {
   useEffect(() => {
     const fetchActivities = async () => {
       try {
-        const activities = await getAllActivities();
+        const activities = await fetchAllActivities();
         setActivities(activities); // Set the fetched activities
         console.log("All activities: ", activities);
       } catch (error) {
@@ -102,13 +100,13 @@ const ActivitiesCount = () => {
                 <Link
                   key={activity.id}
                   target="_blank"
-                  href={`/p/activities/${activity.id}`}
+                  href={`/p/activities/${activity.documentId}`}
                   className="md:w-full hover:shadow-md duration-200 min-w-[170px] w-full min-h-[250px] h-full bg-white items-start justify-start border rounded-3xl flex flex-col gap-4"
                 >
                   <div className="flex max-h-[180px] min-h-[150px] h-[150px] md:max-h-[200px] md:h-full lg:h-full lg:max-h-[182px] lg:min-h-[182px] overflow-clip rounded-t-3xl">
-                    <Image
-                      src={activity.thumbnail.url}
-                      alt={activity.title}
+                    <img
+                      src={activity.Gallery[0]?.url}
+                      alt={activity.Title}
                       width={200}
                       height={150}
                       className="w-full max-h-[180px] duration-300 hover:scale-105 lg:h-full lg:max-h-[182px] lg:min-h-[182px] md:max-h-[300px] object-cover rounded-t-3xl"
@@ -117,17 +115,17 @@ const ActivitiesCount = () => {
                   <div className="w-full overflow-clip p-2 flex-col justify-start items-start flex gap-2 md:gap-2 lg:gap-4">
                     <div className="flex-col w-full gap-[6px] justify-start items-start">
                       <div className="text-[#0a1932] text-[16px] md:text-xl font-semibold font-fredoka leading-[20px]">
-                        {activity.title.length > 14
-                          ? `${activity.title.slice(0, 14)}...`
-                          : activity.title}
+                        {activity.Title.length > 14
+                          ? `${activity.Title.slice(0, 14)}...`
+                          : activity.Title}
                       </div>
                       <div className="justify-start pb-1 w-full items-center gap-1 lg:gap-2 inline-flex">
                         <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-6 flex pr-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
-                          {activity.themeName.slice(0, 10)}
+                          {activity.Theme}
                         </div>
                         •
                         <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-6 flex pr-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
-                          {activity.focusAge.slice(0, 10)}
+                          {activity.FocusAge}
                         </div>
                       </div>
                     </div>
@@ -220,23 +218,17 @@ const SubProfileRoutes = ({
   );
 };
 
-/**
- * @param {MyActivity completed by User} param0
- */
-
 const RemainingActivities = ({ userID }) => {
   const [totalActivities, setTotalActivities] = useState(0);
   const [completedActivities, setCompletedActivities] = useState(0);
   const [loadingTotal, setLoadingTotal] = useState(true);
-  const [loadingCompleted, setLoadingCompleted] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-
-  const ITEMS_PER_PAGE = 8;
 
   useEffect(() => {
     const fetchTotalActivities = async () => {
       try {
-        const activities = await getAllActivities();
+        const activities = await fetchAllActivities();
         setTotalActivities(activities.length);
       } catch (error) {
         setError("Failed to fetch total activities: " + error.message);
@@ -248,76 +240,49 @@ const RemainingActivities = ({ userID }) => {
     fetchTotalActivities();
   }, []);
 
+  console.log(
+    "Total Activities from Remaining Activities function",
+    totalActivities
+  );
+
   useEffect(() => {
-    const fetchCompletedActivities = async () => {
+    const fetchKid = async () => {
+      setLoading(true); // Start loading when data fetching begins
       try {
-        // Fetch completed activities using the MyActivity component's logic
-        const query = `
-          query GetUserActivities($relationalFirst: Int, $where: AccountWhereUniqueInput!) {
-            values: account(where: $where) {
-              id
-              username
-              myActivity(first: $relationalFirst) {
-                id
-                title
-                thumbnail {
-                  url
-                }
-                skills
-                setUpTime
-                themeName
-                focusAge
-                documentInStages(includeCurrent: true) {
-                  id
-                  stage
-                  updatedAt
-                  publishedAt
-                }
-              }
-            }
-          }
-        `;
+        const data = await fetchKidDetails();
+        const filteredData = data.data.filter(
+          (user) => user.documentId === userID
+        );
 
-        const variables = {
-          relationalFirst: 100, // Adjust this value based on your needs
-          where: { id: userID }, // Replace with the current user's ID
-        };
-
-        const response = await fetch(HYGRAPH_ENDPOINT, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${HYGRAPH_TOKEN}`,
-          },
-          body: JSON.stringify({ query, variables }),
-        });
-
-        const result = await response.json();
-
-        if (result.errors) {
-          throw new Error(result.errors[0].message);
+        if (filteredData.length > 0) {
+          const user = filteredData[0];
+          setCompletedActivities(user.myActivities.length); // Store the length of completed activities
         } else {
-          setCompletedActivities(result.data.values.myActivity.length);
+          setError("User not found");
         }
       } catch (error) {
-        setError("Error fetching completed activities: " + error.message);
+        console.error("Error fetching user data", error);
+        setError("Error fetching user data");
       } finally {
-        setLoadingCompleted(false);
+        setLoading(false); // End loading once data is fetched
       }
     };
 
-    fetchCompletedActivities();
+    fetchKid();
   }, [userID]);
 
-  if (loadingTotal || loadingCompleted) {
-    return <p>Loading...</p>;
-  }
+  console.log(
+    "Completed Activities from RemainingActivities function",
+    completedActivities
+  );
 
   if (error) {
     return <p>{error}</p>;
   }
 
+  // Calculate remaining activities
   const remainingActivities = totalActivities - completedActivities;
+  console.log("Finally Remaining:", remainingActivities);
 
   return (
     <>
@@ -327,36 +292,14 @@ const RemainingActivities = ({ userID }) => {
         backgroundColor="#f5a623"
         borderColor="#f5d08e"
       />
-      {/* <Dialog>
-        <DialogTrigger>
-        </DialogTrigger>
-        <DialogContent className="w-full lg:max-w-[1000px] lg:max-h-[600px] overflow-x-hidden overflow-y-scroll">
-          <DialogHeader className="p-4">
-            <div className="flex flex-row justify-center items-center w-full">
-              <DialogTitle>
-                <div className="text-center">
-                  <span className="text-[#3f3a64] text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
-                    Remaining{" "}
-                  </span>
-                  <span className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
-                    Activity
-                  </span>
-                </div>
-              </DialogTitle>
-            </div>
-          </DialogHeader>
-          <DialogDescription>
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
-          </DialogDescription>
-        </DialogContent>
-      </Dialog> */}
     </>
   );
 };
 
 const MyActivity = ({ userID }) => {
+  console.log("Received this UserID as Property: " + userID);
   const [activities, setActivities] = useState([]);
+  const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [page, setPage] = useState(1);
@@ -364,77 +307,33 @@ const MyActivity = ({ userID }) => {
 
   const ITEMS_PER_PAGE = 8; // Number of activities per page
 
-  const fetchActivities = async () => {
-    setLoading(true);
+  useEffect(() => {
+    const fetchKid = async () => {
+      setLoading(true); // Start loading when data fetching begins
+      try {
+        const data = await fetchKidDetails();
+        // Filter user data based on userID passed as a prop
+        const filteredData = data.data.filter(
+          (user) => user.documentId === userID
+        );
 
-    const query = `
-      query GetUserActivities($relationalFirst: Int, $relationalSkip: Int, $where: AccountWhereUniqueInput!) {
-        values: account(where: $where) {
-          id
-          username
-          myActivity(first: $relationalFirst, skip: $relationalSkip) {
-            id
-            title
-            thumbnail {
-              url
-            }
-            skills
-            setUpTime
-            themeName
-            focusAge
-            documentInStages(includeCurrent: true) {
-              id
-              stage
-              updatedAt
-              publishedAt
-            }
-          }
+        if (filteredData.length > 0) {
+          setUserData(filteredData[0]); // Assuming you are getting only one matching user
+        } else {
+          setError("User not found");
         }
-        activityCount: account(where: $where) {
-          myActivity {
-            id
-          }
-        }
+      } catch (error) {
+        console.error("Error fetching user data", error);
+        setError("Error fetching user data");
+      } finally {
+        setLoading(false); // End loading once data is fetched
       }
-    `;
-
-    const variables = {
-      relationalFirst: ITEMS_PER_PAGE,
-      relationalSkip: (page - 1) * ITEMS_PER_PAGE,
-      where: { id: userID },
     };
 
-    try {
-      const response = await fetch(HYGRAPH_ENDPOINT, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${HYGRAPH_TOKEN}`,
-        },
-        body: JSON.stringify({ query, variables }),
-      });
+    fetchKid();
+  }, [userID]); // Dependency on userID so data updates when it changes
 
-      const result = await response.json();
-
-      if (result.errors) {
-        throw new Error(result.errors[0].message);
-      } else {
-        const newActivities = result.data.values.myActivity;
-        const totalItems = result.data.activityCount.myActivity.length;
-
-        setActivities(newActivities);
-        setTotalPages(Math.ceil(totalItems / ITEMS_PER_PAGE));
-      }
-    } catch (error) {
-      setError("Error fetching activities: " + error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchActivities();
-  }, [page, userID]);
+  console.log("Filtered Kids Data from Progress Page: ", userData);
 
   const handlePageChange = (newPage) => {
     if (newPage > 0 && newPage <= totalPages) {
@@ -444,16 +343,26 @@ const MyActivity = ({ userID }) => {
 
   if (error) return <p>{error}</p>;
 
+  // Handle the activities for the current user
+  const activitiesToDisplay = userData
+    ? userData.myActivities.slice(
+        (page - 1) * ITEMS_PER_PAGE,
+        page * ITEMS_PER_PAGE
+      )
+    : [];
+
   return (
     <>
       <Dialog>
         <DialogTrigger>
-          <SubBagde
-            number={activities.length}
-            title="Complete"
-            backgroundColor="#029871"
-            borderColor="#a5d2ce"
-          />
+          {userData ? (
+            <SubBagde
+              number={userData.myActivities.length}
+              title="Complete"
+              backgroundColor="#029871"
+              borderColor="#a5d2ce"
+            />
+          ) : null}
         </DialogTrigger>
         <DialogContent className="w-full lg:max-w-[1000px] lg:max-h-[600px] overflow-x-hidden overflow-y-scroll">
           <DialogHeader className="p-4">
@@ -471,69 +380,48 @@ const MyActivity = ({ userID }) => {
             </div>
           </DialogHeader>
           <DialogDescription>
-            <div className="grid grid-cols-2 lg:grid-cols-4 w-full gap-2 md:gap-4 justify-between items-start">
-              {activities.map((activity) => (
-                <Link
-                  key={activity.id}
-                  target="_blank"
-                  href={`/p/activities/${activity.id}`}
-                  className="md:w-full hover:shadow-md duration-200 min-w-[170px] w-full min-h-[250px] h-full bg-white items-start justify-start border rounded-3xl flex flex-col gap-4"
-                >
-                  <div className="flex max-h-[180px] min-h-[150px] h-[150px] md:max-h-[200px] md:h-full lg:h-full lg:max-h-[182px] lg:min-h-[182px]  overflow-clip rounded-t-3xl">
-                    <Image
-                      src={activity.thumbnail.url}
-                      alt={activity.title}
-                      width={200}
-                      height={150}
-                      className="w-full max-h-[180px] duration-300 hover:scale-105 lg:h-full lg:max-h-[182px] lg:min-h-[182px] md:max-h-[300px] object-cover rounded-t-3xl"
-                    />
-                  </div>
-                  <div className="w-full overflow-clip p-2 flex-col justify-start items-start flex gap-2 md:gap-2 lg:gap-4">
-                    <div className="flex-col w-full gap-[6px] justify-start items-start">
-                      <div className="text-[#0a1932] text-[16px] md:text-xl font-semibold font-fredoka leading-[20px]">
-                        {activity.title.length > 14
-                          ? `${activity.title.slice(0, 14)}...`
-                          : activity.title}
-                      </div>
-                      <div className="justify-start pb-1 w-full items-center gap-1 lg:gap-2 inline-flex">
-                        <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-6 flex pr-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
-                          {activity.themeName.slice(0, 10)}
-                        </div>
-                        •
-                        <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-6 flex pr-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
-                          {activity.focusAge.slice(0, 10)}
-                        </div>
-                      </div>
-                    </div>
-                    {/* <div className="items-center justify-center gap-2 md:gap-4 grid grid-cols-5">
-                      {activityIcons.reduce((acc, item, index) => {
-                        // Only render the icon if it matches the activity and we haven't already displayed 4
-                        if (activity[item.key] && acc.length < 4) {
-                          acc.push(
-                            <div
-                              key={item.key}
-                              className={`w-[20px] h-[24px] md:w-[36px] md:h-[36px] lg:w-[48px] lg:h-[48px] flex justify-center items-center bg-[#${activityIcons.concatbackgroundColor}] rounded-[16px]`}
-                            >
-                              <Image alt="Kindi" src={item.icon} />
-                            </div>
-                          );
-                        }
-                        return acc; // Return accumulated icons
-                      }, [])}
-                      {activityIcons.length > 4 && (
-                        <div
-                          className={`w-[20px] lg:w-[48px] md:w-[36px] md:h-[36px] md:rounded-xl lg:h-[48px] h-[20px] flex lg:rounded-[12px] justify-center items-center bg-[#F6BEBF] rounded-[4px]`}
+            {userData ? (
+              <div className="flex">
+                {userData.myActivities.length > 0 ? (
+                  <div className="grid grid-cols-2 lg:grid-cols-4 w-full gap-2 md:gap-4 justify-between items-start">
+                    {activitiesToDisplay.map((activity) => (
+                      <div className="flex" key={activity.id}>
+                        <Link
+                          key={activity.id}
+                          target="_blank"
+                          href={`/p/activities/${activity.documentId}`}
+                          className="md:w-full hover:shadow-md duration-200 min-w-[170px] w-full min-h-[250px] h-full bg-white items-start justify-start border rounded-3xl flex flex-col gap-4"
                         >
-                          <span className="text-red p-[2px] text-[12px] lg:text-[20px] font-medium font-fredoka">
-                            +{activityIcons.length - 4}
-                          </span>
-                        </div>
-                      )}
-                    </div> */}
+                          <div className="flex max-h-[180px] min-h-[150px] h-[150px] md:max-h-[200px] md:h-full lg:h-full lg:max-h-[182px] lg:min-h-[182px]  overflow-clip rounded-t-3xl">
+                            {/* Image Placeholder */}
+                          </div>
+                          <div className="w-full overflow-clip p-2 flex-col justify-start items-start flex gap-2 md:gap-2 lg:gap-4">
+                            <div className="flex-col w-full gap-[6px] justify-start items-start">
+                              <div className="text-[#0a1932] text-[16px] md:text-xl font-semibold font-fredoka leading-[20px]">
+                                {activity.Title.length > 14
+                                  ? `${activity.Title.slice(0, 14)}...`
+                                  : activity.Title}
+                              </div>
+                              <div className="justify-start pb-1 w-full items-center gap-1 lg:gap-2 inline-flex">
+                                <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-6 flex pr-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
+                                  {activity.Theme}
+                                </div>
+                                •
+                                <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-6 flex pr-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
+                                  {activity.FocusAge}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </Link>
+                      </div>
+                    ))}
                   </div>
-                </Link>
-              ))}
-            </div>
+                ) : (
+                  <p>No activities Found</p>
+                )}
+              </div>
+            ) : null}
             {loading && <p>Loading...</p>}
 
             {/* Pagination Controls */}
@@ -572,487 +460,93 @@ const MyActivity = ({ userID }) => {
   );
 };
 
-// const PartnerOne = () => {
-//   const { user, loading } = useAuth();
-//   const router = useRouter();
-//   const [hygraphUser, setHygraphUser] = useState(null);
-
-//   useEffect(() => {
-//     if (user && user.email) {
-//       getUserDataByEmail(user.email).then((data) => {
-//         setHygraphUser(data);
-//       });
-//     }
-//   }, [user, loading, router]);
-
-//   useEffect(() => {
-//     if (hygraphUser && hygraphUser.partner) {
-//       hygraphUser.partner.forEach((partner) => {
-//         const partnerAvatarUrl = partner.profileAvatar
-//           ? partner.profileAvatar.url
-//           : null;
-
-//         // Check if the partner has an avatar in myAvatar field
-//         const avatarUrl =
-//           partner.myAvatar?.profileAvatar?.url || partnerAvatarUrl;
-
-//         if (avatarUrl) {
-//           console.log("Partner Avatar URL:", avatarUrl);
-//         } else {
-//           console.log("No avatar for this partner.");
-//         }
-//         console.log("Partner ID:", partner.id);
-//         console.log("Partner Name:", partner.email);
-//         // console.log("Partner Name:", partner.myAvatar.profileAvatar.url);
-//       });
-//     }
-//   }, [hygraphUser]);
-//   return (
-//     <div className="relative w-16 h-16  p-0 lg:p-1  rounded-full ">
-//       <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
-//         {hygraphUser &&
-//           hygraphUser.partner &&
-//           hygraphUser.partner.slice(0, 1).map((partner) => {
-//             const avatarUrl =
-//               partner.myAvatar?.profileAvatar?.url ||
-//               partner.profileAvatar?.url;
-
-//             return (
-//               <div key={partner.id} className="flex justify-center">
-//                 {avatarUrl ? (
-//                   <Image
-//                     width={84}
-//                     height={84}
-//                     src={avatarUrl}
-//                     alt={`Avatar of ${partner.name}`}
-//                     className="min-w-16 h-16 cursor-pointer hover:scale-110 ease-in-out duration-200  object-cover overflow-clip rounded-full"
-//                   />
-//                 ) : (
-//                   <div>No avatar</div>
-//                 )}
-//               </div>
-//             );
-//           })}
-//       </div>
-//     </div>
-//   );
-// };
-// const PartnerTwo = () => {
-//   const { user, loading } = useAuth();
-//   const router = useRouter();
-//   const [hygraphUser, setHygraphUser] = useState(null);
-
-//   useEffect(() => {
-//     if (user && user.email) {
-//       getUserDataByEmail(user.email).then((data) => {
-//         setHygraphUser(data);
-//       });
-//     }
-//   }, [user, loading, router]);
-
-//   useEffect(() => {
-//     if (hygraphUser && hygraphUser.partner) {
-//       hygraphUser.partner.forEach((partner) => {
-//         const partnerAvatarUrl = partner.profileAvatar
-//           ? partner.profileAvatar.url
-//           : null;
-
-//         // Check if the partner has an avatar in myAvatar field
-//         const avatarUrl =
-//           partner.myAvatar?.profileAvatar?.url || partnerAvatarUrl;
-
-//         if (avatarUrl) {
-//           console.log("Partner Avatar URL:", avatarUrl);
-//         } else {
-//           console.log("No avatar for this partner.");
-//         }
-//         console.log("Partner ID:", partner.id);
-//         console.log("Partner Name:", partner.email);
-//         // console.log("Partner Name:", partner.myAvatar.profileAvatar.url);
-//       });
-//     }
-//   }, [hygraphUser]);
-//   return (
-//     <div className="relative w-16 h-16 p-0 lg:p-1 rounded-full ">
-//       <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
-//         {hygraphUser &&
-//           hygraphUser.partner &&
-//           hygraphUser.partner.slice(1, 2).map((partner) => {
-//             const avatarUrl =
-//               partner.myAvatar?.profileAvatar?.url ||
-//               partner.profileAvatar?.url;
-
-//             return (
-//               <div key={partner.id} className="flex justify-center">
-//                 {avatarUrl ? (
-//                   <Image
-//                     width={84}
-//                     height={84}
-//                     src={avatarUrl}
-//                     alt={`Avatar of ${partner.name}`}
-//                     className="min-w-16 h-16 cursor-pointer hover:scale-110 ease-in-out duration-200  object-cover overflow-clip rounded-full"
-//                   />
-//                 ) : (
-//                   <div>No avatar</div>
-//                 )}
-//               </div>
-//             );
-//           })}
-//       </div>
-//     </div>
-//   );
-// };
-// const PartnerThree = () => {
-//   const { user, loading } = useAuth();
-//   const router = useRouter();
-//   const [hygraphUser, setHygraphUser] = useState(null);
-
-//   useEffect(() => {
-//     if (user && user.email) {
-//       getUserDataByEmail(user.email).then((data) => {
-//         setHygraphUser(data);
-//       });
-//     }
-//   }, [user, loading, router]);
-
-//   useEffect(() => {
-//     if (hygraphUser && hygraphUser.partner) {
-//       hygraphUser.partner.forEach((partner) => {
-//         const partnerAvatarUrl = partner.profileAvatar
-//           ? partner.profileAvatar.url
-//           : null;
-
-//         // Check if the partner has an avatar in myAvatar field
-//         const avatarUrl =
-//           partner.myAvatar?.profileAvatar?.url || partnerAvatarUrl;
-
-//         if (avatarUrl) {
-//           console.log("Partner Avatar URL:", avatarUrl);
-//         } else {
-//           console.log("No avatar for this partner.");
-//         }
-//         console.log("Partner ID:", partner.id);
-//         console.log("Partner Name:", partner.email);
-//         // console.log("Partner Name:", partner.myAvatar.profileAvatar.url);
-//       });
-//     }
-//   }, [hygraphUser]);
-//   return (
-//     <div className="relative w-16 h-16  p-0 lg:p-1  rounded-full ">
-//       <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
-//         {hygraphUser &&
-//           hygraphUser.partner &&
-//           hygraphUser.partner.slice(2, 3).map((partner) => {
-//             const avatarUrl =
-//               partner.myAvatar?.profileAvatar?.url ||
-//               partner.profileAvatar?.url;
-
-//             return (
-//               <div key={partner.id} className="flex justify-center">
-//                 {avatarUrl ? (
-//                   <Image
-//                     width={84}
-//                     height={84}
-//                     src={avatarUrl}
-//                     alt={`Avatar of ${partner.name}`}
-//                     className="min-w-16 h-16  cursor-pointer hover:scale-110 ease-in-out duration-200  object-cover overflow-clip rounded-full"
-//                   />
-//                 ) : (
-//                   <div>No avatar</div>
-//                 )}
-//               </div>
-//             );
-//           })}
-//       </div>
-//     </div>
-//   );
-// };
-// const PartnerFour = () => {
-//   const { user, loading } = useAuth();
-//   const router = useRouter();
-//   const [hygraphUser, setHygraphUser] = useState(null);
-
-//   useEffect(() => {
-//     if (user && user.email) {
-//       getUserDataByEmail(user.email).then((data) => {
-//         setHygraphUser(data);
-//       });
-//     }
-//   }, [user, loading, router]);
-
-//   useEffect(() => {
-//     if (hygraphUser && hygraphUser.partner) {
-//       hygraphUser.partner.forEach((partner) => {
-//         const partnerAvatarUrl = partner.profileAvatar
-//           ? partner.profileAvatar.url
-//           : null;
-
-//         // Check if the partner has an avatar in myAvatar field
-//         const avatarUrl =
-//           partner.myAvatar?.profileAvatar?.url || partnerAvatarUrl;
-
-//         if (avatarUrl) {
-//           console.log("Partner Avatar URL:", avatarUrl);
-//         } else {
-//           console.log("No avatar for this partner.");
-//         }
-//         console.log("Partner ID:", partner.id);
-//         console.log("Partner Name:", partner.email);
-//         // console.log("Partner Name:", partner.myAvatar.profileAvatar.url);
-//       });
-//     }
-//   }, [hygraphUser]);
-//   return (
-//     <div className="relative w-16 h-16  p-0 lg:p-1  rounded-full ">
-//       <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
-//         {hygraphUser &&
-//           hygraphUser.partner &&
-//           hygraphUser.partner.slice(3, 4).map((partner) => {
-//             const avatarUrl =
-//               partner.myAvatar?.profileAvatar?.url ||
-//               partner.profileAvatar?.url;
-
-//             return (
-//               <div key={partner.id} className="flex justify-center">
-//                 {avatarUrl ? (
-//                   <Image
-//                     width={84}
-//                     height={84}
-//                     src={avatarUrl}
-//                     alt={`Avatar of ${partner.name}`}
-//                     className="min-w-16 h-16 cursor-pointer hover:scale-110 ease-in-out duration-200  object-cover overflow-clip rounded-full"
-//                     // className="w-[80px] h-[80px] lg:w-36 lg:h-36 object-cover overflow-clip rounded-full"
-//                   />
-//                 ) : (
-//                   <div>No avatar</div>
-//                 )}
-//               </div>
-//             );
-//           })}
-//       </div>
-//     </div>
-//   );
-// };
-
-const CurrentUser = () => {
-  const { user, loading } = useAuth();
+export default function ProgressSection() {
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const [hygraphUser, setHygraphUser] = useState(null);
 
   useEffect(() => {
-    if (user && user.email) {
-      getUserDataByEmail(user.email).then((data) => {
-        setHygraphUser(data);
-      });
-    }
-  }, [user, loading, router]);
+    const fetchData = async () => {
+      const token = localStorage.getItem("jwt");
+      if (!token) {
+        return;
+      }
+
+      try {
+        const data = await fetchUserDetails(token);
+        setUserData(data);
+      } catch (error) {
+        console.error("Error fetching user data", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [router]);
+
+  if (loading) return <p>Loading...</p>;
 
   return (
     <>
-      {user && hygraphUser ? (
-        <div className="relative -mx-[26px] z-20 min-w-20 lg:min-w-36 w-20 h-20 lg:w-36 lg:h-36 p-1 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600">
-          <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
-            <Image
-              src={
-                hygraphUser.myAvatar.profileAvatar.url ||
-                "https://ap-south-1.graphassets.com/cm1dom2gf0lqw07pi72v8797k/cm3jnqto60fx008o0ctpfoiaq"
-              }
-              alt="User DP"
-              width={100}
-              height={100}
-              className="w-[72px] cursor-pointer hover:scale-110 ease-in-out duration-200 h-[72px] lg:w-36 lg:h-36 object-cover overflow-clip rounded-full"
-            />
-          </div>
-        </div>
-      ) : (
-        <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
-          <Image
-            src={ProfilePlaceholder01}
-            alt="Random Profile Placeholder"
-            className="cursor-pointer w-16 h-16"
-          />
-        </div>
-      )}
-    </>
-  );
-};
-
-export default async function ProgressSection() {
-  const { user, loading } = useAuth();
-  const router = useRouter();
-  const [hygraphUser, setHygraphUser] = useState(null);
-
-  useEffect(() => {
-    if (user && user.email) {
-      getUserDataByEmail(user.email).then((data) => {
-        setHygraphUser(data);
-      });
-    }
-  }, [user, loading, router]);
-
-  useEffect(() => {
-    if (hygraphUser && hygraphUser.partner) {
-      hygraphUser.partner.forEach((partner) => {
-        const partnerAvatarUrl = partner.profileAvatar
-          ? partner.profileAvatar.url
-          : "https://ap-south-1.graphassets.com/cm1dom2gf0lqw07pi72v8797k/cm3jnqto60fx008o0ctpfoiaq";
-
-        // Check if the partner has an avatar in myAvatar field
-        const avatarUrl =
-          partner.myAvatar?.profileAvatar?.url || partnerAvatarUrl;
-
-        if (avatarUrl) {
-          console.log("Partner Avatar URL:", avatarUrl);
-        } else {
-          console.log("No avatar for this partner.");
-        }
-        console.log("Partner ID:", partner.id);
-        console.log("Partner Name:", partner.email);
-      });
-    }
-  }, [hygraphUser]);
-
-  if (loading) {
-    return (
-      <div className="w-full h-screen flex justify-center items-center">
-        <Loading />
-      </div>
-    );
-  }
-
-  return (
-    <>
-      <head>
-        <title>Progress - Kindilearning</title>
-        <meta name="description" content="Your profile page on Kindilearning" />
-      </head>
-      <section className="w-full h-auto bg-[#F5F5F5] pb-12 pt-6 lg:pt-0 md:bg-[#EAEAF5] items-center justify-center flex flex-col px-0">
-        {/* Topbar */}
-        <div className="claracontainer py-4 md:p-8 lg:pt-20 w-full flex flex-col overflow-hidden gap-8">
-          <Tabs
-            defaultValue="CurrentUser"
-            className="w-full flex flex-col gap-6 lg:gap-24"
-          >
-            <TabsList className="lg:bg-[#eaeaf5] bg-[#F5F5F5]">
-              {hygraphUser?.partner.slice(2, 3)?.map((partner) => (
-                <TabsTrigger
-                  className="data-[state=active]:bg-[#f5f5f500] p-0 data-[state=active]:shadow-none"
-                  key={partner.id}
-                  value={`Partner-${partner.id}`}
+      <section className="w-full pb-24 h-full bg-[#EAEAF5] items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">
+        <div className="claracontainer items-center justify-center p-4 md:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-8">
+          {userData ? (
+            <div className="flex w-full py-6 flex-col justify-center items-center">
+              {userData.myKids && userData.myKids.length > 0 ? (
+                <Tabs
+                  defaultValue={userData.myKids[0].id}
+                  className="w-full flex-col flex items-center h-fit bg-transparent"
                 >
-                  <Image
-                    width={84}
-                    height={84}
-                    src={
-                      partner.myAvatar?.profileAvatar?.url ||
-                      "https://ap-south-1.graphassets.com/cm1dom2gf0lqw07pi72v8797k/cm3jnqto60fx008o0ctpfoiaq"
-                    }
-                    alt={`Avatar of ${partner.name}`}
-                    className="min-w-16 max-w-16 h-16 cursor-pointer hover:scale-110 ease-in-out duration-200  object-cover overflow-clip rounded-full"
-                  />
-                </TabsTrigger>
-              ))}
-              {hygraphUser?.partner.slice(0, 1)?.map((partner) => (
-                <TabsTrigger
-                  className="data-[state=active]:bg-[#f5f5f500] p-0 data-[state=active]:shadow-none"
-                  key={partner.id}
-                  value={`Partner-${partner.id}`}
-                >
-                  <Image
-                    width={84}
-                    height={84}
-                    src={
-                      partner.myAvatar?.profileAvatar?.url ||
-                      "https://ap-south-1.graphassets.com/cm1dom2gf0lqw07pi72v8797k/cm3jnqto60fx008o0ctpfoiaq"
-                    }
-                    alt={`Avatar of ${partner.name}`}
-                    className="min-w-16 max-w-16 h-16 cursor-pointer hover:scale-110 ease-in-out duration-200  object-cover overflow-clip rounded-full"
-                  />
-                </TabsTrigger>
-              ))}
-              <TabsTrigger
-                className="data-[state=active]:bg-[#f5f5f500] p-0 data-[state=active]:shadow-none"
-                value="CurrentUser"
-              >
-                <CurrentUser />
-              </TabsTrigger>
-              {hygraphUser?.partner.slice(1, 2)?.map((partner) => (
-                <TabsTrigger
-                  className="data-[state=active]:bg-[#f5f5f500] p-0 data-[state=active]:shadow-none"
-                  key={partner.id}
-                  value={`Partner-${partner.id}`}
-                >
-                  <Image
-                    width={84}
-                    height={84}
-                    src={
-                      partner.myAvatar?.profileAvatar?.url ||
-                      "https://ap-south-1.graphassets.com/cm1dom2gf0lqw07pi72v8797k/cm3jnqto60fx008o0ctpfoiaq"
-                    }
-                    alt={`Avatar of ${partner.name}`}
-                    className="min-w-16 max-w-16 h-16 cursor-pointer hover:scale-110 ease-in-out duration-200 object-cover overflow-clip rounded-full"
-                  />
-                </TabsTrigger>
-              ))}
-              {hygraphUser?.partner.slice(3, 4)?.map((partner) => (
-                <TabsTrigger
-                  className="data-[state=active]:bg-[#f5f5f500] p-0 data-[state=active]:shadow-none"
-                  key={partner.id}
-                  value={`Partner-${partner.id}`}
-                >
-                  <Image
-                    width={84}
-                    height={84}
-                    src={
-                      partner.myAvatar?.profileAvatar?.url ||
-                      "https://ap-south-1.graphassets.com/cm1dom2gf0lqw07pi72v8797k/cm3jnqto60fx008o0ctpfoiaq"
-                    }
-                    alt={`Avatar of ${partner.name}`}
-                    className="min-w-16 max-w-16 h-16 cursor-pointer hover:scale-110 ease-in-out duration-200 object-cover overflow-clip rounded-full"
-                  />
-                </TabsTrigger>
-              ))}
-            </TabsList>
-            {hygraphUser?.partner?.map((partner) => (
-              <TabsContent key={partner.id} value={`Partner-${partner.id}`}>
-                {hygraphUser ? (
-                  <div className="w-full flex flex-col gap-2 justify-between items-center">
-                    <div className="font-fredoka text-[12px] lg:text-[20px]">
-                      Email: {partner.email || "Partner"}
-                    </div>
-                    <div className="flex gap-2 px-4 items-start lg:px-0 overflow-x-scroll scrollbar-hidden w-full">
-                      <ActivitiesCount />
-                      <RemainingActivities userID={partner.id} />
-                      <MyActivity userID={partner.id} />
-                    </div>
+                  <div className="flex w-full max-w-[400px] lg:max-w-full lg:items-center lg:justify-center ">
+                    {/* Main Frame: Shows up to 5 tabs */}
+                    <TabsList className="flex gap-2 lg:gap-[2px] h-full bg-transparent py-6 overflow-x-scroll justify-center items-center w-full scrollbar-hidden">
+                      {userData.myKids.map((kid) => (
+                        <TabsTrigger
+                          key={kid.id}
+                          value={kid.id}
+                          className="flex-shrink-0 flex-col data-[state=active]:bg-[#f5f5f500] data-[state=active]:opacity-100 opacity-70  data-[state=active]:z-12 data-[state=active]:scale-125 duration-200 ease-ease-in-out  data-[state=active]:border-red border-2 p-0 rounded-full bg-transparent"
+                        >
+                          <Image
+                            src={getRandomImage()} // Random image for each kid's tab
+                            alt={`Profile of ${kid.Name}`}
+                            width={48}
+                            height={48}
+                            title={kid.Name}
+                            className={`w-16 h-16 p-0 m-0 rounded-full object-cover transition-all duration-200`}
+                          />
+                        </TabsTrigger>
+                      ))}
+                    </TabsList>
                   </div>
-                ) : null}
-              </TabsContent>
-            ))}
-            <TabsContent value="CurrentUser">
-              <>
-                {hygraphUser ? (
-                  <div className="flex gap-2 px-4 lg:px-0 overflow-x-scroll scrollbar-hidden w-full">
-                    <ActivitiesCount />
-                    <RemainingActivities userID={hygraphUser.id} />
-                    <MyActivity userID={hygraphUser.id} />
-                  </div>
-                ) : (
-                  <div className="flex w-full flex-col justify-center items-center gap-2">
-                    <h2 className="text-[#029871] text-[24px] md:text-[28px] lg:text-[32px] xl:text-[40px] font-semibold  font-fredoka leading-tight">
-                      Kindi Learner
-                    </h2>
-                    <p className="font-fredoka text-[12px] lg:text-[20px]">
-                      <Link href="/auth/sign-in" className="text-red">
-                        Login&nbsp;
-                      </Link>
-                      to use more feature
-                    </p>
-                  </div>
-                )}
-              </>
-            </TabsContent>
-          </Tabs>
+
+                  {/* Dynamically create TabsContent for each kid */}
+                  {userData.myKids.map((kid) => (
+                    <TabsContent key={kid.id} value={kid.id} className="w-full">
+                      <div className="w-full flex flex-col gap-2 lg:gap-4 justify-between items-center">
+                        <div className="font-fredoka text-[12px] lg:text-[20px]">
+                          {kid.Name}
+                        </div>
+
+                        <div className="flex gap-2 px-4 items-start lg:px-0 overflow-x-scroll scrollbar-hidden w-full">
+                          <ActivitiesCount />
+                          <RemainingActivities userID={kid.documentId} />
+                          <MyActivity userID={kid.documentId} />
+                        </div>
+                        <div className="w-full flex flex-col gap-2 justify-between items-center">
+                          <div className="font-fredoka text-[12px] lg:text-[20px]"></div>
+                        </div>
+                      </div>
+                    </TabsContent>
+                  ))}
+                </Tabs>
+              ) : (
+                <p>No kids profiles available.</p>
+              )}
+            </div>
+          ) : (
+            <p>User Not Found</p>
+          )}
 
           <div className="grid grid-cols-2 md:flex w-full px-2 lg:px-0 justify-start items-center gap-2 flex-wrap">
             {progressData.map((card, index) => (
