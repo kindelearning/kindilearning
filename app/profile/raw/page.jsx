@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/dialog";
 import { Condiment } from "next/font/google";
 import MyLevel from "../Sections/MyLevel";
- 
+
 export default function RawProfile() {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -48,25 +48,27 @@ export default function RawProfile() {
   return (
     <section className="min-h-screen flex justify-center items-center bg-gray-100">
       <div className="claracontainer max-w-4xl w-full bg-white shadow-lg rounded-lg p-6">
-        <Dialog>
-          <DialogTrigger>add new kid</DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Are you absolutely sure?</DialogTitle>
-              <DialogDescription>
-                <AddKidForm parentId={userData.id} />
-              </DialogDescription>
-            </DialogHeader>
-          </DialogContent>
-        </Dialog>
+        {userData && (
+          <Dialog>
+            <DialogTrigger>add new kid</DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Are you absolutely sure?</DialogTitle>
+                <DialogDescription>
+                  <AddKidForm parentId={userData.id} />
+                </DialogDescription>
+              </DialogHeader>
+            </DialogContent>
+          </Dialog>
+        )}
 
         {/* <UpdateRawProfile /> */}
         <h1 className="text-2xl font-semibold text-center mb-6">
           User Profile
         </h1>
-        <MyLevel />
+        {/* <MyLevel /> */}
 
-        <Dialog>
+        {/* <Dialog>
           <DialogTrigger className="text-purple">Invite a new Partner</DialogTrigger>
           <DialogContent>
             <DialogHeader>
@@ -76,7 +78,7 @@ export default function RawProfile() {
               </DialogDescription>
             </DialogHeader>
           </DialogContent>
-        </Dialog>
+        </Dialog> */}
 
         {userData && (
           <div className="space-y-6">
@@ -128,47 +130,59 @@ export default function RawProfile() {
               <h3 className="text-xl font-semibold mb-4">Kids Profiles</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {userData.myKids && userData.myKids.length > 0 ? (
-                  userData.myKids.map((kid, index) => (
-                    <div
-                      key={index}
-                      className="p-4 bg-gray-50 rounded-lg shadow-sm"
-                    >
-                      <Dialog>
-                        <DialogTrigger>Update kid</DialogTrigger>
-                        <DialogContent>
-                          <DialogHeader>
-                            <DialogTitle>Are you absolutely sure?</DialogTitle>
-                            <DialogDescription>
-                              <UpdateKidForm
-                                kidId={kid.documentId}
-                                parentId={userData.id}
-                              />
-                            </DialogDescription>
-                          </DialogHeader>
-                        </DialogContent>
-                      </Dialog>
+                  userData.myKids.map((kid, index) => {
+                    if (index % 2 === 0) {
+                      return (
+                        <div
+                          key={index}
+                          className="p-4 bg-gray-50 rounded-lg shadow-sm"
+                        >
+                          <Dialog>
+                            <DialogTrigger>Update kid</DialogTrigger>
+                            <DialogContent>
+                              <DialogHeader>
+                                <DialogTitle>
+                                  Are you absolutely sure?
+                                </DialogTitle>
+                                <DialogDescription>
+                                  <UpdateKidForm
+                                    kidId={kid.documentId}
+                                    parentId={userData.id}
+                                  />
+                                </DialogDescription>
+                              </DialogHeader>
+                            </DialogContent>
+                          </Dialog>
 
-                      <RemoveKidButton
-                        kidId={kid.documentId}
-                        parentId={userData.id}
-                      />
-                      <p>
-                        <strong>Id:</strong> {kid.id}
-                      </p>
-                      <p>
-                        <strong>Name:</strong> {kid.Name}
-                      </p>
-                      <p>
-                        <strong>Age:</strong> {kid.age}
-                      </p>
-                      <p>
-                        <strong>Gender:</strong> {kid.Gender}
-                      </p>
-                      <p>
-                        <strong>DoB:</strong> {kid.dob}
-                      </p>
-                    </div>
-                  ))
+                          <RemoveKidButton
+                            kidId={kid.documentId}
+                            parentId={userData.id}
+                          />
+                          <p>
+                            <strong>Id:</strong> {kid.id}
+                          </p>
+                          <p>
+                            <strong>Name:</strong> {kid.Name}
+                          </p>
+                          <p>
+                            <strong>Age:</strong> {kid.age}
+                          </p>
+                          <p>
+                            <strong>Gender:</strong> {kid.Gender}
+                          </p>
+                          <p>
+                            <strong>DoB:</strong> {kid.dob}
+                          </p>
+                          <UpdateKidButton
+                            kidDocumentId={kid.documentId} // Pass the kid's documentId
+                            activityId="70" // Pass the activity ID to associate with the kid
+                            parentId={userData.id} // Pass the parent's ID
+                          />
+                        </div>
+                      );
+                    }
+                    return null; // Return null if the kid is at an odd index
+                  })
                 ) : (
                   <p>No kids profiles available.</p>
                 )}
@@ -193,68 +207,84 @@ export default function RawProfile() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {userData.myPaymentMethods &&
                 userData.myPaymentMethods.length > 0 ? (
-                  userData.myPaymentMethods.map((kid, index) => (
-                    <div
-                      key={index}
-                      className="p-4 bg-gray-50 rounded-lg shadow-sm"
-                    >
-                      <Dialog>
-                        <DialogTrigger className="text-[blue]">
-                          Update Payment Method
-                        </DialogTrigger>
-                        <DialogContent>
-                          <DialogHeader>
-                            <DialogTitle>Are you absolutely sure?</DialogTitle>
-                            <DialogDescription>
-                              <UpdatePaymentDataForm
-                                paymentId={kid.documentId}
-                                parentId={userData.id}
-                              />
-                            </DialogDescription>
-                          </DialogHeader>
-                        </DialogContent>
-                      </Dialog>
-                      <RemovePaymentMethodButton paymentId={kid.documentId} />
-                      <p>
-                        <strong>Id:</strong> {kid.id}
-                      </p>
-                      <p>
-                        <strong>Name:</strong> {kid.Name}
-                      </p>
-                      <p>
-                        <strong>Number:</strong> {kid.Number}
-                      </p>
-                      <p>
-                        <strong>ExpiryDate:</strong> {kid.ExpiryDate}
-                      </p>
-                      <p>
-                        <strong>CVV:</strong> {kid.CVV}
-                      </p>
-                    </div>
-                  ))
+                  userData.myPaymentMethods.map((payment, index) => {
+                    // Only render payment methods at even index (0, 2, 4, ...)
+                    if (index % 2 === 0) {
+                      return (
+                        <div
+                          key={index}
+                          className="p-4 bg-gray-50 rounded-lg shadow-sm"
+                        >
+                          <Dialog>
+                            <DialogTrigger className="text-[blue]">
+                              Update Payment Method
+                            </DialogTrigger>
+                            <DialogContent>
+                              <DialogHeader>
+                                <DialogTitle>
+                                  Are you absolutely sure?
+                                </DialogTitle>
+                                <DialogDescription>
+                                  <UpdatePaymentDataForm
+                                    paymentId={payment.documentId}
+                                    parentId={userData.id}
+                                  />
+                                </DialogDescription>
+                              </DialogHeader>
+                            </DialogContent>
+                          </Dialog>
+                          <RemovePaymentMethodButton
+                            paymentId={payment.documentId}
+                          />
+                          <p>
+                            <strong>Id:</strong> {payment.id}
+                          </p>
+                          <p>
+                            <strong>Name:</strong> {payment.Name}
+                          </p>
+                          <p>
+                            <strong>Number:</strong> {payment.Number}
+                          </p>
+                          <p>
+                            <strong>ExpiryDate:</strong> {payment.ExpiryDate}
+                          </p>
+                          <p>
+                            <strong>CVV:</strong> {payment.CVV}
+                          </p>
+                        </div>
+                      );
+                    }
+                    return null; // Return null if the payment method is at an odd index
+                  })
                 ) : (
-                  <p>No kids profiles available.</p>
+                  <p>No PaymentMethods available.</p>
                 )}
               </div>
             </div>
             {/* Partners */}
             <div>
-              <h3 className="text-xl font-semibold mb-4">Partners</h3>
+              <h3 className="text-xl font-semibold mb-4">Partners {}</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {userData.myPartners && userData.myPartners.length > 0 ? (
-                  userData.myPartners.map((partner, index) => (
-                    <div
-                      key={index}
-                      className="p-4 bg-gray-50 rounded-lg shadow-sm"
-                    >
-                      <p>
-                        <strong>Name:</strong> {partner.Name}
-                      </p>
-                      <p>
-                        <strong>Email:</strong> {partner.email}
-                      </p>
-                    </div>
-                  ))
+                {userData.myPartner && userData.myPartner.length > 0 ? (
+                  userData.myPartner.map((partner, index) => {
+                    // Only render partners at even index (0, 2, 4, ...)
+                    if (index % 2 === 0) {
+                      return (
+                        <div
+                          key={index}
+                          className="p-4 bg-gray-50 rounded-lg shadow-sm"
+                        >
+                          <p>
+                            <strong>Name:</strong> {partner.Name}
+                          </p>
+                          <p>
+                            <strong>Email:</strong> {partner.email}
+                          </p>
+                        </div>
+                      );
+                    }
+                    return null; // Return null if the partner is at an odd index
+                  })
                 ) : (
                   <p>No partner profiles available.</p>
                 )}
@@ -275,7 +305,7 @@ export default function RawProfile() {
       </div>
     </section>
   );
-}  
+}
 
 export function UpdateRawProfile() {
   const [username, setUsername] = useState("");
@@ -295,12 +325,9 @@ export function UpdateRawProfile() {
         return;
       }
       try {
-        const response = await fetch(
-          "https://proper-fun-404805c7d9.strapiapp.com/api/users/me",
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const response = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/users/me", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         const data = await response.json();
 
         if (data) {
@@ -886,6 +913,72 @@ const RemoveKidButton = ({ kidId }) => {
   );
 };
 
+const UpdateKidButton = ({ kidDocumentId, activityId }) => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(false);
+
+  const handleUpdate = async () => {
+    setLoading(true);
+    setError(null);
+    setSuccess(false);
+
+    try {
+      const response = await fetch(
+        `https://proper-fun-404805c7d9.strapiapp.com/api/kids/${kidDocumentId}?populate=*`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            // Assuming token is stored in localStorage
+          },
+          body: JSON.stringify({
+            data: {
+              myActivities: [
+                {
+                  id: activityId,
+                },
+              ],
+            },
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to update kid's data.");
+      }
+
+      const data = await response.json();
+      // On success, set success state to true
+      setSuccess(true);
+      console.log("Kid's data updated successfully:", data);
+    } catch (error) {
+      setError(error.message || "An error occurred while updating the data.");
+      console.error("Error updating kid's data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="flex items-center justify-between">
+      <button
+        onClick={handleUpdate}
+        disabled={loading}
+        className="p-2 bg-blue-500 text-white rounded-lg disabled:bg-gray-400"
+      >
+        {loading ? "Updating..." : "Update Kid's Activity"}
+      </button>
+      {error && <p className="text-red-500 mt-2">{error}</p>}
+      {success && (
+        <p className="text-green-500 mt-2">
+          Kid's activity updated successfully!
+        </p>
+      )}
+    </div>
+  );
+};
+
 const AddPaymentMethodForm = ({ parentId }) => {
   const [name, setName] = useState("");
   const [number, setNumber] = useState("");
@@ -1276,11 +1369,11 @@ const InvitePartnerForm = () => {
         `https://proper-fun-404805c7d9.strapiapp.com/api/users?filters[email][$eq]=${email}`
       );
       const data = await response.json();
-      console.log('User search response:', data); // Debugging line
+      console.log("User search response:", data); // Debugging line
 
       if (response.ok && data.data.length > 0) {
         const invitedUserId = data.data[0].id;
-        console.log('Invited user ID:', invitedUserId); // Debugging line
+        console.log("Invited user ID:", invitedUserId); // Debugging line
 
         // Prepare the payload with the inviter's user ID (in this case, use "me" API to get it)
         const currentUserResponse = await fetch(
@@ -1288,7 +1381,7 @@ const InvitePartnerForm = () => {
         );
         const currentUserData = await currentUserResponse.json();
         const inviterId = currentUserData.id;
-        console.log('Current user data:', currentUserData); // Debugging line
+        console.log("Current user data:", currentUserData); // Debugging line
 
         // Send the invitation by updating the inviter's `myPartner` field
         const updateResponse = await fetch(
@@ -1313,16 +1406,14 @@ const InvitePartnerForm = () => {
           setMessage("Partner invited successfully!");
         } else {
           setError("Failed to invite the partner.");
-          console.error('Update user failed:', await updateResponse.json()); // Debugging line
-
+          console.error("Update user failed:", await updateResponse.json()); // Debugging line
         }
       } else {
         setError("No user found with this email.");
       }
     } catch (err) {
       setError("An error occurred. Please try again.");
-      console.error('Error occurred:', err); // Debugging line
-
+      console.error("Error occurred:", err); // Debugging line
     } finally {
       setIsSubmitting(false);
     }

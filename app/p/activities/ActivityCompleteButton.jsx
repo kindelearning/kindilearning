@@ -150,7 +150,12 @@ export default function MarkActivityCompleteForm({ passactivityId }) {
                           <p>
                             <strong>Name:</strong> {kid.Name}
                           </p>
-                          <DynamicButton activityId={passactivityId} kidId={kid.documentId}/>
+                          {/* <DynamicButton activityId={passactivityId} kidId={kid.documentId}/> */}
+                          <UpdateKidButton
+                            kidDocumentId={kid.documentId} // Pass the kid's documentId
+                            activityId={passactivityId} // Pass the activity ID to associate with the kid
+                            parentId={userData.id} // Pass the parent's ID
+                          />
                         </div>
                       ))
                     ) : (
@@ -241,3 +246,69 @@ export function DynamicButton({ activityId, kidId }) {
     </form>
   );
 }
+
+const UpdateKidButton = ({ kidDocumentId, activityId }) => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(false);
+
+  const handleUpdate = async () => {
+    setLoading(true);
+    setError(null);
+    setSuccess(false);
+
+    try {
+      const response = await fetch(
+        `https://proper-fun-404805c7d9.strapiapp.com/api/kids/${kidDocumentId}?populate=*`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            // Assuming token is stored in localStorage
+          },
+          body: JSON.stringify({
+            data: {
+              myActivities: [
+                {
+                  id: activityId,
+                },
+              ],
+            },
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to update kid's data.");
+      }
+
+      const data = await response.json();
+      // On success, set success state to true
+      setSuccess(true);
+      console.log("Kid's data updated successfully:", data);
+    } catch (error) {
+      setError(error.message || "An error occurred while updating the data.");
+      console.error("Error updating kid's data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="flex items-center justify-between">
+      <button
+        onClick={handleUpdate}
+        disabled={loading}
+        className="p-2 bg-blue-500 text-white rounded-lg disabled:bg-gray-400"
+      >
+        {loading ? "Updating..." : "Update Kid's Activity"}
+      </button>
+      {error && <p className="text-red-500 mt-2">{error}</p>}
+      {success && (
+        <p className="text-green-500 mt-2">
+          Kid's activity updated successfully!
+        </p>
+      )}
+    </div>
+  );
+};

@@ -90,7 +90,7 @@ export default async function ActivityDetailPage({ params }) {
   const { id } = params;
   const activityData = await fetchActivityByDocumentId(id);
   // const kidData = await fetchKidDetails();
-  // console.log("Kids Data fetched", kidData);
+  console.log("activity Data fetched", activityData);
 
   if (!activityData) {
     console.log("not found activity");
@@ -120,29 +120,6 @@ export default async function ActivityDetailPage({ params }) {
             <div className="claracontainer py-0 flex flex-col justify-between items-start gap-8">
               <ProductMedia gallery={Gallery} />
 
-              {/* <div className="flex w-full">
-                {Gallery.map((item, index) => (
-                  <div key={index} className="relative">
-                    {item.mime.includes("image") ? (
-                      <img
-                        src={`https://proper-fun-404805c7d9.strapiapp.com${item.url}`}
-                        alt={item.name}
-                        className="w-full h-40 object-cover rounded-lg"
-                      />
-                    ) : (
-                      <video
-                        controls
-                        className="w-full h-40 object-cover rounded-lg"
-                      >
-                        <source
-                          src={`https://proper-fun-404805c7d9.strapiapp.com${item.url}`}
-                          type={item.mime}
-                        />
-                      </video>
-                    )}
-                  </div>
-                ))}
-              </div> */}
             </div>
             {/* Row 1(R2) */}
             <div className="claracontainer lg:hidden w-full flex flex-col px-4 lg:px-0 justify-start items-start gap-4">
@@ -394,15 +371,16 @@ export default async function ActivityDetailPage({ params }) {
                   onClick={handlePrint}
                   className="w-full bg-[#3f3a64] text-white text-sm font-normal font-fredoka uppercase leading-[18px] tracking-wide rounded-2xl shadow border-2 border-white"
                 >
-                  {" "}
-                  Print{" "}
+                  Print
                 </Button>
               </div>
               <div className="md:flex hidden px-4 w-full py-6 bg-white rounded-xl shadow gap-3 flex-col justify-center items-center">
                 <div className="text-[#3f3a64] text-base font-semibold font-montserrat uppercase leading-[19px]">
                   Mark Activity as Complete{" "}
                 </div>
-                <MarkActivityCompleteForm passactivityId={activityData.id} />
+
+                {/* THE PROBLEM The activity id we are fetching from the server att his point actually does not exist  */}
+                <MarkActivityCompleteForm  passactivityId='61' />
 
                 {/* <DynamicMarkActivityCompleteComponent activityId={id} /> */}
               </div>
