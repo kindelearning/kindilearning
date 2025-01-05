@@ -3,19 +3,11 @@
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import React, { useEffect, useState } from "react";
-import {
-  VerifiedIcon,
-  ProfileDP,
-  LevelTwo,
-  LevelOne,
-  LevelThree,
-  ProfilePlaceHolderOne,
-} from "@/public/Images";
+import { LevelTwo, LevelOne, LevelThree } from "@/public/Images";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -23,12 +15,10 @@ import {
 import ReferralCard from "@/app/Sections/Profile/ReferralCard";
 import Link from "next/link";
 import Loading from "@/app/loading";
-
-import { getPublishedBadge, getUserDataByEmail } from "@/lib/hygraph";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/app/lib/useAuth";
 import LevelList from "@/app/Sections/Profile/LevelList";
-import RichTextRender from "@/app/Sections/Global/RichTextRender";
+import { fetchKidDetails, fetchUserDetails } from "../api";
+import TopProfileCard from "../Sections/TopProfileCard";
 
 const HYGRAPH_ENDPOINT =
   "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";
@@ -218,6 +208,7 @@ const badgeLevels = [
 ];
 
 const BadgesDisplay = ({ userID }) => {
+  console.log("Received this UserID as Property: " + userID);
   const [badges, setBadges] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -226,12 +217,17 @@ const BadgesDisplay = ({ userID }) => {
     // Fetch the badges for the user
     const fetchBadges = async () => {
       try {
-        const response = await fetch(`/api/badge?userId=${userID}`);
+        const response = await fetchKidDetails()
         const data = await response.json();
-        if (data.error) {
-          setError(data.error);
+
+        const filteredData = data.data.filter(
+          (user) => user.id === userID
+        );
+
+        if (data > 0) {
+          setBadges(data); // Assuming you are getting only one matching user
         } else {
-          setBadges(data.badges);
+          setError("User not found");
         }
       } catch (error) {
         setError("Failed to load badges");
@@ -243,12 +239,14 @@ const BadgesDisplay = ({ userID }) => {
     fetchBadges();
   }, [userID]);
 
+  console.log("Filtered badge Data from BadgesDisplay Fucntion: ", badges);
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
   return (
     <div>
-      <div className="flex w-full overflow-x-scroll scrollbar-hidden gap-2">
+      {/* <div className="flex w-full overflow-x-scroll scrollbar-hidden gap-2">
         {badges.map((badge) => {
           // Select a random badge level based on your badgeLevels array
           const randomLevelIndex = Math.floor(
@@ -286,22 +284,47 @@ const BadgesDisplay = ({ userID }) => {
             </div>
           );
         })}
-      </div>
+      </div> */}
     </div>
   );
 };
 
 const DisplayAllBadges = () => {
   const [allBadges, setAllBadges] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   useEffect(() => {
     const fetchBadges = async () => {
-      const data = await getPublishedBadge();
-      console.log("allBadges Data", data);
-      setAllBadges(data);
+      try {
+        const response = await fetch(
+          "https://proper-fun-404805c7d9.strapiapp.com/api/badges?populate=*"
+        );
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setAllBadges(data.data);
+        setIsLoading(false);
+      } catch (error) {
+        setError(error.message);
+        setIsLoading(false);
+      }
     };
 
     fetchBadges();
   }, []);
+
+  // console.log("Badges received", allBadges);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
   if (!allBadges || allBadges.length === 0) {
     return <div>No Badges found!</div>;
   }
@@ -309,205 +332,134 @@ const DisplayAllBadges = () => {
   return (
     <>
       <div className="flex w-full flex-col gap-1">
-        {allBadges.length > 0 ? (
-          <Dialog>
-            <DialogTrigger>
-              <div className="grid w-full overflow-hidden md:grid-cols-6 justify-between lg:grid-cols-9 grid-cols-3 gap-2">
-                {allBadges.map((badge) => {
-                  const randomWidth = Math.floor(Math.random() * 46) + 10; // Random number between 10 and 100
-                  return (
-                    <div
-                      className="flex cursor-pointer flex-col justify-start items-center w-fit max-w-[160px] min-w-[120px] gap-2"
-                      key={badge.id}
-                    >
-                      <Image
-                        width={80}
-                        height={80}
-                        className="min-w-[80px] min-h-[80px] max-w-[80px] max-h-[80px] object-cover"
-                        src={badge.icon.url}
-                        alt={badge.icon.fileName}
+        <Dialog>
+          <DialogTrigger>
+            <div className="grid w-full overflow-hidden md:grid-cols-6 justify-between lg:grid-cols-9 grid-cols-3 gap-2">
+              {allBadges.map((badge) => {
+                const randomWidth = Math.floor(Math.random() * 46) + 10; // Random number between 10 and 100
+                return (
+                  <div
+                    className="flex cursor-pointer flex-col justify-start items-center w-fit max-w-[160px] min-w-[120px] gap-2"
+                    key={badge.id}
+                  >
+                    <img
+                      width={80}
+                      height={80}
+                      className="min-w-[80px] min-h-[80px] max-w-[80px] max-h-[80px] object-cover"
+                      src={badge.Thumbnail?.url}
+                      alt={badge.Name}
+                    />
+                    {/* Progress Bar */}
+                    <div className="w-full max-w-[80px] h-1 bg-[#bfbfbf] rounded">
+                      <div
+                        className="h-full bg-red rounded"
+                        style={{ width: `${randomWidth}%` }} // Set random width
                       />
-                      {/* Progress Bar */}
-                      <div className="w-full max-w-[80px] h-1 bg-[#bfbfbf]  rounded">
-                        <div
-                          className="h-full bg-red rounded"
-                          style={{ width: `${randomWidth}%` }} // Set random width
-                        />
-                      </div>
-                      <h2 className="w-full text-center text-sm text-[#000000] font-normal font-fredoka leading-tight">
-                        {badge.name.length > 16
-                          ? badge.name.slice(0, 16) + "..."
-                          : badge.name}
-                      </h2>
-                       
                     </div>
-                  );
-                })}
-              </div>
-            </DialogTrigger>
-            <DialogContent className="bg-[#EAEAF5] max-w-[96%] lg:max-w-[800px] items-start max-h-[70%] scrollbar-hidden overflow-scroll p-0 overflow-x-hidden  rounded-[16px] w-full claracontainer">
-              <DialogHeader className="p-4">
-                <DialogTitle>
-                  <div className="text-center">
-                    <span className="text-[#3f3a64] text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
-                      How{" "}
-                    </span>
-                    <span className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
-                      to Earn
-                    </span>
+                    <h2 className="w-full text-center text-sm text-[#000000] font-normal font-fredoka leading-tight">
+                      {badge.Name.length > 16
+                        ? badge.Name.slice(0, 16) + "..."
+                        : badge.Name}
+                    </h2>
                   </div>
-                </DialogTitle>
-                <DialogDescription className="flex w-full px-4 claracontainer gap-4 flex-col justify-center items-start">
-                  {/* Rendering badge.description */}
-                  <div className="w-full text-[#575757] text-[20px] font-medium font-fredoka leading-[24px]">
-                    <RichTextRender
-                      content={allBadges[0].badgeDescription?.json}
+                );
+              })}
+            </div>
+          </DialogTrigger>
+          <DialogContent className="bg-[#EAEAF5] max-w-[96%] lg:max-w-[800px] items-start max-h-[70%] scrollbar-hidden overflow-scroll p-0 overflow-x-hidden rounded-[16px] w-full claracontainer">
+            <DialogHeader className="p-4">
+              <DialogTitle>
+                <div className="text-center">
+                  <span className="text-[#3f3a64] text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
+                    How{" "}
+                  </span>
+                  <span className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
+                    to Earn
+                  </span>
+                </div>
+              </DialogTitle>
+              <DialogDescription className="flex w-full px-4 claracontainer gap-4 flex-col justify-center items-start">
+                {/* Render badge descriptions dynamically */}
+                {allBadges.map((badge) => (
+                  <div
+                    key={badge.id}
+                    className="w-full prose text-[#575757] text-[20px] font-medium font-fredoka leading-[24px]"
+                  >
+                    <div
+                      dangerouslySetInnerHTML={{ __html: badge.Description }}
                     />
                   </div>
-                  {/* {allBadges.length > 0 && <p>{allBadges[0].description}</p>} */}
-                </DialogDescription>
-              </DialogHeader>
-            </DialogContent>
-          </Dialog>
-        ) : (
-          <p>No badges found.</p>
-        )}
+                ))}
+              </DialogDescription>
+            </DialogHeader>
+          </DialogContent>
+        </Dialog>
       </div>
     </>
   );
 };
 
-export default async function Achievement() {
-  const { user, loading } = useAuth();
+export default function Achievement() {
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true); // Start with loading true
+  const [error, setError] = useState(null); // For error handling
   const router = useRouter();
-  const [hygraphUser, setHygraphUser] = useState(null);
 
   useEffect(() => {
-    if (user && user.email) {
-      getUserDataByEmail(user.email).then((data) => {
-        setHygraphUser(data);
-      });
-    }
-  }, [user, loading, router]);
+    const fetchData = async () => {
+      const token = localStorage.getItem("jwt");
 
-  if (loading) {
-    return (
-      <div className="w-full h-screen flex justify-center items-center">
-        <Loading />
-      </div>
-    );
-  }
+      if (!token) {
+        setError("No token found");
+        setLoading(false); // Set loading to false even if token is not found
+        return;
+      }
+
+      try {
+        const data = await fetchUserDetails(token); // Assuming this function works properly
+        setUserData(data);
+      } catch (error) {
+        console.error("Error fetching user data", error);
+        setError("Error fetching user data");
+      } finally {
+        setLoading(false); // Set loading to false after the fetch attempt
+      }
+    };
+
+    fetchData();
+  }, []); // Empty dependency array ensures this runs only once when the component mounts
+
+  console.log("User Data on Achievement page", userData);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>{error}</p>;
 
   return (
     <>
-      <head>
-        <title>Profile - Kindilearning</title>
-        <meta name="description" content="Your profile page on Kindilearning" />
-      </head>
       <section className="w-full h-auto bg-[#F5F5F5] md:bg-[#EAEAF5] items-center justify-center flex flex-col md:flex-row px-0">
         {/* Topbar */}
         <div className="w-full flex pt-4 pb-7 md:hidden bg-red">
           <div className="text-center w-full text-white text-[20px] font-semibold font-fredoka leading-tight">
-            Profile Acheievemnet
+            Profile
           </div>
         </div>
+        {/* Profile Main Body */}
         <div className="claracontainer bg-[#F5F5F5] md:bg-[#EAEAF5] -mt-4 rounded-t-[12px] z-2 lg:m-12 px-4 py-6 rounded-xl md:px-2 lg:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-[20px]">
-          {/* Top Profile Card */}
-          <div className="w-full flex bg-[white] rounded-[24px] p-2 md:p-4 justify-start items-start gap-[4px] lg:gap-[12px] lg:items-center">
-            <div className="w-fit lg:max-w-[160px] lg:w-full items-center flex justify-start">
-              {user && hygraphUser ? (
-                <>
-                  <div className="relative w-20 h-20 lg:w-36 lg:h-36 p-1 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600">
-                    <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
-                      <Image
-                        src={
-                          hygraphUser.myAvatar.profileAvatar.url ||
-                          "https://ap-south-1.graphassets.com/cm1dom2gf0lqw07pi72v8797k/cm3jnqto60fx008o0ctpfoiaq"
-                        }
-                        alt="User DP"
-                        width={100}
-                        height={100}
-                        className="w-[72px] h-[72px] lg:w-36 lg:h-36 object-cover overflow-clip rounded-full"
-                      />
-                    </div>
-                  </div>
-                </>
-              ) : (
-                <Image
-                  src={ProfileDP}
-                  alt="Logo"
-                  className="rounded-full border-2 lg:w-full lg:h-full border-red w-[48px] h-[48px]"
-                />
-              )}
-            </div>
-            <div className="w-full gap-4 flex flex-col justify-center">
-              <div className="flex flex-row justify-between items-start w-full">
-                {hygraphUser && user ? (
-                  <div className="flex flex-col w-full justify-start items-start">
-                    <div className="flex gap-1 items-center w-full justify-start">
-                      <h2 className="text-[#029871] text-[20px] md:text-[28px] lg:text-[32px] xl:text-[40px] font-semibold font-fredoka leading-tight">
-                        {hygraphUser.name}
-                      </h2>
-                      {hygraphUser.isVerified && (
-                        <span
-                          className="ml-2 text-[#255825]"
-                          title="Verified User"
-                        >
-                          <Image
-                            src={VerifiedIcon}
-                            alt="VerifiedIcon"
-                            className="w-[20px] h-[20px] lg:h-[30px] lg:w-[30px]"
-                          />
-                        </span>
-                      )}
-                    </div>
-                    <p className="font-fredoka text-[12px] lg:text-[20px]">
-                      Email: {hygraphUser.email}
-                    </p>
-                  </div>
-                ) : (
-                  <h2 className="text-[#029871] text-[24px] md:text-[28px] lg:text-[32px] xl:text-[40px] font-semibold  font-fredoka leading-tight">
-                    Kindi Learner
-                  </h2>
-                )}
-                {/* Trigger for the Edit Profile Popup */}
-                <Link
-                  href="/profile/update"
-                  className="hidden lg:flex"
-                  target="_blank"
-                >
-                  <Badge
-                    className="text-[10px] md:text-[16px] cursor-pointer"
-                    variant="outline"
-                  >
-                    Edit
-                  </Badge>
-                </Link>
-              </div>
-              <div className="flex flex-col w-full gap-1 items-start justify-start">
-                <div className="flex flex-row w-full justify-start items-start gap-2">
-                  {/* Trigger for the Level Popup */}
-                  {hygraphUser ? <MyLevel userID={hygraphUser.id} /> : null}
-                </div>
-              </div>
-            </div>
-          </div>
-
+          <TopProfileCard userData={userData} />
           {/* AcheievemnetData Section */}
           <div className="flex flex-col w-full gap-12">
             <div className="flex flex-col w-full gap-2">
               <div className="text-[#0a1932] text-2xl font-medium font-fredoka w-full">
                 Your acievements
               </div>
-              <div className="flex w-full overflow-x-scroll scrollbar-hidden gap-1">
-                {hygraphUser ? (
-                  <BadgesDisplay userID={hygraphUser.id} />
-                ) : (
-                  <p className="clarabodyTwo text-red">
-                    Work Hard and Try Again
-                  </p>
-                )}
-              </div>
+              {/* {userData && <BadgesDisplay userID={userData.id} />} */}
+              {/* {userData && (
+                <div className="flex w-full overflow-x-scroll scrollbar-hidden gap-1">
+                  {userData.myKids.map((kid) => (
+                    <BadgesDisplay userID={kid.documentId} />
+                  ))}
+                </div>
+              )} */}
             </div>
             <div className="flex flex-col w-full gap-2">
               <div className="text-[#0a1932] text-2xl font-medium font-fredoka w-full">
