@@ -167,21 +167,7 @@ function EventCard({ event, onDragStart, activityUrl }) {
                 {event.setUpTime || "5 min"}
               </div>
             </div>
-            {/* <div className="flex flex-row justify-start items-center  w-full gap-[4px]">
-              {icons.map((iconData, index) => (
-                <div
-                  key={index}
-                  className={`w-[20px] h-[20px] p-1 flex justify-center items-center rounded-[4px]`}
-                  style={{ backgroundColor: iconData.color }}
-                >
-                  <Image
-                    className="w-4 h-4"
-                    src={iconData.icon}
-                    alt={iconData.icon.name}
-                  />
-                </div>
-              ))}
-            </div> */}
+            
           </div>
         </div>
       </div>
@@ -482,19 +468,3 @@ export default function CalendarwithComp() {
   );
 }
 
-// {events.map((card, id) => (
-//   <>
-//     <div key={id} className="mb-4 flex flex-col">
-//       {" | "} {card.documentid}
-//       {" | "} {card.id}
-//       {" | "} {card.title}
-//       {" | "} {card.description}
-//       {" | "} {card.activityDate}
-//       {" | "} {card.focusAge}
-//       {" | "} {card.setUpTime}
-//       {" | "} {card.theme}
-//       {" | "} {card.learningArea}
-//       {" | "} {card.skillCategory}
-//     </div>
-//   </>
-// ))}

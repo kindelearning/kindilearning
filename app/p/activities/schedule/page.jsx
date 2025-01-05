@@ -1,7 +1,40 @@
+"use client";
+
+import { useRouter } from "next/navigation";
 import Calendar from "../Sections/Calendar";
 import CalendarwithComp from "../Sections/CalendarwithComp";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useEffect, useState } from "react";
+import { fetchUserDetails } from "@/app/profile/api";
+import { getRandomImage } from "@/app/profile/milestone/page";
+import Image from "next/image";
 
 export default function Schedule() {
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const token = localStorage.getItem("jwt");
+      if (!token) {
+        return;
+      }
+
+      try {
+        const data = await fetchUserDetails(token);
+        setUserData(data);
+      } catch (error) {
+        console.error("Error fetching user data", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [router]);
+
+  if (loading) return <p>Loading...</p>;
   return (
     <>
       <section className="w-full h-auto bg-[#EAEAF5] pb-24 items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">
@@ -23,9 +56,62 @@ export default function Schedule() {
               for a smooth and integrated learning experience.
             </div>
           </div>
-          <div className="claracontainer md:p-0 p-0 py-4 w-full flex flex-col overflow-hidden gap-8">
-            <CalendarwithComp />
-          </div>
+
+          {userData ? (
+            <div className="flex w-full py-6 flex-col justify-center items-center">
+              {userData.myKids && userData.myKids.length > 0 ? (
+                <Tabs
+                  defaultValue={userData.myKids[0].id}
+                  className="w-full flex-col flex items-center h-fit bg-transparent"
+                >
+                  <div className="flex w-full max-w-[400px] lg:max-w-full lg:items-center lg:justify-center ">
+                    {/* Main Frame: Shows up to 5 tabs */}
+                    <TabsList className="flex gap-2 lg:gap-[2px] h-full bg-transparent py-6 overflow-x-scroll justify-center items-center w-full scrollbar-hidden">
+                      {userData.myKids
+                        .filter((_, index) => index % 2 === 1)
+                        .map((kid) => (
+                          <TabsTrigger
+                            key={kid.id}
+                            value={kid.id}
+                            className="flex-shrink-0 flex-col data-[state=active]:bg-[#f5f5f500] data-[state=active]:opacity-100 opacity-70  data-[state=active]:z-12 data-[state=active]:scale-125 duration-200 ease-ease-in-out  data-[state=active]:border-red border-2 p-0 rounded-full bg-transparent"
+                          >
+                            <Image
+                              src={getRandomImage()} // Random image for each kid's tab
+                              alt={`Profile of ${kid.Name}`}
+                              width={48}
+                              height={48}
+                              title={kid.Name}
+                              className={`w-16 h-16 p-0 m-0 rounded-full object-cover transition-all duration-200`}
+                            />
+                          </TabsTrigger>
+                        ))}
+                    </TabsList>
+                  </div>
+
+                  {/* Dynamically create TabsContent for each kid */}
+                  {userData.myKids.map((kid) => (
+                    <TabsContent key={kid.id} value={kid.id} className="w-full">
+                      <div className="w-full flex flex-col gap-2 lg:gap-4 justify-between items-center">
+                        <div className="font-fredoka text-[12px] lg:text-[20px]">
+                          Mange Personalised Schedule for{" "}
+                          <span className="font-semibold text-[20px] font-fredoka text-red">
+                            {kid.Name}
+                          </span>
+                        </div>
+                        <div className="claracontainer md:p-0 p-0 py-4 w-full flex flex-col overflow-hidden gap-8">
+                          <CalendarwithComp />
+                        </div>
+                      </div>
+                    </TabsContent>
+                  ))}
+                </Tabs>
+              ) : (
+                <p>No kids profiles available.</p>
+              )}
+            </div>
+          ) : (
+            <p>User Not Found</p>
+          )}
           {/* {user && hygraphUser ? (
             <>
               {hygraphUser ? (
