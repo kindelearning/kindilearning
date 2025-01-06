@@ -20,6 +20,9 @@ import { getPublishedMileStone } from "@/lib/hygraph";
 import Link from "next/link";
 import { activityIcons } from "@/app/constant/menu";
 import Image from "next/image";
+import { Badge } from "@/components/ui/badge";
+import { DialogClose } from "@radix-ui/react-dialog";
+import MarkMilestoneCompleteForm from "./MilestoneCompleteButton";
 
 export function CurvePath({ milestones = [], currentUserId }) {
   const [currentDate, setCurrentDate] = useState("");
@@ -111,19 +114,37 @@ export function CurvePath({ milestones = [], currentUserId }) {
           <DialogTrigger>
             <button className="transition duration-300 ease-in-out hover:scale-[1.03] font-fredoka tracking-wider font-bold text-[10px] md:text-[16px] hover:bg-purple hover:border-2 hover:border-[#ffffff] border-transparent md:px-6 border-2 rounded-[12px] bg-red px-4 py-2 hover:shadow text-white">
               {/* {milestone.title} */}
-              {(milestone.title?.length > 28 ? milestone.title.substring(0, 28) + "..." : milestone.title) || "Action"}
-
+              {(milestone.Title?.length > 28
+                ? milestone.Title.substring(0, 28) + "..."
+                : milestone.Title) || "Action"}
             </button>
           </DialogTrigger>
           <DialogContent className="w-full bg-[#eaeaf5] p-0 lg:min-w-[800px] ">
             <DialogHeader className="p-4">
-              <DialogTitle></DialogTitle>
-              <DialogDescription className="w-full p-4 flex flex-col gap-4 justify-start items-start">
-                <div className="text-[#0a1932] text-[32px] font-semibold leading-8 font-fredoka">
-                  {milestone.title}
+              <DialogTitle>
+                <div className="text-center">
+                  <span className="text-[#3f3a64] text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
+                    Update {milestone.Title}
+                  </span>{" "}
+                  <span className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
+                    for your Kid
+                  </span>
                 </div>
-                <div className="w-full text-[#4a4a4a] clarabodyTwo justify-center items-center">
-                  {milestone.description}
+              </DialogTitle>
+              <DialogDescription className="w-full p-4 flex flex-col gap-4 justify-start items-start">
+                <div className="flex w-fit font-fredoka gap-2 justify-between items-center">
+                  <Badge className="bg-[#eaeaf5] hover:bg-red text-red hover:text-white font-medium text-[12px] border-red">
+                    {milestone.Category}
+                  </Badge>
+                  <Badge className="bg-[#eaeaf5] hover:bg-red text-red hover:text-white font-medium text-[12px] border-red">
+                    {milestone.SubCategory}
+                  </Badge>
+                </div>
+                <div className="text-[#0a1932] text-[32px] font-semibold leading-8 font-fredoka">
+                  {milestone.Title}
+                </div>
+                <div className="w-full prose text-[#4a4a4a] clarabodyTwo justify-center items-center">
+                  {milestone.Description}
                 </div>
                 <div className="w-full p-2 flex flex-col gap-2 bg-white rounded-lg shadow">
                   <div className="text-[#757575] clarabodyTwo ">
@@ -137,22 +158,17 @@ export function CurvePath({ milestones = [], currentUserId }) {
             </DialogHeader>
             <DialogFooter>
               <section className="w-full h-auto shadow-upper bg-[#ffffff] -top-2 sticky bottom-0 z-10 rounded-t-[16px] items-center justify-between py-4 flex flex-row">
-                <div className="w-fit flex flex-row justify-between items-center gap-4 px-4">
+                <DialogClose className="w-fit flex flex-row justify-between items-center gap-4 px-4">
                   <Button className="px-4 py-2 bg-white hover:bg-white text-[#3f3a64] text-[20px] md:text-[24px] font-medium font-fredoka leading-none rounded-2xl border-2 border-[#3f3a64] justify-center items-center gap-1 inline-flex">
                     <ChevronLeft className="w-[24px] h-[24px]" />
                     Back
                   </Button>
-                </div>
+                </DialogClose>
                 <div className="w-fit flex flex-row justify-between items-center gap-4 px-4">
-                  {user && hygraphUser ? (
-                    <MilestoneCompleteButton
-                      milestoneId={milestone.id}
-                      // userId={hygraphUser.id}
-                      userId={currentUserId}
-                    />
-                  ) : (
-                    <Button className="clarabutton">Login First!</Button>
-                  )}
+                  <MarkMilestoneCompleteForm
+                    passmilestoneId={milestone.id}
+                    userId={currentUserId}
+                  />
                 </div>
               </section>
             </DialogFooter>
@@ -324,20 +340,37 @@ export const TrigSnakeCurve = ({
           <Dialog className="p-2 lg:p-4">
             <DialogTrigger>
               <button className="text-[12px] min-w-[60px] max-w-[80px] w-full rounded-sm px-2 bg-red text-white">
-                {(mileStoneCustomData[index]?.title?.length > 20
-                  ? mileStoneCustomData[index]?.title.substring(0, 14) + "..."
-                  : mileStoneCustomData[index]?.title) || "Action"}
+                {(mileStoneCustomData[index]?.Title?.length > 20
+                  ? mileStoneCustomData[index]?.Title.substring(0, 14) + "..."
+                  : mileStoneCustomData[index]?.Title) || "Action"}
               </button>
             </DialogTrigger>
             <DialogContent className="w-full bg-[#eaeaf5] p-0 lg:min-w-[800px]">
               <DialogHeader className="p-4">
-                <DialogTitle></DialogTitle>
+                <DialogTitle>
+                  <div className="text-center">
+                    <span className="text-[#3f3a64] text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
+                      Update {mileStoneCustomData[index]?.Title}
+                    </span>{" "}
+                    <span className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
+                      for your Kid
+                    </span>
+                  </div>
+                </DialogTitle>
                 <DialogDescription className="w-full p-4 flex flex-col gap-4 justify-start items-start">
+                  <div className="flex w-fit font-fredoka gap-2 justify-between items-center">
+                    <Badge className="bg-[#eaeaf5] hover:bg-red text-red hover:text-white font-medium text-[12px] border-red">
+                      {mileStoneCustomData[index]?.Category}
+                    </Badge>
+                    <Badge className="bg-[#eaeaf5] hover:bg-red text-red hover:text-white font-medium text-[12px] border-red">
+                      {mileStoneCustomData[index]?.SubCategory}
+                    </Badge>
+                  </div>
                   <div className="text-[#0a1932] w-full text-start font-fredoka text-[20px] font-[600]">
-                    {mileStoneCustomData[index]?.title}
+                    {mileStoneCustomData[index]?.Title}
                   </div>
                   <div className="w-full text-start text-[#4a4a4a] clarabodyTwo justify-center items-center">
-                    {mileStoneCustomData[index]?.description ||
+                    {mileStoneCustomData[index]?.Description ||
                       "Description not found"}
                   </div>
                   <div className="w-full p-2 flex flex-col gap-2 bg-white rounded-lg shadow">
@@ -359,17 +392,16 @@ export const TrigSnakeCurve = ({
                     </Button>
                   </div>
                   <div className="w-fit flex flex-row justify-between items-center gap-4 px-4">
-                    {user && hygraphUser ? (
-                      <MilestoneCompleteButton
-                        milestoneId={mileStoneCustomData[index]?.id}
-                        userId={currentUserId}
-                        // userId={hygraphUser.id}
-                      />
+                    <MarkMilestoneCompleteForm
+                      passmilestoneId={mileStoneCustomData[index]?.id}
+                      userId={currentUserId}
+                    />
+                    {/* {user && hygraphUser ? (
                     ) : (
                       <Link href="/auth/sign-up" className="clarabutton">
                         Login First!
                       </Link>
-                    )}
+                    )} */}
                   </div>
                 </section>
               </DialogFooter>
@@ -448,23 +480,26 @@ export default function DisplayAllMileStone({ passThecurrentUserId }) {
   const [milestones, setMilestones] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  // State for filters
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedSubCategory, setSelectedSubCategory] = useState("All");
 
   useEffect(() => {
     const fetchMilestones = async () => {
       try {
-        const data = await getPublishedMileStone();
-        if (!Array.isArray(data)) {
+        const response = await fetch(
+          "https://proper-fun-404805c7d9.strapiapp.com/api/milestones?populate=*"
+        );
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json(); // Parse the JSON from the response
+        if (!Array.isArray(data.data)) {
           throw new Error("Fetched data is not an array.");
         }
-        console.log("Fetched milestones:", data);
-        const trimmedData = data.map((milestone) => ({
-          ...milestone,
-          category: milestone.category?.trim() || "Uncategorized",
-          subCategory: milestone.subCategory?.trim() || "Unspecified",
-        }));
-        setMilestones(trimmedData);
+
+        setMilestones(data.data); // Assum
       } catch (err) {
         console.error("Error fetching milestones:", err);
         setError("Error fetching milestones.");
@@ -476,59 +511,46 @@ export default function DisplayAllMileStone({ passThecurrentUserId }) {
     fetchMilestones();
   }, []);
 
-  // Adding Filters for milestone based on Category and subcategory
-  const categories = [
-    "All",
-    ...new Set(milestones.map((m) => m.category || "Uncategorized")),
-  ];
-
-  // Extract unique subcategories for the selected category
-  const subCategories =
-    selectedCategory === "All"
-      ? ["All"]
-      : [
-          "All",
-          ...new Set(
-            milestones
-              .filter((m) => m.category === selectedCategory)
-              .map((m) => m.subCategory || "Unspecified")
-          ),
-        ];
-
-  console.log("Subcategories: ", subCategories);
-  // Filter milestones based on selected category and subcategory
-  const filteredMilestones = milestones.filter((milestone) => {
-    const matchesCategory =
-      selectedCategory === "All" || milestone.category === selectedCategory;
-    const matchesSubCategory =
-      selectedSubCategory === "All" ||
-      milestone.subCategory === selectedSubCategory;
-    return matchesCategory && matchesSubCategory;
-  });
-  // milestones.forEach((milestone) => {
-  //   console.log("Processing milestone:", milestone);
-  //   console.log(
-  //     "Matches category:",
-  //     selectedCategory === "All" || milestone.category === selectedCategory
-  //   );
-  //   console.log(
-  //     "Matches subcategory:",
-  //     selectedSubCategory === "All" ||
-  //       milestone.subCategory === selectedSubCategory
-  //   );
-  // });
+  console.log("Fetched milestones:", milestones);
 
   if (!Array.isArray(milestones)) {
     return <p>Error: Expected milestones to be an array.</p>;
   }
+
+  // Extract unique categories and subcategories
+  const categories = [
+    "All",
+    ...new Set(milestones.map((m) => m.Category).filter(Boolean)),
+  ];
+
+  const subCategories = [
+    "All",
+    ...new Set(
+      milestones
+        .filter(
+          (m) => selectedCategory === "All" || m.Category === selectedCategory
+        )
+        .map((m) => m.SubCategory)
+        .filter(Boolean)
+    ),
+  ];
+
+  // Filter milestones based on selected filters
+  const filteredMilestones = milestones.filter(
+    (m) =>
+      (selectedCategory === "All" || m.Category === selectedCategory) &&
+      (selectedSubCategory === "All" || m.SubCategory === selectedSubCategory)
+  );
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
   return (
     <>
-      <section className="w-full pb-24 h-full bg-[#EAEAF5] items-center justify-center py-4 flex flex-col gap-[20px]">
-        <div className="flex w-full lg:max-w-[340px] rounded-[12px] px-2 py-2 bg-white max-w-full  flex-col items-start">
+      {/* Filters Section */}
+
+      <div className=" mx-auto flex flex-col gap-4">
+        {/* <div className="flex w-full lg:max-w-[340px] rounded-[12px] px-2 py-2 bg-white max-w-full  flex-col items-start">
           <OptionSlider
             options={activityIcons}
             selectedOption={selectedCategory}
@@ -537,28 +559,45 @@ export default function DisplayAllMileStone({ passThecurrentUserId }) {
               setSelectedSubCategory("All"); // Reset subcategory selection when category changes
             }}
           />
+        </div> */}
+        {/* Category Filter */}
+        <div className="flex gap-2 w-full max-w-full overflow-x-scroll scrollbar-hidden">
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => {
+                setSelectedCategory(cat);
+                setSelectedSubCategory("All"); // Reset subcategory when category changes
+              }}
+              className={`px-4 py-1 hover:bg-red hover:text-white rounded-full text-sm ${
+                selectedCategory === cat
+                  ? "bg-red text-white"
+                  : "bg-gray-200  text-gray-700"
+              }`}
+            >
+              {cat}
+            </button>
+          ))}
         </div>
+        {/* SubCategory Filter */}
+        <div className="flex gap-2 w-full max-w-full overflow-x-scroll scrollbar-hidden">
+          {subCategories.map((subCat) => (
+            <Badge
+              key={subCat}
+              onClick={() => setSelectedSubCategory(subCat)}
+              className={`px-4 py-1 hover:bg-red hover:text-white rounded-full text-sm ${
+                selectedSubCategory === subCat
+                  ? "bg-red text-white"
+                  : "bg-gray-200  text-gray-700"
+              }`}
+            >
+              {subCat}
+            </Badge>
+          ))}
+        </div>
+      </div>
 
-        {/* Subcategory Filter as Badge/Chip (conditionally rendered) */}
-        {selectedCategory !== "All" && (
-          <div className="flex w-full overflow-x-scroll scrollbar-hidden gap-1">
-            {subCategories.map((subCategory) => (
-              <span
-                key={subCategory}
-                onClick={() => setSelectedSubCategory(subCategory)}
-                className={`cursor-pointer min-w-[max-content] border-white border-2 duration-200 px-4 py-1 rounded-full ${
-                  selectedSubCategory === subCategory
-                    ? "bg-red text-white"
-                    : "bg-gray-200 text-gray-800"
-                } hover:bg-red hover:text-white`}
-                style={{ display: "inline-block", margin: "0.2rem" }}
-              >
-                {subCategory}
-              </span>
-            ))}
-          </div>
-        )}
-      </section>
+      <section className="w-full pb-24 h-full bg-[#EAEAF5] items-center justify-center py-4 flex flex-col gap-[20px]"></section>
       <TrigSnakeCurve
         amplitude={6}
         mileStoneCustomData={filteredMilestones}
