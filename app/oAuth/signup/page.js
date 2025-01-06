@@ -10,7 +10,9 @@ import { Eye, EyeOff } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { GoogleSignInButton } from "../Sections/GoogleSignInButton";
+import GoogleSignUp, {
+  GoogleSignInButton,
+} from "../Sections/GoogleSignInButton";
 
 export default function SignupPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -56,19 +58,6 @@ export default function SignupPage() {
     } catch (error) {
       console.error("Error during signup:", error);
       setError("An error occurred. Please try again.");
-    }
-  };
-
-  const handleGoogleSignUp = async () => {
-    try {
-      const user = await signUpWithGoogle();
-      setLoading(true); // Set loading to true when submitting starts
-      console.log("Google Sign-Up Successful:", user);
-      // Optional: Redirect user to dashboard or desired page
-      router.push("/profile"); // Redirect to activity page or any desired page
-    } catch (error) {
-      console.error("Google Sign-Up Failed:", error);
-      setLoading(false); // Set loading to true when submitting starts
     }
   };
 
@@ -135,10 +124,10 @@ export default function SignupPage() {
               </div>
               <div className="flex gap-2 items-center justify-center w-full">
                 <Image alt="Kindi" className="cursor-pointer" src={WithApple} />
-                <button onClick={handleGoogleSignUp}>
+                {/* <button>
                   <Image alt="Kindi" className="cursor-pointer" src={Google} />
-                </button>
-                <GoogleSignInButton />
+                </button> */}
+                <GoogleSignUp />
               </div>
             </div>
             <div className="w-[max-content] justify-end items-start text-center">
@@ -156,7 +145,7 @@ export default function SignupPage() {
 
           {/* column 2 */}
           <div className="flex w-[50%] p-0 h-full">
-            {/* <DynamicCard className="h-full" /> */}
+            <GoogleSignUp />
           </div>
         </div>
       </section>
@@ -232,9 +221,9 @@ export default function SignupPage() {
             </div>
             <div className="flex gap-2 items-center justify-center w-full">
               <Image alt="Kindi" className="cursor-pointer" src={WithApple} />
-              <button onClick={handleGoogleSignUp}>
+              {/* <button >
                 <Image alt="Kindi" className="cursor-pointer" src={Google} />
-              </button>
+              </button> */}
             </div>
           </div>
         </div>
@@ -243,3 +232,16 @@ export default function SignupPage() {
     </>
   );
 }
+
+// const handleGoogleSignUp = async () => {
+//   try {
+//     const user = await signUpWithGoogle();
+//     setLoading(true); // Set loading to true when submitting starts
+//     console.log("Google Sign-Up Successful:", user);
+//     // Optional: Redirect user to dashboard or desired page
+//     router.push("/profile"); // Redirect to activity page or any desired page
+//   } catch (error) {
+//     console.error("Google Sign-Up Failed:", error);
+//     setLoading(false); // Set loading to true when submitting starts
+//   }
+// };
