@@ -6,12 +6,12 @@ import { SessionProvider } from "next-auth/react";
 import { CartProvider } from "./context/CartContext";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { UserProvider } from "./context/UserContext";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
 });
-
 
 export default function RootLayout({ children }) {
   return (
@@ -24,8 +24,13 @@ export default function RootLayout({ children }) {
             href="/favicon-48x48.png"
             sizes="48x48"
           />
-        
+
           <link rel="shortcut icon" href="/favicon.ico" />
+          <script
+            src="https://accounts.google.com/gsi/client"
+            async
+            defer
+          ></script>
           <link
             rel="apple-touch-icon"
             sizes="180x180"
@@ -44,14 +49,16 @@ export default function RootLayout({ children }) {
             fontSans.variable
           )}
         >
-          <UserProvider>
-            <SessionProvider>
-              <CartProvider>
-                {children}
-                <SpeedInsights />
-              </CartProvider>
-            </SessionProvider>
-          </UserProvider>
+          <GoogleOAuthProvider clientId="1055268493431-9l6ee7s7d7o14dfg5vhh9pr0jgq7rlh7.apps.googleusercontent.com">
+            <UserProvider>
+              <SessionProvider>
+                <CartProvider>
+                  {children}
+                  <SpeedInsights />
+                </CartProvider>
+              </SessionProvider>
+            </UserProvider>
+          </GoogleOAuthProvider>
         </body>
       </html>
     </>

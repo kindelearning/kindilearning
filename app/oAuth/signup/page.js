@@ -145,7 +145,7 @@ export default function SignupPage() {
 
           {/* column 2 */}
           <div className="flex w-[50%] p-0 h-full">
-            <GoogleSignUp />
+            {/* <GoogleSignUp /> */}
           </div>
         </div>
       </section>
