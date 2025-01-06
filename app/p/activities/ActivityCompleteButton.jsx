@@ -231,7 +231,7 @@ const UpdateKidButton = ({ kidDocumentId, activityId }) => {
       {error && <p className="text-red-500 mt-2">{error}</p>}
       {success && (
         <p className="text-green-500 mt-2">
-          Kid's activity updated successfully!
+          Kid&apos;s activity updated successfully!
         </p>
       )}
     </div>
