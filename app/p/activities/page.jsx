@@ -17,6 +17,7 @@ import { fetchAllActivities } from "@/app/data/p/Dynamic/Activity";
 import ActivityCard from "./Sections/ActivityCard";
 import { activityIcons } from "@/app/constant/menu";
 import Image from "next/image";
+import MarkActivityCompleteForm from "./ActivityCompleteButton";
 
 // FilterSelect Component
 const FilterSelect = ({ id, label, value, onChange, options }) => {
@@ -40,7 +41,7 @@ const FilterSelect = ({ id, label, value, onChange, options }) => {
     </div>
   );
 };
-
+ 
 const SelectFilter = ({ id, value, onChange, options, label }) => (
   <div className="flex flex-col justify-start items-start gap-2 w-full">
     <div className="text-purple clarabodyTwo">{label}</div>
@@ -125,7 +126,7 @@ export default function ActivitiesData() {
   const weekdays = [
     "Monday",
     "Tuesday",
-    "Wednesday", 
+    "Wednesday",
     "Thursday",
     "Friday",
     "Saturday",
@@ -179,8 +180,7 @@ export default function ActivitiesData() {
     fetchActivities();
   }, []);
 
-
-  console.log('Filtered Activities:', activities)
+  console.log("Filtered Activities:", activities);
   const handleWeekdayChange = (weekday) => {
     setSelectedWeekdays((prev) =>
       prev.includes(weekday)

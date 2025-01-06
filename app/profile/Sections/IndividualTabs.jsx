@@ -36,7 +36,7 @@ import RemovePaymentMethodButton, {
   AddPaymentMethodForm,
   UpdatePaymentDataForm,
 } from "./RemovePaymentMethodButton";
-
+ 
 const CustomDialog = ({
   image,
   iconBackgroundColor,
@@ -55,7 +55,7 @@ const CustomDialog = ({
           title={title}
         />
       </DialogTrigger>
-      <DialogContent className="bg-[#EAEAF5] max-w-[96%] flex flex-col justify-between max-h-[70%] lg:min-h-[600px] min-h-[400px] overflow-y-scroll p-0 overflow-x-hidden rounded-[16px] w-full claracontainer">
+      <DialogContent className="bg-[#EAEAF5] max-w-[1000px] flex flex-col justify-between max-h-[70%] lg:min-h-[600px] min-h-[400px] overflow-y-scroll p-0 overflow-x-hidden rounded-[16px] w-full claracontainer">
         <DialogDescription className="flex w-full px-4 claracontainer flex-col justify-start items-center">
           <DialogHeader className="p-4">
             <div className="flex flex-row justify-center items-center w-full">
