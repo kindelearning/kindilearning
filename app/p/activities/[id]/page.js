@@ -87,6 +87,7 @@ const handlePrint = () => {
 };
 
 export default async function ActivityDetailPage({ params }) {
+  console.log('I am the params', params);
   const { id } = params;
   const activityData = await fetchActivityByDocumentId(id);
   // const kidData = await fetchKidDetails();
@@ -97,12 +98,12 @@ export default async function ActivityDetailPage({ params }) {
   }
 
   const {
+    
     Title,
     Skills,
     Theme,
     FocusAge,
     ActivityDate,
-
     SetUpTime,
     Gallery,
     Accordions,
@@ -380,7 +381,7 @@ export default async function ActivityDetailPage({ params }) {
                 </div>
 
                 {/* THE PROBLEM The activity id we are fetching from the server att his point actually does not exist  */}
-                <MarkActivityCompleteForm  passactivityId='61' />
+                <MarkActivityCompleteForm  passactivityId={activityData.id}  />
 
                 {/* <DynamicMarkActivityCompleteComponent activityId={id} /> */}
               </div>
