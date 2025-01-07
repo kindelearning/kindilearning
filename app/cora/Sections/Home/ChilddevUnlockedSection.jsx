@@ -249,7 +249,6 @@ export function UpdateChildDevelopmentContent() {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [featuredText, setFeaturedText] = useState("");
-  const [bgColor, setBgColor] = useState("");
   const [media, setMedia] = useState(null); // Media state
   const [openDialog, setOpenDialog] = useState(false);
   const [error, setError] = useState("");
@@ -268,7 +267,6 @@ export function UpdateChildDevelopmentContent() {
           setTitle(content.Content?.Title || ""); // Set default values if not found
           setBody(content.Content?.Body || "");
           setFeaturedText(content.Content?.featuredText || "");
-          setBgColor(content.Content?.BgColor || "");
           setMedia(content.Content?.Media?.id || null); // Set the media ID or null if no media is selected
         }
       } catch (err) {
@@ -289,7 +287,6 @@ export function UpdateChildDevelopmentContent() {
           Title: title,
           Body: body,
           featuredText: featuredText,
-
           Media: media?.id || null, // Use media ID if selected
         },
       },

@@ -6,10 +6,12 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"; 
+} from "@/components/ui/table";
 
 import HeroSectionForm from "../../Sections/Home/HomepageHeroSectionPageUpdate";
-import HowItWorksSection, { UpdateHowItWorks } from "../../Sections/Home/HowItWorksSection";
+import HowItWorksSection, {
+  UpdateHowItWorks,
+} from "../../Sections/Home/HowItWorksSection";
 import Monthlytheme, {
   UpdateMonthlytheme,
 } from "../../Sections/Home/Monthlytheme";
@@ -20,8 +22,12 @@ import { SectionRow } from "../../Sections/SectionRow";
 import HowItWorks, {
   UpdateHowItWorkSection,
 } from "../../Sections/horItWorks/HowItWorkshero";
-import AreaOfLearning, { UpdateAreaOfLearning } from "../../Sections/horItWorks/Areaoflearning";
-import KindiSkillsCategoriesCards, { UpdateKindiSkillsCategoriesCards } from "../../Sections/horItWorks/KindiSkillsCategoriesCards";
+import AreaOfLearning, {
+  UpdateAreaOfLearning,
+} from "../../Sections/horItWorks/Areaoflearning";
+import KindiSkillsCategoriesCards, {
+  UpdateKindiSkillsCategoriesCards,
+} from "../../Sections/horItWorks/KindiSkillsCategoriesCards";
 import AgeGroupSection, {
   UpdateAgeGroupSection,
 } from "../../Sections/horItWorks/AgeGroupSection";
@@ -30,6 +36,9 @@ export default function HomePage() {
   return (
     <>
       <section className="w-full h-auto bg-[#F5F5F5] md:bg-[#EAEAF5] items-center justify-center flex flex-col md:flex-row px-0">
+        <head>
+          <title>Update How it Works Page - Cora</title>
+        </head>
         <div className="claracontainer p-4 md:py-8 md:px-2 lg:p-12 w-full flex flex-col overflow-hidden gap-8">
           {/* Hero Section */}
           <Table>

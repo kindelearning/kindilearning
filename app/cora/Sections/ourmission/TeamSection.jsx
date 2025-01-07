@@ -12,6 +12,7 @@ import {
 import RichTextRender from "@/app/Sections/Global/RichTextRender";
 import { useEffect, useState } from "react";
 import ClaraMarkdownRichEditor from "../TextEditor/ClaraMarkdownRichEditor";
+import MediaSelector from "../../website/media/Section/MediaSelector";
 
 export default function TeamSection() {
   const [content, setContent] = useState(null); // To store the fetched data
@@ -99,7 +100,7 @@ export function UpdateTeamSection() {
     const fetchContent = async () => {
       try {
         const response = await fetch(
-          "https://proper-fun-404805c7d9.strapiapp.com/api/our-mission?populate[OurTeam][populate]"
+          "https://proper-fun-404805c7d9.strapiapp.com/api/our-mission?populate[OurTeam][populate]=MemberPic"
         );
         const data = await response.json();
         setContent({
@@ -248,3 +249,4 @@ export function UpdateTeamSection() {
     </div>
   );
 }
+
