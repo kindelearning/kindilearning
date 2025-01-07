@@ -12,6 +12,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import ClaraMarkdownRichEditor from "@/app/cora/Sections/TextEditor/ClaraMarkdownRichEditor";
+import MediaSelector from "../../media/Section/MediaSelector";
 
 export default function ProductUpdateForm({ documentId }) {
   const [existingData, setExistingData] = useState(null);
@@ -22,6 +23,8 @@ export default function ProductUpdateForm({ documentId }) {
   const [discountPrice, setDiscountPrice] = useState("");
   const [seoKeywords, setSEOKeywords] = useState("");
   const [materialOptions, setMaterialOptions] = useState("");
+  const [media, setMedia] = useState(null); // Media state
+  const [gallery, setGallery] = useState(null); // Media state
   const [openDialog, setOpenDialog] = useState(false);
 
   useEffect(() => {
@@ -40,6 +43,8 @@ export default function ProductUpdateForm({ documentId }) {
           setDiscountPrice(data.data.DiscountPrice || "");
           setSEOKeywords(data.data.SEOKeywords || "");
           setMaterialOptions(data.data.MaterialOptions || "");
+          setMedia(data.data?.FeaturedImage?.id || null); // Set the media ID or null if no media is selected
+          setGallery(data.data?.Gallery?.id || null); // Set the media ID or null if no media is selected
         } else {
           throw new Error("Failed to fetch data");
         }
@@ -57,10 +62,13 @@ export default function ProductUpdateForm({ documentId }) {
     const formData = new FormData();
     if (name) formData.append("data[Name]", name);
     if (description) formData.append("data[Description]", description);
-    if (longDescription) formData.append("data[LongDescription]", longDescription);
+    if (longDescription)
+      formData.append("data[LongDescription]", longDescription);
     if (price) formData.append("data[Price]", price);
     if (discountPrice) formData.append("data[DiscountPrice]", discountPrice);
     if (seoKeywords) formData.append("data[SEOKeywords]", seoKeywords);
+    if (gallery) formData.append("data[Gallery]", gallery.id);
+    if (media) formData.append("data[FeaturedImage]", media.id);
     if (materialOptions)
       formData.append("data[MaterialOptions]", materialOptions);
 
@@ -80,7 +88,12 @@ export default function ProductUpdateForm({ documentId }) {
       alert("Error updating product.");
     }
   };
-
+  const handleMediaSelect = (selectedMedia) => {
+    setMedia(selectedMedia); // Store the selected media object
+  };
+  const handleGalleryMediaSelect = (selectedMedia) => {
+    setGallery(selectedMedia); // Store the selected media object
+  };
   if (!existingData) {
     return <div>Loading...</div>;
   }
@@ -88,6 +101,39 @@ export default function ProductUpdateForm({ documentId }) {
   return (
     <>
       <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label>Media:</label>
+          {media ? (
+            <div className="mt-4">
+              <img
+                // src={media.url}
+                src={`https://proper-fun-404805c7d9.strapiapp.com${media.url}`}
+                className="w-32 h-32 object-cover"
+              />
+              <p>{media.name}</p>
+            </div>
+          ) : (
+            <p>Not selected anything</p>
+          )}
+          <MediaSelector onMediaSelect={handleMediaSelect} />
+        </div>
+
+        <div>
+          <label>Gallery:</label>
+          {gallery ? (
+            <div className="mt-4">
+              <img
+                // src={media.url}
+                src={`https://proper-fun-404805c7d9.strapiapp.com${gallery.url}`}
+                className="w-32 h-32 object-cover"
+              />
+              <p>{gallery.name}</p>
+            </div>
+          ) : (
+            <p>Not selected anything</p>
+          )}
+          <MediaSelector onMediaSelect={handleGalleryMediaSelect} />
+        </div>
         <div>
           <label className="block">Name</label>
           <input
@@ -111,14 +157,8 @@ export default function ProductUpdateForm({ documentId }) {
         </div>
         <div>
           <label className="block">Description</label>
-          {/* <input
-            type="text"
-            name="Description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded"
-          /> */}
-           <ClaraMarkdownRichEditor
+
+          <ClaraMarkdownRichEditor
             onChange={(value) => setLongDescription(value)}
             value={longDescription || ""}
           />

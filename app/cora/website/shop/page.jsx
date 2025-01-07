@@ -167,6 +167,9 @@ export default function ShopPage() {
   return (
     <>
       <section className="p-8 min-h-screen font-fredoka bg-gray-100">
+        <head>
+          <title>Manage Shop - Kindi Learning</title>
+        </head>
         <div className="flex justify-between mb-4">
           <div className="flex text-black font-medium text-[24px]">
             Kindi Shop Products

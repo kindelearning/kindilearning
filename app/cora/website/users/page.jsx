@@ -29,7 +29,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Badge } from "@/components/ui/Badge";
+import { Badge } from "@/components/ui/badge";
 
 const Pagination = ({ total, perPage, currentPage, onPageChange }) => {
   const totalPages = Math.ceil(total / perPage);
@@ -280,15 +280,23 @@ export default function AdminUsersPage() {
                 <TableCell>{user.email}</TableCell>
                 <TableCell>{user.role?.name || "N/A"}</TableCell>
                 <TableCell>
-                  <Badge className="font-medium" variant={user.blocked ? "destructive" : "success"}>
+                  <div
+                    className="font-medium border border-black rounded-full"
+                    variant={user.blocked ? "destructive" : "success"}
+                  >
                     {user.blocked ? "Blocked" : "Active"}
-                  </Badge>
-                  <Badge className="font-medium" variant={user.confirmed ? "success" : "warning"}>
+                  </div>
+                  <div
+                    className="font-medium border border-black rounded-full"
+                    variant={user.confirmed ? "success" : "warning"}
+                  >
                     {user.confirmed ? "Confirmed" : "Unconfirmed"}
-                  </Badge>
+                  </div>
                 </TableCell>
                 <TableCell>
-                  <Badge className="font-medium" >{user.SubscriptionLevel || "Free"}</Badge>
+                  <div className="font-medium border border-black rounded-full">
+                    {user.SubscriptionLevel || "Free"}
+                  </div>
                 </TableCell>
                 <TableCell>
                   {new Date(user.createdAt).toLocaleString()}
