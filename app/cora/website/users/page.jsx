@@ -21,7 +21,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import { Input } from "@/components/ui/Input";
 import {
   Select,
   SelectContent,
@@ -29,7 +28,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
 
 const Pagination = ({ total, perPage, currentPage, onPageChange }) => {
   const totalPages = Math.ceil(total / perPage);
@@ -184,7 +182,7 @@ export default function AdminUsersPage() {
           <h1 className="text-xl font-semibold">All Users</h1>
 
           <div className="flex w-full gap-4 flex- wrap">
-            <Input
+            <input
               className="max-w-[50%]"
               placeholder="Search by username or email"
               value={search}
