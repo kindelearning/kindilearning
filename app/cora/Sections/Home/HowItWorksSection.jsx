@@ -109,54 +109,300 @@ export default function HowItWorksSection() {
   );
 }
 
-export function UpdateHowItWorks() {
-  const [formData, setFormData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [openDialog, setOpenDialog] = useState(false);
-  const [media, setMedia] = useState(null); // Use `null` for initial media
+// export function UpdateHowItWorks2() {
+//   const [formData, setFormData] = useState(null);
+//   const [loading, setLoading] = useState(true);
+//   const [error, setError] = useState(null);
+//   const [openDialog, setOpenDialog] = useState(false);
+//   const [media, setMedia] = useState(null); // Use `null` for initial media
 
+//   useEffect(() => {
+//     fetch("https://proper-fun-404805c7d9.strapiapp.com/api/howitwork?populate=*")
+//       .then((res) => res.json())
+//       .then((data) => {
+//         setFormData(data.data);
+//         setLoading(false);
+//       })
+//       .catch((err) => {
+//         console.error(err);
+//         setError("Failed to load data");
+//       });
+//   }, []);
+
+//   // Handle input change for the form
+//   const handleInputChange = (e) => {
+//     const { name, value } = e.target;
+//     setFormData((prev) => ({
+//       ...prev,
+//       [name]: value,
+//     }));
+//   };
+
+//   // Handle form submission
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+
+//     // Prepare the payload
+//     const payload = {
+//       data: {
+//         MainTitle: formData.MainTitle,
+//         MainBody: formData.MainBody,
+//         HIWSection: formData.HIWSection.map((card) => ({
+//           featuredText: card.featuredText,
+//           title: card.title,
+//           BodyDescription: card.BodyDescription,
+//           Media: media.id,
+//         })),
+//       },
+//     };
+//     console.log("Sent Data", payload);
+
+//     try {
+//       const res = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/howitwork", {
+//         method: "PUT",
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//         body: JSON.stringify(payload),
+//       });
+
+//       if (res.ok) {
+//         setOpenDialog(true); // Open the success dialog
+//       } else {
+//         const errorData = await res.json();
+//         console.error("Error updating:", errorData);
+//         alert(`Failed to update: ${errorData.error.message}`);
+//       }
+//     } catch (err) {
+//       console.error(err);
+//       setError("An unexpected error occurred.");
+//     }
+//   };
+//   const handleMediaSelect = (selectedMedia) => {
+//     console.log("Selected Media:", selectedMedia); // Log to inspect the structure
+//     setMedia(selectedMedia); // Store only the media ID
+//   };
+
+//   const handleCardChange = (index, key, value) => {
+//     const updatedCards = [...formData.HIWSection];
+//     updatedCards[index][key] = value;
+//     setFormData((prev) => ({
+//       ...prev,
+//       HIWSection: updatedCards,
+//     }));
+//   };
+
+//   if (loading) return <div>Loading...</div>;
+//   if (error) return <div>{error}</div>;
+
+//   return (
+//     <div className="container mx-auto p-4">
+//       <h2 className="text-2xl font-semibold mb-4">
+//         Update How It Works Content
+//       </h2>
+
+//       <form onSubmit={handleSubmit} className="space-y-4">
+//         <div>
+//           <label
+//             htmlFor="MainTitle"
+//             className="block text-sm font-medium text-gray-700"
+//           >
+//             Main Title
+//           </label>
+//           <input
+//             type="text"
+//             id="MainTitle"
+//             name="MainTitle"
+//             value={formData.MainTitle || ""}
+//             onChange={handleInputChange}
+//             className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md"
+//             required
+//           />
+//         </div>
+
+//         <div>
+//           <label
+//             htmlFor="MainBody"
+//             className="block text-sm font-medium text-gray-700"
+//           >
+//             Main Body
+//           </label>
+//           <textarea
+//             id="MainBody"
+//             name="MainBody"
+//             onChange={handleInputChange}
+//             value={formData.MainBody || ""}
+//             className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md"
+//             rows="5"
+//             required
+//           />
+//         </div>
+
+//         <div>
+//           <h3 className="text-lg font-medium">HIW Section</h3>
+//           {formData.HIWSection.map((card, index) => (
+//             <div key={card.id} className="space-y-4">
+//               <div>
+//                 <label
+//                   htmlFor={`HIWSection_${index}_featuredText`}
+//                   className="block text-sm font-medium text-gray-700"
+//                 >
+//                   Featured Text
+//                 </label>
+//                 <input
+//                   type="text"
+//                   id={`HIWSection_${index}_featuredText`}
+//                   name="HIWSection"
+//                   value={card.featuredText}
+//                   onChange={(e) =>
+//                     handleCardChange(index, "featuredText", e.target.value)
+//                   }
+//                   className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md"
+//                   required
+//                 />
+//               </div>
+
+//               <div>
+//                 <label
+//                   htmlFor={`HIWSection_${index}_title`}
+//                   className="block text-sm font-medium text-gray-700"
+//                 >
+//                   Title
+//                 </label>
+//                 <input
+//                   type="text"
+//                   id={`HIWSection_${index}_title`}
+//                   name="HIWSection"
+//                   value={card.title}
+//                   onChange={(e) =>
+//                     handleCardChange(index, "title", e.target.value)
+//                   }
+//                   className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md"
+//                   required
+//                 />
+//               </div>
+
+//               <div>
+//                 <label
+//                   htmlFor={`HIWSection_${index}_BodyDescription`}
+//                   className="block text-sm font-medium text-gray-700"
+//                 >
+//                   Body Description
+//                 </label>
+
+//                 <ClaraMarkdownRichEditor
+//                   value={card.BodyDescription}
+//                   onChange={(value) =>
+//                     handleCardChange(index, "BodyDescription", value)
+//                   }
+//                 />
+
+//                 <div>
+//                   <label>Media:</label>
+//                   {media ? (
+//                     <div className="mt-4">
+//                       <img
+//                         src={`https://proper-fun-404805c7d9.strapiapp.com${media.url}`}
+//                         className="w-[300px] h-[200px] rounded-lg object-cover"
+//                       />
+//                       <p>{media.name}</p>
+//                     </div>
+//                   ) : (
+//                     <p> Not selected anything</p>
+//                   )}
+//                   <MediaSelector onMediaSelect={handleMediaSelect} />
+//                 </div>
+//               </div>
+//             </div>
+//           ))}
+//         </div>
+
+//         <button
+//           type="submit"
+//           className="px-4 py-2 bg-blue-600 text-white rounded-md"
+//         >
+//           Update
+//         </button>
+//       </form>
+//       {/* Dialog for success message */}
+//       <Dialog open={openDialog} onOpenChange={setOpenDialog}>
+//         <DialogContent>
+//           <DialogHeader>
+//             <DialogTitle>Success!</DialogTitle>
+//             <DialogDescription>
+//               Your data has been updated successfully.
+//             </DialogDescription>
+//           </DialogHeader>
+//           <DialogFooter>
+//             <DialogClose asChild>
+//               <button className="btn-close">Close</button>
+//             </DialogClose>
+//           </DialogFooter>
+//         </DialogContent>
+//       </Dialog>
+//     </div>
+//   );
+// }
+
+export function UpdateHowItWorks() {
+  const [mainTitle, setMainTitle] = useState("");
+  const [mainBody, setMainBody] = useState("");
+  const [hiwSections, setHiwSections] = useState([]); // Array for repeatable HIWSection
+  const [openDialog, setOpenDialog] = useState(false);
+  const [error, setError] = useState("");
+
+  // Fetch existing data for the "How It Works" section
   useEffect(() => {
-    fetch("https://proper-fun-404805c7d9.strapiapp.com/api/howitwork?populate=*")
-      .then((res) => res.json())
-      .then((data) => {
-        setFormData(data.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error(err);
-        setError("Failed to load data");
-      });
+    const fetchHIWData = async () => {
+      try {
+        const res = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/howitwork?populate=HIWSection.Media");
+        const data = await res.json();
+
+        // Parsing the fetched data
+        const hiwData = data.data;
+
+        setMainTitle(hiwData?.MainTitle || "");
+        setMainBody(hiwData?.MainBody || "");
+        setHiwSections(hiwData?.HIWSection || []); // Set the repeatable sections data
+
+      } catch (err) {
+        console.error("Error fetching How It Works data:", err);
+        setError("Error fetching content");
+      }
+    };
+
+    fetchHIWData();
   }, []);
 
-  // Handle input change for the form
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+  const handleHIWSectionUpdate = (index, updatedSection) => {
+    const updatedHIWSections = [...hiwSections];
+    updatedHIWSections[index] = updatedSection; // Update the specific section
+
+    setHiwSections(updatedHIWSections); // Update the state with the new data
   };
 
+  const handleMediaSelect = (selectedMedia, index) => {
+    const updatedSection = [...hiwSections];
+    updatedSection[index].Media = selectedMedia; // Update the media for the specific section
+    setHiwSections(updatedSection);
+  };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevent the default form submission
 
-    // Prepare the payload
     const payload = {
       data: {
-        MainTitle: formData.MainTitle,
-        MainBody: formData.MainBody,
-        HIWSection: formData.HIWSection.map((card) => ({
-          featuredText: card.featuredText,
-          title: card.title,
-          BodyDescription: card.BodyDescription,
-          Media: media.id,
-        })),
+        MainTitle: mainTitle,
+        MainBody: mainBody,
+        HIWSection: hiwSections.map((section) => ({
+          title: section.title,
+          featuredText: section.featuredText,
+          BodyDescription: section.BodyDescription,
+          Media: section.Media ? { id: section.Media.id } : null, // Pass Media ID if it exists
+        })),// Send the updated HIWSection
       },
     };
-    console.log("Sent Data", payload);
+    console.log("payload sent", payload);
 
     try {
       const res = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/howitwork", {
@@ -167,176 +413,136 @@ export function UpdateHowItWorks() {
         body: JSON.stringify(payload),
       });
 
-      if (res.ok) {
-        setOpenDialog(true); // Open the success dialog
-      } else {
-        const errorData = await res.json();
-        console.error("Error updating:", errorData);
-        alert(`Failed to update: ${errorData.error.message}`);
-      }
-    } catch (err) {
-      console.error(err);
-      setError("An unexpected error occurred.");
+      const data = await res.json();
+      console.log("Updated How It Works Data:", data);
+      setOpenDialog(true); // Show success dialog
+    } catch (error) {
+      console.error("Error updating How It Works content:", error);
+      alert("Error updating content.");
     }
   };
-  const handleMediaSelect = (selectedMedia) => {
-    console.log("Selected Media:", selectedMedia); // Log to inspect the structure
-    setMedia(selectedMedia); // Store only the media ID
-  };
-
-  const handleCardChange = (index, key, value) => {
-    const updatedCards = [...formData.HIWSection];
-    updatedCards[index][key] = value;
-    setFormData((prev) => ({
-      ...prev,
-      HIWSection: updatedCards,
-    }));
-  };
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
 
   return (
-    <div className="container mx-auto p-4">
-      <h2 className="text-2xl font-semibold mb-4">
-        Update How It Works Content
-      </h2>
+    <div className="p-8">
+      <h1 className="text-2xl font-bold mb-6">Edit How It Works Section</h1>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit}>
+        {/* Main Title Input */}
         <div>
-          <label
-            htmlFor="MainTitle"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Main Title
-          </label>
+          <label htmlFor="mainTitle">Main Title:</label>
           <input
             type="text"
-            id="MainTitle"
-            name="MainTitle"
-            value={formData.MainTitle || ""}
-            onChange={handleInputChange}
-            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md"
-            required
+            id="mainTitle"
+            value={mainTitle}
+            onChange={(e) => setMainTitle(e.target.value)}
+            className="border p-2 w-full"
           />
         </div>
 
+        {/* Main Body Input */}
         <div>
-          <label
-            htmlFor="MainBody"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Main Body
-          </label>
+          <label htmlFor="mainBody">Main Body (Markdown):</label>
           <textarea
-            id="MainBody"
-            name="MainBody"
-            onChange={handleInputChange}
-            value={formData.MainBody || ""}
-            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md"
-            rows="5"
-            required
+            id="mainBody"
+            value={mainBody}
+            onChange={(e) => setMainBody(e.target.value)}
+            className="border p-2 w-full"
+            rows="4"
           />
         </div>
 
+        {/* How It Works Sections - Looping through HIWSection */}
         <div>
-          <h3 className="text-lg font-medium">HIW Section</h3>
-          {formData.HIWSection.map((card, index) => (
-            <div key={card.id} className="space-y-4">
+          <h2>How It Works Sections</h2>
+          {hiwSections.map((section, index) => (
+            <div key={index} className="border p-4 my-2">
+              <h3>Section {index + 1}</h3>
+              
+              {/* Title */}
               <div>
-                <label
-                  htmlFor={`HIWSection_${index}_featuredText`}
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Featured Text
-                </label>
+                <label htmlFor={`title-${index}`}>Title:</label>
                 <input
                   type="text"
-                  id={`HIWSection_${index}_featuredText`}
-                  name="HIWSection"
-                  value={card.featuredText}
-                  onChange={(e) =>
-                    handleCardChange(index, "featuredText", e.target.value)
-                  }
-                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md"
-                  required
+                  id={`title-${index}`}
+                  value={section.title}
+                  onChange={(e) => {
+                    const updatedSection = { ...section, title: e.target.value };
+                    handleHIWSectionUpdate(index, updatedSection);
+                  }}
+                  className="border p-2 w-full"
                 />
               </div>
 
+              {/* Featured Text */}
               <div>
-                <label
-                  htmlFor={`HIWSection_${index}_title`}
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Title
-                </label>
+                <label htmlFor={`featuredText-${index}`}>Featured Text:</label>
                 <input
                   type="text"
-                  id={`HIWSection_${index}_title`}
-                  name="HIWSection"
-                  value={card.title}
-                  onChange={(e) =>
-                    handleCardChange(index, "title", e.target.value)
-                  }
-                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md"
-                  required
+                  id={`featuredText-${index}`}
+                  value={section.featuredText}
+                  onChange={(e) => {
+                    const updatedSection = { ...section, featuredText: e.target.value };
+                    handleHIWSectionUpdate(index, updatedSection);
+                  }}
+                  className="border p-2 w-full"
                 />
               </div>
 
+              {/* Body Description */}
               <div>
-                <label
-                  htmlFor={`HIWSection_${index}_BodyDescription`}
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Body Description
-                </label>
-
-                <ClaraMarkdownRichEditor
-                  value={card.BodyDescription}
-                  onChange={(value) =>
-                    handleCardChange(index, "BodyDescription", value)
-                  }
+                <label htmlFor={`bodyDescription-${index}`}>Body Description (Markdown):</label>
+                <textarea
+                  id={`bodyDescription-${index}`}
+                  value={section.BodyDescription}
+                  onChange={(e) => {
+                    const updatedSection = { ...section, BodyDescription: e.target.value };
+                    handleHIWSectionUpdate(index, updatedSection);
+                  }}
+                  className="border p-2 w-full"
+                  rows="4"
                 />
+              </div>
 
-                <div>
-                  <label>Media:</label>
-                  {media ? (
-                    <div className="mt-4">
-                      <img
-                        src={`https://proper-fun-404805c7d9.strapiapp.com${media.url}`}
-                        className="w-[300px] h-[200px] rounded-lg object-cover"
-                      />
-                      <p>{media.name}</p>
-                    </div>
-                  ) : (
-                    <p> Not selected anything</p>
-                  )}
-                  <MediaSelector onMediaSelect={handleMediaSelect} />
-                </div>
+              {/* Media Selection */}
+              <div>
+                <label>Media:</label>
+                {section.Media ? (
+                  <div className="mt-4">
+                    <img
+                      src={`https://proper-fun-404805c7d9.strapiapp.com${section.Media.url}`}
+                      alt={section.title}
+                      className="w-32 h-32 object-cover"
+                    />
+                  </div>
+                ) : (
+                  <p>No media selected</p>
+                )}
+                <MediaSelector onMediaSelect={(media) => handleMediaSelect(media, index)} />
               </div>
             </div>
           ))}
         </div>
 
-        <button
-          type="submit"
-          className="px-4 py-2 bg-blue-600 text-white rounded-md"
-        >
-          Update
+        {/* Submit Button */}
+        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md mt-4">
+          Save Changes
         </button>
       </form>
-      {/* Dialog for success message */}
-      <Dialog open={openDialog} onOpenChange={setOpenDialog}>
+
+      {/* Success Dialog */}
+      <Dialog open={openDialog} onOpenChange={(open) => setOpenDialog(open)}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Success!</DialogTitle>
-            <DialogDescription>
-              Your data has been updated successfully.
-            </DialogDescription>
           </DialogHeader>
+          <DialogDescription>
+            Your content has been successfully updated.
+          </DialogDescription>
           <DialogFooter>
             <DialogClose asChild>
-              <button className="btn-close">Close</button>
+              <button className="bg-blue-500 text-white px-4 py-2 rounded-md">
+                Close
+              </button>
             </DialogClose>
           </DialogFooter>
         </DialogContent>
