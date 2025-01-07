@@ -7,6 +7,7 @@ import {
   DialogContent,
   DialogDescription,
   DialogFooter,
+  DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
@@ -16,8 +17,9 @@ import { useState } from "react";
 import { useRouter } from "next/navigation"; // To navigate to All Themes page
 import Link from "next/link";
 import ClaraMarkdownRichEditor from "@/app/cora/Sections/TextEditor/ClaraMarkdownRichEditor";
+import MediaSelector from "../../media/Section/MediaSelector";
 
-export default function CreateTheme() {
+export function CreateTheme2() {
   const [title, setTitle] = useState("");
   const [metaDesc, setMetaDesc] = useState("");
   const [thumbnail, setThumbnail] = useState(null);
@@ -237,7 +239,7 @@ export default function CreateTheme() {
               >
                 Main Content:
               </label>
-              
+
               <ClaraMarkdownRichEditor
                 onChange={handleMainContentChange2}
                 value={mainContent}
@@ -291,5 +293,173 @@ export default function CreateTheme() {
         </div>
       </section>
     </>
+  );
+}
+export default function CreateTheme() {
+  const [title, setTitle] = useState("");
+  const [metaDesc, setMetaDesc] = useState("");
+  const [mainContent, setMainContent] = useState("");
+  const [launchTime, setLaunchTime] = useState("");
+  const [description, setDescription] = useState("");
+  const [name, setName] = useState("");
+  const [media, setMedia] = useState(null); // Media state
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [dialogMessage, setDialogMessage] = useState("");
+  const [dialogType, setDialogType] = useState("success"); // To distinguish between success/error messages
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const newBadge = {
+      LaunchTime: launchTime,
+      Title: title,
+      metaDesc: metaDesc,
+      MainContent: mainContent,
+      Thumbnail: media?.id || null, // Use media ID if selected
+    };
+
+    console.log("New Badge data", newBadge);
+    try {
+      const response = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/our-themes", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ data: newBadge }),
+      });
+
+      const responseData = await response.json();
+
+      if (response.ok) {
+        setDialogMessage("Badge created successfully!");
+        setDialogType("success");
+
+        setMainContent("");
+        setMetaDesc("");
+        setTitle("");
+        setLaunchTime("");
+        setMedia(null);
+      } else {
+        setDialogMessage(
+          "Failed to create badge. Please check the input and try again."
+        );
+        setDialogType("error");
+        throw new Error("Failed to create badge");
+      }
+    } catch (error) {
+      console.error("Error:", error.message); // Log any error that occurs
+      setDialogMessage(error.message);
+      setDialogType("error");
+    }
+
+    setIsDialogOpen(true); // Open dialog after submit
+  };
+  const handleMediaSelect = (selectedMedia) => {
+    setMedia(selectedMedia); // Store the selected media object
+  };
+  return (
+    <div className="p-8 font-fredoka">
+      <head>
+        <title>
+          Create a new badge | Kindi Learning
+        </title>
+      </head>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label>Media:</label>
+          {media ? (
+            <div className="mt-4">
+              <img
+                src={media.url}
+                // src={`https://proper-fun-404805c7d9.strapiapp.com${media.url}`}
+                className="w-32 h-32 object-cover"
+              />
+              <p>{media.name}</p>
+            </div>
+          ) : (
+            <p>Not selected anything</p>
+          )}
+          <MediaSelector onMediaSelect={handleMediaSelect} />
+        </div>
+        <div>
+          <label htmlFor="title" className="block">
+            Title
+          </label>
+          <input
+            type="text"
+            id="title"
+            name="title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="border p-2 w-full"
+            required
+          />
+        </div>
+
+        <div>
+          <label htmlFor="Description" className="block">
+            MainContent
+          </label>
+          <ClaraMarkdownRichEditor
+            value={mainContent}
+            onChange={(newContent) => setMainContent(newContent)}
+            placeholder="Enter a description"
+          />
+        </div>
+        <div>
+          <label htmlFor="metaDesc" className="block">
+            Meta Desc
+          </label>
+          <input
+            type="text"
+            id="metaDesc"
+            name="metaDesc"
+            value={metaDesc}
+            onChange={(e) => setMetaDesc(e.target.value)}
+            className="border p-2 w-full"
+          />
+        </div>
+        <div>
+          <label htmlFor="subCategory" className="block">
+            Launch Time
+          </label>
+          <input
+            type="datetime-local"
+            id="lunchTime"
+            name="subCategory"
+            value={launchTime}
+            onChange={(e) => setLaunchTime(e.target.value)}
+            className="border p-2 w-full"
+          />
+        </div>
+
+        <button type="submit" className="px-4 py-2 bg-black text-white rounded">
+          Create Badge
+        </button>
+      </form>
+
+      {/* Dialog for showing success/error messages */}
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogTrigger asChild>
+          <button className="hidden">Open Dialog</button>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{dialogMessage}</DialogTitle>
+            <DialogDescription>
+              {dialogType === "success"
+                ? "Badge Created Successfully"
+                : "Something went wrong"}
+            </DialogDescription>
+          </DialogHeader>
+          <DialogClose asChild>
+            <button className="px-4 py-2 bg-black text-white rounded">
+              Close
+            </button>
+          </DialogClose>
+        </DialogContent>
+      </Dialog>
+    </div>
   );
 }

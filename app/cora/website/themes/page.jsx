@@ -121,11 +121,14 @@ export default function AdminThemes() {
     });
 
     setThemes(sortedThemes);
-  }; 
+  };
 
   return (
     <>
       <section className="p-8 font-fredoka bg-gray-100">
+        <head>
+          <title>Manage Themes - Kindi Learning</title>
+        </head>
         <div className="container mx-auto">
           <div className="flex w-full justify-between items-center">
             <div className="flex items-center mb-4">
