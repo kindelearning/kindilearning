@@ -163,6 +163,9 @@ export default function AdminBlogs() {
   return (
     <>
       <section className="p-8 font-fredoka bg-gray-100">
+        <head>
+          <title>Manage Blog - Kindi</title>
+        </head>
         <div className="container mx-auto">
           <div className="flex w-full justify-between items-center">
             <div className="flex items-center mb-4">
@@ -207,9 +210,13 @@ export default function AdminBlogs() {
               <TableHeader>
                 <TableRow>
                   <TableHead>Status</TableHead>
-                  <TableHead className="min-w-[100px]">Featured Image</TableHead>
+                  <TableHead className="min-w-[100px]">
+                    Featured Image
+                  </TableHead>
                   <TableHead className="min-w-[120px]">Text</TableHead>
-                  <TableHead className="min-w-[300px]">Meta Description</TableHead>
+                  <TableHead className="min-w-[300px]">
+                    Meta Description
+                  </TableHead>
                   <TableHead>Likes</TableHead>
                   <TableHead
                     className="min-w-[200px] cursor-pointer"

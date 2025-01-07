@@ -22,6 +22,8 @@ import {
 } from "@/components/ui/table";
 import { Pencil, Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import MediaSelector from "../media/Section/MediaSelector";
+import ClaraMarkdownRichEditor from "../../Sections/TextEditor/ClaraMarkdownRichEditor";
 
 export default function MilestoneData() {
   const [milestones, setMilestones] = useState([]);
@@ -125,7 +127,9 @@ export default function MilestoneData() {
       if (response.ok) {
         // Update the milestones list to remove the deleted milestone
         setMilestones(
-          milestones.filter((milestone) => milestone.id !== milestoneToDelete)
+          milestones.filter(
+            (milestone) => milestone.documentId !== milestoneToDelete
+          )
         );
         setIsDialogOpen(false); // Close dialog
       } else {
@@ -138,6 +142,9 @@ export default function MilestoneData() {
 
   return (
     <section className="w-full min-h-screen h-full md:h-full lg:h-full flex flex-col items-center gap-4 py-8">
+      <head>
+        <title>Manage Milestone</title>
+      </head>
       <div className="claracontainer p-4 md:py-8 md:px-2 lg:p-12 w-full flex flex-col overflow-hidden gap-8">
         <div className="flex w-full justify-between items-center">
           <h1 className="text-xl font-semibold mb-4">Milestone</h1>
@@ -236,7 +243,9 @@ export default function MilestoneData() {
                     )}
                   </TableCell>
                   <TableCell>{milestone.Title}</TableCell>
-                  <TableCell>{milestone.Description}</TableCell>
+                  <TableCell>
+                    {milestone.Description.slice(0, 100)}...
+                  </TableCell>
                   <TableCell>{milestone.Category}</TableCell>
                   <TableCell>{milestone.SubCategory}</TableCell>
                   <TableCell>
@@ -338,105 +347,248 @@ export default function MilestoneData() {
   );
 }
 
+// export function UpdateMilestoneData2({ documentId }) {
+//   const [formData, setFormData] = useState({
+//     Description: "",
+//     Title: "",
+//     SubCategory: "",
+//     Category: "",
+//   });
+//   useEffect(() => {
+//     // Fetch activity data using the documentId
+//     async function fetchData() {
+//       const res = await fetch(
+//         `https://proper-fun-404805c7d9.strapiapp.com/api/milestones/${documentId}?populate=*`
+//       );
+//       const data = await res.json();
+//       const milestone = data.data;
+//       if (milestone) {
+//         setFormData({
+//           Title: milestone.Title,
+//           Description: milestone.Description,
+//           SubCategory: milestone.SubCategory,
+//           Category: milestone.Category,
+//         });
+//       }
+//     }
+
+//     fetchData();
+//   }, [documentId]);
+
+//   const handleInputChange = (e) => {
+//     const { name, value } = e.target;
+//     setFormData((prev) => ({ ...prev, [name]: value }));
+//   };
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+
+//     const updatedMilestone = {
+//       ...formData,
+//     };
+
+//     try {
+//       const response = await fetch(
+//         `https://proper-fun-404805c7d9.strapiapp.com/api/milestones/${documentId}`,
+//         {
+//           method: "PUT",
+//           headers: {
+//             "Content-Type": "application/json",
+//           },
+//           body: JSON.stringify({ data: updatedMilestone }),
+//         }
+//       );
+
+//       if (response.ok) {
+//         alert("Milestone updated successfully!");
+//       } else {
+//         throw new Error("Failed to update the activity.");
+//       }
+//     } catch (error) {
+//       alert(error.message);
+//     }
+//   };
+//   return (
+//     <div className="p-8">
+//       <form onSubmit={handleSubmit} className="space-y-4">
+//         <div>
+//           <label htmlFor="Title" className="block">
+//             Title
+//           </label>
+//           <input
+//             type="text"
+//             id="Title"
+//             name="Title"
+//             value={formData.Title}
+//             onChange={handleInputChange}
+//             className="border p-2 w-full"
+//           />
+//         </div>
+//         <div>
+//           <label htmlFor="Name" className="block">
+//             SubCategory
+//           </label>
+//           <input
+//             type="text"
+//             id="SubCategory"
+//             name="SubCategory"
+//             value={formData.SubCategory}
+//             onChange={handleInputChange}
+//             className="border p-2 w-full"
+//           />
+//         </div>
+//         <div>
+//           <label htmlFor="Name" className="block">
+//             Category
+//           </label>
+//           <input
+//             type="text"
+//             id="Category"
+//             name="Category"
+//             value={formData.Category}
+//             onChange={handleInputChange}
+//             className="border p-2 w-full"
+//           />
+//         </div>
+
+//         <div>
+//           <label htmlFor="Description" className="block">
+//             Description
+//           </label>
+//           <input
+//             type="text"
+//             id="Description"
+//             name="Description"
+//             value={formData.Description}
+//             onChange={handleInputChange}
+//             className="border p-2 w-full"
+//           />
+//         </div>
+
+//         <button type="submit" className="px-4 py-2 bg-red text-white rounded">
+//           Update Milestone
+//         </button>
+//       </form>
+//     </div>
+//   );
+// }
+
 export function UpdateMilestoneData({ documentId }) {
-  const [formData, setFormData] = useState({
-    Description: "",
-    Title: "",
-    SubCategory: "",
-    Category: "",
-  });
+  const [description, setDescription] = useState("");
+  const [name, setName] = useState("");
+  const [title, setTitle] = useState("");
+  const [subCategory, setSubCategory] = useState("");
+  const [category, setCategory] = useState("");
+  const [media, setMedia] = useState(null); // Media state
+  const [openDialog, setOpenDialog] = useState(false);
+  const [error, setError] = useState("");
+
+  // Fetch existing data for the "How It Works" section
   useEffect(() => {
-    // Fetch activity data using the documentId
-    async function fetchData() {
-      const res = await fetch(
-        `https://proper-fun-404805c7d9.strapiapp.com/api/milestones/${documentId}?populate=*`
-      );
-      const data = await res.json();
-      const milestone = data.data;
-      if (milestone) {
-        setFormData({
-          Title: milestone.Title,
-          Description: milestone.Description,
-          SubCategory: milestone.SubCategory,
-          Category: milestone.Category,
-        });
+    const fetchContentData = async () => {
+      try {
+        const res = await fetch(
+          `https://proper-fun-404805c7d9.strapiapp.com/api/milestones/${documentId}?populate=*`
+        );
+        const data = await res.json();
+
+        const content = data.data;
+        if (content) {
+          setTitle(content.Title || ""); // Set default values if not found
+          setCategory(content.Category || ""); // Set default values if not found
+          setSubCategory(content.SubCategory || ""); // Set default values if not found
+          setDescription(content.Description || "");
+          setMedia(content?.Thumbnail?.id || null); // Set the media ID or null if no media is selected
+        }
+        console.log("Fetched MileStone Content", content);
+      } catch (err) {
+        console.error("Error fetching content data:", err);
+        setError("Error fetching content");
       }
-    }
+    };
 
-    fetchData();
-  }, [documentId]);
+    fetchContentData();
+  }, []);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const updatedMilestone = {
-      ...formData,
+    const payload = {
+      data: {
+        SubCategory: subCategory,
+        Title: title,
+        Category: category,
+        Description: description,
+        Thumbnail: media?.id || null, // Use media ID if selected
+      },
     };
+    console.log("Payload Created", payload);
 
     try {
-      const response = await fetch(
+      const res = await fetch(
         `https://proper-fun-404805c7d9.strapiapp.com/api/milestones/${documentId}`,
         {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ data: updatedMilestone }),
+          body: JSON.stringify(payload),
         }
       );
 
-      if (response.ok) {
-        alert("Milestone updated successfully!");
-      } else {
-        throw new Error("Failed to update the activity.");
-      }
+      const data = await res.json();
+      console.log("Updated milestones Content:", data);
+      setOpenDialog(true); // Show success dialog
     } catch (error) {
-      alert(error.message);
+      console.error("Error updating content:", error);
+      alert("Error updating content.");
     }
   };
+
+  const handleMediaSelect = (selectedMedia) => {
+    setMedia(selectedMedia); // Store the selected media object
+  };
+
   return (
     <div className="p-8">
+      <h1 className="text-2xl font-bold mb-6">Edit How It Works Section</h1>
+
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label htmlFor="Title" className="block">
-            Title
+          <label htmlFor="Name" className="block">
+            Name
           </label>
           <input
             type="text"
-            id="Title"
-            name="Title"
-            value={formData.Title}
-            onChange={handleInputChange}
+            id="title"
+            name="title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
             className="border p-2 w-full"
           />
         </div>
         <div>
-          <label htmlFor="Name" className="block">
-            SubCategory
-          </label>
-          <input
-            type="text"
-            id="SubCategory"
-            name="SubCategory"
-            value={formData.SubCategory}
-            onChange={handleInputChange}
-            className="border p-2 w-full"
-          />
-        </div>
-        <div>
-          <label htmlFor="Name" className="block">
+          <label htmlFor="Category" className="block">
             Category
           </label>
           <input
             type="text"
             id="Category"
             name="Category"
-            value={formData.Category}
-            onChange={handleInputChange}
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            className="border p-2 w-full"
+          />
+        </div>
+        <div>
+          <label htmlFor="subCategory" className="block">
+            subCategory
+          </label>
+          <input
+            type="text"
+            id="subCategory"
+            name="subCategory"
+            value={subCategory}
+            onChange={(e) => setSubCategory(e.target.value)}
             className="border p-2 w-full"
           />
         </div>
@@ -445,51 +597,235 @@ export function UpdateMilestoneData({ documentId }) {
           <label htmlFor="Description" className="block">
             Description
           </label>
-          <input
-            type="text"
-            id="Description"
-            name="Description"
-            value={formData.Description}
-            onChange={handleInputChange}
-            className="border p-2 w-full"
+          <ClaraMarkdownRichEditor
+            value={description}
+            onChange={(newContent) => setDescription(newContent)}
           />
         </div>
 
+        <div>
+          <label>Media:</label>
+          {media ? (
+            <div className="mt-4">
+              <img
+                src={media.url}
+                // src={`https://proper-fun-404805c7d9.strapiapp.com${media.url}`}
+                className="w-32 h-32 object-cover"
+              />
+              <p>{media.name}</p>
+            </div>
+          ) : (
+            <p>Not selected anything</p>
+          )}
+          <MediaSelector onMediaSelect={handleMediaSelect} />
+        </div>
+
         <button type="submit" className="px-4 py-2 bg-red text-white rounded">
-          Update Milestone
+          Update Badge
         </button>
       </form>
+
+      {/* Success Dialog */}
+      <Dialog open={openDialog} onOpenChange={(open) => setOpenDialog(open)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Success!</DialogTitle>
+          </DialogHeader>
+          <DialogDescription>
+            Your content has been successfully updated.
+          </DialogDescription>
+          <DialogFooter>
+            <DialogClose asChild>
+              <button className="bg-blue-500 text-white px-4 py-2 rounded-md">
+                Close
+              </button>
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
+
+// export function CreateMilestoneForm2() {
+//   const [formData, setFormData] = useState({
+//     Title: "",
+//     Description: "",
+//     Category: "",
+//     SubCategory: "",
+//   });
+//   const [isDialogOpen, setIsDialogOpen] = useState(false);
+//   const [dialogMessage, setDialogMessage] = useState("");
+//   const [dialogType, setDialogType] = useState("success"); // To distinguish between success/error messages
+
+//   // Handle form input changes
+//   const handleInputChange = (e) => {
+//     const { name, value } = e.target;
+//     setFormData((prev) => ({ ...prev, [name]: value }));
+//   };
+
+//   // Handle form submission
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+
+//     const newMilestone = {
+//       Title: formData.Title,
+//       Description: formData.Description,
+//       Category: formData.Category,
+//       SubCategory: formData.SubCategory,
+//     };
+
+//     try {
+//       const response = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/milestones", {
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//         body: JSON.stringify({ data: newMilestone }),
+//       });
+
+//       const responseData = await response.json();
+
+//       if (response.ok) {
+//         setDialogMessage("Milestone created successfully!");
+//         setDialogType("success");
+//         setFormData({
+//           Title: "",
+//           Description: "",
+//           Category: "",
+//           SubCategory: "",
+//         }); // Reset form after submission
+//       } else {
+//         setDialogMessage(
+//           "Failed to create milestone. Please check the input and try again."
+//         );
+//         setDialogType("error");
+//         throw new Error("Failed to create milestone");
+//       }
+//     } catch (error) {
+//       console.error("Error:", error.message); // Log any error that occurs
+//       setDialogMessage(error.message);
+//       setDialogType("error");
+//     }
+
+//     setIsDialogOpen(true); // Open dialog after submit
+//   };
+
+//   return (
+//     <div className="p-8 font-fredoka">
+//       <form onSubmit={handleSubmit} className="space-y-4">
+//         <div>
+//           <label htmlFor="Title" className="block">
+//             Title
+//           </label>
+//           <input
+//             type="text"
+//             id="Title"
+//             name="Title"
+//             value={formData.Title}
+//             onChange={handleInputChange}
+//             className="border p-2 w-full"
+//             required
+//           />
+//         </div>
+
+//         <div>
+//           <label htmlFor="Description" className="block">
+//             Description
+//           </label>
+//           <textarea
+//             id="Description"
+//             name="Description"
+//             value={formData.Description}
+//             onChange={handleInputChange}
+//             className="border p-2 w-full"
+//             required
+//           />
+//         </div>
+
+//         <div>
+//           <label htmlFor="Category" className="block">
+//             Category
+//           </label>
+//           <input
+//             type="text"
+//             id="Category"
+//             name="Category"
+//             value={formData.Category}
+//             onChange={handleInputChange}
+//             className="border p-2 w-full"
+//             required
+//           />
+//         </div>
+
+//         <div>
+//           <label htmlFor="SubCategory" className="block">
+//             SubCategory
+//           </label>
+//           <input
+//             type="text"
+//             id="SubCategory"
+//             name="SubCategory"
+//             value={formData.SubCategory}
+//             onChange={handleInputChange}
+//             className="border p-2 w-full"
+//             required
+//           />
+//         </div>
+
+//         <button type="submit" className="px-4 py-2 bg-black text-white rounded">
+//           Create Milestone
+//         </button>
+//       </form>
+
+//       {/* Dialog for showing success/error messages */}
+//       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+//         <DialogTrigger asChild>
+//           <button className="hidden">Open Dialog</button>
+//         </DialogTrigger>
+//         <DialogContent>
+//           <DialogHeader>
+//             <DialogTitle>{dialogMessage}</DialogTitle>
+//             <DialogDescription>
+//               {dialogType === "success"
+//                 ? "Milestone Created Successfully"
+//                 : "Something went wrong"}
+//             </DialogDescription>
+//           </DialogHeader>
+//           <DialogClose asChild>
+//             <button className="px-4 py-2 bg-black text-white rounded">
+//               Close
+//             </button>
+//           </DialogClose>
+//         </DialogContent>
+//       </Dialog>
+//     </div>
+//   );
+// }
+
 export function CreateMilestoneForm() {
-  const [formData, setFormData] = useState({
-    Title: "",
-    Description: "",
-    Category: "",
-    SubCategory: "",
-  });
+  const [description, setDescription] = useState("");
+  const [title, setTitle] = useState("");
+  const [subCategory, setSubCategory] = useState("");
+  const [category, setCategory] = useState("");
+  const [media, setMedia] = useState(null); // Media state
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [dialogMessage, setDialogMessage] = useState("");
   const [dialogType, setDialogType] = useState("success"); // To distinguish between success/error messages
-
-  // Handle form input changes
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
 
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const newMilestone = {
-      Title: formData.Title,
-      Description: formData.Description,
-      Category: formData.Category,
-      SubCategory: formData.SubCategory,
+      Title: title,
+      Category: category,
+      SubCategory: subCategory,
+      Description: description,
+      Thumbnail: media?.id || null, // Use media ID if selected
     };
 
+    console.log("New milestones data", newMilestone);
     try {
       const response = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/milestones", {
         method: "POST",
@@ -502,20 +838,20 @@ export function CreateMilestoneForm() {
       const responseData = await response.json();
 
       if (response.ok) {
-        setDialogMessage("Milestone created successfully!");
+        setDialogMessage("Badge created successfully!");
         setDialogType("success");
-        setFormData({
-          Title: "",
-          Description: "",
-          Category: "",
-          SubCategory: "",
-        }); // Reset form after submission
+
+        setTitle("");
+        setCategory("");
+        setSubCategory("");
+        setDescription("");
+        setMedia(null);
       } else {
         setDialogMessage(
-          "Failed to create milestone. Please check the input and try again."
+          "Failed to create badge. Please check the input and try again."
         );
         setDialogType("error");
-        throw new Error("Failed to create milestone");
+        throw new Error("Failed to create badge");
       }
     } catch (error) {
       console.error("Error:", error.message); // Log any error that occurs
@@ -525,20 +861,66 @@ export function CreateMilestoneForm() {
 
     setIsDialogOpen(true); // Open dialog after submit
   };
-
+  const handleMediaSelect = (selectedMedia) => {
+    setMedia(selectedMedia); // Store the selected media object
+  };
   return (
     <div className="p-8 font-fredoka">
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label htmlFor="Title" className="block">
-            Title
+          <label>Media:</label>
+          {media ? (
+            <div className="mt-4">
+              <img
+                src={media.url}
+                // src={`https://proper-fun-404805c7d9.strapiapp.com${media.url}`}
+                className="w-32 h-32 object-cover"
+              />
+              <p>{media.name}</p>
+            </div>
+          ) : (
+            <p>Not selected anything</p>
+          )}
+          <MediaSelector onMediaSelect={handleMediaSelect} />
+        </div>
+        <div>
+          <label htmlFor="title" className="block">
+            title
           </label>
           <input
             type="text"
-            id="Title"
-            name="Title"
-            value={formData.Title}
-            onChange={handleInputChange}
+            id="title"
+            name="title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="border p-2 w-full"
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="category" className="block">
+            category
+          </label>
+          <input
+            type="text"
+            id="category"
+            name="category"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            className="border p-2 w-full"
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="subCategory" className="block">
+            subCategory
+          </label>
+          <input
+            type="text"
+            id="subCategory"
+            name="subCategory"
+            value={subCategory}
+            onChange={(e) => setSubCategory(e.target.value)}
             className="border p-2 w-full"
             required
           />
@@ -548,48 +930,15 @@ export function CreateMilestoneForm() {
           <label htmlFor="Description" className="block">
             Description
           </label>
-          <textarea
-            id="Description"
-            name="Description"
-            value={formData.Description}
-            onChange={handleInputChange}
-            className="border p-2 w-full"
-            required
-          />
-        </div>
-
-        <div>
-          <label htmlFor="Category" className="block">
-            Category
-          </label>
-          <input
-            type="text"
-            id="Category"
-            name="Category"
-            value={formData.Category}
-            onChange={handleInputChange}
-            className="border p-2 w-full"
-            required
-          />
-        </div>
-
-        <div>
-          <label htmlFor="SubCategory" className="block">
-            SubCategory
-          </label>
-          <input
-            type="text"
-            id="SubCategory"
-            name="SubCategory"
-            value={formData.SubCategory}
-            onChange={handleInputChange}
-            className="border p-2 w-full"
-            required
+          <ClaraMarkdownRichEditor
+            value={description}
+            onChange={(newContent) => setDescription(newContent)}
+            placeholder="Enter a description"
           />
         </div>
 
         <button type="submit" className="px-4 py-2 bg-black text-white rounded">
-          Create Milestone
+          Create Badge
         </button>
       </form>
 
@@ -603,7 +952,7 @@ export function CreateMilestoneForm() {
             <DialogTitle>{dialogMessage}</DialogTitle>
             <DialogDescription>
               {dialogType === "success"
-                ? "Milestone Created Successfully"
+                ? "Badge Created Successfully"
                 : "Something went wrong"}
             </DialogDescription>
           </DialogHeader>

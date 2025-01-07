@@ -121,7 +121,7 @@ export default function AdminThemes() {
     });
 
     setThemes(sortedThemes);
-  };
+  }; 
 
   return (
     <>
