@@ -30,8 +30,7 @@ export async function fetchHeroSection() {
 export async function fetchChildDevelopmentUnlock() {
   try {
     const res = await fetch(
-      "https://proper-fun-404805c7d9.strapiapp.com/api/childdevelopmentunlock?populate=Content.Media",
-      { next: { revalidate: 60 } } // Optional revalidation for ISR
+      "https://proper-fun-404805c7d9.strapiapp.com/api/childdevelopmentunlock?populate=Content.Media"
     );
 
     if (!res.ok) {
@@ -39,16 +38,13 @@ export async function fetchChildDevelopmentUnlock() {
     }
 
     const data = await res.json();
-
     if (!data?.data?.Content) {
       throw new Error("No content found for Child Development Unlock.");
     }
 
     const content = data.data.Content;
 
-    const mediaUrl = content.Media?.[0]?.url
-      ? content.Media[0].url
-      : null;
+    const mediaUrl = content.Media?.[0]?.url ? content.Media[0].url : null;
 
     return {
       title: content.Title || "No Title",
@@ -73,7 +69,6 @@ export async function fetchEarlyLearningExpert() {
     }
 
     const data = await res.json();
-    
 
     if (!data || !data.data) {
       throw new Error("No data found for Early Learning Expert section");
@@ -81,10 +76,6 @@ export async function fetchEarlyLearningExpert() {
 
     // Extracting content
     const content = data.data.Content;
-
-    const mediaUrl = content.Media?.[0]?.url
-      ? content.Media[0].url
-      : null;
 
     return content; // Return the content data
   } catch (error) {

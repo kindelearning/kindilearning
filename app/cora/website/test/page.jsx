@@ -390,44 +390,6 @@ export function UpdateContentForm({ documentId }) {
         <button type="submit" className="px-4 py-2 bg-black text-white rounded">
           Update Content
         </button>
-
-        {/* Dialog for media selection */}
-        {/* <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogContent className="max-w-[1000px] max-h-[600px] overflow-y-scroll">
-            <DialogHeader>
-              <DialogTitle>Select Media</DialogTitle>
-              <DialogDescription>
-                Click on any image below to select it for the content.
-              </DialogDescription>
-            </DialogHeader>
-            <div className="grid grid-cols-3 gap-4">
-              {mediaFiles && mediaFiles.length > 0 ? (
-                mediaFiles.map((mediaFile) => (
-                  <div
-                    key={mediaFile.id}
-                    className="cursor-pointer"
-                    onClick={() => handleMediaSelect(mediaFile)}
-                  >
-                    <img
-                      // src={mediaFile.url}
-                      src={`https://proper-fun-404805c7d9.strapiapp.com${mediaFile.url}`}
-                      alt={mediaFile.name}
-                      className="w-full h-32 object-cover"
-                    />
-                    <p className="text-center">{mediaFile.name}</p>
-                  </div>
-                ))
-              ) : (
-                <p>No media available</p>
-              )}
-            </div>
-            <DialogClose asChild>
-              <button className="px-4 py-2 bg-black text-white rounded mt-4">
-                Close
-              </button>
-            </DialogClose>
-          </DialogContent>
-        </Dialog> */}
       </form>
 
       {/* Custom Success Dialog */}

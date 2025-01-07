@@ -29,8 +29,8 @@ export default async function Home() {
         <div className="w-full flex flex-col overflow-hidden gap-0">
           <Hero />
           <Slider />
-          <HowItWorks />
           <PromotionalSection />
+          <HowItWorks />
           <PromotionalSectionTwo />
           <MonthlyThemes />
           <PopularActivity />

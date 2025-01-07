@@ -24,6 +24,9 @@ export default function Cora() {
   return (
     <>
       <section className="w-full font-fredoka h-auto bg-[#EAEAF5] items-center pb-32 justify-center flex flex-col gap-[20px]">
+        <head>
+          <title>Cora Admin Panel</title>
+        </head>
         <div className="claracontainer py-6 w-full flex flex-col overflow-hidden gap-8">
           <UserAnalytics />
           <div className="flex w-full gap-4">
