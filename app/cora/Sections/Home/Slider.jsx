@@ -300,23 +300,17 @@ export default function SliderSection() {
 // }
 
 export function UpdateSliderSection() {
-  const [sliderContent, setSliderContent] = useState([]); // Array for repeatable HIWSection
+  const [sliderContent, setSliderContent] = useState([]); 
   const [openDialog, setOpenDialog] = useState(false);
   const [error, setError] = useState("");
 
-  // Fetch existing data for the "How It Works" section
   useEffect(() => {
     const fetchHIWData = async () => {
       try {
-        const res = await fetch(
-          "https://proper-fun-404805c7d9.strapiapp.com/api/slider?populate=Content.Media"
-        );
+        const res = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/slider?populate=Content.Media");
         const data = await res.json();
-
-        // Parsing the fetched data
         const sliderData = data.data;
-
-        setSliderContent(sliderData?.Content || []); // Set the repeatable sections data
+        setSliderContent(sliderData?.Content || []);
       } catch (err) {
         console.error("Error fetching How It Works data:", err);
         setError("Error fetching content");
@@ -328,19 +322,18 @@ export function UpdateSliderSection() {
 
   const handleHIWSectionUpdate = (index, updatedSection) => {
     const updatedHIWSections = [...sliderContent];
-    updatedHIWSections[index] = updatedSection; // Update the specific section
-
-    setSliderContent(updatedHIWSections); // Update the state with the new data
+    updatedHIWSections[index] = updatedSection;
+    setSliderContent(updatedHIWSections);
   };
 
   const handleMediaSelect = (selectedMedia, index) => {
     const updatedSection = [...sliderContent];
-    updatedSection[index].Media = selectedMedia; // Update the media for the specific section
+    updatedSection[index].Media = selectedMedia;
     setSliderContent(updatedSection);
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent the default form submission
+    e.preventDefault();
 
     const payload = {
       data: {
@@ -349,8 +342,8 @@ export function UpdateSliderSection() {
           featuredText: section.featuredText,
           Body: section.Body,
           bgcolor: section.bgcolor,
-          Media: section.Media ? { id: section.Media.id } : null, // Pass Media ID if it exists
-        })), // Send the updated HIWSection
+          Media: section.Media ? { id: section.Media.id } : null,
+        })),
       },
     };
     console.log("payload sent", payload);
@@ -366,7 +359,7 @@ export function UpdateSliderSection() {
 
       const data = await res.json();
       console.log("Updated How It Works Data:", data);
-      setOpenDialog(true); // Show success dialog
+      setOpenDialog(true);
     } catch (error) {
       console.error("Error updating How It Works content:", error);
       alert("Error updating content.");
@@ -374,116 +367,109 @@ export function UpdateSliderSection() {
   };
 
   return (
-    <div className="p-8">
-      <h1 className="text-2xl font-bold mb-6">Edit How It Works Section</h1>
+    <div className="p-8 max-w-4xl mx-auto bg-white shadow-lg rounded-lg">
+      <h1 className="text-3xl font-semibold mb-6 text-center">Edit Slider Section</h1>
+      
+      {/* Error message display */}
+      {error && <div className="bg-red-500 text-white p-3 rounded mb-4">{error}</div>}
 
-      <form onSubmit={handleSubmit}>
-        {/* How It Works Sections - Looping through HIWSection */}
-        <div>
-          <h2>How It Works Sections</h2>
-          {sliderContent.map((section, index) => (
-            <div key={index} className="border p-4 my-2">
-              <h3>Section {index + 1}</h3>
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Looping through each slider content section */}
+        {sliderContent.map((section, index) => (
+          <div style={{ backgroundColor: section.bgcolor }} key={index} className="border p-6 rounded-lg shadow-sm bg-gray-50">
+            <h3 className="text-xl font-medium mb-4">Section {index + 1}</h3>
 
-              {/* Title */}
-              <div>
-                <label htmlFor={`title-${index}`}>Title:</label>
-                <input
-                  type="text"
-                  id={`title-${index}`}
-                  value={section.Title}
-                  onChange={(e) => {
-                    const updatedSection = {
-                      ...section,
-                      Title: e.target.value,
-                    };
-                    handleHIWSectionUpdate(index, updatedSection);
-                  }}
-                  className="border p-2 w-full"
-                />
-              </div>
-
-              {/* Featured Text */}
-              <div>
-                <label htmlFor={`featuredText-${index}`}>Featured Text:</label>
-                <input
-                  type="text"
-                  id={`featuredText-${index}`}
-                  value={section.featuredText}
-                  onChange={(e) => {
-                    const updatedSection = {
-                      ...section,
-                      featuredText: e.target.value,
-                    };
-                    handleHIWSectionUpdate(index, updatedSection);
-                  }}
-                  className="border p-2 w-full"
-                />
-              </div>
-
-              {/* Body Description */}
-              <div>
-                <label htmlFor={`bodyDescription-${index}`}>
-                  Body Description (Markdown):
-                </label>
-                <textarea
-                  id={`bodyDescription-${index}`}
-                  value={section.Body}
-                  onChange={(e) => {
-                    const updatedSection = {
-                      ...section,
-                      Body: e.target.value,
-                    };
-                    handleHIWSectionUpdate(index, updatedSection);
-                  }}
-                  className="border p-2 w-full"
-                  rows="4"
-                />
-              </div>
-              <div>
-                <label htmlFor={`bgcolor-${index}`}>bgcolor</label>
-                <input
-                  type="color"
-                  id={`bgcolor-${index}`}
-                  value={section.bgcolor}
-                  onChange={(e) => {
-                    const updatedSection = {
-                      ...section,
-                      bgcolor: e.target.value,
-                    };
-                    handleHIWSectionUpdate(index, updatedSection);
-                  }}
-                  className="border p-2 w-full"
-                  rows="4"
-                />
-              </div>
-
-              {/* Media Selection */}
-              <div>
-                <label>Media:</label>
-                {section.Media ? (
-                  <div className="mt-4">
-                    <img
-                      src={`https://proper-fun-404805c7d9.strapiapp.com${section.Media.url}`}
-                      alt={section.Title}
-                      className="w-32 h-32 object-cover"
-                    />
-                  </div>
-                ) : (
-                  <p>No media selected</p>
-                )}
-                <MediaSelector
-                  onMediaSelect={(media) => handleMediaSelect(media, index)}
-                />
-              </div>
+            {/* Title */}
+            <div>
+              <label htmlFor={`title-${index}`} className="block text-sm font-medium text-gray-700">
+                Title:
+              </label>
+              <input
+                type="text"
+                id={`title-${index}`}
+                value={section.Title}
+                onChange={(e) => {
+                  const updatedSection = { ...section, Title: e.target.value };
+                  handleHIWSectionUpdate(index, updatedSection);
+                }}
+                className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
             </div>
-          ))}
-        </div>
 
+            {/* Featured Text */}
+            <div>
+              <label htmlFor={`featuredText-${index}`} className="block text-sm font-medium text-gray-700">
+                Featured Text:
+              </label>
+              <input
+                type="text"
+                id={`featuredText-${index}`}
+                value={section.featuredText}
+                onChange={(e) => {
+                  const updatedSection = { ...section, featuredText: e.target.value };
+                  handleHIWSectionUpdate(index, updatedSection);
+                }}
+                className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            {/* Body Description */}
+            <div>
+              <label htmlFor={`bodyDescription-${index}`} className="block text-sm font-medium text-gray-700">
+                Body Description (Markdown):
+              </label>
+              <textarea
+                id={`bodyDescription-${index}`}
+                value={section.Body}
+                onChange={(e) => {
+                  const updatedSection = { ...section, Body: e.target.value };
+                  handleHIWSectionUpdate(index, updatedSection);
+                }}
+                className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                rows="4"
+              />
+            </div>
+
+            {/* Background Color Picker */}
+            <div >
+              <label htmlFor={`bgcolor-${index}`} className="block text-sm font-medium text-gray-700">
+                Background Color:
+              </label>
+              <input
+                type="color"
+                id={`bgcolor-${index}`}
+                value={section.bgcolor}
+                onChange={(e) => {
+                  const updatedSection = { ...section, bgcolor: e.target.value };
+                  handleHIWSectionUpdate(index, updatedSection);
+                }}
+                className="mt-1 block w-16 border rounded-md"
+              />
+            </div>
+
+            {/* Media Selection */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Media:</label>
+              {section.Media ? (
+                <div className="mt-2">
+                  <img
+                    src={`https://proper-fun-404805c7d9.strapiapp.com${section.Media.url}`}
+                    alt={section.Title}
+                    className="w-32 h-32 object-cover border rounded-md"
+                  />
+                </div>
+              ) : (
+                <p className="mt-2 text-gray-500">No media selected</p>
+              )}
+              <MediaSelector onMediaSelect={(media) => handleMediaSelect(media, index)} />
+            </div>
+          </div>
+        ))}
+        
         {/* Submit Button */}
         <button
           type="submit"
-          className="bg-blue-500 text-white px-4 py-2 rounded-md mt-4"
+          className="bg-blue-600 text-white px-6 py-3 rounded-md w-full mt-6 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           Save Changes
         </button>
@@ -500,7 +486,7 @@ export function UpdateSliderSection() {
           </DialogDescription>
           <DialogFooter>
             <DialogClose asChild>
-              <button className="bg-blue-500 text-white px-4 py-2 rounded-md">
+              <button className="bg-blue-600 text-white px-6 py-3 rounded-md">
                 Close
               </button>
             </DialogClose>
@@ -510,3 +496,4 @@ export function UpdateSliderSection() {
     </div>
   );
 }
+

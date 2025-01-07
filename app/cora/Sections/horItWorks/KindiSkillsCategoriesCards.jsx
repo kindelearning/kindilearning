@@ -40,6 +40,7 @@ export default function KindiSkillsCategoriesCards() {
 
     fetchData();
   }, []);
+  console.log("Skill Area COntent", content);
 
   if (loading) return <div className="text-gray-500">Loading content...</div>;
   if (error) return <div className="text-red-500">{error}</div>;
@@ -71,6 +72,16 @@ export default function KindiSkillsCategoriesCards() {
             className="p-6 rounded-lg shadow-lg text-white"
             style={{ backgroundColor: `#${card.bgcolor}` }}
           >
+            {card.Icon ? (
+              <img
+                src={card.Icon.url}
+                // src={`https://proper-fun-404805c7d9.strapiapp.com${card.Icon.url}`}
+                className="w-[60px] h-[60px]"
+                alt={card.Title}
+              />
+            ) : (
+              <p>No image </p>
+            )}
             {/* Card Title */}
             <h3 className="text-2xl font-semibold mb-4">{card.Title}</h3>
 
@@ -85,49 +96,305 @@ export default function KindiSkillsCategoriesCards() {
     </section>
   );
 }
-export const UpdateKindiSkillsCategoriesCards = () => {
-  const [formData, setFormData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [openDialog, setOpenDialog] = useState(false);
-  const [media, setMedia] = useState(null); // Use `null` for initial media
+// export const UpdateKindiSkillsCategoriesCards2 = () => {
+//   const [formData, setFormData] = useState(null);
+//   const [loading, setLoading] = useState(true);
+//   const [error, setError] = useState(null);
+//   const [openDialog, setOpenDialog] = useState(false);
+//   const [media, setMedia] = useState(null); // Use `null` for initial media
 
-  // Fetch existing data
+//   // Fetch existing data
+//   useEffect(() => {
+//     fetch(
+//       "https://proper-fun-404805c7d9.strapiapp.com/api/how-it-work-page?populate[KindiSkillsCategoriesCards][populate]=Icon"
+//     )
+//       .then((res) => res.json())
+//       .then((data) => {
+//         setFormData(data.data);
+//         setLoading(false);
+//       })
+//       .catch((err) => {
+//         console.error(err);
+//         setError("Failed to load data");
+//       });
+//   }, []);
+
+//   // Handle form submission
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+
+//     // Prepare the payload
+//     const payload = {
+//       data: {
+//         KindiSkillsCategoriesTitle: formData.KindiSkillsCategoriesTitle,
+//         KindiSkillsCategoriesBody: formData.KindiSkillsCategoriesBody,
+//         KindiSkillsCategoriesCards: formData.KindiSkillsCategoriesCards.map(
+//           (card) => ({
+//             Title: card.Title,
+//             Body: card.Body,
+//             bgcolor: card.bgcolor.replace("#", ""),
+//             Icon: media.id,
+//           })
+//         ),
+//       },
+//     };
+//     console.log("Sent Data", payload);
+
+//     try {
+//       const res = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/how-it-work-page", {
+//         method: "PUT",
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//         body: JSON.stringify(payload),
+//       });
+
+//       if (res.ok) {
+//         setOpenDialog(true); // Open the success dialog
+//       } else {
+//         const errorData = await res.json();
+//         console.error("Error updating:", errorData);
+//         alert(`Failed to update: ${errorData.error.message}`);
+//       }
+//     } catch (err) {
+//       console.error(err);
+//       setError("An unexpected error occurred.");
+//     }
+//   };
+
+//   // Handle form input changes
+//   const handleInputChange = (e) => {
+//     const { name, value } = e.target;
+//     setFormData((prev) => ({
+//       ...prev,
+//       [name]: value,
+//     }));
+//   };
+//   const handleMediaSelect = (selectedMedia) => {
+//     console.log("Selected Media:", selectedMedia); // Log to inspect the structure
+//     setMedia(selectedMedia); // Store only the media ID
+//   };
+//   const handleCardChange = (index, key, value) => {
+//     const updatedCards = [...formData.KindiSkillsCategoriesCards];
+//     updatedCards[index][key] = value;
+//     setFormData((prev) => ({
+//       ...prev,
+//       KindiSkillsCategoriesCards: updatedCards,
+//     }));
+//   };
+
+//   if (loading) return <p>Loading...</p>;
+//   if (error) return <p>{error}</p>;
+
+//   return (
+//     <>
+//       <form onSubmit={handleSubmit} className="space-y-6 p-6">
+//         {/* Area of Learning Title */}
+//         <div className="space-y-2">
+//           <label
+//             htmlFor="KindiSkillsCategoriesTitle"
+//             className="block text-lg font-semibold"
+//           >
+//             Area of Learning Title
+//           </label>
+//           <input
+//             type="text"
+//             name="KindiSkillsCategoriesTitle"
+//             id="KindiSkillsCategoriesTitle"
+//             value={formData.KindiSkillsCategoriesTitle || ""}
+//             onChange={handleInputChange}
+//             className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+//           />
+//         </div>
+
+//         {/* Area of Learning Body */}
+//         <div className="space-y-2">
+//           <label
+//             htmlFor="KindiSkillsCategoriesBody"
+//             className="block text-lg font-semibold"
+//           >
+//             Area of Learning Body
+//           </label>
+//           <textarea
+//             name="KindiSkillsCategoriesBody"
+//             id="KindiSkillsCategoriesBody"
+//             value={formData.KindiSkillsCategoriesBody || ""}
+//             onChange={handleInputChange}
+//             rows="2"
+//             className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+//           />
+//         </div>
+
+//         {/* Area of Learning Cards */}
+//         <h3 className="text-xl font-semibold">Area of Learning Cards</h3>
+//         <div className="grid w-full grid-cols-2 justify-between gap-2">
+//           {formData.KindiSkillsCategoriesCards.map((card, index) => (
+//             <div
+//               key={card.id}
+//               className="space-y-4 p-4 border border-gray-300 rounded-lg"
+//               style={{ backgroundColor: card.bgcolor }}
+//             >
+//               <h4 className="text-lg font-medium">Card {index + 1}</h4>
+
+//               <div className="space-y-2">
+//                 <label
+//                   htmlFor={`card-title-${index}`}
+//                   className="block text-sm font-medium"
+//                 >
+//                   Title
+//                 </label>
+//                 <input
+//                   type="text"
+//                   id={`card-title-${index}`}
+//                   value={card.Title || ""}
+//                   onChange={(e) =>
+//                     handleCardChange(index, "Title", e.target.value)
+//                   }
+//                   className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+//                 />
+//               </div>
+
+//               <div className="space-y-2">
+//                 <label
+//                   htmlFor={`card-body-${index}`}
+//                   className="block text-sm font-medium"
+//                 >
+//                   Body
+//                 </label>
+
+//                 <ClaraMarkdownRichEditor
+//                   value={card.Body}
+//                   onChange={(value) => handleCardChange(index, "Body", value)}
+//                 />
+//               </div>
+
+//               <div className="space-y-2">
+//                 <label
+//                   htmlFor={`card-bgcolor-${index}`}
+//                   className="block text-sm font-medium"
+//                 >
+//                   Background Color
+//                 </label>
+//                 <input
+//                   type="color"
+//                   id={`card-bgcolor-${index}`}
+//                   value={card.bgcolor || "#000000"}
+//                   onChange={(e) =>
+//                     handleCardChange(index, "bgcolor", e.target.value)
+//                   }
+//                   className="w-full p-2 border border-gray-300 rounded-md"
+//                 />
+//               </div>
+
+//               <div>
+//                 <label>Media:</label>
+//                 {media ? (
+//                   <div className="mt-4">
+//                     <img
+//                       src={`https://proper-fun-404805c7d9.strapiapp.com${media.url}`}
+//                       className="w-[300px] h-[200px] rounded-lg object-cover"
+//                     />
+//                     <p>{media.name}</p>
+//                   </div>
+//                 ) : (
+//                   <p> Not selected anything</p>
+//                 )}
+//                 <MediaSelector onMediaSelect={handleMediaSelect} />
+//               </div>
+//             </div>
+//           ))}
+//         </div>
+
+//         <button
+//           type="submit"
+//           className="w-full py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
+//         >
+//           Update
+//         </button>
+//       </form>
+//       {/* Dialog for success message */}
+//       <Dialog open={openDialog} onOpenChange={setOpenDialog}>
+//         <DialogContent>
+//           <DialogHeader>
+//             <DialogTitle>Success!</DialogTitle>
+//             <DialogDescription>
+//               Your data has been updated successfully.
+//             </DialogDescription>
+//           </DialogHeader>
+//           <DialogFooter>
+//             <DialogClose asChild>
+//               <button className="btn-close">Close</button>
+//             </DialogClose>
+//           </DialogFooter>
+//         </DialogContent>
+//       </Dialog>
+//     </>
+//   );
+// };
+
+export function UpdateKindiSkillsCategoriesCards() {
+  const [skillsCategoriesCards, setSkillsCategoriesCards] = useState([]);
+  const [skillsCategoriesBody, setSkillsCategoriesBody] = useState();
+  const [skillsCategoriesTitle, setSkillsCategoriesTitle] = useState();
+  const [openDialog, setOpenDialog] = useState(false);
+  const [error, setError] = useState("");
+
   useEffect(() => {
-    fetch(
-      "https://proper-fun-404805c7d9.strapiapp.com/api/how-it-work-page?populate[KindiSkillsCategoriesCards][populate]=Icon"
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        setFormData(data.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error(err);
-        setError("Failed to load data");
-      });
+    const fetchHIWData = async () => {
+      try {
+        const res = await fetch(
+          "https://proper-fun-404805c7d9.strapiapp.com/api/how-it-work-page?populate[KindiSkillsCategoriesCards][populate]=Icon"
+        );
+        const data = await res.json();
+        const cardData = data.data;
+        setSkillsCategoriesTitle(cardData.KindiSkillsCategoriesTitle);
+        setSkillsCategoriesBody(cardData.KindiSkillsCategoriesBody);
+        setSkillsCategoriesCards(cardData.KindiSkillsCategoriesCards);
+        console.log("Fethced KindiSkillsCategories cardData", cardData);
+      } catch (err) {
+        console.error("Error fetching How It Works data:", err);
+        setError("Error fetching content");
+      }
+    };
+
+    fetchHIWData();
   }, []);
 
-  // Handle form submission
+  // const handleHIWSectionUpdate = (index, updatedSection) => {
+  //   const updatedHIWSections = [...skillsCategoriesCards];
+  //   updatedHIWSections[index] = updatedSection;
+  //   setSkillsCategoriesCards(updatedHIWSections);
+  // };
+  const handleHIWSectionUpdate = (index, updatedSection) => {
+    setSkillsCategoriesCards((prevCards) => {
+      const updatedCards = [...prevCards];
+      updatedCards[index] = updatedSection;
+      return updatedCards;
+    });
+  };
+
+  const handleMediaSelect = (selectedMedia, index) => {
+    const updatedSection = [...skillsCategoriesCards];
+    updatedSection[index].Icon = selectedMedia;
+    setSkillsCategoriesCards(updatedSection);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Prepare the payload
     const payload = {
       data: {
-        KindiSkillsCategoriesTitle: formData.KindiSkillsCategoriesTitle,
-        KindiSkillsCategoriesBody: formData.KindiSkillsCategoriesBody,
-        KindiSkillsCategoriesCards: formData.KindiSkillsCategoriesCards.map(
-          (card) => ({
-            Title: card.Title,
-            Body: card.Body,
-            bgcolor: card.bgcolor.replace("#", ""),
-            Icon: media.id,
-          })
-        ),
+        KindiSkillsCategoriesTitle: skillsCategoriesTitle,
+        KindiSkillsCategoriesBody: skillsCategoriesBody,
+        KindiSkillsCategoriesCards: skillsCategoriesCards.map((section) => ({
+          Body: section.Body,
+          bgcolor: section.bgcolor.replace("#", ""),
+          Title: section.Title,
+          Icon: section.Icon ? { id: section.Icon.id } : null,
+        })),
       },
     };
-    console.log("Sent Data", payload);
+    console.log("payload sent", payload);
 
     try {
       const res = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/how-it-work-page", {
@@ -138,185 +405,180 @@ export const UpdateKindiSkillsCategoriesCards = () => {
         body: JSON.stringify(payload),
       });
 
-      if (res.ok) {
-        setOpenDialog(true); // Open the success dialog
-      } else {
-        const errorData = await res.json();
-        console.error("Error updating:", errorData);
-        alert(`Failed to update: ${errorData.error.message}`);
-      }
-    } catch (err) {
-      console.error(err);
-      setError("An unexpected error occurred.");
+      const data = await res.json();
+      console.log("Updated our-mission? Data:", data);
+      setOpenDialog(true);
+    } catch (error) {
+      console.error("Error updating our-mission? content:", error);
+      alert("Error updating content.");
     }
   };
 
-  // Handle form input changes
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-  const handleMediaSelect = (selectedMedia) => {
-    console.log("Selected Media:", selectedMedia); // Log to inspect the structure
-    setMedia(selectedMedia); // Store only the media ID
-  };
-  const handleCardChange = (index, key, value) => {
-    const updatedCards = [...formData.KindiSkillsCategoriesCards];
-    updatedCards[index][key] = value;
-    setFormData((prev) => ({
-      ...prev,
-      KindiSkillsCategoriesCards: updatedCards,
-    }));
-  };
-
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>{error}</p>;
-
   return (
-    <>
-      <form onSubmit={handleSubmit} className="space-y-6 p-6">
-        {/* Area of Learning Title */}
-        <div className="space-y-2">
+    <div className="p-8 max-w-4xl mx-auto bg-white shadow-lg rounded-lg">
+      <h1 className="text-3xl font-semibold mb-6 text-center">
+        Edit Our Team Section
+      </h1>
+
+      {/* Error message display */}
+      {error && (
+        <div className="bg-red-500 text-white p-3 rounded mb-4">{error}</div>
+      )}
+
+      <form onSubmit={handleSubmit} className="w-full flex flex-col">
+        <div>
           <label
-            htmlFor="KindiSkillsCategoriesTitle"
-            className="block text-lg font-semibold"
+            htmlFor={`skillsCategoriesTitle-`}
+            className="block text-sm font-medium text-gray-700"
           >
-            Area of Learning Title
+            skillsCategoriesTitle:
           </label>
           <input
             type="text"
-            name="KindiSkillsCategoriesTitle"
-            id="KindiSkillsCategoriesTitle"
-            value={formData.KindiSkillsCategoriesTitle || ""}
-            onChange={handleInputChange}
-            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+            id={`skillsCategoriesTitle-`}
+            value={skillsCategoriesTitle}
+            onChange={(e) => setSkillsCategoriesTitle(e.target.value)}
+            className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-
-        {/* Area of Learning Body */}
-        <div className="space-y-2">
+        <div>
           <label
-            htmlFor="KindiSkillsCategoriesBody"
-            className="block text-lg font-semibold"
+            htmlFor={`skillsCategoriesBody-`}
+            className="block text-sm font-medium text-gray-700"
           >
-            Area of Learning Body
+            skillsCategoriesBody:
           </label>
-          <textarea
-            name="KindiSkillsCategoriesBody"
-            id="KindiSkillsCategoriesBody"
-            value={formData.KindiSkillsCategoriesBody || ""}
-            onChange={handleInputChange}
-            rows="2"
-            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+
+          <ClaraMarkdownRichEditor
+            value={skillsCategoriesBody}
+            onChange={(newContent) => setSkillsCategoriesBody(newContent)} // update the state with new content
           />
         </div>
 
-        {/* Area of Learning Cards */}
-        <h3 className="text-xl font-semibold">Area of Learning Cards</h3>
         <div className="grid w-full grid-cols-2 justify-between gap-2">
-          {formData.KindiSkillsCategoriesCards.map((card, index) => (
+          {/* Looping through each slider content section */}
+          {skillsCategoriesCards.map((section, index) => (
             <div
-              key={card.id}
-              className="space-y-4 p-4 border border-gray-300 rounded-lg"
-              style={{ backgroundColor: card.bgcolor }}
+              key={index}
+              style={{ backgroundColor: `${section.bgcolor}` }}
+              className="border p-6 rounded-lg shadow-sm bg-gray-50"
             >
-              <h4 className="text-lg font-medium">Card {index + 1}</h4>
+              <h3 className="text-xl font-medium mb-4">Section {index + 1}</h3>
 
-              <div className="space-y-2">
+              <div>
                 <label
-                  htmlFor={`card-title-${index}`}
-                  className="block text-sm font-medium"
+                  htmlFor={`Title-${index}`}
+                  className="block text-sm font-medium text-gray-700"
                 >
-                  Title
+                  Title:
                 </label>
                 <input
                   type="text"
-                  id={`card-title-${index}`}
-                  value={card.Title || ""}
-                  onChange={(e) =>
-                    handleCardChange(index, "Title", e.target.value)
-                  }
-                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  id={`Title-${index}`}
+                  value={section.Title}
+                  onChange={(e) => {
+                    const updatedSection = {
+                      ...section,
+                      Title: e.target.value,
+                    };
+                    handleHIWSectionUpdate(index, updatedSection);
+                  }}
+                  className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
 
-              <div className="space-y-2">
+              <div>
                 <label
-                  htmlFor={`card-body-${index}`}
-                  className="block text-sm font-medium"
+                  htmlFor={`bgcolor-${index}`}
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  bgcolor:
+                </label>
+                <input
+                  type="color"
+                  id={`bgcolor-${index}`}
+                  value={section.bgcolor}
+                  onChange={(e) => {
+                    const updatedSection = {
+                      ...section,
+                      bgcolor: e.target.value,
+                    };
+                    handleHIWSectionUpdate(index, updatedSection);
+                  }}
+                  className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor={`Body-${index}`}
+                  className="block text-sm font-medium text-gray-700"
                 >
                   Body
                 </label>
 
                 <ClaraMarkdownRichEditor
-                  value={card.Body}
-                  onChange={(value) => handleCardChange(index, "Body", value)}
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label
-                  htmlFor={`card-bgcolor-${index}`}
-                  className="block text-sm font-medium"
-                >
-                  Background Color
-                </label>
-                <input
-                  type="color"
-                  id={`card-bgcolor-${index}`}
-                  value={card.bgcolor || "#000000"}
-                  onChange={(e) =>
-                    handleCardChange(index, "bgcolor", e.target.value)
-                  }
-                  className="w-full p-2 border border-gray-300 rounded-md"
+                  value={section.Body}
+                  // onChange={(value) => handleCardChange(index, "Body", value)}
+                  onChange={(newContent) => {
+                    const updatedSection = { ...section, Body: newContent };
+                    handleHIWSectionUpdate(index, updatedSection);
+                  }}
                 />
               </div>
 
               <div>
-                <label>Media:</label>
-                {media ? (
-                  <div className="mt-4">
+                <label className="block text-sm font-medium text-gray-700">
+                  Icon:
+                </label>
+                {section.Icon ? (
+                  <div className="mt-2">
                     <img
-                      src={`https://proper-fun-404805c7d9.strapiapp.com${media.url}`}
-                      className="w-[300px] h-[200px] rounded-lg object-cover"
+                      src={`https://proper-fun-404805c7d9.strapiapp.com${section.Icon.url}`}
+                      alt={section.Title}
+                      className="w-32 h-32 object-cover border rounded-md"
                     />
-                    <p>{media.name}</p>
                   </div>
                 ) : (
-                  <p> Not selected anything</p>
+                  <p className="mt-2 text-gray-500">No media selected</p>
                 )}
-                <MediaSelector onMediaSelect={handleMediaSelect} />
+                <MediaSelector
+                  onMediaSelect={(MemberPic) =>
+                    handleMediaSelect(MemberPic, index)
+                  }
+                />
               </div>
             </div>
           ))}
         </div>
 
+        {/* Submit Button */}
         <button
           type="submit"
-          className="w-full py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          className="bg-blue-600 text-white px-6 py-3 rounded-md w-full mt-6 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
-          Update
+          Save Changes
         </button>
       </form>
-      {/* Dialog for success message */}
-      <Dialog open={openDialog} onOpenChange={setOpenDialog}>
+
+      {/* Success Dialog */}
+      <Dialog open={openDialog} onOpenChange={(open) => setOpenDialog(open)}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Success!</DialogTitle>
-            <DialogDescription>
-              Your data has been updated successfully.
-            </DialogDescription>
           </DialogHeader>
+          <DialogDescription>
+            Your content has been successfully updated.
+          </DialogDescription>
           <DialogFooter>
             <DialogClose asChild>
-              <button className="btn-close">Close</button>
+              <button className="bg-blue-600 text-white px-6 py-3 rounded-md">
+                Close
+              </button>
             </DialogClose>
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </>
+    </div>
   );
-};
+}

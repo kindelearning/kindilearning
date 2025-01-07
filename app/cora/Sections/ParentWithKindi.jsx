@@ -12,6 +12,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import ClaraMarkdownRichEditor from "./TextEditor/ClaraMarkdownRichEditor";
+import MediaSelector from "../website/media/Section/MediaSelector";
 
 export default function ParentWithKindi() {
   const [content, setContent] = useState(null);
@@ -75,7 +76,6 @@ export default function ParentWithKindi() {
             </h2>
 
             <div className="text-lg text-gray-700 space-y-6 leading-relaxed">
-             
               <p
                 className="prose w-full px-0 text-start clarabodyTwo  font-medium font-fredoka"
                 dangerouslySetInnerHTML={{
@@ -90,7 +90,7 @@ export default function ParentWithKindi() {
   );
 }
 
-export function UpdateParentWithKindiSection() {
+export function UpdateParentWithKindiSection2() {
   const [content, setContent] = useState({
     Parentwithkindi: {
       Body: "",
@@ -265,3 +265,172 @@ export function UpdateParentWithKindiSection() {
     </div>
   );
 }
+
+export function UpdateParentWithKindiSection() {
+  const [title, setTitle] = useState("");
+  const [body, setBody] = useState("");
+  const [featuredText, setFeaturedText] = useState("");
+  const [media, setMedia] = useState(null); // Media state
+  const [openDialog, setOpenDialog] = useState(false);
+  const [error, setError] = useState("");
+
+  // Fetch existing data for MonthlyTheme content
+  useEffect(() => {
+    const fetchContentData = async () => {
+      try {
+        const res = await fetch(
+          "https://proper-fun-404805c7d9.strapiapp.com/api/our-mission?populate[Parentwithkindi][populate]=Media"
+        );
+        const data = await res.json();
+
+        const content = data.data;
+        if (content) {
+          setTitle(content.Parentwithkindi?.Title || ""); // Set default values if not found
+          setBody(content.Parentwithkindi?.Body || "");
+          setFeaturedText(content.Parentwithkindi?.featuredText || "");
+          setMedia(content.Parentwithkindi?.Media?.id || null); // Set the media ID or null if no media is selected
+        }
+
+        console.log("Fetched OurStory Content", content);
+      } catch (err) {
+        console.error("Error fetching content data:", err);
+        setError("Error fetching content");
+      }
+    };
+
+    fetchContentData();
+  }, []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const payload = {
+      data: {
+        Parentwithkindi: {
+          Title: title,
+          Body: body,
+          featuredText: featuredText,
+          Media: media?.id || null, // Use media ID if selected
+        },
+      },
+    };
+    console.log("Payload Created", payload);
+
+    try {
+      const res = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/our-mission", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+      console.log("Updated our-mission Content:", data);
+      setOpenDialog(true); // Show success dialog
+    } catch (error) {
+      console.error("Error updating content:", error);
+      alert("Error updating content.");
+    }
+  };
+
+  const handleMediaSelect = (selectedMedia) => {
+    setMedia(selectedMedia); // Store the selected media object
+  };
+
+  return (
+    <div className="p-8">
+      <h1 className="text-2xl font-bold mb-6">Edit Monthly Theme</h1>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Title Field */}
+        <div>
+          <label htmlFor="Title" className="block">
+            Title
+          </label>
+          <input
+            type="text"
+            id="Title"
+            name="Title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="border p-2 w-full"
+          />
+        </div>
+
+        {/* Body Description Field */}
+        <div>
+          <label htmlFor="BodyDescription" className="block">
+            Body Description (Markdown)
+          </label>
+          <textarea
+            id="BodyDescription"
+            name="BodyDescription"
+            value={body}
+            onChange={(e) => setBody(e.target.value)}
+            className="border p-2 w-full"
+            rows="5"
+          />
+        </div>
+
+        {/* Featured Text Field */}
+        <div>
+          <label htmlFor="FeaturedText" className="block">
+            Featured Text
+          </label>
+          <input
+            type="text"
+            id="FeaturedText"
+            name="FeaturedText"
+            value={featuredText}
+            onChange={(e) => setFeaturedText(e.target.value)}
+            className="border p-2 w-full"
+          />
+        </div>
+
+        {/* Media Field */}
+        <div>
+          <label>Media:</label>
+          {media ? (
+            <div className="mt-4">
+              <video
+                autoPlay
+                controls
+                src={media.url}
+                // src={`https://proper-fun-404805c7d9.strapiapp.com${media.url}`}
+                className="w-32 h-32 object-cover"
+              />
+              <p>{media.name}</p>
+            </div>
+          ) : (
+            <p>Not selected anything</p>
+          )}
+          <MediaSelector onMediaSelect={handleMediaSelect} />
+        </div>
+
+        <button type="submit" className="px-4 py-2 bg-black text-white rounded">
+          Update Content
+        </button>
+      </form>
+
+      {/* Success Dialog */}
+      <Dialog open={openDialog} onOpenChange={(open) => setOpenDialog(open)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Success!</DialogTitle>
+          </DialogHeader>
+          <DialogDescription>
+            Your content has been successfully updated.
+          </DialogDescription>
+          <DialogFooter>
+            <DialogClose asChild>
+              <button className="bg-blue-500 text-white px-4 py-2 rounded-md">
+                Close
+              </button>
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+}
+
