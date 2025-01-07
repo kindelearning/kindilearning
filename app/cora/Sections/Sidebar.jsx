@@ -246,12 +246,12 @@ export default function Sidebar() {
           label="Scheduler"
           isCollapsed={isCollapsed}
         /> */}
-        {/* <SidebarLink
+        <SidebarLink
           href="/cora/website/users"
           icon={<User />} // Users icon (User management)
           label="Users"
           isCollapsed={isCollapsed}
-        /> */}
+        />
         {/* <SidebarLink
           href="/cora/website/profile"
           icon={<UserCog />} // Admin Profile icon (UserCog for settings)
