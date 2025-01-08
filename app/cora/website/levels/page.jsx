@@ -121,6 +121,9 @@ export default function LevelData() {
 
   return (
     <section className="w-full font-fredoka min-h-screen h-full md:h-full lg:h-full flex flex-col items-center gap-4 py-8">
+       <head>
+          <title>Levels - Kindi Learning</title>
+        </head>
       <div className="claracontainer p-4 md:py-8 md:px-2 lg:p-12 w-full flex flex-col overflow-hidden gap-8">
         <div className="flex w-full justify-between items-center">
           <h1 className="text-xl font-semibold mb-4">Levels</h1>

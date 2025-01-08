@@ -113,6 +113,9 @@ export default function ContactFormPage() {
   return (
     <>
       <section className="p-8 min-h-screen font-fredoka bg-gray-100">
+      <head>
+          <title>Forms - Kindi Learning</title>
+        </head>
         <div className="container mx-auto">
           <h1 className="text-3xl font-semibold">Contact Form Entries</h1>
           {loading ? (

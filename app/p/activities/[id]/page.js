@@ -76,26 +76,11 @@ const ActivityAttribute = ({
   );
 };
 
-const IconBadge = ({ icon, backgroundColor = "f05c5c" }) => {
-  return (
-    <div
-      className={`w-[50px] hover:scale-105 duration-200 ease-ease-out cursor-pointer h-[50px] flex justify-center items-center bg-[#${backgroundColor}] rounded-[16px]`}
-    >
-      <Image alt="Kindi" src={icon || KindiHeart} />
-    </div>
-  );
-};
-
 const handlePrint = () => {
   window.print();
 };
 
-const getIconForSkillTitle = (skillTitle) => {
-  const activity = activityIcons.find(
-    (activity) => activity.title === skillTitle
-  );
-  return activity ? activity.icon : null; // Return icon URL or null if not found
-};
+
 
 export default async function ActivityDetailPage({ params }) {
   console.log("I am the params", params);

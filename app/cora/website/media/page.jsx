@@ -174,6 +174,9 @@ export default function MediaPage() {
 
   return (
     <div className="container font-fredoka mx-auto p-4">
+       <head>
+          <title>Media - Kindi Learning</title>
+        </head>
       <h1 className="text-3xl text-[#666666] font-semibold mb-4">
         Kindi Media Assets
       </h1>

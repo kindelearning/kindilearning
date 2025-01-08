@@ -21,7 +21,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-
 export default function PaymentMethodsTable() {
   const [paymentMethods, setPaymentMethods] = useState([]);
   const [filteredMethods, setFilteredMethods] = useState([]);
@@ -104,6 +103,9 @@ export default function PaymentMethodsTable() {
 
   return (
     <section className="font-fredoka min-h-screen h-full md:h-full lg:h-full flex flex-col items-center bg- [#ffffff] w-full gap-4 py-8">
+      <head>
+        <title>Payment Methods - Kindi learning</title>
+      </head>
       <div className="claracontainer p-4 md:py-8 md:px-2 lg:p-12 w-full flex flex-col overflow-hidden gap-8">
         <h1 className="text-2xl font-bold mb-4">Payment Methods</h1>
 
