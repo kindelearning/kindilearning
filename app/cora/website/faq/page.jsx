@@ -106,7 +106,7 @@ export default function FAQSection() {
   return (
     <div className="container mx-auto font-fredoka px-8 py-12">
       <head>
-          <title>FAQ's - Kindi Learning</title>
+          <title>FAQ&apos;s - Kindi Learning</title>
         </head>
       <div className="flex justify-between items-center mb-10">
         <h2 className="text-3xl font-medium mb-8">FAQs</h2>
