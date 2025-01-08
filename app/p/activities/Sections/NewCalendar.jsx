@@ -103,8 +103,7 @@ function Weekdays() {
 
 function ActivityCard({ activityData }) {
   if (!activityData) return <p>No activity data available</p>;
-  const { Title, FocusAge, SetUpTime, Skills, Theme } =
-    activityData?.myActivity;
+  // const { FocusAge, SetUpTime, Skills, Theme } = activityData?.myActivity;
 
   return (
     <>
@@ -112,7 +111,7 @@ function ActivityCard({ activityData }) {
         <div className="flex w-full justify-between gap-1 lg:gap-0 items-start">
           <div className="flex w-full py-1 flex-col justify-start items-start">
             <p className="font-semibold text-black text-[14px] leading-[16px] lg:text-[12px] lg:leading-[12px] text-start">
-              {Title}
+              {activityData?.myActivity?.Title || "Unknown Activity"}
             </p>
           </div>
           {/* Drag icon */}
@@ -136,19 +135,19 @@ function ActivityCard({ activityData }) {
           <div className="flex w-full justify-between flex-col items-start">
             <div className="flex gap-1 items-center ">
               <div className="text-[#0a1932] text-[12px] leading-[14px] lg:text-[9px] lg:leading-[10px] font-semibold font-fredoka">
-                {FocusAge || "Toddles"}
+                {activityData?.myActivity?.FocusAge || "Toddles"}
               </div>
               <span className="flex items-center">•</span>
               <div className="text-[#0a1932] text-[12px] leading-[14px] lg:text-[9px] lg:leading-[10px] font-semibold font-fredoka">
-                {Theme || "Winter"}
+                {activityData?.myActivity?.Theme || "Winter"}
               </div>
               <span className="flex items-center">•</span>
               <div className="text-[#0a1932] text-[12px] leading-[14px] lg:text-[9px] lg:leading-[10px] font-semibold font-fredoka">
-                {SetUpTime || "5 min"}
+                {activityData?.myActivity?.SetUpTime || "5 min"}
               </div>
             </div>
             <div className="grid grid-cols-4 overflow-x-scroll gap-1 justify-between items-center  scrollbar-hidden">
-              {Skills.map((skill, index) => {
+              {activityData?.myActivity?.Skills.map((skill, index) => {
                 // Extract the skill title
                 const skillTitle = skill.children[0]?.text;
                 const icon = getIconForSkill(skillTitle); // Get the icon URL dynamically
@@ -380,6 +379,67 @@ export default function NewCalendar({ activities }) {
       start: startOfCalendar,
       end: endOfCalendar,
     });
+  };
+
+  const handleDrop = async (event, date) => {
+    event.preventDefault();
+    const activityId = event.dataTransfer.getData("activityId");
+
+    // Log the dropped date to the console
+    console.log("Dropped on date: ", format(date, "yyyy-MM-dd"));
+
+    // Find the activity that was dragged and update its date
+    const updatedActivitiesList = updatedActivities.map((activity) =>
+      activity.id === parseInt(activityId)
+        ? { ...activity, newDate: format(date, "yyyy-MM-dd") }
+        : activity
+    );
+
+    setUpdatedActivities(updatedActivitiesList);
+
+    // Get the updated event with the documentId
+    const updatedEvent = updatedActivitiesList.find(
+      (activity) => activity.id === parseInt(activityId)
+    );
+
+    // Check if documentId exists
+    if (updatedEvent.documentId) {
+      const payload = {
+        data: {
+          newDate: format(date, "yyyy-MM-dd"),
+        },
+      };
+
+      // Log the payload to check if it's in the right format
+      console.log("Payload to send:", payload);
+
+      try {
+        // Send the PUT request using the documentId
+        const response = await fetch(
+          `https://proper-fun-404805c7d9.strapiapp.com/api/rescheduled-events/${updatedEvent.documentId}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+          }
+        );
+
+        // Check for successful response
+        if (response.ok) {
+          console.log("Event updated successfully!");
+        } else {
+          // Log response if there's an error
+          const data = await response.json();
+          console.error("Error updating event:", data);
+        }
+      } catch (error) {
+        console.error("Error during API request:", error);
+      }
+    } else {
+      console.error("No documentId found for the event.");
+    }
   };
 
   const getActivitiesForDate = (date) => {

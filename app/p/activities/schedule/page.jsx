@@ -8,6 +8,8 @@ import { getRandomImage } from "@/app/profile/milestone/page";
 import Image from "next/image";
 import "react-calendar/dist/Calendar.css";
 import NewCalendar from "../Sections/NewCalendar";
+import { fetchAllActivities } from "@/app/data/p/Dynamic/Activity";
+import SetNewActivities from "../Sections/SetNewActivities";
 
 export default function Schedule() {
   const [userData, setUserData] = useState(null);
@@ -27,10 +29,10 @@ export default function Schedule() {
         const data = await response.json();
         const rescheduledActivities = data.data;
         setKids(rescheduledActivities);
-        console.log(
-          "Fethced Data from Kids API in rescheduledActivities",
-          rescheduledActivities
-        );
+        // console.log(
+        //   "Fethced Data from Kids API in rescheduledActivities",
+        //   rescheduledActivities
+        // );
 
         // Fetch user data
         const token = localStorage.getItem("jwt");
@@ -53,7 +55,7 @@ export default function Schedule() {
     fetchData();
   }, [router]);
 
-  console.log("User Fetched from Server", userData);
+  // console.log("User Fetched from Server", userData);
   // getActivityForKid function
   const getActivityForKid = (kidId) => {
     const selectedKid = kids.find((kid) => kid.documentId === kidId);
@@ -64,7 +66,7 @@ export default function Schedule() {
 
     return selectedKid.myRescheduledActivities || [];
   };
-  console.log("Kids data:", kids);
+  // console.log("Kids data:", kids);
 
   if (loading) return <p>Loading...</p>;
   return (
@@ -128,10 +130,12 @@ export default function Schedule() {
                             {kid.Name}
                           </span>
                         </div>
+                        <SetNewActivities kidId={kid.id}/>
+
                         <div className="claracontainer md:p-0 p-0 py-4 w-full flex flex-col overflow-hidden gap-8">
                           <NewCalendar
                             activities={getActivityForKid(kid.documentId)}
-                          />{" "}
+                          />
                         </div>
                       </div>
                     </TabsContent>
