@@ -26,18 +26,15 @@ import MarkMilestoneCompleteForm from "./MilestoneCompleteButton";
 
 export function CurvePath({ milestones = [], currentUserId }) {
   const [currentDate, setCurrentDate] = useState("");
-  const [message, setMessage] = useState("");
-  const { user, loading } = useAuth();
   const router = useRouter();
-  const [hygraphUser, setHygraphUser] = useState(null);
 
-  useEffect(() => {
-    if (user && user.email) {
-      getUserDataByEmail(user.email).then((data) => {
-        setHygraphUser(data);
-      });
-    }
-  }, [user, loading, router]);
+  // useEffect(() => {
+  //   if (user && user.email) {
+  //     getUserDataByEmail(user.email).then((data) => {
+  //       setHygraphUser(data);
+  //     });
+  //   }
+  // }, [user, loading, router]);
 
   useEffect(() => {
     const today = new Date();
@@ -475,7 +472,7 @@ const OptionSlider = ({
     </div>
   );
 };
-
+ 
 export default function DisplayAllMileStone({ passThecurrentUserId }) {
   const [milestones, setMilestones] = useState([]);
   const [loading, setLoading] = useState(true);

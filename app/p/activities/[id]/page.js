@@ -9,6 +9,7 @@ import {
   ActivityBlack,
   CompletedMark,
   KidBlack,
+  KindiHeart,
   Print,
   SpeechLanguageActivity,
   Themes,
@@ -35,7 +36,7 @@ import { activityIcons } from "@/app/constant/activity";
 import ActivityResources from "../ActivityResources";
 import ProductMedia from "@/app/shop/sections/ProductMedia";
 import MarkActivityCompleteForm from "../ActivityCompleteButton";
-import { fetchKidDetails } from "@/app/profile/api";
+import { fetchKidDetails, fetchUserDetails } from "@/app/profile/api";
 import ResourceCard from "../Sections/ActivityResource";
 import ResourcesGrid from "../Sections/ActivityResource";
 import { getIconForSkill } from "../Sections/ActivityCard";
@@ -80,17 +81,77 @@ const handlePrint = () => {
   window.print();
 };
 
-
-
 export default async function ActivityDetailPage({ params }) {
-  console.log("I am the params", params);
+  const [loading, setLoading] = useState(true);
+  const [userData, setUserData] = useState(null);
+  const [activityData, setActivityData] = useState(null);
   const { id } = params;
-  const activityData = await fetchActivityByDocumentId(id);
-  console.log("activity Data fetched", activityData);
+  const [matchedActivityId, setMatchedActivityId] = useState(null); // State to hold the matched activity ID
 
-  if (!activityData) {
-    console.log("not found activity");
+  useEffect(() => {
+    const fetchData = async () => {
+      const token = localStorage.getItem("jwt");
+
+      if (!token) {
+        console.log("Token not found, redirecting...");
+        setLoading(false); // Set loading to false if there's no token
+        return;
+      }
+
+      try {
+        // Fetch user details
+        const userResponse = await fetchUserDetails(token);
+        setUserData(userResponse.allActivities); // Store the fetched user data
+        const allActivities = userResponse.allActivities;
+
+        // Handle if it's an array of activities
+        if (Array.isArray(allActivities)) {
+          const matchedActivity = allActivities.find(
+            (activity) => activity.documentId === id
+          );
+
+          if (matchedActivity) {
+            setMatchedActivityId(matchedActivity.id); // Set match
+            console.log(
+              "Found matching activity in allActivities:",
+              matchedActivity.id
+            );
+          } else {
+            console.log("No activity found with the given documentId.");
+          }
+        }
+
+        // Handle if it's a single activity object (in case userResponse.allActivities is a single object)
+        else if (allActivities && allActivities.documentId === id) {
+          setMatchedActivityId(allActivities.id); // Set matched activity ID in state
+          console.log("Found matching activity ID:", allActivities.id);
+        } else {
+          console.log("No activity found with the given documentId.");
+        }
+
+        // Fetch activity data by id
+        const activityDataResponse = await fetchActivityByDocumentId(id);
+        setActivityData(activityDataResponse); // Store the fetched activity data
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false); // Always set loading to false after fetch attempt
+      }
+    };
+
+    fetchData();
+  }, [id]); // Depend on `id` so it fetches data whenever `id` changes
+
+  if (loading) {
+    return <div>Loading...</div>; // Display a loading message while data is being fetched
   }
+
+  if (!userData || !activityData) {
+    return <div>Failed to load data or activity not found.</div>; // Fallback message if data is not found
+  }
+
+  // console.log("Fetched userData on activity detail page:", userData);
+  // console.log("Fetched activityData:", activityData);
 
   const {
     Title,
@@ -264,25 +325,28 @@ export default async function ActivityDetailPage({ params }) {
                 </div>
 
                 <div className="items-center overflow-x-scroll  scrollbar-hidden w-full justify-start flex flex-row gap-1">
-                  {Skills.map((skill, index) => {
-                    // Extract the skill title
-                    const skillTitle = skill.children[0]?.text;
-                    const icon = getIconForSkill(skillTitle); // Get the icon URL dynamically
-                    const iconSrc = icon?.src || SpeechLanguageActivity; // Replace with your fallback icon path
+                  {Skills && Skills.length > 0 ? (
+                    Skills.map((skill, index) => {
+                      // Extract the skill title
+                      const skillTitle = skill.children[0]?.text;
+                      const icon = getIconForSkill(skillTitle); // Get the icon URL dynamically
+                      const iconSrc = icon?.src || SpeechLanguageActivity; // Replace with your fallback icon path
 
-                    console.log("Icon fetched ", icon); // You can remove this in production
-                    return (
-                      <Image
-                        key={index}
-                        src={icon.src} // Using the icon image URL here
-                        alt={skillTitle}
-                        width={32}
-                        title={skillTitle}
-                        height={32}
-                        className="w-8 h-8 cursor-pointer text-opacity-50 hover:opacity-100 duration-150 ease-out" // Set the size for the image
-                      />
-                    );
-                  })}
+                      return (
+                        <Image
+                          key={index}
+                          src={iconSrc} // Using the icon image URL here
+                          alt={skillTitle}
+                          width={32}
+                          title={skillTitle}
+                          height={32}
+                          className="w-8 h-8 cursor-pointer text-opacity-50 hover:opacity-100 duration-150 ease-out" // Set the size for the image
+                        />
+                      );
+                    })
+                  ) : (
+                    <p>No skills available.</p> // Fallback message if no skills are found
+                  )}
                 </div>
               </div>
               <div className="flex w-full flex-col justify-star items-start gap-2">
@@ -436,7 +500,8 @@ export default async function ActivityDetailPage({ params }) {
                 </div>
 
                 {/* THE PROBLEM The activity id we are fetching from the server att his point actually does not exist  */}
-                <MarkActivityCompleteForm passactivityId={activityData.id} />
+                <MarkActivityCompleteForm passactivityId={matchedActivityId} />
+                {/* <MarkActivityCompleteForm passactivityId={activityData.id} /> */}
               </div>
             </div>
           </div>
@@ -447,10 +512,10 @@ export default async function ActivityDetailPage({ params }) {
               onClick={handlePrint}
               className="flex bg-[#3f3a64] gap-[4px] py-2 text-center text-white text-xs font-semibold font-fredoka rounded-2xl shadow border-2 border-white flex-row justify-center items-center w-full"
             >
-              <Image alt="Kindi" src={Print} />
+              <Image alt="Kindi" src={Print || KindiHeart} />
               Print
             </Button>
-            <MarkActivityCompleteForm passactivityId={activityData.id} />
+            <MarkActivityCompleteForm passactivityId={matchedActivityId} />
           </div>
         </div>{" "}
       </section>

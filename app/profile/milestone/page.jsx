@@ -1,5 +1,5 @@
 "use client";
-
+ 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ProfilePlaceholder01 } from "@/public/Images";
 import Image from "next/image";
@@ -42,6 +42,7 @@ export default function MileStone() {
 
     fetchData();
   }, [router]);
+  console.log("Fetched userData on Milestone pag:", userData);
 
   if (loading) return <p>Loading...</p>;
 

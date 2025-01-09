@@ -83,7 +83,7 @@ import { fetchUserDetails } from "../../api";
 //     </Button>
 //   );
 // }
-
+ 
 export default function MarkMilestoneCompleteForm({ passmilestoneId }) {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -190,12 +190,12 @@ const MilestoneCOmpletedButton = ({ kidDocumentId, milestoneId }) => {
           }),
         }
       );
-
       if (!response.ok) {
         throw new Error("Failed to update milestones's data.");
       }
-
+      
       const data = await response.json();
+      console.log('Payload sent', data)
       // On success, set success state to true
       setSuccess(true);
       console.log("milestones's data updated successfully:", data);
