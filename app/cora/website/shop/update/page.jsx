@@ -12,7 +12,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import ClaraMarkdownRichEditor from "@/app/cora/Sections/TextEditor/ClaraMarkdownRichEditor";
-import MediaSelector from "../../media/Section/MediaSelector";
+import MediaSelector, {
+  MultiMediaSelector,
+} from "../../media/Section/MediaSelector";
 
 export default function ProductUpdateForm({ documentId }) {
   const [existingData, setExistingData] = useState(null);
@@ -24,7 +26,7 @@ export default function ProductUpdateForm({ documentId }) {
   const [seoKeywords, setSEOKeywords] = useState("");
   const [materialOptions, setMaterialOptions] = useState("");
   const [media, setMedia] = useState(null); // Media state
-  const [gallery, setGallery] = useState(null); // Media state
+  const [gallery, setGallery] = useState([]); // Media state
   const [openDialog, setOpenDialog] = useState(false);
 
   useEffect(() => {
@@ -67,14 +69,20 @@ export default function ProductUpdateForm({ documentId }) {
     if (price) formData.append("data[Price]", price);
     if (discountPrice) formData.append("data[DiscountPrice]", discountPrice);
     if (seoKeywords) formData.append("data[SEOKeywords]", seoKeywords);
-    if (gallery) formData.append("data[Gallery]", gallery.id);
+    // if (gallery) formData.append("data[Gallery]", gallery.id);
+    if (gallery && gallery.length > 0) {
+      const galleryData = gallery.map((mediaItem) => ({
+        id: mediaItem.id
+      }));
+      formData.append("data[Gallery]", JSON.stringify(galleryData)); // Send as JSON string
+    }
     if (media) formData.append("data[FeaturedImage]", media.id);
     if (materialOptions)
       formData.append("data[MaterialOptions]", materialOptions);
 
     try {
       const res = await fetch(
-        `https://proper-fun-404805c7d9.strapiapp.com/api/products/${documentId}`,
+        `https://proper-fun-404805c7d9.strapiapp.com/api/products/${documentId}?populate=*`,
         {
           method: "PUT",
           body: formData,
@@ -88,11 +96,15 @@ export default function ProductUpdateForm({ documentId }) {
       alert("Error updating product.");
     }
   };
+
   const handleMediaSelect = (selectedMedia) => {
     setMedia(selectedMedia); // Store the selected media object
   };
+  // const handleGalleryMediaSelect = (selectedMedia) => {
+  //   setGallery(selectedMedia); // Store the selected media object
+  // };
   const handleGalleryMediaSelect = (selectedMedia) => {
-    setGallery(selectedMedia); // Store the selected media object
+    setGallery(selectedMedia); // Store the selected media objects
   };
   if (!existingData) {
     return <div>Loading...</div>;
@@ -120,19 +132,24 @@ export default function ProductUpdateForm({ documentId }) {
 
         <div>
           <label>Gallery:</label>
-          {gallery ? (
-            <div className="mt-4">
-              <img
-                // src={media.url}
-                src={`https://proper-fun-404805c7d9.strapiapp.com${gallery.url}`}
-                className="w-32 h-32 object-cover"
-              />
-              <p>{gallery.name}</p>
+          {/* {gallery.map((media) => (
+            <div key={media.id} className="relative">
+              {media.mime.startsWith("video/") ? (
+                <video
+                  src={`https://proper-fun-404805c7d9.strapiapp.com${media.url}`}
+                  controls
+                  className="w-32 h-32 object-cover"
+                />
+              ) : (
+                <img
+                  src={`https://proper-fun-404805c7d9.strapiapp.com${media.url}`}
+                  className="w-32 h-32 object-cover"
+                />
+              )}
+              <p className="text-sm mt-2">{media.name}</p>
             </div>
-          ) : (
-            <p>Not selected anything</p>
-          )}
-          <MediaSelector onMediaSelect={handleGalleryMediaSelect} />
+          ))} */}
+          <MultiMediaSelector onMediaSelect={handleGalleryMediaSelect} />
         </div>
         <div>
           <label className="block">Name</label>
