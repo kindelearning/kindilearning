@@ -1,9 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { Fallback } from "../[id]/page";
 
 export default function ProductMedia({ gallery }) {
   // State to track the currently selected media
+  if (!gallery || gallery.length === 0) {
+    return <Fallback message="No images available" />;
+  }
   const [currentIndex, setCurrentIndex] = useState(0);
 
   // Current media item

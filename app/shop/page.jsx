@@ -1,5 +1,5 @@
 "use client";
-
+ 
 import { fetchShopProducts } from "../data/p/Dynamic/Shop";
 import Banner from "./sections/Banner";
 import { BottomNavigation, Header, Newsletter } from "../Sections";

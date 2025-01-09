@@ -236,7 +236,7 @@ const ShopHeader = () => {
                             href="/shop/cart"
                           >
                             <p className="bg-[eaeaf5] border -mb-[8px] border-red text-red flex justify-center items-center text-[12px] z-12 w-[16px] h-[16px] font-fredoka rounded-full">
-                              {cart.length}
+                              {/* {cart.length} */}
                             </p>
                             <ShoppingBag className="text-red w-[28px] h-[28px]" />
                           </Link>
@@ -324,7 +324,7 @@ const ShopHeader = () => {
                   href="/shop/cart"
                 >
                   <p className="bg-[eaeaf5] border border-red text-red flex justify-center items-center text-[12px] z-12 w-[16px] h-[16px] font-fredoka rounded-full">
-                    {cart.length}
+                    {/* {cart.length} */}
                   </p>
                   <ShoppingBag className="text-red w-[28px] h-[28px]" />
                 </Link>

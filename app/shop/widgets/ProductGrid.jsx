@@ -7,6 +7,7 @@ import { useEffect, useState, useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { fetchShopProducts } from "@/app/data/p/Dynamic/Shop";
 import ProductCard from "../sections/ProductCard";
+import { ProductImage } from "@/public/Images";
 
 export default function ProductGrid() {
   const [products, setProducts] = useState([]); // State to store fetched products
@@ -52,6 +53,7 @@ export default function ProductGrid() {
     fetchProducts();
   }, []); // Empty dependency array means this effect runs once
 
+  // console.log("Products from productGrid COmponent", products);
   // Function to scroll right with smooth animation
   const scrollRight = () => {
     if (scrollRef.current) {
@@ -108,14 +110,17 @@ export default function ProductGrid() {
         >
           {products.map((product) => (
             <div key={product.id}>
-              <Link href={`/shop/${product.documentId}`}>
-                <ProductCard
-                  image={product?.FeaturedImage[0]?.url}
-                  // image={`https://proper-fun-404805c7d9.strapiapp.com${product?.FeaturedImage[0]?.url}`}
-                  price={product.DiscountPrice}
-                  title={product.Name}
-                />
-              </Link>
+              <ProductCard
+                productUrl={`/shop/${product.documentId}`}
+                image={
+                  product?.FeaturedImage?.[0]?.url
+                    ? `https://proper-fun-404805c7d9.strapiapp.com${product.FeaturedImage[0].url}`
+                    : ProductImage
+                }
+                // image={`https://proper-fun-404805c7d9.strapiapp.com${product?.FeaturedImage[0]?.url}`}
+                price={product.DiscountPrice}
+                title={product.Name}
+              />
             </div>
           ))}
         </div>
