@@ -16,6 +16,8 @@ export default function Schedule() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
+  const [nextedActivity, setNestedActivity] = useState(null);
+
   // ActvitiesData
   const [kids, setKids] = useState([]);
 
@@ -29,11 +31,6 @@ export default function Schedule() {
         const data = await response.json();
         const rescheduledActivities = data.data;
         setKids(rescheduledActivities);
-        // console.log(
-        //   "Fethced Data from Kids API in rescheduledActivities",
-        //   rescheduledActivities
-        // );
-
         // Fetch user data
         const token = localStorage.getItem("jwt");
         if (!token) {
@@ -44,6 +41,12 @@ export default function Schedule() {
 
         const userResponse = await fetchUserDetails(token);
         setUserData(userResponse);
+
+        // const gettingNestedActivities = await fetch(
+        //   "https://proper-fun-404805c7d9.strapiapp.com/api/activities?populate[nested_activities][populate]=*"
+        // );
+        // const fetchedActivitiesData = await gettingNestedActivities.json()
+        // setNestedActivity(fetchedActivitiesData.data);
       } catch (error) {
         console.error("Error fetching data", error);
         setUserData(null); // Optionally handle the error state here
@@ -55,7 +58,8 @@ export default function Schedule() {
     fetchData();
   }, [router]);
 
-  // console.log("User Fetched from Server", userData);
+  // console.log("Nested Activities from Server", nextedActivity);
+  console.log("User Fetched from Server", userData);
   // getActivityForKid function
   const getActivityForKid = (kidId) => {
     const selectedKid = kids.find((kid) => kid.documentId === kidId);
@@ -101,22 +105,24 @@ export default function Schedule() {
                   <div className="flex w-full max-w-[400px] lg:max-w-full lg:items-center lg:justify-center ">
                     {/* Main Frame: Shows up to 5 tabs */}
                     <TabsList className="flex gap-2 lg:gap-[2px] h-full bg-transparent py-6 overflow-x-scroll justify-center items-center w-full scrollbar-hidden">
-                      {userData.myKids.map((kid) => (
-                        <TabsTrigger
-                          key={kid.id}
-                          value={kid.id}
-                          className="flex-shrink-0 flex-col data-[state=active]:bg-[#f5f5f500] data-[state=active]:opacity-100 opacity-70  data-[state=active]:z-12 data-[state=active]:scale-125 duration-200 ease-ease-in-out  data-[state=active]:border-red border-2 p-0 rounded-full bg-transparent"
-                        >
-                          <Image
-                            src={getRandomImage()} // Random image for each kid's tab
-                            alt={`Profile of ${kid.Name}`}
-                            width={48}
-                            height={48}
-                            title={kid.Name}
-                            className={`w-16 h-16 p-0 m-0 rounded-full object-cover transition-all duration-200`}
-                          />
-                        </TabsTrigger>
-                      ))}
+                      {userData.myKids
+                        .filter((_, index) => index % 2 === 0)
+                        .map((kid) => (
+                          <TabsTrigger
+                            key={kid.id}
+                            value={kid.id}
+                            className="flex-shrink-0 flex-col data-[state=active]:bg-[#f5f5f500] data-[state=active]:opacity-100 opacity-70  data-[state=active]:z-12 data-[state=active]:scale-125 duration-200 ease-ease-in-out  data-[state=active]:border-red border-2 p-0 rounded-full bg-transparent"
+                          >
+                            <Image
+                              src={getRandomImage()} // Random image for each kid's tab
+                              alt={`Profile of ${kid.Name}`}
+                              width={48}
+                              height={48}
+                              title={kid.Name}
+                              className={`w-16 h-16 p-0 m-0 rounded-full object-cover transition-all duration-200`}
+                            />
+                          </TabsTrigger>
+                        ))}
                     </TabsList>
                   </div>
 
@@ -130,7 +136,7 @@ export default function Schedule() {
                             {kid.Name}
                           </span>
                         </div>
-                        <SetNewActivities kidId={kid.id}/>
+                        <SetNewActivities kidId={kid.id} />
 
                         <div className="claracontainer md:p-0 p-0 py-4 w-full flex flex-col overflow-hidden gap-8">
                           <NewCalendar

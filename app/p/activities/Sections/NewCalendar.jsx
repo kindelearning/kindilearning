@@ -14,7 +14,7 @@ import {
   parseISO,
 } from "date-fns";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { ThemeThumb } from "@/public/Images";
+import { KindiHeart, ThemeThumb } from "@/public/Images";
 import Image from "next/image";
 import { getIconForSkill } from "./ActivityCard";
 
@@ -156,7 +156,7 @@ function ActivityCard({ activityData }) {
                 return (
                   <Image
                     key={index}
-                    src={icon} // Using the icon image URL here
+                    src={icon || KindiHeart} // Using the icon image URL here
                     alt={skillTitle}
                     width={20}
                     title={skillTitle}
