@@ -230,6 +230,7 @@ export default function ShopPage() {
               <TableHeader>
                 <TableRow>
                   <TableHead className="w-[max-content]">Sr. No</TableHead>
+                  <TableHead>DocumentId</TableHead>
                   <TableHead>Name</TableHead>
                   <TableHead>Description</TableHead>
                   <TableHead>Price</TableHead>
@@ -249,6 +250,7 @@ export default function ShopPage() {
                   filteredProducts.map((product, index) => (
                     <TableRow key={product.documentId}>
                       <TableCell>{(page - 1) * pageSize + index + 1}</TableCell>
+                      <TableCell>{product.documentId}</TableCell>
                       <TableCell>{product.Name}</TableCell>
                       <TableCell>
                         {product.Description.slice(0, 100)}...
@@ -265,12 +267,14 @@ export default function ShopPage() {
                         {new Date(product.updatedAt).toLocaleString()}
                       </TableCell>
                       <TableCell className="flex w-fit gap-1">
+                        {/* ?preview */}
                         <Link
                           target="_blank"
                           href={`http://localhost:3000/shop/${product.documentId}`}
                         >
                           <Eye className="text-[#717171] w-4 h-4  duration-200 ease-ease-in-out hover:text-black" />
                         </Link>
+                        {/* Edit */}
                         <Dialog>
                           <DialogTrigger asChild>
                             <Button variant="primary">
@@ -288,6 +292,7 @@ export default function ShopPage() {
                             <DialogFooter></DialogFooter>
                           </DialogContent>
                         </Dialog>{" "}
+                        {/* delete */}
                         <Dialog>
                           <DialogTrigger asChild>
                             <Trash className="text-[#717171] w-4 h-4  duration-200 ease-ease-in-out hover:text-black" />
@@ -304,7 +309,7 @@ export default function ShopPage() {
                             </DialogHeader>
                             <DialogFooter>
                               <Button
-                                onClick={() => deleteProduct(deleteProductId)}
+                                onClick={() => deleteProduct(product.documentId)}
                                 className="bg-red text-white"
                               >
                                 Confirm Delete

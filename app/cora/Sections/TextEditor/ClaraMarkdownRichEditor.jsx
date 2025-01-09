@@ -57,7 +57,7 @@ const ClaraMarkdownRichEditor = ({
   }, []);
 
   return (
-    <div className="text-editor-container">
+    <div className="w-full text-editor-container">
       <ReactQuill
         value={value}
         onChange={handleChange}

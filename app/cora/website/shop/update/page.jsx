@@ -147,16 +147,19 @@ export default function ProductUpdateForm({ documentId }) {
 
         <div>
           <label className="block">Description</label>
-          <input
-            type="text"
+          {/* <textarea
             name="Description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             className="w-full p-2 border border-gray-300 rounded"
+          /> */}
+          <ClaraMarkdownRichEditor
+            onChange={(value) => setDescription(value)}
+            value={description || ""}
           />
         </div>
         <div>
-          <label className="block">Description</label>
+          <label className="block">Meta Description</label>
 
           <ClaraMarkdownRichEditor
             onChange={(value) => setLongDescription(value)}

@@ -457,8 +457,8 @@ export function UpdateBadgesTable({ documentId }) {
   };
 
   return (
-    <div className="p-8">
-      <h1 className="text-2xl font-bold mb-6">Edit How It Works Section</h1>
+    <div className="p-8 font-fredoka">
+      <h1 className="text-2xl font-bold mb-6">Edit Badge Data</h1>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
@@ -706,6 +706,22 @@ export function CreateBadgeForm() {
   return (
     <div className="p-8 font-fredoka">
       <form onSubmit={handleSubmit} className="space-y-4">
+      <div>
+          <label>Select Media First:</label>
+          {media ? (
+            <div className="mt-4">
+              <img
+                src={media.url}
+                // src={`https://proper-fun-404805c7d9.strapiapp.com${media.url}`}
+                className="w-32 h-32 object-cover"
+              />
+              <p>{media.name}</p>
+            </div>
+          ) : (
+            <p>Not selected anything</p>
+          )}
+          <MediaSelector onMediaSelect={handleMediaSelect} />
+        </div>
         <div>
           <label htmlFor="Name" className="block">
             Name
@@ -731,22 +747,7 @@ export function CreateBadgeForm() {
             placeholder="Enter a description"
           />
         </div>
-        <div>
-          <label>Media:</label>
-          {media ? (
-            <div className="mt-4">
-              <img
-                src={media.url}
-                // src={`https://proper-fun-404805c7d9.strapiapp.com${media.url}`}
-                className="w-32 h-32 object-cover"
-              />
-              <p>{media.name}</p>
-            </div>
-          ) : (
-            <p>Not selected anything</p>
-          )}
-          <MediaSelector onMediaSelect={handleMediaSelect} />
-        </div>
+     
 
         <button type="submit" className="px-4 py-2 bg-black text-white rounded">
           Create Badge

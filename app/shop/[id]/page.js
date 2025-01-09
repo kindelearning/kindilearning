@@ -77,10 +77,15 @@ function ProductInfo({ product }) {
         <div className="w-[max-content] text-[#0a1932] text-[32px] font-semibold font-fredoka leading-tight">
           Description
         </div>
-        <div className="w-full text-[#757575] text-[20px] font-medium font-fredoka leading-[24px]">
-          {product.Description || "Product Description"}
-          {product.MetaDescription || "Product meta Description"}
+        <div className="w-full text-[#757575] prose text-[20px] font-medium font-fredoka leading-[24px]">
+          {/* {product.Description || "Product Description"}
+          {product.MetaDescription || "Product meta Description"} */}
+
+          <span  dangerouslySetInnerHTML={{ __html: product.Description }}/>
+          <span  dangerouslySetInnerHTML={{ __html: product.MetaDescription }}/>
+
         </div>
+
       </div>
     </div>
   );

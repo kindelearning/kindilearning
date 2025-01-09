@@ -18,215 +18,215 @@ import {
 import MediaSelector from "../../media/Section/MediaSelector";
 import ClaraMarkdownRichEditor from "@/app/cora/Sections/TextEditor/ClaraMarkdownRichEditor";
 
-export function CreateProductPage2() {
-  const [productData, setProductData] = useState({
-    name: "",
-    description: "",
-    longDescription: "",
-    price: "",
-    discountPrice: "",
-    metaDescription: "",
-    seoKeywords: "",
-    variants: "",
-    inStock: false,
-    keywords: "",
-  });
+// export function CreateProductPage2() {
+//   const [productData, setProductData] = useState({
+//     name: "",
+//     description: "",
+//     longDescription: "",
+//     price: "",
+//     discountPrice: "",
+//     metaDescription: "",
+//     seoKeywords: "",
+//     variants: "",
+//     inStock: false,
+//     keywords: "",
+//   });
 
-  // Handle form input changes
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setProductData((prevData) => ({ ...prevData, [name]: value }));
-  };
+//   // Handle form input changes
+//   const handleInputChange = (e) => {
+//     const { name, value } = e.target;
+//     setProductData((prevData) => ({ ...prevData, [name]: value }));
+//   };
 
-  // Handle checkbox changes (inStock)
-  const handleCheckboxChange = (e) => {
-    const { name, checked } = e.target;
-    setProductData((prevData) => ({ ...prevData, [name]: checked }));
-  };
+//   // Handle checkbox changes (inStock)
+//   const handleCheckboxChange = (e) => {
+//     const { name, checked } = e.target;
+//     setProductData((prevData) => ({ ...prevData, [name]: checked }));
+//   };
 
-  // Handle form submission
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+//   // Handle form submission
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
 
-    // Prepare the data to send to Strapi API
-    const productPayload = {
-      data: {
-        Name: productData.name,
-        Description: productData.description,
-        LongDescription: productData.longDescription,
-        Price: parseFloat(productData.price),
-        DiscountPrice: productData.discountPrice
-          ? parseFloat(productData.discountPrice)
-          : null,
-        MetaDescription: productData.metaDescription,
-        SEOKeywords: productData.seoKeywords,
-        Variants: productData.variants ? JSON.parse(productData.variants) : {},
-        inStock: productData.inStock,
-        Keywords: productData.keywords,
-      },
-    };
+//     // Prepare the data to send to Strapi API
+//     const productPayload = {
+//       data: {
+//         Name: productData.name,
+//         Description: productData.description,
+//         LongDescription: productData.longDescription,
+//         Price: parseFloat(productData.price),
+//         DiscountPrice: productData.discountPrice
+//           ? parseFloat(productData.discountPrice)
+//           : null,
+//         MetaDescription: productData.metaDescription,
+//         SEOKeywords: productData.seoKeywords,
+//         Variants: productData.variants ? JSON.parse(productData.variants) : {},
+//         inStock: productData.inStock,
+//         Keywords: productData.keywords,
+//       },
+//     };
 
-    try {
-      const res = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/products", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(productPayload),
-      });
+//     try {
+//       const res = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/products", {
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//         body: JSON.stringify(productPayload),
+//       });
 
-      if (!res.ok) throw new Error("Failed to create product");
+//       if (!res.ok) throw new Error("Failed to create product");
 
-      // Clear the form after successful submission
-      setProductData({
-        name: "",
-        description: "",
-        longDescription: "",
-        price: "",
-        discountPrice: "",
-        metaDescription: "",
-        seoKeywords: "",
-        variants: "",
-        inStock: false,
-        keywords: "",
-      });
+//       // Clear the form after successful submission
+//       setProductData({
+//         name: "",
+//         description: "",
+//         longDescription: "",
+//         price: "",
+//         discountPrice: "",
+//         metaDescription: "",
+//         seoKeywords: "",
+//         variants: "",
+//         inStock: false,
+//         keywords: "",
+//       });
 
-      alert("Product created successfully!");
-    } catch (error) {
-      console.error("Error creating product:", error);
-      alert("There was an error creating the product.");
-    }
-  };
+//       alert("Product created successfully!");
+//     } catch (error) {
+//       console.error("Error creating product:", error);
+//       alert("There was an error creating the product.");
+//     }
+//   };
 
-  return (
-    <>
-      <section className="p-8 min-h-screen font-fredoka bg-gray-50">
-        <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-lg">
-          <h1 className="text-2xl font-semibold text-gray-700 mb-4">
-            Create New Product
-          </h1>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-4">
-              <div>
-                <label className="block text-gray-600">Name</label>
-                <Input
-                  type="text"
-                  name="name"
-                  value={productData.name}
-                  onChange={handleInputChange}
-                  required
-                  className="mt-2 w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
+//   return (
+//     <>
+//       <section className="p-8 min-h-screen font-fredoka bg-gray-50">
+//         <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-lg">
+//           <h1 className="text-2xl font-semibold text-gray-700 mb-4">
+//             Create New Product
+//           </h1>
+//           <form onSubmit={handleSubmit} className="space-y-4">
+//             <div className="space-y-4">
+//               <div>
+//                 <label className="block text-gray-600">Name</label>
+//                 <Input
+//                   type="text"
+//                   name="name"
+//                   value={productData.name}
+//                   onChange={handleInputChange}
+//                   required
+//                   className="mt-2 w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+//                 />
+//               </div>
 
-              <div>
-                <label className="block text-gray-600">Description</label>
-                <Input
-                  type="text"
-                  name="description"
-                  value={productData.description}
-                  onChange={handleInputChange}
-                  required
-                  className="mt-2 w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
+//               <div>
+//                 <label className="block text-gray-600">Description</label>
+//                 <Input
+//                   type="text"
+//                   name="description"
+//                   value={productData.description}
+//                   onChange={handleInputChange}
+//                   required
+//                   className="mt-2 w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+//                 />
+//               </div>
 
-              <div>
-                <label className="block text-gray-600">Long Description</label>
-                <Textarea
-                  name="longDescription"
-                  value={productData.longDescription}
-                  onChange={handleInputChange}
-                  required
-                  className="mt-2 w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-              <div>
-                <label className="block text-gray-600">Price</label>
-                <Input
-                  type="number"
-                  name="price"
-                  value={productData.price}
-                  onChange={handleInputChange}
-                  required
-                  className="mt-2 w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
+//               <div>
+//                 <label className="block text-gray-600">Long Description</label>
+//                 <Textarea
+//                   name="longDescription"
+//                   value={productData.longDescription}
+//                   onChange={handleInputChange}
+//                   required
+//                   className="mt-2 w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+//                 />
+//               </div>
+//               <div>
+//                 <label className="block text-gray-600">Price</label>
+//                 <Input
+//                   type="number"
+//                   name="price"
+//                   value={productData.price}
+//                   onChange={handleInputChange}
+//                   required
+//                   className="mt-2 w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+//                 />
+//               </div>
 
-              <div>
-                <label className="block text-gray-600">Discount Price</label>
-                <Input
-                  type="number"
-                  name="discountPrice"
-                  value={productData.discountPrice}
-                  onChange={handleInputChange}
-                  className="mt-2 w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
+//               <div>
+//                 <label className="block text-gray-600">Discount Price</label>
+//                 <Input
+//                   type="number"
+//                   name="discountPrice"
+//                   value={productData.discountPrice}
+//                   onChange={handleInputChange}
+//                   className="mt-2 w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+//                 />
+//               </div>
 
-              <div>
-                <label className="block text-gray-600">Meta Description</label>
-                <Input
-                  type="text"
-                  name="metaDescription"
-                  value={productData.metaDescription}
-                  onChange={handleInputChange}
-                />
-              </div>
+//               <div>
+//                 <label className="block text-gray-600">Meta Description</label>
+//                 <Input
+//                   type="text"
+//                   name="metaDescription"
+//                   value={productData.metaDescription}
+//                   onChange={handleInputChange}
+//                 />
+//               </div>
 
-              <div>
-                <label className="block text-gray-600">SEO Keywords</label>
-                <Input
-                  type="text"
-                  name="seoKeywords"
-                  value={productData.seoKeywords}
-                  onChange={handleInputChange}
-                  className="mt-2 w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
+//               <div>
+//                 <label className="block text-gray-600">SEO Keywords</label>
+//                 <Input
+//                   type="text"
+//                   name="seoKeywords"
+//                   value={productData.seoKeywords}
+//                   onChange={handleInputChange}
+//                   className="mt-2 w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+//                 />
+//               </div>
 
-              <div>
-                <label className="block text-gray-600">Variants (JSON)</label>
-                <Textarea
-                  name="variants"
-                  value={productData.variants}
-                  onChange={handleInputChange}
-                  placeholder='{"color": "red", "size": "M"}'
-                  className="mt-2 w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
+//               <div>
+//                 <label className="block text-gray-600">Variants (JSON)</label>
+//                 <Textarea
+//                   name="variants"
+//                   value={productData.variants}
+//                   onChange={handleInputChange}
+//                   placeholder='{"color": "red", "size": "M"}'
+//                   className="mt-2 w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+//                 />
+//               </div>
 
-              <div className="w-fit gap-2 flex">
-                <input
-                  type="checkbox"
-                  name="inStock"
-                  checked={productData.inStock}
-                  onChange={handleCheckboxChange}
-                  className=" w-[max-content] px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-                <label className="block text-gray-600">In Stock</label>
-              </div>
+//               <div className="w-fit gap-2 flex">
+//                 <input
+//                   type="checkbox"
+//                   name="inStock"
+//                   checked={productData.inStock}
+//                   onChange={handleCheckboxChange}
+//                   className=" w-[max-content] px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+//                 />
+//                 <label className="block text-gray-600">In Stock</label>
+//               </div>
 
-              <div>
-                <label className="block text-gray-600">
-                  Keywords (Rich Text)
-                </label>
-                <Textarea
-                  name="keywords"
-                  value={productData.keywords}
-                  onChange={handleInputChange}
-                  className="mt-2 w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
+//               <div>
+//                 <label className="block text-gray-600">
+//                   Keywords (Rich Text)
+//                 </label>
+//                 <Textarea
+//                   name="keywords"
+//                   value={productData.keywords}
+//                   onChange={handleInputChange}
+//                   className="mt-2 w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+//                 />
+//               </div>
 
-              <Button type="submit">Create Product</Button>
-            </div>
-          </form>
-        </div>
-      </section>
-    </>
-  );
-}
+//               <Button type="submit">Create Product</Button>
+//             </div>
+//           </form>
+//         </div>
+//       </section>
+//     </>
+//   );
+// }
 
 export default function CreateProductPage() {
   const [name, setName] = useState("");
@@ -282,7 +282,7 @@ export default function CreateProductPage() {
       const responseData = await response.json();
 
       if (response.ok) {
-        setDialogMessage("Badge created successfully!");
+        setDialogMessage("Product created successfully!");
         setDialogType("success");
 
         setName("");
@@ -321,7 +321,7 @@ export default function CreateProductPage() {
     setGallery(selectedMedia); // Store the selected media object
   };
   return (
-    <div className="p-8 font-fredoka">
+    <div className="p-8 font-fredoka bg-[#ffffff]">
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Media */}
         <div>
@@ -372,109 +372,120 @@ export default function CreateProductPage() {
             required
           />
         </div>
-        <div>
-          <label htmlFor="typeOfToy" className="block">
-            typeOfToy
-          </label>
-          <input
-            type="text"
-            id="typeOfToy"
-            name="typeOfToy"
-            value={typeOfToy}
-            onChange={(e) => setTypeOfToy(e.target.value)}
-            className="border p-2 w-full"
-            required
-          />
+
+        <div className="flex gap-1 justify-start items-start">
+          <div className="flex w-full  flex-col gap-1 justify-start items-start">
+            <label htmlFor="typeOfToy" className="block">
+              Type of Toy
+            </label>
+            <input
+              type="text"
+              id="typeOfToy"
+              name="typeOfToy"
+              value={typeOfToy}
+              onChange={(e) => setTypeOfToy(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded"
+              required
+            />
+          </div>
+          <div className="flex w-full  flex-col gap-1 justify-start items-start">
+            <label htmlFor="educationalFeatures" className="block">
+              Educational Features
+            </label>
+            <input
+              type="text"
+              id="educationalFeatures"
+              name="educationalFeatures"
+              value={educationalFeatures}
+              onChange={(e) => setEducationalFeatures(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded"
+              required
+            />
+          </div>
         </div>
-        <div>
-          <label htmlFor="educationalFeatures" className="block">
-            educationalFeatures
-          </label>
-          <input
-            type="text"
-            id="educationalFeatures"
-            name="educationalFeatures"
-            value={educationalFeatures}
-            onChange={(e) => setEducationalFeatures(e.target.value)}
-            className="border p-2 w-full"
-            required
-          />
+        <div className="flex gap-1 justify-start items-start">
+          <div className="flex w-full flex-col gap-1 justify-start items-start">
+            <label htmlFor="discountType" className="block">
+              Discount Type
+            </label>
+            <input
+              type="text"
+              id="discountType"
+              name="discountType"
+              value={discountType}
+              onChange={(e) => setDiscountType(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded"
+              required
+            />
+          </div>
+          <div className="flex w-full  flex-col gap-1 justify-start items-start">
+            <label htmlFor="skillOptions" className="block">
+              Skill Options
+            </label>
+            <input
+              type="text"
+              id="skillOptions"
+              name="skillOptions"
+              value={skillOptions}
+              onChange={(e) => setSkillOptions(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded"
+              required
+            />
+          </div>
         </div>
-        <div>
-          <label htmlFor="discountType" className="block">
-            discountType
-          </label>
-          <input
-            type="text"
-            id="discountType"
-            name="discountType"
-            value={discountType}
-            onChange={(e) => setDiscountType(e.target.value)}
-            className="border p-2 w-full"
-            required
-          />
-        </div>
-        <div>
+        <div className="flex flex-col gap-1 justify-start items-start">
           <label htmlFor="NlongDescriptioname" className="block">
-            longDescription
+            Long Description
           </label>
           <textarea
             id="longDescription"
             name="longDescription"
             value={longDescription}
             onChange={(e) => setLongDescription(e.target.value)}
-            className="border p-2 w-full"
+            className="w-full p-2 border border-gray-300 rounded"
             required
           />
-        </div>
-
-        <div>
-          <label htmlFor="skillOptions" className="block">
-            skillOptions
-          </label>
-          <input
-            type="text"
-            id="skillOptions"
-            name="skillOptions"
-            value={skillOptions}
-            onChange={(e) => setSkillOptions(e.target.value)}
-            className="border p-2 w-full"
-            required
+           <ClaraMarkdownRichEditor
+            value={longDescription}
+            onChange={(newContent) => setLongDescription(newContent)}
+            placeholder="Enter a description"
           />
         </div>
-        <div>
-          <label htmlFor="price" className="block">
-            price
-          </label>
-          <input
-            type="number"
-            id="price"
-            name="price"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            className="border p-2 w-full"
-            required
-          />
+        <div className="flex gap-1 justify-start items-start">
+          <div className="flex w-full  flex-col gap-1 justify-start items-start">
+            <label htmlFor="price" className="block">
+              Price
+            </label>
+            <input
+              type="number"
+              id="price"
+              name="price"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded"
+              required
+            />
+          </div>
+          <div className="flex  w-full  flex-col gap-1 justify-start items-start">
+            <label htmlFor="discountPrice" className="block">
+              Discount Price
+            </label>
+            <input
+              type="number"
+              id="discountPrice"
+              name="discountPrice"
+              value={discountPrice}
+              onChange={(e) => setDiscountPrice(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded"
+              required
+            />
+          </div>
         </div>
-        <div>
-          <label htmlFor="discountPrice" className="block">
-            discountPrice
-          </label>
-          <input
-            type="number"
-            id="discountPrice"
-            name="discountPrice"
-            value={discountPrice}
-            onChange={(e) => setDiscountPrice(e.target.value)}
-            className="border p-2 w-full"
-            required
-          />
-        </div>
-        <div>
+        <div className="flex w-full   flex-col gap-1 justify-start items-start">
           <label htmlFor="metaDescription" className="block">
-            metaDescription
+            Meta Description
           </label>
-          <input
+          {/* <input
             type="text"
             id="metaDescription"
             name="metaDescription"
@@ -482,11 +493,16 @@ export default function CreateProductPage() {
             onChange={(e) => setMetaDescription(e.target.value)}
             className="border p-2 w-full"
             required
+          /> */}
+          <ClaraMarkdownRichEditor
+            value={metaDescription}
+            onChange={(newContent) => setMetaDescription(newContent)}
+            placeholder="Enter a description"
           />
         </div>
-        <div>
+        <div className="flex w-full   flex-col gap-1 justify-start items-start">
           <label htmlFor="seoKeywords" className="block">
-            seoKeywords
+            SEO Keywords
           </label>
           <input
             type="text"
@@ -494,13 +510,13 @@ export default function CreateProductPage() {
             name="seoKeywords"
             value={seoKeywords}
             onChange={(e) => setSEOKeywords(e.target.value)}
-            className="border p-2 w-full"
+            className="w-full p-2 border border-gray-300 rounded"
             required
           />
         </div>
-        <div>
+        <div className="flex w-full   flex-col gap-1 justify-start items-start">
           <label htmlFor="materialOptions" className="block">
-            materialOptions
+            Material Options
           </label>
           <input
             type="text"
@@ -508,13 +524,13 @@ export default function CreateProductPage() {
             name="materialOptions"
             value={materialOptions}
             onChange={(e) => setMaterialOptions(e.target.value)}
-            className="border p-2 w-full"
+            className="w-full p-2 border border-gray-300 rounded"
             required
           />
         </div>
-        <div>
+        <div className="flex w-full   flex-col gap-1 justify-start items-start">
           <label htmlFor="discountType" className="block">
-            discountType
+            Discount Type
           </label>
           <input
             type="text"
@@ -522,12 +538,12 @@ export default function CreateProductPage() {
             name="discountType"
             value={discountType}
             onChange={(e) => setDiscountType(e.target.value)}
-            className="border p-2 w-full"
+            className="w-full p-2 border border-gray-300 rounded"
             required
           />
         </div>
 
-        <div>
+        <div className="flex w-full flex-col gap-1 justify-start items-start">
           <label htmlFor="Description" className="block">
             Description
           </label>
@@ -539,7 +555,7 @@ export default function CreateProductPage() {
         </div>
 
         <button type="submit" className="px-4 py-2 bg-black text-white rounded">
-          Create Badge
+          Create Product
         </button>
       </form>
 
