@@ -244,7 +244,7 @@ export default function ProductDetailPage({ params }) {
       title: product.Name,
       description: product.MetaDescription,
       price: product.DiscountPrice, // In cents
-      image: product.Gallery[0]?.url,
+      image: product.FeaturedImage?.url,
       quantity,
     });
   

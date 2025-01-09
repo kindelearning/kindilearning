@@ -2,7 +2,14 @@ import { OrderConfirmed } from "@/public/Images";
 import Image from "next/image";
 import Link from "next/link";
 
+const generateOrderNumber = () => {
+  const prefix = "KINDI";
+  const randomNum = Math.floor(Math.random() * 1000000); // Generates a random number between 0 and 999999
+  return `${prefix}${randomNum.toString().padStart(6, "0")}`; // Pads the number with leading zeros if needed
+};
+
 export default function SuccessPage() {
+  const orderNumber = generateOrderNumber();
   return (
     <>
       <section className="w-full h-screen bg-[#EAEAF5] flex flex-col gap-0 justify-center items-center">
@@ -14,7 +21,7 @@ export default function SuccessPage() {
             </div>
             <div className="w-full text-center text-[#0a1932] text-[16px] lg:text-[24px] font-normal font-fredoka">
               Your order has been placed. Your order reference number is
-              BRJ388290.
+              {` ${orderNumber}`}.
             </div>
             <div className="w-fit flex gap-2">
               <Link

@@ -176,13 +176,13 @@ export default function CartPage() {
                 <div className="flex w-full justify-between items-start">
                   <div className="flex flex-col w-full gap-1 md:gap-2">
                     <h5 className="text-black clarabodyTwo">{item.title}</h5>
-                    <div className="w-[max-content] text-[#0a1932] text-[12px] font-normal font-fredoka leading-tight">
+                    <div className="w-full text-[#0a1932] text-[12px] font-normal font-fredoka leading-tight">
                     {item.description}
                     </div>
                   </div>
                   <div className="flex flex-col justify-end items-end w-full gap-2">
                     <div className="w-full text-red text-3xl text-end font-semibold font-fredoka capitalize leading-10">
-                      ${((item.price * item.quantity) / 100).toFixed(2)}
+                      ${((item.price * item.quantity)).toFixed(2)}
                     </div>
                     <div className="w-full gap-[2px] flex justify-end items-center">
                       <button onClick={() => removeFromCart(item.id)}>
@@ -216,7 +216,7 @@ export default function CartPage() {
             </Button> */}
 
             <div>
-              <h3>Total Price: ${(totalPrice / 100).toFixed(2)}</h3>
+              <h3>Total Price: ${(totalPrice).toFixed(2)}</h3>
             </div>
             <Button
               disabled={loading}
