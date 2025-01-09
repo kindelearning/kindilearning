@@ -23,7 +23,7 @@ import {
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import DeleteContent from "./delete/page";
-import { Eye, PencilIcon } from "lucide-react";
+import { Eye, PencilIcon, TrashIcon } from "lucide-react";
 import UpdateThemeForm from "./update/page";
 
 export default function AdminThemes() {
@@ -35,6 +35,7 @@ export default function AdminThemes() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [sortDirection, setSortDirection] = useState("asc");
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   // Fetch all themes
   const fetchThemes = async () => {
@@ -64,29 +65,6 @@ export default function AdminThemes() {
     setPage(newPage);
   };
 
-  const toggleStatus = async (id, currentStatus) => {
-    const newStatus = currentStatus === "published" ? "draft" : "published"; // Toggle status between published and draft
-
-    const res = await fetch(`https://proper-fun-404805c7d9.strapiapp.com/api/our-themes/${id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ status: newStatus }),
-    });
-
-    if (res.ok) {
-      setThemes((prevThemes) =>
-        prevThemes.map((theme) =>
-          theme.id === id ? { ...theme, status: newStatus } : theme
-        )
-      );
-    } else {
-      // Handle error
-      console.error("Failed to update status");
-    }
-  };
-
   const handleDelete = (documentId) => {
     // Log the documentId being deleted
     console.log("Deleting documentId:", documentId);
@@ -95,6 +73,7 @@ export default function AdminThemes() {
     setThemes((prevContent) =>
       prevContent.filter((theme) => theme.documentId !== documentId)
     );
+    setIsDialogOpen(false);
   };
 
   const filteredThemes = themes.filter((theme) =>
@@ -172,6 +151,8 @@ export default function AdminThemes() {
             <Table className="overscroll-x-auto">
               <TableHeader>
                 <TableRow>
+                  <TableHead>Serial No.</TableHead>
+                  <TableHead>DocumentId</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead className="w-[100px]">Thumbnail</TableHead>
                   <TableHead>Title</TableHead>
@@ -198,8 +179,10 @@ export default function AdminThemes() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {displayedThemes.map((theme) => (
+                {displayedThemes.map((theme, index) => (
                   <TableRow key={theme.id}>
+                    <TableCell>{index + 1}</TableCell>
+                    <TableCell>{theme.documentId}</TableCell>
                     <TableCell>
                       {theme.status === "published" ? "Draft" : " Published"}
                     </TableCell>
@@ -223,12 +206,47 @@ export default function AdminThemes() {
                       {new Date(theme.updatedAt).toLocaleString()}
                     </TableCell>
                     <TableCell className="flex">
-                      <Button variant="primary">
-                        <DeleteContent
-                          documentId={theme.documentId}
-                          onDelete={handleDelete}
-                        />
-                      </Button>
+                      {/* Delete */}
+                      <Dialog
+                        open={isDialogOpen}
+                        onOpenChange={setIsDialogOpen}
+                      >
+                        <DialogTrigger asChild>
+                          <Button
+                            variant="primary"
+                            onClick={() => {
+                              // setDeleteBadgeId(badge.documentId);
+                              setIsDialogOpen(true);
+                            }}
+                            className="text-[#6d6d6d] hover:text-[#000000]"
+                          >
+                            <TrashIcon size={20} />
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>Are you absolutely sure?</DialogTitle>
+                            <DialogDescription>
+                              This action cannot be undone. This will
+                              permanently delete this badge.
+                            </DialogDescription>
+                          </DialogHeader>
+                          <DialogFooter>
+                            <Button
+                              variant="secondary"
+                              onClick={() => setIsDialogOpen(false)}
+                            >
+                              Cancel
+                            </Button>
+
+                            <DeleteContent
+                              documentId={theme.documentId}
+                              onDelete={handleDelete}
+                            />
+                          </DialogFooter>
+                        </DialogContent>
+                      </Dialog>
+                      {/* Edit */}
                       <Dialog>
                         <DialogTrigger>
                           <Button variant="primary">
@@ -256,6 +274,7 @@ export default function AdminThemes() {
                           </DialogFooter>
                         </DialogContent>
                       </Dialog>
+                      {/* Preview */}
                       <Dialog>
                         <DialogTrigger>
                           <Button
@@ -306,26 +325,6 @@ export default function AdminThemes() {
                                         selectedTheme?.LaunchTime
                                       ).toLocaleString()}
                                     </p>
-                                  </div>
-                                  {/* Toggle Status Button */}
-                                  <div className="mt-4">
-                                    <Button
-                                      variant={
-                                        selectedTheme?.status === "published"
-                                          ? "success"
-                                          : "warning"
-                                      }
-                                      onClick={() =>
-                                        toggleStatus(
-                                          selectedTheme?.id,
-                                          selectedTheme?.status
-                                        )
-                                      }
-                                    >
-                                      {selectedTheme?.status === "published"
-                                        ? "Switch to Draft"
-                                        : "Switch to Publish"}
-                                    </Button>
                                   </div>
                                 </div>
                               </div>

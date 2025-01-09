@@ -158,9 +158,10 @@ export default function BadgesTable() {
           <TableHeader>
             <TableRow>
               <TableHead className="w-[50px]">#</TableHead>
+              <TableHead>DocumentId</TableHead>
               <TableHead>Thumbnail</TableHead>
               <TableHead>Name</TableHead>
-              <TableHead>Description</TableHead>
+              <TableHead className="w-[400px]">Description</TableHead>
               <TableHead>Created At</TableHead>
               <TableHead>Updated At</TableHead>
               <TableHead>Actions</TableHead>
@@ -172,6 +173,7 @@ export default function BadgesTable() {
                 <TableCell>
                   {index + 1 + (currentPage - 1) * badgesPerPage}
                 </TableCell>
+                <TableCell>{badge.documentId}</TableCell>
                 <TableCell>
                   {badge.Thumbnail?.url ? (
                     <img
@@ -187,13 +189,12 @@ export default function BadgesTable() {
                   )}
                 </TableCell>
                 <TableCell>{badge.Name}</TableCell>
-                <TableCell className="whitespace-pre-wrap prose">
+                <TableCell className="min-w-[500px] whitespace-pre-wrap prose">
                   <div
                     dangerouslySetInnerHTML={{
-                      __html: badge.Description.slice(0, 300),
+                      __html: badge.Description.slice(0, 100),
                     }}
                   />
-                  {/* {badge.Description} */}
                 </TableCell>
                 <TableCell>
                   {new Date(badge.createdAt).toLocaleDateString()}
@@ -684,7 +685,6 @@ export function CreateBadgeForm() {
         setName("");
         setDescription("");
         setMedia(null);
-        
       } else {
         setDialogMessage(
           "Failed to create badge. Please check the input and try again."

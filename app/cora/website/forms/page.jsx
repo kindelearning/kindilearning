@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/dialog";
 import { Eye } from "lucide-react";
 import RichTextRender from "@/app/Sections/Global/RichTextRender";
+import Link from "next/link";
 
 export default function ContactFormPage() {
   const [contactForms, setContactForms] = useState([]);
@@ -113,7 +114,7 @@ export default function ContactFormPage() {
   return (
     <>
       <section className="p-8 min-h-screen font-fredoka bg-gray-100">
-      <head>
+        <head>
           <title>Forms - Kindi Learning</title>
         </head>
         <div className="container mx-auto">
@@ -127,6 +128,7 @@ export default function ContactFormPage() {
                 <TableHeader>
                   <TableRow>
                     <TableHead>Serial</TableHead>
+                    <TableHead className="w-[120px]">DocumentId</TableHead>
                     <TableHead>Name</TableHead>
                     <TableHead>Email</TableHead>
                     <TableHead>Phone</TableHead>
@@ -144,6 +146,7 @@ export default function ContactFormPage() {
                         <TableCell className="font-medium">
                           {index + 1}
                         </TableCell>
+                        <TableCell>{form.documentId}</TableCell>
                         <TableCell>{form.Name}</TableCell>
                         <TableCell>{form.Email}</TableCell>
                         <TableCell>{form.Phone}</TableCell>
@@ -203,9 +206,13 @@ export default function ContactFormPage() {
 
                                 {/* CTA Button */}
                                 <div className="mt-6 flex justify-end">
-                                  <button className="px-6 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                                  <Link
+                                    target="_blank"
+                                    href={`https://mail.google.com/mail/?view=cm&fs=1&to=${form.Email}&su=Subject&body=BodyText`}
+                                    className="px-6 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                                  >
                                     Send Reply
-                                  </button>
+                                  </Link>
                                 </div>
                               </div>
                             </DialogContent>

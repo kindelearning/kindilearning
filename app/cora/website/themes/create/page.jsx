@@ -435,7 +435,7 @@ export default function CreateTheme() {
         </div>
 
         <button type="submit" className="px-4 py-2 bg-black text-white rounded">
-          Create Badge
+          Create Theme
         </button>
       </form>
 
@@ -449,7 +449,7 @@ export default function CreateTheme() {
             <DialogTitle>{dialogMessage}</DialogTitle>
             <DialogDescription>
               {dialogType === "success"
-                ? "Badge Created Successfully"
+                ? "Theme Created Successfully"
                 : "Something went wrong"}
             </DialogDescription>
           </DialogHeader>

@@ -7,6 +7,7 @@ import {
   DialogContent,
   DialogDescription,
   DialogFooter,
+  DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
@@ -22,7 +23,7 @@ import {
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import DeleteContent from "./delete/page";
-import { Eye, FilePenLine, MessageCircleMore, ThumbsUp } from "lucide-react";
+import { Eye, FilePenLine, MessageCircleMore, ThumbsUp, TrashIcon } from "lucide-react";
 import BlogUpdateForm from "./update/page";
 
 export default function AdminBlogs() {
@@ -35,6 +36,7 @@ export default function AdminBlogs() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [sortDirection, setSortDirection] = useState("asc");
   const [comments, setComments] = useState([]);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   // Fetch all blogs
   const fetchBlogs = async () => {
@@ -112,6 +114,7 @@ export default function AdminBlogs() {
     setBlogs((prevContent) =>
       prevContent.filter((blog) => blog.documentId !== documentId)
     );
+    setIsDialogOpen(false);
   };
   const filteredBlogs = blogs.filter(
     (blog) =>
@@ -209,6 +212,8 @@ export default function AdminBlogs() {
             <Table className="overflow-x-scroll">
               <TableHeader>
                 <TableRow>
+                  <TableHead>Sr. No</TableHead>
+                  <TableHead>documentId</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead className="min-w-[100px]">
                     Featured Image
@@ -229,8 +234,10 @@ export default function AdminBlogs() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {displayedBlogs.map((blog) => (
+                {displayedBlogs.map((blog, index) => (
                   <TableRow key={blog.id}>
+                    <TableCell>{index + 1}</TableCell>
+                    <TableCell>{blog.documentId}</TableCell>
                     <TableCell>
                       {blog.status === "published" ? "Draft" : " Published"}
                     </TableCell>
@@ -258,14 +265,49 @@ export default function AdminBlogs() {
                     {/* actions */}
                     <TableCell className="flex">
                       {/* delete */}
-                      <Button variant="primary">
-                        <DeleteContent
-                          documentId={blog.documentId}
-                          onDelete={handleDelete}
-                        />
-                      </Button>
+
+                      {/* Delete */}
+                      <Dialog
+                        open={isDialogOpen}
+                        onOpenChange={setIsDialogOpen}
+                      >
+                        <DialogTrigger asChild>
+                          <Button
+                            variant="primary"
+                            onClick={() => {
+                              setIsDialogOpen(true);
+                            }}
+                            className="text-[#6d6d6d] hover:text-[#000000]"
+                          >
+                            <TrashIcon size={20} />
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>Are you absolutely sure?</DialogTitle>
+                            <DialogDescription>
+                              This action cannot be undone. This will
+                              permanently delete this badge.
+                            </DialogDescription>
+                          </DialogHeader>
+                          <DialogFooter>
+                            <Button
+                              variant="secondary"
+                              onClick={() => setIsDialogOpen(false)}
+                            >
+                              Cancel
+                            </Button>
+                            <Button variant="primary">
+                              <DeleteContent
+                                documentId={blog.documentId}
+                                onDelete={handleDelete}
+                              />
+                            </Button>
+                          </DialogFooter>
+                        </DialogContent>
+                      </Dialog>
                       {/* Preview */}
-                      <Button variant="primary">
+                      <Button variant="primary" title="Preview Live on website">
                         <Link
                           href={`http://localhost:3000/p/community/${blog.documentId}`}
                           target="_blank"
@@ -276,6 +318,7 @@ export default function AdminBlogs() {
                       <Dialog>
                         <DialogTrigger>
                           <Button
+                            title="Preview on Admin"
                             variant="primary"
                             onClick={() => handlePreview(blog)}
                           >

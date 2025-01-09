@@ -130,7 +130,6 @@ export default function AdminUsersPage() {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        // Add token if needed
         Authorization: `Bearer ${localStorage.getItem("jwt")}`, // Replace with your JWT storage method
       },
       body: JSON.stringify({
@@ -141,7 +140,7 @@ export default function AdminUsersPage() {
       .then((data) => {
         if (data) {
           alert("User data updated successfully!");
-          setUsers(data); // Update local state with the response
+          setUsers(data);
         }
       })
       .catch((err) => setError("Error updating user data."));
@@ -229,7 +228,7 @@ export default function AdminUsersPage() {
                 {/* <SelectItem value="">All Roles</SelectItem> */}
                 <SelectItem>All</SelectItem>
                 <SelectItem value="Admin">Admin</SelectItem>
-                <SelectItem value="User">User</SelectItem>
+                {/* <SelectItem value="User">User</SelectItem> */}
               </SelectContent>
             </Select>
             <Select

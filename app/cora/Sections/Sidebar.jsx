@@ -28,6 +28,13 @@ import {
   Clock,
   UserCog,
   FlaskConicalIcon,
+  Video,
+  Clipboard,
+  ActivityIcon,
+  Award,
+  CreditCard,
+  InfoIcon,
+  LucideFileText,
 } from "lucide-react";
 import { useState } from "react";
 import { AppStore, KindiVector } from "@/public/Images";
@@ -36,7 +43,10 @@ import Image from "next/image";
 export const SidebarLink = ({ href, icon, label, isCollapsed }) => {
   return (
     <Link href={href}>
-      <div className="flex items-center space-x-4 py-2 px-4 hover:bg-gray-800 rounded-lg transition-colors duration-200">
+      <div
+        title={isCollapsed ? label : ""}
+        className="flex items-center space-x-4 py-2 px-4 hover:bg-gray-800 rounded-lg transition-colors duration-200"
+      >
         <div className="text-xl text-gray-400">{icon}</div>
         {!isCollapsed && (
           <span className="text-gray-200 font-medium font-fredoka">
@@ -95,55 +105,55 @@ export default function Sidebar() {
         />
         <SidebarLink
           href="/cora/website/media"
-          icon={<Home />} // Media icon (Image icon for media files)
+          icon={<Video />} // Image icon for media files
           label="Media"
           isCollapsed={isCollapsed}
         />
-        <SidebarLink
+        {/* <SidebarLink
           href="/cora/website/test"
-          icon={<FlaskConicalIcon />} // Test icon (Flask icon for testing)
+          icon={<FlaskConical />} // Flask icon for testing
           label="Test"
           isCollapsed={isCollapsed}
-        />
+        /> */}
         <SidebarLink
           href="/cora/website/forms"
-          icon={<FormInput />} // Form icon (for ClaraForms)
+          icon={<Clipboard />} // Clipboard icon for forms
           label="ClaraForms"
           isCollapsed={isCollapsed}
         />
         <SidebarLink
           href="/cora/website/activities"
-          icon={<Activity />} // Activity icon (Activity log)
+          icon={<ActivityIcon />} // Activity icon for activity log
           label="Activity"
           isCollapsed={isCollapsed}
         />
         <SidebarLink
           href="/cora/website/shop"
-          icon={<ShoppingCart />} // Products icon (Shopping Cart)
+          icon={<ShoppingCart />} // Shopping cart for products
           label="Products"
           isCollapsed={isCollapsed}
         />
         <SidebarLink
           href="/cora/website/levels"
-          icon={<Flag />} // Mission icon (Flag for mission)
+          icon={<Flag />} // Flag icon for levels
           label="Levels"
           isCollapsed={isCollapsed}
         />
         <SidebarLink
           href="/cora/website/milestone"
-          icon={<Flag />} // Mission icon (Flag for mission)
+          icon={<Flag />} // Flag icon for milestones
           label="Milestone"
           isCollapsed={isCollapsed}
         />
         <SidebarLink
           href="/cora/website/badge"
-          icon={<Flag />} // Mission icon (Flag for mission)
+          icon={<Award />} // Award icon for badges
           label="Badge"
           isCollapsed={isCollapsed}
         />
         <SidebarLink
           href="/cora/website/paymentmethod"
-          icon={<Flag />} // Mission icon (Flag for mission)
+          icon={<CreditCard />} // Credit card icon for payment methods
           label="Payment Method"
           isCollapsed={isCollapsed}
         />
@@ -165,55 +175,55 @@ export default function Sidebar() {
             <div className="pl-8 space-y-2">
               <SidebarLink
                 href="/cora/website/home"
-                icon={<Home />} // Home page icon
+                icon={<Home />} // Home icon
                 label="Home Page"
                 isCollapsed={isCollapsed}
               />
               <SidebarLink
                 href="/cora/website/ourmission"
-                icon={<Flag />} // Mission icon (Flag for mission)
+                icon={<Flag />} // Flag icon for mission
                 label="Our Mission"
                 isCollapsed={isCollapsed}
               />
               <SidebarLink
                 href="/cora/website/howitworks"
-                icon={<Info />} // How It Works icon (Information)
+                icon={<InfoIcon />} // Information icon for how it works
                 label="How It Works"
                 isCollapsed={isCollapsed}
               />
-              <SidebarLink
+              {/* <SidebarLink
                 href="/cora/website/pages"
-                icon={<FileText />} // Pages icon (File text)
+                icon={<LucideFileText />} // Document icon for pages
                 label="Pages"
                 isCollapsed={isCollapsed}
-              />
+              /> */}
               <SidebarLink
                 href="/cora/website/pages/tnc"
-                icon={<FileText />} // Terms and Conditions icon
+                icon={<LucideFileText />} // Document icon for terms and conditions
                 label="Terms and Conditions"
                 isCollapsed={isCollapsed}
               />
               <SidebarLink
                 href="/cora/website/pages/refund"
-                icon={<FileText />} // Refund Policy icon
+                icon={<LucideFileText />} // Document icon for refund policy
                 label="Refund Policy"
                 isCollapsed={isCollapsed}
               />
               <SidebarLink
                 href="/cora/website/pages/privacypolicy"
-                icon={<FileText />} // Privacy Policy icon
+                icon={<LucideFileText />} // Document icon for privacy policy
                 label="Privacy Policy"
                 isCollapsed={isCollapsed}
               />
               <SidebarLink
                 href="/cora/website/pages/quality"
-                icon={<CheckCircle />} // Quality Control icon (CheckCircle)
+                icon={<CheckCircle />} // Check Circle for quality control
                 label="Quality Control"
                 isCollapsed={isCollapsed}
               />
               <SidebarLink
                 href="/cora/website/pages/investment"
-                icon={<DollarSign />} // Investment icon (Dollar Sign)
+                icon={<DollarSign />} // Dollar icon for investment
                 label="Investment"
                 isCollapsed={isCollapsed}
               />
@@ -223,47 +233,28 @@ export default function Sidebar() {
 
         <SidebarLink
           href="/cora/website/community"
-          icon={<Users />} // Blogs icon (Users for community)
+          icon={<Users />} // Users icon for community
           label="Blogs"
           isCollapsed={isCollapsed}
         />
         <SidebarLink
           href="/cora/website/faq"
-          icon={<HelpCircle />} // FAQ icon (Help Circle)
+          icon={<HelpCircle />} // Help Circle for FAQs
           label="FAQs"
           isCollapsed={isCollapsed}
         />
         <SidebarLink
           href="/cora/website/themes"
-          icon={<Palette />} // Themes icon (Palette for themes)
+          icon={<Palette />} // Palette icon for themes
           label="Themes"
           isCollapsed={isCollapsed}
         />
-
-        {/* <SidebarLink
-          href="/cora/website/scheduler"
-          icon={<Clock />} // Scheduler icon (Clock for scheduling)
-          label="Scheduler"
-          isCollapsed={isCollapsed}
-        /> */}
         <SidebarLink
           href="/cora/website/users"
-          icon={<User />} // Users icon (User management)
+          icon={<User />} // User icon for user management
           label="Users"
           isCollapsed={isCollapsed}
         />
-        {/* <SidebarLink
-          href="/cora/website/profile"
-          icon={<UserCog />} // Admin Profile icon (UserCog for settings)
-          label="Admin Profile"
-          isCollapsed={isCollapsed}
-        /> */}
-        {/* <SidebarLink
-          href="/cora/app"
-          icon={<AppWindow />} // App Switch icon (AppWindow)
-          label="Switch to App"
-          isCollapsed={isCollapsed}
-        /> */}
       </div>
     </div>
   );

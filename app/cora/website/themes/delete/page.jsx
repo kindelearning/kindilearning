@@ -31,9 +31,10 @@ export default function DeleteContent({ documentId, onDelete }) {
   return (
     <button
       onClick={handleDelete}
-      className="text-red-600 hover:text-red-700 font-medium"
+      className="text-red -600 flex gap-1 justify-between items-center hover:text-red-700 font-medium"
     >
-      <Trash2 className="text-[#7f7f7f] duration-300 w-5 h-5 ease-in-out hover:text-black"/>
+      Yes Delete
+      <Trash2 className="text-red duration-300 w-5 h-5 ease-in-out hover:text-black"/>
     </button>
   );
 }

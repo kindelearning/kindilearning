@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Dialog,
   DialogClose,
@@ -109,10 +109,12 @@ export default function LevelData() {
           method: "DELETE",
         }
       );
-
+// Close the dialog after successful deletion
       if (!response.ok) {
         throw new Error("Failed to delete level.");
       }
+      // Refresh the page after successful deletion
+    window.location.reload();
     } catch (err) {
       setContent(filteredContent); // Restore if failed
       setError("Error deleting level: " + err.message);
@@ -160,6 +162,11 @@ export default function LevelData() {
                 Serial No.
               </TableHead>
               <TableHead
+                className="cursor-pointer"
+              >
+                DocumentId
+              </TableHead>
+              <TableHead
                 onClick={() => handleSort("Tiitle")}
                 className="cursor-pointer"
               >
@@ -195,6 +202,7 @@ export default function LevelData() {
               currentItems.map((level, index) => (
                 <TableRow key={level.id}>
                   <TableCell>{index + 1}</TableCell>
+                  <TableCell>{level.documentId}</TableCell>
                   <TableCell>{level.Tiitle}</TableCell>
                   <TableCell>{level.noOfActivities}</TableCell>
                   <TableCell>

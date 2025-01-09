@@ -124,10 +124,12 @@ export default function PaymentMethodsTable() {
             <TableHeader>
               <TableRow>
                 <TableHead>Serial No.</TableHead>
+                <TableHead>DocumentId</TableHead>
                 <TableHead onClick={() => handleSort("Name")}>
                   Name{" "}
                   {sortField === "Name" && (sortOrder === "asc" ? "↑" : "↓")}
                 </TableHead>
+
                 <TableHead onClick={() => handleSort("Number")}>
                   Number{" "}
                   {sortField === "Number" && (sortOrder === "asc" ? "↑" : "↓")}
@@ -154,6 +156,9 @@ export default function PaymentMethodsTable() {
                   <TableCell>
                     {(currentPage - 1) * entriesPerPage + index + 1}
                   </TableCell>
+                  <TableCell className="font-medium">
+                    {method.documentId}
+                  </TableCell>
                   <TableCell className="font-medium">{method.Name}</TableCell>
                   <TableCell>{method.Number}</TableCell>
                   <TableCell>{method.ExpiryDate}</TableCell>
@@ -169,7 +174,7 @@ export default function PaymentMethodsTable() {
                     <Dialog open={openDialog} onOpenChange={setOpenDialog}>
                       <DialogTrigger asChild>
                         <button
-                          className="text-red-600 hover:underline"
+                          className="text-red -600 hover:underline"
                           onClick={() => {
                             setSelectedPaymentMethod(method);
                             setOpenDialog(true);
@@ -188,7 +193,7 @@ export default function PaymentMethodsTable() {
                         </DialogHeader>
                         <div className="flex justify-end gap-2 mt-4">
                           <button
-                            className="px-4 py-2 bg-red-600 text-white rounded"
+                            className="px-4 py-2 bg-red-600 text-red rounded"
                             onClick={handleDelete}
                           >
                             Yes, Delete
