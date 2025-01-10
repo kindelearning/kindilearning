@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { fetchHeroSection } from "../../data/p/Home";
 import Image from "next/image";
+import Link from "next/link";
 
 export default async function Hero() {
   const result = await fetchHeroSection();
@@ -31,14 +32,13 @@ export default async function Hero() {
               <div className="flex flex-col flex-wrap w-full justify-start items-start gap-3 lg:gap-6 animate-fade-in">
                 <div className="w-full lg:w-[max-content]">
                   <span className="text-white claraheading lg:text-[50px] lg:leading-[56px] font-bold font-fredoka capitalize animate-fade-in">
-                    {getFirstThreeWords(heroData.HeroTitle) ||
-                      "No Hero Title available"}
+                    {getFirstThreeWords(heroData.HeroTitle) || "Kindi Learning"}
                   </span>
                   <br />
                   <span className="text-light-purple-100 claraheading md:text-[24px] md:leading-[26px] font-normal font-fredoka capitalize animate-fade-in"></span>
                   <span className="text-red claraheading lg:text-[50px] lg:leading-[56px] animate-fade-in">
                     {getLastThreeWords(heroData.HeroTitle) ||
-                      "No Hero Title available"}
+                      "For 0-5 Year kids"}
                   </span>
                 </div>
                 {/* {heroData.BodyDescription?.map((desc, index) => (
@@ -49,18 +49,34 @@ export default async function Hero() {
                     {desc.children[0]?.text || "No body description available"}
                   </div>
                 ))} */}
-                <p
-                  className="prose text-start w-full h-auto text-white clarabody animate-fade-in] text-base md:text-lg lg:text-xl mt-4 leading-relaxed  animate-fadeIn animate-delay-2000"
-                  dangerouslySetInnerHTML={{ __html: heroData.BodyDescription }}
-                />
+                {heroData.BodyDescription ? (
+                  <p
+                    className="prose text-start w-full h-auto text-white clarabody animate-fade-in] text-base md:text-lg lg:text-xl mt-4 leading-relaxed  animate-fadeIn animate-delay-2000"
+                    dangerouslySetInnerHTML={{
+                      __html: heroData.BodyDescription,
+                    }}
+                  />
+                ) : (
+                  <p className="prose text-start w-full h-auto text-white clarabody animate-fade-in] text-base md:text-lg lg:text-xl mt-4 leading-relaxed  animate-fadeIn animate-delay-2000">
+                    New Featured Text for Hero Section shravya shsNew Featured
+                    Text for Hero Section shravya shsNew Featured Text for Hero
+                    Section shravya shsNew Featured Text for Hero Section
+                    shravya shsNew Featured Text for Hero Section shravya shsNew
+                    Featured Text for Hero Section shravya shs
+                  </p>
+                )}
               </div>
             </div>
-            <div className="w-auto animate-fade-in">
+            <Link
+              href="/profile"
+              target="_blank"
+              className="w-auto animate-fade-in"
+            >
               <Button className="bg-red hover:bg-[#eaeaf5] hover:text-red clarabutton">
                 Get Started
                 {/* {session ? "Upgrade" : "Get Started"} */}
               </Button>
-            </div>
+            </Link>
           </div>
           <div className="w-full flex md:min-w-[300px] items-start justify-center h-fit min-h-[400px] md:w-[300px] lg:w-full">
             <div className="w-full h-fit md:h-[460px] animate-fade-in md:max-w-[500px] flex items-end justify-end">
@@ -74,7 +90,9 @@ export default async function Hero() {
                   <Image src={heroMediaUrl} alt="Hero" />
                 )
               ) : (
-                <p>No media available</p>
+                <video autoPlay loop muted>
+                  <source src="/preloader.mp4" type="video/mp4" />
+                </video>
               )}
             </div>
           </div>

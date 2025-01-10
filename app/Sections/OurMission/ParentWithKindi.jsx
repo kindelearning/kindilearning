@@ -39,12 +39,14 @@ export default async function ParentWithKindi() {
               <div className="text-start w-full">
                 <span className="text-red claraheading">
                   {data.Parentwithkindi.featuredText && (
-                    <p>{data.Parentwithkindi.featuredText}</p>
+                    <p>
+                      {data.Parentwithkindi.featuredText || "Br a confident"}
+                    </p>
                   )}{" "}
                 </span>
                 {/* <br className="flex md:hidden lg:flex" /> */}
                 <span className="text-white claraheading">
-                  {data.Parentwithkindi.Title}
+                  {data.Parentwithkindi.Title || " Parent With Kindi"}
                 </span>
               </div>
               <div className="flex w-full container justify-start px-0 items-center flex-col">
@@ -58,12 +60,38 @@ export default async function ParentWithKindi() {
                 {/* <div className="w-full px-0 text-start clarabodyTwo text-[white] font-medium font-fredoka">
                   {data.Parentwithkindi.Body}
                 </div> */}
-                <p
-                  className="prose w-full px-0 text-start clarabodyTwo text-[white] font-medium font-fredoka"
-                  dangerouslySetInnerHTML={{
-                    __html: data.Parentwithkindi.Body,
-                  }}
-                />
+
+                {data.Parentwithkindi.Body ? (
+                  <p
+                    className="prose w-full px-0 text-start clarabodyTwo text-[white] font-medium font-fredoka"
+                    dangerouslySetInnerHTML={{
+                      __html: data.Parentwithkindi.Body,
+                    }}
+                  />
+                ) : (
+                  <p>
+                    <span style="color: rgb(250, 204, 204); background-color: rgb(0, 0, 0);">
+                      Parenthood{" "}
+                    </span>
+                    is a whirlwind of responsibilities, and we get it. That's
+                    why we've created Kindi, a haven for busy parents like you.
+                    No more endless scrolling for play ideas. With Kindi, every
+                    moment counts. Our platform offers curated activities for
+                    children aged 6 months to 5 years, designed to make learning
+                    enjoyable. Say goodbye to parenting uncertainties and hello
+                    to confident meaningful experiences at home that foster your
+                    child's growth and witness your child flourish, knowing each
+                    interaction shapes their future. Explore exciting monthly
+                    themes covering literacy, numeracy, fine motor skills,
+                    sensory play, and crafting. With Kindi, embark on this
+                    journey of discovery and growth confidently, giving your
+                    child the best start in life. Parents trust Kindi because it
+                    comes from a place of love, passion and real-life
+                    experience. Join the Kindi community and together, let's
+                    create lasting memories and build a brighter future for our
+                    children.
+                  </p>
+                )}
               </div>
             </div>
             <div className="py-3 w-full flex-col justify-start items-center gap-1 inline-flex">

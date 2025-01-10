@@ -1,6 +1,6 @@
 "use client";
 
-import { AgeRangeArrow, User } from "@/public/Images";
+import { AgeCardOne, AgeRangeArrow, User } from "@/public/Images";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -16,12 +16,12 @@ const AgeCard = ({ bgImage, image, title, body, link }) => {
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
         }}
-        className="w-full min-h-[390px] overflow-clip h-[390px] border-t-2 border-b-2 min-w-[280px]  flex flex-col bg-[#ffffff00] rounded-[24px] justify-between items-start px-8 py-4"
+        className="w-full  min-h-[390px] overflow-clip h-[390px] border-t-2 border-b-2 min-w-[280px]  flex flex-col bg-[#ffffff00] rounded-[24px] justify-between items-start px-8 py-4"
       >
         <div className="flex w-full items-center justify-start flex-col">
           <img
             alt="Kindi"
-            src={image || User}
+            src={image || AgeCardOne}
             className="w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24"
           />
           <h2 className="text-[#0a1932] w-full text-[18px] font-semibold font-fredoka text-start leading-[20px] mt-4">
@@ -36,7 +36,7 @@ const AgeCard = ({ bgImage, image, title, body, link }) => {
           href={link || "/p/community"}
           className="w-full justify-start items-start"
         >
-          <div className="w-full bg-[#ada5a500] border-[#ffffff00] text-center text-red hover:underline hover:bg-[#f05c5c00] clarabutton mt-8">
+          <div className="w-full bg-[#ada5a500] border-0 text-center text-red hover:underline hover:bg-transparent clarabutton mt-8">
             Read More
           </div>
         </Link>
@@ -137,7 +137,7 @@ export default function AgeRangeWidget() {
               {data.data.AgeGroup.Content.slice(0, 1).map((content, index) => (
                 <AgeCard
                   key={index}
-                  // image={`https://proper-fun-404805c7d9.strapiapp.com${content.Icon.url}` || User}
+                  image={content?.Icon.url || "/Images/AgeCardOne.svg"}
                   bgImage="/Images/AgeRangeOne.svg"
                   title={content?.Title}
                   body={
@@ -165,10 +165,16 @@ export default function AgeRangeWidget() {
                   key={index}
                   // image={`https://proper-fun-404805c7d9.strapiapp.com${content.Icon.url}` || User}
                   bgImage="/Images/AgeRangeTwo.svg"
-                  title={content?.Title}
+                  title={content?.Title || "Toddler"}
                   // body={content?.Body}
                   body={
-                    <p dangerouslySetInnerHTML={{ __html: content?.Body }} />
+                    <p
+                      dangerouslySetInnerHTML={{
+                        __html:
+                          content?.Body ||
+                          "Fun learning activities for children approaching the beginning of their school careers; these activities will also appeal to toddlers and babies",
+                      }}
+                    />
                   }
                 />
               ))}

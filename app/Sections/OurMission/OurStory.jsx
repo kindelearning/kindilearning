@@ -1,5 +1,6 @@
 import { fetchOurMission } from "@/app/data/p/OurMission";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default async function OurStory() {
   const data = await fetchOurMission();
@@ -34,33 +35,49 @@ export default async function OurStory() {
           <div className="flex-col flex justify-center body items-start">
             <div className="flex w-full flex-col script justify-start items-start ">
               <div className="text-white clarascript animate-fadeIn animate-delay-150">
-                {data.OurStory.featuredText && (
+                {(data.OurStory.featuredText && (
                   <p>{data.OurStory.featuredText}</p>
-                )}{" "}
+                )) ||
+                  "Life-Defining Early Learning Through Play"}{" "}
               </div>
               <div className="w-full flex heading flex-col justify-start items-start">
                 <div>
                   <span className="text-[#3F3A64] capitalize animate-fadeIn animate-delay-150 claraheading">
-                    {data.OurStory.Title.split(" ").slice(0, 1).join(" ")}
+                    {data.OurStory.Title.split(" ").slice(0, 1).join(" ") ||
+                      "Our"}
                   </span>{" "}
                   <span className="text-white capitalize animate-fadeIn animate-delay-150 claraheading">
-                    {data.OurStory.Title.split(" ").slice(1, 2).join(" ")}
+                    {data.OurStory.Title.split(" ").slice(1, 2).join(" ") ||
+                      "Story"}
                   </span>
                 </div>
                 {/* <div className="w-auto h-auto text-white clarabodyTwo animate-fadeIn animate-delay-150 ">
                   {data.OurStory.Body}
-                </div> */}
-                <div
-                  className="w-auto prose h-auto text-white clarabodyTwo animate-fadeIn animate-delay-150 "
-                  dangerouslySetInnerHTML={{ __html: data.OurStory.Body }}
-                />
+                  </div> */}
+                {data.OurStory.Body ? (
+                  <div
+                    className="w-auto prose h-auto text-white clarabodyTwo animate-fadeIn animate-delay-150 "
+                    dangerouslySetInnerHTML={{ __html: data.OurStory.Body }}
+                  />
+                ) : (
+                  <p>
+                    We weren't always child development experts. We remember the
+                    struggle of wanting the best for our kids during these
+                    precious years but feeling lost, like we were failing at
+                    parenting. Now, with over 20 years of combined experience
+                    working directly with Early Years children and top ratings
+                    from OFSTED, we're committed to ensuring no parent ever
+                    feels overwhelmed and every child thrives through our guided
+                    activities for brain stimulation and development.
+                  </p>
+                )}
               </div>
             </div>
-            <div className="w-full flex">
+            <Link href="/profile" target="_blank" className="w-full flex">
               <Button className="bg-[#ffffff] text-[#EEBA00] hover:bg-red hover:text-white animate-fadeIn animate-delay-150 hover:border-2  px-4 md:px-8 xl:px-12 border-2 clarabutton rounded-[10px]">
                 Get Started
               </Button>
-            </div>
+            </Link>
           </div>
         </div>
       </section>

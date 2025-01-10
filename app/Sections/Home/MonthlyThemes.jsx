@@ -1,7 +1,8 @@
+import { fetchOurThemes } from "@/app/data/p/Dynamic/OurTheme";
 import { fetchMonthlyTheme } from "@/app/data/p/Home";
 import NotFound from "@/app/not-found";
 import ThemeCard from "@/app/Widgets/Card/ThemeCard";
-import { getThemes } from "@/lib/hygraph";
+import { ThemeDummy } from "@/public/Images";
 import Link from "next/link";
 
 export default async function MonthlyThemes() {
@@ -10,10 +11,12 @@ export default async function MonthlyThemes() {
   if (!content) {
     return <p>No data available</p>;
   }
-  const themes = await getThemes();
+
+  const themes = await fetchOurThemes();
   if (!themes || themes.length === 0) {
     return <NotFound />;
   }
+  console.log("Themes for Home Page,", themes);
 
   const monthlyTheme = content?.Content;
 
@@ -36,43 +39,49 @@ export default async function MonthlyThemes() {
               <span className="text-[#3f3a64] claraheading animate-fade-in  duration-150">
                 {monthlyTheme.title
                   ? monthlyTheme.title.split(" ").slice(0, 2).join(" ")
-                  : "Monthly Theme"}{" "}
+                  : "This Months"}{" "}
               </span>
               <br />
               <span className="text-[#ffffff] claraheading animate-fade-in  duration-150">
                 {monthlyTheme.title
                   ? monthlyTheme.title.split(" ").slice(3, 12).join(" ")
-                  : "Monthly Theme d"}{" "}
+                  : "Learning Themes"}{" "}
               </span>
             </div>
-            <p
-              className="prose w-full md:w-[500px] xl:w-[800px] animate-fade-in  duration-150 text-start md:text-center text-purple clarabodyTwo"
-              dangerouslySetInnerHTML={{ __html: monthlyTheme.BodyDescription }}
-            />
-
-            {/* {monthlyTheme.BodyDescription?.map((desc, index) => (
+            {monthlyTheme.BodyDescription ? (
               <p
-                key={index}
-                className="w-full md:w-[500px] xl:w-[800px] animate-fade-in  duration-150 text-start md:text-center text-purple clarabodyTwo"
-              >
-                {desc.children[0]?.text || "No description available"}
+                className="prose w-full md:w-[500px] xl:w-[800px] animate-fade-in  duration-150 text-start md:text-center text-purple clarabodyTwo"
+                dangerouslySetInnerHTML={{
+                  __html: monthlyTheme.BodyDescription,
+                }}
+              />
+            ) : (
+              <p>
+                Providing themes for each activity is a powerful way to keep
+                children engaged in learning; we use it to both maintain
+                involvement and reinforce the previous day&apos;s learnings.
+                That&apos;s why we release new themes every month.
               </p>
-            ))} */}
+            )}
           </div>
 
           <div className="lg:grid claracontainer w-full flex flex-row overflow-x-scroll scrollbar-hidden px-2 py-4 hover:px-2 gap-4 lg:grid-cols-2 xl:grid-cols-2">
             {themes.slice(0, 4).map((theme) => (
               <Link
                 target="_blank"
-                href={`/p/our-themes/${theme.id}`}
+                href={`/p/our-themes/${theme.documentId}`}
                 key={theme.id}
               >
                 <ThemeCard
                   key={theme.id}
-                  image={theme.thumbnail.url}
-                  theTime={theme.launchTime}
-                  metaDesc={theme.metaDesc}
-                  title={theme.title}
+                  image={theme?.Thumbnail?.url || "/Images/ThemeDummy.png"} // Fallback to default image if URL is missing
+                  theTime={theme?.LaunchTime || "No launch time specified"} // Fallback if LaunchTime is missing
+                  metaDesc={
+                    theme?.metaDesc
+                      ? theme.metaDesc.slice(0, 100)
+                      : "No description available"
+                  } // Fallback if metaDesc is missing
+                  title={theme?.Title || "Untitled"} // Fallback if Title is missing
                 />
               </Link>
             ))}

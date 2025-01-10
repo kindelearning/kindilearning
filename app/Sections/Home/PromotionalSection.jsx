@@ -2,6 +2,8 @@
 
 import { fetchChildDevelopmentUnlock } from "@/app/data/p/Home";
 import { Button } from "@/components/ui/button";
+import { PromotionalImage } from "@/public/Images";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
 export default function PromotionalSection() {
@@ -32,18 +34,30 @@ export default function PromotionalSection() {
             <div className="w-full flex flex-col justify-start items-start h-auto gap-6 md:gap-6 script">
               {/* Featured Text */}
               <div className="text-white clarascript animate-fade-in">
-                {content.featuredText}
+                {content.featuredText || "Play now Learn fo Life"}
               </div>
 
               {/* Title and Body */}
               <div className="flex flex-col w-full justify-start items-start heading animate-fade-in">
                 <span className="text-white claraheading capitalize animate-fade-in">
-                  {content.title || "No Title Available"}
+                  {content.title || "Child Development Unlocked"}
                 </span>
-                <span className="w-full h-auto text-white clarabodyTwo animate-fade-in">
-                  {/* Render HTML content */}
-                  <div dangerouslySetInnerHTML={{ __html: content.Body }} />
-                </span>
+                {content.Body ? (
+                  <span className="w-full h-auto text-white clarabodyTwo animate-fade-in">
+                    <div dangerouslySetInnerHTML={{ __html: content.Body }} />
+                  </span>
+                ) : (
+                  <span className="w-full h-auto text-white clarabodyTwo animate-fade-in">
+                    Scientists have recently determined that it takes
+                    approximately 400 repetitions to create a new synapse in the
+                    brain- unless it is done with play, in which case, it takes
+                    between 10-20 repetitions.”- Dr. Karyn Purvis Institute of
+                    Child Development.Play matters! It's the vital developmental
+                    process that shapes the adults we're destined to become. And
+                    we are in a rush, as essential life skills become more
+                    challenging to master as children age....&nbsp;
+                  </span>
+                )}
               </div>
             </div>
 
@@ -68,7 +82,13 @@ export default function PromotionalSection() {
                   className="w-full object-cover"
                 />
               ) : (
-                <p>No image available</p>
+                <Image
+                  src={PromotionalImage}
+                  alt="Child Development"
+                  width={400}
+                  height={400}
+                  className="w-full object-cover"
+                />
               )}
             </div>
           </div>

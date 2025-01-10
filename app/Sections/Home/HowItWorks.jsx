@@ -1,5 +1,5 @@
 import { fetchHowItWorksData } from "@/app/data/p/Home";
-import { Curve, CurveTwo } from "@/public/Images";
+import { Curve, CurveTwo, HIWOne, HIWThree, HIWTwo } from "@/public/Images";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -38,7 +38,11 @@ export default async function HowItWorks() {
             ))} */}
             <p
               className="prose w-full md:w-[500px] xl:w-[800px] text-start md:text-center animate-fade-in text-white clarabodyTwo"
-              dangerouslySetInnerHTML={{ __html: MainBody }}
+              dangerouslySetInnerHTML={{
+                __html:
+                  MainBody ||
+                  "Regardless of parenting approaches or the development stage of children, Kindi delivers a wholesome, engaging and beautiful early childhood learning experience.",
+              }}
             />
           </div>
 
@@ -57,29 +61,33 @@ export default async function HowItWorks() {
                     <div className="flex-col w-full justify-start items-start gap-5 flex">
                       <div className="w-full gap-3">
                         <span className="text-white animate-fade-in claraheading lg:text-[44px]">
-                          {section.featuredText} <br />
+                          {section.featuredText || "Select Your Preferred "}{" "}
+                          <br />
                         </span>
                         <span className="text-red animate-fade-in w-[max-content] claraheading lg:text-[44px]">
-                          {section.title}
+                          {section.title || "Educational Activities"}
                         </span>
                       </div>
-                      {/* <div className="w-full text-white animate-fade-in clarabodyTwo">
-                          <p>{homeData[0].howItWorksOne}</p>
-                        </div> */}
-                      {/* {section.BodyDescription?.map((desc, idx) => (
+
+                      {section.BodyDescription ? (
                         <p
-                          className="w-full text-white animate-fade-in clarabodyTwo"
-                          key={idx}
-                        >
-                          {desc.children[0]?.text}
+                          className="prose w-full text-start text-white clarabodyTwo"
+                          dangerouslySetInnerHTML={{
+                            __html: section.BodyDescription,
+                          }}
+                        />
+                      ) : (
+                        <p>
+                          Kindi adds a suggested learning activity to your
+                          personalised calendar every day, but you can swap or
+                          move them around to suit your schedule. Develop your
+                          child&apos;s personal, social, emotional and
+                          intellectual traits by choosing from a range of
+                          specialised daily activities.&nbsp;Empowering children
+                          to fulfil their potential is now as fun as it is
+                          convenient.
                         </p>
-                      ))} */}
-                      <p
-                        className="prose w-full text-start text-white clarabodyTwo"
-                        dangerouslySetInnerHTML={{
-                          __html: section.BodyDescription,
-                        }}
-                      />
+                      )}
                     </div>
                     <Link
                       href="/p/how-it-works#video"
@@ -104,7 +112,15 @@ export default async function HowItWorks() {
                       height={100}
                       className="w-full h-full object-contain"
                     />
-                  ) : null}
+                  ) : (
+                    <Image
+                      src={HIWOne}
+                      alt="Kindi"
+                      width={100}
+                      height={100}
+                      className="w-full h-full object-contain"
+                    />
+                  )}
                 </div>
               </div>
             ))}
@@ -121,13 +137,6 @@ export default async function HowItWorks() {
                 className="flex flex-col-reverse lg:flex-row xl:flex-row w-full items-center justify-between py-8 gap-4"
               >
                 <div className="w-full h-[460px] animate-fade-in md:max-w-[500px] flex items-end justify-end">
-                  {/* <Image
-                      alt="Kindi"
-                      width={100}
-                      height={100}
-                      src={homeData[0]?.hiwOne?.url}
-                      className="w-full h-full object-contain"
-                    /> */}
                   {section.Media && section.Media.url ? (
                     <img
                       src={section.Media.url}
@@ -136,7 +145,15 @@ export default async function HowItWorks() {
                       height={100}
                       className="w-full h-full object-contain"
                     />
-                  ) : null}
+                  ) : (
+                    <Image
+                      src={HIWTwo}
+                      alt="Kindi"
+                      width={100}
+                      height={100}
+                      className="w-full h-full object-contain"
+                    />
+                  )}
                 </div>
                 <div className="min-h-[300px] animate-fade-in  flex flex-col md:flex-row w-full justify-start items-start gap-4">
                   <div className="text-white text-6xl md:text-[50px] p-0 animate-fade-in font-semibold font-fredoka uppercase leading-10">
@@ -146,29 +163,31 @@ export default async function HowItWorks() {
                     <div className="flex-col w-full justify-start items-start gap-5 flex">
                       <div className="w-full gap-3">
                         <span className="text-white animate-fade-in claraheading lg:text-[44px]">
-                          {section.featuredText}{" "}
+                          {section.featuredText || "Guide Your Child"}{" "}
                         </span>
                         <span className="text-red animate-fade-in w-[max-content] claraheading lg:text-[44px]">
-                          {section.title}
+                          {section.title || "Through the Learning Process11"}
                         </span>
                       </div>
-                      {/* <div className="w-full text-white animate-fade-in clarabodyTwo">
-                          <p>{homeData[0].howItWorksOne}</p>
-                        </div> */}
-                      {/* {section.BodyDescription?.map((desc, idx) => (
+                      {section.BodyDescription ? (
                         <p
-                          className="w-full text-white animate-fade-in clarabodyTwo"
-                          key={idx}
-                        >
-                          {desc.children[0]?.text}
+                          className="prose w-full text-start text-white clarabodyTwo"
+                          dangerouslySetInnerHTML={{
+                            __html: section.BodyDescription,
+                          }}
+                        />
+                      ) : (
+                        <p>
+                          With Kindi, all our activities deliver mixed-age
+                          outcomes without the need for multiple sessions. As
+                          you and your child play, you&apos;ll receive tips and
+                          instructions about extended learning. Just like a
+                          recipe, each early years activity in this educational
+                          teaching and parenting app includes an ingredients
+                          list — featuring everyday household items. Simply
+                          follow the instructions and enjoy the fun!
                         </p>
-                      ))} */}
-                      <p
-                        className="prose w-full text-start text-white clarabodyTwo"
-                        dangerouslySetInnerHTML={{
-                          __html: section.BodyDescription,
-                        }}
-                      />
+                      )}
                     </div>
                     <Link
                       href="/p/how-it-works#video"
@@ -207,29 +226,30 @@ export default async function HowItWorks() {
                     <div className="flex-col w-full justify-start items-start gap-5 flex">
                       <div className="w-full gap-3">
                         <span className="text-white animate-fade-in claraheading lg:text-[44px]">
-                          {section.featuredText}{" "}
+                          {section.featuredText || "Enjoy"}{" "}
                         </span>
                         <span className="text-red animate-fade-in w-[max-content] claraheading lg:text-[44px]">
-                          {section.title}
+                          {section.title || "Precious Time"}
                         </span>
                       </div>
-                      {/* <div className="w-full text-white animate-fade-in clarabodyTwo">
-                          <p>{homeData[0].howItWorksOne}</p>
-                        </div> */}
-                      {/* {section.BodyDescription?.map((desc, idx) => (
+                      {section.BodyDescription ? (
                         <p
-                          className="w-full text-white animate-fade-in clarabodyTwo"
-                          key={idx}
-                        >
-                          {desc.children[0]?.text}
+                          className="prose w-full text-start text-white clarabodyTwo"
+                          dangerouslySetInnerHTML={{
+                            __html: section.BodyDescription,
+                          }}
+                        />
+                      ) : (
+                        <p>
+                          Our guided learning activities are both fun and
+                          educational. So whether you&apos;re working one-on-one
+                          with your child or taking an entire nursery group
+                          through Kindi&apos;s learning activities, playtime fun
+                          is always part of the process. Our early years
+                          development guide strikes the perfect balance between
+                          play and education, so fun is never too far away!
                         </p>
-                      ))} */}
-                      <p
-                        className="prose w-full text-start text-white clarabodyTwo"
-                        dangerouslySetInnerHTML={{
-                          __html: section.BodyDescription,
-                        }}
-                      />
+                      )}
                     </div>
                     <Link
                       href="/p/how-it-works#video"
@@ -254,7 +274,15 @@ export default async function HowItWorks() {
                       height={100}
                       className="w-full h-full object-contain"
                     />
-                  ) : null}
+                  ) : (
+                    <Image
+                      src={HIWThree}
+                      alt="Kindi"
+                      width={100}
+                      height={100}
+                      className="w-full h-full object-contain"
+                    />
+                  )}
                   {/* <Image
                       alt="Kindi"
                       width={100}

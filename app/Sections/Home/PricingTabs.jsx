@@ -1,5 +1,5 @@
 "use client";
- 
+
 import {
   fetchMonthlyPricingDataFeatures,
   fetchPricingData,
@@ -39,7 +39,7 @@ export default function PricingTabs() {
   useEffect(() => {
     const loadPricingData = async () => {
       const fetchedData = await fetchPricingDataFeatures();
-      console.log("Fetched Data:", fetchedData); // Log data here
+      // console.log("Fetched Data:", fetchedData); // Log data here
 
       if (fetchedData) {
         setPricingDataFeature(fetchedData);
@@ -56,7 +56,7 @@ export default function PricingTabs() {
   useEffect(() => {
     const loadPricingDataTwo = async () => {
       const fetchedDataTwo = await fetchMonthlyPricingDataFeatures();
-    //   console.log("Fetched Data:", fetchedDataTwo); // Log data here
+      //   console.log("Fetched Data:", fetchedDataTwo); // Log data here
 
       if (fetchedDataTwo) {
         setMonthlyPricingDataFeature(fetchedDataTwo);
@@ -135,7 +135,6 @@ export default function PricingTabs() {
           </div>
         </div>
 
-     
         {/* Tab Content */}
         <div className="flex flex-nowrap overflow-x-auto justify-start md:justify-start lg:justify-center lg:items-start items-start scrollbar-hidden px-0 w-full claracontainer gap-2 md:gap-4 scrollbar-hidden">
           {activeTab === "monthly" && (
@@ -143,30 +142,40 @@ export default function PricingTabs() {
               {pricingData.MonthlyPlans &&
                 pricingData.MonthlyPlans.length > 0 && (
                   <>
-                   
                     {monthlypricingDataFeature?.MonthlyPlans?.length > 0 ? (
                       monthlypricingDataFeature.MonthlyPlans.slice(0, 10).map(
                         (plan, index) => (
                           <PricingCard
                             key={index}
-                            title={plan.PriceTitle}
+                            title={plan.PriceTitle || "Default Plan Title"}
                             paymentLink="https://buy.stripe.com/6oEbKT0yJa5qbPG28h"
                             description={
-                              <div
-                                dangerouslySetInnerHTML={{
-                                  __html: plan.PriceBody, // Render Markdown or Rich Text
-                                }}
-                              />
+                              plan.PriceBody ? (
+                                <div
+                                  dangerouslySetInnerHTML={{
+                                    __html: plan.PriceBody, // Render Markdown or Rich Text
+                                  }}
+                                />
+                              ) : (
+                                <p>
+                                  No more guesswork! Unlock your child's full
+                                  potential with our affordable Milestone
+                                  Tracker—an essential tool for every parent.
+                                  Ensure your child gets the right support when
+                                  they need it, keeping them on track and
+                                  maximizing their brain growth effortlessly.
+                                </p>
+                              )
                             }
-                            price={plan.Price}
-                            duration="/Yearly"
+                            price={plan.Price} // Fallback to 'N/A' if price is missing
+                            duration={plan.Duration || "/Monthly"}
                             pricingDetails={transformFeaturesToPricingDetailsFamily(
                               plan.Features
                             )}
                             isOpen={isAccordionOpen} // Pass the state here
                             toggleAccordion={toggleAccordion} // Pass toggle function
-                            image={plan.Thumbnail?.url}
-                            // image={plan.Thumbnail?.url}
+                            image={plan.Thumbnail?.url || "Images/PricingThumb.svg"}
+                            // image={`https://proper-fun-404805c7d9.strapiapp.com${plan.Thumbnail?.url}`}
                           />
                         )
                       )
@@ -187,16 +196,27 @@ export default function PricingTabs() {
                         (plan, index) => (
                           <PricingCard
                             key={index}
-                            title={plan.PriceTitle}
+                            title={plan.PriceTitle || "Default Plan Title"}
                             paymentLink="https://buy.stripe.com/6oEbKT0yJa5qbPG28h"
                             description={
-                              <div
-                                dangerouslySetInnerHTML={{
-                                  __html: plan.PriceBody, // Render Markdown or Rich Text
-                                }}
-                              />
+                              plan.PriceBody ? (
+                                <div
+                                  dangerouslySetInnerHTML={{
+                                    __html: plan.PriceBody, // Render Markdown or Rich Text
+                                  }}
+                                />
+                              ) : (
+                                <p>
+                                  No more guesswork! Unlock your child's full
+                                  potential with our affordable Milestone
+                                  Tracker—an essential tool for every parent.
+                                  Ensure your child gets the right support when
+                                  they need it, keeping them on track and
+                                  maximizing their brain growth effortlessly.
+                                </p>
+                              )
                             }
-                            price={plan.Price}
+                            price={plan.Price || "299"} // Fallback to 'N/A' if price is missing
                             duration="/Yearly"
                             pricingDetails={transformFeaturesToPricingDetailsFamily(
                               plan.Features
@@ -204,8 +224,7 @@ export default function PricingTabs() {
                             isOpen={isAccordionOpen} // Pass the state here
                             toggleAccordion={toggleAccordion} // Pass toggle function
                             // image={`https://proper-fun-404805c7d9.strapiapp.com${plan.Thumbnail?.url}`}
-                            image={plan.Thumbnail?.url}
-
+                            image={plan.Thumbnail?.url || "Images/PricingThumb.svg"}
                           />
                         )
                       )

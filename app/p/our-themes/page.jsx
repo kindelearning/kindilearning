@@ -7,7 +7,7 @@ export default async function Page() {
   const pageContent = await fetchOurThemes();
   if (!pageContent) {
     return <div>Error: No data available</div>;
-  } 
+  }
 
   return (
     <>
@@ -25,12 +25,22 @@ export default async function Page() {
                   href={`/p/our-themes/${item.documentId}`}
                 >
                   <article className="rounded-lg">
-                    <CategoryCard
+                    {/* <CategoryCard
                       schedulesDate={item.LaunchTime}
                       image={item.Thumbnail.url}
                       // image={`https://proper-fun-404805c7d9.strapiapp.com${item.Thumbnail.url}`}
                       description={item.metaDesc.slice(0, 100)}
                       header={item.Title}
+                    /> */}
+                    <CategoryCard
+                      schedulesDate={item?.LaunchTime || "2024-12-25"} // Fallback for LaunchTime
+                      image={item?.Thumbnail?.url || "/Images/ThemeDummy.png"} // Fallback for image URL
+                      description={
+                        item?.metaDesc
+                          ? item.metaDesc.slice(0, 100)
+                          : "No description available"
+                      } // Fallback for metaDesc
+                      header={item?.Title || "Untitled"} // Fallback for Title
                     />
                   </article>
                 </Link>

@@ -26,32 +26,37 @@ export default async function TheTeam() {
             <Team
               key={index}
               bgColor="#ff8e00"
-              title={member.Name}
-              degree={member.Degree}
+              title={member.Name || "Jannie"}
+              degree={member.Degree || "BA (Hons) Childhood Studies (Level 16)"}
               description={
                 <p
                   className="prose text-white"
-                  dangerouslySetInnerHTML={{ __html: member.About }}
+                  dangerouslySetInnerHTML={{
+                    __html:
+                      member.About ||
+                      "Jannie nickname is The Child Whisperer. Her ability to assess the developmental needs of children and deliver educational activities to satisfy them is legendary. Janine&apos;s time as an early learning expert has developed educational play approaches that deliver tangible results.", // Fallback message
+                  }}
                 />
               }
-              // description={member.About}
             />
           ))}
           {data.OurTeam?.slice(1, 2).map((member, index) => (
             <Team
               key={index}
               bgColor="#f15c57"
-              title={member.Name}
-              degree={member.Degree}
+              title={member.Name || "Thomas"}
+              degree={member.Degree || "BA (Hons) Childhood Studies (Level 16)"}
               imageSrc={Thomas}
-              // description="Janine's nickname is &quot;The Child Whisperer&quot;. Her ability to assess the developmental needs of children and deliver educational activities to satisfy them is legendary. Janine's time as an early learning expert has developed educational play approaches that deliver tangible results."
               description={
                 <p
                   className="prose text-white"
-                  dangerouslySetInnerHTML={{ __html: member.About }}
+                  dangerouslySetInnerHTML={{
+                    __html:
+                      member.About ||
+                      "With more than a decade of experience in preschool environments, his commitment to early years education has earned him two Outstanding Ofsted ratings. Working with early learners has given Tom unique insights into those crucial formative years.",
+                  }}
                 />
               }
-              // description={member.About}
             />
           ))}
         </div>
@@ -60,4 +65,3 @@ export default async function TheTeam() {
   );
 }
 
-// export default TheTeam;

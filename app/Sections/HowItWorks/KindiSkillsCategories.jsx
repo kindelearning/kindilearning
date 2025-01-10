@@ -14,19 +14,23 @@ export default async function KindiSkillsCategories() {
           <div className="text-start w-full md:text-center">
             <div>
               <span className="text-white claraheading">
-                {data.KindiSkillsCategoriesTitle}{" "}
+                {data.KindiSkillsCategoriesTitle.split(" ")
+                  .slice(0, 1)
+                  .join(" ") || "Kindi's"}{" "}
               </span>
               <span className="text-red claraheading">
-                {data.KindiSkillsCategoriesTitle}{" "}
-              </span>
-              <span className="text-white claraheading">
-                {data.KindiSkillsCategoriesTitle}
+                {data.KindiSkillsCategoriesTitle.split(" ")
+                  .slice(1, 6)
+                  .join(" ") || "Skills Categories "}{" "}
               </span>
             </div>
           </div>
           <div className="flex w-full justify-start items-start flex-col">
             <div className="w-full px-0 md:px-12 lg:px-32 text-start md:text-center text-[#ffffff] font-fredoka text-[18px] font-medium leading-[22px]">
-              <p>{data.KindiSkillsCategoriesBody}</p>
+              <p>
+                {data.KindiSkillsCategoriesBody ||
+                  "Encouraging children to tackle open-ended problems nurtures their creative thinking and equips them with skills for a successful life. Kindi supports this journey by providing tailored learning exercises designed to nurture these skills through play"}
+              </p>
             </div>
           </div>
         </div>

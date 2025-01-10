@@ -1,6 +1,7 @@
 "use client";
 
 import { MyToggleCard } from "@/app/Widgets";
+import { KindiHeart } from "@/public/Images";
 import { useEffect, useState } from "react";
 
 export default function ToggleCardGrid() {
@@ -27,16 +28,16 @@ export default function ToggleCardGrid() {
         {cards.map((card) => (
           <MyToggleCard
             key={card.id}
-            title={card.Title}
+            title={card?.Title || "Default Title"} //
             description={
-              <div dangerouslySetInnerHTML={{ __html: card.Body }} />
-            }
+              <div dangerouslySetInnerHTML={{ __html: card.Body || "<em>No description available.</em>" }} />
+            } 
             // description={card.Body}
-            backgroundColor={card.bgcolor}
+            backgroundColor={card?.bgcolor || "#f0f0f0"}
             isOpen={isOpen}
             setIsOpen={handleCardClick}
-            color={card.color || "white"}
-            icon={card.icon}
+            color={card?.color || "white"} // F
+            icon={card?.icon || KindiHeart}
           />
         ))}
       </div>

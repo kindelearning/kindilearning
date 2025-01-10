@@ -5,7 +5,7 @@ export default async function AgeRanges() {
   const data = await fetchHowItWorks();
   if (!data) {
     return <div>Error loading page content</div>;
-  } 
+  }
 
   return (
     <>
@@ -16,18 +16,22 @@ export default async function AgeRanges() {
             <div className="text-start w-full md:text-center">
               <div>
                 <span className="text-[#3f3a64] claraheading">
-                  {data.AgeGroup?.Title}
+                  {data.AgeGroup?.Title || "Kindi"}
                 </span>
                 <span className="text-red claraheading">
                   {" "}
-                  {data.AgeGroup?.featuredText}
+                  {data.AgeGroup?.featuredText || " Age Ranges"}
                 </span>
               </div>
             </div>
             <div className="flex w-full justify-start items-start flex-col">
               <div className="w-full px-0 md:px-12 prose lg:px-32 text-start md:text-center text-[#3f3a64] clarbodyTwo">
                 <div
-                  dangerouslySetInnerHTML={{ __html: data.AgeGroup?.Body }}
+                  dangerouslySetInnerHTML={{
+                    __html:
+                      data.AgeGroup?.Body ||
+                      "We created Kindi to empower both par with resources, you have everything you need to customize a unique learning path for your child amidst your other commitments.",
+                  }}
                 />
               </div>
             </div>

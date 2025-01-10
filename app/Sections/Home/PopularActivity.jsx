@@ -1,13 +1,11 @@
 // 'use cl'
 
-
 import { fetchAllActivities } from "@/app/data/p/Dynamic/Activity";
 import { fetchPopularLearning } from "@/app/data/p/Home";
 import PopularActivityCarousel from "@/app/Widgets/Carousel/PopularActivityCarousel";
 // import { getAllActivities } from "@/lib/hygraph";
 
 export default async function PopularActivity() {
-  // Fetch the content
   const content = await fetchPopularLearning();
 
   if (!content || !content.Content) {
@@ -17,6 +15,9 @@ export default async function PopularActivity() {
   const { featuredText, title, BodyDescription, Media } = content.Content;
 
   const activities = await fetchAllActivities();
+  console.log("Fetched Activities on PopularActivity", activities);
+  const data = activities.data || [];  // Use an empty array if myData is undefined
+  const filteredActivities = data.filter(activity => activity.isPopular === "Yes");
 
   if (!activities || activities.length === 0) {
     return <div>No activities found!</div>;
@@ -47,13 +48,18 @@ export default async function PopularActivity() {
               </span>
             </div>
 
-            <p
-              className="prose w-full clarabodyTwo text-start md:text-center text-purple text-base md:text-lg lg:text-xl mt-4 leading-relaxed  animate-fadeIn animate-delay-2000"
-              dangerouslySetInnerHTML={{ __html: BodyDescription }}
-            />
+            {BodyDescription ? (
+              <p
+                className="prose w-full clarabodyTwo text-start md:text-center text-purple text-base md:text-lg lg:text-xl mt-4 leading-relaxed  animate-fadeIn animate-delay-2000"
+                dangerouslySetInnerHTML={{ __html: BodyDescription }}
+              />
+            ) : (
+              <p>Discover the Joy of learning with Kindi</p>
+            )}
           </div>
         </div>
 
+        {/* <PopularActivityCarousel activities={filteredActivities} /> */}
         <PopularActivityCarousel activities={activities} />
       </section>
     </>

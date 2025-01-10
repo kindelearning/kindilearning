@@ -1,6 +1,7 @@
 import { fetchEarlyLearningExpert } from "@/app/data/p/Home";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import Link from "next/link";
 
 // const PromotionalSectionTwo = async () => {
 export default async function PromotionalSectionTwo() {
@@ -51,29 +52,38 @@ export default async function PromotionalSectionTwo() {
                 <span className="text-red claraheading ">
                   {title.length > 2
                     ? title.split(" ").slice(0, 2).join(" ")
-                    : title}
+                    : title || "Early Learning"}
                 </span>{" "}
                 <span className="text-purple claraheading">
                   {title.length > 2
                     ? title.split(" ").slice(2, 3).join(" ")
-                    : title}
+                    : title || "Experts"}
                 </span>
               </div>
-              {BodyDescription && BodyDescription.length > 0 && (
-                <div>
-                  <p
-                    className="prose w-full text-start text-[#696969] text-base md:text-lg lg:text-xl mt-4 leading-relaxed  animate-fadeIn animate-delay-2000"
-                    dangerouslySetInnerHTML={{ __html: BodyDescription }}
-                  />
-                </div>
+              {BodyDescription && BodyDescription.length > 0 ? (
+                <p
+                  className="prose w-full text-start text-[#696969] text-base md:text-lg lg:text-xl mt-4 leading-relaxed  animate-fadeIn animate-delay-2000"
+                  dangerouslySetInnerHTML={{ __html: BodyDescription }}
+                />
+              ) : (
+                <p>
+                  Scientists have recently determined that it takes
+                  approximately 400 repetitions to create a new synapse in the
+                  brain- unless it is done with play, in which case, it takes
+                  between 10-20 repetitions.”- Dr. Karyn Purvis Institute of
+                  Child Development.Play matters! It's the vital developmental
+                  process that shapes the adults we're destined to become. And
+                  we are in a rush, as essential life skills become more
+                  challenging to master as children age....&nbsp;
+                </p>
               )}
             </div>
           </div>
-          <div className="w-full h-auto animate-fade-in">
+          <Link href="/profile" target="_blank" className="w-full h-auto animate-fade-in">
             <Button className="bg-red hover:bg-purple px-4 md:px-8 xl:px-12 border-2 clarabutton rounded-[16px]">
               Get Started
             </Button>
-          </div>
+          </Link>
         </div>
       </div>
     </section>
