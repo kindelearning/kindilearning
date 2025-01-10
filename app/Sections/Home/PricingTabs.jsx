@@ -158,7 +158,7 @@ export default function PricingTabs() {
                                 />
                               ) : (
                                 <p>
-                                  No more guesswork! Unlock your child's full
+                                  No more guesswork! Unlock your childs full
                                   potential with our affordable Milestone
                                   Tracker—an essential tool for every parent.
                                   Ensure your child gets the right support when
@@ -207,7 +207,7 @@ export default function PricingTabs() {
                                 />
                               ) : (
                                 <p>
-                                  No more guesswork! Unlock your child's full
+                                  No more guesswork! Unlock your childs full
                                   potential with our affordable Milestone
                                   Tracker—an essential tool for every parent.
                                   Ensure your child gets the right support when

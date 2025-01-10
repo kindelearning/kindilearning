@@ -52,8 +52,8 @@ export default function PromotionalSection() {
                     approximately 400 repetitions to create a new synapse in the
                     brain- unless it is done with play, in which case, it takes
                     between 10-20 repetitions.”- Dr. Karyn Purvis Institute of
-                    Child Development.Play matters! It's the vital developmental
-                    process that shapes the adults we're destined to become. And
+                    Child Development.Play matters! Its the vital developmental
+                    process that shapes the adults were destined to become. And
                     we are in a rush, as essential life skills become more
                     challenging to master as children age....&nbsp;
                   </span>

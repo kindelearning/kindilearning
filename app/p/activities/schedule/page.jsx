@@ -156,11 +156,11 @@ export default function Schedule() {
                         No Kids Found
                       </span>
                       <span className="text-red clarabod yTwo text-[24px] ">
-                        Please Create a Kid's Profile to Access the Scheduler
+                        Please Create a Kids Profile to Access the Scheduler
                       </span>
                       <p className="text-[#3f3a64] text-lg mt-4">
                         Go to your <strong>Profile Page</strong>, click on{" "}
-                        <strong>My Kids</strong>, and create a new kid's profile
+                        <strong>My Kids</strong>, and create a new kids profile
                         to unlock the scheduler feature.
                       </p>
                     </div>
