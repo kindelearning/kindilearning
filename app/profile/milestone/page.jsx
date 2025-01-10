@@ -19,8 +19,8 @@ export const getRandomImage = () => {
 };
 
 export default function MileStone() {
-  const [userData, setUserData] = useState(null);
   const [milestoneData, setMilestoneData] = useState([]);
+  const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -32,26 +32,7 @@ export default function MileStone() {
       }
 
       try {
-        // const response = await fetch(
-        //   "https://proper-fun-404805c7d9.strapiapp.com/api/users/me?populate[assignedMilestones][populate]=*",
-        //   {
-        //     method: "GET",
-        //     headers: {
-        //       Authorization: `Bearer ${token}`,
-        //     },
-        //   }
-        // );
-
-        // const DatafromUser = await response.json();
-        // console.log("Raw milestone data response:", DatafromUser);
-
-        // // Check if the response has the expected structure
-        // if (milestoneDatafromUser) {
-        //   console.log("Fetched milestones:", milestoneDatafromUser);
-        //   setMilestoneData(milestoneDatafromUser);
-        // } else {
-        //   console.log("Milestone data not found in the response");
-        // }
+       
 
         const data = await fetchUserDetails(token);
         setUserData(data);
@@ -115,7 +96,7 @@ export default function MileStone() {
                           {kid.Name}
                         </div>
                         {/* <ProfileRoute /> */}
-                        <DisplayAllMileStone
+                        <DisplayAllMileStone 
                           passThecurrentUserId={kid.documentId}
                         />
                       </div>

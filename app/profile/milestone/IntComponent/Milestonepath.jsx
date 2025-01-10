@@ -15,26 +15,19 @@ import { getUserDataByEmail } from "@/lib/hygraph";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import MilestoneCompleteButton from "./MilestoneCompleteButton";
-import { getPublishedMileStone } from "@/lib/hygraph";
-import Link from "next/link";
-import { activityIcons } from "@/app/constant/menu";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { DialogClose } from "@radix-ui/react-dialog";
 import MarkMilestoneCompleteForm from "./MilestoneCompleteButton";
+import { fetchUserDetails } from "../../api";
 
-export function CurvePath({ milestones = [], currentUserId }) {
+export function CurvePath({
+  milestones = [],
+  currentUserId,
+  custommilestoneidfromuser,
+}) {
   const [currentDate, setCurrentDate] = useState("");
   const router = useRouter();
-
-  // useEffect(() => {
-  //   if (user && user.email) {
-  //     getUserDataByEmail(user.email).then((data) => {
-  //       setHygraphUser(data);
-  //     });
-  //   }
-  // }, [user, loading, router]);
 
   useEffect(() => {
     const today = new Date();
@@ -46,6 +39,8 @@ export function CurvePath({ milestones = [], currentUserId }) {
     });
     setCurrentDate(formattedDate);
   }, []);
+
+  console.log("realMilestoneData from CurevePath", custommilestoneidfromuser);
 
   // Dynamically set container height based on the number of nodes
   const nodeSpacing = 200; // Define the desired spacing between nodes
@@ -78,12 +73,10 @@ export function CurvePath({ milestones = [], currentUserId }) {
   const paths = [];
 
   // Loop through milestones data
-  for (let i = 0; i < milestones.length; i++) {
-    const milestone = milestones[i];
+  for (let i = 0; i < custommilestoneidfromuser.length; i++) {
+    // if (i % 2 !== 0) continue; // Skip odd indices
+    const milestone = custommilestoneidfromuser[i];
 
-    // Position calculation:
-    // - Center the first and last nodes
-    // - Alternate the others to the left and right
     const top = i * nodeSpacing;
     const left =
       i === 0 || i === milestones.length - 1
@@ -92,7 +85,6 @@ export function CurvePath({ milestones = [], currentUserId }) {
         ? containerWidth * 0.3 // Left for even
         : containerWidth * 0.7; // Right for odd
 
-    // Calculate button positioning adjustments
     const buttonTop = top + 60; // Adjust top spacing
     const buttonLeft = left - 110; // Adjust left spacing
 
@@ -110,7 +102,6 @@ export function CurvePath({ milestones = [], currentUserId }) {
         <Dialog className="p-2 lg:p-4">
           <DialogTrigger>
             <button className="transition duration-300 ease-in-out hover:scale-[1.03] font-fredoka tracking-wider font-bold text-[10px] md:text-[16px] hover:bg-purple hover:border-2 hover:border-[#ffffff] border-transparent md:px-6 border-2 rounded-[12px] bg-red px-4 py-2 hover:shadow text-white">
-              {/* {milestone.title} */}
               {(milestone.Title?.length > 28
                 ? milestone.Title.substring(0, 28) + "..."
                 : milestone.Title) || "Action"}
@@ -122,6 +113,7 @@ export function CurvePath({ milestones = [], currentUserId }) {
                 <div className="text-center">
                   <span className="text-[#3f3a64] text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
                     Update {milestone.Title}
+                    {/* Update {milestone.documentId} */}
                   </span>{" "}
                   <span className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
                     for your Kid
@@ -235,24 +227,11 @@ export const TrigSnakeCurve = ({
   mileStoneCustomData = [],
   step = 0.1,
   currentUserId,
+  custommilestoneidfromuser,
 }) => {
   const [currentDate, setCurrentDate] = useState("");
-  const [message, setMessage] = useState("");
   const numButtons = mileStoneCustomData.length;
   const maxY = numButtons * Math.PI * 2;
-
-  // Getting Hygraph User for Auth
-  const { user, loading } = useAuth();
-  const router = useRouter();
-  const [hygraphUser, setHygraphUser] = useState(null);
-
-  useEffect(() => {
-    if (user && user.email) {
-      getUserDataByEmail(user.email).then((data) => {
-        setHygraphUser(data);
-      });
-    }
-  }, [user, loading, router]);
 
   // Current Date
   useEffect(() => {
@@ -354,12 +333,14 @@ export const TrigSnakeCurve = ({
                     </span>
                   </div>
                 </DialogTitle>
-                <DialogDescription className="w-full p-4 flex flex-col gap-4 justify-start items-start">
-                  <div className="flex w-fit font-fredoka gap-2 justify-between items-center">
+                <DialogDescription className="w-full p-4 flex overflow-x-scroll scrollbar-hidden flex-col gap-4 justify-start items-start">
+                  <div className="flex w-full overflow-x-scroll scrollbar-hidden font-fredoka gap-2 justify-between items-center">
                     <Badge className="bg-[#eaeaf5] hover:bg-red text-red hover:text-white font-medium text-[12px] border-red">
                       {mileStoneCustomData[index]?.Category}
+                      {/* {mileStoneCustomData[index]?.Category.split(" ")[0]} */}
                     </Badge>
                     <Badge className="bg-[#eaeaf5] hover:bg-red text-red hover:text-white font-medium text-[12px] border-red">
+                      {/* {mileStoneCustomData[index]?.SubCategory.split(" ")[0]} */}
                       {mileStoneCustomData[index]?.SubCategory}
                     </Badge>
                   </div>
@@ -390,15 +371,9 @@ export const TrigSnakeCurve = ({
                   </div>
                   <div className="w-fit flex flex-row justify-between items-center gap-4 px-4">
                     <MarkMilestoneCompleteForm
-                      passmilestoneId={mileStoneCustomData[index]?.id}
+                      passmilestoneId={custommilestoneidfromuser[index]?.id}
                       userId={currentUserId}
                     />
-                    {/* {user && hygraphUser ? (
-                    ) : (
-                      <Link href="/auth/sign-up" className="clarabutton">
-                        Login First!
-                      </Link>
-                    )} */}
                   </div>
                 </section>
               </DialogFooter>
@@ -472,43 +447,60 @@ const OptionSlider = ({
     </div>
   );
 };
- 
+
 export default function DisplayAllMileStone({ passThecurrentUserId }) {
   const [milestones, setMilestones] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  // State for filters
+  const [userData, setUserData] = useState(null);
+  const [realMilestoneData, setRealMilestoneData] = useState([]);
+  const router = useRouter();
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedSubCategory, setSelectedSubCategory] = useState("All");
 
   useEffect(() => {
-    const fetchMilestones = async () => {
+    const fetchData = async () => {
+      const token = localStorage.getItem("jwt");
+      if (!token) {
+        return;
+      }
+
       try {
+        const data = await fetchUserDetails(token);
+        setUserData(data);
+        const evenIndexedMilestones = data.allMilestones.filter(
+          (_, index) => index % 2 === 0
+        );
+
+        // setRealMilestoneData(data.allMilestones);
+        setRealMilestoneData(evenIndexedMilestones);
+
+        // Milestone Data fetchcing
         const response = await fetch(
           "https://proper-fun-404805c7d9.strapiapp.com/api/milestones?populate=*"
         );
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const data = await response.json(); // Parse the JSON from the response
-        if (!Array.isArray(data.data)) {
+        const milestoneData = await response.json(); // Parse the JSON from the response
+        if (!Array.isArray(milestoneData.data)) {
           throw new Error("Fetched data is not an array.");
         }
 
-        setMilestones(data.data); // Assum
-      } catch (err) {
-        console.error("Error fetching milestones:", err);
-        setError("Error fetching milestones.");
+        setMilestones(milestoneData.data);
+      } catch (error) {
+        console.error("Error fetching user data", error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchMilestones();
-  }, []);
+    fetchData();
+  }, [router]);
 
   console.log("Fetched milestones:", milestones);
+  console.log("Fetched euserData on Milestone pag:", userData);
+  console.log("Fetched setRealMilestoneId ", realMilestoneData);
 
   if (!Array.isArray(milestones)) {
     return <p>Error: Expected milestones to be an array.</p>;
@@ -538,6 +530,8 @@ export default function DisplayAllMileStone({ passThecurrentUserId }) {
       (selectedCategory === "All" || m.Category === selectedCategory) &&
       (selectedSubCategory === "All" || m.SubCategory === selectedSubCategory)
   );
+
+  console.log("Filtered Milestone", filteredMilestones);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
@@ -572,7 +566,7 @@ export default function DisplayAllMileStone({ passThecurrentUserId }) {
                   : "bg-gray-200  text-gray-700"
               }`}
             >
-              {cat}
+              {cat.split(" ").slice(0, 2).join(" ")}
             </button>
           ))}
         </div>
@@ -588,7 +582,7 @@ export default function DisplayAllMileStone({ passThecurrentUserId }) {
                   : "bg-gray-200  text-gray-700"
               }`}
             >
-              {subCat}
+              {subCat.split(" ").slice(0, 2).join(" ")}
             </Badge>
           ))}
         </div>
@@ -597,10 +591,12 @@ export default function DisplayAllMileStone({ passThecurrentUserId }) {
       <section className="w-full pb-24 h-full bg-[#EAEAF5] items-center justify-center py-4 flex flex-col gap-[20px]"></section>
       <TrigSnakeCurve
         amplitude={6}
+        custommilestoneidfromuser={realMilestoneData}
         mileStoneCustomData={filteredMilestones}
         currentUserId={passThecurrentUserId}
       />
       <CurvePath
+        custommilestoneidfromuser={realMilestoneData}
         milestones={filteredMilestones}
         currentUserId={passThecurrentUserId}
       />
