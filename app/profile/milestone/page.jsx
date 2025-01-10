@@ -32,8 +32,6 @@ export default function MileStone() {
       }
 
       try {
-       
-
         const data = await fetchUserDetails(token);
         setUserData(data);
       } catch (error) {
@@ -96,7 +94,7 @@ export default function MileStone() {
                           {kid.Name}
                         </div>
                         {/* <ProfileRoute /> */}
-                        <DisplayAllMileStone 
+                        <DisplayAllMileStone
                           passThecurrentUserId={kid.documentId}
                         />
                       </div>
@@ -108,7 +106,27 @@ export default function MileStone() {
               )}
             </div>
           ) : (
-            <p>User Not Found</p>
+            <section className="w-full font-fredoka">
+              <div className="claracontainer h-[500px] flex flex-col gap-6 justify-center items-center">
+                <div className="flex-col gap-4 text-center">
+                  <span className="text-[#3f3a64] claraheading uppercase">
+                    No User Data Found
+                  </span>
+                  <br />
+                  <span className="text-red claraheading uppercase">
+                    Please log in to access your profile.
+                  </span>
+                </div>
+                <div className="flex w-full justify-center items-center gap-4 flex-col lg:flex-row text-white text-center">
+                  <Link
+                    href="/oAuth/signup" // Replace this with your login navigation logic
+                    className="bg-red text-white px-4 py-2 rounded shadow"
+                  >
+                    Go to Login
+                  </Link>
+                </div>
+              </div>
+            </section>
           )}
         </div>
       </section>

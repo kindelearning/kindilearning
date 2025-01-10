@@ -69,13 +69,13 @@ export default async function PlayForLife() {
                     <p>
                       We created Kindi to empower both parents and professionals
                       with essential developmental tools to unlock young
-                      children's full potential. Our ultimate goal is to enhance
+                      childrens full potential. Our ultimate goal is to enhance
                       the life prospects, prosperity, and well-being of future
                       generations through the transformative power of play.
                       Early years learning is a continuous journey, and Kindi is
                       your reliable companion, ensuring a smooth, fulfilling,
                       and fruitful path for a lifetime of achievement and joy.
-                      We've developed a comprehensive suite of tools to simplify
+                      Weve developed a comprehensive suite of tools to simplify
                       and streamline this journey, tailored to the demands of
                       our increasingly busy and fast-paced world. With our early
                       years learning app packed with resources, you have

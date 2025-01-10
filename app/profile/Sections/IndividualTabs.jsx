@@ -336,7 +336,7 @@ export default function IndividualTabs({ userData }) {
                   <>
                     <Link href="/profile/edit">
                       <SettingCard
-                        Value={userData.Name}
+                        Value={userData.Name || "Name Not provided"}
                         image={User}
                         title="Full Name"
                       />
@@ -344,7 +344,7 @@ export default function IndividualTabs({ userData }) {
                     {/* Email Edit */}
                     <SettingCard
                       disabled
-                      Value={userData.email}
+                      Value={userData.email || "email Not provided"}
                       image={Email}
                       title="Email"
                     />

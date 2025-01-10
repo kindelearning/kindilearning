@@ -36,10 +36,12 @@ export default async function Page() {
                   <BlogCard
                     documentId={item.documentId}
                     addUrl={`/p/community/${item.documentId}`}
-                    metsDesc={item.MetaDescription}
-                    title={item.Text}
-                    image={item.FeaturedImage.url}
-                    // image={`https://proper-fun-404805c7d9.strapiapp.com${item.FeaturedImage.url}`}
+                    metsDesc={
+                      item?.MetaDescription ||
+                      "  discover your daily educational  play activities. Utilize our drag-and-drop feature to rearrange  learning, ensuring development  "
+                    }
+                    title={item?.Text || "Untitled Post"}
+                    image={item?.FeaturedImage?.url || "/Images/BlogThumb.png"}
                     initialLikes={item.likes || 0} // Replace with actual value from your CMS
                     initialDislikes={item.dislikes || 0} // Replace with actual value from your CMS
                   />
@@ -52,6 +54,7 @@ export default async function Page() {
     </>
   );
 }
+// image={`https://proper-fun-404805c7d9.strapiapp.com${item.FeaturedImage.url}`}
 // "use client";
 
 // import NotFound from "@/app/not-found";

@@ -23,6 +23,7 @@ import { useCart } from "@/app/context/CartContext";
 import { useAuth } from "@/app/lib/useAuth";
 import { useRouter } from "next/navigation";
 import { getUserDataByEmail } from "@/lib/hygraph";
+import { fetchUserDetails } from "@/app/profile/api";
 
 const LocalNavitem = ({
   Link = "#",
@@ -129,37 +130,40 @@ const GET_ACCOUNT_BY_EMAIL = gql`
 `;
 
 const ShopHeader = () => {
-  const { cart } = useCart();
-  const { user, loading } = useAuth();
   const router = useRouter();
-  const [hygraphUser, setHygraphUser] = useState(null);
   const pathname = usePathname();
-  const { data: session, status } = useSession();
-  const [profileData, setProfileData] = useState(null);
 
+  const [userData, setUserData] = useState(null);
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    profilepic: null,
+  });
+  const [loading, setLoading] = useState(true);
+
+  // Fetch user data when the component mounts
   useEffect(() => {
-    if (user && user.email) {
-      getUserDataByEmail(user.email).then((data) => {
-        setHygraphUser(data);
-      });
-    }
-  }, [user, loading, router]);
+    const fetchData = async () => {
+      const token = localStorage.getItem("jwt"); // Get the JWT token from localStorage
 
-  // useEffect(() => {
-  //   if (session && session.user) {
-  //     fetchUserData(session.user.email);
-  //   }
-  // }, [session]);
+      try {
+        const data = await fetchUserDetails(token); // Use the helper function to fetch user data
+        setUserData(data);
+        setFormData({
+          username: data.username,
+          email: data.email,
+          profilepic: data.profilepic?.url || "",
+        });
+      } catch (error) {
+        console.error("Error fetching user data", error);
+        // router.push("/oAuth/signin"); // Redirect to login if there's an error fetching user data
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  // const fetchUserData = async (email) => {
-  //   try {
-  //     const data = await client.request(GET_ACCOUNT_BY_EMAIL, { email });
-  //     setProfileData(data.account);
-  //   } catch (error) {
-  //     console.error("Error fetching profile data:", error);
-  //   }
-  // };
-
+    fetchData();
+  }, [router]);
   const handleSignOut = () => {
     signOut({
       callbackUrl: "/", // Optional: Redirect users to this URL after sign out
@@ -168,9 +172,145 @@ const ShopHeader = () => {
 
   if (loading) {
     return (
-      <div className="w-full h-screen flex justify-center items-center">
-        <Loading />
-      </div>
+      <header className="sticky rounded-b-[12px] top-0 z-50 w-full px-4 bg-white dark:bg-dark-blue-100 shadow-md flex justify-center items-center py-4 md:py-4">
+        <section className="max-w-[1400px] claracontainer px-0 md:px-2 lg:px-4 flex flex-row justify-between items-center w-full">
+          <Link href="/">
+            <div className="logo">
+              <Image
+                src={Logo}
+                alt="Logo"
+                className="lg:w-[110px] w-[80px] md:w-[100px] lg:max-h-[50px]"
+              />
+            </div>
+          </Link>
+          {/* Hamburger icon for small screens */}
+          <div className="lg:hidden clara flex items-center">
+            <Sheet>
+              <SheetTrigger>
+                <Menu />
+              </SheetTrigger>
+              <SheetContent className="bg-[#F5F5F5] px-2 h-full">
+                <SheetHeader className="h-full">
+                  {/* Custom Sidebar Item */}
+                  <section className="lg:hidden h-full flex flex-col w-full gap-2 items-start justify-between space-y-2 mt-4">
+                    <div className="flex w-full flex-col gap-2">
+                      <div className="flex w-full flex-col gap-1 justify-start items-start">
+                        <div className="text-[#0a1932] clarabodyTwo font-medium font-fredoka leading-tight">
+                          Quick Access
+                        </div>
+                        <div className="flex w-full flex-col gap-1 justify-normal items-center">
+                          {NavMenu?.map((menuItem, index) => (
+                            <LocalNavitem
+                              key={index}
+                              IconSrc={menuItem.icon}
+                              Link={menuItem.link}
+                              Title={menuItem.title}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                      <div className="flex w-full flex-col gap-1 justify-start items-start">
+                        <div className="text-[#0a1932] clarabodyTwo  font-fredoka leading-tight">
+                          My Progress
+                        </div>
+                        <div className="grid grid-cols-3 w-full gap-1">
+                          <MileStone />
+                          <Progress />
+                          <Achievements />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex w-full flex-col gap-2">
+                      {userData ? (
+                        <div className="flex w-full gap-2 justify-start items-center">
+                          <div className="flex">
+                            <Link
+                              target="_blank"
+                              className="flex flex-col justify-end items-end"
+                              href="/shop/cart"
+                            >
+                              <p className="bg-[eaeaf5] border -mb-[8px] border-red text-red flex justify-center items-center text-[12px] z-12 w-[16px] h-[16px] font-fredoka rounded-full">
+                                {/* {useCart.length} */}
+                              </p>
+                              <ShoppingBag className="text-red w-[28px] h-[28px]" />
+                            </Link>
+                          </div>
+                          <Button
+                            // onClick={handleSignOut}
+                            className="bg-red hover:bg-hoverRed text-white clarabutton w-full"
+                          >
+                            Sign Out
+                          </Button>
+                        </div>
+                      ) : (
+                        <div className="flex w-full flex-col gap-1 justify-start items-start">
+                          <Link
+                            href="/auth/sign-in"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="w-full"
+                          >
+                            <div className="bg-[#ffffff] py-2 w-full text-[12px] font-fredoka border-[black] text-[black] hover:bg-[#ffffff] hover:border-[#2b2b2b] hover:text-dark-blue-100 px-[40px] border-2 rounded-[10px] transition duration-300 ease-in-out">
+                              Log in
+                            </div>
+                          </Link>
+                          <Link
+                            href="/auth/sign-up"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="w-full"
+                          >
+                            <div className="bg-red hover:bg-hoverRed text-[12px] font-fredoka text-white w-full py-2 px-[40px]  hover:text-white border-2 border-red rounded-[10px] transition duration-300 ease-in-out">
+                              Get Started
+                            </div>
+                          </Link>
+                        </div>
+                      )}
+                    </div>
+                  </section>
+                  <SheetDescription>#KindiLearning</SheetDescription>
+                </SheetHeader>
+              </SheetContent>
+            </Sheet>
+          </div>
+          {/* Navigation Links - Hidden on small screens */}
+          <div className="hidden lg:flex flex-col md:flex-row gap-[16px] md:items-center md:justify-center w-full md:w-[max-content]">
+            {NavMenu.map((menuItem, index) => (
+              <a
+                key={index}
+                href={menuItem.link}
+                className={`text-light-gray-500 gap-[6px] flex-row w-[max-content] dark:text-light-gray-500 text-lg font-semibold font-montserrat leading-6 flex items-center transition duration-300 ease-in-out ${
+                  pathname === menuItem.link ? "active" : ""
+                }`}
+              >
+                <Image
+                  src={
+                    pathname === menuItem.link
+                      ? menuItem.activeIcon
+                      : menuItem.icon
+                  }
+                  alt={`${menuItem.title} icon`}
+                  width={20}
+                  height={20}
+                  className="h-[14px] w-[14px] transition duration-300 ease-in-out"
+                />
+                <span
+                  className={`text-[14px] font-montserrat hover:text-[#000000] transition duration-300 ease-in-out ${
+                    pathname === menuItem.link
+                      ? "text-[#000000] hover:text-[#000000] underline underline-[red]"
+                      : " text-[#757575] "
+                  }`}
+                  style={{ textDecorationColor: "#de4040" }}
+                >
+                  {menuItem.title}
+                </span>
+              </a>
+            ))}
+          </div>
+
+          <div className="hidden lg:flex space-x-4"></div>
+        </section>
+      </header>
     );
   }
 
@@ -224,10 +364,7 @@ const ShopHeader = () => {
                     </div>
                   </div>
                   <div className="flex w-full flex-col gap-2">
-                    {/* <div className="flex w-full">
-                      <GoogleTranslate />
-                    </div> */}
-                    {user && hygraphUser ? (
+                    {userData ? (
                       <div className="flex w-full gap-2 justify-start items-center">
                         <div className="flex">
                           <Link
@@ -236,13 +373,13 @@ const ShopHeader = () => {
                             href="/shop/cart"
                           >
                             <p className="bg-[eaeaf5] border -mb-[8px] border-red text-red flex justify-center items-center text-[12px] z-12 w-[16px] h-[16px] font-fredoka rounded-full">
-                              {/* {cart.length} */}
+                              {/* {useCart.length} */}
                             </p>
                             <ShoppingBag className="text-red w-[28px] h-[28px]" />
                           </Link>
                         </div>
                         <Button
-                          onClick={handleSignOut}
+                          // onClick={handleSignOut}
                           className="bg-red hover:bg-hoverRed text-white clarabutton w-full"
                         >
                           Sign Out
@@ -315,7 +452,7 @@ const ShopHeader = () => {
         </div>
 
         <div className="hidden lg:flex space-x-4">
-          {user && hygraphUser ? (
+          {userData ? (
             <div className="flex flex-row justify-center items-center gap-2">
               <div className="flex z-12">
                 <Link
@@ -336,25 +473,32 @@ const ShopHeader = () => {
               >
                 <div className="relative w-full flex justify-center items-center p-[2px] border-2 border-red hover:border-hoverRed rounded-full">
                   <div className="w-full h-full bg-white rounded-full  flex items-center justify-center">
-                    <Image
-                      src={hygraphUser.profilePicture?.url}
-                      alt="User DP"
-                      width={40}
-                      height={40}
-                      className="w-[40px] h-[40px] object-cover rounded-full"
-                    />
+                    {userData.profilepic ? (
+                      <img
+                        src={userData.profilepic.url}
+                        // src={`https://proper-fun-404805c7d9.strapiapp.com${userData.profilepic.url}`}
+                        alt="Profile Picture"
+                        className="w-[40px] h-[40px] object-cover rounded-full"
+                      />
+                    ) : (
+                      <Image
+                        src={ProfilePlaceholder01}
+                        alt="Profile Picture"
+                        className="w-[40px] h-[40px] object-cover rounded-full"
+                      />
+                    )}
                   </div>
                 </div>
               </Link>
             </div>
           ) : (
             <>
-              <Link href="/auth/sign-in">
+              <Link href="/oAuth/signin">
                 <Button className="bg-[#ffffff] border-purple text-purple hover:bg-[#ffffff] hover:border-[#2b2b2b] hover:text-dark-blue-100 px-[40px] border-2 rounded-[16px] transition duration-300 ease-in-out">
                   Log In
                 </Button>
               </Link>
-              <Link href="/auth/sign-up">
+              <Link href="/oAuth/signup">
                 <Button className="bg-red px-[40px] hover:text-white border-4 border-red hover:bg-hoverRed hover:border-hoverRed rounded-[16px] transition duration-300 ease-in-out">
                   Sign Up
                 </Button>

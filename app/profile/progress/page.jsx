@@ -22,10 +22,6 @@ import { fetchKidDetails, fetchUserDetails } from "../api";
 import { getRandomImage } from "../milestone/page";
 import { fetchAllActivities } from "@/app/data/p/Dynamic/Activity";
 
-const HYGRAPH_ENDPOINT =
-  "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";
-const HYGRAPH_TOKEN =
-  "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImdjbXMtbWFpbi1wcm9kdWN0aW9uIn0.eyJ2ZXJzaW9uIjozLCJpYXQiOjE3MjcwNjQxNzcsImF1ZCI6WyJodHRwczovL2FwaS1hcC1zb3V0aC0xLmh5Z3JhcGguY29tL3YyL2NtMWRvbTFoaDAzeTEwN3V3d3hydXRwbXovbWFzdGVyIiwibWFuYWdlbWVudC1uZXh0LmdyYXBoY21zLmNvbSJdLCJpc3MiOiJodHRwczovL21hbmFnZW1lbnQtYXAtc291dGgtMS5oeWdyYXBoLmNvbS8iLCJzdWIiOiI2Yzg4NjI5YS1jMmU5LTQyYjctYmJjOC04OTI2YmJlN2YyNDkiLCJqdGkiOiJjbTFlaGYzdzYwcmZuMDdwaWdwcmpieXhyIn0.YMoI_XTrCZI-C7v_FX-oKL5VVtx95tPmOFReCdUcP50nIpE3tTjUtYdApDqSRPegOQai6wbyT0H8UbTTUYsZUnBbvaMd-Io3ru3dqT1WdIJMhSx6007fl_aD6gQcxb-gHxODfz5LmJdwZbdaaNnyKIPVQsOEb-uVHiDJP3Zag2Ec2opK-SkPKKWq-gfDv5JIZxwE_8x7kwhCrfQxCZyUHvIHrJb9VBPrCIq1XE-suyA03bGfh8_5PuCfKCAof7TbH1dtvaKjUuYY1Gd54uRgp8ELZTf13i073I9ZFRUU3PVjUKEOUoCdzNLksKc-mc-MF8tgLxSQ946AfwleAVkFCXduIAO7ASaWU3coX7CsXmZLGRT_a82wOORD8zihfJa4LG8bB-FKm2LVIu_QfqIHJKq-ytuycpeKMV_MTvsbsWeikH0tGPQxvAA902mMrYJr9wohOw0gru7mg_U6tLOwG2smcwuXBPnpty0oGuGwXWt_D6ryLwdNubLJpIWV0dOWF8N5D6VubNytNZlIbyFQKnGcPDw6hGRLMw2B7-1V2RpR6F3RibLFJf9GekI60UYdsXthAFE6Xzrlw03Gv5BOKImBoDPyMr0DCzneyAj9KDq4cbNNcihbHl1iA6lUCTNY3vkCBXmyujXZEcLu_Q0gvrAW3OvZMHeHY__CtXN6JFA";
 
 const ActivitiesCount = () => {
   const [activities, setActivities] = useState([]);
@@ -525,7 +521,7 @@ export default function ProgressSection() {
                     <TabsContent key={kid.id} value={kid.id} className="w-full">
                       <div className="w-full flex flex-col gap-2 lg:gap-4 justify-between items-center">
                         <div className="font-fredoka text-[12px] lg:text-[20px]">
-                          {kid.Name}
+                         Track Progress for: {kid.Name}
                         </div>
 
                         <div className="flex gap-2 px-4 items-start lg:px-0 overflow-x-scroll scrollbar-hidden w-full">
@@ -545,7 +541,27 @@ export default function ProgressSection() {
               )}
             </div>
           ) : (
-            <p>User Not Found</p>
+            <section className="w-full font-fredoka">
+            <div className="claracontainer h-[500px] flex flex-col gap-6 justify-center items-center">
+              <div className="flex-col gap-4 text-center">
+                <span className="text-[#3f3a64] claraheading uppercase">
+                  No User Data Found
+                </span>
+                <br />
+                <span className="text-red claraheading uppercase">
+                  Please log in to access your profile.
+                </span>
+              </div>
+              <div className="flex w-full justify-center items-center gap-4 flex-col lg:flex-row text-white text-center">
+                <Link
+                  href="/oAuth/signup" // Replace this with your login navigation logic
+                  className="bg-red text-white px-4 py-2 rounded shadow"
+                >
+                  Go to Login
+                </Link>
+              </div>
+            </div>
+          </section>
           )}
 
           <div className="grid grid-cols-2 md:flex w-full px-2 lg:px-0 justify-start items-center gap-2 flex-wrap">

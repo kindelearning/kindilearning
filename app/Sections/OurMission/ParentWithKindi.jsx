@@ -73,21 +73,21 @@ export default async function ParentWithKindi() {
                     <span style="color: rgb(250, 204, 204); background-color: rgb(0, 0, 0);">
                       Parenthood{" "}
                     </span>
-                    is a whirlwind of responsibilities, and we get it. That's
-                    why we've created Kindi, a haven for busy parents like you.
+                    is a whirlwind of responsibilities, and we get it. Thats
+                    why weve created Kindi, a haven for busy parents like you.
                     No more endless scrolling for play ideas. With Kindi, every
                     moment counts. Our platform offers curated activities for
                     children aged 6 months to 5 years, designed to make learning
                     enjoyable. Say goodbye to parenting uncertainties and hello
                     to confident meaningful experiences at home that foster your
-                    child's growth and witness your child flourish, knowing each
+                    childs growth and witness your child flourish, knowing each
                     interaction shapes their future. Explore exciting monthly
                     themes covering literacy, numeracy, fine motor skills,
                     sensory play, and crafting. With Kindi, embark on this
                     journey of discovery and growth confidently, giving your
                     child the best start in life. Parents trust Kindi because it
                     comes from a place of love, passion and real-life
-                    experience. Join the Kindi community and together, let's
+                    experience. Join the Kindi community and together, lets
                     create lasting memories and build a brighter future for our
                     children.
                   </p>

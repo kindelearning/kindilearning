@@ -1,5 +1,5 @@
 "use client";
- 
+
 import { fetchShopProducts } from "../data/p/Dynamic/Shop";
 import Banner from "./sections/Banner";
 import { BottomNavigation, Header, Newsletter } from "../Sections";
@@ -448,18 +448,25 @@ export default function ShopPage() {
                     <div key={product.id} className="product-card">
                       <ProductCard
                         productUrl={`/shop/${product.documentId}`}
-                        image={product?.FeaturedImage?.[0]?.url}
-                        // image={`https://proper-fun-404805c7d9.strapiapp.com${
-                        //   product?.FeaturedImage?.[0]?.url ||
-                        //   "/uploads/default-image.webp"
-                        // }`}
-                        price={product.DiscountPrice || product.Price}
-                        title={product.Name}
+                        image={
+                          product?.FeaturedImage?.[0]?.url ||
+                          "/Images/BlogThumb.png"
+                        }
+                        price={
+                          product.DiscountPrice ||
+                          product.Price ||
+                          "Price not available"
+                        }
+                        title={product.Name || "Untitled Product"}
                       />
                     </div>
                   );
                 })}
               </div>
+              {/* // image={`https://proper-fun-404805c7d9.strapiapp.com${
+                //   product?.FeaturedImage?.[0]?.url ||
+                //   "/uploads/default-image.webp"
+                // }`} */}
               {/* Pagination Controls */}
               <div className="w-full hidden lg:flex justify-between items-center mt-6">
                 <button

@@ -131,7 +131,7 @@ export default function BlogCard({
                 <Image src={CommentIcon} alt="Comment" />
               </button>
               <span className="ml-1 font-semibold font-fredoka">
-                {randomComments}+
+                {/* {randomComments}+ */}
               </span>
             </div>
           </div>

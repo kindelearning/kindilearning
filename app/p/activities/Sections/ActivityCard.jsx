@@ -1,5 +1,5 @@
 import { activityIcons } from "@/app/constant/menu";
-import { ActivityImage } from "@/public/Images";
+import { ActivityImage, ThemeDummy } from "@/public/Images";
 import Image from "next/image";
 import Link from "next/link";
 export const getIconForSkill = (skillTitle) => {
@@ -35,30 +35,42 @@ export default function ActivityCard({ activity, activityUrl, icons }) {
         <div className="claracontainer w-full flex-col justify-start items-center gap-7 inline-flex">
           <div className="w-full max-w-full md:min-w-full lg:max-w-full h-auto">
             <div className="flex max-h-[180px] min-h-[150px] h-[150px] md:min-h-[200px] md:h-full lg:min-h-[276px] lg:h-full lg:max-h-[276px] md:max-h-[300px] overflow-clip rounded-t-3xl">
-              <Image
-                width={280}
-                height={250}
-                alt={Title}
-                className="w-full max-h-[180px] duration-300 hover:scale-105 lg:min-h-[276px] lg:h-full lg:max-h-[276px] md:max-h-[300px] object-cover rounded-t-3xl"
-                src={imageUrl}
-              />
+              {imageUrl ? (
+                <img
+                  width={280}
+                  height={250}
+                  alt={Title}
+                  className="w-full max-h-[180px] duration-300 hover:scale-105 lg:min-h-[276px] lg:h-full lg:max-h-[276px] md:max-h-[300px] object-cover rounded-t-3xl"
+                  src={imageUrl}
+                />
+              ) : (
+                <Image
+                  width={280}
+                  height={250}
+                  alt="ThemeDummy"
+                  className="w-full max-h-[180px] duration-300 hover:scale-105 lg:min-h-[276px] lg:h-full lg:max-h-[276px] md:max-h-[300px] object-cover rounded-t-3xl"
+                  src={ThemeDummy}
+                />
+              )}
             </div>
             <div className="w-full p-2 md:p-4  flex-col justify-start lg:p-4 items-start flex gap-2 md:gap-2 lg:gap-4">
               <div className="flex-col w-full gap-[6px] justify-start items-start">
                 <div className="text-[#0a1932] text-[16px] md:text-xl font-semibold font-fredoka leading-[20px]">
-                  {Title.length > 18 ? `${Title.slice(0, 18)}...` : Title}
+                  {Title.length > 18
+                    ? `${Title.slice(0, 18)}...`
+                    : Title || "Activity Title"}
                 </div>
                 <div className="justify-start overflow-clip w-full items-center gap-1 lg:gap-2 inline-flex">
                   <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-4 flex px-0 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
-                    {SetUpTime}
+                    {SetUpTime || "5 min"}
                   </div>
                   •
                   <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-6 flex pr-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
-                    {Theme}
+                    {Theme || "Winter"}
                   </div>
                   •
                   <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-6 flex pr-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
-                    {FocusAge}
+                    {FocusAge || "Toddler"}
                   </div>
                 </div>
               </div>

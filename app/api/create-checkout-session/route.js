@@ -33,8 +33,8 @@ export async function POST(req) {
       payment_method_types: ["card"],
       line_items: transformedItems,
       mode: "payment",
-      success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/shop/success`,
-      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/shop/cancel`,
+      success_url: `${process.env.NEXT_PUBLIC_URL}/shop/success`,
+      cancel_url: `${process.env.NEXT_PUBLIC_URL}/shop/cancel`,
     });
 
     return new Response(JSON.stringify({ id: session.id }), { status: 200 });

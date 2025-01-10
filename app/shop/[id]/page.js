@@ -78,14 +78,9 @@ function ProductInfo({ product }) {
           Description
         </div>
         <div className="w-full text-[#757575] prose text-[20px] font-medium font-fredoka leading-[24px]">
-          {/* {product.Description || "Product Description"}
-          {product.MetaDescription || "Product meta Description"} */}
-
-          <span  dangerouslySetInnerHTML={{ __html: product.Description }}/>
-          <span  dangerouslySetInnerHTML={{ __html: product.MetaDescription }}/>
-
+          <span dangerouslySetInnerHTML={{ __html: product.Description }} />
+          <span dangerouslySetInnerHTML={{ __html: product.MetaDescription }} />
         </div>
-
       </div>
     </div>
   );
@@ -152,7 +147,11 @@ function CustomerReviews({ formData }) {
   );
 }
 
-export function QuantityControl({ quantity, incrementQuantity, decrementQuantity }) {
+export function QuantityControl({
+  quantity,
+  incrementQuantity,
+  decrementQuantity,
+}) {
   return (
     <div className="flex border-[#eaeaf5] w-fit min-w-[124px] items-center border-1 shadow-sm lg:shadow-none rounded-full overflow-hidden">
       <button
@@ -239,10 +238,10 @@ export default function ProductDetailPage({ params }) {
   const handleCheckout = async (e) => {
     e.preventDefault();
     setLoading(true);
-  
+
     // Simulate delay
     await new Promise((resolve) => setTimeout(resolve, 500));
-  
+
     // Add product to cart
     addToCart({
       id: product.documentId,
@@ -252,9 +251,9 @@ export default function ProductDetailPage({ params }) {
       image: product.FeaturedImage?.url,
       quantity,
     });
-  
+
     setLoading(false);
-  
+
     // Redirect to cart page
     router.push("/shop/cart");
   };

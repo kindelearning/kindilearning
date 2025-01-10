@@ -61,12 +61,12 @@ export default async function OurStory() {
                   />
                 ) : (
                   <p>
-                    We weren't always child development experts. We remember the
+                    We werent always child development experts. We remember the
                     struggle of wanting the best for our kids during these
                     precious years but feeling lost, like we were failing at
                     parenting. Now, with over 20 years of combined experience
                     working directly with Early Years children and top ratings
-                    from OFSTED, we're committed to ensuring no parent ever
+                    from OFSTED, were committed to ensuring no parent ever
                     feels overwhelmed and every child thrives through our guided
                     activities for brain stimulation and development.
                   </p>

@@ -10,6 +10,7 @@ import "react-calendar/dist/Calendar.css";
 import NewCalendar from "../Sections/NewCalendar";
 import { fetchAllActivities } from "@/app/data/p/Dynamic/Activity";
 import SetNewActivities from "../Sections/SetNewActivities";
+import Link from "next/link";
 
 export default function Schedule() {
   const [userData, setUserData] = useState(null);
@@ -148,11 +149,64 @@ export default function Schedule() {
                   ))}
                 </Tabs>
               ) : (
-                <p>No kids profiles available.</p>
+                <section className="w-full font-fredoka">
+                  <div className="claracontainer max-h-[500px] flex flex-col gap-6 justify-center items-center">
+                    <div className="flex flex-col gap-4 text-center">
+                      <span className="text-[#3f3a64] claraheading uppercase">
+                        No Kids Found
+                      </span>
+                      <span className="text-red clarabod yTwo text-[24px] ">
+                        Please Create a Kid's Profile to Access the Scheduler
+                      </span>
+                      <p className="text-[#3f3a64] text-lg mt-4">
+                        Go to your <strong>Profile Page</strong>, click on{" "}
+                        <strong>My Kids</strong>, and create a new kid's profile
+                        to unlock the scheduler feature.
+                      </p>
+                    </div>
+                    <div className="flex w-full justify-center items-center gap-4 flex-col lg:flex-row text-white text-center">
+                      <Link
+                        href="/profile"
+                        target="_blank" // Adjust the path if needed
+                        className="bg-[#3f3a64] px-6 py-3 rounded-lg hover:bg-[#2d294d] transition"
+                      >
+                        Go to My Kids
+                      </Link>
+                    </div>
+                  </div>
+                </section>
               )}
             </div>
           ) : (
-            <p>User Not Found</p>
+            <section className="w-full">
+              <div className="claracontainer h-[500px] flex flex-col gap-6 justify-center items-center">
+                <div className="flex-col gap-4 text-center">
+                  <span className="text-[#3f3a64] claraheading uppercase">
+                    Access Denied
+                  </span>{" "}
+                  <br />
+                  <span className="text-red claraheading uppercase">
+                    Please Login to Access Schedular
+                  </span>
+                </div>
+                <div className="flex w-full justify-center items-center gap-4 flex-col lg:flex-row text-white text-center">
+                  <Link
+                    target="_blank"
+                    href="/oAuth/signin"
+                    className="clarabutton w-full lg:max-w-[240px] py-2 bg-purple hover:bg-hoverPurple"
+                  >
+                    Sign In
+                  </Link>
+                  <Link
+                    href="/oAuth/signup"
+                    className="clarabutton py-2 w-full lg:max-w-[240px] bg-red hover:bg-hoverRed"
+                    target="_blank"
+                  >
+                    Sign Up
+                  </Link>
+                </div>
+              </div>
+            </section>
           )}
         </div>
       </section>

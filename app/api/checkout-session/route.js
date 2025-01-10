@@ -84,8 +84,8 @@ export async function POST(req) {
       payment_method_types: ["card", "paypal", "link"],
       line_items: lineItems,
       mode: "payment",
-      success_url: `${process.env.VERCEL_URL}/shop/success`,
-      cancel_url: `${process.env.VERCEL_URL}/shop/cancel`,
+      success_url: `${process.env.NEXT_PUBLIC_URL}/shop/success`,
+      cancel_url: `${process.env.NEXT_PUBLIC_URL}/shop/cancel`,
     });
 
     // Log session ID for debugging

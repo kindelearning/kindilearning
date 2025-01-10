@@ -116,11 +116,7 @@ export default function BlogDetailPage({ params }) {
         <img
           width={1400}
           height={600}
-          src={
-            FeaturedImage?.url
-              ? `https://proper-fun-404805c7d9.strapiapp.com${FeaturedImage.url}`
-              : BlogThumb
-          }
+          src={FeaturedImage?.url ? FeaturedImage?.url : BlogThumb}
           alt={`Featured Image for ${Text}`}
           className="w-full hover:scale-105 duration-300 lg:max-w-[960px] lg:rounded-xl h-60 md:h-[400px] lg:h-[400px] object-cover"
         />
@@ -217,15 +213,13 @@ export default function BlogDetailPage({ params }) {
       <div className="claracontainer p-4 md:p-2 lg:p-4 w-full flex flex-col overflow-hidden gap-8">
         <div className="w-full mx-auto flex flex-col gap-4 justify-center items-center">
           <div className="w-full text-[#3f3a64] font-semibold font-fredoka capitalize text-[32px] md:text-[36px] md:leading-[40px] lg:text-[48px] lg:leading-[54px]">
-            {Text}
+            {Text || "Blog Title"}
           </div>
           <div className="w-full text-[#0a1932] text-2xl font-normal font-fredoka leading-[28px]">
-            {Description}
+            {Description || "Blog Metadescription"}
           </div>
           <div className="content prose font-fredoka py-4 flex flex-col gap-2 justify-center">
             {Content ? (
-              // <RichTextRender content={Content} />
-
               <div
                 className="text-lg text-gray-600 prose leading-relaxed mb-6"
                 dangerouslySetInnerHTML={{ __html: Content }}

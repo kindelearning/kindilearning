@@ -174,33 +174,35 @@ export default async function ActivityDetailPage({ params }) {
           <div className="claracontainer lg:min-w-[60%] lg:w-full bg-[#ffffff] md:bg-[#ffffff] pb-4 lg:bg-[#eaeaf5] py-0 flex flex-col justify-start items-start gap-4">
             {/* Row 1(C1) */}
             <div className="claracontainer py-0 flex flex-col justify-between items-start gap-8">
-              <ProductMedia gallery={Gallery} />
+              {Gallery && <ProductMedia gallery={Gallery} />}
             </div>
             {/* Row 1(R2) */}
             <div className="claracontainer lg:hidden w-full flex flex-col px-4 lg:px-0 justify-start items-start gap-4">
               <div className="flex w-full flex-col justify-normal items-center gap-2">
                 <div className="text-[#0a1932]  text-start justify-start items-start w-full font-fredoka font-semibold text-[24px] md:text-[28px] lg:text-[28px]">
-                  {Title}
+                  {Title || "Activity Title"}
                 </div>
                 <div className="items-center cursor-pointer w-full justify-center flex flex-col gap-2">
                   <ActivityAttribute
                     image={ActivityBlack}
-                    features={new Date(ActivityDate).toDateString()}
+                    features={
+                      new Date(ActivityDate).toDateString() || "Thu Dec 26 2024"
+                    }
                   />
                   <ActivityAttribute
                     image={TimerBlack}
-                    features={SetUpTime}
+                    features={SetUpTime || "5 Min"}
                     title="Set up Time"
                   />
                   <ActivityAttribute
                     image={Themes}
                     className="text-[black]"
-                    features={Theme}
+                    features={Theme || "Winter"}
                     title="Theme"
                   />
                   <ActivityAttribute
                     image={KidBlack}
-                    features={FocusAge}
+                    features={FocusAge || "Toddler"}
                     title="Focus age"
                   />
                 </div>
@@ -212,12 +214,28 @@ export default async function ActivityDetailPage({ params }) {
                 </div>
 
                 <div className="items-center h-fit hover:h-full overflow-y-hidden overflow-x-scroll scrollbar-hidden w-full justify-start flex flex-row gap-1">
-                  {/* {activityIcons.map(
-                    (item) =>
-                      activity[item.key] && (
-                        <IconBadge key={item.key} icon={item.icon} />
-                      )
-                  )} */}
+                  {Skills && Skills.length > 0 ? (
+                    Skills.map((skill, index) => {
+                      // Extract the skill title
+                      const skillTitle = skill.children[0]?.text;
+                      const icon = getIconForSkill(skillTitle); // Get the icon URL dynamically
+                      const iconSrc = icon?.src || SpeechLanguageActivity; // Replace with your fallback icon path
+
+                      return (
+                        <Image
+                          key={index}
+                          src={iconSrc} // Using the icon image URL here
+                          alt={skillTitle}
+                          width={32}
+                          title={skillTitle}
+                          height={32}
+                          className="w-8 h-8 cursor-pointer text-opacity-50 hover:opacity-100 duration-150 ease-out" // Set the size for the image
+                        />
+                      );
+                    })
+                  ) : (
+                    <p>No skills available.</p> // Fallback message if no skills are found
+                  )}
                 </div>
               </div>
               <div className="flex w-full flex-col justify-star items-start gap-2">
@@ -299,22 +317,24 @@ export default async function ActivityDetailPage({ params }) {
                 <div className="items-center w-full justify-center flex flex-col gap-2">
                   <ActivityAttribute
                     image={ActivityBlack}
-                    features={new Date(ActivityDate).toDateString()}
+                    features={
+                      new Date(ActivityDate).toDateString() || "Thu Dec 26 2024"
+                    }
                   />
                   <ActivityAttribute
                     image={TimerBlack}
-                    features={SetUpTime}
+                    features={SetUpTime || "5 Min"}
                     title="Set up Time"
                   />
                   <ActivityAttribute
                     image={Themes}
                     className="text-[black]"
-                    features={Theme}
+                    features={Theme || "Winter"}
                     title="Theme"
                   />
                   <ActivityAttribute
                     image={KidBlack}
-                    features={FocusAge}
+                    features={FocusAge || "Toddler"}
                     title="Focus age"
                   />
                 </div>
@@ -367,7 +387,6 @@ export default async function ActivityDetailPage({ params }) {
                 </div>
                 <Dialog>
                   <DialogTrigger className="w-full">
-                    Check Activity Resources
                     <Button
                       disabled={
                         !activityData.Resources ||
