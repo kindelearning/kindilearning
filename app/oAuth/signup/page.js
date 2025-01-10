@@ -10,9 +10,47 @@ import { Eye, EyeOff } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import GoogleSignUp, {
-  GoogleSignInButton,
-} from "../Sections/GoogleSignInButton";
+// import GoogleSignUp from "../Sections/GoogleSignInButton";
+import { GoogleLogin } from "@react-oauth/google";
+
+export function GoogleSignUp() {
+  const handleGoogleLogin = async (response) => {
+    if (response?.credential) {
+      const googleToken = response.credential;
+
+      // Send the token to your Strapi backend for authentication
+      const res = await fetch(
+        "https://proper-fun-404805c7d9.strapiapp.com/api/auth/google/callback",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            token: googleToken,
+          }),
+        }
+      );
+
+      const data = await res.json();
+      if (data?.jwt) {
+        // Handle successful signup, save token, and log in the user
+        console.log("Google signup successful:", data);
+      } else {
+        console.log("Error during Google signup:", data);
+      }
+    }
+  };
+
+  return (
+    <div>
+      <GoogleLogin
+        onSuccess={handleGoogleLogin}
+        onError={() => console.log("Login Failed")}
+      />
+    </div>
+  );
+}
 
 export default function SignupPage() {
   const [showPassword, setShowPassword] = useState(false);
