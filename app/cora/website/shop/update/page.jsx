@@ -46,7 +46,9 @@ export default function ProductUpdateForm({ documentId }) {
           setSEOKeywords(data.data.SEOKeywords || "");
           setMaterialOptions(data.data.MaterialOptions || "");
           setMedia(data.data?.FeaturedImage?.id || null); // Set the media ID or null if no media is selected
-          setGallery(data.data?.Gallery?.id || null); // Set the media ID or null if no media is selected
+          setGallery(
+            data.data?.Gallery?.map((media) => ({ id: media.id })) || []
+          );
         } else {
           throw new Error("Failed to fetch data");
         }
@@ -61,31 +63,32 @@ export default function ProductUpdateForm({ documentId }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const formData = new FormData();
-    if (name) formData.append("data[Name]", name);
-    if (description) formData.append("data[Description]", description);
-    if (longDescription)
-      formData.append("data[LongDescription]", longDescription);
-    if (price) formData.append("data[Price]", price);
-    if (discountPrice) formData.append("data[DiscountPrice]", discountPrice);
-    if (seoKeywords) formData.append("data[SEOKeywords]", seoKeywords);
-    // if (gallery) formData.append("data[Gallery]", gallery.id);
-    if (gallery && gallery.length > 0) {
-      const galleryData = gallery.map((mediaItem) => ({
-        id: mediaItem.id
-      }));
-      formData.append("data[Gallery]", JSON.stringify(galleryData)); // Send as JSON string
-    }
-    if (media) formData.append("data[FeaturedImage]", media.id);
-    if (materialOptions)
-      formData.append("data[MaterialOptions]", materialOptions);
+    const payload = {
+      data: {
+        Name: name,
+        Description: description,
+        LongDescription: longDescription,
+        Price: price,
+        DiscountPrice: discountPrice,
+        SEOKeywords: seoKeywords,
+        Gallery: gallery.map((mediaItem) => ({
+          id: mediaItem.id,
+        })),
+        FeaturedImage: media?.id || null,
+        MaterialOptions: materialOptions,
+      },
+    };
+    console.log("Payload Created", payload);
 
     try {
       const res = await fetch(
-        `https://proper-fun-404805c7d9.strapiapp.com/api/products/${documentId}?populate=*`,
+        `https://proper-fun-404805c7d9.strapiapp.com/api/products/${documentId}`,
         {
           method: "PUT",
-          body: formData,
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
         }
       );
       const data = await res.json();
@@ -100,12 +103,16 @@ export default function ProductUpdateForm({ documentId }) {
   const handleMediaSelect = (selectedMedia) => {
     setMedia(selectedMedia); // Store the selected media object
   };
-  // const handleGalleryMediaSelect = (selectedMedia) => {
-  //   setGallery(selectedMedia); // Store the selected media object
-  // };
+
   const handleGalleryMediaSelect = (selectedMedia) => {
-    setGallery(selectedMedia); // Store the selected media objects
+    console.log("Selected Media for Gallery (Before Mapping):", selectedMedia);
+    if (!selectedMedia || !Array.isArray(selectedMedia)) {
+      console.error("Invalid media selection:", selectedMedia);
+      return;
+    }
+    setGallery(selectedMedia);
   };
+
   if (!existingData) {
     return <div>Loading...</div>;
   }
@@ -132,20 +139,12 @@ export default function ProductUpdateForm({ documentId }) {
 
         <div>
           <label>Gallery:</label>
-          {/* {gallery.map((media) => (
+          {/* {gallery?.map((media) => (
             <div key={media.id} className="relative">
-              {media.mime.startsWith("video/") ? (
-                <video
-                  src={`https://proper-fun-404805c7d9.strapiapp.com${media.url}`}
-                  controls
-                  className="w-32 h-32 object-cover"
-                />
-              ) : (
-                <img
-                  src={`https://proper-fun-404805c7d9.strapiapp.com${media.url}`}
-                  className="w-32 h-32 object-cover"
-                />
-              )}
+              <img
+                src={`https://proper-fun-404805c7d9.strapiapp.com${media.url}`}
+                className="w-32 h-32 object-cover"
+              />
               <p className="text-sm mt-2">{media.name}</p>
             </div>
           ))} */}
@@ -164,12 +163,6 @@ export default function ProductUpdateForm({ documentId }) {
 
         <div>
           <label className="block">Description</label>
-          {/* <textarea
-            name="Description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded"
-          /> */}
           <ClaraMarkdownRichEditor
             onChange={(value) => setDescription(value)}
             value={description || ""}
