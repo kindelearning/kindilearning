@@ -295,7 +295,7 @@ export default function ActivitiesPage() {
                   onClick={() => handleSort("SetUpTime")}
                   className="flex items-center"
                 >
-                  SetUp Time
+                  Set Up Time
                   {sortConfig.key === "SetUpTime" &&
                     (sortConfig.direction === "asc" ? " ↑" : " ↓")}
                 </button>
@@ -367,7 +367,7 @@ export default function ActivitiesPage() {
                 </TableCell>
                 <TableCell>{activity.LearningArea}</TableCell>
                 <TableCell>
-                  {new Date(activity.SetUpTime).toLocaleString()}
+                  {activity.SetUpTime}
                 </TableCell>
 
                 <TableCell>{activity.Accordions.length}</TableCell>
@@ -428,7 +428,6 @@ export default function ActivitiesPage() {
                     </DialogContent>
                   </Dialog>
                 </TableCell>
-                {/* <TableCell></TableCell> */}
               </TableRow>
             ))}
           </TableBody>
@@ -458,6 +457,7 @@ export default function ActivitiesPage() {
     </div>
   );
 }
+
 // export function EditActivityForm({ documentId }) {
 //   const [title, setTitle] = useState("");
 //   const [theme, setTheme] = useState("");

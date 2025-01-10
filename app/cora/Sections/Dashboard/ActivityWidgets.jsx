@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 
-
 const ActivityCard = ({ activity }) => {
   const {
     Title,
@@ -16,9 +15,12 @@ const ActivityCard = ({ activity }) => {
   } = activity;
 
   // Extract Skills text
-  const skillsText = Skills.map((skill) =>
-    skill.children.map((child) => child.text).join(" ")
-  ).join(", ");
+  const skillsText =
+    Skills.map((skill) =>
+      (skill.children || [])
+        .map((child) => child.text || "Unknown") // Fallback to "Unknown" if text is missing
+        .join(" ")
+    ).join(", ") || "No skills available"; // Fallback to "No skills available" if Skills is empty
 
   return (
     <div className="bg-white rounded-lg border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
