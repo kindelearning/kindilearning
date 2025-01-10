@@ -18,6 +18,8 @@ export default function ProfilePage() {
     email: "",
     profilepic: null,
   });
+  const [kidsData, setKidsData] = useState([]);
+  const [myLevels, setMyLevels] = useState(null);
 
   const router = useRouter();
 
@@ -38,6 +40,35 @@ export default function ProfilePage() {
           email: data.email,
           profilepic: data.profilepic?.url || "",
         });
+
+        // Fetch kids data
+        const kidsResponse = await fetch(
+          "https://proper-fun-404805c7d9.strapiapp.com/api/kids?populate=*"
+        );
+        const kidsData = await kidsResponse.json();
+        setKidsData(kidsData.data);
+
+        // Filter kids based on user data's myKids documentIds
+        if (data.myKids && data.myKids.length > 0) {
+          const kidDocumentIds = data.myKids.map((kid) => kid.documentId);
+
+          // Loop through kidsData and calculate lengths of 'myActivities'
+          let totalActivitiesLength = 0;
+
+          kidDocumentIds.forEach((kidId) => {
+            const kid = kidsData.data.find((k) => k.documentId === kidId);
+            if (kid) {
+              const activitiesLength = kid.myActivities.length;
+              console.log(
+                `Kid ${kid.Name} has ${activitiesLength} activities.`
+              );
+              totalActivitiesLength += activitiesLength;
+            }
+          });
+          setMyLevels(totalActivitiesLength);
+
+          console.log(`Total Activities Length: ${totalActivitiesLength}`);
+        }
       } catch (error) {
         console.error("Error fetching user data", error);
         router.push("/oAuth/signin"); // Redirect to login if there's an error fetching user data
@@ -49,7 +80,7 @@ export default function ProfilePage() {
     fetchData();
   }, [router]);
 
-  console.log('Fetched User Data', userData);
+  console.log("Fetched User Data", userData);
 
   if (loading) return <p>Loading...</p>;
 
@@ -68,7 +99,7 @@ export default function ProfilePage() {
         </div>
         {/* Profile Main Body */}
         <div className="claracontainer bg-[#F5F5F5] md:bg-[#EAEAF5] -mt-4 rounded-t-[12px] z-2 lg:m-12 px-4 py-6 rounded-xl md:px-2 lg:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-[20px]">
-          <TopProfileCard userData={userData} />
+          <TopProfileCard userData={userData} totalactitivuty={myLevels} />
           <QuickNavigation />
           <IndividualTabs userData={userData} />
           <LogoutButton />

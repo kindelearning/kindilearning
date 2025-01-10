@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import MyLevel from "./MyLevel";
 
-export default function TopProfileCard({ userData }) {
+export default function TopProfileCard({ userData, totalactitivuty }) {
   return (
     <>
       <div className="w-full flex bg-[white] rounded-[24px] gap-2 p-2 md:p-4 justify-start items-start lg:gap-[12px] lg:items-center">
@@ -90,10 +90,7 @@ export default function TopProfileCard({ userData }) {
           {/* Trigger for the Level Popup and Edit on Mobile, hidden after mobile */}
           <div className="flex flex-col w-full gap-1 items-start justify-start">
             <div className="flex flex-row w-full justify-start items-center gap-2">
-              {/* {user && hygraphUser ? (
-                    <MyLevel userID={hygraphUser.id} />
-                  ) : null} */}
-              <MyLevel />
+              <MyLevel totalActivities={totalactitivuty} />
             </div>
           </div>
         </div>

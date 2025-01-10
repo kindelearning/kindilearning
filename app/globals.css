@@ -121,6 +121,24 @@
   .claracontainer {
     width: 100%;
   }
+  /* Add this CSS to global.css */
+  @keyframes water-slide {
+    0% {
+      background-position: -100%;
+    }
+    50% {
+      background-position: 100%;
+    }
+    100% {
+      background-position: -100%;
+    }
+  }
+
+  .animate-water-slide {
+    animation: water-slide 3s infinite linear;
+    background-size: 200% 100%;
+    background-image: linear-gradient(to right, #ff4444, #ff7777, #ff0000);
+  }
 
   .milestone-dot {
     width: 16px;

@@ -190,11 +190,11 @@ export default function ActivitiesPage() {
         ></Link> */}
         <Dialog>
           <DialogTrigger>Create New Activity</DialogTrigger>
-          <DialogContent>
+          <DialogContent className="max-w-[1000px] max-h-[600px] overflow-y-scroll">
             <DialogHeader>
               <DialogTitle>Are you absolutely sure?</DialogTitle>
               <DialogDescription>
-              <CreateActivityForm />
+                <CreateActivityForm />
               </DialogDescription>
             </DialogHeader>
           </DialogContent>
@@ -458,7 +458,7 @@ export default function ActivitiesPage() {
     </div>
   );
 }
-// export function EditActivityForm2({ documentId }) {
+// export function EditActivityForm({ documentId }) {
 //   const [title, setTitle] = useState("");
 //   const [theme, setTheme] = useState("");
 //   const [focusAge, setFocusAge] = useState("");
@@ -735,6 +735,7 @@ export function EditActivityForm({ documentId }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  console.log("Accordions Data", accordions);
   // Fetch existing data
   useEffect(() => {
     let isMounted = true;
@@ -803,17 +804,18 @@ export function EditActivityForm({ documentId }) {
         Gallery: media ? [{ id: media.id }] : [], // Media array (ensure it's an array of objects with `id`)
         Resources: resourceMedia ? [{ id: resourceMedia.id }] : [], // Media array (ensure it's an array of objects with `id`)
         Accordions: accordions.map((accordion) => ({
-          Question: accordion.question, // Text
-          Answer: accordion.answer, // Rich text (Markdown)
-        })), // Repeatable Component
+          Question: accordion.question,
+          Answer: accordion.answer,
+        })),
         SetUpTime: setUpTime, // Text
         SkillCategory: skillCategory, // Text
       },
     };
 
+    console.log("Payload created", payload);
     try {
       const res = await fetch(
-        `https://proper-fun-404805c7d9.strapiapp.com/api/activities/${documentId}`,
+        `https://proper-fun-404805c7d9.strapiapp.com/api/activities/${documentId}?populate=*`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -1075,9 +1077,9 @@ export function CreateActivityForm() {
       Resources: resourceMedia ? [{ id: resourceMedia.id }] : [], // Media array
       Skills: skills, // Rich Text (JSON or string)
       Accordions: accordions.map((accordion) => ({
-        Question: accordion.question, // Text
-        Answer: accordion.answer, // Rich text (Markdown)
-      })), // Repeatable Component
+        Question: accordion.question,
+        Answer: accordion.answer,
+      })),
       SetUpTime: setUpTime, // Text
       SkillCategory: skillCategory, // Text
     };
@@ -1085,18 +1087,16 @@ export function CreateActivityForm() {
     console.log("New Activity data", newActivity);
 
     try {
-      const response = await fetch(
-        "https://proper-fun-404805c7d9.strapiapp.com/api/activities",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ data: newActivity }),
-        }
-      );
+      const response = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/activities", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ data: newActivity }),
+      });
 
       const responseData = await response.json();
+      console.log("ResponseData", responseData);
 
       if (response.ok) {
         setDialogMessage("Activity created successfully!");
