@@ -415,7 +415,6 @@ export default function ActivitiesPage() {
                         <DialogDescription>
                           {/* <EditActivityForm documentId={activity.documentId} /> */}
                           import ClaraMarkdownRichEditor from
-                          "../../Sections/TextEditor/ClaraMarkdownRichEditor";
                         </DialogDescription>
                       </DialogHeader>
                     </DialogContent>
