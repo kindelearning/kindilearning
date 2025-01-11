@@ -21,9 +21,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
-import { ThemeDummy } from "@/public/Images";
+
 // import CreateActivityForm from "./CreateActivityForm";
 // import EditActivityForm from "./EditActivityForm";
 
@@ -335,9 +333,9 @@ export default function ActivitiesPage() {
                         />
                       ))
                     ) : (
-                      <Image
+                      <img
                         key={index}
-                        src={ThemeDummy}
+                        src="/Images/ThemeDummy.png"
                         alt={`Gallery ${index}`}
                         className="min-w-16 rounded-md h-16 object-cover"
                       />
@@ -390,18 +388,18 @@ export default function ActivitiesPage() {
                         </DialogDescription>
                       </DialogHeader>
                       <DialogFooter>
-                        <Button
+                        <button
                           variant="outline"
                           onClick={() => console.log("Cancel")}
                         >
                           Cancel
-                        </Button>
-                        <Button
+                        </button>
+                        <button
                           variant="destructive"
                           onClick={() => handleDelete(activity.documentId)}
                         >
                           Delete
-                        </Button>
+                        </button>
                       </DialogFooter>
                     </DialogContent>
                   </Dialog>
