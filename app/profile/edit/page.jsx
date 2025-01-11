@@ -585,7 +585,7 @@ export function UpdateRawProfile() {
               <label className="block text-[#757575] text-[10px] lg:text-[14px] px-3 font-fredoka">
                 Username{" "}
                 <span className="text-red text-[12px]">
-                  (Can't Update Username)
+                  (Can&apos;t Update Username)
                 </span>
               </label>
               <Input
@@ -602,7 +602,7 @@ export function UpdateRawProfile() {
               <label className="block text-[#757575] text-[10px] lg:text-[14px] px-3 font-fredoka">
                 Email{" "}
                 <span className="text-red text-[12px]">
-                  (Can't Update Email)
+                  (Can&apos;t Update Email)
                 </span>{" "}
               </label>
               <Input

@@ -553,14 +553,14 @@ export function EditActivityForm({ documentId }) {
     const filteredSkillsData = skillsData.filter((_, index) => index % 2 === 0);
 
     // Prepare Gallery correctly by mapping the selected media
-    const galleryPayload =
-      media && Array.isArray(media)
-        ? media.map((item) => ({ id: item.id })) // If media is an array, use its `id`
-        : media
-        ? [{ id: media.id }] // If it's a single object, just wrap it in an array
-        : [];
+    // const galleryPayload =
+    //   media && Array.isArray(media)
+    //     ? media.map((item) => ({ id: item.id })) // If media is an array, use its `id`
+    //     : media
+    //     ? [{ id: media.id }] // If it's a single object, just wrap it in an array
+    //     : [];
 
-    const mediaPayload = media.map((item) => ({ id: item.id })); // Or just use `media.id` if it's a single item
+    // const mediaPayload = media.map((item) => ({ id: item.id })); // Or just use `media.id` if it's a single item
 
     const payload = {
       data: {
@@ -572,7 +572,7 @@ export function EditActivityForm({ documentId }) {
         SetUpTime: setUpTime,
         LearningArea: learningArea,
         isPopular: isPopular,
-        Gallery: mediaPayload,
+        Gallery: media ? media.id : null,
         Accordions: prepareAccordionsPayload(),
       },
     };
@@ -636,8 +636,7 @@ export function EditActivityForm({ documentId }) {
           <label htmlFor="Gallery" className="block">
             Gallery
           </label>
-          <MultiMediaSelector 
-            selectedMedia={media} // Pass the current selected media
+          <MediaSelector
             onMediaSelect={handleMediaChange} // Update the state when user selects media
           />
         </div>
