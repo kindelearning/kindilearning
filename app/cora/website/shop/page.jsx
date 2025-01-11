@@ -253,7 +253,16 @@ export default function ShopPage() {
                       <TableCell>{product.documentId}</TableCell>
                       <TableCell>{product.Name}</TableCell>
                       <TableCell>
-                        {product.Description.slice(0, 100)}...
+                        {product.Description ? (
+                          <span
+                            dangerouslySetInnerHTML={{
+                              __html: product.Description.slice(0, 100),
+                            }}
+                          />
+                        ) : (
+                          <p>No description availble</p>
+                        )}
+                        ...
                       </TableCell>
                       <TableCell>${product.Price || "N/A"}</TableCell>
                       <TableCell>${product.DiscountPrice || "N/A"}</TableCell>
@@ -309,7 +318,9 @@ export default function ShopPage() {
                             </DialogHeader>
                             <DialogFooter>
                               <Button
-                                onClick={() => deleteProduct(product.documentId)}
+                                onClick={() =>
+                                  deleteProduct(product.documentId)
+                                }
                                 className="bg-red text-white"
                               >
                                 Confirm Delete

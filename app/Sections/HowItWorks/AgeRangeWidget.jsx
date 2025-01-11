@@ -19,11 +19,21 @@ const AgeCard = ({ bgImage, image, title, body, link }) => {
         className="w-full  min-h-[390px] overflow-clip h-[390px] border-t-2 border-b-2 min-w-[280px]  flex flex-col bg-[#ffffff00] rounded-[24px] justify-between items-start px-8 py-4"
       >
         <div className="flex w-full items-center justify-start flex-col">
-          <img
-            alt="Kindi"
-            src={image || AgeCardOne}
-            className="w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24"
-          />
+          {image ? (
+            <img
+              alt="Kindi"
+              src={image}
+              className="w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24"
+            />
+          ) : (
+            <Image
+              width={64}
+              height={64}
+              className="w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24"
+              alt="Kindi"
+              src={AgeCardOne}
+            />
+          )}
           <h2 className="text-[#0a1932] w-full text-[18px] font-semibold font-fredoka text-start leading-[20px] mt-4">
             {title || "title"}
           </h2>

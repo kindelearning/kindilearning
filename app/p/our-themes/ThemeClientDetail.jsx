@@ -69,26 +69,36 @@ export default function ThemeClientDetail({
   return (
     <>
       <head>
-        <title>{Title}</title>
+        <title>Kindi Theme</title>
       </head>
       <section className="w-full h-auto py-0 lg:py-12 bg-[#EAEAF5] items-center justify-center pb-24 flex flex-col gap-[20px]">
         <div className="flex overflow-clip lg:rounded-xl lg:max-w-[960px] w-full">
-          <img
-            width={1400}
-            height={600}
-            src={Thumbnail?.url}
-            // src={`https://upbeat-life-04fe8098b1.strapiapp.com${Thumbnail?.url}`}
-            alt={Title}
-            className="w-full hover:scale-105 duration-300 lg:max-w-[960px] lg:rounded-xl h-60 md:h-[400px] lg:h-[400px] object-cover"
-          />
+          {Thumbnail?.url ? (
+            <img
+              width={1400}
+              height={600}
+              src={Thumbnail?.url}
+              // src={`https://upbeat-life-04fe8098b1.strapiapp.com${Thumbnail?.url}`}
+              alt={Title}
+              className="w-full hover:scale-105 duration-300 lg:max-w-[960px] lg:rounded-xl h-60 md:h-[400px] lg:h-[400px] object-cover"
+            />
+          ) : (
+            <Image
+              width={1400}
+              height={600}
+              src={ThemeDummy}
+              alt={Title}
+              className="w-full hover:scale-105 duration-300 lg:max-w-[960px] lg:rounded-xl h-60 md:h-[400px] lg:h-[400px] object-cover"
+            />
+          )}
         </div>
         <div className="claracontainer p-4 md:p-2 lg:p-4 w-full flex flex-col overflow-hidden gap-8">
           <div className="w-full mx-auto flex flex-col gap-4 justify-start items-start">
             <h2 className="text-[#3f3a64] w-full claraheading text-start">
-              {Title}
+              {Title || "Default Title"}
             </h2>
             <p className=" text-[#0a1932] text-start clarabodyTwo">
-              {metaDesc}
+              {metaDesc || "meta Desc "}
             </p>
           </div>
           <div className="grid grid-cols-1  pb-12 gap-8">
@@ -97,7 +107,7 @@ export default function ThemeClientDetail({
                 About the theme
               </h3>
               <div className="w-full text-[#757575] text-[20px] font-medium font-fredoka leading-[24px]">
-                {MainContent}
+                {MainContent || "Meta Content"}
               </div>
             </div>
           </div>

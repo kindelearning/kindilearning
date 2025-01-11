@@ -25,13 +25,23 @@ export default function ProductCard({ image, title, productUrl, price }) {
       className="flex min-w-[190px] lg:min-w-[280px] lg:max-w-full xl:min-w-[280px] xl:max-w-full  max-w-[176px] md:min-w-full lg:w-full w-full flex-col rounded-[24px] lg:rounded-[24px] items-center gap-2 lg:gap-4 bg-white hover:shadow-md"
     >
       <div className="flex rounded-t-[24px] overflow-clip w-full">
-        <img
-          src={image || ProductImage}
-          alt={title}
-          width={200}
-          height={200}
-          className="w-full hover:scale-110 duration-300 md:min-w-[200px] h-full min-h-[148px] max-h-[148px] md:h-[260px] lg:max-h-[200px] rounded-t-[12px] object-cover"
-        />
+        {image ? (
+          <img
+            src={image}
+            alt={title}
+            width={200}
+            height={200}
+            className="w-full hover:scale-110 duration-300 md:min-w-[200px] h-full min-h-[148px] max-h-[148px] md:h-[260px] lg:max-h-[200px] rounded-t-[12px] object-cover"
+          />
+        ) : (
+          <Image
+            src={ProductImage}
+            alt={title}
+            width={200}
+            height={200}
+            className="w-full hover:scale-110 duration-300 md:min-w-[200px] h-full min-h-[148px] max-h-[148px] md:h-[260px] lg:max-h-[200px] rounded-t-[12px] object-cover"
+          />
+        )}
       </div>
       <div className="claracontainer flex flex-col justify-start items-center w-full gap-2">
         <div className="flex items-center  px-4 w-full justify-between gap-2">

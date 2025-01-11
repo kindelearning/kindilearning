@@ -1,4 +1,5 @@
 import { ThemeDummy } from "@/public/Images";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 
 async function fetchThemeById(documentId) {
@@ -11,7 +12,7 @@ async function fetchThemeById(documentId) {
 
   return data.data;
 }
- 
+
 export default async function ThemePage({ params }) {
   const { id } = params;
   const themeData = await fetchThemeById(id);
@@ -27,26 +28,33 @@ export default async function ThemePage({ params }) {
     <>
       <section className="w-full h-auto py-0 lg:py-12 bg-[#EAEAF5] items-center justify-center pb-24 flex flex-col gap-[20px]">
         <div className="flex overflow-clip lg:rounded-xl lg:max-w-[960px] w-full">
-          <img
-            width={1400}
-            height={600}
-            // src={`https://upbeat-life-04fe8098b1.strapiapp.com${Thumbnail?.url}`}
-            src={
-              Thumbnail?.url
-                ? `https://upbeat-life-04fe8098b1.strapiapp.com${Thumbnail.url}`
-                : ThemeDummy
-            }
-            alt={`Thumbnail for ${Title}`}
-            className="w-full hover:scale-105 duration-300 lg:max-w-[960px] lg:rounded-xl h-60 md:h-[400px] lg:h-[400px] object-cover"
-          />
+          {Thumbnail.url ? (
+            <img
+              width={1400}
+              height={600}
+              // src={`https://upbeat-life-04fe8098b1.strapiapp.com${Thumbnail?.url}`}
+              src={Thumbnail?.url}
+              alt={`Thumbnail for ${Title}`}
+              className="w-full hover:scale-105 duration-300 lg:max-w-[960px] lg:rounded-xl h-60 md:h-[400px] lg:h-[400px] object-cover"
+            />
+          ) : (
+            <Image
+              width={1400}
+              height={600}
+              // src={`https://upbeat-life-04fe8098b1.strapiapp.com${Thumbnail?.url}`}
+              src={ThemeDummy}
+              alt={`Thumbnail for ${Title}`}
+              className="w-full hover:scale-105 duration-300 lg:max-w-[960px] lg:rounded-xl h-60 md:h-[400px] lg:h-[400px] object-cover"
+            />
+          )}
         </div>
         <div className="claracontainer p-4 md:p-2 lg:p-4 w-full flex flex-col overflow-hidden gap-8">
           <div className="w-full mx-auto flex flex-col gap-4 justify-start items-start">
             <h2 className="text-[#3f3a64] w-full claraheading text-start">
-              {Title}
+              {Title || " Default Title"}
             </h2>
             <p className=" text-[#0a1932] text-start clarabodyTwo">
-              {metaDesc}
+              {metaDesc || " Default metaDesc"}
             </p>
           </div>
 
@@ -56,7 +64,7 @@ export default async function ThemePage({ params }) {
                 About the theme
               </h3>
               <div className="w-full text-[#757575] text-[20px] font-medium font-fredoka leading-[24px]">
-                {MainContent}
+                {MainContent || "  MainContent"}
               </div>
             </div>
           </div>
