@@ -125,8 +125,8 @@ export default function ProductUpdateForm({ documentId }) {
           {media ? (
             <div className="mt-4">
               <img
-                // src={media.url}
-                src={`https://upbeat-life-04fe8098b1.strapiapp.com${media.url}`}
+                src={media.url}
+                // src={`https://upbeat-life-04fe8098b1.strapiapp.com${media.url}`}
                 className="w-32 h-32 object-cover"
               />
               <p>{media.name}</p>

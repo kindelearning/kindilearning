@@ -35,6 +35,7 @@ import {
   CreditCard,
   InfoIcon,
   LucideFileText,
+  EyeIcon,
 } from "lucide-react";
 import { useState } from "react";
 import { AppStore, KindiVector } from "@/public/Images";
@@ -256,6 +257,12 @@ export default function Sidebar() {
           isCollapsed={isCollapsed}
         />
       </div>
+      <SidebarLink
+          href="/"
+          icon={<EyeIcon />} // User icon for user management
+          label="Live Website"
+          isCollapsed={isCollapsed}
+        />
     </div>
   );
 }

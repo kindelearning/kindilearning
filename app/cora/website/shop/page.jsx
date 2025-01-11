@@ -24,6 +24,8 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import ProductUpdateForm from "./update/page";
+import Image from "next/image";
+import { ProductImage } from "@/public/Images";
 
 export default function ShopPage() {
   const [products, setProducts] = useState([]);
@@ -230,6 +232,7 @@ export default function ShopPage() {
               <TableHeader>
                 <TableRow>
                   <TableHead className="w-[max-content]">Sr. No</TableHead>
+                  <TableHead>Thumbnail</TableHead>
                   <TableHead>DocumentId</TableHead>
                   <TableHead>Name</TableHead>
                   <TableHead>Description</TableHead>
@@ -250,6 +253,21 @@ export default function ShopPage() {
                   filteredProducts.map((product, index) => (
                     <TableRow key={product.documentId}>
                       <TableCell>{(page - 1) * pageSize + index + 1}</TableCell>
+                      <TableCell>
+                        {product.FeaturedImage?.url ? (
+                          <img
+                            className="w-16 h-16 rounded-full"
+                            src={product.FeaturedImage?.url}
+                            alt={product.Name}
+                          />
+                        ) : (
+                          <Image
+                            className="w-16 h-16 rounded-full"
+                            alt="{product.Name}"
+                            src={ProductImage}
+                          />
+                        )}
+                      </TableCell>
                       <TableCell>{product.documentId}</TableCell>
                       <TableCell>{product.Name}</TableCell>
                       <TableCell>
