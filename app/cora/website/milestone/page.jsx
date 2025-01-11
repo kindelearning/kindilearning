@@ -812,6 +812,29 @@ export function CreateMilestoneForm() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [dialogMessage, setDialogMessage] = useState("");
   const [dialogType, setDialogType] = useState("success"); // To distinguish between success/error messages
+  const [relatedUsers, setRelatedUsers] = useState([]); // State for storing selected user IDs
+
+  const [userList, setUserList] = useState([]); // State for storing fetched users
+
+  useEffect(() => {
+    // Fetching users from the provided endpoint
+    const fetchUsers = async () => {
+      try {
+        const response = await fetch(
+          "https://proper-fun-404805c7d9.strapiapp.com/api/users?populate=*"
+        );
+        const data = await response.json();
+        setUserList(data); // Save the list of users
+        // Set the default value for relatedUsers to include all user IDs
+        const allUserIds = data.map((user) => user.id);
+        setRelatedUsers(allUserIds);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+
+    fetchUsers();
+  }, []);
 
   // Handle form submission
   const handleSubmit = async (e) => {
@@ -823,6 +846,7 @@ export function CreateMilestoneForm() {
       SubCategory: subCategory,
       Description: description,
       Thumbnail: media?.id || null, // Use media ID if selected
+      users: relatedUsers.map((id) => ({ id })),
     };
 
     console.log("New milestones data", newMilestone);
@@ -938,7 +962,7 @@ export function CreateMilestoneForm() {
         </div>
 
         <button type="submit" className="px-4 py-2 bg-black text-white rounded">
-          Create Badge
+          Create Milestone
         </button>
       </form>
 

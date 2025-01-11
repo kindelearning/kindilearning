@@ -825,324 +825,345 @@ export function EditActivityForm({ documentId }) {
   );
 }
 
-export function EditActivityForm2({ documentId }) {
-  const [title, setTitle] = useState("");
-  const [theme, setTheme] = useState("");
-  const [focusAge, setFocusAge] = useState("");
-  const [learningArea, setLearningArea] = useState("");
-  const [activityDate, setActivityDate] = useState("");
-  const [skillCategory, setSkillCategory] = useState("");
-  const [setUpTime, setSetUpTime] = useState("");
-  const [media, setMedia] = useState(null);
-  const [resourceMedia, setResourceMedia] = useState(null);
-  const [accordions, setAccordions] = useState([]);
-  const [openDialog, setOpenDialog] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+// export function EditActivityForm2({ documentId }) {
+//   const [title, setTitle] = useState("");
+//   const [theme, setTheme] = useState("");
+//   const [focusAge, setFocusAge] = useState("");
+//   const [learningArea, setLearningArea] = useState("");
+//   const [activityDate, setActivityDate] = useState("");
+//   const [skillCategory, setSkillCategory] = useState("");
+//   const [setUpTime, setSetUpTime] = useState("");
+//   const [media, setMedia] = useState(null);
+//   const [resourceMedia, setResourceMedia] = useState(null);
+//   const [accordions, setAccordions] = useState([]);
+//   const [openDialog, setOpenDialog] = useState(false);
+//   const [loading, setLoading] = useState(false);
+//   const [error, setError] = useState("");
 
-  console.log("Accordions Data", accordions);
-  // Fetch existing data
-  useEffect(() => {
-    let isMounted = true;
-    setLoading(true);
-    const fetchContentData = async () => {
-      try {
-        const res = await fetch(
-          `https://proper-fun-404805c7d9.strapiapp.com/api/activities/${documentId}?populate=*`
-        );
-        const data = await res.json();
+//   console.log("Accordions Data", accordions);
+//   // Fetch existing data
+//   useEffect(() => {
+//     let isMounted = true;
+//     setLoading(true);
+//     const fetchContentData = async () => {
+//       try {
+//         const res = await fetch(
+//           `https://proper-fun-404805c7d9.strapiapp.com/api/activities/${documentId}?populate=*`
+//         );
+//         const data = await res.json();
 
-        if (isMounted) {
-          const content = data.data;
-          setTitle(content?.Title || "");
-          setTheme(content?.Theme || "");
-          setFocusAge(content?.FocusAge || "");
-          setActivityDate(content?.ActivityDate || "");
-          setLearningArea(content?.LearningArea || "");
-          setSetUpTime(content?.SetUpTime || "");
-          setSkillCategory(content?.SkillCategory || "");
-          setAccordions(content?.Accordions || []);
-          setMedia(
-            content?.Gallery?.id
-              ? {
-                  id: content.Gallery.id,
-                  url: content.Gallery.url,
-                  name: content.Gallery.name,
-                }
-              : null
-          );
-          setResourceMedia(
-            content?.Resources?.id
-              ? {
-                  id: content.Resources.id,
-                  url: content.Resources.url,
-                  name: content.Resources.name,
-                }
-              : null
-          );
-        }
-      } catch (err) {
-        console.error("Error fetching content data:", err);
-        if (isMounted) setError("Error fetching content");
-      } finally {
-        if (isMounted) setLoading(false);
-      }
-    };
+//         if (isMounted) {
+//           const content = data.data;
+//           setTitle(content?.Title || "");
+//           setTheme(content?.Theme || "");
+//           setFocusAge(content?.FocusAge || "");
+//           setActivityDate(content?.ActivityDate || "");
+//           setLearningArea(content?.LearningArea || "");
+//           setSetUpTime(content?.SetUpTime || "");
+//           setSkillCategory(content?.SkillCategory || "");
+//           setAccordions(content?.Accordions || []);
+//           setMedia(
+//             content?.Gallery?.id
+//               ? {
+//                   id: content.Gallery.id,
+//                   url: content.Gallery.url,
+//                   name: content.Gallery.name,
+//                 }
+//               : null
+//           );
+//           setResourceMedia(
+//             content?.Resources?.id
+//               ? {
+//                   id: content.Resources.id,
+//                   url: content.Resources.url,
+//                   name: content.Resources.name,
+//                 }
+//               : null
+//           );
+//         }
+//       } catch (err) {
+//         console.error("Error fetching content data:", err);
+//         if (isMounted) setError("Error fetching content");
+//       } finally {
+//         if (isMounted) setLoading(false);
+//       }
+//     };
 
-    fetchContentData();
-    return () => {
-      isMounted = false;
-    };
-  }, [documentId]);
+//     fetchContentData();
+//     return () => {
+//       isMounted = false;
+//     };
+//   }, [documentId]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     setLoading(true);
 
-    const payload = {
-      data: {
-        Title: title, // Text
-        Theme: theme, // Text
-        FocusAge: focusAge, // Text
-        ActivityDate: activityDate, // Date in 'YYYY-MM-DD' format
-        LearningArea: learningArea, // Enumeration (ensure the value matches allowed options in Strapi)
-        Gallery: media ? [{ id: media.id }] : [], // Media array (ensure it's an array of objects with `id`)
-        Resources: resourceMedia ? [{ id: resourceMedia.id }] : [], // Media array (ensure it's an array of objects with `id`)
-        Accordions: accordions.map((accordion) => ({
-          Question: accordion.question,
-          Answer: accordion.answer,
-        })),
-        SetUpTime: setUpTime, // Text
-        SkillCategory: skillCategory, // Text
-      },
-    };
+//     const payload = {
+//       data: {
+//         Title: title, // Text
+//         Theme: theme, // Text
+//         FocusAge: focusAge, // Text
+//         ActivityDate: activityDate, // Date in 'YYYY-MM-DD' format
+//         LearningArea: learningArea, // Enumeration (ensure the value matches allowed options in Strapi)
+//         Gallery: media ? [{ id: media.id }] : [], // Media array (ensure it's an array of objects with `id`)
+//         Resources: resourceMedia ? [{ id: resourceMedia.id }] : [], // Media array (ensure it's an array of objects with `id`)
+//         Accordions: accordions.map((accordion) => ({
+//           Question: accordion.question,
+//           Answer: accordion.answer,
+//         })),
+//         SetUpTime: setUpTime, // Text
+//         SkillCategory: skillCategory, // Text
+//       },
+//     };
 
-    console.log("Payload created", payload);
-    try {
-      const res = await fetch(
-        `https://proper-fun-404805c7d9.strapiapp.com/api/activities/${documentId}?populate=*`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        }
-      );
+//     console.log("Payload created", payload);
+//     try {
+//       const res = await fetch(
+//         `https://proper-fun-404805c7d9.strapiapp.com/api/activities/${documentId}?populate=*`,
+//         {
+//           method: "PUT",
+//           headers: { "Content-Type": "application/json" },
+//           body: JSON.stringify(payload),
+//         }
+//       );
 
-      if (!res.ok) {
-        throw new Error("Failed to update content.");
-      }
+//       if (!res.ok) {
+//         throw new Error("Failed to update content.");
+//       }
 
-      const data = await res.json();
-      console.log("Updated activities Content:", data);
-      setOpenDialog(true);
-    } catch (err) {
-      console.error("Error updating content:", err);
-      setError("Error updating content.");
-    } finally {
-      setLoading(false);
-    }
-  };
+//       const data = await res.json();
+//       console.log("Updated activities Content:", data);
+//       setOpenDialog(true);
+//     } catch (err) {
+//       console.error("Error updating content:", err);
+//       setError("Error updating content.");
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
 
-  const handleMediaSelect = (selectedMedia) => {
-    setMedia(selectedMedia);
-  };
-  const handleResourceMediaSelect = (selectedMedia) => {
-    setResourceMedia(selectedMedia);
-  };
+//   const handleMediaSelect = (selectedMedia) => {
+//     setMedia(selectedMedia);
+//   };
+//   const handleResourceMediaSelect = (selectedMedia) => {
+//     setResourceMedia(selectedMedia);
+//   };
 
-  return (
-    <div className="p-8">
-      <h1 className="text-2xl font-bold mb-6">Edit Activity</h1>
-      {loading && <p>Loading...</p>}
-      {error && <p className="text-red-500">{error}</p>}
+//   return (
+//     <div className="p-8">
+//       <h1 className="text-2xl font-bold mb-6">Edit Activity</h1>
+//       {loading && <p>Loading...</p>}
+//       {error && <p className="text-red-500">{error}</p>}
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Form Fields */}
-        <InputField
-          label="Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-        <InputField
-          label="Theme"
-          value={theme}
-          onChange={(e) => setTheme(e.target.value)}
-        />
-        <InputField
-          label="Focus Age"
-          value={focusAge}
-          onChange={(e) => setFocusAge(e.target.value)}
-        />
-        <SelectField
-          label="Learning Area"
-          value={learningArea}
-          options={[
-            "Emotional & Social Strength",
-            "Confidence & Independence",
-            "Speech & Language",
-            "Physical Agility",
-            "Reading & Writing",
-            "Discovering Our World",
-            "Creativity & Imagination",
-            "Experiments & Math",
-          ]}
-          onChange={(e) => setLearningArea(e.target.value)}
-        />
-        <InputField
-          type="date"
-          label="Activity Date"
-          value={activityDate}
-          onChange={(e) => setActivityDate(e.target.value)}
-        />
-        <InputField
-          label="SetUp Time"
-          value={setSetUpTime}
-          onChange={(e) => setSetUpTime(e.target.value)}
-        />
-        <InputField
-          label="Skill Category"
-          value={skillCategory}
-          onChange={(e) => setSkillCategory(e.target.value)}
-        />
+//       <form onSubmit={handleSubmit} className="space-y-4">
+//         {/* Form Fields */}
+//         <InputField
+//           label="Title"
+//           value={title}
+//           onChange={(e) => setTitle(e.target.value)}
+//         />
+//         <InputField
+//           label="Theme"
+//           value={theme}
+//           onChange={(e) => setTheme(e.target.value)}
+//         />
+//         <InputField
+//           label="Focus Age"
+//           value={focusAge}
+//           onChange={(e) => setFocusAge(e.target.value)}
+//         />
+//         <SelectField
+//           label="Learning Area"
+//           value={learningArea}
+//           options={[
+//             "Emotional & Social Strength",
+//             "Confidence & Independence",
+//             "Speech & Language",
+//             "Physical Agility",
+//             "Reading & Writing",
+//             "Discovering Our World",
+//             "Creativity & Imagination",
+//             "Experiments & Math",
+//           ]}
+//           onChange={(e) => setLearningArea(e.target.value)}
+//         />
+//         <InputField
+//           type="date"
+//           label="Activity Date"
+//           value={activityDate}
+//           onChange={(e) => setActivityDate(e.target.value)}
+//         />
+//         <InputField
+//           label="SetUp Time"
+//           value={setSetUpTime}
+//           onChange={(e) => setSetUpTime(e.target.value)}
+//         />
+//         <InputField
+//           label="Skill Category"
+//           value={skillCategory}
+//           onChange={(e) => setSkillCategory(e.target.value)}
+//         />
 
-        {/* Media Selector */}
-        <div>
-          <label>Media:</label>
-          {media ? (
-            <div className="mt-4">
-              <img src={media.url} className="w-32 h-32 object-cover" />
-              <p>{media.name}</p>
-            </div>
-          ) : (
-            <p>Not selected</p>
-          )}
-          <MediaSelector onMediaSelect={handleMediaSelect} />
-        </div>
-        {/* Resource Selector */}
-        <div>
-          <label>Resource Selector:</label>
-          {resourceMedia ? (
-            <div className="mt-4">
-              <img src={resourceMedia.url} className="w-32 h-32 object-cover" />
-              <p>{resourceMedia.name}</p>
-            </div>
-          ) : (
-            <p>Not selected</p>
-          )}
-          <MediaSelector onMediaSelect={handleResourceMediaSelect} />
-        </div>
+//         {/* Media Selector */}
+//         <div>
+//           <label>Media:</label>
+//           {media ? (
+//             <div className="mt-4">
+//               <img src={media.url} className="w-32 h-32 object-cover" />
+//               <p>{media.name}</p>
+//             </div>
+//           ) : (
+//             <p>Not selected</p>
+//           )}
+//           <MediaSelector onMediaSelect={handleMediaSelect} />
+//         </div>
+//         {/* Resource Selector */}
+//         <div>
+//           <label>Resource Selector:</label>
+//           {resourceMedia ? (
+//             <div className="mt-4">
+//               <img src={resourceMedia.url} className="w-32 h-32 object-cover" />
+//               <p>{resourceMedia.name}</p>
+//             </div>
+//           ) : (
+//             <p>Not selected</p>
+//           )}
+//           <MediaSelector onMediaSelect={handleResourceMediaSelect} />
+//         </div>
 
-        {/* Accordion Section */}
-        <AccordionSection
-          accordions={accordions}
-          setAccordions={setAccordions}
-        />
+//         {/* Accordion Section */}
+//         <AccordionSection
+//           accordions={accordions}
+//           setAccordions={setAccordions}
+//         />
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="px-4 py-2 bg-red text-white rounded"
-        >
-          Update Activity
-        </button>
-      </form>
+//         <button
+//           type="submit"
+//           disabled={loading}
+//           className="px-4 py-2 bg-red text-white rounded"
+//         >
+//           Update Activity
+//         </button>
+//       </form>
 
-      {/* Success Dialog */}
-      <Dialog open={openDialog} onOpenChange={setOpenDialog}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Success!</DialogTitle>
-          </DialogHeader>
-          <DialogDescription>
-            Your content has been successfully updated.
-          </DialogDescription>
-          <DialogFooter>
-            <DialogClose asChild>
-              <button className="bg-blue-500 text-white px-4 py-2 rounded-md">
-                Close
-              </button>
-            </DialogClose>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-    </div>
-  );
-}
+//       {/* Success Dialog */}
+//       <Dialog open={openDialog} onOpenChange={setOpenDialog}>
+//         <DialogContent>
+//           <DialogHeader>
+//             <DialogTitle>Success!</DialogTitle>
+//           </DialogHeader>
+//           <DialogDescription>
+//             Your content has been successfully updated.
+//           </DialogDescription>
+//           <DialogFooter>
+//             <DialogClose asChild>
+//               <button className="bg-blue-500 text-white px-4 py-2 rounded-md">
+//                 Close
+//               </button>
+//             </DialogClose>
+//           </DialogFooter>
+//         </DialogContent>
+//       </Dialog>
+//     </div>
+//   );
+// }
 
-export const InputField = ({ label, type = "text", value, onChange }) => (
-  <div>
-    <label className="block">{label}</label>
-    <input
-      type={type}
-      value={value}
-      onChange={onChange}
-      className="border p-2 w-full"
-    />
-  </div>
-);
+// const InputField = ({ label, type = "text", value, onChange }) => (
+//   <div>
+//     <label className="block">{label}</label>
+//     <input
+//       type={type}
+//       value={value}
+//       onChange={onChange}
+//       className="border p-2 w-full"
+//     />
+//   </div>
+// );
 
-export const SelectField = ({ label, value, options, onChange }) => (
-  <div>
-    <label className="block">{label}</label>
-    <select value={value} onChange={onChange} className="border p-2 w-full">
-      <option value="" disabled>
-        Select {label}
-      </option>
-      {options.map((option) => (
-        <option key={option} value={option}>
-          {option}
-        </option>
-      ))}
-    </select>
-  </div>
-);
+// const SelectField = ({ label, value, options, onChange }) => (
+//   <div>
+//     <label className="block">{label}</label>
+//     <select value={value} onChange={onChange} className="border p-2 w-full">
+//       <option value="" disabled>
+//         Select {label}
+//       </option>
+//       {options.map((option) => (
+//         <option key={option} value={option}>
+//           {option}
+//         </option>
+//       ))}
+//     </select>
+//   </div>
+// );
 
-export const AccordionSection = ({ accordions, setAccordions }) => (
-  <div>
-    <h3 className="font-bold mb-2">Accordions</h3>
-    {accordions.map((accordion, index) => (
-      <div key={index} className="mb-4">
-        <InputField
-          label="Question"
-          value={accordion.Question}
-          onChange={(e) => {
-            const updated = [...accordions];
-            updated[index].Question = e.target.value;
-            setAccordions(updated);
-          }}
-        />
-        <InputField
-          label="Answer"
-          type="textarea"
-          value={accordion.Answer}
-          onChange={(e) => {
-            const updated = [...accordions];
-            updated[index].Answer = e.target.value;
-            setAccordions(updated);
-          }}
-        />
-        <button
-          type="button"
-          onClick={() =>
-            setAccordions(accordions.filter((_, i) => i !== index))
-          }
-          className="text-red-500 mt-2"
-        >
-          Remove
-        </button>
-      </div>
-    ))}
-    <button
-      type="button"
-      onClick={() =>
-        setAccordions([...accordions, { Question: "", Answer: "" }])
-      }
-      className="text-blue-500 mt-4"
-    >
-      Add New Accordion
-    </button>
-  </div>
-);
+// const AccordionSection = ({ accordions, setAccordions }) => (
+//   <div>
+//     <h3 className="font-bold mb-2">Accordions</h3>
+//     {accordions.map((accordion, index) => (
+//       <div key={index} className="mb-4">
+//         <InputField
+//           label="Question"
+//           value={accordion.Question}
+//           onChange={(e) => {
+//             const updated = [...accordions];
+//             updated[index].Question = e.target.value;
+//             setAccordions(updated);
+//           }}
+//         />
+//         <InputField
+//           label="Answer"
+//           type="textarea"
+//           value={accordion.Answer}
+//           onChange={(e) => {
+//             const updated = [...accordions];
+//             updated[index].Answer = e.target.value;
+//             setAccordions(updated);
+//           }}
+//         />
+//         <button
+//           type="button"
+//           onClick={() =>
+//             setAccordions(accordions.filter((_, i) => i !== index))
+//           }
+//           className="text-red-500 mt-2"
+//         >
+//           Remove
+//         </button>
+//       </div>
+//     ))}
+//     <button
+//       type="button"
+//       onClick={() =>
+//         setAccordions([...accordions, { Question: "", Answer: "" }])
+//       }
+//       className="text-blue-500 mt-4"
+//     >
+//       Add New Accordion
+//     </button>
+//   </div>
+// );
+
+// function MediaPreview({ media, onMediaSelect, label }) {
+//   return (
+//     <div>
+//       <label>{label}:</label>
+//       {media ? (
+//         <div className="mt-4">
+//           <img
+//             // src={`https://proper-fun-404805c7d9.strapiapp.com${media.url}`}
+//             src={media.url}
+//             className="w-32 h-32 object-cover"
+//           />
+//           <p>{media.name}</p>
+//         </div>
+//       ) : (
+//         <p>Not selected anything</p>
+//       )}
+//       <MediaSelector onMediaSelect={onMediaSelect} />
+//     </div>
+//   );
+// }
 
 export function CreateActivityForm() {
   const [title, setTitle] = useState("");
@@ -1150,20 +1171,90 @@ export function CreateActivityForm() {
   const [focusAge, setFocusAge] = useState("");
   const [learningArea, setLearningArea] = useState("");
   const [activityDate, setActivityDate] = useState("");
-  const [skillCategory, setSkillCategory] = useState("");
+  const [skills, setSkills] = useState("");
   const [setUpTime, setSetUpTime] = useState("");
-  const [resourceMedia, setResourceMedia] = useState(null);
+  const [skillCategory, setSkillCategory] = useState("");
   const [accordions, setAccordions] = useState([]);
+  const [isPopular, setIsPopular] = useState(""); // New field for isPopular
+  const [relatedUsers, setRelatedUsers] = useState([]); // State for storing selected user IDs
+  const [userList, setUserList] = useState([]); // State for storing fetched users
+  const [resourceMedia, setResourceMedia] = useState(null);
   const [media, setMedia] = useState(null); // Media state
-  const [skills, setSkills] = useState(""); // Skills Rich Text Editor state
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [dialogMessage, setDialogMessage] = useState("");
   const [dialogType, setDialogType] = useState("success");
+  const quillRef = useRef(null);
+
+  useEffect(() => {
+    // Fetching users from the provided endpoint
+    const fetchUsers = async () => {
+      try {
+        const response = await fetch(
+          "https://proper-fun-404805c7d9.strapiapp.com/api/users?populate=*"
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch users.");
+        }
+        const data = await response.json();
+        setUserList(data); // Save the list of users
+        // Set the default value for relatedUsers to include all user IDs
+        const allUserIds = data.map((user) => user.id);
+        setRelatedUsers(allUserIds);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+        setDialogMessage("Error fetching users. Please try again later.");
+      setDialogType("error");
+      setIsDialogOpen(true); //
+      }
+    };
+
+    fetchUsers();
+  }, []);
+  
+
+  // Handle change in the editor
+  const handleEditorChange = (value) => {
+    setSkills(value);
+  };
+
+  // Convert Quill Delta to the desired JSON structure
+  const convertToJSON = () => {
+    const editor = quillRef.current.getEditor();
+    const delta = editor.getContents();
+
+    // Convert the Delta into the structure you want
+    const formattedSkills = delta.ops
+      .map((op) => {
+        if (op.insert && typeof op.insert === "string") {
+          return {
+            type: "paragraph",
+            children: [
+              {
+                type: "text",
+                text: op.insert,
+              },
+            ],
+          };
+        }
+        return null;
+      })
+      .filter((item) => item !== null);
+
+    return formattedSkills;
+  };
+
+  const prepareAccordionsPayload = () => {
+    // Map over the accordions and exclude the 'id' field
+    return accordions.map(({ id, ...rest }) => rest);
+  };
 
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const skillsData = convertToJSON();
+    const filteredSkillsData = skillsData.filter((_, index) => index % 2 === 0);
 
+    console.log("Skill Data after Optimisation", filteredSkillsData);
     // Validation
     if (!title || !theme || !activityDate) {
       setDialogMessage("Please fill in all required fields.");
@@ -1177,16 +1268,14 @@ export function CreateActivityForm() {
       Theme: theme, // Text
       FocusAge: focusAge, // Text
       ActivityDate: activityDate, // Date in 'YYYY-MM-DD' format
-      LearningArea: learningArea, // Enumeration
-      Gallery: media ? [{ id: media.id }] : [], // Media array (ensure it's an array of objects with `id`)
-      Resources: resourceMedia ? [{ id: resourceMedia.id }] : [], // Media array
-      Skills: skills, // Rich Text (JSON or string)
-      Accordions: accordions.map((accordion) => ({
-        Question: accordion.question,
-        Answer: accordion.answer,
-      })),
+      Skills: filteredSkillsData,
       SetUpTime: setUpTime, // Text
+      LearningArea: learningArea, // Enumeration
+      // Gallery: media ? [{ id: media.id }] : [], // Media array (ensure it's an array of objects with `id`)
+      // Resources: resourceMedia ? [{ id: resourceMedia.id }] : [], // Media array
+      Accordions: prepareAccordionsPayload(),
       SkillCategory: skillCategory, // Text
+      relatedUsers: relatedUsers.map((id) => ({ id })),
     };
 
     console.log("New Activity data", newActivity);
@@ -1212,11 +1301,13 @@ export function CreateActivityForm() {
         setActivityDate("");
         setSetUpTime("");
         setSkillCategory("");
-        setResourceMedia(null);
+        // setResourceMedia(null);
         setLearningArea("");
-        setMedia(null);
+        // setMedia(null);
+        setIsPopular("");
         setAccordions([]);
         setSkills(""); // Reset Skills
+        setRelatedUsers([]);
       } else {
         setDialogMessage(
           "Failed to create activity. Please check the input and try again."
@@ -1233,6 +1324,15 @@ export function CreateActivityForm() {
     setIsDialogOpen(true); // Open dialog after submit
   };
 
+  // Handle Accordion Changes
+  const handleAccordionChange = (index, field, value) => {
+    setAccordions((prevAccordions) => {
+      const updatedAccordions = [...prevAccordions];
+      updatedAccordions[index][field] = value;
+      return updatedAccordions;
+    });
+  };
+
   const handleMediaSelect = (selectedMedia) => {
     setMedia(selectedMedia); // Store the selected media object
   };
@@ -1247,81 +1347,223 @@ export function CreateActivityForm() {
         <title>Create New Activity - KindiLearning</title>
       </head>
       <form onSubmit={handleSubmit} className="space-y-4">
-        <InputField
-          label="Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-        <InputField
-          label="Theme"
-          value={theme}
-          onChange={(e) => setTheme(e.target.value)}
-        />
-        <InputField
-          label="Focus Age"
-          value={focusAge}
-          onChange={(e) => setFocusAge(e.target.value)}
-        />
-        <SelectField
-          label="Learning Area"
-          value={learningArea}
-          options={[
-            "Emotional & Social Strength",
-            "Confidence & Independence",
-            "Speech & Language",
-            "Physical Agility",
-            "Reading & Writing",
-            "Discovering Our World",
-            "Creativity & Imagination",
-            "Experiments & Math",
-          ]}
-          onChange={(e) => setLearningArea(e.target.value)}
-        />
-        <InputField
-          type="date"
-          label="Activity Date"
-          value={activityDate}
-          onChange={(e) => setActivityDate(e.target.value)}
-        />
-        <InputField
-          label="SetUp Time"
-          value={setUpTime}
-          onChange={(e) => setSetUpTime(e.target.value)}
-        />
-        <InputField
-          label="Skill Category"
-          value={skillCategory}
-          onChange={(e) => setSkillCategory(e.target.value)}
-        />
-
-        <MediaPreview
-          media={media}
-          onMediaSelect={handleMediaSelect}
-          label="Gallery Media"
-        />
-        <MediaPreview
-          media={resourceMedia}
-          onMediaSelect={handleResourceMediaSelect}
-          label="Resource Media"
-        />
-
-        {/* Skills Rich Text Editor */}
         <div>
-          <label>Skills:</label>
-          <textarea
-            value={skills}
-            onChange={setSkills}
-            placeholder="Enter the skills description..."
+          <label htmlFor="Title" className="block">
+            Title
+          </label>
+          <input
+            type="text"
+            id="Title"
+            name="Title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="border p-2 w-full"
           />
         </div>
+        <div>
+          <label htmlFor="Theme" className="block">
+            Theme
+          </label>
+          <input
+            type="text"
+            id="Theme"
+            name="Theme"
+            value={theme}
+            onChange={(e) => setTheme(e.target.value)}
+            className="border p-2 w-full"
+          />
+        </div>
+        <div>
+          <label htmlFor="FocusAge" className="block">
+            Focus Age
+          </label>
+          <input
+            type="text"
+            id="FocusAge"
+            name="FocusAge"
+            value={focusAge}
+            onChange={(e) => setFocusAge(e.target.value)}
+            className="border p-2 w-full"
+          />
+        </div>
+        {/* New LearningArea Select Field */}
+        <div>
+          <label htmlFor="LearningArea" className="block">
+            Learning Area
+          </label>
+          <select
+            id="LearningArea"
+            name="LearningArea"
+            value={learningArea}
+            onChange={(e) => setLearningArea(e.target.value)}
+            className="border p-2 w-full"
+          >
+            <option value="" disabled>
+              Select a Learning Area
+            </option>
+            <option value="Emotional & Social Strength">
+              Emotional & Social Strength
+            </option>
+            <option value="Confidence & Independence">
+              Confidence & Independence
+            </option>
+            <option value="Speech & Language">Speech & Language</option>
+            <option value="Physical Agility">Physical Agility</option>
+            <option value="Reading & Writing">Reading & Writing</option>
+            <option value="Discovering Our World">Discovering Our World</option>
+            <option value="Creativity & Imagination">
+              Creativity & Imagination
+            </option>
+            <option value="Experiments & Math">Experiments & Math</option>
+          </select>
+        </div>
+        {/* Skills (Rich Text Editor with React Quill) */}
+        <div>
+          <label htmlFor="Skills" className="block">
+            Learning Area Icons & Skills (For Activity Detail Page)
+          </label>
+          <label htmlFor="Skills" className="text-[12px] text-red">
+            (Please use List item so that it renders properly) These will be
+            used to show Learning Area Icons on Activity Page
+          </label>
 
-        {/* Accordion Section */}
-        <AccordionSection
-          accordions={accordions}
-          setAccordions={setAccordions}
-        />
+          <ReactQuill
+            ref={quillRef}
+            value={skills}
+            onChange={handleEditorChange}
+            modules={{
+              toolbar: [[{ list: "ordered" }, { list: "bullet" }]],
+            }}
+            formats={["list"]}
+            className="border p-2 w-full"
+          />
+        </div>
+        {/* isPopular Field (Radio Buttons) */}
+        <div>
+          <label htmlFor="isPopular" className="block">
+            Is this activity popular?
+          </label>
+          <div className="flex space-x-4">
+            <label>
+              <input
+                type="radio"
+                name="isPopular"
+                value="Yes"
+                checked={isPopular === "Yes"}
+                onChange={(e) => setIsPopular(e.target.value)}
+              />
+              Yes
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="isPopular"
+                value="No"
+                checked={isPopular === "No"}
+                onChange={(e) => setIsPopular(e.target.value)}
+              />
+              No
+            </label>
+          </div>
+        </div>
+        <div>
+          <label htmlFor="ActivityDate" className="block">
+            Activity Date
+          </label>
+          <input
+            type="date"
+            id="ActivityDate"
+            name="ActivityDate"
+            value={activityDate}
+            onChange={(e) => setActivityDate(e.target.value)}
+            className="border p-2 w-full"
+          />
+        </div>
+        <div>
+          <label htmlFor="SetUpTime" className="block">
+            SetUp Time
+          </label>
+          <input
+            type="text"
+            id="SetUpTime"
+            name="SetUpTime"
+            value={setUpTime}
+            onChange={(e) => setSetUpTime(e.target.value)}
+            className="border p-2 w-full"
+          />
+        </div>
+        <div>
+          <h3 className="font-bold mb-2">Accordions</h3>
+          {accordions.map((accordion, index) => (
+            <div key={index} className="mb-4">
+              <label className="block mb-1">Question</label>
+              <input
+                type="text"
+                value={accordion.Question}
+                onChange={(e) =>
+                  handleAccordionChange(index, "Question", e.target.value)
+                }
+                className="border p-2 w-full mb-2"
+              />
+              <label className="block mb-1">Answer</label>
+              <ClaraMarkdownRichEditor
+                id={`answer-${accordion.id}`}
+                value={accordion.Answer}
+                onChange={(value) =>
+                  handleAccordionChange(index, "Answer", value)
+                } // Update the answer field
+              />
+              <button
+                type="button"
+                onClick={() => {
+                  const updatedAccordions = accordions.filter(
+                    (_, i) => i !== index
+                  );
+                  setAccordions(updatedAccordions);
+                }}
+                className="text-red-500 mt-2"
+              >
+                Remove
+              </button>
+            </div>
+          ))}
 
-        <button type="submit" className="px-4 py-2 bg-black text-white rounded">
+          {/* Add New Accordion */}
+          <button
+            type="button"
+            onClick={() =>
+              setAccordions([...accordions, { Question: "", Answer: "" }])
+            }
+            className="text-blue-500 mt-4"
+          >
+            Add New Accordion
+          </button>
+        </div>
+        {/* Related Users Field (Multi-select Dropdown) */}
+        {/* <div>
+          <label htmlFor="relatedUsers" className="block">
+            Select Related Users
+          </label>
+          <select
+            id="relatedUsers"
+            name="relatedUsers"
+            value={relatedUsers}
+            onChange={handleRelatedUsersChange}
+            multiple
+            className="border p-2 w-full"
+          >
+            {userList.map((user) => (
+              <option key={user.id} value={user.id}>
+                {user.username}
+              </option>
+            ))}
+          </select>
+        </div> */}
+
+        <button
+          type="submit"
+          className="px-4 py-2 bg-blue-500 text-white rounded"
+        >
           Create Activity
         </button>
       </form>
@@ -1347,27 +1589,6 @@ export function CreateActivityForm() {
           </DialogClose>
         </DialogContent>
       </Dialog>
-    </div>
-  );
-}
-
-export function MediaPreview({ media, onMediaSelect, label }) {
-  return (
-    <div>
-      <label>{label}:</label>
-      {media ? (
-        <div className="mt-4">
-          <img
-            // src={`https://proper-fun-404805c7d9.strapiapp.com${media.url}`}
-            src={media.url}
-            className="w-32 h-32 object-cover"
-          />
-          <p>{media.name}</p>
-        </div>
-      ) : (
-        <p>Not selected anything</p>
-      )}
-      <MediaSelector onMediaSelect={onMediaSelect} />
     </div>
   );
 }

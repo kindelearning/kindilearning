@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { GraphQLClient, gql } from "graphql-request";
 import {
   ActivityBlack,
+  ActivityCard,
+  ActivityImage,
   CompletedMark,
   KidBlack,
   KindiHeart,
@@ -174,7 +176,17 @@ export default async function ActivityDetailPage({ params }) {
           <div className="claracontainer lg:min-w-[60%] lg:w-full bg-[#ffffff] md:bg-[#ffffff] pb-4 lg:bg-[#eaeaf5] py-0 flex flex-col justify-start items-start gap-4">
             {/* Row 1(C1) */}
             <div className="claracontainer py-0 flex flex-col justify-between items-start gap-8">
-              {Gallery && <ProductMedia gallery={Gallery} />}
+              {Gallery ? (
+                <ProductMedia gallery={Gallery} />
+              ) : (
+                <div className="w-full overflow-clip rounded-lg h-[300px] max-h-[300px] lg:h-[400px] lg:max-h-[400px] mb-4">
+                  <Image
+                    className="w-full h-full object-cover rounded-lg"
+                    alt="Placholder Image"
+                    src={ActivityImage}
+                  />
+                </div>
+              )}
             </div>
             {/* Row 1(R2) */}
             <div className="claracontainer lg:hidden w-full flex flex-col px-4 lg:px-0 justify-start items-start gap-4">
