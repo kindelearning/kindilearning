@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Table,
   TableBody,
@@ -24,6 +24,11 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import MediaSelector from "../media/Section/MediaSelector";
+import Image from "next/image";
+import { ActivityImage } from "@/public/Images";
+import ReactQuill from "react-quill"; // Import React Quill
+import "react-quill/dist/quill.snow.css";
+import ClaraMarkdownRichEditor from "../../Sections/TextEditor/ClaraMarkdownRichEditor";
 
 export default function ActivitiesPage() {
   const [activities, setActivities] = useState([]);
@@ -279,6 +284,7 @@ export default function ActivitiesPage() {
               <TableHead>Skills</TableHead>
               <TableHead>Theme</TableHead>
               <TableHead>Focus Age</TableHead>
+              <TableHead>isPopular</TableHead>
               <TableHead>
                 <button
                   onClick={() => handleSort("ActivityDate")}
@@ -330,26 +336,23 @@ export default function ActivitiesPage() {
                 <TableCell>{indexOfFirstActivity + index + 1}</TableCell>
                 <TableCell>
                   <div className="flex space-x-2">
-                    {activity.Gallery && activity.Gallery.length > 0
-                      ? activity.Gallery.slice(0, 1).map((image, index) => (
-                          <img
-                            key={index}
-                            src={image.url}
-                            alt={`Gallery ${index}`}
-                            className="min-w-16 rounded-md h-16 object-cover"
-                          />
-                        ))
-                      : null}
-
-                    {/* {activity.Gallery.slice(0, 1).map((image, index) => (
-                      <img
+                    {activity.Gallery && activity.Gallery.length > 0 ? (
+                      activity.Gallery.slice(0, 1).map((image, index) => (
+                        <img
+                          key={index}
+                          src={image.url}
+                          alt={`Gallery ${index}`}
+                          className="min-w-16 rounded-md h-16 object-cover"
+                        />
+                      ))
+                    ) : (
+                      <Image
                         key={index}
-                        src={image.url}
-                        // src={`https://proper-fun-404805c7d9.strapiapp.com${image.url}`}
+                        src={ActivityImage}
                         alt={`Gallery ${index}`}
                         className="min-w-16 rounded-md h-16 object-cover"
                       />
-                    ))} */}
+                    )}
                   </div>
                 </TableCell>
                 <TableCell>{activity.Title}</TableCell>
@@ -362,13 +365,12 @@ export default function ActivitiesPage() {
                 </TableCell>
                 <TableCell>{activity.Theme}</TableCell>
                 <TableCell>{activity.FocusAge}</TableCell>
+                <TableCell>{activity.isPopular}</TableCell>
                 <TableCell>
                   {new Date(activity.ActivityDate).toLocaleString()}
                 </TableCell>
                 <TableCell>{activity.LearningArea}</TableCell>
-                <TableCell>
-                  {activity.SetUpTime}
-                </TableCell>
+                <TableCell>{activity.SetUpTime}</TableCell>
 
                 <TableCell>{activity.Accordions.length}</TableCell>
                 <TableCell>
@@ -458,269 +460,372 @@ export default function ActivitiesPage() {
   );
 }
 
-// export function EditActivityForm({ documentId }) {
-//   const [title, setTitle] = useState("");
-//   const [theme, setTheme] = useState("");
-//   const [focusAge, setFocusAge] = useState("");
-//   const [learningArea, setLearningArea] = useState(""); // New field
-//   const [activityDate, setActivityDate] = useState("");
-//   const [skills, setSkills] = useState("");
-//   const [setUpTime, setSetUpTime] = useState("");
-//   const [existingData, setExistingData] = useState(null);
-//   const [openDialog, setOpenDialog] = useState(false); // State
-//   const [accordions, setAccordions] = useState([]);
-
-//   // Fetch existing activity data based on documentId
-//   useEffect(() => {
-//     const fetchActivityData = async () => {
-//       try {
-//         const res = await fetch(
-//           `https://proper-fun-404805c7d9.strapiapp.com/api/activities/${documentId}?populate=*`
-//         );
-//         const data = await res.json();
-//         setExistingData(data.data);
-//         setTitle(data.data.Title || "");
-//         setTheme(data.data.Theme || "");
-//         setFocusAge(data.data.FocusAge || "");
-//         setSkills(data.data.Skills || "");
-//         setAccordions(data.data.Accordions || []); // Assuming Accordions is the field name in your Strapi model
-//         setActivityDate(data.data.ActivityDate || "");
-//         setSetUpTime(data.data.SetUpTime || "");
-//         setLearningArea(data.data.LearningArea || ""); // Initialize with fetched data
-//       } catch (err) {
-//         console.error("Error fetching activity data:", err);
-//       }
-//     };
-
-//     fetchActivityData();
-//   }, [documentId]);
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-
-//     const payload = {
-//       data: {
-//         Title: title,
-//         Theme: theme,
-//         FocusAge: focusAge,
-//         ActivityDate: activityDate,
-//         Skills: skills,
-//         SetUpTime: setUpTime,
-//         LearningArea: learningArea,
-//         Accordions: accordions, // Directly add the accordions array
-//       },
-//     };
-
-//     try {
-//       const res = await fetch(
-//         `https://proper-fun-404805c7d9.strapiapp.com/api/activities/${documentId}`,
-//         {
-//           method: "PUT",
-//           headers: {
-//             "Content-Type": "application/json", // Ensure the server expects JSON
-//           },
-//           body: JSON.stringify(payload),
-//         }
-//       );
-
-//       const data = await res.json();
-//       console.log("Updated Activity:", data);
-//       setOpenDialog(true); // Show the success dialog
-//     } catch (error) {
-//       console.error("Error updating activity:", error);
-//       alert("Error updating activity.");
-//     }
-//   };
-
-//   return (
-//     <div className="p-8">
-//       <h1 className="text-2xl font-bold mb-6">Edit Activity</h1>
-//       <form onSubmit={handleSubmit} className="space-y-4">
-//         <div>
-//           <label htmlFor="Title" className="block">
-//             Title
-//           </label>
-//           <input
-//             type="text"
-//             id="Title"
-//             name="Title"
-//             value={title}
-//             onChange={(e) => setTitle(e.target.value)}
-//             className="border p-2 w-full"
-//           />
-//         </div>
-
-//         <div>
-//           <label htmlFor="Theme" className="block">
-//             Theme
-//           </label>
-//           <input
-//             type="text"
-//             id="Theme"
-//             name="Theme"
-//             value={theme}
-//             onChange={(e) => setTheme(e.target.value)}
-//             className="border p-2 w-full"
-//           />
-//         </div>
-
-//         <div>
-//           <label htmlFor="FocusAge" className="block">
-//             Focus Age
-//           </label>
-//           <input
-//             type="text"
-//             id="FocusAge"
-//             name="FocusAge"
-//             value={focusAge}
-//             onChange={(e) => setFocusAge(e.target.value)}
-//             className="border p-2 w-full"
-//           />
-//         </div>
-
-//         {/* New LearningArea Select Field */}
-//         <div>
-//           <label htmlFor="LearningArea" className="block">
-//             Learning Area
-//           </label>
-//           <select
-//             id="LearningArea"
-//             name="LearningArea"
-//             value={learningArea}
-//             onChange={(e) => setLearningArea(e.target.value)}
-//             className="border p-2 w-full"
-//           >
-//             <option value="" disabled>
-//               Select a Learning Area
-//             </option>
-//             <option value="Emotional & Social Strength">
-//               Emotional & Social Strength
-//             </option>
-//             <option value="Confidence & Independence">
-//               Confidence & Independence
-//             </option>
-//             <option value="Speech & Language">Speech & Language</option>
-//             <option value="Physical Agility">Physical Agility</option>
-//             <option value="Reading & Writing">Reading & Writing</option>
-//             <option value="Discovering Our World">Discovering Our World</option>
-//             <option value="Creativity & Imagination">
-//               Creativity & Imagination
-//             </option>
-//             <option value="Experiments & Math">Experiments & Math</option>
-//           </select>
-//         </div>
-
-//         <div>
-//           <label htmlFor="ActivityDate" className="block">
-//             Activity Date
-//           </label>
-//           <input
-//             type="date"
-//             id="ActivityDate"
-//             name="ActivityDate"
-//             value={activityDate}
-//             onChange={(e) => setActivityDate(e.target.value)}
-//             className="border p-2 w-full"
-//           />
-//         </div>
-
-//         <div>
-//           <label htmlFor="SetUpTime" className="block">
-//             SetUp Time
-//           </label>
-//           <input
-//             type="text"
-//             id="SetUpTime"
-//             name="SetUpTime"
-//             value={setUpTime}
-//             onChange={(e) => setSetUpTime(e.target.value)}
-//             className="border p-2 w-full"
-//           />
-//         </div>
-
-//         <div>
-//           <h3 className="font-bold mb-2">Accordions</h3>
-//           {accordions.map((accordion, index) => (
-//             <div key={index} className="mb-4">
-//               <label className="block mb-1">Question</label>
-//               <input
-//                 type="text"
-//                 value={accordion.Question}
-//                 onChange={(e) => {
-//                   const updatedAccordions = [...accordions];
-//                   updatedAccordions[index].Question = e.target.value;
-//                   setAccordions(updatedAccordions);
-//                 }}
-//                 className="border p-2 w-full mb-2"
-//               />
-//               <label className="block mb-1">Answer</label>
-//               <textarea
-//                 value={accordion.Answer}
-//                 onChange={(e) => {
-//                   const updatedAccordions = [...accordions];
-//                   updatedAccordions[index].Answer = e.target.value;
-//                   setAccordions(updatedAccordions);
-//                 }}
-//                 className="border p-2 w-full"
-//               />
-//               <button
-//                 type="button"
-//                 onClick={() => {
-//                   const updatedAccordions = accordions.filter(
-//                     (_, i) => i !== index
-//                   );
-//                   setAccordions(updatedAccordions);
-//                 }}
-//                 className="text-red-500 mt-2"
-//               >
-//                 Remove
-//               </button>
-//             </div>
-//           ))}
-
-//           {/* Add New Accordion */}
-//           <button
-//             type="button"
-//             onClick={() =>
-//               setAccordions([...accordions, { Question: "", Answer: "" }])
-//             }
-//             className="text-blue-500 mt-4"
-//           >
-//             Add New Accordion
-//           </button>
-//         </div>
-
-//         <button
-//           type="submit"
-//           className="px-4 py-2 bg-blue-500 text-white rounded"
-//         >
-//           Update Activity
-//         </button>
-//       </form>
-
-//       {/* Custom Success Dialog */}
-//       <Dialog open={openDialog} onOpenChange={(open) => setOpenDialog(open)}>
-//         <DialogContent>
-//           <DialogHeader>
-//             <DialogTitle>Success!</DialogTitle>
-//           </DialogHeader>
-//           <DialogDescription>
-//             Your activity has been successfully updated.
-//           </DialogDescription>
-//           <DialogFooter>
-//             <DialogClose asChild>
-//               <button className="bg-blue-500 text-white px-4 py-2 rounded-md">
-//                 Close
-//               </button>
-//             </DialogClose>
-//           </DialogFooter>
-//         </DialogContent>
-//       </Dialog>
-//     </div>
-//   );
-// }
-
 export function EditActivityForm({ documentId }) {
+  const [title, setTitle] = useState("");
+  const [theme, setTheme] = useState("");
+  const [focusAge, setFocusAge] = useState("");
+  const [learningArea, setLearningArea] = useState(""); // New field
+  const [activityDate, setActivityDate] = useState("");
+  const [skills, setSkills] = useState("");
+  const [setUpTime, setSetUpTime] = useState("");
+  const [existingData, setExistingData] = useState(null);
+  const [openDialog, setOpenDialog] = useState(false); // State
+  const [accordions, setAccordions] = useState([]);
+  const [isPopular, setIsPopular] = useState(""); // New field for isPopular
+  const quillRef = useRef(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null); // To
+
+  // Handle change in the editor
+  const handleEditorChange = (value) => {
+    setSkills(value);
+  };
+  // Convert Quill Delta to the desired JSON structure
+  const convertToJSON = () => {
+    const editor = quillRef.current.getEditor();
+    const delta = editor.getContents();
+
+    // Convert the Delta into the structure you want
+    const formattedSkills = delta.ops
+      .map((op) => {
+        if (op.insert && typeof op.insert === "string") {
+          return {
+            type: "paragraph",
+            children: [
+              {
+                type: "text",
+                text: op.insert,
+              },
+            ],
+          };
+        }
+        return null;
+      })
+      .filter((item) => item !== null);
+
+    return formattedSkills;
+  };
+
+  // Fetch existing activity data based on documentId
+  useEffect(() => {
+    const fetchActivityData = async () => {
+      setIsLoading(true); // Start loading
+      setError(null);
+      try {
+        const res = await fetch(
+          `https://proper-fun-404805c7d9.strapiapp.com/api/activities/${documentId}?populate=*`
+        );
+        if (!res.ok) throw new Error("Failed to fetch activity data.");
+
+        const data = await res.json();
+        setExistingData(data.data);
+        setTitle(data.data.Title || "");
+        setTheme(data.data.Theme || "");
+        setFocusAge(data.data.FocusAge || "");
+        setSkills(data.data.Skills || "");
+        setAccordions(data.data.Accordions || []); // Assuming Accordions is the field name in your Strapi model
+        setActivityDate(data.data.ActivityDate || "");
+        setSetUpTime(data.data.SetUpTime || "");
+        setLearningArea(data.data.LearningArea || ""); // Initialize with fetched data
+        setIsPopular(data.data.isPopular || ""); // Initialize with fetched data
+      } catch (err) {
+        setError("Error fetching activity data. Please try again.");
+        console.error("Error fetching activity data:", err);
+      } finally {
+        setIsLoading(false); // End loading
+      }
+    };
+
+    fetchActivityData();
+  }, [documentId]);
+  const prepareAccordionsPayload = () => {
+    // Map over the accordions and exclude the 'id' field
+    return accordions.map(({ id, ...rest }) => rest);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const skillsData = convertToJSON();
+    const filteredSkillsData = skillsData.filter((_, index) => index % 2 === 0);
+
+    const payload = {
+      data: {
+        Title: title,
+        Theme: theme,
+        FocusAge: focusAge,
+        ActivityDate: activityDate,
+        Skills: filteredSkillsData,
+        SetUpTime: setUpTime,
+        LearningArea: learningArea,
+        isPopular: isPopular,
+        Accordions: prepareAccordionsPayload(),
+      },
+    };
+
+    console.log("Payload Send", payload);
+
+    try {
+      const res = await fetch(
+        `https://proper-fun-404805c7d9.strapiapp.com/api/activities/${documentId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json", // Ensure the server expects JSON
+          },
+          body: JSON.stringify(payload),
+        }
+      );
+      if (!res.ok) throw new Error("Error updating activity.");
+
+      const data = await res.json();
+      console.log("Updated Activity:", data);
+      setOpenDialog(true); // Show the success dialog
+    } catch (error) {
+      console.error("Error updating activity:", error);
+      setError(error.message || "Error updating activity.");
+      alert("Error updating activity.");
+    }
+  };
+
+  // Handle Accordion Changes
+  const handleAccordionChange = (index, field, value) => {
+    setAccordions((prevAccordions) => {
+      const updatedAccordions = [...prevAccordions];
+      updatedAccordions[index][field] = value;
+      return updatedAccordions;
+    });
+  };
+
+  return (
+    <div className="p-8 font-fredoka">
+      <h1 className="text-2xl font-bold mb-6">Edit Activity</h1>
+
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {error && <div className="text-red-500">{error}</div>}{" "}
+        {/* Error message */}
+        <div>
+          <label htmlFor="Title" className="block">
+            Title
+          </label>
+          <input
+            type="text"
+            id="Title"
+            name="Title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="border p-2 w-full"
+          />
+        </div>
+        <div>
+          <label htmlFor="Theme" className="block">
+            Theme
+          </label>
+          <input
+            type="text"
+            id="Theme"
+            name="Theme"
+            value={theme}
+            onChange={(e) => setTheme(e.target.value)}
+            className="border p-2 w-full"
+          />
+        </div>
+        <div>
+          <label htmlFor="FocusAge" className="block">
+            Focus Age
+          </label>
+          <input
+            type="text"
+            id="FocusAge"
+            name="FocusAge"
+            value={focusAge}
+            onChange={(e) => setFocusAge(e.target.value)}
+            className="border p-2 w-full"
+          />
+        </div>
+        {/* New LearningArea Select Field */}
+        <div>
+          <label htmlFor="LearningArea" className="block">
+            Learning Area
+          </label>
+          <select
+            id="LearningArea"
+            name="LearningArea"
+            value={learningArea}
+            onChange={(e) => setLearningArea(e.target.value)}
+            className="border p-2 w-full"
+          >
+            <option value="" disabled>
+              Select a Learning Area
+            </option>
+            <option value="Emotional & Social Strength">
+              Emotional & Social Strength
+            </option>
+            <option value="Confidence & Independence">
+              Confidence & Independence
+            </option>
+            <option value="Speech & Language">Speech & Language</option>
+            <option value="Physical Agility">Physical Agility</option>
+            <option value="Reading & Writing">Reading & Writing</option>
+            <option value="Discovering Our World">Discovering Our World</option>
+            <option value="Creativity & Imagination">
+              Creativity & Imagination
+            </option>
+            <option value="Experiments & Math">Experiments & Math</option>
+          </select>
+        </div>
+        {/* Skills (Rich Text Editor with React Quill) */}
+        <div>
+          <label htmlFor="Skills" className="block">
+            Learning Area Icons & Skills (For Activity Detail Page)
+          </label>
+          <label htmlFor="Skills" className="text-[12px] text-red">
+            (Please use List item so that it renders properly) These will be
+            used to show Learning Area Icons on Activity Page
+          </label>
+
+          <ReactQuill
+            ref={quillRef}
+            value={skills}
+            onChange={handleEditorChange}
+            modules={{
+              toolbar: [[{ list: "ordered" }, { list: "bullet" }]],
+            }}
+            formats={["list"]}
+            className="border p-2 w-full"
+          />
+        </div>
+        {/* isPopular Field (Radio Buttons) */}
+        <div>
+          <label htmlFor="isPopular" className="block">
+            Is this activity popular?
+          </label>
+          <div className="flex space-x-4">
+            <label>
+              <input
+                type="radio"
+                name="isPopular"
+                value="Yes"
+                checked={isPopular === "Yes"}
+                onChange={(e) => setIsPopular(e.target.value)}
+              />
+              Yes
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="isPopular"
+                value="No"
+                checked={isPopular === "No"}
+                onChange={(e) => setIsPopular(e.target.value)}
+              />
+              No
+            </label>
+          </div>
+        </div>
+        <div>
+          <label htmlFor="ActivityDate" className="block">
+            Activity Date
+          </label>
+          <input
+            type="date"
+            id="ActivityDate"
+            name="ActivityDate"
+            value={activityDate}
+            onChange={(e) => setActivityDate(e.target.value)}
+            className="border p-2 w-full"
+          />
+        </div>
+        <div>
+          <label htmlFor="SetUpTime" className="block">
+            SetUp Time
+          </label>
+          <input
+            type="text"
+            id="SetUpTime"
+            name="SetUpTime"
+            value={setUpTime}
+            onChange={(e) => setSetUpTime(e.target.value)}
+            className="border p-2 w-full"
+          />
+        </div>
+        <div>
+          <h3 className="font-bold mb-2">Accordions</h3>
+          {accordions.map((accordion, index) => (
+            <div key={index} className="mb-4">
+              <label className="block mb-1">Question</label>
+              <input
+                type="text"
+                value={accordion.Question}
+                onChange={(e) =>
+                  handleAccordionChange(index, "Question", e.target.value)
+                }
+                className="border p-2 w-full mb-2"
+              />
+              <label className="block mb-1">Answer</label>
+              <ClaraMarkdownRichEditor
+                id={`answer-${accordion.id}`}
+                value={accordion.Answer}
+                onChange={(value) =>
+                  handleAccordionChange(index, "Answer", value)
+                } // Update the answer field
+              />
+              <button
+                type="button"
+                onClick={() => {
+                  const updatedAccordions = accordions.filter(
+                    (_, i) => i !== index
+                  );
+                  setAccordions(updatedAccordions);
+                }}
+                className="text-red-500 mt-2"
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+
+          {/* Add New Accordion */}
+          <button
+            type="button"
+            onClick={() =>
+              setAccordions([...accordions, { Question: "", Answer: "" }])
+            }
+            className="text-blue-500 mt-4"
+          >
+            Add New Accordion
+          </button>
+        </div>
+        <button
+          type="submit"
+          className="px-4 py-2 bg-blue-500 text-white rounded"
+        >
+          Update Activity
+        </button>
+      </form>
+
+      {/* Custom Success Dialog */}
+      <Dialog open={openDialog} onOpenChange={(open) => setOpenDialog(open)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Success!</DialogTitle>
+          </DialogHeader>
+          <DialogDescription>
+            Your activity has been successfully updated.
+          </DialogDescription>
+          <DialogFooter>
+            <DialogClose asChild>
+              <button className="bg-blue-500 text-white px-4 py-2 rounded-md">
+                Close
+              </button>
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+}
+
+export function EditActivityForm2({ documentId }) {
   const [title, setTitle] = useState("");
   const [theme, setTheme] = useState("");
   const [focusAge, setFocusAge] = useState("");
