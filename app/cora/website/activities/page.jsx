@@ -411,7 +411,7 @@ export default function ActivitiesPage() {
                     <DialogContent className="max-w-[1000px] max-h-[600px] overflow-y-scroll">
                       <DialogHeader>
                         <DialogDescription>
-                          <EditActivityForm />
+                          {/* <EditActivityForm /> */}
                           Loading.....
                         </DialogDescription>
                       </DialogHeader>
