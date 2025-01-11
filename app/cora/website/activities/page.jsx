@@ -23,7 +23,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import MediaSelector from "../media/Section/MediaSelector";
+import MediaSelector, {
+  MultiMediaSelector,
+} from "../media/Section/MediaSelector";
 import Image from "next/image";
 import { ActivityImage } from "@/public/Images";
 import ReactQuill from "react-quill"; // Import React Quill
@@ -467,6 +469,7 @@ export function EditActivityForm({ documentId }) {
   const [learningArea, setLearningArea] = useState(""); // New field
   const [activityDate, setActivityDate] = useState("");
   const [skills, setSkills] = useState("");
+  const [media, setMedia] = useState([]); // Store selected media
   const [setUpTime, setSetUpTime] = useState("");
   const [existingData, setExistingData] = useState(null);
   const [openDialog, setOpenDialog] = useState(false); // State
@@ -525,6 +528,7 @@ export function EditActivityForm({ documentId }) {
         setSkills(data.data.Skills || "");
         setAccordions(data.data.Accordions || []); // Assuming Accordions is the field name in your Strapi model
         setActivityDate(data.data.ActivityDate || "");
+        setMedia(data.data.Gallery || []);
         setSetUpTime(data.data.SetUpTime || "");
         setLearningArea(data.data.LearningArea || ""); // Initialize with fetched data
         setIsPopular(data.data.isPopular || ""); // Initialize with fetched data
@@ -548,6 +552,16 @@ export function EditActivityForm({ documentId }) {
     const skillsData = convertToJSON();
     const filteredSkillsData = skillsData.filter((_, index) => index % 2 === 0);
 
+    // Prepare Gallery correctly by mapping the selected media
+    const galleryPayload =
+      media && Array.isArray(media)
+        ? media.map((item) => ({ id: item.id })) // If media is an array, use its `id`
+        : media
+        ? [{ id: media.id }] // If it's a single object, just wrap it in an array
+        : [];
+
+    const mediaPayload = media.map((item) => ({ id: item.id })); // Or just use `media.id` if it's a single item
+
     const payload = {
       data: {
         Title: title,
@@ -558,6 +572,7 @@ export function EditActivityForm({ documentId }) {
         SetUpTime: setUpTime,
         LearningArea: learningArea,
         isPopular: isPopular,
+        Gallery: mediaPayload,
         Accordions: prepareAccordionsPayload(),
       },
     };
@@ -578,7 +593,7 @@ export function EditActivityForm({ documentId }) {
       if (!res.ok) throw new Error("Error updating activity.");
 
       const data = await res.json();
-      console.log("Updated Activity:", data);
+      // console.log("Updated Activity:", data);
       setOpenDialog(true); // Show the success dialog
     } catch (error) {
       console.error("Error updating activity:", error);
@@ -595,6 +610,20 @@ export function EditActivityForm({ documentId }) {
       return updatedAccordions;
     });
   };
+  useEffect(() => {
+    console.log("Updated Media:", media);
+  }, [media]); // This will log the state whenever `media` changes
+
+  // Handle media selection
+  const handleMediaChange = (newMedia) => {
+    // If the media isn't an array, wrap it into an array
+    const selectedMedia = Array.isArray(newMedia) ? newMedia : [newMedia];
+    console.log("Before setting media:", newMedia);
+    setMedia(newMedia);
+    console.log("After setting media:", media);
+  };
+
+  // console.log("Selected Media shravya:", media); // Log the selected media
 
   return (
     <div className="p-8 font-fredoka">
@@ -602,6 +631,16 @@ export function EditActivityForm({ documentId }) {
 
       <form onSubmit={handleSubmit} className="space-y-4">
         {error && <div className="text-red-500">{error}</div>}{" "}
+        {/* Gallery Media Selector */}
+        <div>
+          <label htmlFor="Gallery" className="block">
+            Gallery
+          </label>
+          <MultiMediaSelector 
+            selectedMedia={media} // Pass the current selected media
+            onMediaSelect={handleMediaChange} // Update the state when user selects media
+          />
+        </div>
         {/* Error message */}
         <div>
           <label htmlFor="Title" className="block">
@@ -1203,14 +1242,13 @@ export function CreateActivityForm() {
       } catch (error) {
         console.error("Error fetching users:", error);
         setDialogMessage("Error fetching users. Please try again later.");
-      setDialogType("error");
-      setIsDialogOpen(true); //
+        setDialogType("error");
+        setIsDialogOpen(true); //
       }
     };
 
     fetchUsers();
   }, []);
-  
 
   // Handle change in the editor
   const handleEditorChange = (value) => {
