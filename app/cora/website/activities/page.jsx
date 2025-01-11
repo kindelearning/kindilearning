@@ -181,9 +181,7 @@ export default function ActivitiesPage() {
 
   return (
     <div className="gap-4 font-fredoka flex w-full flex-col p-8">
-      <head>
-        <title>Actvities - KindiLearning</title>
-      </head>
+      
       <div className="flex w-full justify-between items-center">
         <h1 className="text-2xl font-bold mb-6">Activities</h1>
         <Dialog>
@@ -192,7 +190,7 @@ export default function ActivitiesPage() {
             <DialogHeader>
               <DialogTitle>Are you absolutely sure?</DialogTitle>
               <DialogDescription>
-                <CreateActivityForm />
+                {/* <CreateActivityForm /> */}
               </DialogDescription>
             </DialogHeader>
           </DialogContent>
