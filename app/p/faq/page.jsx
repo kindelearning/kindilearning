@@ -26,33 +26,41 @@ export default async function FaqPage() {
           </div>
         </div>
         <div className="items-center w-full justify-center flex flex-col gap-2">
-          {faqContent.map((faqItem, index) => {
-            const { Question, Answer } = faqItem;
-            return (
-              <div key={index} className="w-full ">
-                <Accordion
-                  title={Question}
-                  description={
-                    Answer ? (
-                      <div className="flex flex-col w-full justify-start items-start heading animate-fade-in">
-                        {/* <span
-                          className="text-[#3f3a64] text-base font-normal font-fredoka leading-tight"
-                          dangerouslySetInnerHTML={{ __html: Answer }}
-                        /> */}
-                        {Answer}
-                      </div>
-                    ) : (
-                      <div className="flex flex-col w-full justify-start items-start heading animate-fade-in">
-                        <span className="text-[#3f3a64] text-base font-normal font-fredoka leading-tight">
-                          No Answer Available
-                        </span>
-                      </div>
-                    )
-                  }
-                />
-              </div>
-            );
-          })}
+          {faqContent ? (
+            <>
+              {faqContent.map((faqItem, index) => {
+                const { Question, Answer } = faqItem;
+                return (
+                  <div key={index} className="w-full ">
+                    <Accordion
+                      title={Question}
+                      description={
+                        Answer ? (
+                          <div className="flex flex-col w-full justify-start items-start heading animate-fade-in">
+                            {/* <span
+                            className="text-[#3f3a64] text-base font-normal font-fredoka leading-tight"
+                            dangerouslySetInnerHTML={{ __html: Answer }}
+                          /> */}
+                            {Answer}
+                          </div>
+                        ) : (
+                          <div className="flex flex-col w-full justify-start items-start heading animate-fade-in">
+                            <span className="text-[#3f3a64] text-base font-normal font-fredoka leading-tight">
+                              No Answer Available
+                            </span>
+                          </div>
+                        )
+                      }
+                    />
+                  </div>
+                );
+              })}
+            </>
+          ) : (
+            <div className="flex flex-col w-full gap-4 justify-center items-center">
+              <div className="w-full text-center">No Faq Found</div>
+            </div>
+          )}
         </div>
       </div>
     </section>
