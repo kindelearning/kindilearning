@@ -14,7 +14,6 @@ import Link from "next/link";
 import { Eye, PencilLine, Trash } from "lucide-react";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -24,9 +23,9 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { ActivityImage, ThemeDummy } from "@/public/Images";
-import CreateActivityForm from "./CreateActivityForm";
-import EditActivityForm from "./EditActivityForm";
+import { ThemeDummy } from "@/public/Images";
+// import CreateActivityForm from "./CreateActivityForm";
+// import EditActivityForm from "./EditActivityForm";
 
 export default function ActivitiesPage() {
   const [activities, setActivities] = useState([]);
@@ -181,7 +180,6 @@ export default function ActivitiesPage() {
 
   return (
     <div className="gap-4 font-fredoka flex w-full flex-col p-8">
-      
       <div className="flex w-full justify-between items-center">
         <h1 className="text-2xl font-bold mb-6">Activities</h1>
         <Dialog>
@@ -416,6 +414,8 @@ export default function ActivitiesPage() {
                       <DialogHeader>
                         <DialogDescription>
                           {/* <EditActivityForm documentId={activity.documentId} /> */}
+                          import ClaraMarkdownRichEditor from
+                          "../../Sections/TextEditor/ClaraMarkdownRichEditor";
                         </DialogDescription>
                       </DialogHeader>
                     </DialogContent>

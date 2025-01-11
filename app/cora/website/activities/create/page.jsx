@@ -15,7 +15,7 @@ import {
 
 import ReactQuill from "react-quill"; // Import React Quill
 import "react-quill/dist/quill.snow.css";
-import ClaraMarkdownRichEditor from "../../Sections/TextEditor/ClaraMarkdownRichEditor";
+import ClaraMarkdownRichEditor from "@/app/cora/Sections/TextEditor/ClaraMarkdownRichEditor";
 
 export default function CreateActivityForm() {
   const [title, setTitle] = useState("");
@@ -132,16 +132,13 @@ export default function CreateActivityForm() {
     console.log("New Activity data", newActivity);
 
     try {
-      const response = await fetch(
-        "https://upbeat-life-04fe8098b1.strapiapp.com/api/activities",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ data: newActivity }),
-        }
-      );
+      const response = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/activities", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ data: newActivity }),
+      });
 
       const responseData = await response.json();
       console.log("ResponseData", responseData);
