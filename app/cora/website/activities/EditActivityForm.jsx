@@ -106,16 +106,7 @@ export default function EditActivityForm({ documentId }) {
     const skillsData = convertToJSON();
     const filteredSkillsData = skillsData.filter((_, index) => index % 2 === 0);
 
-    // Prepare Gallery correctly by mapping the selected media
-    // const galleryPayload =
-    //   media && Array.isArray(media)
-    //     ? media.map((item) => ({ id: item.id })) // If media is an array, use its `id`
-    //     : media
-    //     ? [{ id: media.id }] // If it's a single object, just wrap it in an array
-    //     : [];
-
-    // const mediaPayload = media.map((item) => ({ id: item.id })); // Or just use `media.id` if it's a single item
-
+  
     const payload = {
       data: {
         Title: title,
@@ -286,7 +277,6 @@ export default function EditActivityForm({ documentId }) {
             className="border p-2 w-full"
           />
         </div>
-        {/* isPopular Field (Radio Buttons) */}
         <div>
           <label htmlFor="isPopular" className="block">
             Is this activity popular?
