@@ -23,9 +23,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import MediaSelector, {
-  MultiMediaSelector,
-} from "../media/Section/MediaSelector";
+import MediaSelector from "../media/Section/MediaSelector";
 import Image from "next/image";
 import { ActivityImage } from "@/public/Images";
 import ReactQuill from "react-quill"; // Import React Quill
@@ -59,7 +57,7 @@ export default function ActivitiesPage() {
     const fetchActivities = async () => {
       try {
         const response = await fetch(
-          " https://upbeat-life-04fe8098b1.strapiapp.com/api/activities?populate=*"
+          "https://upbeat-life-04fe8098b1.strapiapp.com/api/activities?populate=*"
         );
         const data = await response.json();
         console.log("Data", data);
@@ -1318,13 +1316,16 @@ export function CreateActivityForm() {
     console.log("New Activity data", newActivity);
 
     try {
-      const response = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/activities", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ data: newActivity }),
-      });
+      const response = await fetch(
+        "https://upbeat-life-04fe8098b1.strapiapp.com/api/activities",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ data: newActivity }),
+        }
+      );
 
       const responseData = await response.json();
       console.log("ResponseData", responseData);

@@ -180,7 +180,7 @@ export default function ActivitiesData() {
     fetchActivities();
   }, []);
 
-  console.log("Filtered Activities:", activities);
+  // console.log("Filtered Activities:", activities);
   const handleWeekdayChange = (weekday) => {
     setSelectedWeekdays((prev) =>
       prev.includes(weekday)

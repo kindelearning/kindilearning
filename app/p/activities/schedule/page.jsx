@@ -60,7 +60,7 @@ export default function Schedule() {
   }, [router]);
 
   // console.log("Nested Activities from Server", nextedActivity);
-  console.log("User Fetched from Server", userData);
+  // console.log("User Fetched from Server", userData);
   // getActivityForKid function
   const getActivityForKid = (kidId) => {
     const selectedKid = kids.find((kid) => kid.documentId === kidId);
