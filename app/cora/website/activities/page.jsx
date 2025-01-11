@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { ActivityImage } from "@/public/Images";
+import { ActivityImage, ThemeDummy } from "@/public/Images";
 import CreateActivityForm from "./CreateActivityForm";
 import EditActivityForm from "./EditActivityForm";
 
@@ -333,7 +333,7 @@ export default function ActivitiesPage() {
                       activity.Gallery.slice(0, 1).map((image, index) => (
                         <img
                           key={index}
-                          src={image.url}
+                          src={image?.url}
                           alt={`Gallery ${index}`}
                           className="min-w-16 rounded-md h-16 object-cover"
                         />
@@ -341,7 +341,7 @@ export default function ActivitiesPage() {
                     ) : (
                       <Image
                         key={index}
-                        src={ActivityImage}
+                        src={ThemeDummy}
                         alt={`Gallery ${index}`}
                         className="min-w-16 rounded-md h-16 object-cover"
                       />
@@ -417,7 +417,7 @@ export default function ActivitiesPage() {
                     <DialogContent className="max-w-[1000px] max-h-[600px] overflow-y-scroll">
                       <DialogHeader>
                         <DialogDescription>
-                          <EditActivityForm documentId={activity.documentId} />
+                          {/* <EditActivityForm documentId={activity.documentId} /> */}
                         </DialogDescription>
                       </DialogHeader>
                     </DialogContent>
