@@ -29,13 +29,7 @@ export default function ProfileUpdate() {
     }
   }, [user, loading, router]);
   
-  // useEffect(() => {
-  //   if (user && user.email) {
-  //     getUserDataByEmail(user.email).then((data) => {
-  //       setHygraphUser(data);
-  //     });
-  //   }
-  // }, [user, loading, router]);
+  
 
   if (loading)
     return (
@@ -46,6 +40,7 @@ export default function ProfileUpdate() {
 
   return (
     <>
+    I am the update page not edit page
       <section className="w-full pb-32 bg-[#f5f5f5] flex flex-col gap-0 justify-center items-start">
         {user && hygraphUser ? (
           <ProfileEdit userId={hygraphUser.id} />

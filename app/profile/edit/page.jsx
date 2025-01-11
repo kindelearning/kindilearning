@@ -3,7 +3,7 @@
 import AvatarSelectionForm from "@/app/Sections/Profile/ImageInput";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { RefreshCcw } from "lucide-react";
+import { Pencil, RefreshCcw, Trash, Trash2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import {
@@ -165,15 +165,13 @@ const AvailableDaysForm = ({ userId }) => {
   );
 };
 
-export default function ProfileEdit({ userId }) {
+export default function ProfileEdit() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-  const [formData, setFormData] = useState({
-    name: "",
-    dateOfBirth: "",
-    attendingNursery: false,
-  });
+
   const [userData, setUserData] = useState(null);
+  const [kidsData, setKidsData] = useState([]);
+  const [myLevels, setMyLevels] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -186,7 +184,7 @@ export default function ProfileEdit({ userId }) {
       try {
         // Fetch user data
         const response = await fetch(
-          "https://proper-fun-404805c7d9.strapiapp.com/api/users/me?populate[profilepic]=true&populate[myKids]=*&populate[myPaymentMethods]=*&populate[myPartner]=*&populate[iAmPartnerOf]=*",
+          "https://proper-fun-404805c7d9.strapiapp.com/api/users/me?populate=*",
           {
             method: "GET",
             headers: {
@@ -197,6 +195,7 @@ export default function ProfileEdit({ userId }) {
         const data = await response.json();
         setUserData(data);
 
+        // console.log("userData on profile Edit Page", userData.myKids);
         // Fetch kids data
         const kidsResponse = await fetch(
           "https://proper-fun-404805c7d9.strapiapp.com/api/kids?populate=*"
@@ -235,6 +234,9 @@ export default function ProfileEdit({ userId }) {
     fetchData();
   }, []);
 
+  // Filter for even index entries
+  const filterEvenEntries = (arr) => arr.filter((_, index) => index % 2 === 0);
+
   console.log("Fetched user details", userData);
   if (loading) return <p>Loading...</p>;
 
@@ -244,7 +246,7 @@ export default function ProfileEdit({ userId }) {
         <title>Profile Edit | Kindilearning</title>
         <meta name="description" content="Edit your profile in Kindilearning" />
       </head>
-      <section className="w-full pb-24 h-auto bg-[#f5f5f5] flex flex-col md:flex-row items-center justify-center px-0">
+      <section className="w-full font-fredoka pb-24 h-auto bg-[#f5f5f5] flex flex-col md:flex-row items-center justify-center px-0">
         <div className="w-full flex pt-4 pb-7 md:hidden bg-red">
           <div className="text-center w-full text-white text-[20px] font-semibold font-fredoka leading-tight">
             Profile Edit
@@ -257,86 +259,213 @@ export default function ProfileEdit({ userId }) {
           </div>
 
           <div className="claracontainer lg:px-[144px] flex flex-col gap-8 justify-center items-center">
-            {/* <div className="flex w-full justify-center items-center">
-              <AvatarSelectionForm accountId={userId} />
-            </div> */}
-            {/* <form
-              onSubmit={handleSubmit}
-              className="w-full flex flex-col gap-4"
-            >
-              <div className="claracontainer w-full flex flex-col gap-2">
-                <div className="mb-4 py-2 bg-white rounded-lg">
-                  <label
-                    htmlFor="name"
-                    className="block text-[#757575] text-[10px] lg:text-[14px] px-3 font-fredoka"
-                  >
-                    Name:
-                  </label>
-                  <Input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                    className="w-full border-0 shadow-none focus:ring-0 rounded-b-lg bg-white text-[#000] text-base font-fredoka"
-                  />
-                </div>
+            <div className="flex w-full justify-center items-center">
+              {/* <AvatarSelectionForm /> */}
+            </div>
 
-                <div className="flex flex-col lg:flex-row w-full gap-4">
-                  <div className="w-full py-2 bg-white rounded-lg flex-col">
-                    <label
-                      htmlFor="dateOfBirth"
-                      className="block text-[#757575] text-[10px] lg:text-[14px] px-3 font-fredoka"
-                    >
-                      Date of Birth:
-                    </label>
-                    <Input
-                      type="date"
-                      id="dateOfBirth"
-                      name="dateOfBirth"
-                      value={formData.dateOfBirth}
-                      onChange={handleChange}
-                      className="w-full border-0 shadow-none focus:ring-0 rounded-b-lg bg-white text-[#000] text-base font-fredoka"
-                    />
-                  </div>
-
-                  <div className="w-full py-2 bg-white rounded-lg flex flex-col gap-2">
-                    <label className="block text-[#757575] text-[10px] lg:text-[14px] px-3 font-fredoka">
-                      Attending Nursery:
-                    </label>
-                    <div className="w-full flex items-center px-2 gap-1">
-                      <Input
-                        type="checkbox"
-                        id="attendingNursery"
-                        name="attendingNursery"
-                        checked={formData.attendingNursery}
-                        onChange={handleChange}
-                        className="w-[20px] h-[20px] rounded-full text-[black] bg-white text-base font-fredoka"
-                      />
-                      <label
-                        htmlFor="attendingNursery"
-                        className="block text-[#757575] text-[10px] lg:text-[12px] px-4 font-fredoka"
-                      >
-                        Check if you are studying in Nursery
-                      </label>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex w-full justify-center items-center">
-                  <Button
-                    type="submit"
-                    className="text-center text-white text-base bg-red rounded-2xl shadow border-2 border-white font-semibold w-[200px]"
-                    disabled={loading}
-                  >
-                    {loading ? "Updating..." : "Update Profile"}
-                  </Button>
-                </div>
-                {message && <p className="mt-4 text-green-600">{message}</p>}
-              </div>
-            </form> */}
             <UpdateRawProfile />
-            <AvailableDaysForm />
+
+            {/* My Kids Section */}
+            <div className="w-full ">
+              <div className="flex w-full justify-between items-center">
+                <h3 className="text-2xl font-medium mb-4">My Kids</h3>
+                {userData && (
+                  <Dialog>
+                    <DialogTrigger className="claraButton">
+                      Add new kid
+                    </DialogTrigger>
+                    <DialogContent className="w-full max-w-[800px] max-h-[600px] overflow-y-scroll">
+                      <DialogHeader>
+                        <DialogDescription>
+                          <AddKidForm parentId={userData.id} />
+                        </DialogDescription>
+                      </DialogHeader>
+                    </DialogContent>
+                  </Dialog>
+                )}
+              </div>
+              {userData?.myKids?.length > 0 ? (
+                <div className="grid w-full font-fredoka grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {filterEvenEntries(userData.myKids).map((kid, index) => (
+                    <div
+                      key={index}
+                      className="bg-white border border-gray-200 rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow duration-200"
+                    >
+                      {/* Card Header */}
+                      <div className="flex items-center justify-between">
+                        <Dialog>
+                          <DialogTrigger>
+                            <Pencil className="text-gray-500 hover:text-indigo-600 transition-colors duration-200 cursor-pointer" />
+                          </DialogTrigger>
+                          <DialogContent>
+                            <DialogHeader>
+                              <DialogTitle>Update Kid</DialogTitle>
+                              <DialogDescription>
+                                <UpdateKidForm
+                                  kidId={kid.documentId}
+                                  parentId={userData.id}
+                                />
+                              </DialogDescription>
+                            </DialogHeader>
+                          </DialogContent>
+                        </Dialog>
+                        <RemoveKidButton
+                          kidId={kid.documentId}
+                          parentId={userData.id}
+                          className="text-gray-500 hover:text-red-600 transition-colors duration-200"
+                        />
+                      </div>
+
+                      {/* Card Content */}
+                      <div className="mt-4">
+                        <h4 className="text-lg font-semibold text-gray-800 mb-2">
+                          {kid.Name}
+                        </h4>
+                        <div className="text-sm text-gray-600 space-y-1">
+                          <p>
+                            <span className="font-medium text-gray-800">
+                              Age:
+                            </span>{" "}
+                            {kid.Age}
+                          </p>
+                          <p>
+                            <span className="font-medium text-gray-800">
+                              DOB:
+                            </span>{" "}
+                            {kid.dob}
+                          </p>
+                          <p>
+                            <span className="font-medium text-gray-800">
+                              Gender:
+                            </span>{" "}
+                            {kid.Gender === "M" ? "Male" : "Female"}
+                          </p>
+                          <p>
+                            <span className="font-medium text-gray-800">
+                              Attending Nursery:
+                            </span>{" "}
+                            {kid.AttendingNursury ? "Yes" : "No"}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-gray-500">No kids data available.</p>
+              )}
+            </div>
+
+            {/* My Partners Section */}
+            <div className="w-full">
+              <div className="flex w-full justify-between items-center">
+                <h3 className="text-2xl font-medium mb-4">My Partners</h3>
+                {userData && (
+                  <Dialog>
+                    <DialogTrigger className="claraButton">
+                      AddNew Payment Method
+                    </DialogTrigger>
+                    <DialogContent className="w-full max-w-[800px] max-h-[600px] overflow-y-scroll">
+                      <DialogHeader>
+                        <DialogDescription>
+                          <AddPaymentMethodForm parentId={userData.id} />
+                        </DialogDescription>
+                      </DialogHeader>
+                    </DialogContent>
+                  </Dialog>
+                )}
+              </div>
+              {userData?.myPartner?.length > 0 ? (
+                <div className="grid w-full grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {filterEvenEntries(userData.myPartner).map(
+                    (partner, index) => (
+                      <div
+                        key={index}
+                        className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300"
+                      >
+                        {/* Card Content */}
+                        <h4 className="text-lg font-bold mb-2">
+                          {partner.Name}
+                        </h4>
+                        <p>id: {partner.id}</p>
+                        <p>Email: {partner.email}</p>
+                      </div>
+                    )
+                  )}
+                </div>
+              ) : (
+                <p className="text-gray-500">No partners data available.</p>
+              )}
+            </div>
+
+            {/* Payment Methods Section */}
+            <div className="w-full">
+              <div className="flex w-full justify-between items-center">
+                <h3 className="text-2xl font-medium mb-4">
+                  My Payment Methods
+                </h3>
+                {userData && (
+                  <Dialog>
+                    <DialogTrigger className="claraButton">
+                      AddNew Payment Method
+                    </DialogTrigger>
+                    <DialogContent className="w-full max-w-[800px] max-h-[600px] overflow-y-scroll">
+                      <DialogHeader>
+                        <DialogDescription>
+                          <AddPaymentMethodForm parentId={userData.id} />
+                        </DialogDescription>
+                      </DialogHeader>
+                    </DialogContent>
+                  </Dialog>
+                )}
+              </div>
+              {userData?.myPaymentMethods?.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {filterEvenEntries(userData.myPaymentMethods).map(
+                    (payment, index) => (
+                      <div
+                        key={index}
+                        className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300"
+                      >
+                        {/* Card Header */}
+                        <div className="flex items-center justify-between">
+                          <Dialog>
+                            <DialogTrigger>
+                              <Pencil className="text-gray-500 hover:text-indigo-600 transition-colors duration-200 cursor-pointer" />
+                            </DialogTrigger>
+                            <DialogContent>
+                              <DialogHeader>
+                                <DialogTitle>Update Kid</DialogTitle>
+                                <DialogDescription>
+                                  <UpdatePaymentDataForm
+                                    paymentId={payment.documentId}
+                                    parentId={userData.id}
+                                  />
+                                </DialogDescription>
+                              </DialogHeader>
+                            </DialogContent>
+                          </Dialog>
+                          <RemovePaymentMethodButton
+                            paymentId={payment.documentId}
+                            className="text-gray-500 hover:text-red-600 transition-colors duration-200"
+                          />
+                        </div>
+                        <h4 className="text-lg font-bold mb-2">
+                          {payment.Name}
+                        </h4>
+                        <p>Card Number: {payment.Number}</p>
+                        <p>Expiry: {payment.expiryDate}</p>
+                        <p>CVV: {payment.CVV}</p>
+                      </div>
+                    )
+                  )}
+                </div>
+              ) : (
+                <p className="text-gray-500">
+                  No payment methods data available.
+                </p>
+              )}
+            </div>
           </div>
         </div>
       </section>
@@ -366,6 +495,7 @@ export function UpdateRawProfile() {
         const response = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/users/me", {
           headers: { Authorization: `Bearer ${token}` },
         });
+        if (!response.ok) throw new Error("Failed to fetch user data.");
         const data = await response.json();
 
         if (data) {
@@ -387,13 +517,8 @@ export function UpdateRawProfile() {
 
     fetchData();
   }, []);
-
-  const handleUpdateKid = (index, field, value) => {
-    const updatedKids = [...myKids];
-    updatedKids[index][field] = value;
-    setMyKids(updatedKids);
-  };
-
+  // Token retrieval utility
+  const getToken = () => localStorage.getItem("jwt");
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -401,10 +526,10 @@ export function UpdateRawProfile() {
       username: username,
       Name: name,
       email: email,
-      myKids: myKids, // Include updated kids
+      // myKids: myKids, // Include updated kids
     };
-
-    const token = localStorage.getItem("jwt");
+    const token = getToken();
+    // const token = localStorage.getItem("jwt");
     if (!token) {
       setError("You need to be logged in to update your profile.");
       return;
@@ -438,251 +563,82 @@ export function UpdateRawProfile() {
   if (error) return <div className="text-red-500">{error}</div>;
 
   return (
-    <div className="container mx-auto font-fredoka px-8 py-12">
+    <div className="claraContainer w-full font-fredoka py-12">
       <h2 className="text-3xl font-medium mb-8">Update Profile</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block text-gray-700">Name</label>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md"
-            placeholder="Enter Name"
-            required
-          />
-        </div>
-        <div>
-          <label className="block text-gray-700">Username</label>
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md"
-            placeholder="Enter Username"
-            required
-          />
-        </div>
-        <div>
-          <label className="block text-gray-700">Email</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md"
-            placeholder="Enter Email"
-            required
-          />
-        </div>
-
-        <h3 className="text-xl font-medium mt-6">My Kids</h3>
-        {myKids.map((kid, index) => (
-          <div key={index} className="border p-4 rounded-md mb-4">
-            <div>
-              <label className="block text-gray-700">Name</label>
-              <input
+      <form onSubmit={handleSubmit} className="w-full flex flex-col gap-4">
+        <div className="claracontainer w-full flex flex-col gap-2">
+          <div className="py-2 w-full bg-white rounded-lg">
+            <label className="block text-[#757575] text-[10px] lg:text-[14px] px-3 font-fredoka">
+              Name
+            </label>
+            <Input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="w-full rounded-none ring-offset-0  focus-visible:ring-0  border-0 focus-visible:scale-100 shadow-none border-transparent bg-white text-gray-500 text-base font-fredoka focus:text-black focus:ring-0 focus:outline-none transition-colors duration-150 ease-in-out"
+              placeholder="Enter Name"
+              required
+            />
+          </div>
+          <div className="w-full justify-between gap-2 items-center  flex">
+            <div className="w-full py-2 bg-white rounded-lg">
+              <label className="block text-[#757575] text-[10px] lg:text-[14px] px-3 font-fredoka">
+                Username{" "}
+                <span className="text-red text-[12px]">
+                  (Can't Update Username)
+                </span>
+              </label>
+              <Input
                 type="text"
-                value={kid.Name}
-                onChange={(e) => handleUpdateKid(index, "Name", e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md"
-                placeholder="Enter Kid's Name"
+                disabled
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="w-full rounded-none ring-offset-0  focus-visible:ring-0  border-0 focus-visible:scale-100 shadow-none border-transparent bg-white text-gray-500 text-base font-fredoka focus:text-black focus:ring-0 focus:outline-none transition-colors duration-150 ease-in-out"
+                placeholder="Enter Username"
+                required
               />
             </div>
-            <div>
-              <label className="block text-gray-700">Age</label>
-              <input
-                type="number"
-                value={kid.age}
-                onChange={(e) => handleUpdateKid(index, "age", e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md"
-                placeholder="Enter Kid's Age"
-              />
-            </div>
-            <div>
-              <label className="block text-gray-700">Gender</label>
-              <input
-                type="text"
-                value={kid.Gender}
-                onChange={(e) =>
-                  handleUpdateKid(index, "Gender", e.target.value)
-                }
-                className="w-full px-4 py-2 border border-gray-300 rounded-md"
-                placeholder="Enter Kid's Gender"
-              />
-            </div>
-            <div>
-              <label className="block text-gray-700">Attending Nursery</label>
-              <input
-                type="checkbox"
-                checked={kid.AttendingNursury}
-                onChange={(e) =>
-                  handleUpdateKid(index, "AttendingNursury", e.target.checked)
-                }
-              />
-            </div>
-            <div>
-              <label className="block text-gray-700">Date of Birth</label>
-              <input
-                type="date"
-                value={kid.dob}
-                onChange={(e) => handleUpdateKid(index, "dob", e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md"
+            <div className="w-full py-2 bg-white rounded-lg">
+              <label className="block text-[#757575] text-[10px] lg:text-[14px] px-3 font-fredoka">
+                Email{" "}
+                <span className="text-red text-[12px]">
+                  (Can't Update Email)
+                </span>{" "}
+              </label>
+              <Input
+                type="email"
+                disabled
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full rounded-none ring-offset-0  focus-visible:ring-0  border-0 focus-visible:scale-100 shadow-none border-transparent bg-white text-gray-500 text-base font-fredoka focus:text-black focus:ring-0 focus:outline-none transition-colors duration-150 ease-in-out"
+                placeholder="Enter Email"
+                required
               />
             </div>
           </div>
-        ))}
 
-        <div>
-          <button
-            type="submit"
-            className="bg-green-500 text-white px-6 py-2 rounded-md hover:bg-green-600"
-          >
-            Update Profile
-          </button>
+          <div>
+            <Button
+              type="submit"
+              className="text-center text-white text-base bg-red rounded-2xl shadow border-2 border-white font-semibold w-[200px]"
+              disabled={loading}
+            >
+              {loading ? "Updating..." : "Update Profile"}
+            </Button>
+          </div>
         </div>
+        {error && <p className="mt-4 text-red">{error}</p>}
       </form>
-
-      {/* Kids Profiles */}
-      <div>
-        <h3 className="text-xl font-semibold mb-4">Kids Profiles</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {userData.myKids && userData.myKids.length > 0 ? (
-            userData.myKids.map((kid, index) => {
-              if (index % 2 === 0) {
-                return (
-                  <div
-                    key={index}
-                    className="p-4 bg-gray-50 rounded-lg shadow-sm"
-                  >
-                    <Dialog>
-                      <DialogTrigger>Update kid</DialogTrigger>
-                      <DialogContent>
-                        <DialogHeader>
-                          <DialogTitle>Are you absolutely sure?</DialogTitle>
-                          <DialogDescription>
-                            <UpdateKidForm
-                              kidId={kid.documentId}
-                              parentId={userData.id}
-                            />
-                          </DialogDescription>
-                        </DialogHeader>
-                      </DialogContent>
-                    </Dialog>
-
-                    <RemoveKidButton
-                      kidId={kid.documentId}
-                      parentId={userData.id}
-                    />
-                    <p>
-                      <strong>Id:</strong> {kid.id}
-                    </p>
-                    <p>
-                      <strong>Name:</strong> {kid.Name}
-                    </p>
-                    <p>
-                      <strong>Age:</strong> {kid.age}
-                    </p>
-                    <p>
-                      <strong>Gender:</strong> {kid.Gender}
-                    </p>
-                    <p>
-                      <strong>DoB:</strong> {kid.dob}
-                    </p>
-                    <UpdateKidButton
-                      kidDocumentId={kid.documentId} // Pass the kid's documentId
-                      activityId="70" // Pass the activity ID to associate with the kid
-                      parentId={userData.id} // Pass the parent's ID
-                    />
-                  </div>
-                );
-              }
-              return null; // Return null if the kid is at an odd index
-            })
-          ) : (
-            <p>No kids profiles available.</p>
-          )}
-        </div>
-      </div>
-
-      {/* Payment Method */}
-      <div>
-        <Dialog>
-          <DialogTrigger>create Payment Method</DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Are you absolutely sure?</DialogTitle>
-              <DialogDescription>
-                <AddPaymentMethodForm parentId={userData.id} />
-              </DialogDescription>
-            </DialogHeader>
-          </DialogContent>
-        </Dialog>
-
-        <h3 className="text-xl font-semibold mb-4">payment-methods</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {userData.myPaymentMethods && userData.myPaymentMethods.length > 0 ? (
-            userData.myPaymentMethods.map((payment, index) => {
-              // Only render payment methods at even index (0, 2, 4, ...)
-              if (index % 2 === 0) {
-                return (
-                  <div
-                    key={index}
-                    className="p-4 bg-gray-50 rounded-lg shadow-sm"
-                  >
-                    <Dialog>
-                      <DialogTrigger className="text-[blue]">
-                        Update Payment Method
-                      </DialogTrigger>
-                      <DialogContent>
-                        <DialogHeader>
-                          <DialogTitle>Are you absolutely sure?</DialogTitle>
-                          <DialogDescription>
-                            <UpdatePaymentDataForm
-                              paymentId={payment.documentId}
-                              parentId={userData.id}
-                            />
-                          </DialogDescription>
-                        </DialogHeader>
-                      </DialogContent>
-                    </Dialog>
-                    <RemovePaymentMethodButton paymentId={payment.documentId} />
-                    <p>
-                      <strong>Id:</strong> {payment.id}
-                    </p>
-                    <p>
-                      <strong>Name:</strong> {payment.Name}
-                    </p>
-                    <p>
-                      <strong>Number:</strong> {payment.Number}
-                    </p>
-                    <p>
-                      <strong>ExpiryDate:</strong> {payment.ExpiryDate}
-                    </p>
-                    <p>
-                      <strong>CVV:</strong> {payment.CVV}
-                    </p>
-                  </div>
-                );
-              }
-              return null; // Return null if the payment method is at an odd index
-            })
-          ) : (
-            <p>No PaymentMethods available.</p>
-          )}
-        </div>
-      </div>
     </div>
   );
 }
 
 const AddKidForm = ({ parentId }) => {
-  // Managing individual states
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
   const [dob, setDob] = useState("");
   const [attendingNursery, setAttendingNursery] = useState(false);
   const [gender, setGender] = useState("");
-
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
 
@@ -720,9 +676,6 @@ const AddKidForm = ({ parentId }) => {
       console.log("Payload sent", data);
 
       if (response.ok) {
-        // Trigger callback after successful creation
-        // onKidAdded(data);
-        // Reset form fields
         setName("");
         setAge("");
         setDob("");
@@ -739,90 +692,101 @@ const AddKidForm = ({ parentId }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      {error && <p className="text-red-500">{error}</p>}
+    <div className="max-w-full font-fredoka bg-white shadow-lg rounded-lg p-6">
+      <h2 className="text-xl font-semibold text-gray-700 mb-4">
+        Add Kid Profile
+      </h2>
+      {error && <p className="text-red-500 mb-4">{error}</p>}
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="claracontainer w-full flex flex-col gap-2">
+          <div className="w-full gap-1 py-2 bg-white rounded-lg">
+            <label htmlFor="name" className="block">
+              Name
+            </label>
+            <Input
+              type="text"
+              id="name"
+              name="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+              className="w-full rounded-lg focus-visible:scale-100 shadow-none border-transparent bg-white text-gray-500 text-base font-fredoka focus:text-black focus:ring-0 focus:outline-none transition-colors duration-150 ease-in-out"
+            />
+          </div>
 
-      <div>
-        <label htmlFor="name" className="block">
-          Name
-        </label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-          className="input"
-        />
-      </div>
+          <div className="w-full gap-1 py-2 bg-white rounded-lg">
+            <label htmlFor="age" className="block">
+              Age
+            </label>
+            <Input
+              type="number"
+              id="age"
+              name="age"
+              value={age}
+              onChange={(e) => setAge(e.target.value)}
+              required
+              className="w-full rounded-lg focus-visible:scale-100 shadow-none border-transparent bg-white text-gray-500 text-base font-fredoka focus:text-black focus:ring-0 focus:outline-none transition-colors duration-150 ease-in-out"
+            />
+          </div>
 
-      <div>
-        <label htmlFor="age" className="block">
-          Age
-        </label>
-        <input
-          type="number"
-          id="age"
-          name="age"
-          value={age}
-          onChange={(e) => setAge(e.target.value)}
-          required
-          className="input"
-        />
-      </div>
+          <div className="w-full gap-1 py-2 bg-white rounded-lg">
+            <label htmlFor="dob" className="block">
+              Date of Birth
+            </label>
+            <Input
+              type="date"
+              id="dob"
+              name="dob"
+              value={dob}
+              onChange={(e) => setDob(e.target.value)}
+              required
+              className="w-full rounded-lg focus-visible:scale-100 shadow-none border-transparent bg-white text-gray-500 text-base font-fredoka focus:text-black focus:ring-0 focus:outline-none transition-colors duration-150 ease-in-out"
+            />
+          </div>
+          <div className="w-full justify-between gap-2 items-center  flex">
+            <div className="w-full gap-1 py-2 bg-white rounded-lg">
+              <label htmlFor="attendingNursery" className="block">
+                Attending Nursery
+              </label>
+              <Input
+                type="checkbox"
+                id="attendingNursery"
+                name="attendingNursery"
+                checked={attendingNursery}
+                onChange={(e) => setAttendingNursery(e.target.checked)}
+                className="w-[20px] h-[20px] rounded-none ring-offset-0  focus-visible:ring-0  border-0 focus-visible:scale-100 shadow-none border-transparent bg-white text-gray-500 text-base font-fredoka focus:text-black focus:ring-0 focus:outline-none transition-colors duration-150 ease-in-out"
+              />
+            </div>
 
-      <div>
-        <label htmlFor="dob" className="block">
-          Date of Birth
-        </label>
-        <input
-          type="date"
-          id="dob"
-          name="dob"
-          value={dob}
-          onChange={(e) => setDob(e.target.value)}
-          required
-          className="input"
-        />
-      </div>
+            <div className="w-full gap-1 py-2 bg-white rounded-lg">
+              <label htmlFor="gender" className="block">
+                Gender
+              </label>
+              <select
+                id="gender"
+                name="gender"
+                value={gender}
+                onChange={(e) => setGender(e.target.value)}
+                required
+                className="w-full rounded-none ring-offset-0  focus-visible:ring-0  border-0 focus-visible:scale-100 shadow-none border-transparent bg-white text-gray-500 text-base font-fredoka focus:text-black focus:ring-0 focus:outline-none transition-colors duration-150 ease-in-out"
+              >
+                <option value="">Select Gender</option>
+                <option value="M">Male</option>
+                <option value="F">Female</option>
+              </select>
+            </div>
+          </div>
+        </div>
 
-      <div>
-        <label htmlFor="attendingNursery" className="block">
-          Attending Nursery
-        </label>
-        <input
-          type="checkbox"
-          id="attendingNursery"
-          name="attendingNursery"
-          checked={attendingNursery}
-          onChange={(e) => setAttendingNursery(e.target.checked)}
-          className="input"
-        />
-      </div>
-
-      <div>
-        <label htmlFor="gender" className="block">
-          Gender
-        </label>
-        <select
-          id="gender"
-          name="gender"
-          value={gender}
-          onChange={(e) => setGender(e.target.value)}
-          required
-          className="input"
+        <Button
+          type="submit"
+          disabled={isSubmitting}
+          className="text-center text-white text-base bg-red rounded-2xl shadow border-2 border-white font-semibold w-[200px]"
         >
-          <option value="">Select Gender</option>
-          <option value="M">Male</option>
-          <option value="F">Female</option>
-        </select>
-      </div>
-
-      <button type="submit" disabled={isSubmitting} className="btn">
-        {isSubmitting ? "Adding..." : "Add Kid"}
-      </button>
-    </form>
+          {isSubmitting ? "Adding..." : "Add Kid"}
+        </Button>
+      </form>
+    </div>
   );
 };
 
@@ -909,90 +873,98 @@ const UpdateKidForm = ({ parentId, kidId }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      {error && <p className="text-red-500">{error}</p>}
+    <div className="max-w-full font-fredoka bg-white rounded-lg">
+      {error && <p className="text-red-500 mb-4">{error}</p>}
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {error && <p className="text-red-500">{error}</p>}
+        <div className="claracontainer w-full flex flex-col gap-2">
+          <div className="w-full gap-1 py-2 bg-white rounded-lg">
+            <label htmlFor="name" className="block">
+              Name
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+              className="w-full rounded-lg focus-visible:scale-100 shadow-none border-transparent bg-white text-gray-500 text-base font-fredoka focus:text-black focus:ring-0 focus:outline-none transition-colors duration-150 ease-in-out"
+            />
+          </div>
 
-      <div>
-        <label htmlFor="name" className="block">
-          Name
-        </label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-          className="input"
-        />
-      </div>
+          <div className="w-full gap-1 py-2 bg-white rounded-lg">
+            <label htmlFor="age" className="block">
+              Age
+            </label>
+            <input
+              type="number"
+              id="age"
+              name="age"
+              value={age}
+              onChange={(e) => setAge(e.target.value)}
+              required
+              className="w-full rounded-lg focus-visible:scale-100 shadow-none border-transparent bg-white text-gray-500 text-base font-fredoka focus:text-black focus:ring-0 focus:outline-none transition-colors duration-150 ease-in-out"
+            />
+          </div>
 
-      <div>
-        <label htmlFor="age" className="block">
-          Age
-        </label>
-        <input
-          type="number"
-          id="age"
-          name="age"
-          value={age}
-          onChange={(e) => setAge(e.target.value)}
-          required
-          className="input"
-        />
-      </div>
+          <div className="w-full gap-1 py-2 bg-white rounded-lg">
+            <label htmlFor="dob" className="block">
+              Date of Birth
+            </label>
+            <input
+              type="date"
+              id="dob"
+              name="dob"
+              value={dob}
+              onChange={(e) => setDob(e.target.value)}
+              required
+              className="input"
+            />
+          </div>
 
-      <div>
-        <label htmlFor="dob" className="block">
-          Date of Birth
-        </label>
-        <input
-          type="date"
-          id="dob"
-          name="dob"
-          value={dob}
-          onChange={(e) => setDob(e.target.value)}
-          required
-          className="input"
-        />
-      </div>
+          <div className="w-full gap-1 py-2 bg-white rounded-lg">
+            <label htmlFor="attendingNursery" className="block">
+              Attending Nursery
+            </label>
+            <input
+              type="checkbox"
+              id="attendingNursery"
+              name="attendingNursery"
+              checked={attendingNursery}
+              onChange={(e) => setAttendingNursery(e.target.checked)}
+              className="input"
+            />
+          </div>
 
-      <div>
-        <label htmlFor="attendingNursery" className="block">
-          Attending Nursery
-        </label>
-        <input
-          type="checkbox"
-          id="attendingNursery"
-          name="attendingNursery"
-          checked={attendingNursery}
-          onChange={(e) => setAttendingNursery(e.target.checked)}
-          className="input"
-        />
-      </div>
+          <div className="w-full gap-1 py-2 bg-white rounded-lg">
+            <label htmlFor="gender" className="block">
+              Gender
+            </label>
+            <select
+              id="gender"
+              name="gender"
+              value={gender}
+              onChange={(e) => setGender(e.target.value)}
+              required
+              className="input"
+            >
+              <option value="">Select Gender</option>
+              <option value="M">Male</option>
+              <option value="F">Female</option>
+            </select>
+          </div>
+        </div>
 
-      <div>
-        <label htmlFor="gender" className="block">
-          Gender
-        </label>
-        <select
-          id="gender"
-          name="gender"
-          value={gender}
-          onChange={(e) => setGender(e.target.value)}
-          required
-          className="input"
+        <Button
+          type="submit"
+          disabled={isSubmitting}
+          className="text-center text-white text-base bg-red rounded-2xl shadow border-2 border-white font-semibold w-[200px]"
         >
-          <option value="">Select Gender</option>
-          <option value="M">Male</option>
-          <option value="F">Female</option>
-        </select>
-      </div>
-
-      <button type="submit" disabled={isSubmitting} className="btn">
-        {isSubmitting ? "Updating..." : "Update Kid"}
-      </button>
-    </form>
+          {isSubmitting ? "Updating..." : "Update Kid"}
+        </Button>
+      </form>
+    </div>
   );
 };
 
@@ -1043,18 +1015,22 @@ const RemoveKidButton = ({ kidId }) => {
   };
 
   return (
-    <div>
+    <div className="font-fredoka">
       {error && <p className="text-red-500">{error}</p>}
       {success && <p className="text-green-500">Kid removed successfully!</p>}
 
       <Dialog open={openDialog} onOpenChange={setOpenDialog}>
         <DialogTrigger asChild>
           <button className="btn text-red-500" disabled={isSubmitting}>
-            {isSubmitting ? "Removing..." : "Remove Kid"}
+            {isSubmitting ? (
+              "Removing..."
+            ) : (
+              <Trash2Icon className="text-[#6a6a6a] duration-200 hover:text-black" />
+            )}
           </button>
         </DialogTrigger>
 
-        <DialogContent>
+        <DialogContent className="font-fredoka">
           <DialogHeader>
             <DialogTitle>Are you absolutely sure?</DialogTitle>
             <DialogDescription>
@@ -1065,85 +1041,19 @@ const RemoveKidButton = ({ kidId }) => {
 
           <div className="mt-4 flex justify-end space-x-2">
             <DialogClose asChild className="btn-secondary">
-              <button>Cancel</button>
+              <Button variant="outline">Cancel</Button>
             </DialogClose>
 
-            <button
-              className="btn-danger"
+            <Button
+              className="btn-danger text-white bg-red"
               onClick={handleRemoveKid}
               disabled={isSubmitting}
             >
               {isSubmitting ? "Removing..." : "Confirm Remove"}
-            </button>
+            </Button>
           </div>
         </DialogContent>
       </Dialog>
-    </div>
-  );
-};
-
-const UpdateKidButton = ({ kidDocumentId, activityId }) => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(false);
-
-  const handleUpdate = async () => {
-    setLoading(true);
-    setError(null);
-    setSuccess(false);
-
-    try {
-      const response = await fetch(
-        `https://proper-fun-404805c7d9.strapiapp.com/api/kids/${kidDocumentId}?populate=*`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            // Assuming token is stored in localStorage
-          },
-          body: JSON.stringify({
-            data: {
-              myActivities: [
-                {
-                  id: activityId,
-                },
-              ],
-            },
-          }),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to update kid's data.");
-      }
-
-      const data = await response.json();
-      // On success, set success state to true
-      setSuccess(true);
-      console.log("Kid's data updated successfully:", data);
-    } catch (error) {
-      setError(error.message || "An error occurred while updating the data.");
-      console.error("Error updating kid's data:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return (
-    <div className="flex items-center justify-between">
-      <button
-        onClick={handleUpdate}
-        disabled={loading}
-        className="p-2 bg-blue-500 text-white rounded-lg disabled:bg-gray-400"
-      >
-        {loading ? "Updating..." : "Update Kid's Activity"}
-      </button>
-      {error && <p className="text-red-500 mt-2">{error}</p>}
-      {success && (
-        <p className="text-green-500 mt-2">
-          Kids activity updated successfully!
-        </p>
-      )}
     </div>
   );
 };
@@ -1153,7 +1063,6 @@ const AddPaymentMethodForm = ({ parentId }) => {
   const [number, setNumber] = useState("");
   const [cvv, setCVV] = useState("");
   const [expiryDate, setExpiryDate] = useState(false);
-
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
 
@@ -1208,72 +1117,83 @@ const AddPaymentMethodForm = ({ parentId }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="font-fredoka">
       {error && <p className="text-red-500">{error}</p>}
 
-      <div>
-        <label htmlFor="name" className="block">
-          Name
-        </label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-          className="input"
-        />
-      </div>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {error && <p className="text-red-500">{error}</p>}
+        <div className="claracontainer w-full flex flex-col gap-2">
+          <div className="w-full gap-1 py-2 bg-white rounded-lg">
+            <label htmlFor="name" className="block">
+              Name
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+              className="w-full rounded-lg focus-visible:scale-100 shadow-none border-transparent bg-white text-gray-500 text-base font-fredoka focus:text-black focus:ring-0 focus:outline-none transition-colors duration-150 ease-in-out"
+            />
+          </div>
 
-      <div>
-        <label htmlFor="number" className="block">
-          number
-        </label>
-        <input
-          type="number"
-          id="number"
-          name="number"
-          value={number}
-          onChange={(e) => setNumber(e.target.value)}
-          required
-          className="input"
-        />
-      </div>
+          <div className="w-full gap-1 py-2 bg-white rounded-lg">
+            <label htmlFor="number" className="block">
+              Number
+            </label>
+            <input
+              type="number"
+              id="number"
+              name="number"
+              value={number}
+              onChange={(e) => setNumber(e.target.value)}
+              required
+              className="w-full rounded-lg focus-visible:scale-100 shadow-none border-transparent bg-white text-gray-500 text-base font-fredoka focus:text-black focus:ring-0 focus:outline-none transition-colors duration-150 ease-in-out"
+            />
+          </div>
 
-      <div>
-        <label htmlFor="expiryDate" className="block">
-          expiryDate
-        </label>
-        <input
-          type="date"
-          id="expiryDate"
-          name="expiryDate"
-          value={expiryDate}
-          onChange={(e) => setExpiryDate(e.target.value)}
-          required
-          className="input"
-        />
-      </div>
+          <div className="flex w-full justify-between items-center">
+            <div className="w-full gap-1 py-2 bg-white rounded-lg">
+              <label htmlFor="expiryDate" className="block">
+                ExpiryDate
+              </label>
+              <input
+                type="date"
+                id="expiryDate"
+                name="expiryDate"
+                value={expiryDate}
+                onChange={(e) => setExpiryDate(e.target.value)}
+                required
+                className="w-full rounded-lg focus-visible:scale-100 shadow-none border-transparent bg-white text-gray-500 text-base font-fredoka focus:text-black focus:ring-0 focus:outline-none transition-colors duration-150 ease-in-out"
+              />
+            </div>
 
-      <div>
-        <label htmlFor="cvv" className="block">
-          cvv
-        </label>
-        <input
-          type="number"
-          id="cvv"
-          name="cvv"
-          checked={cvv}
-          onChange={(e) => setCVV(e.target.value)}
-          className="input"
-        />
-      </div>
+            <div className="w-full gap-1 py-2 bg-white rounded-lg">
+              <label htmlFor="cvv" className="block">
+                CVV
+              </label>
+              <input
+                type="number"
+                id="cvv"
+                name="cvv"
+                checked={cvv}
+                onChange={(e) => setCVV(e.target.value)}
+                className="w-full rounded-lg focus-visible:scale-100 shadow-none border-transparent bg-white text-gray-500 text-base font-fredoka focus:text-black focus:ring-0 focus:outline-none transition-colors duration-150 ease-in-out"
+              />
+            </div>
+          </div>
+        </div>
 
-      <button type="submit" disabled={isSubmitting} className="btn">
-        {isSubmitting ? "Adding..." : "Add Kid"}
-      </button>
-    </form>
+        <Button
+          type="submit"
+          disabled={isSubmitting}
+          className="text-center text-white text-base bg-red rounded-2xl shadow border-2 border-white font-semibold w-[200px]"
+        >
+          {isSubmitting ? "Adding..." : "Add Payment Method"}
+        </Button>
+      </form>
+    </div>
   );
 };
 
@@ -1361,73 +1281,78 @@ const UpdatePaymentDataForm = ({ parentId, paymentId }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="font-fredoka">
       {error && <p className="text-red-500">{error}</p>}
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {error && <p className="text-red-500">{error}</p>}
+        <div className="claracontainer w-full flex flex-col gap-2">
+          <div className="w-full gap-1 py-2 bg-white rounded-lg">
+            <label htmlFor="name" className="block">
+              Name
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+              className="w-full rounded-lg focus-visible:scale-100 shadow-none border-transparent bg-white text-gray-500 text-base font-fredoka focus:text-black focus:ring-0 focus:outline-none transition-colors duration-150 ease-in-out"
+            />
+          </div>
 
-      <div>
-        <label htmlFor="name" className="block">
-          Name
-        </label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-          className="input"
-        />
-      </div>
+          <div className="w-full gap-1 py-2 bg-white rounded-lg">
+            <label htmlFor="number" className="block">
+              Number
+            </label>
+            <input
+              type="number"
+              id="number"
+              name="number"
+              value={number}
+              onChange={(e) => setNumber(e.target.value)}
+              required
+              className="w-full rounded-lg focus-visible:scale-100 shadow-none border-transparent bg-white text-gray-500 text-base font-fredoka focus:text-black focus:ring-0 focus:outline-none transition-colors duration-150 ease-in-out"
+            />
+          </div>
+          <div className="flex w-full justify-between items-center">
+            <div className="w-full gap-1 py-2 bg-white rounded-lg">
+              <label htmlFor="expiryDate" className="block">
+                Expiry
+              </label>
+              <input
+                type="date"
+                id="expiryDate"
+                name="expiryDate"
+                value={expiryDate}
+                onChange={(e) => setExpiryDate(e.target.value)}
+                required
+                className="w-full rounded-lg focus-visible:scale-100 shadow-none border-transparent bg-white text-gray-500 text-base font-fredoka focus:text-black focus:ring-0 focus:outline-none transition-colors duration-150 ease-in-out"
+              />
+            </div>
 
-      <div>
-        <label htmlFor="number" className="block">
-          Number
-        </label>
-        <input
-          type="number"
-          id="number"
-          name="number"
-          value={number}
-          onChange={(e) => setNumber(e.target.value)}
-          required
-          className="input"
-        />
-      </div>
+            <div className="w-full gap-1 py-2 bg-white rounded-lg">
+              <label htmlFor="cvv" className="block">
+                CVV
+              </label>
+              <input
+                type="number"
+                id="cvv"
+                name="cvv"
+                value={cvv}
+                onChange={(e) => setCVV(e.target.value)}
+                required
+                className="w-full rounded-lg focus-visible:scale-100 shadow-none border-transparent bg-white text-gray-500 text-base font-fredoka focus:text-black focus:ring-0 focus:outline-none transition-colors duration-150 ease-in-out"
+              />
+            </div>
+          </div>
+        </div>
 
-      <div>
-        <label htmlFor="expiryDate" className="block">
-          Expiry
-        </label>
-        <input
-          type="date"
-          id="expiryDate"
-          name="expiryDate"
-          value={expiryDate}
-          onChange={(e) => setExpiryDate(e.target.value)}
-          required
-          className="input"
-        />
-      </div>
-
-      <div>
-        <label htmlFor="cvv" className="block">
-          CVV
-        </label>
-        <input
-          type="number"
-          id="cvv"
-          name="cvv"
-          value={cvv}
-          onChange={(e) => setCVV(e.target.value)}
-          required
-          className="input"
-        />
-      </div>
-
-      <button type="submit" disabled={isSubmitting} className="btn">
-        {isSubmitting ? "Updating..." : "Update Kid"}
-      </button>
-    </form>
+        <button type="submit" disabled={isSubmitting} className="btn">
+          {isSubmitting ? "Updating..." : "Update Payment Method"}
+        </button>
+      </form>
+    </div>
   );
 };
 
@@ -1471,7 +1396,7 @@ const RemovePaymentMethodButton = ({ paymentId }) => {
         setSuccess(true); // Kid is successfully removed from the current parent
         setOpenDialog(false); // Close dialog after success
       } else {
-        setError(data.error?.message || "Error removing kid");
+        setError(data.error?.message || "Error removing Payment Method");
       }
     } catch (err) {
       setError("An error occurred. Please try again.");
@@ -1481,17 +1406,19 @@ const RemovePaymentMethodButton = ({ paymentId }) => {
   };
 
   return (
-    <div>
+    <div className="font-fredoka">
       {error && <p className="text-red-500">{error}</p>}
-      {success && <p className="text-green-500">Kid removed successfully!</p>}
-
+      {success && <p className="text-green-500">Removed Successfully!</p>}
       <Dialog open={openDialog} onOpenChange={setOpenDialog}>
         <DialogTrigger asChild>
           <button className="btn text-red-500" disabled={isSubmitting}>
-            {isSubmitting ? "Removing..." : "Remove Thsi method"}
+            {isSubmitting ? (
+              "Removing..."
+            ) : (
+              <Trash2Icon className="text-[#6a6a6a] duration-200 hover:text-black" />
+            )}
           </button>
         </DialogTrigger>
-
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Are you absolutely sure?</DialogTitle>
@@ -1500,19 +1427,17 @@ const RemovePaymentMethodButton = ({ paymentId }) => {
               profile.
             </DialogDescription>
           </DialogHeader>
-
           <div className="mt-4 flex justify-end space-x-2">
             <DialogClose asChild className="btn-secondary">
-              <button>Cancel</button>
+              <Button variant="outline">Cancel</Button>
             </DialogClose>
-
-            <button
-              className="btn-danger"
+            <Button
+              className="btn-danger text-white bg-red"
               onClick={handleRemoveKid}
               disabled={isSubmitting}
             >
               {isSubmitting ? "Removing..." : "Confirm Remove"}
-            </button>
+            </Button>
           </div>
         </DialogContent>
       </Dialog>

@@ -75,7 +75,7 @@ export default function TopProfileCard({ userData, totalactitivuty }) {
             )}
             {/* Trigger for the Edit Profile Popup for Larger screen */}
             <Link
-              href="/profile/update"
+              href="/profile/edit"
               className="hidden lg:flex"
               target="_blank"
             >
