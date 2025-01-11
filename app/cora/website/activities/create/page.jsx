@@ -193,9 +193,7 @@ export default function CreateActivityForm() {
 
   return (
     <div className="p-8 font-fredoka">
-      <head>
-        <title>Create New Activity - KindiLearning</title>
-      </head>
+     
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label htmlFor="Title" className="block">
