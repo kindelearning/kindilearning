@@ -181,9 +181,9 @@ export default function EditActivityForm({ documentId }) {
           <label htmlFor="Gallery" className="block">
             Gallery
           </label>
-          <MediaSelector
+          {/* <MediaSelector
             onMediaSelect={handleMediaChange} // Update the state when user selects media
-          />
+          /> */}
         </div>
         {/* Error message */}
         <div>
