@@ -8,7 +8,7 @@ const ProductCard = ({ product }) => {
       {/* Product Image */}
       <img
         src={product.FeaturedImage} // Assuming the product image URL is under 'thumbnail'
-        // src={`https://proper-fun-404805c7d9.strapiapp.com${product.FeaturedImage}`} // Assuming the product image URL is under 'thumbnail'
+        // src={`https://upbeat-life-04fe8098b1.strapiapp.com${product.FeaturedImage}`} // Assuming the product image URL is under 'thumbnail'
         alt={product.Name}
         className="w-16 h-16 object-cover rounded-lg"
       />
@@ -39,7 +39,7 @@ export default function ProductWidgets() {
   // Function to fetch product data from the API
   const fetchProductData = async () => {
     try {
-      const response = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/products"); // Replace with the correct API endpoint for fetching all products
+      const response = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/products"); // Replace with the correct API endpoint for fetching all products
       const data = await response.json();
       setProductData(data.data); // Assuming the response structure has a 'data' field containing an array of products
     } catch (error) {
@@ -135,7 +135,7 @@ export function LatestProducts() {
   const fetchProducts = async () => {
     try {
       const response = await fetch(
-        "https://proper-fun-404805c7d9.strapiapp.com/api/products?populate=*"
+        "https://upbeat-life-04fe8098b1.strapiapp.com/api/products?populate=*"
       );
       const data = await response.json();
 

@@ -1,7 +1,7 @@
 export async function fetchDynamicPageContent() {
   try {
     const response = await fetch(
-      "https://proper-fun-404805c7d9.strapiapp.com/api/dynammic-page-content?populate=*"
+      "https://upbeat-life-04fe8098b1.strapiapp.com/api/dynammic-page-content?populate=*"
     );
 
     if (!response.ok) {

@@ -71,7 +71,7 @@ export default function CreateBlog() {
 
     console.log('Payload Sent', newBlog)
     try {
-      const response = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/blogs", {
+      const response = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/blogs", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ data: newBlog }),
@@ -206,7 +206,7 @@ export default function CreateBlog() {
             {media ? (
               <div>
                 <img
-                  src={`https://proper-fun-404805c7d9.strapiapp.com${media.url}`}
+                  src={`https://upbeat-life-04fe8098b1.strapiapp.com${media.url}`}
                   alt={media.name}
                   className="w-32 h-32 object-cover"
                 />

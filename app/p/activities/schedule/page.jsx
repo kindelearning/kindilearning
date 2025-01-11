@@ -27,7 +27,7 @@ export default function Schedule() {
       // Fetch activities
       try {
         const response = await fetch(
-          "https://proper-fun-404805c7d9.strapiapp.com/api/kids?populate[myRescheduledActivities][populate]=*"
+          "https://upbeat-life-04fe8098b1.strapiapp.com/api/kids?populate[myRescheduledActivities][populate]=*"
         );
         const data = await response.json();
         const rescheduledActivities = data.data;
@@ -44,7 +44,7 @@ export default function Schedule() {
         setUserData(userResponse);
 
         // const gettingNestedActivities = await fetch(
-        //   "https://proper-fun-404805c7d9.strapiapp.com/api/activities?populate[nested_activities][populate]=*"
+        //   "https://upbeat-life-04fe8098b1.strapiapp.com/api/activities?populate[nested_activities][populate]=*"
         // );
         // const fetchedActivitiesData = await gettingNestedActivities.json()
         // setNestedActivity(fetchedActivitiesData.data);

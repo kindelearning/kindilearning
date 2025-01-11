@@ -31,7 +31,7 @@ export default function BlogDetailPage({ params }) {
 
   const fetchBlogData = async () => {
     const res = await fetch(
-      `https://proper-fun-404805c7d9.strapiapp.com/api/blogs/${id}?populate=comments&populate=FeaturedImage`
+      `https://upbeat-life-04fe8098b1.strapiapp.com/api/blogs/${id}?populate=comments&populate=FeaturedImage`
     );
     const data = await res.json();
 
@@ -296,7 +296,7 @@ export default function BlogDetailPage({ params }) {
 
 //   const fetchBlogData = async () => {
 //     const res = await fetch(
-//       `https://proper-fun-404805c7d9.strapiapp.com/api/blogs/${id}?populate=comments&populate=FeaturedImage`
+//       `https://upbeat-life-04fe8098b1.strapiapp.com/api/blogs/${id}?populate=comments&populate=FeaturedImage`
 //     );
 //     const data = await res.json();
 
@@ -384,7 +384,7 @@ export default function BlogDetailPage({ params }) {
 //         <meta property="og:description" content={Description} />
 //         <meta
 //           property="og:image"
-//           content={`https://proper-fun-404805c7d9.strapiapp.com${FeaturedImage.url}`}
+//           content={`https://upbeat-life-04fe8098b1.strapiapp.com${FeaturedImage.url}`}
 //         />
 //         <meta property="og:url" content={window.location.href} />
 //         <meta property="og:type" content="article" />
@@ -395,7 +395,7 @@ export default function BlogDetailPage({ params }) {
 //         <meta name="twitter:description" content={Description} />
 //         <meta
 //           name="twitter:image"
-//           content={`https://proper-fun-404805c7d9.strapiapp.com${FeaturedImage.url}`}
+//           content={`https://upbeat-life-04fe8098b1.strapiapp.com${FeaturedImage.url}`}
 //         />
 //       </head>
 
@@ -406,7 +406,7 @@ export default function BlogDetailPage({ params }) {
 //             height={600}
 //             src={
 //               FeaturedImage?.url
-//                 ? `https://proper-fun-404805c7d9.strapiapp.com${FeaturedImage.url}`
+//                 ? `https://upbeat-life-04fe8098b1.strapiapp.com${FeaturedImage.url}`
 //                 : BlogThumb
 //             }
 //             alt={`Featured Image for ${Text}`}

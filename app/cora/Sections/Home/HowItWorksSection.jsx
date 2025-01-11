@@ -19,7 +19,7 @@ export default function HowItWorksSection() {
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(
-        "https://proper-fun-404805c7d9.strapiapp.com/api/howitwork?populate=HIWSection.Media"
+        "https://upbeat-life-04fe8098b1.strapiapp.com/api/howitwork?populate=HIWSection.Media"
       );
       const result = await response.json();
       setData(result.data);
@@ -72,7 +72,7 @@ export default function HowItWorksSection() {
               <img
                 className="rounded-lg max-w-[300px] h-[300px] w-full object-contain"
                 src={section.Media.url}
-                // src={`https://proper-fun-404805c7d9.strapiapp.com${section.Media.url}`}
+                // src={`https://upbeat-life-04fe8098b1.strapiapp.com${section.Media.url}`}
                 alt={section.Media.name || "How it works image"}
               />
             ) : (
@@ -117,7 +117,7 @@ export default function HowItWorksSection() {
 //   const [media, setMedia] = useState(null); // Use `null` for initial media
 
 //   useEffect(() => {
-//     fetch("https://proper-fun-404805c7d9.strapiapp.com/api/howitwork?populate=*")
+//     fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/howitwork?populate=*")
 //       .then((res) => res.json())
 //       .then((data) => {
 //         setFormData(data.data);
@@ -158,7 +158,7 @@ export default function HowItWorksSection() {
 //     console.log("Sent Data", payload);
 
 //     try {
-//       const res = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/howitwork", {
+//       const res = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/howitwork", {
 //         method: "PUT",
 //         headers: {
 //           "Content-Type": "application/json",
@@ -302,7 +302,7 @@ export default function HowItWorksSection() {
 //                   {media ? (
 //                     <div className="mt-4">
 //                       <img
-//                         src={`https://proper-fun-404805c7d9.strapiapp.com${media.url}`}
+//                         src={`https://upbeat-life-04fe8098b1.strapiapp.com${media.url}`}
 //                         className="w-[300px] h-[200px] rounded-lg object-cover"
 //                       />
 //                       <p>{media.name}</p>
@@ -355,7 +355,7 @@ export function UpdateHowItWorks() {
   useEffect(() => {
     const fetchHIWData = async () => {
       try {
-        const res = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/howitwork?populate=HIWSection.Media");
+        const res = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/howitwork?populate=HIWSection.Media");
         const data = await res.json();
 
         // Parsing the fetched data
@@ -405,7 +405,7 @@ export function UpdateHowItWorks() {
     console.log("payload sent", payload);
 
     try {
-      const res = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/howitwork", {
+      const res = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/howitwork", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -509,7 +509,7 @@ export function UpdateHowItWorks() {
                 {section.Media ? (
                   <div className="mt-4">
                     <img
-                      src={`https://proper-fun-404805c7d9.strapiapp.com${section.Media.url}`}
+                      src={`https://upbeat-life-04fe8098b1.strapiapp.com${section.Media.url}`}
                       alt={section.title}
                       className="w-32 h-32 object-cover"
                     />

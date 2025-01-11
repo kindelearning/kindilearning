@@ -44,7 +44,7 @@ export default function ProfilePage() {
 
         // Fetch kids data
         const kidsResponse = await fetch(
-          "https://proper-fun-404805c7d9.strapiapp.com/api/kids?populate=*"
+          "https://upbeat-life-04fe8098b1.strapiapp.com/api/kids?populate=*"
         );
         const kidsData = await kidsResponse.json();
         setKidsData(kidsData.data);

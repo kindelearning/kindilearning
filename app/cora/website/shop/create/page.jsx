@@ -67,7 +67,7 @@ import ClaraMarkdownRichEditor from "@/app/cora/Sections/TextEditor/ClaraMarkdow
 //     };
 
 //     try {
-//       const res = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/products", {
+//       const res = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/products", {
 //         method: "POST",
 //         headers: {
 //           "Content-Type": "application/json",
@@ -271,7 +271,7 @@ export default function CreateProductPage() {
 
     console.log("New Badge data", newProducts);
     try {
-      const response = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/products", {
+      const response = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/products", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -330,7 +330,7 @@ export default function CreateProductPage() {
             <div className="mt-4">
               <img
                 src={media.url}
-                // src={`https://proper-fun-404805c7d9.strapiapp.com${media.url}`}
+                // src={`https://upbeat-life-04fe8098b1.strapiapp.com${media.url}`}
                 className="w-32 h-32 object-cover"
               />
               <p>{media.name}</p>
@@ -347,7 +347,7 @@ export default function CreateProductPage() {
             <div className="mt-4">
               <img
                 // src={media.url}
-                src={`https://proper-fun-404805c7d9.strapiapp.com${gallery.url}`}
+                src={`https://upbeat-life-04fe8098b1.strapiapp.com${gallery.url}`}
                 className="w-32 h-32 object-cover"
               />
               <p>{gallery.name}</p>

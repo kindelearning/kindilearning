@@ -28,7 +28,7 @@ export default async function Page() {
                     {/* <CategoryCard
                       schedulesDate={item.LaunchTime}
                       image={item.Thumbnail.url}
-                      // image={`https://proper-fun-404805c7d9.strapiapp.com${item.Thumbnail.url}`}
+                      // image={`https://upbeat-life-04fe8098b1.strapiapp.com${item.Thumbnail.url}`}
                       description={item.metaDesc.slice(0, 100)}
                       header={item.Title}
                     /> */}

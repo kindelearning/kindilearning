@@ -208,7 +208,7 @@ const BlogCard = ({ post }) => {
     <div className="flex items-start space-x-4 bg-gray-50 p-4 rounded-lg border border-gray-200 hover:bg-gray-100 transition-all">
       {/* Thumbnail */}
       <img
-        // src={`https://proper-fun-404805c7d9.strapiapp.com${post.thumbnail}`}
+        // src={`https://upbeat-life-04fe8098b1.strapiapp.com${post.thumbnail}`}
         src={post.thumbnail || BlogThumb}
         alt={post.title}
         className="w-16 h-16 object-cover rounded-lg"
@@ -236,7 +236,7 @@ export function RecentBlogs() {
     const fetchBlogs = async () => {
       try {
         const response = await fetch(
-          "https://proper-fun-404805c7d9.strapiapp.com/api/blogs?populate=*"
+          "https://upbeat-life-04fe8098b1.strapiapp.com/api/blogs?populate=*"
         );
         const data = await response.json();
 
@@ -293,7 +293,7 @@ const CommentCard = ({ comment, onDelete }) => {
   const handleDelete = async () => {
     try {
       const response = await fetch(
-        `https://proper-fun-404805c7d9.strapiapp.com/api/comments/${comment.documentId}`,
+        `https://upbeat-life-04fe8098b1.strapiapp.com/api/comments/${comment.documentId}`,
         {
           method: "DELETE",
           headers: {
@@ -365,7 +365,7 @@ export function RecentComment() {
   useEffect(() => {
     const fetchComments = async () => {
       try {
-        const response = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/comments");
+        const response = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/comments");
         const data = await response.json();
 
         // Sort the comments by publishedAt to get the recent ones

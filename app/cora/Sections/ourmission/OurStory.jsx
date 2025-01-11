@@ -23,7 +23,7 @@ export default function OurStory() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://proper-fun-404805c7d9.strapiapp.com/api/our-mission?populate[OurStory][populate]=Media"
+          "https://upbeat-life-04fe8098b1.strapiapp.com/api/our-mission?populate[OurStory][populate]=Media"
         );
         const data = await response.json();
         console.log("HIW Data", data);
@@ -57,7 +57,7 @@ export default function OurStory() {
             <video
               autoPlay
               controls
-              // src={`https://proper-fun-404805c7d9.strapiapp.com${OurStory.Media[0].url}`}
+              // src={`https://upbeat-life-04fe8098b1.strapiapp.com${OurStory.Media[0].url}`}
               src={OurStory.Media[0].url}
               className="w-full max-w-[800px] h-auto border-2 border-[#ddd] shadow-lg rounded-lg overflow-hidden"
             />
@@ -119,7 +119,7 @@ export default function OurStory() {
 //     const fetchContent = async () => {
 //       try {
 //         const response = await fetch(
-//           "https://proper-fun-404805c7d9.strapiapp.com/api/our-mission?populate[OurStory][populate]=Media"
+//           "https://upbeat-life-04fe8098b1.strapiapp.com/api/our-mission?populate[OurStory][populate]=Media"
 //         );
 //         const data = await response.json();
 //         if (data && data.data) {
@@ -154,7 +154,7 @@ export default function OurStory() {
 
 //     try {
 //       const response = await fetch(
-//         "https://proper-fun-404805c7d9.strapiapp.com/api/our-mission?populate[OurStory][populate]=Media",
+//         "https://upbeat-life-04fe8098b1.strapiapp.com/api/our-mission?populate[OurStory][populate]=Media",
 //         {
 //           method: "PUT",
 //           headers: {
@@ -206,7 +206,7 @@ export default function OurStory() {
 //       formData.append("refId", content.OurStory.id);
 //       formData.append("field", "Media");
 
-//       fetch("https://proper-fun-404805c7d9.strapiapp.com/api/upload", {
+//       fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/upload", {
 //         method: "POST",
 //         body: formData,
 //       })
@@ -359,7 +359,7 @@ export function UpdateOurStorySection() {
     const fetchContentData = async () => {
       try {
         const res = await fetch(
-          "https://proper-fun-404805c7d9.strapiapp.com/api/our-mission?populate[OurStory][populate]=Media"
+          "https://upbeat-life-04fe8098b1.strapiapp.com/api/our-mission?populate[OurStory][populate]=Media"
         );
         const data = await res.json();
 
@@ -397,7 +397,7 @@ export function UpdateOurStorySection() {
     console.log("Payload Created", payload);
 
     try {
-      const res = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/our-mission", {
+      const res = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/our-mission", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -476,7 +476,7 @@ export function UpdateOurStorySection() {
                 autoPlay
                 controls
                 src={media.url}
-                // src={`https://proper-fun-404805c7d9.strapiapp.com${media.url}`}
+                // src={`https://upbeat-life-04fe8098b1.strapiapp.com${media.url}`}
                 className="w-32 h-32 object-cover"
               />
               <p>{media.name}</p>

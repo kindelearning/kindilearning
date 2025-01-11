@@ -23,7 +23,7 @@ export default function AgeGroupSection() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://proper-fun-404805c7d9.strapiapp.com/api/how-it-work-page?populate[AgeGroup][populate]=Content.Icon"
+          "https://upbeat-life-04fe8098b1.strapiapp.com/api/how-it-work-page?populate[AgeGroup][populate]=Content.Icon"
         );
         const data = await response.json();
         console.log("Age Group Data", data);
@@ -76,7 +76,7 @@ export default function AgeGroupSection() {
               <div className="text-center mb-4">
                 <img
                   // src={ageGroup.Icon.url}
-                  src={`https://proper-fun-404805c7d9.strapiapp.com${ageGroup.Icon.url}`}
+                  src={`https://upbeat-life-04fe8098b1.strapiapp.com${ageGroup.Icon.url}`}
                   alt={
                     ageGroup.Icon.alternativeText ||
                     `Icon for ${ageGroup.Title}`
@@ -115,7 +115,7 @@ export default function AgeGroupSection() {
 //   // Fetch existing data
 //   useEffect(() => {
 //     fetch(
-//       "https://proper-fun-404805c7d9.strapiapp.com/api/how-it-work-page?populate[AgeGroup][populate]=*"
+//       "https://upbeat-life-04fe8098b1.strapiapp.com/api/how-it-work-page?populate[AgeGroup][populate]=*"
 //     )
 //       .then((res) => res.json())
 //       .then((data) => {
@@ -149,7 +149,7 @@ export default function AgeGroupSection() {
 //     console.log("Sent Data", payload);
 
 //     try {
-//       const res = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/how-it-work-page", {
+//       const res = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/how-it-work-page", {
 //         method: "PUT",
 //         headers: {
 //           "Content-Type": "application/json",
@@ -301,7 +301,7 @@ export function UpdateAgeGroupSection() {
     const fetchHIWData = async () => {
       try {
         const res = await fetch(
-          "https://proper-fun-404805c7d9.strapiapp.com/api/how-it-work-page?populate[AgeGroup][populate]=Content.Icon"
+          "https://upbeat-life-04fe8098b1.strapiapp.com/api/how-it-work-page?populate[AgeGroup][populate]=Content.Icon"
         );
         const data = await res.json();
         console.log("Complete API response:", data);
@@ -353,7 +353,7 @@ export function UpdateAgeGroupSection() {
     console.log("payload sent", payload);
 
     try {
-      const res = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/how-it-work-page", {
+      const res = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/how-it-work-page", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -437,7 +437,7 @@ export function UpdateAgeGroupSection() {
                 {section.Icon ? (
                   <div className="mt-2">
                     <img
-                      src={`https://proper-fun-404805c7d9.strapiapp.com${section.Icon.url}`}
+                      src={`https://upbeat-life-04fe8098b1.strapiapp.com${section.Icon.url}`}
                       alt={section.Title}
                       className="w-32 h-32 object-cover border rounded-md"
                     />

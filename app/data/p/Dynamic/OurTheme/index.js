@@ -1,6 +1,6 @@
 export async function fetchOurThemes() {
     try {
-      const response = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/our-themes?populate=*");
+      const response = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/our-themes?populate=*");
   
       if (!response.ok) {
         throw new Error(`Error fetching data: ${response.statusText}`);

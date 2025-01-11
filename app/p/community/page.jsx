@@ -54,7 +54,7 @@ export default async function Page() {
     </>
   );
 }
-// image={`https://proper-fun-404805c7d9.strapiapp.com${item.FeaturedImage.url}`}
+// image={`https://upbeat-life-04fe8098b1.strapiapp.com${item.FeaturedImage.url}`}
 // "use client";
 
 // import NotFound from "@/app/not-found";

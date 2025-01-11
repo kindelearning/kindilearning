@@ -463,7 +463,7 @@ export default function ShopPage() {
                   );
                 })}
               </div>
-              {/* // image={`https://proper-fun-404805c7d9.strapiapp.com${
+              {/* // image={`https://upbeat-life-04fe8098b1.strapiapp.com${
                 //   product?.FeaturedImage?.[0]?.url ||
                 //   "/uploads/default-image.webp"
                 // }`} */}
@@ -1316,7 +1316,7 @@ export default function ShopPage() {
 //                         <div key={product.id} className="border">
 //                           <Link href={`/shop/${product.documentId}`}>
 //                             <ProductCard
-//                               image={`https://proper-fun-404805c7d9.strapiapp.com${product.FeaturedImage.url}`}
+//                               image={`https://upbeat-life-04fe8098b1.strapiapp.com${product.FeaturedImage.url}`}
 //                               price={product.DiscountPrice}
 //                               title={product.Name}
 //                             />

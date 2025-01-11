@@ -33,7 +33,7 @@ export default function ProductUpdateForm({ documentId }) {
     const fetchProductData = async () => {
       try {
         const res = await fetch(
-          `https://proper-fun-404805c7d9.strapiapp.com/api/products/${documentId}?populate=*`
+          `https://upbeat-life-04fe8098b1.strapiapp.com/api/products/${documentId}?populate=*`
         );
         const data = await res.json();
         if (res.ok) {
@@ -82,7 +82,7 @@ export default function ProductUpdateForm({ documentId }) {
 
     try {
       const res = await fetch(
-        `https://proper-fun-404805c7d9.strapiapp.com/api/products/${documentId}`,
+        `https://upbeat-life-04fe8098b1.strapiapp.com/api/products/${documentId}`,
         {
           method: "PUT",
           headers: {
@@ -126,7 +126,7 @@ export default function ProductUpdateForm({ documentId }) {
             <div className="mt-4">
               <img
                 // src={media.url}
-                src={`https://proper-fun-404805c7d9.strapiapp.com${media.url}`}
+                src={`https://upbeat-life-04fe8098b1.strapiapp.com${media.url}`}
                 className="w-32 h-32 object-cover"
               />
               <p>{media.name}</p>
@@ -142,7 +142,7 @@ export default function ProductUpdateForm({ documentId }) {
           {/* {gallery?.map((media) => (
             <div key={media.id} className="relative">
               <img
-                src={`https://proper-fun-404805c7d9.strapiapp.com${media.url}`}
+                src={`https://upbeat-life-04fe8098b1.strapiapp.com${media.url}`}
                 className="w-32 h-32 object-cover"
               />
               <p className="text-sm mt-2">{media.name}</p>

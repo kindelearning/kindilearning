@@ -33,7 +33,7 @@ export default function EditTnc() {
     const fetchContent = async () => {
       try {
         const response = await fetch(
-          "https://proper-fun-404805c7d9.strapiapp.com/api/tnc?populate=*"
+          "https://upbeat-life-04fe8098b1.strapiapp.com/api/tnc?populate=*"
         );
         const data = await response.json();
 
@@ -63,7 +63,7 @@ export default function EditTnc() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/tnc", {
+    const response = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/tnc", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -222,7 +222,7 @@ export default function EditTnc() {
 //     const fetchContent = async () => {
 //       try {
 //         const response = await fetch(
-//           "https://proper-fun-404805c7d9.strapiapp.com/api/tnc?populate=*"
+//           "https://upbeat-life-04fe8098b1.strapiapp.com/api/tnc?populate=*"
 //         );
 //         const data = await response.json();
 
@@ -251,7 +251,7 @@ export default function EditTnc() {
 //   const handleSubmit = async (e) => {
 //     e.preventDefault();
 
-//     const response = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/tnc", {
+//     const response = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/tnc", {
 //       method: "PUT",
 //       headers: {
 //         "Content-Type": "application/json",

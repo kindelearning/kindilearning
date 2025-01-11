@@ -25,7 +25,7 @@ export default function MediaSelector({ onMediaSelect }) {
   useEffect(() => {
     const fetchMediaFiles = async () => {
       try {
-        const response = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/upload/files");
+        const response = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/upload/files");
         if (!response.ok) throw new Error("Failed to fetch media files");
         const data = await response.json();
         setMediaFiles(data);
@@ -126,11 +126,11 @@ export default function MediaSelector({ onMediaSelect }) {
                         className={`w-full h-32 object-cover rounded transition ${
                           selectedMediaId === mediaFile.id ? "opacity-90" : ""
                         }`}
-                        src={`https://proper-fun-404805c7d9.strapiapp.com${mediaFile.url}`}
+                        src={`https://upbeat-life-04fe8098b1.strapiapp.com${mediaFile.url}`}
                       />
                     ) : (
                       <img
-                        src={`https://proper-fun-404805c7d9.strapiapp.com${mediaFile.url}`}
+                        src={`https://upbeat-life-04fe8098b1.strapiapp.com${mediaFile.url}`}
                         alt={mediaFile.name}
                         className={`w-full h-32 object-cover rounded transition ${
                           selectedMediaId === mediaFile.id ? "opacity-90" : ""
@@ -204,7 +204,7 @@ export default function MediaSelector({ onMediaSelect }) {
 //   useEffect(() => {
 //     const fetchMediaFiles = async () => {
 //       try {
-//         const response = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/upload/files");
+//         const response = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/upload/files");
 //         if (!response.ok) throw new Error("Failed to fetch media files");
 //         const data = await response.json();
 //         setMediaFiles(data);
@@ -241,7 +241,7 @@ export default function MediaSelector({ onMediaSelect }) {
 //                     onClick={() => handleMediaSelect(mediaFile)}
 //                   >
 //                     <img
-//                       src={`https://proper-fun-404805c7d9.strapiapp.com${mediaFile.url}`}
+//                       src={`https://upbeat-life-04fe8098b1.strapiapp.com${mediaFile.url}`}
 //                       alt={mediaFile.name}
 //                       className="w-full h-32 object-cover"
 //                     />
@@ -270,7 +270,7 @@ export function MultiMediaSelector({ onMediaSelect, maxSelection = 10 }) {
   useEffect(() => {
     const fetchMediaFiles = async () => {
       try {
-        const response = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/upload/files");
+        const response = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/upload/files");
         if (!response.ok) throw new Error("Failed to fetch media files");
         const data = await response.json();
         setMediaFiles(data);
@@ -393,11 +393,11 @@ export function MultiMediaSelector({ onMediaSelect, maxSelection = 10 }) {
                             ? "opacity-90"
                             : ""
                         }`}
-                        src={`https://proper-fun-404805c7d9.strapiapp.com${mediaFile.url}`}
+                        src={`https://upbeat-life-04fe8098b1.strapiapp.com${mediaFile.url}`}
                       />
                     ) : (
                       <img
-                        src={`https://proper-fun-404805c7d9.strapiapp.com${mediaFile.url}`}
+                        src={`https://upbeat-life-04fe8098b1.strapiapp.com${mediaFile.url}`}
                         alt={mediaFile.name}
                         className={`w-full h-32 object-cover rounded transition ${
                           selectedMedia.some(

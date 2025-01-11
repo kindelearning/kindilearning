@@ -61,7 +61,7 @@ export default async function HeroOueMission() {
 //   const [openDialog, setOpenDialog] = useState(false);
 
 //   useEffect(() => {
-//     fetch("https://proper-fun-404805c7d9.strapiapp.com/api/our-mission?populate=*")
+//     fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/our-mission?populate=*")
 //       .then((res) => res.json())
 //       .then((data) => {
 //         // Assuming the response structure is { data: { Hero: {...} } }
@@ -100,7 +100,7 @@ export default async function HeroOueMission() {
 //     console.log("Sent Data", payload);
 
 //     try {
-//       const res = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/our-mission", {
+//       const res = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/our-mission", {
 //         method: "PUT",
 //         headers: {
 //           "Content-Type": "application/json",
@@ -210,7 +210,7 @@ export function UpdateHeroSection() {
     const fetchContentData = async () => {
       try {
         const res = await fetch(
-          "https://proper-fun-404805c7d9.strapiapp.com/api/our-mission?populate=Hero.Media"
+          "https://upbeat-life-04fe8098b1.strapiapp.com/api/our-mission?populate=Hero.Media"
         );
         const data = await res.json();
 
@@ -249,7 +249,7 @@ export function UpdateHeroSection() {
 
     try {
       const res = await fetch(
-        "https://proper-fun-404805c7d9.strapiapp.com/api/our-mission",
+        "https://upbeat-life-04fe8098b1.strapiapp.com/api/our-mission",
         {
           method: "PUT",
           headers: {
@@ -327,7 +327,7 @@ export function UpdateHeroSection() {
           {media ? (
             <div className="mt-4">
               <img
-                src={`https://proper-fun-404805c7d9.strapiapp.com${media.url}`}
+                src={`https://upbeat-life-04fe8098b1.strapiapp.com${media.url}`}
                 alt={media.name}
                 className="w-32 h-32 object-cover"
               />

@@ -131,7 +131,7 @@ export function ProductsWithPagination({ products }) {
             key={product.documentId}
             productUrl={`/shop/${product.documentId}`}
             image={product?.FeaturedImage?.[0]?.url}
-            // image={`https://proper-fun-404805c7d9.strapiapp.com${
+            // image={`https://upbeat-life-04fe8098b1.strapiapp.com${
             //   product?.FeaturedImage?.[0]?.url || "/uploads/default-image.webp"
             // }`}
             price={product.DiscountPrice || product.Price}

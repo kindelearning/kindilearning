@@ -2,7 +2,7 @@ import { ThemeDummy } from "@/public/Images";
 import { notFound } from "next/navigation";
 
 async function fetchThemeById(documentId) {
-  const res = await fetch(`https://proper-fun-404805c7d9.strapiapp.com/api/our-themes/${documentId}`);
+  const res = await fetch(`https://upbeat-life-04fe8098b1.strapiapp.com/api/our-themes/${documentId}`);
   const data = await res.json();
 
   if (!data || !data.data) {
@@ -30,10 +30,10 @@ export default async function ThemePage({ params }) {
           <img
             width={1400}
             height={600}
-            // src={`https://proper-fun-404805c7d9.strapiapp.com${Thumbnail?.url}`}
+            // src={`https://upbeat-life-04fe8098b1.strapiapp.com${Thumbnail?.url}`}
             src={
               Thumbnail?.url
-                ? `https://proper-fun-404805c7d9.strapiapp.com${Thumbnail.url}`
+                ? `https://upbeat-life-04fe8098b1.strapiapp.com${Thumbnail.url}`
                 : ThemeDummy
             }
             alt={`Thumbnail for ${Title}`}

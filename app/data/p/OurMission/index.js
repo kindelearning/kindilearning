@@ -1,8 +1,8 @@
 export async function fetchOurMission() {
   try {
     const response = await fetch(
-      "https://proper-fun-404805c7d9.strapiapp.com/api/our-mission?populate[Hero][populate]=Media&populate[Parentwithkindi][populate]=Media&populate[OurStory][populate]=Media&populate[OurTeam][populate]=*"
-      // "https://proper-fun-404805c7d9.strapiapp.com/api/our-mission?populate=*"
+      "https://upbeat-life-04fe8098b1.strapiapp.com/api/our-mission?populate[Hero][populate]=Media&populate[Parentwithkindi][populate]=Media&populate[OurStory][populate]=Media&populate[OurTeam][populate]=*"
+      // "https://upbeat-life-04fe8098b1.strapiapp.com/api/our-mission?populate=*"
     );
     if (!response.ok) {
       throw new Error(`Error fetching data: ${response.statusText}`);

@@ -45,7 +45,7 @@ import { getIconForSkill } from "../Sections/ActivityCard";
 
 async function fetchActivityByDocumentId(documentId) {
   const res = await fetch(
-    `https://proper-fun-404805c7d9.strapiapp.com/api/activities/${documentId}?populate=*`
+    `https://upbeat-life-04fe8098b1.strapiapp.com/api/activities/${documentId}?populate=*`
   );
   const data = await res.json();
   if (!data || !data.data) {

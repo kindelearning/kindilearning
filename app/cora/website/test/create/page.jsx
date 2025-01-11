@@ -23,7 +23,7 @@ import LocalHeader from "../Topbar";
 //     };
 
 //     try {
-//       const response = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/contents", {
+//       const response = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/contents", {
 //         method: "POST",
 //         headers: {
 //           "Content-Type": "application/json",
@@ -130,7 +130,7 @@ export default function ContentList() {
     const fetchContent = async () => {
       try {
         const response = await fetch(
-          "https://proper-fun-404805c7d9.strapiapp.com/api/contents?populate=*"
+          "https://upbeat-life-04fe8098b1.strapiapp.com/api/contents?populate=*"
         );
         const data = await response.json();
 
@@ -151,7 +151,7 @@ export default function ContentList() {
 
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`https://proper-fun-404805c7d9.strapiapp.com/api/contents/${id}`, {
+      const response = await fetch(`https://upbeat-life-04fe8098b1.strapiapp.com/api/contents/${id}`, {
         method: "DELETE",
       });
 
@@ -171,7 +171,7 @@ export default function ContentList() {
   const handleUpdate = async (updatedData) => {
     try {
       const response = await fetch(
-        `https://proper-fun-404805c7d9.strapiapp.com/api/contents/${updatedData.id}`,
+        `https://upbeat-life-04fe8098b1.strapiapp.com/api/contents/${updatedData.id}`,
         {
           method: "PUT",
           headers: {

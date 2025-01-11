@@ -20,7 +20,7 @@ export default function ProductMedia({ gallery }) {
         {currentMedia.mime.includes("image") ? (
           <img
             src={currentMedia.url}
-            // src={`https://proper-fun-404805c7d9.strapiapp.com${currentMedia.url}`}
+            // src={`https://upbeat-life-04fe8098b1.strapiapp.com${currentMedia.url}`}
             alt={currentMedia.name || "Product Media"}
             className="w-full h-auto object-cover  rounded-lg shadow-md"
           />
@@ -45,7 +45,7 @@ export default function ProductMedia({ gallery }) {
           >
             {item.mime.includes("image") ? (
               <img
-                // src={`https://proper-fun-404805c7d9.strapiapp.com${item.url}`}
+                // src={`https://upbeat-life-04fe8098b1.strapiapp.com${item.url}`}
             src={item.url}
                 
                 alt={item.name || "Thumbnail"}
@@ -54,7 +54,7 @@ export default function ProductMedia({ gallery }) {
             ) : item.mime.includes("video") ? (
               <video className="w-full h-full object-cover rounded-lg pointer-events-none">
                 <source
-                  // src={`https://proper-fun-404805c7d9.strapiapp.com${item.url}`}
+                  // src={`https://upbeat-life-04fe8098b1.strapiapp.com${item.url}`}
             src={item.url}
 
                   type={item.mime}

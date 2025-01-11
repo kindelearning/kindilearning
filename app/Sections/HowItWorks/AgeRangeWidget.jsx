@@ -51,7 +51,7 @@ export default function AgeRangeWidget() {
     const fetchHowItWorks = async () => {
       try {
         const response = await fetch(
-          "https://proper-fun-404805c7d9.strapiapp.com/api/how-it-work-page?populate[AgeGroup][populate]=Content.Icon"
+          "https://upbeat-life-04fe8098b1.strapiapp.com/api/how-it-work-page?populate[AgeGroup][populate]=Content.Icon"
         );
         if (!response.ok) {
           throw new Error(`Error fetching data: ${response.statusText}`);
@@ -163,7 +163,7 @@ export default function AgeRangeWidget() {
               {data.data.AgeGroup.Content.slice(1, 2).map((content, index) => (
                 <AgeCard
                   key={index}
-                  // image={`https://proper-fun-404805c7d9.strapiapp.com${content.Icon.url}` || User}
+                  // image={`https://upbeat-life-04fe8098b1.strapiapp.com${content.Icon.url}` || User}
                   bgImage="/Images/AgeRangeTwo.svg"
                   title={content?.Title || "Toddler"}
                   // body={content?.Body}
@@ -196,7 +196,7 @@ export default function AgeRangeWidget() {
                 <AgeCard
                   key={index}
                   // image={AgeCardOne}
-                  // image={`https://proper-fun-404805c7d9.strapiapp.com${content.Icon.url}` || User}
+                  // image={`https://upbeat-life-04fe8098b1.strapiapp.com${content.Icon.url}` || User}
                   bgImage="/Images/AgeRangeThree.svg"
                   title={content?.Title}
                   // body={content?.Body}
@@ -221,7 +221,7 @@ export default function AgeRangeWidget() {
                 <AgeCard
                   key={index}
                   // image={AgeCardOne}
-                  // image={`https://proper-fun-404805c7d9.strapiapp.com${content.Icon.url}` || User}
+                  // image={`https://upbeat-life-04fe8098b1.strapiapp.com${content.Icon.url}` || User}
                   bgImage="/Images/AgeRangeFour.svg"
                   title={content?.Title}
                   // body={content?.Body}

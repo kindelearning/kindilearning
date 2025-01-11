@@ -33,7 +33,7 @@ export default function EditRefund() {
     const fetchContent = async () => {
       try {
         const response = await fetch(
-          "https://proper-fun-404805c7d9.strapiapp.com/api/refundpolicy?populate=*"
+          "https://upbeat-life-04fe8098b1.strapiapp.com/api/refundpolicy?populate=*"
         );
         const data = await response.json();
 
@@ -68,7 +68,7 @@ export default function EditRefund() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/refundpolicy", {
+    const response = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/refundpolicy", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

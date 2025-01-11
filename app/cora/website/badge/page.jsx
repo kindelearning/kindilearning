@@ -44,7 +44,7 @@ export default function BadgesTable() {
     const fetchBadges = async () => {
       try {
         const response = await fetch(
-          "https://proper-fun-404805c7d9.strapiapp.com/api/badges?populate=*"
+          "https://upbeat-life-04fe8098b1.strapiapp.com/api/badges?populate=*"
         );
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -65,7 +65,7 @@ export default function BadgesTable() {
   const handleDelete = async () => {
     try {
       const response = await fetch(
-        `https://proper-fun-404805c7d9.strapiapp.com/api/badges/${deleteBadgeId}`,
+        `https://upbeat-life-04fe8098b1.strapiapp.com/api/badges/${deleteBadgeId}`,
         {
           method: "DELETE",
         }
@@ -178,7 +178,7 @@ export default function BadgesTable() {
                   {badge.Thumbnail?.url ? (
                     <img
                       src={badge.Thumbnail.url}
-                      // src={`https://proper-fun-404805c7d9.strapiapp.com${badge.Thumbnail.url}`}
+                      // src={`https://upbeat-life-04fe8098b1.strapiapp.com${badge.Thumbnail.url}`}
                       alt={badge.Thumbnail?.alternativeText || badge.Name}
                       className="w-10 h-10 rounded"
                     />
@@ -299,7 +299,7 @@ export default function BadgesTable() {
 //     // Fetch activity data using the documentId
 //     async function fetchData() {
 //       const res = await fetch(
-//         `https://proper-fun-404805c7d9.strapiapp.com/api/badges/${documentId}?populate=*`
+//         `https://upbeat-life-04fe8098b1.strapiapp.com/api/badges/${documentId}?populate=*`
 //       );
 //       const data = await res.json();
 //       const badge = data.data;
@@ -328,7 +328,7 @@ export default function BadgesTable() {
 
 //     try {
 //       const response = await fetch(
-//         `https://proper-fun-404805c7d9.strapiapp.com/api/badges/${documentId}`,
+//         `https://upbeat-life-04fe8098b1.strapiapp.com/api/badges/${documentId}`,
 //         {
 //           method: "PUT",
 //           headers: {
@@ -399,7 +399,7 @@ export function UpdateBadgesTable({ documentId }) {
     const fetchContentData = async () => {
       try {
         const res = await fetch(
-          `https://proper-fun-404805c7d9.strapiapp.com/api/badges/${documentId}?populate=*`
+          `https://upbeat-life-04fe8098b1.strapiapp.com/api/badges/${documentId}?populate=*`
         );
         const data = await res.json();
 
@@ -433,7 +433,7 @@ export function UpdateBadgesTable({ documentId }) {
 
     try {
       const res = await fetch(
-        `https://proper-fun-404805c7d9.strapiapp.com/api/badges/${documentId}`,
+        `https://upbeat-life-04fe8098b1.strapiapp.com/api/badges/${documentId}`,
         {
           method: "PUT",
           headers: {
@@ -491,7 +491,7 @@ export function UpdateBadgesTable({ documentId }) {
             <div className="mt-4">
               <img
                 src={media.url}
-                // src={`https://proper-fun-404805c7d9.strapiapp.com${media.url}`}
+                // src={`https://upbeat-life-04fe8098b1.strapiapp.com${media.url}`}
                 className="w-32 h-32 object-cover"
               />
               <p>{media.name}</p>
@@ -559,7 +559,7 @@ export function UpdateBadgesTable({ documentId }) {
 //     };
 
 //     try {
-//       const response = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/badges", {
+//       const response = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/badges", {
 //         method: "POST",
 //         headers: {
 //           "Content-Type": "application/json",
@@ -668,7 +668,7 @@ export function CreateBadgeForm() {
 
     console.log("New Badge data", newBadge);
     try {
-      const response = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/badges", {
+      const response = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/badges", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -712,7 +712,7 @@ export function CreateBadgeForm() {
             <div className="mt-4">
               <img
                 src={media.url}
-                // src={`https://proper-fun-404805c7d9.strapiapp.com${media.url}`}
+                // src={`https://upbeat-life-04fe8098b1.strapiapp.com${media.url}`}
                 className="w-32 h-32 object-cover"
               />
               <p>{media.name}</p>

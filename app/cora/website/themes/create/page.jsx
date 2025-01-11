@@ -79,7 +79,7 @@ export function CreateTheme2() {
     }
 
     try {
-      const res = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/our-themes", {
+      const res = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/our-themes", {
         method: "POST",
         body: formData,
       });
@@ -321,7 +321,7 @@ export default function CreateTheme() {
 
     console.log("New Badge data", newBadge);
     try {
-      const response = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/our-themes", {
+      const response = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/our-themes", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -372,7 +372,7 @@ export default function CreateTheme() {
             <div className="mt-4">
               <img
                 src={media.url}
-                // src={`https://proper-fun-404805c7d9.strapiapp.com${media.url}`}
+                // src={`https://upbeat-life-04fe8098b1.strapiapp.com${media.url}`}
                 className="w-32 h-32 object-cover"
               />
               <p>{media.name}</p>

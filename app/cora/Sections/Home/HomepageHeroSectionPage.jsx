@@ -18,7 +18,7 @@ export default function HomepageHeroSection() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://proper-fun-404805c7d9.strapiapp.com/api/homepage-hero-section?populate=Image"
+          "https://upbeat-life-04fe8098b1.strapiapp.com/api/homepage-hero-section?populate=Image"
         );
         const result = await response.json();
         console.log("Hero section", result);
@@ -83,7 +83,7 @@ export default function HomepageHeroSection() {
           {data.Image?.url ? (
             <video
               src={data.Image.url}
-              // src={`https://proper-fun-404805c7d9.strapiapp.com${data.Image.url}`}
+              // src={`https://upbeat-life-04fe8098b1.strapiapp.com${data.Image.url}`}
               width={1200}
               height={800}
               className="w-full max-w-[300px] mx-auto rounded-xl "

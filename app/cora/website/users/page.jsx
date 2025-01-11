@@ -98,7 +98,7 @@ export default function AdminUsersPage() {
     const fetchUsers = async () => {
       try {
         const response = await fetch(
-          "https://proper-fun-404805c7d9.strapiapp.com/api/users?populate=*",
+          "https://upbeat-life-04fe8098b1.strapiapp.com/api/users?populate=*",
           {
             method: "GET",
             headers: {
@@ -126,7 +126,7 @@ export default function AdminUsersPage() {
 
   const handleUpdate = (updatedUser) => {
     // Here, you can send a PUT request to update the user's details
-    fetch(`https://proper-fun-404805c7d9.strapiapp.com/api/users`, {
+    fetch(`https://upbeat-life-04fe8098b1.strapiapp.com/api/users`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -566,7 +566,7 @@ const UserEditForm = ({ userId, onUpdate }) => {
     const fetchUserData = async () => {
       try {
         const response = await fetch(
-          `https://proper-fun-404805c7d9.strapiapp.com/api/users/${userId}?populate=*`
+          `https://upbeat-life-04fe8098b1.strapiapp.com/api/users/${userId}?populate=*`
         );
         const data = await response.json();
 
@@ -603,7 +603,7 @@ const UserEditForm = ({ userId, onUpdate }) => {
 
     try {
       const response = await fetch(
-        `https://proper-fun-404805c7d9.strapiapp.com/api/users/${userId}`,
+        `https://upbeat-life-04fe8098b1.strapiapp.com/api/users/${userId}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

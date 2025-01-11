@@ -22,7 +22,7 @@ export default function BlogCard({
     const fetchCounts = async () => {
       try {
         const response = await fetch(
-          `https://proper-fun-404805c7d9.strapiapp.com/api/blogs/${documentId}`
+          `https://upbeat-life-04fe8098b1.strapiapp.com/api/blogs/${documentId}`
         );
         const data = await response.json();
 
@@ -58,7 +58,7 @@ export default function BlogCard({
   const updateLikesDislikes = async (newLikes, newDislikes) => {
     try {
       const response = await fetch(
-        `https://proper-fun-404805c7d9.strapiapp.com/api/blogs/${documentId}`,
+        `https://upbeat-life-04fe8098b1.strapiapp.com/api/blogs/${documentId}`,
         {
           method: "PUT",
           headers: {

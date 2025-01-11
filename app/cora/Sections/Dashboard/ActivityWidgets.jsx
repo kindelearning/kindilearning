@@ -84,7 +84,7 @@ export default function ActivityWidgets() {
   useEffect(() => {
     const fetchActivities = async () => {
       try {
-        const response = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/activities");
+        const response = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/activities");
         const result = await response.json();
         const data = result.data; // Extracting data array from the response
 
@@ -190,7 +190,7 @@ export function RecentActivities() {
   useEffect(() => {
     const fetchActivities = async () => {
       try {
-        const response = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/activities");
+        const response = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/activities");
         const data = await response.json();
 
         // Sort by 'publishedAt' and slice the latest 5 activities

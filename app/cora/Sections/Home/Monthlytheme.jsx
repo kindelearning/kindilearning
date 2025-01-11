@@ -24,7 +24,7 @@ export default function Monthlytheme() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://proper-fun-404805c7d9.strapiapp.com/api/Monthlytheme?populate=Content.Media"
+          "https://upbeat-life-04fe8098b1.strapiapp.com/api/Monthlytheme?populate=Content.Media"
         );
         const data = await response.json();
         console.log("Monthlytheme Database", data);
@@ -77,7 +77,7 @@ export default function Monthlytheme() {
       {content.Media ? (
         <img
           src={content.Media[0].url}
-          // src={`https://proper-fun-404805c7d9.strapiapp.com${content.Media[0].url}`}
+          // src={`https://upbeat-life-04fe8098b1.strapiapp.com${content.Media[0].url}`}
           alt="Child Development Media"
           className="w-full h-auto"
         />
@@ -103,7 +103,7 @@ export default function Monthlytheme() {
 //     const fetchContent = async () => {
 //       try {
 //         const response = await fetch(
-//           "https://proper-fun-404805c7d9.strapiapp.com/api/Monthlytheme?populate=Content.Media"
+//           "https://upbeat-life-04fe8098b1.strapiapp.com/api/Monthlytheme?populate=Content.Media"
 //         );
 //         const data = await response.json();
 //         setContent({
@@ -142,7 +142,7 @@ export default function Monthlytheme() {
 //       // console.log("Request Payload:", updatedContent);
 
 //       const response = await fetch(
-//         `https://proper-fun-404805c7d9.strapiapp.com/api/Monthlytheme?${documentId}`, // Correct URL with query parameter for documentId
+//         `https://upbeat-life-04fe8098b1.strapiapp.com/api/Monthlytheme?${documentId}`, // Correct URL with query parameter for documentId
 //         {
 //           method: "PUT",
 //           headers: {
@@ -270,7 +270,7 @@ export function UpdateMonthlytheme() {
     const fetchContentData = async () => {
       try {
         const res = await fetch(
-          "https://proper-fun-404805c7d9.strapiapp.com/api/Monthlytheme/?populate=Content.Media"
+          "https://upbeat-life-04fe8098b1.strapiapp.com/api/Monthlytheme/?populate=Content.Media"
         );
         const data = await res.json();
 
@@ -307,7 +307,7 @@ export function UpdateMonthlytheme() {
 
     try {
       const res = await fetch(
-        "https://proper-fun-404805c7d9.strapiapp.com/api/Monthlytheme",
+        "https://upbeat-life-04fe8098b1.strapiapp.com/api/Monthlytheme",
         {
           method: "PUT",
           headers: {
@@ -385,7 +385,7 @@ export function UpdateMonthlytheme() {
           {media ? (
             <div className="mt-4">
               <img
-                src={`https://proper-fun-404805c7d9.strapiapp.com${media.url}`}
+                src={`https://upbeat-life-04fe8098b1.strapiapp.com${media.url}`}
                 alt={media.name}
                 className="w-32 h-32 object-cover"
               />

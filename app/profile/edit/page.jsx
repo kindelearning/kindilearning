@@ -184,7 +184,7 @@ export default function ProfileEdit() {
       try {
         // Fetch user data
         const response = await fetch(
-          "https://proper-fun-404805c7d9.strapiapp.com/api/users/me?populate=*",
+          "https://upbeat-life-04fe8098b1.strapiapp.com/api/users/me?populate=*",
           {
             method: "GET",
             headers: {
@@ -198,7 +198,7 @@ export default function ProfileEdit() {
         // console.log("userData on profile Edit Page", userData.myKids);
         // Fetch kids data
         const kidsResponse = await fetch(
-          "https://proper-fun-404805c7d9.strapiapp.com/api/kids?populate=*"
+          "https://upbeat-life-04fe8098b1.strapiapp.com/api/kids?populate=*"
         );
         const kidsData = await kidsResponse.json();
         setKidsData(kidsData.data);
@@ -492,7 +492,7 @@ export function UpdateRawProfile() {
         return;
       }
       try {
-        const response = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/users/me", {
+        const response = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/users/me", {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (!response.ok) throw new Error("Failed to fetch user data.");
@@ -537,7 +537,7 @@ export function UpdateRawProfile() {
 
     try {
       const response = await fetch(
-        `https://proper-fun-404805c7d9.strapiapp.com/api/users/${userId}`,
+        `https://upbeat-life-04fe8098b1.strapiapp.com/api/users/${userId}`,
         {
           method: "PUT",
           headers: {
@@ -664,7 +664,7 @@ const AddKidForm = ({ parentId }) => {
     console.log("New Kid data", newKid);
 
     try {
-      const response = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/kids", {
+      const response = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/kids", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -805,7 +805,7 @@ const UpdateKidForm = ({ parentId, kidId }) => {
   useEffect(() => {
     const fetchKidData = async () => {
       try {
-        const response = await fetch(`https://proper-fun-404805c7d9.strapiapp.com/api/kids/${kidId}`);
+        const response = await fetch(`https://upbeat-life-04fe8098b1.strapiapp.com/api/kids/${kidId}`);
         const data = await response.json();
         if (response.ok) {
           const kid = data.data;
@@ -845,7 +845,7 @@ const UpdateKidForm = ({ parentId, kidId }) => {
     };
 
     try {
-      const response = await fetch(`https://proper-fun-404805c7d9.strapiapp.com/api/kids/${kidId}`, {
+      const response = await fetch(`https://upbeat-life-04fe8098b1.strapiapp.com/api/kids/${kidId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -991,7 +991,7 @@ const RemoveKidButton = ({ kidId }) => {
     };
 
     try {
-      const response = await fetch(`https://proper-fun-404805c7d9.strapiapp.com/api/kids/${kidId}`, {
+      const response = await fetch(`https://upbeat-life-04fe8098b1.strapiapp.com/api/kids/${kidId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -1088,7 +1088,7 @@ const AddPaymentMethodForm = ({ parentId }) => {
 
     try {
       const response = await fetch(
-        "https://proper-fun-404805c7d9.strapiapp.com/api/payment-methods",
+        "https://upbeat-life-04fe8098b1.strapiapp.com/api/payment-methods",
         {
           method: "POST",
           headers: {
@@ -1212,7 +1212,7 @@ const UpdatePaymentDataForm = ({ parentId, paymentId }) => {
     const fetchKidData = async () => {
       try {
         const response = await fetch(
-          `https://proper-fun-404805c7d9.strapiapp.com/api/payment-methods/${paymentId}`
+          `https://upbeat-life-04fe8098b1.strapiapp.com/api/payment-methods/${paymentId}`
         );
         const data = await response.json();
         if (response.ok) {
@@ -1252,7 +1252,7 @@ const UpdatePaymentDataForm = ({ parentId, paymentId }) => {
 
     try {
       const response = await fetch(
-        `https://proper-fun-404805c7d9.strapiapp.com/api/payment-methods/${paymentId}`,
+        `https://upbeat-life-04fe8098b1.strapiapp.com/api/payment-methods/${paymentId}`,
         {
           method: "PUT",
           headers: {
@@ -1380,7 +1380,7 @@ const RemovePaymentMethodButton = ({ paymentId }) => {
 
     try {
       const response = await fetch(
-        `https://proper-fun-404805c7d9.strapiapp.com/api/payment-methods/${paymentId}`,
+        `https://upbeat-life-04fe8098b1.strapiapp.com/api/payment-methods/${paymentId}`,
         {
           method: "PUT",
           headers: {

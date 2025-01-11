@@ -59,7 +59,7 @@ export default function ActivitiesPage() {
     const fetchActivities = async () => {
       try {
         const response = await fetch(
-          " https://proper-fun-404805c7d9.strapiapp.com/api/activities?populate=*"
+          " https://upbeat-life-04fe8098b1.strapiapp.com/api/activities?populate=*"
         );
         const data = await response.json();
         console.log("Data", data);
@@ -158,7 +158,7 @@ export default function ActivitiesPage() {
   const handleDelete = async (documentId) => {
     try {
       const response = await fetch(
-        `https://proper-fun-404805c7d9.strapiapp.com/api/activities/${documentId}`,
+        `https://upbeat-life-04fe8098b1.strapiapp.com/api/activities/${documentId}`,
         {
           method: "DELETE",
         }
@@ -516,7 +516,7 @@ export function EditActivityForm({ documentId }) {
       setError(null);
       try {
         const res = await fetch(
-          `https://proper-fun-404805c7d9.strapiapp.com/api/activities/${documentId}?populate=*`
+          `https://upbeat-life-04fe8098b1.strapiapp.com/api/activities/${documentId}?populate=*`
         );
         if (!res.ok) throw new Error("Failed to fetch activity data.");
 
@@ -581,7 +581,7 @@ export function EditActivityForm({ documentId }) {
 
     try {
       const res = await fetch(
-        `https://proper-fun-404805c7d9.strapiapp.com/api/activities/${documentId}`,
+        `https://upbeat-life-04fe8098b1.strapiapp.com/api/activities/${documentId}`,
         {
           method: "PUT",
           headers: {
@@ -886,7 +886,7 @@ export function EditActivityForm({ documentId }) {
 //     const fetchContentData = async () => {
 //       try {
 //         const res = await fetch(
-//           `https://proper-fun-404805c7d9.strapiapp.com/api/activities/${documentId}?populate=*`
+//           `https://upbeat-life-04fe8098b1.strapiapp.com/api/activities/${documentId}?populate=*`
 //         );
 //         const data = await res.json();
 
@@ -958,7 +958,7 @@ export function EditActivityForm({ documentId }) {
 //     console.log("Payload created", payload);
 //     try {
 //       const res = await fetch(
-//         `https://proper-fun-404805c7d9.strapiapp.com/api/activities/${documentId}?populate=*`,
+//         `https://upbeat-life-04fe8098b1.strapiapp.com/api/activities/${documentId}?populate=*`,
 //         {
 //           method: "PUT",
 //           headers: { "Content-Type": "application/json" },
@@ -1189,7 +1189,7 @@ export function EditActivityForm({ documentId }) {
 //       {media ? (
 //         <div className="mt-4">
 //           <img
-//             // src={`https://proper-fun-404805c7d9.strapiapp.com${media.url}`}
+//             // src={`https://upbeat-life-04fe8098b1.strapiapp.com${media.url}`}
 //             src={media.url}
 //             className="w-32 h-32 object-cover"
 //           />
@@ -1228,7 +1228,7 @@ export function CreateActivityForm() {
     const fetchUsers = async () => {
       try {
         const response = await fetch(
-          "https://proper-fun-404805c7d9.strapiapp.com/api/users?populate=*"
+          "https://upbeat-life-04fe8098b1.strapiapp.com/api/users?populate=*"
         );
         if (!response.ok) {
           throw new Error("Failed to fetch users.");
@@ -1318,7 +1318,7 @@ export function CreateActivityForm() {
     console.log("New Activity data", newActivity);
 
     try {
-      const response = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/activities", {
+      const response = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/activities", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

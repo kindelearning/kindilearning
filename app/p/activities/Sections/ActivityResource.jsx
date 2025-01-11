@@ -22,14 +22,14 @@ const AudioCard = ({ resource }) => {
         <audio
           id={resource.id}
           className="w-full mt-3 rounded-lg"
-          src={`https://proper-fun-404805c7d9.strapiapp.com${resource.url}`}
+          src={`https://upbeat-life-04fe8098b1.strapiapp.com${resource.url}`}
           controls
         >
           Your browser does not support the audio element.
         </audio>
         {/* Download Button */}
         <a
-          href={`https://proper-fun-404805c7d9.strapiapp.com${resource.url}`}
+          href={`https://upbeat-life-04fe8098b1.strapiapp.com${resource.url}`}
           download
           target="_blank"
           className="mt-3 text-blue-500 hover:text-blue-700 flex items-center gap-2"
@@ -54,7 +54,7 @@ const PDFCard = ({ resource }) => {
         </p>
         {/* Download Button */}
         <a
-          href={`https://proper-fun-404805c7d9.strapiapp.com${resource.url}`}
+          href={`https://upbeat-life-04fe8098b1.strapiapp.com${resource.url}`}
           download
           className="mt-2 text-red-500 hover:text-red-700 flex items-center gap-2"
           title="Download PDF"
@@ -78,7 +78,7 @@ export default function ResourceCard({ resource }) {
         <video
           controls
           className="w-full h-40 rounded-lg"
-          src={`https://proper-fun-404805c7d9.strapiapp.com${resource.url}`}
+          src={`https://upbeat-life-04fe8098b1.strapiapp.com${resource.url}`}
         />
       ) : isAudio ? (
         <AudioCard resource={resource} />
@@ -86,7 +86,7 @@ export default function ResourceCard({ resource }) {
         <PDFCard resource={resource} />
       ) : (
         <img
-          src={`https://proper-fun-404805c7d9.strapiapp.com${resource.url}`}
+          src={`https://upbeat-life-04fe8098b1.strapiapp.com${resource.url}`}
           alt={resource.name || "Resource"}
           className="w-full h-40 object-cover rounded-lg"
         />
@@ -97,7 +97,7 @@ export default function ResourceCard({ resource }) {
           {resource.name || "Unnamed Resource"}
         </p>
         <a
-          href={`https://proper-fun-404805c7d9.strapiapp.com${resource.url}`}
+          href={`https://upbeat-life-04fe8098b1.strapiapp.com${resource.url}`}
           download
           target="_blank"
           className="mt-2 text-red-500 hover:text-red-700"

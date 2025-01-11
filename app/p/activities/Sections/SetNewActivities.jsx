@@ -58,7 +58,7 @@ import { fetchUserDetails } from "@/app/profile/api";
 //     console.log("Payload Sent", payload);
 //     try {
 //       const response = await fetch(
-//         "https://proper-fun-404805c7d9.strapiapp.com/api/rescheduled-events?populate=*",
+//         "https://upbeat-life-04fe8098b1.strapiapp.com/api/rescheduled-events?populate=*",
 //         {
 //           method: "POST",
 //           headers: {
@@ -198,7 +198,7 @@ export default function SetNewActivities({ kidId }) {
 
     try {
       const response = await fetch(
-        "https://proper-fun-404805c7d9.strapiapp.com/api/rescheduled-events?populate=*",
+        "https://upbeat-life-04fe8098b1.strapiapp.com/api/rescheduled-events?populate=*",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

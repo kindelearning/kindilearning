@@ -22,7 +22,7 @@ export default function HowItWorks() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://proper-fun-404805c7d9.strapiapp.com/api/how-it-work-page?populate[Hero][populate]=Media"
+          "https://upbeat-life-04fe8098b1.strapiapp.com/api/how-it-work-page?populate[Hero][populate]=Media"
         );
         const data = await response.json();
         console.log("HIW Data", data);
@@ -63,7 +63,7 @@ export default function HowItWorks() {
               autoPlay
               controls
               src={Hero.Media[0].url}
-              // src={`https://proper-fun-404805c7d9.strapiapp.com${Hero.Media[0].url}`}
+              // src={`https://upbeat-life-04fe8098b1.strapiapp.com${Hero.Media[0].url}`}
               className="w-full max-w-[800px] h-auto border-2 border-[#ddd] shadow-lg rounded-lg overflow-hidden"
             />
           ) : (
@@ -123,7 +123,7 @@ export function UpdateHowItWorkSection2() {
     const fetchContent = async () => {
       try {
         const response = await fetch(
-          "https://proper-fun-404805c7d9.strapiapp.com/api/how-it-work-page?populate[Hero][populate]=Media"
+          "https://upbeat-life-04fe8098b1.strapiapp.com/api/how-it-work-page?populate[Hero][populate]=Media"
         );
         const data = await response.json();
         if (data && data.data) {
@@ -157,7 +157,7 @@ export function UpdateHowItWorkSection2() {
 
     try {
       const response = await fetch(
-        "https://proper-fun-404805c7d9.strapiapp.com/api/how-it-work-page?populate[Hero][populate]=Media",
+        "https://upbeat-life-04fe8098b1.strapiapp.com/api/how-it-work-page?populate[Hero][populate]=Media",
         {
           method: "PUT",
           headers: {
@@ -291,7 +291,7 @@ export function UpdateHowItWorkSection() {
     const fetchContentData = async () => {
       try {
         const res = await fetch(
-          "https://proper-fun-404805c7d9.strapiapp.com/api/how-it-work-page?populate[Hero][populate]=Media"
+          "https://upbeat-life-04fe8098b1.strapiapp.com/api/how-it-work-page?populate[Hero][populate]=Media"
         );
         const data = await res.json();
 
@@ -329,7 +329,7 @@ export function UpdateHowItWorkSection() {
     console.log("Payload Created", payload);
 
     try {
-      const res = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/how-it-work-page", {
+      const res = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/how-it-work-page", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -408,7 +408,7 @@ export function UpdateHowItWorkSection() {
                 autoPlay
                 controls
                 src={media.url}
-                // src={`https://proper-fun-404805c7d9.strapiapp.com${media.url}`}
+                // src={`https://upbeat-life-04fe8098b1.strapiapp.com${media.url}`}
                 className="w-32 h-32 object-cover"
               />
               <p>{media.name}</p>

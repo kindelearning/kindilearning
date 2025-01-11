@@ -41,7 +41,7 @@ export default function MilestoneData() {
     const fetchMilestones = async () => {
       try {
         const response = await fetch(
-          `https://proper-fun-404805c7d9.strapiapp.com/api/milestones?populate=*&_limit=${itemsPerPage}&_start=${
+          `https://upbeat-life-04fe8098b1.strapiapp.com/api/milestones?populate=*&_limit=${itemsPerPage}&_start=${
             (currentPage - 1) * itemsPerPage
           }`
         );
@@ -119,7 +119,7 @@ export default function MilestoneData() {
   const handleDeleteConfirm = async () => {
     try {
       const response = await fetch(
-        `https://proper-fun-404805c7d9.strapiapp.com/api/milestones/${milestoneToDelete}`,
+        `https://upbeat-life-04fe8098b1.strapiapp.com/api/milestones/${milestoneToDelete}`,
         {
           method: "DELETE",
         }
@@ -237,7 +237,7 @@ export default function MilestoneData() {
                     {milestone.Thumbnail && (
                       <img
                         src={milestone.Thumbnail.url}
-                        // src={`https://proper-fun-404805c7d9.strapiapp.com${milestone.Thumbnail.url}`}
+                        // src={`https://upbeat-life-04fe8098b1.strapiapp.com${milestone.Thumbnail.url}`}
                         alt={milestone.Title}
                       />
                     )}
@@ -358,7 +358,7 @@ export default function MilestoneData() {
 //     // Fetch activity data using the documentId
 //     async function fetchData() {
 //       const res = await fetch(
-//         `https://proper-fun-404805c7d9.strapiapp.com/api/milestones/${documentId}?populate=*`
+//         `https://upbeat-life-04fe8098b1.strapiapp.com/api/milestones/${documentId}?populate=*`
 //       );
 //       const data = await res.json();
 //       const milestone = data.data;
@@ -388,7 +388,7 @@ export default function MilestoneData() {
 
 //     try {
 //       const response = await fetch(
-//         `https://proper-fun-404805c7d9.strapiapp.com/api/milestones/${documentId}`,
+//         `https://upbeat-life-04fe8098b1.strapiapp.com/api/milestones/${documentId}`,
 //         {
 //           method: "PUT",
 //           headers: {
@@ -487,7 +487,7 @@ export function UpdateMilestoneData({ documentId }) {
     const fetchContentData = async () => {
       try {
         const res = await fetch(
-          `https://proper-fun-404805c7d9.strapiapp.com/api/milestones/${documentId}?populate=*`
+          `https://upbeat-life-04fe8098b1.strapiapp.com/api/milestones/${documentId}?populate=*`
         );
         const data = await res.json();
 
@@ -525,7 +525,7 @@ export function UpdateMilestoneData({ documentId }) {
 
     try {
       const res = await fetch(
-        `https://proper-fun-404805c7d9.strapiapp.com/api/milestones/${documentId}`,
+        `https://upbeat-life-04fe8098b1.strapiapp.com/api/milestones/${documentId}`,
         {
           method: "PUT",
           headers: {
@@ -609,7 +609,7 @@ export function UpdateMilestoneData({ documentId }) {
             <div className="mt-4">
               <img
                 src={media.url}
-                // src={`https://proper-fun-404805c7d9.strapiapp.com${media.url}`}
+                // src={`https://upbeat-life-04fe8098b1.strapiapp.com${media.url}`}
                 className="w-32 h-32 object-cover"
               />
               <p>{media.name}</p>
@@ -676,7 +676,7 @@ export function UpdateMilestoneData({ documentId }) {
 //     };
 
 //     try {
-//       const response = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/milestones", {
+//       const response = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/milestones", {
 //         method: "POST",
 //         headers: {
 //           "Content-Type": "application/json",
@@ -821,7 +821,7 @@ export function CreateMilestoneForm() {
     const fetchUsers = async () => {
       try {
         const response = await fetch(
-          "https://proper-fun-404805c7d9.strapiapp.com/api/users?populate=*"
+          "https://upbeat-life-04fe8098b1.strapiapp.com/api/users?populate=*"
         );
         const data = await response.json();
         setUserList(data); // Save the list of users
@@ -851,7 +851,7 @@ export function CreateMilestoneForm() {
 
     console.log("New milestones data", newMilestone);
     try {
-      const response = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/milestones", {
+      const response = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/milestones", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -897,7 +897,7 @@ export function CreateMilestoneForm() {
             <div className="mt-4">
               <img
                 src={media.url}
-                // src={`https://proper-fun-404805c7d9.strapiapp.com${media.url}`}
+                // src={`https://upbeat-life-04fe8098b1.strapiapp.com${media.url}`}
                 className="w-32 h-32 object-cover"
               />
               <p>{media.name}</p>

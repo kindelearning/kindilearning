@@ -33,7 +33,7 @@ export default function EditInvestment() {
     const fetchContent = async () => {
       try {
         const response = await fetch(
-          "https://proper-fun-404805c7d9.strapiapp.com/api/investmentoppertunite?populate=*"
+          "https://upbeat-life-04fe8098b1.strapiapp.com/api/investmentoppertunite?populate=*"
         );
         const data = await response.json();
 
@@ -68,7 +68,7 @@ export default function EditInvestment() {
     e.preventDefault();
 
     const response = await fetch(
-      "https://proper-fun-404805c7d9.strapiapp.com/api/investmentoppertunite",
+      "https://upbeat-life-04fe8098b1.strapiapp.com/api/investmentoppertunite",
       {
         method: "PUT",
         headers: {

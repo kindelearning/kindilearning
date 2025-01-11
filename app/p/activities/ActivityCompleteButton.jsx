@@ -106,7 +106,7 @@ const UpdateKidButton = ({ kidDocumentId, activityId }) => {
 
     try {
       const response = await fetch(
-        `https://proper-fun-404805c7d9.strapiapp.com/api/kids/${kidDocumentId}?populate=*`,
+        `https://upbeat-life-04fe8098b1.strapiapp.com/api/kids/${kidDocumentId}?populate=*`,
         {
           method: "PUT",
           headers: {
@@ -183,7 +183,7 @@ function DynamicButton({ activityId, kidId }) {
 
       // Send the updated data to the backend
       const updateResponse = await fetch(
-        `https://proper-fun-404805c7d9.strapiapp.com/api/kids/${kidId}?populate=*`,
+        `https://upbeat-life-04fe8098b1.strapiapp.com/api/kids/${kidId}?populate=*`,
         {
           method: "PUT",
           headers: {

@@ -19,7 +19,7 @@ export function CommentForm({ blogId, onCommentAdded }) {
     setError("");
 
     try {
-      const res = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/comments", {
+      const res = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/comments", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

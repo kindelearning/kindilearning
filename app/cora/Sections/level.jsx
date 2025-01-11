@@ -30,7 +30,7 @@ export default function LevelData() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://proper-fun-404805c7d9.strapiapp.com/api/levels?populate=*"
+          "https://upbeat-life-04fe8098b1.strapiapp.com/api/levels?populate=*"
         );
         const data = await response.json();
         console.log("Level Data", data);
@@ -105,7 +105,7 @@ export function UpdateHowItWorkSection() {
     const fetchContent = async () => {
       try {
         const response = await fetch(
-          "https://proper-fun-404805c7d9.strapiapp.com/api/how-it-work-page?populate[Hero][populate]=Media"
+          "https://upbeat-life-04fe8098b1.strapiapp.com/api/how-it-work-page?populate[Hero][populate]=Media"
         );
         const data = await response.json();
         if (data && data.data) {
@@ -139,7 +139,7 @@ export function UpdateHowItWorkSection() {
 
     try {
       const response = await fetch(
-        "https://proper-fun-404805c7d9.strapiapp.com/api/how-it-work-page?populate[Hero][populate]=Media",
+        "https://upbeat-life-04fe8098b1.strapiapp.com/api/how-it-work-page?populate[Hero][populate]=Media",
         {
           method: "PUT",
           headers: {

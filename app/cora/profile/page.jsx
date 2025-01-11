@@ -19,7 +19,7 @@ const Profile = () => {
     }
 
     try {
-      const response = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/users/me", {
+      const response = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/users/me", {
         headers: {
           Authorization: `Bearer ${token}`,
         },

@@ -20,7 +20,7 @@ export function GoogleSignUp() {
 
       // Send the token to your Strapi backend for authentication
       const res = await fetch(
-        "https://proper-fun-404805c7d9.strapiapp.com/api/auth/google/callback",
+        "https://upbeat-life-04fe8098b1.strapiapp.com/api/auth/google/callback",
         {
           method: "POST",
           headers: {
@@ -73,7 +73,7 @@ export default function SignupPage() {
 
     try {
       const response = await fetch(
-        "https://proper-fun-404805c7d9.strapiapp.com/api/auth/local/register",
+        "https://upbeat-life-04fe8098b1.strapiapp.com/api/auth/local/register",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

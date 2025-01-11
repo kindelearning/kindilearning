@@ -25,7 +25,7 @@ export default function EarlyLearningExpert() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://proper-fun-404805c7d9.strapiapp.com/api/early-learning-expert?populate=Content.Media"
+          "https://upbeat-life-04fe8098b1.strapiapp.com/api/early-learning-expert?populate=Content.Media"
         );
         const data = await response.json();
         console.log("Monthlytheme Database", data);
@@ -78,7 +78,7 @@ export default function EarlyLearningExpert() {
         <div className="w-full max-w-[400px] mx-auto">
           <video
             src={content.Media.url}
-            // src={`https://proper-fun-404805c7d9.strapiapp.com${content.Media.url}`}
+            // src={`https://upbeat-life-04fe8098b1.strapiapp.com${content.Media.url}`}
             controls
             autoPlay
             className="w-full rounded-xl shadow-lg"
@@ -107,7 +107,7 @@ export default function EarlyLearningExpert() {
 //     const fetchContent = async () => {
 //       try {
 //         const response = await fetch(
-//           "https://proper-fun-404805c7d9.strapiapp.com/api/early-learning-expert?populate=*"
+//           "https://upbeat-life-04fe8098b1.strapiapp.com/api/early-learning-expert?populate=*"
 //         );
 //         const data = await response.json();
 //         setContent({
@@ -142,7 +142,7 @@ export default function EarlyLearningExpert() {
 //     try {
 //       // Use documentId in the PUT request URL
 //       const response = await fetch(
-//         `https://proper-fun-404805c7d9.strapiapp.com/api/early-learning-expert`,
+//         `https://upbeat-life-04fe8098b1.strapiapp.com/api/early-learning-expert`,
 //         {
 //           method: "PUT",
 //           headers: {
@@ -265,7 +265,7 @@ export function UpdateEarlyLearningExpert() {
     const fetchContentData = async () => {
       try {
         const res = await fetch(
-          "https://proper-fun-404805c7d9.strapiapp.com/api/early-learning-expert?populate=Content.Media"
+          "https://upbeat-life-04fe8098b1.strapiapp.com/api/early-learning-expert?populate=Content.Media"
         );
         const data = await res.json();
 
@@ -303,7 +303,7 @@ export function UpdateEarlyLearningExpert() {
     console.log("Payload Created", payload);
 
     try {
-      const res = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/early-learning-expert", {
+      const res = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/early-learning-expert", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -382,7 +382,7 @@ export function UpdateEarlyLearningExpert() {
                 autoPlay
                 controls
                 src={media.url}
-                // src={`https://proper-fun-404805c7d9.strapiapp.com${media.url}`}
+                // src={`https://upbeat-life-04fe8098b1.strapiapp.com${media.url}`}
                 className="w-32 h-32 object-cover"
               />
               <p>{media.name}</p>

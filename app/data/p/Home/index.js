@@ -1,7 +1,7 @@
 export async function fetchHeroSection() {
   try {
     const res = await fetch(
-      `https://proper-fun-404805c7d9.strapiapp.com/api/homepage-hero-section?populate=*`
+      `https://upbeat-life-04fe8098b1.strapiapp.com/api/homepage-hero-section?populate=*`
     );
 
     if (!res.ok) {
@@ -30,7 +30,7 @@ export async function fetchHeroSection() {
 export async function fetchChildDevelopmentUnlock() {
   try {
     const res = await fetch(
-      "https://proper-fun-404805c7d9.strapiapp.com/api/childdevelopmentunlock?populate=Content.Media"
+      "https://upbeat-life-04fe8098b1.strapiapp.com/api/childdevelopmentunlock?populate=Content.Media"
     );
 
     if (!res.ok) {
@@ -61,7 +61,7 @@ export async function fetchChildDevelopmentUnlock() {
 export async function fetchEarlyLearningExpert() {
   try {
     const res = await fetch(
-      `https://proper-fun-404805c7d9.strapiapp.com/api/early-learning-expert?populate=Content.Media`
+      `https://upbeat-life-04fe8098b1.strapiapp.com/api/early-learning-expert?populate=Content.Media`
     );
 
     if (!res.ok) {
@@ -87,7 +87,7 @@ export async function fetchEarlyLearningExpert() {
 export async function fetchPopularLearning() {
   try {
     const response = await fetch(
-      "https://proper-fun-404805c7d9.strapiapp.com/api/popularlearning?populate=*"
+      "https://upbeat-life-04fe8098b1.strapiapp.com/api/popularlearning?populate=*"
     );
 
     if (!response.ok) {
@@ -107,7 +107,7 @@ export async function fetchPopularLearning() {
 export async function fetchHowItWorksData() {
   try {
     const res = await fetch(
-      `https://proper-fun-404805c7d9.strapiapp.com/api/howitwork?populate=HIWSection.Media`
+      `https://upbeat-life-04fe8098b1.strapiapp.com/api/howitwork?populate=HIWSection.Media`
     );
     if (!res.ok) {
       throw new Error("Failed to fetch How It Works data");
@@ -126,7 +126,7 @@ export async function fetchHowItWorksData() {
 export async function fetchMonthlyTheme() {
   try {
     const res = await fetch(
-      "https://proper-fun-404805c7d9.strapiapp.com/api/monthlytheme?populate=*"
+      "https://upbeat-life-04fe8098b1.strapiapp.com/api/monthlytheme?populate=*"
     );
 
     if (!res.ok) {
@@ -149,7 +149,7 @@ export async function fetchMonthlyTheme() {
 export async function fetchDefaultReview() {
   try {
     const response = await fetch(
-      "https://proper-fun-404805c7d9.strapiapp.com/api/defaultreview?populate=*"
+      "https://upbeat-life-04fe8098b1.strapiapp.com/api/defaultreview?populate=*"
     );
 
     if (!response.ok) {
@@ -170,8 +170,8 @@ export async function fetchDefaultReview() {
 export async function fetchPricingData() {
   try {
     const response = await fetch(
-      "https://proper-fun-404805c7d9.strapiapp.com/api/ourpricing?populate=*"
-      // "https://proper-fun-404805c7d9.strapiapp.com/api/ourpricing?populate[AnnualPlans][populate]=Features&[MonthlyPlans][populate]=Features"
+      "https://upbeat-life-04fe8098b1.strapiapp.com/api/ourpricing?populate=*"
+      // "https://upbeat-life-04fe8098b1.strapiapp.com/api/ourpricing?populate[AnnualPlans][populate]=Features&[MonthlyPlans][populate]=Features"
     );
 
     if (!response.ok) {
@@ -191,8 +191,8 @@ export async function fetchPricingData() {
 export async function fetchPricingDataFeatures() {
   try {
     const response = await fetch(
-      // "https://proper-fun-404805c7d9.strapiapp.com/api/ourpricing?populate[AnnualPlans][populate]=Features&[MonthlyPlans][populate]=Features"
-      "https://proper-fun-404805c7d9.strapiapp.com/api/ourpricing?populate[MonthlyPlans][populate][0]=Features&populate[MonthlyPlans][populate][1]=Thumbnail&populate[AnnualPlans][populate][0]=Features&populate[AnnualPlans][populate][1]=Thumbnail"
+      // "https://upbeat-life-04fe8098b1.strapiapp.com/api/ourpricing?populate[AnnualPlans][populate]=Features&[MonthlyPlans][populate]=Features"
+      "https://upbeat-life-04fe8098b1.strapiapp.com/api/ourpricing?populate[MonthlyPlans][populate][0]=Features&populate[MonthlyPlans][populate][1]=Thumbnail&populate[AnnualPlans][populate][0]=Features&populate[AnnualPlans][populate][1]=Thumbnail"
     );
 
     if (!response.ok) {
@@ -213,7 +213,7 @@ export async function fetchPricingDataFeatures() {
 export async function fetchMonthlyPricingDataFeatures() {
   try {
     const response = await fetch(
-      "https://proper-fun-404805c7d9.strapiapp.com/api/ourpricing?populate[MonthlyPlans][populate]=Features"
+      "https://upbeat-life-04fe8098b1.strapiapp.com/api/ourpricing?populate[MonthlyPlans][populate]=Features"
     );
 
     if (!response.ok) {

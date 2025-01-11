@@ -35,7 +35,7 @@ export default function RemoveKidButton({ kidId }) {
     };
 
     try {
-      const response = await fetch(`https://proper-fun-404805c7d9.strapiapp.com/api/kids/${kidId}`, {
+      const response = await fetch(`https://upbeat-life-04fe8098b1.strapiapp.com/api/kids/${kidId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

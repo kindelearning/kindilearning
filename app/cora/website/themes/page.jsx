@@ -39,7 +39,7 @@ export default function AdminThemes() {
 
   // Fetch all themes
   const fetchThemes = async () => {
-    const res = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/our-themes?populate=*");
+    const res = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/our-themes?populate=*");
     const data = await res.json();
 
     if (data && data.data) {
@@ -189,7 +189,7 @@ export default function AdminThemes() {
                     <TableCell>
                       <img
                         src={theme?.Thumbnail?.url}
-                        // src={`https://proper-fun-404805c7d9.strapiapp.com${theme?.Thumbnail?.url}`}
+                        // src={`https://upbeat-life-04fe8098b1.strapiapp.com${theme?.Thumbnail?.url}`}
                         alt={theme?.Title}
                         className="w-[40px] border-2 border-[#333333] rounded-full h-[40px] object-cover"
                       />
@@ -292,7 +292,7 @@ export default function AdminThemes() {
                                 {/* Thumbnail Image */}
                                 <img
                                   src={selectedTheme?.Thumbnail?.url} // Assuming the image URL is in the 'image' property
-                                  // src={`https://proper-fun-404805c7d9.strapiapp.com${selectedTheme?.Thumbnail?.url}`} // Assuming the image URL is in the 'image' property
+                                  // src={`https://upbeat-life-04fe8098b1.strapiapp.com${selectedTheme?.Thumbnail?.url}`} // Assuming the image URL is in the 'image' property
                                   alt={selectedTheme?.Title}
                                   className="w-full h-[300px] object-cover rounded-lg  mb-6"
                                 />

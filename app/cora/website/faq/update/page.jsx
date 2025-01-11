@@ -20,7 +20,7 @@ export default function FAQEditPage() {
     const fetchFAQs = async () => {
       try {
         const response = await fetch(
-          "https://proper-fun-404805c7d9.strapiapp.com/api/faq?populate=*"
+          "https://upbeat-life-04fe8098b1.strapiapp.com/api/faq?populate=*"
         );
         const data = await response.json();
 
@@ -61,7 +61,7 @@ export default function FAQEditPage() {
       const updatedFAQ = { Question: question, Answer: answer };
 
       const response = await fetch(
-        `https://proper-fun-404805c7d9.strapiapp.com/api/faq/${selectedFAQ.id}`,
+        `https://upbeat-life-04fe8098b1.strapiapp.com/api/faq/${selectedFAQ.id}`,
         {
           method: "PUT",
           headers: {
@@ -100,7 +100,7 @@ export default function FAQEditPage() {
     try {
       const newFAQ = { Question: newQuestion, Answer: newAnswer };
 
-      const response = await fetch("https://proper-fun-404805c7d9.strapiapp.com/api/faq", {
+      const response = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/faq", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

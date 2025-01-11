@@ -114,10 +114,10 @@ export default function ProductGrid() {
                 productUrl={`/shop/${product.documentId}`}
                 image={
                   product?.FeaturedImage?.[0]?.url
-                    ? `https://proper-fun-404805c7d9.strapiapp.com${product.FeaturedImage[0].url}`
+                    ? `https://upbeat-life-04fe8098b1.strapiapp.com${product.FeaturedImage[0].url}`
                     : ProductImage
                 }
-                // image={`https://proper-fun-404805c7d9.strapiapp.com${product?.FeaturedImage[0]?.url}`}
+                // image={`https://upbeat-life-04fe8098b1.strapiapp.com${product?.FeaturedImage[0]?.url}`}
                 price={product.DiscountPrice}
                 title={product.Name}
               />
