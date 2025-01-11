@@ -126,11 +126,13 @@ export default function MediaSelector({ onMediaSelect }) {
                         className={`w-full h-32 object-cover rounded transition ${
                           selectedMediaId === mediaFile.id ? "opacity-90" : ""
                         }`}
-                        src={`https://upbeat-life-04fe8098b1.strapiapp.com${mediaFile.url}`}
+                        src={mediaFile.url}
+                        // src={`https://upbeat-life-04fe8098b1.strapiapp.com${mediaFile.url}`}
                       />
                     ) : (
                       <img
-                        src={`https://upbeat-life-04fe8098b1.strapiapp.com${mediaFile.url}`}
+                        src={mediaFile.url}
+                        // src={`https://upbeat-life-04fe8098b1.strapiapp.com${mediaFile.url}`}
                         alt={mediaFile.name}
                         className={`w-full h-32 object-cover rounded transition ${
                           selectedMediaId === mediaFile.id ? "opacity-90" : ""
