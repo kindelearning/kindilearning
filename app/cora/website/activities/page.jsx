@@ -180,17 +180,17 @@ export default function ActivitiesPage() {
     <div className="gap-4 font-fredoka flex w-full flex-col p-8">
       <div className="flex w-full justify-between items-center">
         <h1 className="text-2xl font-bold mb-6">Activities</h1>
-        <Dialog>
+        {/* <Dialog>
           <DialogTrigger>Create New Activity</DialogTrigger>
           <DialogContent className="max-w-[1000px] max-h-[600px] overflow-y-scroll">
             <DialogHeader>
               <DialogTitle>Are you absolutely sure?</DialogTitle>
               <DialogDescription>
-                {/* <CreateActivityForm /> */}
+                <CreateActivityForm />
               </DialogDescription>
             </DialogHeader>
           </DialogContent>
-        </Dialog>
+        </Dialog> */}
       </div>
       {/* Search Bar */}
       <div className="flex w-full justify-between rounded-lg items-center">
@@ -203,7 +203,6 @@ export default function ActivitiesPage() {
         />
       </div>
       <div className="flex w-full gap-4 justify-between">
-        {/* Filters */}
         <div className="flex space-x-4">
           <select
             value={themeFilter}
