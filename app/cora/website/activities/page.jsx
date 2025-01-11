@@ -21,6 +21,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import EditActivityForm from "./EditActivityForm";
 
 // import CreateActivityForm from "./CreateActivityForm";
 // import EditActivityForm from "./EditActivityForm";
@@ -410,7 +411,7 @@ export default function ActivitiesPage() {
                     <DialogContent className="max-w-[1000px] max-h-[600px] overflow-y-scroll">
                       <DialogHeader>
                         <DialogDescription>
-                          {/* <EditActivityForm documentId={activity.documentId} /> */}
+                          <EditActivityForm documentId={activity.documentId} />
                           import ClaraMarkdownRichEditor from
                         </DialogDescription>
                       </DialogHeader>
