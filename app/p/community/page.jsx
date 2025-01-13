@@ -1,15 +1,42 @@
-import { fetchOurBlogs } from "@/app/data/p/Dynamic/Community";
+"use client";
+
+// import { fetchOurBlogs } from "@/app/data/p/Dynamic/Community";
 import { BlogCard } from "@/app/Widgets";
+import { useEffect, useState } from "react";
 
-export default async function Page() {
-    // const [blogs, setBlogs] = useState([]);
-  
-  const pageContent = await fetchOurBlogs();
-  if (!pageContent) {
-    return <div>Error: No data available</div>;
-  }
+export default function Page() {
+  const [blogs, setBlogs] = useState([]);
 
-  console.log("Fetched Blogs", pageContent);
+  const fetchBlogs = async () => {
+    try {
+      const res = await fetch(
+        "https://upbeat-life-04fe8098b1.strapiapp.com/api/blogs?populate=comments&populate=FeaturedImage"
+      );
+      const data = await res.json();
+      // console.log("API Response:", data);
+
+      if (data && data.data) {
+        // Extract comments from all blog entries
+        const allComments = data.data.flatMap((blog) => blog.comments || []);
+        // setComments(
+        //   allComments.sort(
+        //     (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        //   )
+        // );
+        setBlogs(data.data);
+      }
+    } catch (error) {
+      console.error("Error fetching blogs:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchBlogs();
+  }, []);
+
+  console.log("Fetched Blogs", blogs);
   return (
     <>
       <section className="w-full h-auto bg-[#EAEAF5] items-center pb-32 justify-center flex flex-col gap-[20px]">
@@ -34,7 +61,7 @@ export default async function Page() {
             </div>
 
             <div className="claracontainer lg:max-w-[1200px] w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 overflow-hidden gap-4">
-              {pageContent.map((item) => (
+              {blogs.map((item) => (
                 <article key={item.id} className="rounded-lg">
                   <BlogCard
                     documentId={item.documentId}
