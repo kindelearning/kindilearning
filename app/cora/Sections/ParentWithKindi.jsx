@@ -12,7 +12,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import ClaraMarkdownRichEditor from "./TextEditor/ClaraMarkdownRichEditor";
-import MediaSelector from "../website/media/Section/MediaSelector";
+import MediaSelector, {
+  MultiMediaSelector,
+} from "../website/media/Section/MediaSelector";
 
 export default function ParentWithKindi() {
   const [content, setContent] = useState(null);
@@ -43,6 +45,8 @@ export default function ParentWithKindi() {
     fetchData();
   }, []);
 
+  console.log("PWK Content on PWK Popup", content);
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -70,19 +74,36 @@ export default function ParentWithKindi() {
     <section className="bg-gradient-to-b from-white to-gray-100">
       <div className="container mx-auto px-6 lg:px-20">
         <div className="bg-white rounded-lg overflow-hidden">
-          <div className="p-8 md:p-12 lg:p-16">
+          <div className="p-8 md:p-12 gap-4 lg:p-16">
             <h2 className="text-4xl font-bold text-gray-800 mb-6">
               {content.featuredText} {content.Title}
             </h2>
 
             <div className="text-lg text-gray-700 space-y-6 leading-relaxed">
-              <p
-                className="prose w-full px-0 text-start clarabodyTwo  font-medium font-fredoka"
-                dangerouslySetInnerHTML={{
-                  __html: content.Body,
-                }}
-              />
+              {content.Body?(
+
+                <p
+                  className="prose w-full px-0 text-start clarabodyTwo  font-medium font-fredoka"
+                  dangerouslySetInnerHTML={{
+                    __html: content.Body,
+                  }}
+                />
+              ):(
+                <p> content not available</p>
+              )}
             </div>
+
+            {content?.Media ? (
+              <div className="grid grid-cols-3 gap-2 justify-between items-center w-full">
+                {content?.Media?.map((img, index) => (
+                  <div key={index}>
+                    <img className="w-[200px] h-[200px]" src={img.url} alt="text" />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p> Media NOt available</p>
+            )}
           </div>
         </div>
       </div>
@@ -289,6 +310,11 @@ export function UpdateParentWithKindiSection() {
           setBody(content.Parentwithkindi?.Body || "");
           setFeaturedText(content.Parentwithkindi?.featuredText || "");
           setMedia(content.Parentwithkindi?.Media?.id || null); // Set the media ID or null if no media is selected
+          setMedia(
+            content.Parentwithkindi?.Media?.map((media) => ({
+              id: media.id,
+            })) || []
+          );
         }
 
         console.log("Fetched OurStory Content", content);
@@ -303,6 +329,7 @@ export function UpdateParentWithKindiSection() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const formattedGallery = media.map((id) => ({ id }));
 
     const payload = {
       data: {
@@ -310,11 +337,11 @@ export function UpdateParentWithKindiSection() {
           Title: title,
           Body: body,
           featuredText: featuredText,
-          Media: media?.id || null, // Use media ID if selected
+          Media: formattedGallery, // Use media ID if selected
         },
       },
     };
-    console.log("Payload Created", payload);
+    console.log("Payload Created for Parentwithkindi", payload);
 
     try {
       const res = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/our-mission", {
@@ -338,9 +365,21 @@ export function UpdateParentWithKindiSection() {
     setMedia(selectedMedia); // Store the selected media object
   };
 
+  const handleGallerySelect = (selectedMediaIds) => {
+    console.log("Selected Media IDs:", selectedMediaIds);
+
+    // Filter out invalid IDs (e.g., undefined or null)
+
+    const formattedGallery = selectedMediaIds.map((id) => ({ id }));
+    // Update the gallery state with the new array of valid IDs
+    setMedia(selectedMediaIds);
+
+    // console.log("Updated Gallery State:", formattedGallery);
+  };
+
   return (
     <div className="p-8">
-      <h1 className="text-2xl font-bold mb-6">Edit Monthly Theme</h1>
+      <h1 className="text-2xl font-bold mb-6">Edit Parentwithkindi</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Title Field */}
         <div>
@@ -389,24 +428,9 @@ export function UpdateParentWithKindiSection() {
 
         {/* Media Field */}
         <div>
-          <label>Media:</label>
-          {media ? (
-            <div className="mt-4">
-              <video
-                autoPlay
-                controls
-                src={media.url}
-                // src={`https://upbeat-life-04fe8098b1.strapiapp.com${media.url}`}
-                className="w-32 h-32 object-cover"
-              />
-              <p>{media.name}</p>
-            </div>
-          ) : (
-            <p>Not selected anything</p>
-          )}
-          <MediaSelector onMediaSelect={handleMediaSelect} />
+          <label>Gallery:</label>
+          <MultiMediaSelector onMediaSelect={handleGallerySelect} />{" "}
         </div>
-
         <button type="submit" className="px-4 py-2 bg-black text-white rounded">
           Update Content
         </button>
@@ -433,4 +457,3 @@ export function UpdateParentWithKindiSection() {
     </div>
   );
 }
-

@@ -59,7 +59,7 @@ export default function ProductUpdateForm({ documentId }) {
       }
     };
     fetchProductData();
-  }, [documentId]);
+  }, [documentId]); 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
