@@ -46,9 +46,7 @@ const ActivitiesList = ({ activities }) => {
                   <div className="claracontainer w-full flex-col justify-start items-center gap-7 inline-flex">
                     <div className="w-full max-w-full md:min-w-full lg:max-w-full h-auto">
                       <div className="flex max-h-[180px] min-h-[150px] h-[150px] md:min-h-[200px] md:h-full lg:min-h-[276px] lg:h-full lg:max-h-[276px] md:max-h-[300px] overflow-clip rounded-t-3xl">
-                        <Image
-                          width={280}
-                          height={250}
+                        <img
                           alt={activity.title}
                           className="w-full max-h-[180px] duration-300 hover:scale-105 lg:min-h-[276px] lg:h-full lg:max-h-[276px] md:max-h-[300px] object-cover rounded-t-3xl"
                           src={activity.thumbnail.url}

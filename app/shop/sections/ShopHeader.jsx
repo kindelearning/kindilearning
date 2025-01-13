@@ -1,6 +1,6 @@
 "use client";
 
-import { Achievement, Logo, Milestone, progressImage02 } from "@/public/Images";
+import { Achievement, Logo, Milestone, ProfilePlaceholder01, progressImage02 } from "@/public/Images";
 import Image from "next/image";
 import { NavMenu } from "../../constant/menu";
 import { Button } from "@/components/ui/button";
