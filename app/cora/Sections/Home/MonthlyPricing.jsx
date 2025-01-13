@@ -1,6 +1,8 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
+import MediaSelector from "../../website/media/Section/MediaSelector";
 
 export default function MonthlyPricing() {
   const [content, setContent] = useState(null); // To store the fetched data
@@ -43,6 +45,9 @@ export default function MonthlyPricing() {
 
   return (
     <div className="container mx-auto flex flex-col justify-between font-fredoka px-8 py-12">
+      <head>
+        <title>Update Monthly Pricing</title>
+      </head>
       <div className="plans-container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {MonthlyPlans?.map((plan) => (
           <div
@@ -90,151 +95,335 @@ export default function MonthlyPricing() {
   );
 }
 
+export function UpdatePricingForm() {
+  const [monthlyPlans, setMonthlyPlans] = useState([]);
+  const [expandedPlanIndex, setExpandedPlanIndex] = useState(null); // Track expanded tiers
+  const [expandedFeatureIndexes, setExpandedFeatureIndexes] = useState({}); // Track expanded features per plan
 
-export  function MonthlyPricingUpdate() {
-  const [content, setContent] = useState(null); // To store the fetched data
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  // Fetch data when the component mounts
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchPricingData = async () => {
       try {
         const response = await fetch(
           "https://upbeat-life-04fe8098b1.strapiapp.com/api/ourpricing?populate[MonthlyPlans][populate][0]=Features&populate[MonthlyPlans][populate][1]=Thumbnail"
         );
         const data = await response.json();
-        if (data?.data) {
-          setContent(data.data); // Set the fetched data
+        if (response.ok) {
+          setMonthlyPlans(data.data.MonthlyPlans || []);
         } else {
-          setError("No content found.");
+          console.error("Failed to fetch pricing data");
         }
-      } catch (err) {
-        setError("Error fetching data: " + err.message);
-      } finally {
-        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching pricing data:", error);
       }
     };
 
-    fetchData();
+    fetchPricingData();
   }, []);
 
-  const handleUpdate = async (e) => {
+  const handleFeatureChange = (planIndex, featureIndex, field, value) => {
+    const updatedPlans = [...monthlyPlans];
+    updatedPlans[planIndex].Features[featureIndex][field] = value;
+    setMonthlyPlans(updatedPlans);
+  };
+
+  const handlePlanChange = (index, field, value) => {
+    const updatedPlans = [...monthlyPlans];
+    updatedPlans[index][field] = value;
+    setMonthlyPlans(updatedPlans);
+  };
+
+  const handleAddFeature = (planIndex) => {
+    const updatedPlans = [...monthlyPlans];
+    updatedPlans[planIndex].Features.push({
+      Title: "",
+      HelpText: "",
+      isIncluded: false,
+    });
+    setMonthlyPlans(updatedPlans);
+  };
+
+  const handleRemoveFeature = (planIndex, featureIndex) => {
+    const updatedPlans = [...monthlyPlans];
+    updatedPlans[planIndex].Features.splice(featureIndex, 1); // Remove the feature at the given index
+    setMonthlyPlans(updatedPlans);
+  };
+
+  const handleTogglePlanAccordion = (index) => {
+    setExpandedPlanIndex(expandedPlanIndex === index ? null : index);
+  };
+
+  const handleToggleFeatureAccordion = (planIndex, featureIndex) => {
+    setExpandedFeatureIndexes((prevState) => ({
+      ...prevState,
+      [`${planIndex}-${featureIndex}`]:
+        !prevState[`${planIndex}-${featureIndex}`],
+    }));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const formData = {
+      data: {
+        MonthlyPlans: monthlyPlans.map((plan) => ({
+          PriceTitle: plan.PriceTitle,
+          PriceBody: plan.PriceBody,
+          Price: plan.Price,
+          Thumbnail: plan?.Thumbnail ? { id: plan.Thumbnail.id } : null,
+          Features: plan.Features.map((feature) => ({
+            Title: feature.Title,
+            HelpText: feature.HelpText,
+            isIncluded: feature.isIncluded || false,
+          })),
+        })),
+      },
+    };
+
+    console.log("Submitting FormData:", formData);
+
     try {
       const response = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/ourpricing", {
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          data: content, // Send the updated content
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
       });
 
-      const updatedData = await response.json();
-      if (updatedData) {
-        alert("Content updated successfully!");
+      if (!response.ok) {
+        const errorDetails = await response.json();
+        console.error("Error Response:", errorDetails);
+        alert("Failed to update pricing");
+      } else {
+        alert("Pricing updated successfully");
       }
     } catch (error) {
-      alert("Failed to update content");
+      console.error("Error during request:", error);
     }
   };
 
-  if (loading) {
-    return <div>Loading content...</div>;
-  }
-
-  if (error) {
-    return <div className="text-red-500">{error}</div>;
-  }
+  const handleMediaSelect = (selectedMedia, index) => {
+    const updatedSection = [...monthlyPlans];
+    updatedSection[index].Thumbnail = selectedMedia;
+    setMonthlyPlans(updatedSection);
+  };
 
   return (
-    <div className="container mx-auto px-8 py-12">
-      <h2 className="text-3xl font-bold mb-4">Update Pricing Content</h2>
-      
-      {/* Section Title */}
-      <div className="mb-4">
-        <label htmlFor="SectionTitle" className="block font-medium">
-          Section Title
-        </label>
-        <input
-          type="text"
-          id="SectionTitle"
-          value={content?.SectionTitle || ""}
-          onChange={(e) => setContent({ ...content, SectionTitle: e.target.value })}
-          className="w-full p-2 border border-gray-300 rounded"
-        />
-      </div>
-
-      {/* Featured Text */}
-      <div className="mb-4">
-        <label htmlFor="featuredText" className="block font-medium">
-          Featured Text
-        </label>
-        <textarea
-          id="featuredText"
-          value={content?.featuredText || ""}
-          onChange={(e) => setContent({ ...content, featuredText: e.target.value })}
-          className="w-full p-2 border border-gray-300 rounded"
-        />
-      </div>
-
-      {/* Monthly Plans */}
-      <div className="mb-6">
-        <h3 className="text-2xl font-semibold mb-2">Monthly Plans</h3>
-        {content?.MonthlyPlans?.map((plan, index) => (
-          <div key={plan.id} className="border p-4 mb-4 rounded">
-            <div className="mb-2">
-              <label className="font-medium">Price Title</label>
-              <input
-                type="text"
-                value={plan.PriceTitle}
-                onChange={(e) => {
-                  const updatedPlans = [...content.MonthlyPlans];
-                  updatedPlans[index].PriceTitle = e.target.value;
-                  setContent({ ...content, MonthlyPlans: updatedPlans });
-                }}
-                className="w-full p-2 border border-gray-300 rounded"
-              />
-            </div>
-            <div className="mb-2">
-              <label className="font-medium">Price Body</label>
-              <textarea
-                value={plan.PriceBody}
-                onChange={(e) => {
-                  const updatedPlans = [...content.MonthlyPlans];
-                  updatedPlans[index].PriceBody = e.target.value;
-                  setContent({ ...content, MonthlyPlans: updatedPlans });
-                }}
-                className="w-full p-2 border border-gray-300 rounded"
-              />
-            </div>
-            <div className="mb-2">
-              <label className="font-medium">Price</label>
-              <input
-                type="number"
-                value={plan.Price}
-                onChange={(e) => {
-                  const updatedPlans = [...content.MonthlyPlans];
-                  updatedPlans[index].Price = e.target.value;
-                  setContent({ ...content, MonthlyPlans: updatedPlans });
-                }}
-                className="w-full p-2 border border-gray-300 rounded"
-              />
-            </div>
-            {/* Optionally, handle the Thumbnail and Features as well */}
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-8 bg-white font-fredoka rounded-lg"
+    >
+      {/* <h3 className="text-2xl font-semibold mb-4">Monthly Plans</h3> */}
+      {monthlyPlans.map((plan, index) => (
+        <div key={index} className="border-b  p-4 border-gray-200 pb-6 mb-6">
+          {/* Accordion for each plan (tier) */}
+          <div
+            className="cursor-pointer text-lg font-semibold text-red mb-4"
+            onClick={() => handleTogglePlanAccordion(index)}
+          >
+            {expandedPlanIndex === index ? (
+              <span>- {plan.PriceTitle}</span>
+            ) : (
+              <span>+ {plan.PriceTitle}</span>
+            )}
           </div>
-        ))}
-      </div>
 
-      {/* Submit Button */}
-      <button
-        onClick={handleUpdate}
-        className="bg-blue-500 text-white px-6 py-2 rounded"
-      >
-        Update Content
-      </button>
-    </div>
+          {expandedPlanIndex === index && (
+            <div className="space-y-4">
+              {/* Media Selection */}
+              <div className="flex flex-col mb-4">
+                <label className="font-medium text-gray-600">
+                  Plan Thumbnail
+                </label>
+                {plan.Thumbnail ? (
+                  <div className="mt-4">
+                    <img
+                      src={`https://upbeat-life-04fe8098b1.strapiapp.com${plan.Thumbnail.url}`}
+                      alt={plan.name}
+                      className="w-32 h-32 object-cover rounded-md"
+                    />
+                    <p className="text-sm text-gray-500">{plan.name}</p>
+                  </div>
+                ) : (
+                  <p className="text-sm text-gray-500">Not selected</p>
+                )}
+                <MediaSelector
+                  onMediaSelect={(selectedMedia) =>
+                    handleMediaSelect(selectedMedia, index)
+                  }
+                  className="mt-2"
+                />
+              </div>
+
+              {/* Title, Body, Price */}
+              <div className="space-y-4">
+                <div>
+                  <label className="block font-medium text-gray-600">
+                    Price Title
+                  </label>
+                  <input
+                    type="text"
+                    value={plan.PriceTitle}
+                    onChange={(e) =>
+                      handlePlanChange(index, "PriceTitle", e.target.value)
+                    }
+                    className="w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-medium text-gray-600">
+                    Price Body
+                  </label>
+                  <textarea
+                    value={plan.PriceBody}
+                    onChange={(e) =>
+                      handlePlanChange(index, "PriceBody", e.target.value)
+                    }
+                    className="w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    rows="4"
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-medium text-gray-600">
+                    Price
+                  </label>
+                  <input
+                    type="number"
+                    value={plan.Price}
+                    onChange={(e) =>
+                      handlePlanChange(index, "Price", e.target.value)
+                    }
+                    className="w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+              </div>
+
+              {/* Accordion for Features */}
+              <div className="mt-6 space-y-4">
+                <div className="flex justify-between items-center">
+                  <label className="font-medium text-gray-600">Features</label>
+                  <button
+                    type="button"
+                    onClick={() => handleAddFeature(index)}
+                    className="flex items-center text-red hover:text-blue-800 text-sm"
+                  >
+                    <span className="mr-2">+ Add Feature</span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 16 16"
+                      fill="currentColor"
+                      className="w-4 h-4"
+                    >
+                      <path d="M8 3a1 1 0 0 1 1 1v3h3a1 1 0 0 1 0 2H9v3a1 1 0 0 1-2 0V9H4a1 1 0 0 1 0-2h3V4a1 1 0 0 1 1-1z" />
+                    </svg>
+                  </button>
+                </div>
+
+                {plan.Features && plan.Features.length > 0 ? (
+                  plan.Features.map((feature, featureIndex) => (
+                    <div key={featureIndex} className="border-b pb-4 mb-4">
+                      <div
+                        className="cursor-pointer text-sm text-gray-600"
+                        onClick={() =>
+                          handleToggleFeatureAccordion(index, featureIndex)
+                        }
+                      >
+                        {expandedFeatureIndexes[`${index}-${featureIndex}`] ? (
+                          <span>- {feature.Title}</span>
+                        ) : (
+                          <span>+ {feature.Title}</span>
+                        )}
+                      </div>
+
+                      {expandedFeatureIndexes[`${index}-${featureIndex}`] && (
+                        <div className="space-y-2 mt-2">
+                          <div>
+                            <label className="text-sm text-gray-500">
+                              Feature Title
+                            </label>
+                            <input
+                              type="text"
+                              value={feature.Title || ""}
+                              onChange={(e) =>
+                                handleFeatureChange(
+                                  index,
+                                  featureIndex,
+                                  "Title",
+                                  e.target.value
+                                )
+                              }
+                              className="w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            />
+                          </div>
+
+                          <div className="mt-2">
+                            <label className="text-sm text-gray-500">
+                              Feature Description
+                            </label>
+                            <textarea
+                              value={feature.HelpText || ""}
+                              onChange={(e) =>
+                                handleFeatureChange(
+                                  index,
+                                  featureIndex,
+                                  "HelpText",
+                                  e.target.value
+                                )
+                              }
+                              className="w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                              rows="2"
+                            />
+                          </div>
+
+                          <div className="mt-2">
+                            <label className="text-sm text-gray-500">
+                              <input
+                                type="checkbox"
+                                checked={feature.isIncluded}
+                                onChange={() =>
+                                  handleFeatureChange(
+                                    index,
+                                    featureIndex,
+                                    "isIncluded",
+                                    !feature.isIncluded
+                                  )
+                                }
+                                className="mr-2"
+                              />
+                              Is Included
+                            </label>
+                          </div>
+
+                          <button
+                            type="button"
+                            onClick={() =>
+                              handleRemoveFeature(index, featureIndex)
+                            }
+                            className="text-red-600 hover:text-red-800 text-xs"
+                          >
+                            Remove Feature
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-gray-500 text-xs">No features added.</p>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      ))}
+      <section className="w-full h-auto shadow-upper bg-[#ffffff] -top-2 sticky bottom-0 z-10 rounded-t-[16px] items-center justify-center py-4 flex flex-row">
+        <div className="claracontainer flex flex-row  justify-between w-full items-center gap-4 px-4">
+          <Button type="submit">Update Pricing</Button>
+
+          {/* <Button className="bg-red hover:bg-red rounded-2xl font-fredoka text-white shadow border-2 border-white">
+            {PrimaryText}
+          </Button> */}
+        </div>
+      </section>
+    </form>
   );
 }
