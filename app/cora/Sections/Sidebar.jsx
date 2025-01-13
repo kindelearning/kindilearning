@@ -258,11 +258,11 @@ export default function Sidebar() {
         />
       </div>
       <SidebarLink
-          href="/"
-          icon={<EyeIcon />} // User icon for user management
-          label="Live Website"
-          isCollapsed={isCollapsed}
-        />
+        href="/"
+        icon={<EyeIcon />} // User icon for user management
+        label="Live Website"
+        isCollapsed={isCollapsed}
+      />
     </div>
   );
 }

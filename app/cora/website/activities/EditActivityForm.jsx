@@ -13,10 +13,10 @@ import {
 } from "@/components/ui/dialog";
 // import ReactQuill from "react-quill"; // Import React Quill
 // import "react-quill/dist/quill.snow.css";
-import ClaraMarkdownRichEditor, {
-  ClaraMarkdownRichEditorForSkillsOfActivity,
-} from "../../Sections/TextEditor/ClaraMarkdownRichEditor";
-import MediaSelector from "../media/Section/MediaSelector";
+import ClaraMarkdownRichEditor from "../../Sections/TextEditor/ClaraMarkdownRichEditor";
+import MediaSelector, {
+  MultiMediaSelector,
+} from "../media/Section/MediaSelector";
 
 export default function EditActivityForm({ documentId }) {
   const [title, setTitle] = useState("");
@@ -27,6 +27,7 @@ export default function EditActivityForm({ documentId }) {
   const [skills, setSkills] = useState("");
   const [formattedSkills, setFormattedSkills] = useState([]); // For holding structured skill data
 
+  const [resource, setResource] = useState([]); // Store selected media
   const [media, setMedia] = useState([]); // Store selected media
   const [setUpTime, setSetUpTime] = useState("");
   const [existingData, setExistingData] = useState(null);
@@ -72,6 +73,8 @@ export default function EditActivityForm({ documentId }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const formattedGallery = media.map((id) => ({ id }));
+    const formattedResources = resource.map((id) => ({ id }));
 
     const payload = {
       data: {
@@ -83,7 +86,8 @@ export default function EditActivityForm({ documentId }) {
         SetUpTime: setUpTime,
         LearningArea: learningArea,
         isPopular: isPopular,
-        Gallery: media ? media.id : null,
+        Gallery: formattedGallery,
+        Resources: formattedResources,
         Accordions: prepareAccordionsPayload(),
       },
     };
@@ -159,17 +163,37 @@ export default function EditActivityForm({ documentId }) {
     }
   }, [formattedSkills]);
 
+  const handleGallerySelect = (selectedMediaIds) => {
+    console.log("Selected Media IDs:", selectedMediaIds);
+
+    setMedia(selectedMediaIds);
+  };
+  const handleResourcesSelect = (selectedMediaIds) => {
+    console.log("Selected Media IDs:", selectedMediaIds);
+
+    setResource(selectedMediaIds);
+  };
+
   return (
     <div className="p-8 font-fredoka">
       <h1 className="text-2xl font-bold mb-6">Edit Activity</h1>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         {error && <div className="text-red-500">{error}</div>}{" "}
-        {/* Gallery Media Selector */}
-        <div>
-          <label htmlFor="Gallery" className="block">
-            Gallery
-          </label>
+        <div className="flex w-full justify-between items-center gap-2">
+          {/* Gallery Media Selector */}
+          <div className="w-full">
+            <label htmlFor="Gallery" className="block">
+              Gallery
+            </label>
+            <MultiMediaSelector onMediaSelect={handleGallerySelect} />{" "}
+          </div>
+          <div className="w-full">
+            <label htmlFor="Resources" className="block">
+              Resources
+            </label>
+            <MultiMediaSelector onMediaSelect={handleResourcesSelect} />{" "}
+          </div>
         </div>
         {/* Error message */}
         <div>

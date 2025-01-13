@@ -15,7 +15,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import MediaSelector, { MultiMediaSelector } from "../../media/Section/MediaSelector";
+import MediaSelector, {
+  MultiMediaSelector,
+} from "../../media/Section/MediaSelector";
 import ClaraMarkdownRichEditor from "@/app/cora/Sections/TextEditor/ClaraMarkdownRichEditor";
 
 // export function CreateProductPage2() {
@@ -335,6 +337,9 @@ export default function CreateProductPage() {
 
   return (
     <div className="p-8 font-fredoka bg-[#ffffff]">
+      <head>
+        <title>Create New Product - Kindi</title>
+      </head>
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Media */}
         <div>

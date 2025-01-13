@@ -13,6 +13,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import ClaraMarkdownRichEditor from "../../Sections/TextEditor/ClaraMarkdownRichEditor";
+import { MultiMediaSelector } from "../media/Section/MediaSelector";
 
 export default function CreateActivityForm() {
   const [title, setTitle] = useState("");
@@ -28,7 +29,8 @@ export default function CreateActivityForm() {
   const [relatedUsers, setRelatedUsers] = useState([]); // State for storing selected user IDs
   const [userList, setUserList] = useState([]); // State for storing fetched users
   const [resourceMedia, setResourceMedia] = useState(null);
-  const [media, setMedia] = useState(null); // Media state
+  const [resource, setResource] = useState([]); // Store selected media
+  const [media, setMedia] = useState([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [dialogMessage, setDialogMessage] = useState("");
   const [dialogType, setDialogType] = useState("success");
@@ -73,19 +75,21 @@ export default function CreateActivityForm() {
       setIsDialogOpen(true);
       return;
     }
+    const formattedGallery = media.map((id) => ({ id }));
+    const formattedResources = resource.map((id) => ({ id }));
 
     const newActivity = {
-      Title: title, // Text
-      Theme: theme, // Text
-      FocusAge: focusAge, // Text
-      ActivityDate: activityDate, // Date in 'YYYY-MM-DD' format
-      Skills: skills,
-      SetUpTime: setUpTime, // Text
-      LearningArea: learningArea, // Enumeration
-      // Gallery: media ? [{ id: media.id }] : [], // Media array (ensure it's an array of objects with `id`)
-      // Resources: resourceMedia ? [{ id: resourceMedia.id }] : [], // Media array
+      Title: title,
+      Theme: theme,
+      FocusAge: focusAge,
+      ActivityDate: activityDate,
+      // Skills: skills,
+      SetUpTime: setUpTime,
+      LearningArea: learningArea,
+      Gallery: formattedGallery,
+      Resources: formattedResources,
       Accordions: prepareAccordionsPayload(),
-      SkillCategory: skillCategory, // Text
+      SkillCategory: skillCategory,
       relatedUsers: relatedUsers.map((id) => ({ id })),
     };
 
@@ -114,7 +118,6 @@ export default function CreateActivityForm() {
         setSkillCategory("");
         // setResourceMedia(null);
         setLearningArea("");
-        // setMedia(null);
         setIsPopular("");
         setAccordions([]);
         setSkills(""); // Reset Skills
@@ -168,12 +171,15 @@ export default function CreateActivityForm() {
     });
   };
 
-  const handleMediaSelect = (selectedMedia) => {
-    setMedia(selectedMedia); // Store the selected media object
-  };
+  const handleGallerySelect = (selectedMediaIds) => {
+    console.log("Selected Media IDs:", selectedMediaIds);
 
-  const handleResourceMediaSelect = (selectedMedia) => {
-    setResourceMedia(selectedMedia);
+    setMedia(selectedMediaIds);
+  };
+  const handleResourcesSelect = (selectedMediaIds) => {
+    console.log("Selected Media IDs:", selectedMediaIds);
+
+    setResource(selectedMediaIds);
   };
 
   return (
@@ -182,6 +188,21 @@ export default function CreateActivityForm() {
         <title>Create New Activity - KindiLearning</title>
       </head>
       <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="flex w-full justify-between items-center gap-2">
+          {/* Gallery Media Selector */}
+          <div className="w-full">
+            <label htmlFor="Gallery" className="block">
+              Gallery
+            </label>
+            <MultiMediaSelector onMediaSelect={handleGallerySelect} />{" "}
+          </div>
+          <div className="w-full">
+            <label htmlFor="Resources" className="block">
+              Resources
+            </label>
+            <MultiMediaSelector onMediaSelect={handleResourcesSelect} />{" "}
+          </div>
+        </div>
         <div>
           <label htmlFor="Title" className="block">
             Title
