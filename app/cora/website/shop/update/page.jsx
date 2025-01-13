@@ -91,7 +91,7 @@ export default function ProductUpdateForm({ documentId }) {
           },
           body: JSON.stringify(payload),
         }
-      );
+      ); 
       const data = await res.json();
       console.log("Updated Product:", data);
       setOpenDialog(true); // Open the success dialog

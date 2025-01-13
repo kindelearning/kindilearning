@@ -160,21 +160,21 @@ const UploadMediaPage = () => {
             <h2 className="text-xl font-semibold">Uploaded Media</h2>
             {file && file.type.startsWith("image") ? (
               <img
-                src={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${uploadedFileUrl}`}
+                src={uploadedFileUrl}
                 alt="Uploaded Media"
                 className="mt-4 rounded-lg max-w-full h-auto"
               />
             ) : file && file.type.startsWith("video") ? (
               <video controls className="mt-4 rounded-lg max-w-full">
                 <source
-                  src={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${uploadedFileUrl}`}
+                  src={uploadedFileUrl}
                   type={file.type}
                 />
                 Your browser does not support the video tag.
               </video>
             ) : file && file.type === "application/pdf" ? (
               <a
-                href={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${uploadedFileUrl}`}
+                href={uploadedFileUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-500 underline mt-4"
@@ -183,7 +183,7 @@ const UploadMediaPage = () => {
               </a>
             ) : file && file.type === "application/zip" ? (
               <a
-                href={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${uploadedFileUrl}`}
+                href={uploadedFileUrl}
                 download
                 className="text-blue-500 underline mt-4"
               >

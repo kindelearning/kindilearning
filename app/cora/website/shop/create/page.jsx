@@ -15,7 +15,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import MediaSelector from "../../media/Section/MediaSelector";
+import MediaSelector, { MultiMediaSelector } from "../../media/Section/MediaSelector";
 import ClaraMarkdownRichEditor from "@/app/cora/Sections/TextEditor/ClaraMarkdownRichEditor";
 
 // export function CreateProductPage2() {
@@ -250,6 +250,7 @@ export default function CreateProductPage() {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const formattedGallery = gallery.map((id) => ({ id }));
 
     const newProducts = {
       Name: name,
@@ -266,18 +267,21 @@ export default function CreateProductPage() {
       DiscountType: discountType,
       TypeOfToy: typeOfToy,
       FeaturedImage: media?.id || null, // Use media ID if selected
-      Gallery: gallery?.id || null, // Use media ID if selected
+      Gallery: formattedGallery, // Use media ID if selected
     };
 
     console.log("New Badge data", newProducts);
     try {
-      const response = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/products", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ data: newProducts }),
-      });
+      const response = await fetch(
+        "https://upbeat-life-04fe8098b1.strapiapp.com/api/products",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ data: newProducts }),
+        }
+      );
 
       const responseData = await response.json();
 
@@ -317,9 +321,18 @@ export default function CreateProductPage() {
   const handleMediaSelect = (selectedMedia) => {
     setMedia(selectedMedia); // Store the selected media object
   };
-  const handleGalleryMediaSelect = (selectedMedia) => {
-    setGallery(selectedMedia); // Store the selected media object
+  const handleGallerySelect = (selectedMediaIds) => {
+    console.log("Selected Media IDs:", selectedMediaIds);
+
+    // Filter out invalid IDs (e.g., undefined or null)
+
+    const formattedGallery = selectedMediaIds.map((id) => ({ id }));
+    // Update the gallery state with the new array of valid IDs
+    setGallery(selectedMediaIds);
+
+    // console.log("Updated Gallery State:", formattedGallery);
   };
+
   return (
     <div className="p-8 font-fredoka bg-[#ffffff]">
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -343,7 +356,7 @@ export default function CreateProductPage() {
         {/* Gallery */}
         <div>
           <label>Gallery:</label>
-          {gallery ? (
+          {/* {gallery ? (
             <div className="mt-4">
               <img
                 // src={media.url}
@@ -354,8 +367,8 @@ export default function CreateProductPage() {
             </div>
           ) : (
             <p>Not selected anything</p>
-          )}
-          <MediaSelector onMediaSelect={handleGalleryMediaSelect} />
+          )} */}
+          <MultiMediaSelector onMediaSelect={handleGallerySelect} />{" "}
         </div>
 
         <div>
@@ -437,15 +450,15 @@ export default function CreateProductPage() {
           <label htmlFor="NlongDescriptioname" className="block">
             Long Description
           </label>
-          <textarea
+          {/* <textarea
             id="longDescription"
             name="longDescription"
             value={longDescription}
             onChange={(e) => setLongDescription(e.target.value)}
             className="w-full p-2 border border-gray-300 rounded"
             required
-          />
-           <ClaraMarkdownRichEditor
+          /> */}
+          <ClaraMarkdownRichEditor
             value={longDescription}
             onChange={(newContent) => setLongDescription(newContent)}
             placeholder="Enter a description"
