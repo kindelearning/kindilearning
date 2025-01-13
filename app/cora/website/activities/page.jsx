@@ -1,15 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+
 import Link from "next/link";
 import { Eye, PencilLine, Trash } from "lucide-react";
 import {
@@ -21,10 +13,18 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import EditActivityForm from "./EditActivityForm";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
-// import CreateActivityForm from "./CreateActivityForm";
-// import EditActivityForm from "./EditActivityForm";
+import CreateActivityForm from "./CreateActivityForm";
+import EditActivityForm from "./EditActivityForm";
 
 export default function ActivitiesPage() {
   const [activities, setActivities] = useState([]);
@@ -179,9 +179,12 @@ export default function ActivitiesPage() {
 
   return (
     <div className="gap-4 font-fredoka flex w-full flex-col p-8">
+      <head>
+        <title>Manage Activities - Kindi Admin</title>
+      </head>
       <div className="flex w-full justify-between items-center">
         <h1 className="text-2xl font-bold mb-6">Activities</h1>
-        {/* <Dialog>
+        <Dialog>
           <DialogTrigger>Create New Activity</DialogTrigger>
           <DialogContent className="max-w-[1000px] max-h-[600px] overflow-y-scroll">
             <DialogHeader>
@@ -191,7 +194,7 @@ export default function ActivitiesPage() {
               </DialogDescription>
             </DialogHeader>
           </DialogContent>
-        </Dialog> */}
+        </Dialog>
       </div>
       {/* Search Bar */}
       <div className="flex w-full justify-between rounded-lg items-center">
@@ -411,8 +414,8 @@ export default function ActivitiesPage() {
                     <DialogContent className="max-w-[1000px] max-h-[600px] overflow-y-scroll">
                       <DialogHeader>
                         <DialogDescription>
-                          {/* <EditActivityForm /> */}
-                          Loading.....
+                          <EditActivityForm documentId={activity.documentId} />
+                          {/* Loading..... */}
                         </DialogDescription>
                       </DialogHeader>
                     </DialogContent>

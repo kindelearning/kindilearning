@@ -11,8 +11,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import ReactQuill from "react-quill"; // Import React Quill
-import "react-quill/dist/quill.snow.css";
+// import ReactQuill from "react-quill"; // Import React Quill
+// import "react-quill/dist/quill.snow.css";
 import ClaraMarkdownRichEditor from "../../Sections/TextEditor/ClaraMarkdownRichEditor";
 import MediaSelector from "../media/Section/MediaSelector";
 
@@ -266,7 +266,7 @@ export default function EditActivityForm({ documentId }) {
             used to show Learning Area Icons on Activity Page
           </label>
 
-          <ReactQuill
+          {/* <ReactQuill
             ref={quillRef}
             value={skills}
             onChange={handleEditorChange}
@@ -275,7 +275,7 @@ export default function EditActivityForm({ documentId }) {
             }}
             formats={["list"]}
             className="border p-2 w-full"
-          />
+          /> */}
         </div>
         <div>
           <label htmlFor="isPopular" className="block">

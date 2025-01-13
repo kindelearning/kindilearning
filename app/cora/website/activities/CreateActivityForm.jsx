@@ -13,8 +13,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import ReactQuill from "react-quill"; // Import React Quill
-import "react-quill/dist/quill.snow.css";
+// import ReactQuill from "react-quill"; // Import React Quill
+// import "react-quill/dist/quill.snow.css";
 import ClaraMarkdownRichEditor from "../../Sections/TextEditor/ClaraMarkdownRichEditor";
 
 export default function CreateActivityForm() {
@@ -132,16 +132,13 @@ export default function CreateActivityForm() {
     console.log("New Activity data", newActivity);
 
     try {
-      const response = await fetch(
-        "https://upbeat-life-04fe8098b1.strapiapp.com/api/activities",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ data: newActivity }),
-        }
-      );
+      const response = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/activities", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ data: newActivity }),
+      });
 
       const responseData = await response.json();
       console.log("ResponseData", responseData);
@@ -281,7 +278,7 @@ export default function CreateActivityForm() {
             used to show Learning Area Icons on Activity Page
           </label>
 
-          <ReactQuill
+          {/* <ReactQuill
             ref={quillRef}
             value={skills}
             onChange={handleEditorChange}
@@ -290,7 +287,7 @@ export default function CreateActivityForm() {
             }}
             formats={["list"]}
             className="border p-2 w-full"
-          />
+          /> */}
         </div>
         {/* isPopular Field (Radio Buttons) */}
         <div>
