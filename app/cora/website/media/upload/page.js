@@ -102,87 +102,97 @@ const UploadMediaPage = () => {
         Upload Media (Image, Video, PDF, ZIP)
       </h1>
 
-      {/* Error Message */}
-      {errorMessage && <div className="text-red-500 mb-4">{errorMessage}</div>}
+      <div className="w-full flex items-start gap-2 justify-start">
+        <div className="w-full min-w-[50%] flex flex-col">
+          {/* Error Message */}
+          {errorMessage && (
+            <div className="text-red-500 mb-4">{errorMessage}</div>
+          )}
 
-      {/* File upload container */}
-      <div
-        className={`border-2 border-dashed rounded-lg p-6 h-[300px] justify-center items-center flex flex-col mb-4 ${
-          dragOver
-            ? "bg-gray-100 border-blue-500"
-            : "bg-gray-50 border-gray-300"
-        }`}
-        onDragOver={handleDragOver}
-        onDragLeave={() => setDragOver(false)}
-        onDrop={handleDrop}
-      >
-        <div className="text-center">
-          <p className="text-gray-500 text-sm">
-            Drag & Drop your file here, or
-          </p>
-          <input
-            type="file"
-            accept="image/*,video/mp4,video/quicktime,image/svg+xml,image/webp,application/pdf,application/zip"
-            onChange={handleFileChange}
-            className="hidden"
-            id="file-input"
-          />
-          <label
-            htmlFor="file-input"
-            className=" text-red px-6 py-3 rounded-full cursor-pointer text-sm"
+          {/* File upload container */}
+          <div
+            className={`border-2 border-dashed rounded-lg p-6 h-[200px] justify-center items-center flex flex-col mb-4 ${
+              dragOver
+                ? "bg-gray-100 border-blue-500"
+                : "bg-gray-50 border-gray-300"
+            }`}
+            onDragOver={handleDragOver}
+            onDragLeave={() => setDragOver(false)}
+            onDrop={handleDrop}
           >
-            Click to Select File
-          </label>
-        </div>
-      </div>
-
-      {/* Upload button */}
-      <button
-        onClick={handleUpload}
-        disabled={uploading}
-        className="w-full bg-red text-white py-3 rounded-md disabled:bg-gray-300 hover:bg-hoverRed transition duration-200"
-      >
-        {uploading ? <span className="animate-spin">⏳</span> : "Upload Media"}
-      </button>
-
-      {/* Display uploaded media */}
-      {uploadedFileUrl && (
-        <div className="mt-6">
-          <h2 className="text-xl font-semibold">Uploaded Media</h2>
-          {file && file.type.startsWith("image") ? (
-            <img
-              src={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${uploadedFileUrl}`}
-              alt="Uploaded Media"
-              className="mt-4 rounded-lg max-w-full h-auto"
-            />
-          ) : file && file.type.startsWith("video") ? (
-            <video controls className="mt-4 rounded-lg max-w-full">
-              <source
-                src={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${uploadedFileUrl}`}
-                type={file.type}
+            <div className="text-center">
+              <p className="text-gray-500 text-sm">
+                Drag & Drop your file here, or
+              </p>
+              <input
+                type="file"
+                accept="image/*,video/mp4,video/quicktime,image/svg+xml,image/webp,application/pdf,application/zip"
+                onChange={handleFileChange}
+                className="hidden"
+                id="file-input"
               />
-              Your browser does not support the video tag.
-            </video>
-          ) : file && file.type === "application/pdf" ? (
-            <a
-              href={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${uploadedFileUrl}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-500 underline mt-4"
-            >
-              View PDF
-            </a>
-          ) : file && file.type === "application/zip" ? (
-            <a
-              href={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${uploadedFileUrl}`}
-              download
-              className="text-blue-500 underline mt-4"
-            >
-              Download ZIP File
-            </a>
-          ) : null}
+              <label
+                htmlFor="file-input"
+                className=" text-red px-6 py-3 rounded-full cursor-pointer text-sm"
+              >
+                Click to Select File
+              </label>
+            </div>
+          </div>
+
+          {/* Upload button */}
+          <button
+            onClick={handleUpload}
+            disabled={uploading}
+            className="w-full bg-red text-white py-3 rounded-md disabled:bg-gray-300 hover:bg-hoverRed transition duration-200"
+          >
+            {uploading ? (
+              <span className="animate-spin">⏳</span>
+            ) : (
+              "Upload Media"
+            )}
+          </button>
         </div>
-      )}
+
+        {/* Display uploaded media */}
+        {uploadedFileUrl && (
+          <div className="w-full max-w-[50%]">
+            <h2 className="text-xl font-semibold">Uploaded Media</h2>
+            {file && file.type.startsWith("image") ? (
+              <img
+                src={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${uploadedFileUrl}`}
+                alt="Uploaded Media"
+                className="mt-4 rounded-lg max-w-full h-auto"
+              />
+            ) : file && file.type.startsWith("video") ? (
+              <video controls className="mt-4 rounded-lg max-w-full">
+                <source
+                  src={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${uploadedFileUrl}`}
+                  type={file.type}
+                />
+                Your browser does not support the video tag.
+              </video>
+            ) : file && file.type === "application/pdf" ? (
+              <a
+                href={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${uploadedFileUrl}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-500 underline mt-4"
+              >
+                View PDF
+              </a>
+            ) : file && file.type === "application/zip" ? (
+              <a
+                href={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${uploadedFileUrl}`}
+                download
+                className="text-blue-500 underline mt-4"
+              >
+                Download ZIP File
+              </a>
+            ) : null}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
