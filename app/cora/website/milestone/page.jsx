@@ -621,7 +621,7 @@ export function UpdateMilestoneData({ documentId }) {
         </div>
 
         <button type="submit" className="px-4 py-2 bg-red text-white rounded">
-          Update Badge
+          Update milestones
         </button>
       </form>
 
@@ -845,7 +845,7 @@ export function CreateMilestoneForm() {
       Category: category,
       SubCategory: subCategory,
       Description: description,
-      Thumbnail: media?.id || null, // Use media ID if selected
+      // Thumbnail: media?.id || null, // Use media ID if selected
       users: relatedUsers.map((id) => ({ id })),
     };
 
@@ -862,7 +862,7 @@ export function CreateMilestoneForm() {
       const responseData = await response.json();
 
       if (response.ok) {
-        setDialogMessage("Badge created successfully!");
+        setDialogMessage("milestones created successfully!");
         setDialogType("success");
 
         setTitle("");
@@ -872,10 +872,10 @@ export function CreateMilestoneForm() {
         setMedia(null);
       } else {
         setDialogMessage(
-          "Failed to create badge. Please check the input and try again."
+          "Failed to create Milestone. Please check the input and try again."
         );
         setDialogType("error");
-        throw new Error("Failed to create badge");
+        throw new Error("Failed to create milestones");
       }
     } catch (error) {
       console.error("Error:", error.message); // Log any error that occurs
@@ -891,7 +891,7 @@ export function CreateMilestoneForm() {
   return (
     <div className="p-8 font-fredoka">
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
+        {/* <div>
           <label>Media:</label>
           {media ? (
             <div className="mt-4">
@@ -906,7 +906,7 @@ export function CreateMilestoneForm() {
             <p>Not selected anything</p>
           )}
           <MediaSelector onMediaSelect={handleMediaSelect} />
-        </div>
+        </div> */}
         <div>
           <label htmlFor="title" className="block">
             title
@@ -976,7 +976,7 @@ export function CreateMilestoneForm() {
             <DialogTitle>{dialogMessage}</DialogTitle>
             <DialogDescription>
               {dialogType === "success"
-                ? "Badge Created Successfully"
+                ? "milestones Created Successfully"
                 : "Something went wrong"}
             </DialogDescription>
           </DialogHeader>
