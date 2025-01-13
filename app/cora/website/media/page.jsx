@@ -209,6 +209,7 @@ export default function MediaPage() {
             </div>
           </DialogTrigger>
           <DialogContent className="max-w-[800px] max-h-[600px] overflow-y-scroll">
+          <DialogTitle></DialogTitle>
             <DialogHeader>
               <DialogDescription>
                 <UploadMediaPage />

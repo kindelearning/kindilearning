@@ -15,6 +15,7 @@ import ClaraMarkdownRichEditor from "@/app/cora/Sections/TextEditor/ClaraMarkdow
 import MediaSelector, {
   MultiMediaSelector,
 } from "../../media/Section/MediaSelector";
+import { Button } from "@/components/ui/button";
 
 export default function ProductUpdateForm({ documentId }) {
   const [existingData, setExistingData] = useState(null);
@@ -62,6 +63,7 @@ export default function ProductUpdateForm({ documentId }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const formattedGallery = gallery.map((id) => ({ id }));
 
     const payload = {
       data: {
@@ -71,9 +73,8 @@ export default function ProductUpdateForm({ documentId }) {
         Price: price,
         DiscountPrice: discountPrice,
         SEOKeywords: seoKeywords,
-        Gallery: gallery.map((mediaItem) => ({
-          id: mediaItem.id,
-        })),
+        Gallery: formattedGallery,
+        // Gallery: [{ id: 2 }, { id: 4 }, { id: 5 }],
         FeaturedImage: media?.id || null,
         MaterialOptions: materialOptions,
       },
@@ -100,17 +101,20 @@ export default function ProductUpdateForm({ documentId }) {
     }
   };
 
-  const handleMediaSelect = (selectedMedia) => {
-    setMedia(selectedMedia); // Store the selected media object
+  const handleMediaSelect = (selectedMediaIds) => {
+    setMedia(selectedMediaIds); // Store the selected media object
   };
 
-  const handleGalleryMediaSelect = (selectedMedia) => {
-    console.log("Selected Media for Gallery (Before Mapping):", selectedMedia);
-    if (!selectedMedia || !Array.isArray(selectedMedia)) {
-      console.error("Invalid media selection:", selectedMedia);
-      return;
-    }
-    setGallery(selectedMedia);
+  const handleGallerySelect = (selectedMediaIds) => {
+    console.log("Selected Media IDs:", selectedMediaIds);
+
+    // Filter out invalid IDs (e.g., undefined or null)
+
+    const formattedGallery = selectedMediaIds.map((id) => ({ id }));
+    // Update the gallery state with the new array of valid IDs
+    setGallery(selectedMediaIds);
+
+    // console.log("Updated Gallery State:", formattedGallery);
   };
 
   if (!existingData) {
@@ -148,7 +152,7 @@ export default function ProductUpdateForm({ documentId }) {
               <p className="text-sm mt-2">{media.name}</p>
             </div>
           ))} */}
-          <MultiMediaSelector onMediaSelect={handleGalleryMediaSelect} />
+          <MultiMediaSelector onMediaSelect={handleGallerySelect} />{" "}
         </div>
         <div>
           <label className="block">Name</label>
@@ -221,9 +225,14 @@ export default function ProductUpdateForm({ documentId }) {
           />
         </div>
 
-        <button type="submit" className="bg-blue-500 text-white p-2 rounded">
+        {/* <button type="submit" className="bg-blue-500 text-white p-2 rounded">
           Update Product
-        </button>
+        </button> */}
+        <section className="w-full h-auto shadow-upper bg-[#ffffff] -top-2 sticky bottom-0 z-10 rounded-t-[16px] items-center justify-center py-4 flex flex-row">
+          <div className="claracontainer flex flex-row  justify-between w-full items-center gap-4 px-4">
+            <Button type="submit">Update Product</Button>
+          </div>
+        </section>
       </form>
 
       {/* Dialog for success message */}
