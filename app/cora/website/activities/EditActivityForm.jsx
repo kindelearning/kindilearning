@@ -13,7 +13,9 @@ import {
 } from "@/components/ui/dialog";
 // import ReactQuill from "react-quill"; // Import React Quill
 // import "react-quill/dist/quill.snow.css";
-import ClaraMarkdownRichEditor from "../../Sections/TextEditor/ClaraMarkdownRichEditor";
+import ClaraMarkdownRichEditor, {
+  ClaraMarkdownRichEditorForSkillsOfActivity,
+} from "../../Sections/TextEditor/ClaraMarkdownRichEditor";
 import MediaSelector from "../media/Section/MediaSelector";
 
 export default function EditActivityForm({ documentId }) {
@@ -23,50 +25,19 @@ export default function EditActivityForm({ documentId }) {
   const [learningArea, setLearningArea] = useState(""); // New field
   const [activityDate, setActivityDate] = useState("");
   const [skills, setSkills] = useState("");
+  const [formattedSkills, setFormattedSkills] = useState([]); // For holding structured skill data
+
   const [media, setMedia] = useState([]); // Store selected media
   const [setUpTime, setSetUpTime] = useState("");
   const [existingData, setExistingData] = useState(null);
   const [openDialog, setOpenDialog] = useState(false); // State
   const [accordions, setAccordions] = useState([]);
   const [isPopular, setIsPopular] = useState(""); // New field for isPopular
-  const quillRef = useRef(null);
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null); // To
-
-  // Handle change in the editor
-  const handleEditorChange = (value) => {
-    setSkills(value);
-  };
-  // Convert Quill Delta to the desired JSON structure
-  const convertToJSON = () => {
-    const editor = quillRef.current.getEditor();
-    const delta = editor.getContents();
-
-    // Convert the Delta into the structure you want
-    const formattedSkills = delta.ops
-      .map((op) => {
-        if (op.insert && typeof op.insert === "string") {
-          return {
-            type: "paragraph",
-            children: [
-              {
-                type: "text",
-                text: op.insert,
-              },
-            ],
-          };
-        }
-        return null;
-      })
-      .filter((item) => item !== null);
-
-    return formattedSkills;
-  };
 
   // Fetch existing activity data based on documentId
   useEffect(() => {
     const fetchActivityData = async () => {
-      setIsLoading(true); // Start loading
       setError(null);
       try {
         const res = await fetch(
@@ -89,8 +60,6 @@ export default function EditActivityForm({ documentId }) {
       } catch (err) {
         setError("Error fetching activity data. Please try again.");
         console.error("Error fetching activity data:", err);
-      } finally {
-        setIsLoading(false); // End loading
       }
     };
 
@@ -103,17 +72,14 @@ export default function EditActivityForm({ documentId }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const skillsData = convertToJSON();
-    const filteredSkillsData = skillsData.filter((_, index) => index % 2 === 0);
 
-  
     const payload = {
       data: {
         Title: title,
         Theme: theme,
         FocusAge: focusAge,
         ActivityDate: activityDate,
-        // Skills: filteredSkillsData,
+        Skills: formattedSkills,
         SetUpTime: setUpTime,
         LearningArea: learningArea,
         isPopular: isPopular,
@@ -155,20 +121,43 @@ export default function EditActivityForm({ documentId }) {
       return updatedAccordions;
     });
   };
-  useEffect(() => {
-    console.log("Updated Media:", media);
-  }, [media]); // This will log the state whenever `media` changes
 
-  // Handle media selection
-  const handleMediaChange = (newMedia) => {
-    // If the media isn't an array, wrap it into an array
-    const selectedMedia = Array.isArray(newMedia) ? newMedia : [newMedia];
-    console.log("Before setting media:", newMedia);
-    setMedia(newMedia);
-    console.log("After setting media:", media);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    if (name === "Skills") {
+      // Update the raw skills text
+      setSkills(value);
+
+      // Process the value for the structured format (for sending to the server)
+      const processedSkills = value
+        .split("\n")
+        .map((line) => ({
+          type: "paragraph",
+          children: [
+            {
+              text: line.trim(),
+              type: "text", // Add the text as per the required format
+            },
+          ],
+        }))
+        .filter((item) => item.children[0].text); // Remove empty lines
+
+      setFormattedSkills(processedSkills); // Update the structured data
+    }
   };
 
-  // console.log("Selected Media shravya:", media); // Log the selected media
+  // When you get data from the server, transform it into a string for the textarea
+  useEffect(() => {
+    if (formattedSkills.length > 0) {
+      const skillsString = formattedSkills
+        .map((skillObj) =>
+          skillObj.children.map((child) => child.text).join("\n")
+        )
+        .join("\n");
+      setSkills(skillsString); // Set the textarea value as a string
+    }
+  }, [formattedSkills]);
 
   return (
     <div className="p-8 font-fredoka">
@@ -181,9 +170,6 @@ export default function EditActivityForm({ documentId }) {
           <label htmlFor="Gallery" className="block">
             Gallery
           </label>
-          {/* <MediaSelector
-            onMediaSelect={handleMediaChange} // Update the state when user selects media
-          /> */}
         </div>
         {/* Error message */}
         <div>
@@ -266,16 +252,13 @@ export default function EditActivityForm({ documentId }) {
             used to show Learning Area Icons on Activity Page
           </label>
 
-          {/* <ReactQuill
-            ref={quillRef}
-            value={skills}
-            onChange={handleEditorChange}
-            modules={{
-              toolbar: [[{ list: "ordered" }, { list: "bullet" }]],
-            }}
-            formats={["list"]}
+          <textarea
+            name="Skills"
+            value={skills} // Display the string value for the textarea
+            onChange={handleChange} // Handle changes and format as you type
             className="border p-2 w-full"
-          /> */}
+            placeholder="Enter skills or descriptions here... (separate each skill with a new line)"
+          />
         </div>
         <div>
           <label htmlFor="isPopular" className="block">
@@ -406,7 +389,6 @@ export default function EditActivityForm({ documentId }) {
     </div>
   );
 }
-
 
 // export function EditActivityForm2({ documentId }) {
 //   const [title, setTitle] = useState("");

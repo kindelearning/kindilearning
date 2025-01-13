@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   Dialog,
@@ -12,9 +12,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-
-// import ReactQuill from "react-quill"; // Import React Quill
-// import "react-quill/dist/quill.snow.css";
 import ClaraMarkdownRichEditor from "../../Sections/TextEditor/ClaraMarkdownRichEditor";
 
 export default function CreateActivityForm() {
@@ -35,7 +32,6 @@ export default function CreateActivityForm() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [dialogMessage, setDialogMessage] = useState("");
   const [dialogType, setDialogType] = useState("success");
-  const quillRef = useRef(null);
 
   useEffect(() => {
     // Fetching users from the provided endpoint
@@ -63,37 +59,6 @@ export default function CreateActivityForm() {
     fetchUsers();
   }, []);
 
-  // Handle change in the editor
-  const handleEditorChange = (value) => {
-    setSkills(value);
-  };
-
-  // Convert Quill Delta to the desired JSON structure
-  const convertToJSON = () => {
-    const editor = quillRef.current.getEditor();
-    const delta = editor.getContents();
-
-    // Convert the Delta into the structure you want
-    const formattedSkills = delta.ops
-      .map((op) => {
-        if (op.insert && typeof op.insert === "string") {
-          return {
-            type: "paragraph",
-            children: [
-              {
-                type: "text",
-                text: op.insert,
-              },
-            ],
-          };
-        }
-        return null;
-      })
-      .filter((item) => item !== null);
-
-    return formattedSkills;
-  };
-
   const prepareAccordionsPayload = () => {
     // Map over the accordions and exclude the 'id' field
     return accordions.map(({ id, ...rest }) => rest);
@@ -102,11 +67,6 @@ export default function CreateActivityForm() {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const skillsData = convertToJSON();
-    const filteredSkillsData = skillsData.filter((_, index) => index % 2 === 0);
-
-    console.log("Skill Data after Optimisation", filteredSkillsData);
-    // Validation
     if (!title || !theme || !activityDate) {
       setDialogMessage("Please fill in all required fields.");
       setDialogType("error");
@@ -119,7 +79,7 @@ export default function CreateActivityForm() {
       Theme: theme, // Text
       FocusAge: focusAge, // Text
       ActivityDate: activityDate, // Date in 'YYYY-MM-DD' format
-      // Skills: filteredSkillsData,
+      Skills: skills,
       SetUpTime: setUpTime, // Text
       LearningArea: learningArea, // Enumeration
       // Gallery: media ? [{ id: media.id }] : [], // Media array (ensure it's an array of objects with `id`)
@@ -173,6 +133,30 @@ export default function CreateActivityForm() {
     }
 
     setIsDialogOpen(true); // Open dialog after submit
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    if (name === "Skills") {
+      // Split the value by new lines and structure each line into the required format
+      const processedSkills = value
+        .split("\n")
+        .map((line) => ({
+          type: "paragraph",
+          children: [
+            {
+              text: line.trim(),
+              type: "text", // Add the text as per the required format
+            },
+          ],
+        }))
+        .filter((item) => item.children[0].text); // Remove empty lines
+
+      setSkills(processedSkills); // Set the skills in the required format
+    } else {
+      setSkills(value); // For other fields, update the value normally
+    }
   };
 
   // Handle Accordion Changes
@@ -278,16 +262,21 @@ export default function CreateActivityForm() {
             used to show Learning Area Icons on Activity Page
           </label>
 
-          {/* <ReactQuill
-            ref={quillRef}
-            value={skills}
-            onChange={handleEditorChange}
-            modules={{
-              toolbar: [[{ list: "ordered" }, { list: "bullet" }]],
-            }}
-            formats={["list"]}
+          <textarea
+            name="Skills"
+            value={
+              Array.isArray(skills) && skills.length > 0
+                ? skills
+                    .map((skillObj) =>
+                      skillObj.children.map((child) => child.text).join("\n")
+                    )
+                    .join("\n")
+                : ""
+            }
+            onChange={handleChange}
             className="border p-2 w-full"
-          /> */}
+            placeholder="Enter skills or descriptions here... (separate each skill with a new line)"
+          />
         </div>
         {/* isPopular Field (Radio Buttons) */}
         <div>
