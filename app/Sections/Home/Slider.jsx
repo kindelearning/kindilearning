@@ -116,7 +116,7 @@ const slides = [
   },
 ];
 
-export function Slider2() {
+export default function Slider() {
   const [loaded, setLoaded] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
@@ -319,7 +319,7 @@ export function Slider2() {
   );
 }
 
-export default function Slider() {
+export default function Slider3() {
   const [sliderData, setSliderData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
