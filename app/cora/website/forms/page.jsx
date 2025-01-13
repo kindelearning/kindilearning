@@ -189,11 +189,17 @@ export default function ContactFormPage() {
                                 </p>
                                 <p className="text-lg font-medium">
                                   <strong>Message:</strong>
-                                  {Array.isArray(form.Message) ? (
+                                  {/* {Array.isArray(form.Message) ? (
                                     <RichTextRender content={form.Message} />
                                   ) : (
                                     <p>{form.Message}</p> // If it's not an array, just display the string
-                                  )}
+                                  )} */}
+                                  {/* {form.Message} */}
+                                  <span className="prose text-gray-500"
+                                    dangerouslySetInnerHTML={{
+                                      __html: form.Message,
+                                    }}
+                                  />
                                 </p>
                                 <p className="text-lg font-medium">
                                   <strong>Enquiry Type:</strong>{" "}
