@@ -497,7 +497,7 @@ export function UpdateMilestoneData({ documentId }) {
           setCategory(content.Category || ""); // Set default values if not found
           setSubCategory(content.SubCategory || ""); // Set default values if not found
           setDescription(content.Description || "");
-          setMedia(content?.Thumbnail?.id || null); // Set the media ID or null if no media is selected
+          // setMedia(content?.Thumbnail?.id || null); // Set the media ID or null if no media is selected
         }
         console.log("Fetched MileStone Content", content);
       } catch (err) {
@@ -518,7 +518,7 @@ export function UpdateMilestoneData({ documentId }) {
         Title: title,
         Category: category,
         Description: description,
-        Thumbnail: media?.id || null, // Use media ID if selected
+        // Thumbnail: media?.id || null, // Use media ID if selected
       },
     };
     console.log("Payload Created", payload);
@@ -603,7 +603,7 @@ export function UpdateMilestoneData({ documentId }) {
           />
         </div>
 
-        <div>
+        {/* <div>
           <label>Media:</label>
           {media ? (
             <div className="mt-4">
@@ -618,7 +618,7 @@ export function UpdateMilestoneData({ documentId }) {
             <p>Not selected anything</p>
           )}
           <MediaSelector onMediaSelect={handleMediaSelect} />
-        </div>
+        </div> */}
 
         <button type="submit" className="px-4 py-2 bg-red text-white rounded">
           Update milestones

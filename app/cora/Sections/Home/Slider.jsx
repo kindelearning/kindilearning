@@ -28,7 +28,7 @@ export default function SliderSection() {
     fetchData();
   }, []);
 
-  console.log('Fetched Data for Slider', data)
+  console.log("Fetched Data for Slider", data);
 
   if (!data) {
     return (
@@ -50,13 +50,15 @@ export default function SliderSection() {
                 className="how-it-works-section bg-white rounded-lg p-8 gap-4 flex items-start"
               >
                 {/* Image */}
-                {section.Media ? (
-                  <img
-                    className="rounded-lg max-w-[300px] h-[300px] w-full object-contain"
-                    src={section.Media.url}
-                    // src={`https://upbeat-life-04fe8098b1.strapiapp.com${section.Media.url}`}
-                    alt={section.Media.name || "How it works image"}
-                  />
+                {section.Media && section.Media.length ? (
+                  <>
+                    <img
+                      className="rounded-lg max-w-[300px] h-[300px] w-full object-contain"
+                      // src={section?.Media[0]?.url}
+                      src={`https://upbeat-life-04fe8098b1.strapiapp.com${section?.Media[0]?.url}`}
+                      alt={section.Media.name}
+                    />
+                  </>
                 ) : (
                   <div className="w-full h-[300px] bg-gray-300 rounded-lg flex items-center justify-center">
                     <span>No Image Available</span>

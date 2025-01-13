@@ -36,7 +36,7 @@ export default function HeroSectionForm() {
           setFeaturedText(data.data.featuredText || "");
           setHeroTitle(data.data.HeroTitle || "");
           setBodyDescription(
-            data.data.BodyDescription?.[0]?.children?.[0]?.text || ""
+            data.data.BodyDescription || ""
           );
         } else {
           setError("Unable to fetch current data.");
