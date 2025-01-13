@@ -113,7 +113,7 @@ export default function EditActivityForm({ documentId }) {
         Theme: theme,
         FocusAge: focusAge,
         ActivityDate: activityDate,
-        Skills: filteredSkillsData,
+        // Skills: filteredSkillsData,
         SetUpTime: setUpTime,
         LearningArea: learningArea,
         isPopular: isPopular,

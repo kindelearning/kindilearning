@@ -119,7 +119,7 @@ export default function CreateActivityForm() {
       Theme: theme, // Text
       FocusAge: focusAge, // Text
       ActivityDate: activityDate, // Date in 'YYYY-MM-DD' format
-      Skills: filteredSkillsData,
+      // Skills: filteredSkillsData,
       SetUpTime: setUpTime, // Text
       LearningArea: learningArea, // Enumeration
       // Gallery: media ? [{ id: media.id }] : [], // Media array (ensure it's an array of objects with `id`)
