@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import ClaraMarkdownRichEditor from "../TextEditor/ClaraMarkdownRichEditor";
 import MediaSelector from "../../website/media/Section/MediaSelector";
+import { Button } from "@/components/ui/button";
 
 export default function ChildDevelopmentUnlock() {
   const [content, setContent] = useState(null); // To store the fetched data
@@ -317,8 +318,12 @@ export function UpdateChildDevelopmentContent() {
     setMedia(selectedMedia); // Store the selected media object
   };
 
+  const handleEditorChange = (newValue) => {
+    setBody(newValue); // Update body state with the new value from the editor
+  };
+
   return (
-    <div className="p-8">
+    <div className="p-0">
       <h1 className="text-2xl font-bold mb-6">Edit Child Development Unlock</h1>
       {error && <div className="text-red-500">{error}</div>}
 
@@ -344,13 +349,18 @@ export function UpdateChildDevelopmentContent() {
           <label htmlFor="Body" className="block">
             Body (Markdown)
           </label>
-          <textarea
+          {/* <textarea
             id="Body"
             name="Body"
             value={body}
             onChange={(e) => setBody(e.target.value)}
             className="border p-2 w-full"
             rows="5"
+          /> */}
+          <ClaraMarkdownRichEditor
+            name="Body"
+            value={body || ""} // Ensure the value is always a string
+            onChange={handleEditorChange}
           />
         </div>
 
@@ -387,9 +397,11 @@ export function UpdateChildDevelopmentContent() {
           <MediaSelector onMediaSelect={handleMediaSelect} />
         </div>
 
-        <button type="submit" className="px-4 py-2 bg-black text-white rounded">
-          Update Content
-        </button>
+        <section className="w-full h-auto shadow-upper bg-[#ffffff] -top-2 sticky bottom-0 z-10 rounded-t-[16px] items-center justify-center py-4 flex flex-row">
+          <div className="claracontainer flex flex-row  justify-between w-full items-center gap-4 px-4">
+            <Button type="submit">Save Changes</Button>
+          </div>
+        </section>
       </form>
 
       {/* Success Dialog */}

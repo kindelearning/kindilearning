@@ -323,7 +323,9 @@ export function UpdateEarlyLearningExpert() {
   const handleMediaSelect = (selectedMedia) => {
     setMedia(selectedMedia); // Store the selected media object
   };
-
+  const handleEditorChange = (newValue) => {
+    setBodyDescription(newValue);  // Update body state with the new value from the editor
+  };
   return (
     <div className="p-8">
       <h1 className="text-2xl font-bold mb-6">Edit Monthly Theme</h1>
@@ -348,13 +350,18 @@ export function UpdateEarlyLearningExpert() {
           <label htmlFor="BodyDescription" className="block">
             Body Description (Markdown)
           </label>
-          <textarea
+          {/* <textarea
             id="BodyDescription"
             name="BodyDescription"
             value={bodyDescription}
             onChange={(e) => setBodyDescription(e.target.value)}
             className="border p-2 w-full"
             rows="5"
+          /> */}
+          <ClaraMarkdownRichEditor
+            name="BodyDescription"
+            value={bodyDescription || ""} // Ensure the value is always a string
+            onChange={handleEditorChange}
           />
         </div>
 

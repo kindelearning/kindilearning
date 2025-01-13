@@ -53,28 +53,38 @@ export default function Monthlytheme() {
 
   return (
     <div className="container mx-auto flex justify-between font-fredoka px-8 py-12">
-      <div className="flex flex-col max-w-[50%]">
+      <div className="flex flex-col">
         {/* Title */}
-        <h1 className="text-4xl font-bold mb-6">{content?.title}</h1>
+        {content?.title ? (
+          <h1 className="text-4xl font-bold mb-6">{content?.title}</h1>
+        ) : (
+          <p>No Content Available</p>
+        )}
 
         {/* Featured Text */}
-        <p className="text-xl font-medium text-gray-700 mb-6">
-          {content?.featuredText}
-        </p>
+        {content?.featuredText ? (
+          <p className="text-xl font-medium text-gray-700 mb-6">
+            {content?.featuredText}
+          </p>
+        ) : (
+          <p>No Content Available</p>
+        )}
 
         {/* Body */}
-        <div className="prose mb-6">
-          {/* Render the markdown content as HTML */}
-          {/* <RichTextRender content={content?.BodyDescription} /> */}
-          <p
-            className="prose w-full text-start text-[#696969] text-base md:text-lg lg:text-xl mt-4 leading-relaxed  animate-fadeIn animate-delay-2000"
-            dangerouslySetInnerHTML={{ __html: content?.BodyDescription }}
-          />
-        </div>
+        {content?.BodyDescription ? (
+          <div className="prose mb-6">
+            <p
+              className="prose w-full text-start text-[#696969] text-base md:text-lg lg:text-xl mt-4 leading-relaxed  animate-fadeIn animate-delay-2000"
+              dangerouslySetInnerHTML={{ __html: content?.BodyDescription }}
+            />
+          </div>
+        ) : (
+          <p>No Content Available</p>
+        )}
       </div>
 
       {/* Media */}
-      {content.Media ? (
+      {/* {content.Media ? (
         <img
           src={content.Media[0].url}
           // src={`https://upbeat-life-04fe8098b1.strapiapp.com${content.Media[0].url}`}
@@ -83,7 +93,7 @@ export default function Monthlytheme() {
         />
       ) : (
         <p>No media available.</p>
-      )}
+      )} */}
     </div>
   );
 }
@@ -299,23 +309,20 @@ export function UpdateMonthlytheme() {
           title: title,
           BodyDescription: bodyDescription,
           featuredText: featuredText,
-          Media: media?.id || null, // Use media ID if selected
+          // Media: media?.id || null, // Use media ID if selected
         },
       },
     };
     console.log("Payload Created", payload);
 
     try {
-      const res = await fetch(
-        "https://upbeat-life-04fe8098b1.strapiapp.com/api/Monthlytheme",
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
-        }
-      );
+      const res = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/Monthlytheme", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
 
       const data = await res.json();
       console.log("Updated MonthlyTheme Content:", data);
@@ -329,7 +336,9 @@ export function UpdateMonthlytheme() {
   const handleMediaSelect = (selectedMedia) => {
     setMedia(selectedMedia); // Store the selected media object
   };
-
+  const handleEditorChange = (newValue) => {
+    setBodyDescription(newValue); // Update body state with the new value from the editor
+  };
   return (
     <div className="p-8">
       <h1 className="text-2xl font-bold mb-6">Edit Monthly Theme</h1>
@@ -354,13 +363,18 @@ export function UpdateMonthlytheme() {
           <label htmlFor="BodyDescription" className="block">
             Body Description (Markdown)
           </label>
-          <textarea
+          {/* <textarea
             id="BodyDescription"
             name="BodyDescription"
             value={bodyDescription}
             onChange={(e) => setBodyDescription(e.target.value)}
             className="border p-2 w-full"
             rows="5"
+          /> */}
+          <ClaraMarkdownRichEditor
+            name="BodyDescription"
+            value={bodyDescription || ""} // Ensure the value is always a string
+            onChange={handleEditorChange}
           />
         </div>
 
@@ -380,7 +394,7 @@ export function UpdateMonthlytheme() {
         </div>
 
         {/* Media Field */}
-        <div>
+        {/* <div>
           <label>Media:</label>
           {media ? (
             <div className="mt-4">
@@ -395,7 +409,7 @@ export function UpdateMonthlytheme() {
             <p>Not selected anything</p>
           )}
           <MediaSelector onMediaSelect={handleMediaSelect} />
-        </div>
+        </div> */}
 
         <button type="submit" className="px-4 py-2 bg-black text-white rounded">
           Update Content

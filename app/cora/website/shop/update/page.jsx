@@ -59,7 +59,7 @@ export default function ProductUpdateForm({ documentId }) {
       }
     };
     fetchProductData();
-  }, [documentId]); 
+  }, [documentId]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -91,7 +91,7 @@ export default function ProductUpdateForm({ documentId }) {
           },
           body: JSON.stringify(payload),
         }
-      ); 
+      );
       const data = await res.json();
       console.log("Updated Product:", data);
       setOpenDialog(true); // Open the success dialog
@@ -124,35 +124,38 @@ export default function ProductUpdateForm({ documentId }) {
   return (
     <>
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label>Media:</label>
-          {media ? (
-            <div className="mt-4">
-              <img
-                src={media.url}
-                // src={`https://upbeat-life-04fe8098b1.strapiapp.com${media.url}`}
-                className="w-32 h-32 object-cover"
-              />
-              <p>{media.name}</p>
-            </div>
-          ) : (
-            <p>Not selected anything</p>
-          )}
-          <MediaSelector onMediaSelect={handleMediaSelect} />
-        </div>
+        <div className="flex w-full justify-between items-center gap-2">
+          <div className="w-full">
+            <label>Media:</label>
+            {media ? (
+              <div className="mt-4">
+                <img
+                  src={media.url}
+                  // src={`https://upbeat-life-04fe8098b1.strapiapp.com${media.url}`}
+                  className="w-32 h-32 object-cover"
+                />
+                <p>{media.name}</p>
+              </div>
+            ) : (
+              <p>Not selected anything</p>
+            )}
+            <MediaSelector onMediaSelect={handleMediaSelect} />
+          </div>
 
-        <div>
-          <label>Gallery:</label>
-          {/* {gallery?.map((media) => (
-            <div key={media.id} className="relative">
-              <img
-                src={`https://upbeat-life-04fe8098b1.strapiapp.com${media.url}`}
-                className="w-32 h-32 object-cover"
-              />
-              <p className="text-sm mt-2">{media.name}</p>
-            </div>
-          ))} */}
-          <MultiMediaSelector onMediaSelect={handleGallerySelect} />{" "}
+          <div className="w-full">
+            <label>Gallery:</label>
+            {/* {gallery?.map((media) => (
+              <div key={media.id} className="relative">
+                <img
+                  src={media.url}
+                  // src={`https://upbeat-life-04fe8098b1.strapiapp.com${media.url}`}
+                  className="w-32 h-32 object-cover"
+                />
+                <p className="text-sm mt-2">{media.name}</p>
+              </div>
+            ))} */}
+            <MultiMediaSelector onMediaSelect={handleGallerySelect} />{" "}
+          </div>
         </div>
         <div>
           <label className="block">Name</label>

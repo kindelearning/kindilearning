@@ -429,10 +429,6 @@ export function EditAnnualPricing() {
       <section className="w-full h-auto shadow-upper bg-[#ffffff] -top-2 sticky bottom-0 z-10 rounded-t-[16px] items-center justify-center py-4 flex flex-row">
         <div className="claracontainer flex flex-row  justify-between w-full items-center gap-4 px-4">
           <Button type="submit">Update Pricing</Button>
-
-          {/* <Button className="bg-red hover:bg-red rounded-2xl font-fredoka text-white shadow border-2 border-white">
-            {PrimaryText}
-          </Button> */}
         </div>
       </section>
     </form>

@@ -274,16 +274,13 @@ export default function CreateProductPage() {
 
     console.log("New Badge data", newProducts);
     try {
-      const response = await fetch(
-        "https://upbeat-life-04fe8098b1.strapiapp.com/api/products",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ data: newProducts }),
-        }
-      );
+      const response = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/products", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ data: newProducts }),
+      });
 
       const responseData = await response.json();
 
@@ -341,27 +338,28 @@ export default function CreateProductPage() {
         <title>Create New Product - Kindi</title>
       </head>
       <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Media */}
-        <div>
-          <label>Media:</label>
-          {media ? (
-            <div className="mt-4">
-              <img
-                src={media.url}
-                // src={`https://upbeat-life-04fe8098b1.strapiapp.com${media.url}`}
-                className="w-32 h-32 object-cover"
-              />
-              <p>{media.name}</p>
-            </div>
-          ) : (
-            <p>Not selected anything</p>
-          )}
-          <MediaSelector onMediaSelect={handleMediaSelect} />
-        </div>
-        {/* Gallery */}
-        <div>
-          <label>Gallery:</label>
-          {/* {gallery ? (
+        <div className="flex w-full justify-between items-center gap-2">
+          {/* Media */}
+          <div className="w-full">
+            <label>Media:</label>
+            {media ? (
+              <div className="mt-4">
+                <img
+                  src={media.url}
+                  // src={`https://upbeat-life-04fe8098b1.strapiapp.com${media.url}`}
+                  className="w-32 h-32 object-cover"
+                />
+                <p>{media.name}</p>
+              </div>
+            ) : (
+              <p>Not selected anything</p>
+            )}
+            <MediaSelector onMediaSelect={handleMediaSelect} />
+          </div>
+          {/* Gallery */}
+          <div className="w-full">
+            <label>Gallery:</label>
+            {/* {gallery ? (
             <div className="mt-4">
               <img
                 // src={media.url}
@@ -373,7 +371,8 @@ export default function CreateProductPage() {
           ) : (
             <p>Not selected anything</p>
           )} */}
-          <MultiMediaSelector onMediaSelect={handleGallerySelect} />{" "}
+            <MultiMediaSelector onMediaSelect={handleGallerySelect} />{" "}
+          </div>
         </div>
 
         <div>

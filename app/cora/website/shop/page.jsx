@@ -178,7 +178,7 @@ export default function ShopPage() {
           </div>
           <Link
             target="_blank"
-            href="http://localhost:3000/cora/website/shop/create"
+            href="https://kindilearning.vercel.app/cora/website/shop/create"
             className="text-[#414141] hover:text-black px-4 py-2 rounded-md text-[16px] font-medium duration-200 ease-in-out"
           >
             Create New Product

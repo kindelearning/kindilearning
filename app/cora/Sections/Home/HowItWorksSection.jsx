@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import ClaraMarkdownRichEditor from "../TextEditor/ClaraMarkdownRichEditor";
 import MediaSelector from "../../website/media/Section/MediaSelector";
+import { Button } from "@/components/ui/button";
 
 export default function HowItWorksSection() {
   const [data, setData] = useState(null);
@@ -355,7 +356,9 @@ export function UpdateHowItWorks() {
   useEffect(() => {
     const fetchHIWData = async () => {
       try {
-        const res = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/howitwork?populate=HIWSection.Media");
+        const res = await fetch(
+          "https://upbeat-life-04fe8098b1.strapiapp.com/api/howitwork?populate=HIWSection.Media"
+        );
         const data = await res.json();
 
         // Parsing the fetched data
@@ -364,7 +367,6 @@ export function UpdateHowItWorks() {
         setMainTitle(hiwData?.MainTitle || "");
         setMainBody(hiwData?.MainBody || "");
         setHiwSections(hiwData?.HIWSection || []); // Set the repeatable sections data
-
       } catch (err) {
         console.error("Error fetching How It Works data:", err);
         setError("Error fetching content");
@@ -399,7 +401,7 @@ export function UpdateHowItWorks() {
           featuredText: section.featuredText,
           BodyDescription: section.BodyDescription,
           Media: section.Media ? { id: section.Media.id } : null, // Pass Media ID if it exists
-        })),// Send the updated HIWSection
+        })), // Send the updated HIWSection
       },
     };
     console.log("payload sent", payload);
@@ -422,8 +424,12 @@ export function UpdateHowItWorks() {
     }
   };
 
+  const handleEditorChange = (newValue) => {
+    setMainBody(newValue); // Update body state with the new value from the editor
+  };
+
   return (
-    <div className="p-8">
+    <div className="p-0">
       <h1 className="text-2xl font-bold mb-6">Edit How It Works Section</h1>
 
       <form onSubmit={handleSubmit}>
@@ -441,13 +447,18 @@ export function UpdateHowItWorks() {
 
         {/* Main Body Input */}
         <div>
-          <label htmlFor="mainBody">Main Body (Markdown):</label>
+          <label htmlFor="mainBody">Main Body (Richtext):</label>
           <textarea
             id="mainBody"
             value={mainBody}
             onChange={(e) => setMainBody(e.target.value)}
             className="border p-2 w-full"
             rows="4"
+          />
+          <ClaraMarkdownRichEditor
+            name="mainBody"
+            value={mainBody || ""} // Ensure the value is always a string
+            onChange={handleEditorChange}
           />
         </div>
 
@@ -457,7 +468,7 @@ export function UpdateHowItWorks() {
           {hiwSections.map((section, index) => (
             <div key={index} className="border p-4 my-2">
               <h3>Section {index + 1}</h3>
-              
+
               {/* Title */}
               <div>
                 <label htmlFor={`title-${index}`}>Title:</label>
@@ -466,7 +477,10 @@ export function UpdateHowItWorks() {
                   id={`title-${index}`}
                   value={section.title}
                   onChange={(e) => {
-                    const updatedSection = { ...section, title: e.target.value };
+                    const updatedSection = {
+                      ...section,
+                      title: e.target.value,
+                    };
                     handleHIWSectionUpdate(index, updatedSection);
                   }}
                   className="border p-2 w-full"
@@ -481,7 +495,10 @@ export function UpdateHowItWorks() {
                   id={`featuredText-${index}`}
                   value={section.featuredText}
                   onChange={(e) => {
-                    const updatedSection = { ...section, featuredText: e.target.value };
+                    const updatedSection = {
+                      ...section,
+                      featuredText: e.target.value,
+                    };
                     handleHIWSectionUpdate(index, updatedSection);
                   }}
                   className="border p-2 w-full"
@@ -490,12 +507,17 @@ export function UpdateHowItWorks() {
 
               {/* Body Description */}
               <div>
-                <label htmlFor={`bodyDescription-${index}`}>Body Description (Markdown):</label>
+                <label htmlFor={`bodyDescription-${index}`}>
+                  Body Description (Markdown):
+                </label>
                 <textarea
                   id={`bodyDescription-${index}`}
                   value={section.BodyDescription}
                   onChange={(e) => {
-                    const updatedSection = { ...section, BodyDescription: e.target.value };
+                    const updatedSection = {
+                      ...section,
+                      BodyDescription: e.target.value,
+                    };
                     handleHIWSectionUpdate(index, updatedSection);
                   }}
                   className="border p-2 w-full"
@@ -517,16 +539,26 @@ export function UpdateHowItWorks() {
                 ) : (
                   <p>No media selected</p>
                 )}
-                <MediaSelector onMediaSelect={(media) => handleMediaSelect(media, index)} />
+                <MediaSelector
+                  onMediaSelect={(media) => handleMediaSelect(media, index)}
+                />
               </div>
             </div>
           ))}
         </div>
 
         {/* Submit Button */}
-        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md mt-4">
+        {/* <button
+          type="submit"
+          className="bg-blue-500 text-white px-4 py-2 rounded-md mt-4"
+        >
           Save Changes
-        </button>
+        </button> */}
+        <section className="w-full h-auto shadow-upper bg-[#ffffff] -top-2 sticky bottom-0 z-10 rounded-t-[16px] items-center justify-center py-4 flex flex-row">
+          <div className="claracontainer flex flex-row  justify-between w-full items-center gap-4 px-4">
+            <Button type="submit">Save Changes</Button>
+          </div>
+        </section>
       </form>
 
       {/* Success Dialog */}

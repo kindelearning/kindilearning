@@ -215,7 +215,7 @@ export default async function ActivityDetailPage({ params }) {
                   <ActivityAttribute
                     image={KidBlack}
                     features={FocusAge || "Toddler"}
-                    title="Focus age"
+                    title="Difficulty"
                   />
                 </div>
               </div>

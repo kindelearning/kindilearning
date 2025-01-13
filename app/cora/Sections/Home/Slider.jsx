@@ -28,6 +28,8 @@ export default function SliderSection() {
     fetchData();
   }, []);
 
+  console.log('Fetched Data for Slider', data)
+
   if (!data) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -365,6 +367,10 @@ export function UpdateSliderSection() {
     }
   };
 
+  // const handleEditorChange = (newValue) => {
+  //   setBody(newValue);  // Update body state with the new value from the editor
+  // };
+
   return (
     <div className="p-8 max-w-4xl mx-auto bg-white shadow-lg rounded-lg">
       <h1 className="text-3xl font-semibold mb-6 text-center">
@@ -437,7 +443,7 @@ export function UpdateSliderSection() {
               >
                 Body Description (Markdown):
               </label>
-              <textarea
+              {/* <textarea
                 id={`bodyDescription-${index}`}
                 value={section.Body}
                 onChange={(e) => {
@@ -446,6 +452,14 @@ export function UpdateSliderSection() {
                 }}
                 className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 rows="4"
+              /> */}
+              <ClaraMarkdownRichEditor
+                value={section.Body || ""} // Ensure the value is always a string (fallback to an empty string if undefined)
+                onChange={(newBodyValue) => {
+                  const updatedSection = { ...section, Body: newBodyValue }; // Update section with the new body value
+                  handleHIWSectionUpdate(index, updatedSection); // Call your handler to update the section
+                }}
+                className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
 
