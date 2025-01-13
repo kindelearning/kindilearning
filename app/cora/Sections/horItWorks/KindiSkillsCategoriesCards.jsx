@@ -417,7 +417,7 @@ export function UpdateKindiSkillsCategoriesCards() {
   return (
     <div className="p-8 max-w-4xl mx-auto bg-white shadow-lg rounded-lg">
       <h1 className="text-3xl font-semibold mb-6 text-center">
-        Edit Our Team Section
+        Edit Skill Category Section
       </h1>
 
       {/* Error message display */}

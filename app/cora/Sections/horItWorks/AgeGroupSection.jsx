@@ -53,16 +53,18 @@ export default function AgeGroupSection() {
     <section className="max-w-7xl mx-auto py-12 px-6">
       {/* Section Header */}
       <div className="text-center mb-8">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-800">
-          {Title}
-        </h2>
-        <p className="text-gray-600 mt-4 text-lg">{Body}</p>
+        <div className="text-center mb-8">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-800">
+            {Title}
+          </h2>{" "}
+          <h3 className="text-xl font-semibold text-gray-700">
+            {featuredText}
+          </h3>
+        </div>
       </div>
+      <p className="text-gray-600 mt-4 text-lg">{Body}</p>
 
       {/* Featured Text */}
-      <div className="text-center mb-8">
-        <h3 className="text-xl font-semibold text-gray-700">{featuredText}</h3>
-      </div>
 
       {/* Content Blocks for each Age Group */}
       <div className="grid grid-cols-2 gap-2 justify-between w-full">
@@ -373,7 +375,7 @@ export function UpdateAgeGroupSection() {
   return (
     <div className="p-8 max-w-4xl mx-auto bg-white shadow-lg rounded-lg">
       <h1 className="text-3xl font-semibold mb-6 text-center">
-        Edit Our Team Section
+        Edit Age GroupSection
       </h1>
 
       {/* Error message display */}

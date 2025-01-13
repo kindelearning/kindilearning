@@ -12,6 +12,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import MediaSelector from "../../website/media/Section/MediaSelector";
+import ClaraMarkdownRichEditor from "../TextEditor/ClaraMarkdownRichEditor";
 
 export default function HowItWorks() {
   const [content, setContent] = useState(null);
@@ -76,34 +77,39 @@ export default function HowItWorks() {
         <div className="w-full flex flex-col justify-start items-center animate-fadeIn animate-delay-500">
           {/* Featured Text */}
           {Hero?.featuredText && (
-            <p className="text-[#1d1d1d] clarascript text-lg md:text-xl lg:text-2xl font-semibold animate-slideInLeft animate-delay-1000">
+            <div className="w-full text-[#1d1d1d] clarascript animate-slideInLeft script animate-delay-1000">
               {Hero.featuredText}
-            </p>
-          )}
-
-          {/* Title */}
-          {Hero?.Title && (
-            <div className="flex flex-wrap justify-center items-center text-[#1d1d1d] claraheading text-3xl md:text-4xl lg:text-5xl font-bold text-center animate-slideInLeft animate-delay-1500">
-              <span className="mx-1">
-                {Hero.Title.split(" ").slice(0, 2).join(" ")}
-              </span>
-              <span className="mx-1">
-                {Hero.Title.split(" ").slice(2, 3).join(" ")}
-              </span>
             </div>
           )}
 
+          {/* Title */}
+          <div className="flex flex-col w-full justify-start items-start heading animate-fadeIn animate-delay-1500">
+            <div className="text-start flex-wrap w-full animate-slideInLeft animate-delay-2000">
+              {Hero?.Title && (
+                <div className="flex flex-wrap justify-center items-center text-[#1d1d1d] claraheading text-3xl md:text-4xl lg:text-5xl font-bold text-center animate-slideInLeft animate-delay-1500">
+                  <span className="mx-1">
+                    {Hero.Title.split(" ").slice(0, 2).join(" ")}
+                  </span>
+                  <span className="mx-1">
+                    {Hero.Title.split(" ").slice(2, 3).join(" ")}
+                  </span>
+                </div>
+              )}
+            </div>
+          </div>
+
           {/* Body */}
           {Hero?.Body && (
-            <p className="text-center text-[#696969] text-base md:text-lg lg:text-xl mt-4 leading-relaxed animate-fadeIn animate-delay-2000">
-              {Hero.Body}
-            </p>
+            <div
+              dangerouslySetInnerHTML={{ __html: Hero.Body }}
+              className="w-full prose text-start text-[#696969] text-[16px] leading-[20px] md:text-[18px] md:leading-[22px] lg:text-[22px] lg:leading-[24px] xl:text-[22px] xl:leading-[24px] font-medium font-fredoka animate-slideInLeft animate-delay-3000"
+            />
           )}
         </div>
       </section>
     </>
   );
-} 
+}
 
 export function UpdateHowItWorkSection2() {
   const [content, setContent] = useState({
@@ -349,6 +355,9 @@ export function UpdateHowItWorkSection() {
   const handleMediaSelect = (selectedMedia) => {
     setMedia(selectedMedia); // Store the selected media object
   };
+  const handleEditorChange = (newValue) => {
+    setBody(newValue); // Update body state with the new value from the editor
+  };
 
   return (
     <div className="p-8">
@@ -374,13 +383,18 @@ export function UpdateHowItWorkSection() {
           <label htmlFor="BodyDescription" className="block">
             Body Description (Markdown)
           </label>
-          <textarea
+          {/* <textarea
             id="BodyDescription"
             name="BodyDescription"
             value={body}
             onChange={(e) => setBodyDescription(e.target.value)}
             className="border p-2 w-full"
             rows="5"
+          /> */}
+          <ClaraMarkdownRichEditor
+            name="Body"
+            value={body || ""} // Ensure the value is always a string
+            onChange={handleEditorChange}
           />
         </div>
 
