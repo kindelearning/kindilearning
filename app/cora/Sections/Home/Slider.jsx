@@ -39,49 +39,46 @@ export default function SliderSection() {
   return (
     <section className="how-it-works py-4 bg-gray-100">
       <div className="max-w-7xl mx-auto flex flex-col gap-4 px-4">
-        {data.Content.map((section) => (
-          <div
-            key={section.id}
-            style={{ backgroundColor: `${section.bgcolor}` }}
-            className="how-it-works-section bg-white rounded-lg p-8 gap-4 flex items-start"
-          >
-            {/* Image */}
-            {section.Media ? (
-              <img
-                className="rounded-lg max-w-[300px] h-[300px] w-full object-contain"
-                src={section.Media.url}
-                // src={`https://upbeat-life-04fe8098b1.strapiapp.com${section.Media.url}`}
-                alt={section.Media.name || "How it works image"}
-              />
-            ) : (
-              <div className="w-full h-[300px] bg-gray-300 rounded-lg flex items-center justify-center">
-                <span>No Image Available</span>
-              </div>
-            )}
-            <div className="flex flex-col justify-start items-start">
-              {/* Title and Featured Text */}
-              <span className="text-2xl font-semibold text-gray-800 mb-4 text-center">
-                {section.Title} {section.featuredText}
-              </span>
+        {data.Content ? (
+          <>
+            {data.Content.map((section) => (
+              <div
+                key={section.id}
+                style={{ backgroundColor: `${section.bgcolor}` }}
+                className="how-it-works-section bg-white rounded-lg p-8 gap-4 flex items-start"
+              >
+                {/* Image */}
+                {section.Media ? (
+                  <img
+                    className="rounded-lg max-w-[300px] h-[300px] w-full object-contain"
+                    src={section.Media.url}
+                    // src={`https://upbeat-life-04fe8098b1.strapiapp.com${section.Media.url}`}
+                    alt={section.Media.name || "How it works image"}
+                  />
+                ) : (
+                  <div className="w-full h-[300px] bg-gray-300 rounded-lg flex items-center justify-center">
+                    <span>No Image Available</span>
+                  </div>
+                )}
+                <div className="flex flex-col justify-start items-start">
+                  {/* Title and Featured Text */}
+                  <span className="text-2xl font-semibold text-gray-800 mb-4 text-center">
+                    {section.Title} {section.featuredText}
+                  </span>
 
-              {/* Body Description */}
-              {/* {section.BodyDescription.map((body, index) => (
-                <p
-                  key={index}
-                  className="text-lg text-[gray]  mb-6 text-start leading-relaxed"
-                >
-                  {body.children[0].text}
-                </p>
-              ))} */}
-              <p
-                className="prose w-full text-start text-[#101010] clarabodyTwo"
-                dangerouslySetInnerHTML={{
-                  __html: section.Body,
-                }}
-              />
-            </div>
-          </div>
-        ))}
+                  <p
+                    className="prose w-full text-start text-[#101010] clarabodyTwo"
+                    dangerouslySetInnerHTML={{
+                      __html: section.Body,
+                    }}
+                  />
+                </div>
+              </div>
+            ))}
+          </>
+        ) : (
+          <p> Data not Found</p>
+        )}
       </div>
     </section>
   );
@@ -300,14 +297,16 @@ export default function SliderSection() {
 // }
 
 export function UpdateSliderSection() {
-  const [sliderContent, setSliderContent] = useState([]); 
+  const [sliderContent, setSliderContent] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchHIWData = async () => {
       try {
-        const res = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/slider?populate=Content.Media");
+        const res = await fetch(
+          "https://upbeat-life-04fe8098b1.strapiapp.com/api/slider?populate=Content.Media"
+        );
         const data = await res.json();
         const sliderData = data.data;
         setSliderContent(sliderData?.Content || []);
@@ -368,20 +367,31 @@ export function UpdateSliderSection() {
 
   return (
     <div className="p-8 max-w-4xl mx-auto bg-white shadow-lg rounded-lg">
-      <h1 className="text-3xl font-semibold mb-6 text-center">Edit Slider Section</h1>
-      
+      <h1 className="text-3xl font-semibold mb-6 text-center">
+        Edit Slider Section
+      </h1>
+
       {/* Error message display */}
-      {error && <div className="bg-red-500 text-white p-3 rounded mb-4">{error}</div>}
+      {error && (
+        <div className="bg-red-500 text-white p-3 rounded mb-4">{error}</div>
+      )}
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Looping through each slider content section */}
         {sliderContent.map((section, index) => (
-          <div style={{ backgroundColor: section.bgcolor }} key={index} className="border p-6 rounded-lg shadow-sm bg-gray-50">
+          <div
+            style={{ backgroundColor: section.bgcolor }}
+            key={index}
+            className="border p-6 rounded-lg shadow-sm bg-gray-50"
+          >
             <h3 className="text-xl font-medium mb-4">Section {index + 1}</h3>
 
             {/* Title */}
             <div>
-              <label htmlFor={`title-${index}`} className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor={`title-${index}`}
+                className="block text-sm font-medium text-gray-700"
+              >
                 Title:
               </label>
               <input
@@ -398,7 +408,10 @@ export function UpdateSliderSection() {
 
             {/* Featured Text */}
             <div>
-              <label htmlFor={`featuredText-${index}`} className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor={`featuredText-${index}`}
+                className="block text-sm font-medium text-gray-700"
+              >
                 Featured Text:
               </label>
               <input
@@ -406,7 +419,10 @@ export function UpdateSliderSection() {
                 id={`featuredText-${index}`}
                 value={section.featuredText}
                 onChange={(e) => {
-                  const updatedSection = { ...section, featuredText: e.target.value };
+                  const updatedSection = {
+                    ...section,
+                    featuredText: e.target.value,
+                  };
                   handleHIWSectionUpdate(index, updatedSection);
                 }}
                 className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -415,7 +431,10 @@ export function UpdateSliderSection() {
 
             {/* Body Description */}
             <div>
-              <label htmlFor={`bodyDescription-${index}`} className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor={`bodyDescription-${index}`}
+                className="block text-sm font-medium text-gray-700"
+              >
                 Body Description (Markdown):
               </label>
               <textarea
@@ -431,8 +450,11 @@ export function UpdateSliderSection() {
             </div>
 
             {/* Background Color Picker */}
-            <div >
-              <label htmlFor={`bgcolor-${index}`} className="block text-sm font-medium text-gray-700">
+            <div>
+              <label
+                htmlFor={`bgcolor-${index}`}
+                className="block text-sm font-medium text-gray-700"
+              >
                 Background Color:
               </label>
               <input
@@ -440,7 +462,10 @@ export function UpdateSliderSection() {
                 id={`bgcolor-${index}`}
                 value={section.bgcolor}
                 onChange={(e) => {
-                  const updatedSection = { ...section, bgcolor: e.target.value };
+                  const updatedSection = {
+                    ...section,
+                    bgcolor: e.target.value,
+                  };
                   handleHIWSectionUpdate(index, updatedSection);
                 }}
                 className="mt-1 block w-16 border rounded-md"
@@ -449,7 +474,9 @@ export function UpdateSliderSection() {
 
             {/* Media Selection */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">Media:</label>
+              <label className="block text-sm font-medium text-gray-700">
+                Media:
+              </label>
               {section.Media ? (
                 <div className="mt-2">
                   <img
@@ -461,11 +488,13 @@ export function UpdateSliderSection() {
               ) : (
                 <p className="mt-2 text-gray-500">No media selected</p>
               )}
-              <MediaSelector onMediaSelect={(media) => handleMediaSelect(media, index)} />
+              <MediaSelector
+                onMediaSelect={(media) => handleMediaSelect(media, index)}
+              />
             </div>
           </div>
         ))}
-        
+
         {/* Submit Button */}
         <button
           type="submit"
@@ -496,4 +525,3 @@ export function UpdateSliderSection() {
     </div>
   );
 }
-

@@ -13,6 +13,13 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 const SimpleLine = ({ SlideTitle = "Educational play for young children" }) => {
   return (
@@ -109,8 +116,7 @@ const slides = [
   },
 ];
 
-const Slider = () => {
-  const { data: session } = useSession();
+export function Slider2() {
   const [loaded, setLoaded] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
@@ -127,7 +133,7 @@ const Slider = () => {
     touchStartX = e.touches[0].clientX;
     startX = e.touches[0].clientX;
     isDragging = true;
-    document.body.classList.add('draggable');
+    document.body.classList.add("draggable");
   };
 
   const handleTouchMove = (e) => {
@@ -147,7 +153,7 @@ const Slider = () => {
     }
     touchStartX = 0;
     touchEndX = 0;
-    document.body.classList.remove('draggable');
+    document.body.classList.remove("draggable");
     if (!isDragging) return;
     isDragging = false;
     if (startX - moveX > 50) {
@@ -216,9 +222,7 @@ const Slider = () => {
   return (
     <>
       <section
-        className={`w-full h-auto cursor-grab bg-purple py-12 md:pt-16 md:pb-4 items-center justify-center flex flex-col gap-[20px] ${
-          loaded ? "loaded" : "loading"
-        }`}
+        className={`w-full h-auto cursor-grab bg-purple py-12 md:pt-16 md:pb-4 items-center justify-center flex flex-col gap-[20px] `}
         style={{
           backgroundColor: `#${slides[currentSlide].backgroundColor}`,
         }}
@@ -231,11 +235,7 @@ const Slider = () => {
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
       >
-        <div
-          className={`claracontainer w-full flex flex-col-reverse md:flex-col-reverse md:justify-center md:items-center lg:flex-row-reverse xl:flex-row-reverse gap-8 md:gap-8 ${
-            loaded ? "animate-fade-in" : "opacity-0"
-          }`}
-        >
+        <div className="claracontainer w-full flex flex-col-reverse md:flex-col-reverse md:justify-center md:items-center lg:flex-row-reverse xl:flex-row-reverse gap-8 md:gap-8">
           <button
             onClick={handlePrevSlide}
             className=" w-[32px] h-[32px] hidden lg:flex justify-center items-center left-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-30 backdrop-blur-lg text-[#000000] p-2 rounded-full z-10"
@@ -243,51 +243,23 @@ const Slider = () => {
             <ChevronRight />
           </button>
           {/* Left Column */}
-          <div
-            className={`h-auto w-full flex-col px-4 md:px-2 lg:px-4 justify-start items-start gap-6 md:gap-8 lg:gap-10 xl:gap-12 inline-flex ${
-              loaded ? "animate-slide-up" : ""
-            }`}
-          >
-            <div
-              className={`w-full flex flex-col justify-start items-start h-auto gap-4  ${
-                loaded ? "animate-fade-in" : "opacity-0"
-              }`}
-            >
-              <div
-                className={`text-white clarascript ${
-                  loaded ? "animate-text-reveal" : ""
-                }`}
-              >
+          <div className="h-auto w-full flex-col px-4 md:px-2 lg:px-4 justify-start items-start gap-6 md:gap-8 lg:gap-10 xl:gap-12 inline-flex  ">
+            <div className="w-full flex flex-col justify-start items-start h-auto gap-4">
+              <div className={`text-white clarascript   `}>
                 {slides[currentSlide].script}
               </div>
-              <div
-                className={`flex flex-col w-full justify-start items-start gap-4 ${
-                  loaded ? "animate-fade-in" : "opacity-0"
-                }`}
-              >
+              <div className="flex flex-col w-full justify-start items-start gap-4">
                 <div className="w-auto">
-                  <span
-                    className={`text-white claraheading ${
-                      loaded ? "animate-text-reveal" : ""
-                    }`}
-                  >
+                  <span className="text-white claraheading">
                     {slides[currentSlide].heading}
                   </span>
                 </div>
-                <div
-                  className={`w-full h-auto text-white clarabodyTwo ${
-                    loaded ? "animate-fade-in" : "opacity-0"
-                  }`}
-                >
+                <div className="w-full h-auto text-white clarabodyTwo">
                   {slides[currentSlide].description}
                 </div>
               </div>
             </div>
-            <div
-              className={`w-auto ${
-                loaded ? "animate-button-reveal" : "opacity-0"
-              }`}
-            >
+            <div className="w-auto">
               <Button
                 className={`bg-white py-4 hover:bg-red hover: text-white clarabutton font-medium px-8 md:px-12 border-2 border-[#${slides[currentSlide].backgroundColor}] rounded-[10px]`}
                 disabled={!loaded}
@@ -295,16 +267,12 @@ const Slider = () => {
                   color: `#${slides[currentSlide].textcolor}`,
                 }}
               >
-                {session ? "Upgrade" : "Get Started"}
+                Get Started{" "}
               </Button>
             </div>
           </div>
           {/* Right Column */}
-          <div
-            className={`w-full slide-in-from-left-2 duration-200 md:min-w-[300px] md:w-[300px] lg:w-full flex justify-center items-center h-auto ${
-              loaded ? "animate-fade-in" : "opacity-0"
-            }`}
-          >
+          <div className="w-full slide-in-from-left-2 duration-200 md:min-w-[300px] md:w-[300px] lg:w-full flex justify-center items-center h-auto ">
             <Image
               alt="Kindi"
               src={slides[currentSlide].image}
@@ -349,6 +317,113 @@ const Slider = () => {
       </section>
     </>
   );
-};
+}
 
-export default Slider;
+export default function Slider() {
+  const [sliderData, setSliderData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchSliderData = async () => {
+      try {
+        const response = await fetch(
+          "https://upbeat-life-04fe8098b1.strapiapp.com/api/slider?populate=Content.Media"
+        );
+        const data = await response.json();
+
+        if (response.ok) {
+          setSliderData(data.data.Content);
+        } else {
+          setError("Error fetching data");
+        }
+      } catch (error) {
+        setError("Error fetching data");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSliderData();
+  }, []);
+
+  console.log("Slider Data", sliderData);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
+
+  return (
+    <>
+      {sliderData && (
+        <section className="w-full h-auto cursor-grab  items-center justify-center flex flex-col gap-[20px] bg-purple">
+          <div className=" w-full bg-purple flex flex-col-reverse md:justify-center md:items-center  gap-8 md:gap-8">
+            <Carousel loop className="w-full flex py-0 my-0 justify-center items-center">
+              <CarouselContent loop className="w-full ml-0 p-0 flex justify-center items-center" >
+                {sliderData?.map((item) => (
+                  <CarouselItem
+                    key={item.id}
+                    className={`min-w-full justify-center  shrink-0 grow-0 basis-full flex p-0  items-center ${
+                      item.bgcolor ? `bg-[${item.bgcolor}]` : "bg-purple"
+                    }`}
+                  >
+                    <div
+                      className={`w-full max-w-full claracontainer  md:min-w-[300px] md:w-[300px] lg:w-full flex flex-col  lg:flex-row justify-between items-center h-auto  `}
+                    >
+                      {item?.Media && item?.Media?.url ? (
+                        <img
+                          src={`https://upbeat-life-04fe8098b1.strapiapp.com${item.Media.url}`}
+                          // src={item?.Media?.url}
+                          alt={item?.Title}
+                          className="w-full md:min-w-[300px] md:w-[300px] lg:w-full lg:h-full lg:min-h-[400px] max-h-[400px] object-contain"
+                        />
+                      ) : (
+                        <Image
+                          src={SlideGrow}
+                          // className="w-full md:min-w-[300px] md:w-[300px] lg:w-full lg:h-full lg:min-h-[400px] max-h-[400px] object-contain"
+                          alt={item?.Title}
+                        />
+                      )}
+
+                      {/* Right - Text Content */}
+
+                      <div className="h-auto max-w-[400px] lg:min-w-[700px] lg:max-w-full w-full flex-col px-4 md:px-2 lg:px-4 justify-start items-start gap-6 md:gap-8 lg:gap-10 xl:gap-12 inline-flex  ">
+                        <div className="w-fit flex flex-col justify-start items-start h-auto gap-4">
+                          <div className={`text-white clarascript   `}>
+                            {item.featuredText}
+                          </div>
+                          <div className="flex flex-col w-fit justify-start items-start gap-4">
+                            <span className="text-white w-full claraheading">
+                              {item.Title}
+                            </span>
+
+                            <div className="w-full max-w-full h-auto prose text-white clarabodyTwo">
+                              <p
+                                dangerouslySetInnerHTML={{ __html: item.Body }}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <div className="w-auto">
+                          <Button
+                            className={`bg-white py-4 hover:bg-red hover: text-white clarabutton font-medium px-8 md:px-12 border-2  rounded-[10px]`}
+                            // style={{
+                            //   color: `#${slides[currentSlide].textcolor}`,
+                            // }}
+                          >
+                            Get Started{" "}
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious />
+              <CarouselNext />
+            </Carousel>
+          </div>
+        </section>
+      )}
+    </>
+  );
+}
