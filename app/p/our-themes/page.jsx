@@ -1,13 +1,40 @@
+"use client";
+
 import { fetchOurThemes } from "@/app/data/p/Dynamic/OurTheme";
 import { CategoryCard } from "@/app/Widgets";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
-export default async function Page() {
-  const pageContent = await fetchOurThemes();
-  if (!pageContent) {
-    return <div>Error: No data available</div>;
-  }
+export default function Page() {
+  const [themes, setThemes] = useState([]);
+
+  const fetchTheme = async () => {
+    try {
+      const res = await fetch(
+        "https://upbeat-life-04fe8098b1.strapiapp.com/api/our-themes?populate=*"
+      );
+      const data = await res.json();
+      // console.log("API Response:", data);
+
+      if (data && data.data) {
+        setThemes(data.data);
+      }
+    } catch (error) {
+      console.error("Error fetching blogs:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchTheme();
+  }, []);
+
+  // const pageContent = await fetchOurThemes();
+  // if (!pageContent) {
+  //   return <div>Error: No data available</div>;
+  // }
 
   return (
     <>
@@ -18,7 +45,7 @@ export default async function Page() {
               Upcoming Themes
             </div>
             <div className="grid gap-[12px] grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 w-full claracontainer">
-              {pageContent.map((item) => (
+              {themes.map((item) => (
                 <Link
                   key={item.id}
                   target="_blank"

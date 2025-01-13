@@ -298,7 +298,7 @@ export default function UpdateThemeForm({ documentId }) {
 
   return (
     <div className="p-8">
-      <h1 className="text-2xl font-bold mb-6">Edit How It Works Section</h1>
+      <h1 className="text-2xl font-bold mb-6">Edit Theme </h1>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
@@ -368,7 +368,7 @@ export default function UpdateThemeForm({ documentId }) {
         </div>
 
         <button type="submit" className="px-4 py-2 bg-red text-white rounded">
-          Update Badge
+          Update Theme
         </button>
       </form>
 
