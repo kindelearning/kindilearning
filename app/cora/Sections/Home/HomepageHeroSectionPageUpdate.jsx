@@ -64,7 +64,7 @@ export default function HeroSectionForm() {
       },
     };
 
-    console.log("Payload: ", JSON.stringify(updatedData));
+    console.log("Payload: ", updatedData);
 
     try {
       const response = await fetch(

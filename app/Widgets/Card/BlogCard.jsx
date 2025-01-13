@@ -27,7 +27,7 @@ export default function BlogCard({
         const data = await response.json();
 
         // Check the structure of the API response
-        console.log("API Response:", data);
+        // console.log("API Response:", data);
 
         if (data?.data) {
           // Correctly update likes and dislikes from the API response

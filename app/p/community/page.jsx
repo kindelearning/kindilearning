@@ -2,11 +2,14 @@ import { fetchOurBlogs } from "@/app/data/p/Dynamic/Community";
 import { BlogCard } from "@/app/Widgets";
 
 export default async function Page() {
+    // const [blogs, setBlogs] = useState([]);
+  
   const pageContent = await fetchOurBlogs();
   if (!pageContent) {
     return <div>Error: No data available</div>;
   }
 
+  console.log("Fetched Blogs", pageContent);
   return (
     <>
       <section className="w-full h-auto bg-[#EAEAF5] items-center pb-32 justify-center flex flex-col gap-[20px]">

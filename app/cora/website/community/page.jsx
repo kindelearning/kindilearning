@@ -45,7 +45,7 @@ export default function AdminBlogs() {
         "https://upbeat-life-04fe8098b1.strapiapp.com/api/blogs?populate=comments&populate=FeaturedImage"
       );
       const data = await res.json();
-      console.log("API Response:", data);
+      // console.log("API Response:", data);
 
       if (data && data.data) {
         // Extract comments from all blog entries
@@ -309,7 +309,7 @@ export default function AdminBlogs() {
                       {/* Preview */}
                       <Button variant="primary" title="Preview Live on website">
                         <Link
-                          href={`http://localhost:3000/p/community/${blog.documentId}`}
+                          href={`https://kindilearning.vercel.app/p/community/${blog.documentId}`}
                           target="_blank"
                         >
                           <Eye className="text-[#7f7f7f]  w-5 h-5 duration-300 ease-in-out hover:text-black" />
