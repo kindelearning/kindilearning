@@ -319,7 +319,7 @@ export default function Slider() {
   );
 }
 
-export default function Slider3() {
+export  function Slider3() {
   const [sliderData, setSliderData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
