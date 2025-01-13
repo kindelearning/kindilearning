@@ -34,8 +34,8 @@ export default function ProductCard({ image, title, productUrl, price }) {
             className="w-full hover:scale-110 duration-300 md:min-w-[200px] h-full min-h-[148px] max-h-[148px] md:h-[260px] lg:max-h-[200px] rounded-t-[12px] object-cover"
           />
         ) : (
-          <Image
-            src={ProductImage}
+          <img
+            src="/Images/shop/ProductImage.png"
             alt={title}
             width={200}
             height={200}

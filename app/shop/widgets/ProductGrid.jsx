@@ -114,8 +114,8 @@ export default function ProductGrid() {
                 productUrl={`/shop/${product.documentId}`}
                 image={
                   product?.FeaturedImage?.[0]?.url
-                    ? `https://upbeat-life-04fe8098b1.strapiapp.com${product.FeaturedImage[0].url}`
-                    : ProductImage
+                    ? product.FeaturedImage[0].url
+                    : "/Images/shop/ProductImage.png"
                 }
                 // image={`https://upbeat-life-04fe8098b1.strapiapp.com${product?.FeaturedImage[0]?.url}`}
                 price={product.DiscountPrice}

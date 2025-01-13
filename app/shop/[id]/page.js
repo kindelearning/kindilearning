@@ -1,6 +1,6 @@
 "use client";
 
-import { creditCard, Ratings } from "@/public/Images";
+import { ActivityImage, creditCard, Ratings } from "@/public/Images";
 import { ProductGrid, ReviewGrid } from "..";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
@@ -43,7 +43,17 @@ export function Fallback({ message = "Something went wrong." }) {
 function MediaGallery({ gallery }) {
   return (
     <div className="claracontainer py-0 flex flex-col max-w-full lg:max-w-[60%] justify-between  items-start gap-8 sticky top-0 h-fit ">
-      <ProductMedia gallery={gallery} />
+      {gallery ? (
+        <ProductMedia gallery={gallery} />
+      ) : (
+        <div className="w-full overflow-clip rounded-lg h-[300px] max-h-[300px] lg:h-[400px] lg:max-h-[400px] mb-4">
+          <Image
+            className="w-full h-full object-cover rounded-lg"
+            alt="Placholder Image"
+            src={ActivityImage}
+          />
+        </div>
+      )}
     </div>
   );
 }
