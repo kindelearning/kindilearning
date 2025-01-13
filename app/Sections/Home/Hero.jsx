@@ -41,14 +41,6 @@ export default async function Hero() {
                       "For 0-5 Year kids"}
                   </span>
                 </div>
-                {/* {heroData.BodyDescription?.map((desc, index) => (
-                  <div
-                    className="w-full h-auto text-white clarabody animate-fade-in"
-                    key={index}
-                  >
-                    {desc.children[0]?.text || "No body description available"}
-                  </div>
-                ))} */}
                 {heroData.BodyDescription ? (
                   <p
                     className="prose text-start w-full h-auto text-white clarabody animate-fade-in] text-base md:text-lg lg:text-xl mt-4 leading-relaxed  animate-fadeIn animate-delay-2000"

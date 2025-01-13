@@ -69,8 +69,7 @@ export default function PopularActivities() {
         </div>
       </div>
 
-      {/* Media */}
-      {content.Media ? (
+      {/* {content.Media ? (
         <img
           // src={`https://upbeat-life-04fe8098b1.strapiapp.com${content.Media[0].url}`}
           src={content.Media[0].url}
@@ -79,7 +78,7 @@ export default function PopularActivities() {
         />
       ) : (
         <p>No media available.</p>
-      )}
+      )} */}
     </div>
   );
 }

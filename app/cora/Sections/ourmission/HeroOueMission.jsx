@@ -222,7 +222,7 @@ export function UpdateHeroSection() {
           setMedia(content.Hero?.Media?.id || null); // Set the media ID or null if no media is selected
         }
 
-        console.log('Fetched Content', content);
+        console.log("Fetched Content", content);
       } catch (err) {
         console.error("Error fetching content data:", err);
         setError("Error fetching content");
@@ -241,23 +241,20 @@ export function UpdateHeroSection() {
           Title: title,
           Body: body,
           featuredText: featuredText,
-          Media: media?.id || null, // Use media ID if selected
+          // Media: media?.id || null, // Use media ID if selected
         },
       },
     };
     console.log("Payload Created", payload);
 
     try {
-      const res = await fetch(
-        "https://upbeat-life-04fe8098b1.strapiapp.com/api/our-mission",
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
-        }
-      );
+      const res = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/our-mission", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
 
       const data = await res.json();
       console.log("Updated our-mission Content:", data);
@@ -268,13 +265,17 @@ export function UpdateHeroSection() {
     }
   };
 
+  const handleEditorChange = (newValue) => {
+    setBody(newValue);  // Update body state with the new value from the editor
+  };
+
+
   const handleMediaSelect = (selectedMedia) => {
     setMedia(selectedMedia); // Store the selected media object
   };
 
   return (
     <div className="p-8">
-      <h1 className="text-2xl font-bold mb-6">Edit Monthly Theme</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Title Field */}
         <div>
@@ -296,13 +297,18 @@ export function UpdateHeroSection() {
           <label htmlFor="BodyDescription" className="block">
             Body Description (Markdown)
           </label>
-          <textarea
+          {/* <textarea
             id="BodyDescription"
             name="BodyDescription"
             value={body}
-            onChange={(e) => setBodyDescription(e.target.value)}
+            onChange={(e) => setBody(e.target.value)}
             className="border p-2 w-full"
             rows="5"
+          /> */}
+          <ClaraMarkdownRichEditor
+            name="Body"
+            value={body || ""} // Ensure the value is always a string
+            onChange={handleEditorChange}
           />
         </div>
 
@@ -322,7 +328,7 @@ export function UpdateHeroSection() {
         </div>
 
         {/* Media Field */}
-        <div>
+        {/* <div>
           <label>Media:</label>
           {media ? (
             <div className="mt-4">
@@ -337,7 +343,7 @@ export function UpdateHeroSection() {
             <p>Not selected anything</p>
           )}
           <MediaSelector onMediaSelect={handleMediaSelect} />
-        </div>
+        </div> */}
 
         <button type="submit" className="px-4 py-2 bg-black text-white rounded">
           Update Content

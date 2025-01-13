@@ -346,6 +346,8 @@ export default function OurStory() {
 //   );
 // }
 
+
+
 export function UpdateOurStorySection() {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
@@ -418,6 +420,11 @@ export function UpdateOurStorySection() {
     setMedia(selectedMedia); // Store the selected media object
   };
 
+
+  const handleEditorChange = (newValue) => {
+    setBody(newValue);  // Update body state with the new value from the editor
+  };
+
   return (
     <div className="p-8">
       <h1 className="text-2xl font-bold mb-6">Edit Monthly Theme</h1>
@@ -442,13 +449,18 @@ export function UpdateOurStorySection() {
           <label htmlFor="BodyDescription" className="block">
             Body Description (Markdown)
           </label>
-          <textarea
+          {/* <textarea
             id="BodyDescription"
             name="BodyDescription"
             value={body}
             onChange={(e) => setBodyDescription(e.target.value)}
             className="border p-2 w-full"
             rows="5"
+          /> */}
+           <ClaraMarkdownRichEditor
+            name="Body"
+            value={body || ""} // Ensure the value is always a string
+            onChange={handleEditorChange}
           />
         </div>
 

@@ -6,6 +6,9 @@ import { useEffect, useState } from "react";
 
 export default function Page() {
   const [blogs, setBlogs] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [currentThemes, setCurrentThemes] = useState([]); // Store themes for the current page
+  const [totalPages, setTotalPages] = useState(1); // Total number of pages
 
   const fetchBlogs = async () => {
     try {
@@ -24,6 +27,7 @@ export default function Page() {
         //   )
         // );
         setBlogs(data.data);
+        setTotalPages(Math.ceil(data.data.length / 12)); // Calculate total pages
       }
     } catch (error) {
       console.error("Error fetching blogs:", error);
@@ -37,6 +41,25 @@ export default function Page() {
   }, []);
 
   console.log("Fetched Blogs", blogs);
+
+  useEffect(() => {
+    // Paginate the themes
+    const start = (currentPage - 1) * 4;
+    const end = start + 4;
+    setCurrentThemes(blogs.slice(start, end)); // Get the themes for the current page
+  }, [blogs, currentPage]);
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
   return (
     <>
       <section className="w-full h-auto bg-[#EAEAF5] items-center pb-32 justify-center flex flex-col gap-[20px]">
@@ -60,23 +83,51 @@ export default function Page() {
               </div>
             </div>
 
-            <div className="claracontainer lg:max-w-[1200px] w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 overflow-hidden gap-4">
-              {blogs.map((item) => (
-                <article key={item.id} className="rounded-lg">
-                  <BlogCard
-                    documentId={item.documentId}
-                    addUrl={`/p/community/${item.documentId}`}
-                    metsDesc={
-                      item?.MetaDescription ||
-                      "  discover your daily educational  play activities. Utilize our drag-and-drop feature to rearrange  learning, ensuring development  "
-                    }
-                    title={item?.Text || "Untitled Post"}
-                    image={item?.FeaturedImage?.url || "/Images/BlogThumb.png"}
-                    initialLikes={item.likes || 0} // Replace with actual value from your CMS
-                    initialDislikes={item.dislikes || 0} // Replace with actual value from your CMS
-                  />
-                </article>
-              ))}
+            <div className="claracontainer ">
+              {blogs.length === 0 ? (
+                <div>Loading...</div> // Loading state
+              ) : (
+                <div className="grid gap-[12px] grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 w-full claracontainer">
+                  {blogs.map((item) => (
+                    <article key={item.id} className="rounded-lg">
+                      <BlogCard
+                        documentId={item.documentId}
+                        addUrl={`/p/community/${item.documentId}`}
+                        metsDesc={
+                          item?.MetaDescription ||
+                          "  discover your daily educational  play activities. Utilize our drag-and-drop feature to rearrange  learning, ensuring development  "
+                        }
+                        title={item?.Text || "Untitled Post"}
+                        image={
+                          item?.FeaturedImage?.url || "/Images/BlogThumb.png"
+                        }
+                        initialLikes={item.likes || 0} // Replace with actual value from your CMS
+                        initialDislikes={item.dislikes || 0} // Replace with actual value from your CMS
+                      />
+                    </article>
+                  ))}
+                </div>
+              )}
+            </div>
+            {/* Pagination Controls */}
+            <div className="flex justify-center gap-4 mt-6">
+              <button
+                onClick={handlePrevPage}
+                disabled={currentPage === 1}
+                className="bg-blue-500 text-white px-4 py-2 rounded disabled:opacity-50"
+              >
+                Previous
+              </button>
+              <span className="self-center text-lg">
+                Page {currentPage} of {totalPages}
+              </span>
+              <button
+                onClick={handleNextPage}
+                disabled={currentPage === totalPages}
+                className="bg-blue-500 text-white px-4 py-2 rounded disabled:opacity-50"
+              >
+                Next
+              </button>
             </div>
           </div>
         </div>
