@@ -15,7 +15,7 @@ export default function OurMission() {
         <OurStory />
         <ParentWithKindi />
         <TheTeam />
-        <DefaultReviews />
+        <DefaultReviews /> 
         <PopularActivity />
       </section>
     </>
