@@ -36,7 +36,7 @@ export default function Cora() {
           <ThemeWidgets />
           <RecentThemes />
           {/* <ProductWidgets /> */}
-          <LatestProducts />
+          {/* <LatestProducts /> */}
           {/*
            <ProductWidgets />
 
