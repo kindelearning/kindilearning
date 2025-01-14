@@ -24,14 +24,14 @@ export default function Cora() {
           <title> Kindi Learning - Admin Panel</title>
         </head>
         <div className="claracontainer py-6 w-full flex flex-col overflow-hidden gap-8">
-          {/* <UserAnalytics /> */}
+          <UserAnalytics />
           <div className="flex w-full gap-4">
-            {/* <VisitorAnalytics />
-            <DeviceAnalytics /> */}
+            <VisitorAnalytics />
+            <DeviceAnalytics />
           </div>
           <div className="flex w-full gap-4">
-            {/* <RealTimeVisitors />
-            <GeolocationAnalytics /> */}
+            <RealTimeVisitors />
+            <GeolocationAnalytics />
           </div>
           {/* <BlogWidgets />
 
