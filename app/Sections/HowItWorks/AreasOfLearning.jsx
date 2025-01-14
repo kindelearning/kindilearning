@@ -31,10 +31,10 @@ export default async function AreasOfLearning() {
                 />
               ) : (
                 <p>
-                  "Unlocking your childs full potential. Kindi is here to equip
+                  Unlocking your childs full potential. Kindi is here to equip
                   you with the tools to make it happen! Discover our early years
                   education activities across eight distinctive categories, all
-                  aligned with strong"
+                  aligned with strong
                 </p>
               )}
             </div>

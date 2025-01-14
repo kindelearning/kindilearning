@@ -1,8 +1,4 @@
-import { DollarSign, ListOrdered, Users } from "lucide-react";
-import ActivityFeed from "./Sections/ActivityFeed";
-import StatisticsWidget from "./Sections/StatisticsWidget";
-import { activityData, RecentActivityWidget } from "./Sections/ActivityItem";
-import { statsData, UserStatsWidget } from "./Sections/StatCard";
+
 import VisitorAnalytics from "../Sections/Dashboard/VisitorAnalytics";
 import GeolocationAnalytics from "../Sections/Dashboard/GeoChart";
 import DeviceAnalytics from "../Sections/Dashboard/DeviceChart";
@@ -45,8 +41,8 @@ export default function Cora() {
           <LatestProducts />
           <RecentBlogs />
           <RecentComment />
-          <RecentActivities />
-          <ActivityWidgets />
+          {/* <RecentActivities /> */}
+          {/* <ActivityWidgets /> */}
         </div>
       </section>
     </>
