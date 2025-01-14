@@ -32,15 +32,15 @@ export default function Cora() {
             <RealTimeVisitors />
             <GeolocationAnalytics />
           </div>
-          {/* <BlogWidgets /> */}
+          <BlogWidgets />
           <ThemeWidgets />
           <RecentThemes />
-          <ProductWidgets />
-          <LatestProducts />
-          {/* 
+          {/* <ProductWidgets />
+          <LatestProducts /> */}
+          
           <RecentBlogs />
           <RecentComment /> 
-          */}
+         
           {/* <RecentActivities /> */}
           {/* <ActivityWidgets /> */}
         </div>
