@@ -244,18 +244,20 @@ export default function MilestoneData() {
                   </TableCell>
                   <TableCell>{milestone.Title}</TableCell>
                   <TableCell>
-                    {milestone.Description.slice(0, 100)}...
+                    <span
+                      dangerouslySetInnerHTML={{
+                        __html: milestone.Description.slice(0, 52),
+                      }}
+                    />
+                    ...
                   </TableCell>
                   <TableCell>{milestone.Category}</TableCell>
                   <TableCell>{milestone.SubCategory}</TableCell>
                   <TableCell>
-                    {truncateDescription(milestone.Description)}
+                    {new Date(milestone.createdAt).toLocaleString()}
                   </TableCell>
                   <TableCell>
-                    {new Date(milestone.createdAt).toLocaleDateString()}
-                  </TableCell>
-                  <TableCell>
-                    {new Date(milestone.updatedAt).toLocaleDateString()}
+                    {new Date(milestone.updatedAt).toLocaleString()}
                   </TableCell>
                   <TableCell>
                     {/* Update */}

@@ -254,10 +254,10 @@ export default function ShopPage() {
                     <TableRow key={product.documentId}>
                       <TableCell>{(page - 1) * pageSize + index + 1}</TableCell>
                       <TableCell>
-                        {product.FeaturedImage?.url ? (
+                        {product.FeaturedImage ? (
                           <img
                             className="w-16 h-16 rounded-full"
-                            src={product.FeaturedImage?.url}
+                            src={product.FeaturedImage[0]?.url}
                             alt={product.Name}
                           />
                         ) : (
