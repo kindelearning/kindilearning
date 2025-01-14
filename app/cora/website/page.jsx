@@ -1,4 +1,3 @@
-
 import VisitorAnalytics from "../Sections/Dashboard/VisitorAnalytics";
 import GeolocationAnalytics from "../Sections/Dashboard/GeoChart";
 import DeviceAnalytics from "../Sections/Dashboard/DeviceChart";
@@ -33,14 +32,15 @@ export default function Cora() {
             <RealTimeVisitors />
             <GeolocationAnalytics />
           </div>
-          {/* <BlogWidgets />
-
+          {/* <BlogWidgets /> */}
           <ThemeWidgets />
           <RecentThemes />
+          {/* 
           <ProductWidgets />
           <LatestProducts />
           <RecentBlogs />
-          <RecentComment /> */}
+          <RecentComment /> 
+          */}
           {/* <RecentActivities /> */}
           {/* <ActivityWidgets /> */}
         </div>

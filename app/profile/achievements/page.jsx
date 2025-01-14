@@ -235,6 +235,9 @@ export default function Achievement() {
   const [loading, setLoading] = useState(true); // Start with loading true
   const [error, setError] = useState(null); // For error handling
   const router = useRouter();
+  const [kidsData, setKidsData] = useState([]);
+  const [myLevels, setMyLevels] = useState(null);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -249,6 +252,36 @@ export default function Achievement() {
       try {
         const data = await fetchUserDetails(token); // Assuming this function works properly
         setUserData(data);
+
+
+         // Fetch kids data
+         const kidsResponse = await fetch(
+          "https://upbeat-life-04fe8098b1.strapiapp.com/api/kids?populate=*"
+        );
+        const kidsData = await kidsResponse.json();
+        setKidsData(kidsData.data);
+
+        // Filter kids based on user data's myKids documentIds
+        if (data.myKids && data.myKids.length > 0) {
+          const kidDocumentIds = data.myKids.map((kid) => kid.documentId);
+
+          // Loop through kidsData and calculate lengths of 'myActivities'
+          let totalActivitiesLength = 0;
+
+          kidDocumentIds.forEach((kidId) => {
+            const kid = kidsData.data.find((k) => k.documentId === kidId);
+            if (kid) {
+              const activitiesLength = kid.myActivities.length;
+              console.log(
+                `Kid ${kid.Name} has ${activitiesLength} activities.`
+              );
+              totalActivitiesLength += activitiesLength;
+            }
+          });
+          setMyLevels(totalActivitiesLength);
+
+          console.log(`Total Activities Length: ${totalActivitiesLength}`);
+        }
       } catch (error) {
         console.error("Error fetching user data", error);
         setError("Error fetching user data");
@@ -276,7 +309,7 @@ export default function Achievement() {
         </div>
         {userData ? (
           <div className="claracontainer bg-[#F5F5F5] md:bg-[#EAEAF5] -mt-4 rounded-t-[12px] z-2 lg:m-12 px-4 py-6 rounded-xl md:px-2 lg:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-[20px]">
-            <TopProfileCard userData={userData} />
+            <TopProfileCard userData={userData} totalactitivuty={myLevels} />
             <div className="flex flex-col w-full gap-12">
               <div className="flex flex-col w-full gap-2">
                 <div className="text-[#0a1932] text-2xl font-medium font-fredoka w-full">
