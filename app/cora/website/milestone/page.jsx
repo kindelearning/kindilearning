@@ -22,7 +22,6 @@ import {
 } from "@/components/ui/table";
 import { Pencil, Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import MediaSelector from "../media/Section/MediaSelector";
 import ClaraMarkdownRichEditor from "../../Sections/TextEditor/ClaraMarkdownRichEditor";
 
 export default function MilestoneData() {
@@ -852,13 +851,16 @@ export function CreateMilestoneForm() {
 
     console.log("New milestones data", newMilestone);
     try {
-      const response = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/milestones", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ data: newMilestone }),
-      });
+      const response = await fetch(
+        "https://upbeat-life-04fe8098b1.strapiapp.com/api/milestones",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ data: newMilestone }),
+        }
+      );
 
       if (response.ok) {
         setDialogMessage("milestones created successfully!");

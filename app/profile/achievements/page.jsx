@@ -153,12 +153,12 @@ const DisplayAllBadges = () => {
             {allBadges?.map((badge) => {
               const randomWidth = Math.floor(Math.random() * 46) + 10; // Random number between 10 and 100
               return (
-                <Dialog>
+                <Dialog   key={badge.id}>
                   <DialogTrigger>
                     <div className="">
                       <div
                         className="flex cursor-pointer flex-col justify-start items-center w-fit max-w-[160px] min-w-[120px] gap-2"
-                        key={badge.id}
+                      
                       >
                         <img
                           width={80}
