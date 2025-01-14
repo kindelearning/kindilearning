@@ -24,10 +24,19 @@ export default async function AreasOfLearning() {
           <div className="flex w-full justify-start items-start flex-col">
             <div className="w-full px-0 md:px-12 lg:px-32 text-start md:text-center text-[#3f3a64] font-fredoka text-[18px] font-medium leading-[22px]">
               {/* <p>{data.ArealearningBody}</p> */}
-              <p>
-                {data.ArealearningBody ||
-                  "Unlocking your child's full potential. Kindi is here to equip you with the tools to make it happen! Discover our early years education activities across eight distinctive categories, all aligned with &lt;strong"}
-              </p>
+              {data.ArealearningBody ? (
+                <p
+                  className="prose"
+                  dangerouslySetInnerHTML={{ __html: data.ArealearningBody }}
+                />
+              ) : (
+                <p>
+                  "Unlocking your childs full potential. Kindi is here to equip
+                  you with the tools to make it happen! Discover our early years
+                  education activities across eight distinctive categories, all
+                  aligned with strong"
+                </p>
+              )}
             </div>
           </div>
         </div>

@@ -14,13 +14,16 @@ export default function SkillToggleCardGrid() {
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(
-        "https://upbeat-life-04fe8098b1.strapiapp.com/api/how-it-work-page?populate=*"
+        // "https://upbeat-life-04fe8098b1.strapiapp.com/api/how-it-work-page?populate=*"
+        "https://upbeat-life-04fe8098b1.strapiapp.com/api/how-it-work-page?populate[KindiSkillsCategoriesCards][populate]=Icon"
       );
       const data = await response.json();
       setCards(data.data.KindiSkillsCategoriesCards);
     };
     fetchData();
   }, []);
+
+  console.log("KindiSkillsCategoriesCards", cards);
 
   return (
     <div className="claracontainer px-4 md:pl-0  flex flex-row overflow-x-scroll scrollbar-hidden md:grid md:grid-cols-3 lg:grid lg:grid-cols-4 xl:grid xl:grid-cols-4 gap-4 justify-between">
@@ -38,8 +41,8 @@ export default function SkillToggleCardGrid() {
           backgroundColor={card?.bgcolor || "#f0f0f0"} // Fallback for card.bgcolor
           isOpen={isOpen}
           setIsOpen={handleCardClick}
-          color={card?.color || "white"} 
-          icon={card?.icon || KindiHeart}
+          color={card?.color || "white"}
+          icon={card?.Icon?.url}
         />
       ))}
     </div>

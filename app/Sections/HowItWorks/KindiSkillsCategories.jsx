@@ -27,10 +27,26 @@ export default async function KindiSkillsCategories() {
           </div>
           <div className="flex w-full justify-start items-start flex-col">
             <div className="w-full px-0 md:px-12 lg:px-32 text-start md:text-center text-[#ffffff] font-fredoka text-[18px] font-medium leading-[22px]">
-              <p>
+              {/* <p>
                 {data.KindiSkillsCategoriesBody ||
                   "Encouraging children to tackle open-ended problems nurtures their creative thinking and equips them with skills for a successful life. Kindi supports this journey by providing tailored learning exercises designed to nurture these skills through play"}
-              </p>
+              </p> */}
+              {data.KindiSkillsCategoriesBody ? (
+                <p
+                  className="prose"
+                  dangerouslySetInnerHTML={{
+                    __html: data.KindiSkillsCategoriesBody,
+                  }}
+                />
+              ) : (
+                <p>
+                  Encouraging children to tackle open-ended problems nurtures
+                  their creative thinking and equips them with skills for a
+                  successful life. Kindi supports this journey by providing
+                  tailored learning exercises designed to nurture these skills
+                  through play
+                </p>
+              )}
             </div>
           </div>
         </div>
