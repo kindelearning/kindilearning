@@ -14,10 +14,15 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { fetchAllActivities } from "@/app/data/p/Dynamic/Activity";
 
 const PopularActivityCarousel = () => {
-  const [activities, setActivities] = useState(null); // Activitie
-  const [loading, setLoading] = useState(true);
+  // const [activities, setActivities] = useState(null); // Activitie
   const [error, setError] = useState(null);
   const [popularActivities, setPopularActivities] = useState([]); // Popular activities state
+  
+  // Mouse dragging state and refs
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
+  const scrollRef = useRef(null); // Create a reference for the scroll container
 
 
   // Fetch activities data
@@ -30,7 +35,7 @@ const PopularActivityCarousel = () => {
         const data = await response.json();
 
         if (response.ok) {
-          setActivities(data.data);
+          // setActivities(data.data);
            // Filter activities with isPopular === "Yes"
            const popularActivities = data.data.filter((activity) => activity.isPopular === "Yes");
            setPopularActivities(popularActivities);
@@ -50,13 +55,7 @@ const PopularActivityCarousel = () => {
 
   console.log("Activities fetched on Popular actviity componenet", );
 
-  const scrollRef = useRef(null); // Create a reference for the scroll container
-
-  // Mouse dragging state and refs
-  const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [scrollLeft, setScrollLeft] = useState(0);
-
+ 
   const handleMouseDown = (e) => {
     setIsDragging(true);
     setStartX(e.pageX - scrollRef.current.offsetLeft);
