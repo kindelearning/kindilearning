@@ -257,7 +257,7 @@ export default function CreateProductPage() {
     const newProducts = {
       Name: name,
       Description: description,
-      LongDescription: longDescription,
+      // LongDescription: longDescription,
       Price: price,
       DiscountPrice: discountPrice,
       MetaDescription: metaDescription,
@@ -272,7 +272,7 @@ export default function CreateProductPage() {
       Gallery: formattedGallery, // Use media ID if selected
     };
 
-    console.log("New Badge data", newProducts);
+    console.log("New Product data", newProducts);
     try {
       const response = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/products", {
         method: "POST",
@@ -304,10 +304,10 @@ export default function CreateProductPage() {
         setMedia(null);
       } else {
         setDialogMessage(
-          "Failed to create badge. Please check the input and try again."
+          "Failed to create Product. Please check the input and try again."
         );
         setDialogType("error");
-        throw new Error("Failed to create badge");
+        throw new Error("Failed to create Product");
       }
     } catch (error) {
       console.error("Error:", error.message); // Log any error that occurs
@@ -470,24 +470,24 @@ export default function CreateProductPage() {
             />
           </div>
         </div>
-        <div className="flex flex-col gap-1 justify-start items-start">
+        {/* <div className="flex flex-col gap-1 justify-start items-start">
           <label htmlFor="NlongDescriptioname" className="block">
             Long Description
           </label>
-          {/* <textarea
+          <textarea
             id="longDescription"
             name="longDescription"
             value={longDescription}
             onChange={(e) => setLongDescription(e.target.value)}
             className="w-full p-2 border border-gray-300 rounded"
             required
-          /> */}
+          />
           <ClaraMarkdownRichEditor
             value={longDescription}
             onChange={(newContent) => setLongDescription(newContent)}
             placeholder="Enter a description"
           />
-        </div>
+        </div> */}
         <div className="flex gap-1 justify-start items-start">
           <div className="flex w-full  flex-col gap-1 justify-start items-start">
             <label htmlFor="price" className="block">
@@ -522,15 +522,7 @@ export default function CreateProductPage() {
           <label htmlFor="metaDescription" className="block">
             Meta Description
           </label>
-          {/* <input
-            type="text"
-            id="metaDescription"
-            name="metaDescription"
-            value={metaDescription}
-            onChange={(e) => setMetaDescription(e.target.value)}
-            className="border p-2 w-full"
-            required
-          /> */}
+
           <ClaraMarkdownRichEditor
             value={metaDescription}
             onChange={(newContent) => setMetaDescription(newContent)}
@@ -561,20 +553,6 @@ export default function CreateProductPage() {
             name="materialOptions"
             value={materialOptions}
             onChange={(e) => setMaterialOptions(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded"
-            required
-          />
-        </div>
-        <div className="flex w-full   flex-col gap-1 justify-start items-start">
-          <label htmlFor="discountType" className="block">
-            Discount Type
-          </label>
-          <input
-            type="text"
-            id="discountType"
-            name="discountType"
-            value={discountType}
-            onChange={(e) => setDiscountType(e.target.value)}
             className="w-full p-2 border border-gray-300 rounded"
             required
           />

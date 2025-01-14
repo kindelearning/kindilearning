@@ -47,30 +47,6 @@ export default function Cora() {
           <RecentComment />
           <RecentActivities />
           <ActivityWidgets />
-
-          {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <StatisticsWidget
-              title="Total Revenue"
-              value="$250,000"
-              icon={<DollarSign size={24} />}
-              change="+12%"
-              trend="up"
-            />
-            <StatisticsWidget
-              title="Active Users"
-              value="1,200"
-              icon={<Users size={24} />}
-              change="-5%"
-              trend="down"
-            />
-            <StatisticsWidget
-              title="Orders Completed"
-              value="3,000"
-              icon={<ListOrdered size={24} />}
-              change="+8%"
-              trend="up"
-            />
-          </div> */}
         </div>
       </section>
     </>
