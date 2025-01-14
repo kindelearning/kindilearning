@@ -90,7 +90,7 @@ const PopularActivityCarousel = ({ activities }) => {
                             className="w-full max-h-[180px] duration-300 hover:scale-105 lg:min-h-[276px] lg:h-full lg:max-h-[276px] md:max-h-[300px] object-cover rounded-t-3xl"
                             src={
                               activity?.Gallery?.[0]?.url ||
-                              "/path/to/default-image.jpg"
+                              "/Images/shop/ProductImage.png"
                             } // Fallback for image source
                           />
                         </div>
