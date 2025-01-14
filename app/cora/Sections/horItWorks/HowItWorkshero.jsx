@@ -289,7 +289,7 @@ export function UpdateHowItWorkSection() {
   const [body, setBody] = useState("");
   const [featuredText, setFeaturedText] = useState("");
   const [media, setMedia] = useState(null); // Media state
-  const [openDialog, setOpenDialog] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false); 
   const [error, setError] = useState("");
 
   // Fetch existing data for MonthlyTheme content
