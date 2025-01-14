@@ -8,17 +8,45 @@ import { useEffect, useState } from "react";
 
 export default function PromotionalSection() {
   const [content, setContent] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   // Fetch content when the component mounts
   useEffect(() => {
-    async function loadContent() {
-      const fetchedContent = await fetchChildDevelopmentUnlock();
-      setContent(fetchedContent);
-    }
+    // async function loadContent() {
+    //   const fetchedContent = await fetchChildDevelopmentUnlock();
+    //   setContent(fetchedContent);
+    // }
 
-    loadContent();
+    // loadContent();
+    const fetchContent = async () => {
+      try {
+        const response = await fetch(
+          "https://upbeat-life-04fe8098b1.strapiapp.com/api/childdevelopmentunlock?populate=Content.Media"
+        );
+        const data = await response.json();
+
+        if (response.ok) {
+          setContent(data.data.Content); // Assuming the response has the Content property
+        } else {
+          setError("Error fetching content");
+        }
+      } catch (error) {
+        setError("Error fetching content");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchContent();
   }, []); // Empty dependency array means this effect runs only once when the component mounts
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
+  if (error) {
+    return <div>{error}</div>;
+  }
   if (!content) {
     return <p>No content...</p>; // Show loading state while fetching
   }
@@ -33,21 +61,24 @@ export default function PromotionalSection() {
           <div className="w-full flex lg:min-w-[54%] lg:w-[50%] px-0 lg:px-4 flex-col button justify-start items-start h-auto transition-all duration-300 animate-expand">
             <div className="w-full flex flex-col justify-start items-start h-auto gap-6 md:gap-6 script">
               {/* Featured Text */}
-              <div className="text-white clarascript animate-fade-in">
-                {content.featuredText || "Play now Learn fo Life"}
-              </div>
+              {content && (
+                <div className="text-white clarascript animate-fade-in">
+                  {content.featuredText || "Play now Learn fo Life 2"}
+                </div>
+              )}
 
               {/* Title and Body */}
               <div className="flex flex-col w-full justify-start items-start heading animate-fade-in">
                 <span className="text-white claraheading capitalize animate-fade-in">
                   {content.title || "Child Development Unlocked"}
                 </span>
+
                 {content.Body ? (
-                  <span className="w-full h-auto text-white clarabodyTwo animate-fade-in">
+                  <span className="w-full text-white h-auto prose clarabodyTwo animate-fade-in">
                     <div dangerouslySetInnerHTML={{ __html: content.Body }} />
                   </span>
                 ) : (
-                  <span className="w-full h-auto text-white clarabodyTwo animate-fade-in">
+                  <span className="w-full h-auto  clarabodyTwo animate-fade-in">
                     Scientists have recently determined that it takes
                     approximately 400 repetitions to create a new synapse in the
                     brain- unless it is done with play, in which case, it takes
@@ -55,7 +86,7 @@ export default function PromotionalSection() {
                     Child Development.Play matters! Its the vital developmental
                     process that shapes the adults were destined to become. And
                     we are in a rush, as essential life skills become more
-                    challenging to master as children age....&nbsp;
+                    challenging to master as children age....
                   </span>
                 )}
               </div>
