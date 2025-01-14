@@ -10,7 +10,6 @@ import {
   SlideThrive,
 } from "@/public/Images";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import {
@@ -116,7 +115,7 @@ const slides = [
   },
 ];
 
-export default function Slider() {
+export function Slider8() {
   const [loaded, setLoaded] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
@@ -319,7 +318,7 @@ export default function Slider() {
   );
 }
 
-export  function Slide3r() {
+export default function Slider() {
   const [sliderData, setSliderData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -354,76 +353,69 @@ export  function Slide3r() {
 
   return (
     <>
-      {sliderData && (
-        <section className="w-full h-auto cursor-grab  items-center justify-center flex flex-col gap-[20px] bg-purple">
-          <div className=" w-full bg-purple flex flex-col-reverse md:justify-center md:items-center  gap-8 md:gap-8">
-            <Carousel loop className="w-full flex py-0 my-0 justify-center items-center">
-              <CarouselContent loop className="w-full ml-0 p-0 flex justify-center items-center" >
-                {sliderData?.map((item) => (
-                  <CarouselItem
-                    key={item.id}
-                    className={`min-w-full justify-center  shrink-0 grow-0 basis-full flex p-0  items-center ${
-                      item.bgcolor ? `bg-[${item.bgcolor}]` : "bg-purple"
-                    }`}
-                  >
-                    <div
-                      className={`w-full max-w-full claracontainer  md:min-w-[300px] md:w-[300px] lg:w-full flex flex-col  lg:flex-row justify-between items-center h-auto  `}
-                    >
-                      {item?.Media && item?.Media?.url ? (
-                        <img
-                          src={`https://upbeat-life-04fe8098b1.strapiapp.com${item.Media.url}`}
-                          // src={item?.Media?.url}
-                          alt={item?.Title}
-                          className="w-full md:min-w-[300px] md:w-[300px] lg:w-full lg:h-full lg:min-h-[400px] max-h-[400px] object-contain"
-                        />
-                      ) : (
-                        <Image
-                          src={SlideGrow}
-                          // className="w-full md:min-w-[300px] md:w-[300px] lg:w-full lg:h-full lg:min-h-[400px] max-h-[400px] object-contain"
-                          alt={item?.Title}
-                        />
-                      )}
+      <section className="w-full h-auto cursor-grab  items-center justify-center flex flex-col gap-[20px] bg-purple">
+        <div className=" w-full bg-purple flex flex-col-reverse md:justify-center md:items-center py-0  gap-8 md:gap-8">
+          <Carousel className="w-full flex py-0 my-0 justify-center items-center">
+            <CarouselContent className="w-full ml-0 p-0 flex justify-center items-center">
+              {sliderData?.map((item) => (
+                <CarouselItem
+                  tyle={{ backgroundColor: item.bgcolor || "purple" }}
+                  key={item.id}
+                  className="min-w-full justify-center  shrink-0 grow-0 basis-full flex p-0  items-center"
+                >
+                  <div className="w-full max-w-full claracontainer  md:min-w-[300px] md:w-[300px] lg:w-full flex flex-col  lg:flex-row justify-between items-center h-auto ">
+                    {item?.Media && item?.Media[0]?.url ? (
+                      <img
+                        // src={`https://upbeat-life-04fe8098b1.strapiapp.com${item.Media[0]?.url}`}
+                        src={SlideGrow}
+                        alt={item?.Title}
+                        className="w-full md:min-w-[300px] md:w-[300px] lg:w-full lg:h-full lg:min-h-[400px] max-h-[400px] object-contain"
+                      />
+                    ) : (
+                      <Image
+                        src={SlideGrow}
+                        // className="w-full md:min-w-[300px] md:w-[300px] lg:w-full lg:h-full lg:min-h-[400px] max-h-[400px] object-contain"
+                        alt={item?.Title}
+                      />
+                    )}
 
-                      {/* Right - Text Content */}
-
-                      <div className="h-auto max-w-[400px] lg:min-w-[700px] lg:max-w-full w-full flex-col px-4 md:px-2 lg:px-4 justify-start items-start gap-6 md:gap-8 lg:gap-10 xl:gap-12 inline-flex  ">
-                        <div className="w-fit flex flex-col justify-start items-start h-auto gap-4">
-                          <div className={`text-white clarascript   `}>
-                            {item.featuredText}
-                          </div>
-                          <div className="flex flex-col w-fit justify-start items-start gap-4">
-                            <span className="text-white w-full claraheading">
-                              {item.Title}
-                            </span>
-
-                            <div className="w-full max-w-full h-auto prose text-white clarabodyTwo">
-                              <p
-                                dangerouslySetInnerHTML={{ __html: item.Body }}
-                              />
-                            </div>
-                          </div>
+                    <div className="h-auto max-w-[400px] lg:min-w-[700px] lg:max-w-full w-full flex-col px-4 md:px-2 lg:px-4 justify-start items-start gap-6 md:gap-8 lg:gap-10 xl:gap-12 inline-flex  ">
+                      <div className="w-fit flex flex-col justify-start items-start h-auto gap-4">
+                        <div className={`text-white clarascript   `}>
+                          {item.featuredText}
                         </div>
-                        <div className="w-auto">
-                          <Button
-                            className={`bg-white py-4 hover:bg-red hover: text-white clarabutton font-medium px-8 md:px-12 border-2  rounded-[10px]`}
-                            // style={{
-                            //   color: `#${slides[currentSlide].textcolor}`,
-                            // }}
-                          >
-                            Get Started{" "}
-                          </Button>
+                        <div className="flex flex-col w-fit justify-start items-start gap-4">
+                          <span className="text-white w-full claraheading">
+                            {item.Title}
+                          </span>
+
+                          <div className="w-full max-w-full h-auto prose text-white clarabodyTwo">
+                            <p
+                              dangerouslySetInnerHTML={{ __html: item.Body }}
+                            />
+                          </div>
                         </div>
                       </div>
+                      <div className="w-auto">
+                        <Button
+                          className={`bg-white py-4 hover:bg-red hover: text-white clarabutton font-medium px-8 md:px-12 border-2  rounded-[10px]`}
+                          // style={{
+                          //   color: `#${slides[currentSlide].textcolor}`,
+                          // }}
+                        >
+                          Get Started{" "}
+                        </Button>
+                      </div>
                     </div>
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-              <CarouselPrevious />
-              <CarouselNext />
-            </Carousel>
-          </div>
-        </section>
-      )}
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="text-black" />
+            <CarouselNext className="text-black" />
+          </Carousel>
+        </div>
+      </section>
     </>
   );
 }
