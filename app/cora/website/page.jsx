@@ -35,9 +35,9 @@ export default function Cora() {
           {/* <BlogWidgets /> */}
           <ThemeWidgets />
           <RecentThemes />
-          {/* 
           <ProductWidgets />
           <LatestProducts />
+          {/* 
           <RecentBlogs />
           <RecentComment /> 
           */}
