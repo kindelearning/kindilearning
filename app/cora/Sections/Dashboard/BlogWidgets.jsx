@@ -209,7 +209,7 @@ const BlogCard = ({ post }) => {
       {/* Thumbnail */}
       <img
         // src={`https://upbeat-life-04fe8098b1.strapiapp.com${post.thumbnail}`}
-        src={post.thumbnail || BlogThumb}
+        src={post.thumbnail || "/Images/BlogThumb.png"}
         alt={post.title}
         className="w-16 h-16 object-cover rounded-lg"
       />

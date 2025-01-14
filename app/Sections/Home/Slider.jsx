@@ -115,7 +115,7 @@ const slides = [
   },
 ];
 
-export function OldSlider() {
+export default function Slider() {
   const [loaded, setLoaded] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
@@ -406,111 +406,111 @@ const getComplementaryColor = (hex) => {
   return hslToHex(complementaryHue, s, l);
 };
 
-export default function Slider() {
-  const [sliderData, setSliderData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [currentIndex, setCurrentIndex] = useState(0); // Track the current slide index
-  const autoplayInterval = 1000; // Time interval for autoplay (in ms)
+// export default function Slider() {
+//   const [sliderData, setSliderData] = useState(null);
+//   const [loading, setLoading] = useState(true);
+//   const [error, setError] = useState(null);
+//   const [currentIndex, setCurrentIndex] = useState(0); // Track the current slide index
+//   const autoplayInterval = 1000; // Time interval for autoplay (in ms)
 
-  useEffect(() => {
-    // Fetch slider data
-    const fetchSliderData = async () => {
-      try {
-        const response = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/slider?populate=Content.Media");
-        const data = await response.json();
+//   useEffect(() => {
+//     // Fetch slider data
+//     const fetchSliderData = async () => {
+//       try {
+//         const response = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/slider?populate=Content.Media");
+//         const data = await response.json();
 
-        if (response.ok) {
-          setSliderData(data.data.Content);
-        } else {
-          setError("Error fetching data");
-        }
-      } catch (error) {
-        setError("Error fetching data");
-      } finally {
-        setLoading(false);
-      }
-    };
+//         if (response.ok) {
+//           setSliderData(data.data.Content);
+//         } else {
+//           setError("Error fetching data");
+//         }
+//       } catch (error) {
+//         setError("Error fetching data");
+//       } finally {
+//         setLoading(false);
+//       }
+//     };
 
-    fetchSliderData();
+//     fetchSliderData();
 
-    // Autoplay logic: Change slide every few seconds
-    const intervalId = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % sliderData?.length); // Loop through slides
-    }, autoplayInterval);
+//     // Autoplay logic: Change slide every few seconds
+//     const intervalId = setInterval(() => {
+//       setCurrentIndex((prevIndex) => (prevIndex + 1) % sliderData?.length); // Loop through slides
+//     }, autoplayInterval);
 
-    // Cleanup the interval on component unmount
-    return () => clearInterval(intervalId);
-  }, [sliderData]);
+//     // Cleanup the interval on component unmount
+//     return () => clearInterval(intervalId);
+//   }, [sliderData]);
 
-  console.log("Slider Data", sliderData);
+//   console.log("Slider Data", sliderData);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
+//   if (loading) return <div>Loading...</div>;
+//   if (error) return <div>{error}</div>;
 
-  return (
-    <section className="w-full h-auto cursor-grab items-center justify-center flex flex-col gap-[20px] bg-purple">
-      <div className="w-full bg-purple flex flex-col-reverse md:justify-center md:items-center py-0 gap-8 md:gap-8">
-        <Carousel
-          selectedItem={currentIndex} // Use currentIndex for controlling active slide
-          onChange={(index) => setCurrentIndex(index)} // Update index on manual change
-          className="w-full flex py-0 my-0 justify-center items-center"
-        >
-          {sliderData?.length > 0 ? (
-            <CarouselContent className="w-full ml-0 p-0 flex justify-center items-center">
-              {sliderData.map((item) => (
-                <CarouselItem
-                  key={item.id}
-                  style={{ backgroundColor: item.bgcolor || "purple" }}
-                  className="min-w-full justify-center shrink-0 grow-0 basis-full flex p-0 items-center"
-                >
-                  <div className="w-full max-w-full claracontainer md:min-w-[300px] md:w-[300px] lg:w-full flex flex-col lg:flex-row justify-between items-center h-auto">
-                    {item?.Media && item.Media[0]?.url ? (
-                      <img
-                        src={`https://upbeat-life-04fe8098b1.strapiapp.com${item.Media[0].url}`}
-                        alt={item?.Title}
-                        className="w-full md:min-w-[300px] md:w-[300px] lg:w-full lg:h-full lg:min-h-[400px] max-h-[400px] object-contain"
-                        loading="lazy"
-                      />
-                    ) : (
-                      <Image src={SlideGrow} alt={item?.Title} loading="lazy" />
-                    )}
-                    <div className="h-auto max-w-[400px] lg:min-w-[700px] lg:max-w-full w-full flex-col px-4 md:px-2 lg:px-4 justify-start items-start gap-6 md:gap-8 lg:gap-10 xl:gap-12 inline-flex">
-                      <div className="w-fit text-[white] flex flex-col justify-start items-start h-auto gap-4">
-                        <div className=" clarascript">{item.featuredText}</div>
-                        <div className="flex flex-col w-fit justify-start items-start gap-4">
-                          <span className="w-full claraheading">{item.Title}</span>
+//   return (
+//     <section className="w-full h-auto cursor-grab items-center justify-center flex flex-col gap-[20px] bg-purple">
+//       <div className="w-full bg-purple flex flex-col-reverse md:justify-center md:items-center py-0 gap-8 md:gap-8">
+//         <Carousel
+//           selectedItem={currentIndex} // Use currentIndex for controlling active slide
+//           onChange={(index) => setCurrentIndex(index)} // Update index on manual change
+//           className="w-full flex py-0 my-0 justify-center items-center"
+//         >
+//           {sliderData?.length > 0 ? (
+//             <CarouselContent className="w-full ml-0 p-0 flex justify-center items-center">
+//               {sliderData.map((item) => (
+//                 <CarouselItem
+//                   key={item.id}
+//                   style={{ backgroundColor: item.bgcolor || "purple" }}
+//                   className="min-w-full justify-center shrink-0 grow-0 basis-full flex p-0 items-center"
+//                 >
+//                   <div className="w-full max-w-full claracontainer md:min-w-[300px] md:w-[300px] lg:w-full flex flex-col lg:flex-row justify-between items-center h-auto">
+//                     {item?.Media && item.Media[0]?.url ? (
+//                       <img
+//                         src={`https://upbeat-life-04fe8098b1.strapiapp.com${item.Media[0].url}`}
+//                         alt={item?.Title}
+//                         className="w-full md:min-w-[300px] md:w-[300px] lg:w-full lg:h-full lg:min-h-[400px] max-h-[400px] object-contain"
+//                         loading="lazy"
+//                       />
+//                     ) : (
+//                       <Image src={SlideGrow} alt={item?.Title} loading="lazy" />
+//                     )}
+//                     <div className="h-auto max-w-[400px] lg:min-w-[700px] lg:max-w-full w-full flex-col px-4 md:px-2 lg:px-4 justify-start items-start gap-6 md:gap-8 lg:gap-10 xl:gap-12 inline-flex">
+//                       <div className="w-fit text-[white] flex flex-col justify-start items-start h-auto gap-4">
+//                         <div className=" clarascript">{item.featuredText}</div>
+//                         <div className="flex flex-col w-fit justify-start items-start gap-4">
+//                           <span className="w-full claraheading">{item.Title}</span>
 
-                          <div className="w-full max-w-full h-auto prose text-white clarabodyTwo">
-                            <p dangerouslySetInnerHTML={{ __html: item.Body }} />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="w-auto">
-                        <Button
-                          className="bg-white py-4 hover:bg-red hover:text-white clarabutton font-medium px-8 md:px-12 border-2 rounded-[10px]"
-                          style={{
-                            backgroundColor: getComplementaryColor(item.bgcolor || "#000000"),
-                          }}
-                        >
-                          Get Started
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-          ) : (
-            <OldSlider />
-          )}
-          <CarouselPrevious className="text-black" />
-          <CarouselNext className="text-black" />
-        </Carousel>
-      </div>
-    </section>
-  );
-}
+//                           <div className="w-full max-w-full h-auto prose text-white clarabodyTwo">
+//                             <p dangerouslySetInnerHTML={{ __html: item.Body }} />
+//                           </div>
+//                         </div>
+//                       </div>
+//                       <div className="w-auto">
+//                         <Button
+//                           className="bg-white py-4 hover:bg-red hover:text-white clarabutton font-medium px-8 md:px-12 border-2 rounded-[10px]"
+//                           style={{
+//                             backgroundColor: getComplementaryColor(item.bgcolor || "#000000"),
+//                           }}
+//                         >
+//                           Get Started
+//                         </Button>
+//                       </div>
+//                     </div>
+//                   </div>
+//                 </CarouselItem>
+//               ))}
+//             </CarouselContent>
+//           ) : (
+//             <OldSlider />
+//           )}
+//           <CarouselPrevious className="text-black" />
+//           <CarouselNext className="text-black" />
+//         </Carousel>
+//       </div>
+//     </section>
+//   );
+// }
 
 
 export function Slider2() {

@@ -448,13 +448,13 @@ export function UpdateHowItWorks() {
         {/* Main Body Input */}
         <div>
           <label htmlFor="mainBody">Main Body (Richtext):</label>
-          <textarea
+          {/* <textarea
             id="mainBody"
             value={mainBody}
             onChange={(e) => setMainBody(e.target.value)}
             className="border p-2 w-full"
             rows="4"
-          />
+          /> */}
           <ClaraMarkdownRichEditor
             name="mainBody"
             value={mainBody || ""} // Ensure the value is always a string

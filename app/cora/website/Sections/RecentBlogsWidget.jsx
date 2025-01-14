@@ -3,7 +3,7 @@ const BlogCard = ({ post }) => {
     <div className="flex items-start space-x-4 bg-gray-50 p-4 rounded-lg border border-gray-200 hover:bg-gray-100 transition-all">
       {/* Thumbnail */}
       <img
-        src={post.thumbnail}
+        src={post.thumbnail }
         alt={post.title}
         className="w-16 h-16 object-cover rounded-lg"
       />
