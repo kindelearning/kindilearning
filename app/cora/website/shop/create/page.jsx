@@ -338,40 +338,60 @@ export default function CreateProductPage() {
         <title>Create New Product - Kindi</title>
       </head>
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="flex w-full justify-between items-center gap-2">
+        <div className="flex gap-4 justify-between items-start w-full">
           {/* Media */}
-          <div className="w-full">
+          <div className="w-full p-2 bg-[#f3f3f3a8] rounded-lg">
             <label>Media:</label>
-            {media ? (
-              <div className="mt-4">
-                <img
-                  src={media.url}
-                  // src={`https://upbeat-life-04fe8098b1.strapiapp.com${media.url}`}
-                  className="w-32 h-32 object-cover"
-                />
-                <p>{media.name}</p>
+            <div className="flex justify-between items-center max-w-full">
+              <h1 className="text-2xl font-semibold text-gray-900">
+                Select Media
+              </h1>
+
+              {/* Media Count Display */}
+              <div className="flex max-w-full justify-between items-center gap-2">
+                <div className="justify-center items-center text-lg font-semibold transition-colors duration-300 ">
+                  {media ? (
+                    <div className="flex flex-col">
+                      <img
+                        src={media.url}
+                        // src={`https://upbeat-life-04fe8098b1.strapiapp.com${media.url}`}
+                        className="w-32 h-32 object-cover rounded-full flex "
+                      />
+                      <p>{media.name}</p>
+                    </div>
+                  ) : (
+                    <p className="mt-4 text-gray-500 text-center">
+                      Not selected anything
+                    </p>
+                  )}
+                </div>
               </div>
-            ) : (
-              <p>Not selected anything</p>
-            )}
+            </div>
             <MediaSelector onMediaSelect={handleMediaSelect} />
           </div>
           {/* Gallery */}
-          <div className="w-full">
+          <div className="w-full p-2 bg-[#ffe9e9a8] rounded-lg">
             <label>Gallery:</label>
-            {/* {gallery ? (
-            <div className="mt-4">
-              <img
-                // src={media.url}
-                src={`https://upbeat-life-04fe8098b1.strapiapp.com${gallery.url}`}
-                className="w-32 h-32 object-cover"
-              />
-              <p>{gallery.name}</p>
+            <div className="flex max-w-full justify-between items-center mb-6">
+              <h1 className="text-2xl font-semibold text-gray-900">
+                Media Gallery
+              </h1>
+
+              {/* Minimal count display */}
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full flex justify-center items-center bg-indigo-500 text-white text-lg font-semibold transition-colors duration-300 hover:bg-indigo-600">
+                  {Array.isArray(gallery) && <>{gallery.length}</>}
+                </div>
+                <span className="text-gray-600 text-sm">Items Selected</span>
+              </div>
             </div>
-          ) : (
-            <p>Not selected anything</p>
-          )} */}
             <MultiMediaSelector onMediaSelect={handleGallerySelect} />{" "}
+            {/* If no media selected, show a placeholder */}
+            {Array.isArray(gallery) && gallery.length === 0 && (
+              <p className="mt-4 text-gray-500 text-center">
+                No items selected yet.
+              </p>
+            )}
           </div>
         </div>
 
@@ -519,7 +539,7 @@ export default function CreateProductPage() {
         </div>
         <div className="flex w-full   flex-col gap-1 justify-start items-start">
           <label htmlFor="seoKeywords" className="block">
-            SEO Keywords
+            SEO Keywords (Add Comma for multiple Values)
           </label>
           <input
             type="text"

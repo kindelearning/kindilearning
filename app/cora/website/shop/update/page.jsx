@@ -105,16 +105,9 @@ export default function ProductUpdateForm({ documentId }) {
     setMedia(selectedMediaIds); // Store the selected media object
   };
 
-  const handleGallerySelect = (selectedMediaIds) => {
+  const handleGallerySelect = async (selectedMediaIds) => {
     console.log("Selected Media IDs:", selectedMediaIds);
-
-    // Filter out invalid IDs (e.g., undefined or null)
-
-    const formattedGallery = selectedMediaIds.map((id) => ({ id }));
-    // Update the gallery state with the new array of valid IDs
     setGallery(selectedMediaIds);
-
-    // console.log("Updated Gallery State:", formattedGallery);
   };
 
   if (!existingData) {
@@ -125,36 +118,61 @@ export default function ProductUpdateForm({ documentId }) {
     <>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="flex w-full justify-between items-center gap-2">
-          <div className="w-full">
-            <label>Media:</label>
-            {media ? (
-              <div className="mt-4">
-                <img
-                  src={media.url}
-                  // src={`https://upbeat-life-04fe8098b1.strapiapp.com${media.url}`}
-                  className="w-32 h-32 object-cover"
-                />
-                <p>{media.name}</p>
-              </div>
-            ) : (
-              <p>Not selected anything</p>
-            )}
-            <MediaSelector onMediaSelect={handleMediaSelect} />
-          </div>
+          <div className="flex gap-4 justify-between items-start w-full">
+            <div className="w-full p-2 bg-[#f3f3f3a8] rounded-lg">
+              <label>Media:</label>
 
-          <div className="w-full">
-            <label>Gallery:</label>
-            {/* {gallery?.map((media) => (
-              <div key={media.id} className="relative">
-                <img
-                  src={media.url}
-                  // src={`https://upbeat-life-04fe8098b1.strapiapp.com${media.url}`}
-                  className="w-32 h-32 object-cover"
-                />
-                <p className="text-sm mt-2">{media.name}</p>
+              <div className="flex justify-between items-center max-w-full">
+                <h1 className="text-2xl font-semibold text-gray-900">
+                  Select Media
+                </h1>
+
+                {/* Media Count Display */}
+                <div className="flex max-w-full justify-between items-center gap-2">
+                  <div className="justify-center items-center text-lg font-semibold transition-colors duration-300 ">
+                    {media ? (
+                      <div className="flex flex-col">
+                        <img
+                          src={media.url}
+                          // src={`https://upbeat-life-04fe8098b1.strapiapp.com${media.url}`}
+                          className="w-32 h-32 object-cover rounded-full flex "
+                        />
+                        <p>{media.name}</p>
+                      </div>
+                    ) : (
+                      <p className="mt-4 text-gray-500 text-center">
+                        Not selected anything
+                      </p>
+                    )}
+                  </div>
+                </div>
               </div>
-            ))} */}
-            <MultiMediaSelector onMediaSelect={handleGallerySelect} />{" "}
+              <MediaSelector onMediaSelect={handleMediaSelect} />
+            </div>
+
+            <div className="w-full p-2 bg-[#ffe9e9a8] rounded-lg">
+              <label>Gallery:</label>
+              <div className="flex max-w-full justify-between items-center mb-6">
+                <h1 className="text-2xl font-semibold text-gray-900">
+                  Media Gallery
+                </h1>
+
+                {/* Minimal count display */}
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-full flex justify-center items-center bg-indigo-500 text-white text-lg font-semibold transition-colors duration-300 hover:bg-indigo-600">
+                    {gallery && <>{gallery.length}</>}
+                  </div>
+                  <span className="text-gray-600 text-sm">Items Selected</span>
+                </div>
+              </div>
+              <MultiMediaSelector onMediaSelect={handleGallerySelect} />{" "}
+              {/* If no media selected, show a placeholder */}
+              {gallery.length === 0 && (
+                <p className="mt-4 text-gray-500 text-center">
+                  No items selected yet.
+                </p>
+              )}
+            </div>
           </div>
         </div>
         <div>

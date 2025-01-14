@@ -17,6 +17,7 @@ import ClaraMarkdownRichEditor from "../../Sections/TextEditor/ClaraMarkdownRich
 import MediaSelector, {
   MultiMediaSelector,
 } from "../media/Section/MediaSelector";
+import { Button } from "@/components/ui/button";
 
 export default function EditActivityForm({ documentId }) {
   const [title, setTitle] = useState("");
@@ -175,24 +176,62 @@ export default function EditActivityForm({ documentId }) {
   };
 
   return (
-    <div className="p-8 font-fredoka">
+    <div className="p-0 font-fredoka">
       <h1 className="text-2xl font-bold mb-6">Edit Activity</h1>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         {error && <div className="text-red-500">{error}</div>}{" "}
         <div className="flex w-full justify-between items-center gap-2">
           {/* Gallery Media Selector */}
-          <div className="w-full">
+          <div className="w-full p-2 bg-[#e4e1e1a8] rounded-lg">
             <label htmlFor="Gallery" className="block">
               Gallery
             </label>
+            <div className="flex max-w-full justify-between items-center mb-6">
+              <h1 className="text-2xl font-semibold text-gray-900">Gallery</h1>
+
+              {/* Minimal count display */}
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full flex justify-center items-center bg-indigo-500 text-white text-lg font-semibold transition-colors duration-300 hover:bg-indigo-600">
+                  {Array.isArray(media) && <>{media.length}</>}
+                </div>
+                <span className="text-gray-600 text-sm">Items Selected</span>
+              </div>
+            </div>
             <MultiMediaSelector onMediaSelect={handleGallerySelect} />{" "}
+            {/* If no media selected, show a placeholder */}
+            {Array.isArray(media) && media.length === 0 && (
+              <p className="mt-4 text-gray-500 text-center">
+                No items selected yet.
+              </p>
+            )}
           </div>
-          <div className="w-full">
+
+          {/* Resource */}
+          <div className="w-full p-2 bg-[#e4e1e1a8] rounded-lg">
             <label htmlFor="Resources" className="block">
               Resources
             </label>
-            <MultiMediaSelector onMediaSelect={handleResourcesSelect} />{" "}
+            <div className="flex max-w-full justify-between items-center mb-6">
+              <h1 className="text-2xl font-semibold text-gray-900">
+                Resources
+              </h1>
+
+              {/* Minimal count display */}
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full flex justify-center items-center bg-indigo-500 text-white text-lg font-semibold transition-colors duration-300 hover:bg-indigo-600">
+                  {Array.isArray(resource) && <>{resource.length}</>}
+                </div>
+                <span className="text-gray-600 text-sm">Items Selected</span>
+              </div>
+            </div>
+            <MultiMediaSelector onMediaSelect={handleResourcesSelect} />
+            {/* If no media selected, show a placeholder */}
+            {Array.isArray(resource) && resource.length === 0 && (
+              <p className="mt-4 text-gray-500 text-center">
+                No items selected yet.
+              </p>
+            )}
           </div>
         </div>
         {/* Error message */}
@@ -384,12 +423,17 @@ export default function EditActivityForm({ documentId }) {
             Add New Accordion
           </button>
         </div>
-        <button
+        {/* <button
           type="submit"
           className="px-4 py-2 bg-blue-500 text-white rounded"
         >
           Update Activity
-        </button>
+        </button> */}
+        <section className="w-full h-auto shadow-upper bg-[#ffffff] -top-2 sticky bottom-0 z-10 rounded-t-[16px] items-center justify-center py-4 flex flex-row">
+          <div className="claracontainer flex flex-row  justify-between w-full items-center gap-4 px-4">
+            <Button type="submit">Update Activity</Button>
+          </div>
+        </section>
       </form>
 
       {/* Custom Success Dialog */}

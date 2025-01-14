@@ -80,15 +80,14 @@ export default function ParentWithKindi() {
             </h2>
 
             <div className="text-lg text-gray-700 space-y-6 leading-relaxed">
-              {content.Body?(
-
+              {content.Body ? (
                 <p
                   className="prose w-full px-0 text-start clarabodyTwo  font-medium font-fredoka"
                   dangerouslySetInnerHTML={{
                     __html: content.Body,
                   }}
                 />
-              ):(
+              ) : (
                 <p> content not available</p>
               )}
             </div>
@@ -97,7 +96,11 @@ export default function ParentWithKindi() {
               <div className="grid grid-cols-3 gap-2 justify-between items-center w-full">
                 {content?.Media?.map((img, index) => (
                   <div key={index}>
-                    <img className="w-[200px] h-[200px]" src={img.url} alt="text" />
+                    <img
+                      className="w-[200px] h-[200px]"
+                      src={img.url}
+                      alt="text"
+                    />
                   </div>
                 ))}
               </div>
@@ -381,6 +384,29 @@ export function UpdateParentWithKindiSection() {
     <div className="p-8">
       <h1 className="text-2xl font-bold mb-6">Edit Parentwithkindi</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Media Field */}
+        <div className="w-full p-2 bg-[#e4e1e1a8] rounded-lg">
+          <label>Gallery:</label>
+          <div className="flex max-w-full justify-between items-center mb-6">
+            <h1 className="text-2xl font-semibold text-gray-900">Gallery</h1>
+
+            {/* Minimal count display */}
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-full flex justify-center items-center bg-indigo-500 text-white text-lg font-semibold transition-colors duration-300 hover:bg-indigo-600">
+                {Array.isArray(media) && <>{media.length}</>}
+              </div>
+              <span className="text-gray-600 text-sm">Items Selected</span>
+            </div>
+          </div>
+          <MultiMediaSelector onMediaSelect={handleGallerySelect} />{" "}
+          {/* If no media selected, show a placeholder */}
+          {Array.isArray(media) && media.length === 0 && (
+            <p className="mt-4 text-gray-500 text-center">
+              No items selected yet.
+            </p>
+          )}
+        </div>
+
         {/* Title Field */}
         <div>
           <label htmlFor="Title" className="block">
@@ -426,11 +452,6 @@ export function UpdateParentWithKindiSection() {
           />
         </div>
 
-        {/* Media Field */}
-        <div>
-          <label>Gallery:</label>
-          <MultiMediaSelector onMediaSelect={handleGallerySelect} />{" "}
-        </div>
         <button type="submit" className="px-4 py-2 bg-black text-white rounded">
           Update Content
         </button>
