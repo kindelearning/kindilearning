@@ -14,14 +14,11 @@ export default async function PopularActivity() {
 
   const { featuredText, title, BodyDescription, Media } = content.Content;
 
-  const activities = await fetchAllActivities();
-  console.log("Fetched Activities on PopularActivity", activities);
-  const data = activities.data || [];  // Use an empty array if myData is undefined
-  const filteredActivities = data.filter(activity => activity.isPopular === "Yes");
+  // const activities = await fetchAllActivities();
 
-  if (!activities || activities.length === 0) {
-    return <div>No activities found!</div>;
-  }
+  // if (!activities || activities.length === 0) {
+  //   return <div>No activities found!</div>;
+  // }
 
   return (
     <>
@@ -60,7 +57,7 @@ export default async function PopularActivity() {
         </div>
 
         {/* <PopularActivityCarousel activities={filteredActivities} /> */}
-        <PopularActivityCarousel activities={activities} />
+        <PopularActivityCarousel />
       </section>
     </>
   );

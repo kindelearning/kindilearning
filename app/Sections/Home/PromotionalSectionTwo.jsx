@@ -31,14 +31,25 @@ export default async function PromotionalSectionTwo() {
                   muted
                   className="object-cover max-h-[260px] md:min-h-[400px] md:h-[400px] lg:h-[360px] lg:max-h-[400px] rounded-[24px] w-full md:w-full lg:w-[540px] h-full"
                 >
-                  <source src={mediaUrl} type="video/mp4" />
-                  Your browser does not support the video.
+                  <source
+                    src={mediaUrl || "preloader.mp4"}
+                    // src={`https://upbeat-life-04fe8098b1.strapiapp.com${mediaUrl}`}
+                    type="video/mp4"
+                  />
                 </video>
               ) : (
-                <Image src={mediaUrl} alt="Hero" width={540} height={360} />
+                <img src={mediaUrl} alt="Hero" width={540} height={360} />
               )
             ) : (
-              <p>No media available</p>
+              <video
+                controls
+                autoPlay
+                loop
+                muted
+                className="object-cover max-h-[260px] md:min-h-[400px] md:h-[400px] lg:h-[360px] lg:max-h-[400px] rounded-[24px] w-full md:w-full lg:w-[540px] h-full"
+              >
+                <source src="preloader.mp4" type="video/mp4" />
+              </video>
             )}
           </div>
         </div>
@@ -71,15 +82,20 @@ export default async function PromotionalSectionTwo() {
                   approximately 400 repetitions to create a new synapse in the
                   brain- unless it is done with play, in which case, it takes
                   between 10-20 repetitions.”- Dr. Karyn Purvis Institute of
-                  Child Development.Play matters! It&apos;s the vital developmental
-                  process that shapes the adults we&apos;re destined to become. And
-                  we are in a rush, as essential life skills become more
-                  challenging to master as children age....&nbsp;
+                  Child Development.Play matters! It&apos;s the vital
+                  developmental process that shapes the adults we&apos;re
+                  destined to become. And we are in a rush, as essential life
+                  skills become more challenging to master as children
+                  age....&nbsp;
                 </p>
               )}
             </div>
           </div>
-          <Link href="/profile" target="_blank" className="w-full h-auto animate-fade-in">
+          <Link
+            href="/profile"
+            target="_blank"
+            className="w-full h-auto animate-fade-in"
+          >
             <Button className="bg-red hover:bg-purple px-4 md:px-8 xl:px-12 border-2 clarabutton rounded-[16px]">
               Get Started
             </Button>

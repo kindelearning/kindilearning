@@ -17,6 +17,8 @@ export default function PricingTabs() {
   const [pricingDataFeature, setPricingDataFeature] = useState(null);
   const [monthlypricingDataFeature, setMonthlyPricingDataFeature] =
     useState(null);
+
+
   const toggleAccordion = () => {
     setIsAccordionOpen((prev) => !prev);
   };

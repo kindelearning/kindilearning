@@ -24,7 +24,7 @@ export default async function HowItWorks() {
               </span>
               <span className="text-red text-start md:text-center claraheading animate-fade-in">
                 {MainTitle
-                  ? MainTitle.split(" ").slice(2, 3).join(" ")
+                  ? MainTitle.split(" ").slice(2, 6).join(" ")
                   : " Works"}{" "}
               </span>
             </div>

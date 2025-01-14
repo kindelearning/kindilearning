@@ -25,7 +25,7 @@ export default function PricingCard({
           className="min-h-[260px] object-cover h-full w-full"
         />
       </div>
-      <div className="flex flex-col justify-normal items-start px-4 py-8">
+      <div className="flex flex-col justify-normal items-start px-4 py-8 w-full overflow-clip">
         <div className="flex flex-col gap-6 justify-normal items-start px-0">
           <div className="flex flex-col justify-between gap-4 items-start">
             <div className="text-[#3f3a64] text-[28px] lg:text-[30px] leading-[30px] lg:leading-[32px] font-semibold font-fredoka capitalize ">

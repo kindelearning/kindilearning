@@ -71,7 +71,7 @@ const PricingCard = ({
   return (
     <div className="w-full max-w-[360px] h-auto bg-[#ffffff] rounded-[32px] items-center justify-center flex flex-col gap-[20px] ">
       <Image src={image || PricingThumb} alt="Pricing Image" />
-      <div className="flex flex-col justify-normal items-start px-4 py-8">
+      <div className="flex flex-col justify-normal items-start px-4 py-8 w-full overflow-clip">
         <div className="flex flex-col gap-6 justify-normal items-start px-4">
           <div className="flex flex-col justify-between items-start">
             <div className="text-[#3f3a64] text-[28px] lg:text-[30px]  font-semibold font-fredoka capitalize leading-10">

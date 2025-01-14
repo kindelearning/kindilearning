@@ -151,7 +151,7 @@ export function LatestProducts() {
       const sortedProducts = data.data.sort(
         (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt) // Sort by updatedAt to get the latest
       );
-      console.log("Fetched products data", sortedProducts);
+      // console.log("Fetched products data", sortedProducts);
 
       setProducts(sortedProducts.slice(0, 5)); // Get the latest 5 products
     } catch (error) {
