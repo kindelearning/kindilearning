@@ -12,6 +12,8 @@ import Image from "next/image";
 export default function Claras3DGallery({
   images = [BlogThumb, ProfessionalThumb, HowItWorkVideo, ActivityCard],
 }) {
+
+  console.log('Images Received form the Server, ', images)
   const [currentIndex, setCurrentIndex] = useState(0);
   const [dragging, setDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState(0);
@@ -100,10 +102,10 @@ export default function Claras3DGallery({
             onMouseUp={isActive ? handleDragEnd : null}
             onTouchEnd={isActive ? handleDragEnd : null}
           >
-            <Image
+            <img
               width={500}
               height={600}
-              src={images[imageIndex].src || images[imageIndex]}
+              src={images[imageIndex]}
               alt={`gallery-image-${imageIndex}`}
               className="w-full h-full object-cover border-8 border-[white] rounded-xl transition-all duration-500 ease-in-out hover:scale-105 hover:opacity-90"
             />

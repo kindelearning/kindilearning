@@ -1,7 +1,10 @@
+'use client'
+
 import { BookOpen, PWKOne, PWKTwo } from "@/public/Images";
 import Image from "next/image";
 import Claras3DGallery from "./ClaraGallery";
 import { fetchOurMission } from "@/app/data/p/OurMission";
+import { useEffect, useState } from "react";
 
 const InternalChip = ({
   image,
@@ -21,13 +24,49 @@ const InternalChip = ({
   );
 };
 
-export default async function ParentWithKindi() {
-  const data = await fetchOurMission();
+export default  function ParentWithKindi() {
+  const [missionData, setMissionData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  if (!data) {
-    return <div>No content available.</div>;
-  }
 
+  // Fetch mission data
+  useEffect(() => {
+    const fetchMissionData = async () => {
+      try {
+        const response = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/our-mission?populate[Parentwithkindi][populate]=Media");
+        const data = await response.json();
+
+        if (response.ok) {
+          setMissionData(data.data);
+        } else {
+          setError("Error fetching mission data");
+        }
+      } catch (error) {
+        setError("Error fetching mission data");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMissionData();
+  }, []);
+
+  // Handle loading and error states
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
+
+  const { Parentwithkindi } = missionData;
+
+  
+  // const data = await fetchOurMission();
+  
+  // if (!data) {
+    //   return <div>No content available.</div>;
+    // }
+    const mediaUrls = Parentwithkindi.Media.map(media => `${media.url}`);
+    // const mediaUrls = Parentwithkindi.Media.map(media => `https://upbeat-life-04fe8098b1.strapiapp.com${media.url}`);
+    console.log('Parentwithkindi mediaUrls Data', mediaUrls)
   return (
     <>
       <section className="w-full h-auto bg-[#523373] items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">
@@ -38,15 +77,15 @@ export default async function ParentWithKindi() {
             <div className="flex-col flex justify-center heading items-start">
               <div className="text-start w-full">
                 <span className="text-red claraheading">
-                  {data.Parentwithkindi.featuredText && (
+                  {Parentwithkindi.featuredText && (
                     <p>
-                      {data.Parentwithkindi.featuredText || "Br a confident"}
+                      {Parentwithkindi.featuredText || "Br a confident"}
                     </p>
                   )}{" "}
                 </span>
                 {/* <br className="flex md:hidden lg:flex" /> */}
                 <span className="text-white claraheading">
-                  {data.Parentwithkindi.Title || " Parent With Kindi"}
+                  {Parentwithkindi.Title || " Parent With Kindi"}
                 </span>
               </div>
               <div className="flex w-full container justify-start px-0 items-center flex-col">
@@ -58,14 +97,14 @@ export default async function ParentWithKindi() {
                   </div>
                 ))} */}
                 {/* <div className="w-full px-0 text-start clarabodyTwo text-[white] font-medium font-fredoka">
-                  {data.Parentwithkindi.Body}
+                  {Parentwithkindi.Body}
                 </div> */}
 
-                {data.Parentwithkindi.Body ? (
+                {Parentwithkindi.Body ? (
                   <p
                     className="prose w-full px-0 text-start clarabodyTwo text-[white] font-medium font-fredoka"
                     dangerouslySetInnerHTML={{
-                      __html: data.Parentwithkindi.Body,
+                      __html: Parentwithkindi.Body,
                     }}
                   />
                 ) : (
@@ -110,7 +149,7 @@ export default async function ParentWithKindi() {
             </div>
           </div>
 
-          <Claras3DGallery />
+          <Claras3DGallery images={mediaUrls}/>
           {/* <Gallery /> */}
         </div>
       </section>
