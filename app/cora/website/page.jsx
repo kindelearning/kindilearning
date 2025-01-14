@@ -37,12 +37,12 @@ export default function Cora() {
           <RecentThemes />
           {/* <ProductWidgets />
           <LatestProducts /> */}
-          
+
           <RecentBlogs />
-          <RecentComment /> 
-         
-          {/* <RecentActivities /> */}
-          {/* <ActivityWidgets /> */}
+          <RecentComment />
+
+          <RecentActivities /> 
+          <ActivityWidgets />
         </div>
       </section>
     </>
