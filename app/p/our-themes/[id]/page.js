@@ -3,7 +3,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 
 async function fetchThemeById(documentId) {
-  const res = await fetch(`https://upbeat-life-04fe8098b1.strapiapp.com/api/our-themes/${documentId}`);
+  const res = await fetch(`https://upbeat-life-04fe8098b1.strapiapp.com/api/our-themes/${documentId}?populate=*`);
   const data = await res.json();
 
   if (!data || !data.data) {
@@ -16,7 +16,7 @@ async function fetchThemeById(documentId) {
 export default async function ThemePage({ params }) {
   const { id } = params;
   const themeData = await fetchThemeById(id);
-  console.log("object found", themeData);
+  console.log("Object found", themeData);
   if (!themeData) {
     notFound(); // If the theme is not found, show the 404 page
   }
@@ -28,7 +28,7 @@ export default async function ThemePage({ params }) {
     <>
       <section className="w-full h-auto py-0 lg:py-12 bg-[#EAEAF5] items-center justify-center pb-24 flex flex-col gap-[20px]">
         <div className="flex overflow-clip lg:rounded-xl lg:max-w-[960px] w-full">
-          {Thumbnail.url ? (
+          {Thumbnail? (
             <img
               width={1400}
               height={600}
