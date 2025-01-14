@@ -2,6 +2,8 @@ import { activityIcons } from "@/app/constant/menu";
 import { ActivityImage, ThemeDummy } from "@/public/Images";
 import Image from "next/image";
 import Link from "next/link";
+
+
 export const getIconForSkill = (skillTitle) => {
   const foundIcon = activityIcons.find(
     (iconData) => iconData.title === skillTitle
@@ -13,6 +15,7 @@ export default function ActivityCard({ activity, activityUrl, icons }) {
   const {
     Title,
     Skills,
+    LearningAreaIcons,
     Theme,
     FocusAge,
     ActivityDate,
@@ -24,7 +27,7 @@ export default function ActivityCard({ activity, activityUrl, icons }) {
   // Handle Gallery URL (Assume it's either an array or object with a URL field)
   const imageUrl = Array.isArray(Gallery)
     ? Gallery[0]?.url // If it's an array, use the first image
-    : Gallery?.url || ActivityImage;
+    : Gallery?.url || "/Images/ActivityImage.png";
   return (
     <>
       <Link
@@ -77,7 +80,7 @@ export default function ActivityCard({ activity, activityUrl, icons }) {
               {/* <div className="items-center justify-center gap-2 md:gap-4 grid grid-cols-5"></div> */}
               <div className="items-center justify-center gap-2 md:gap-4 grid grid-cols-5">
                 {/* Skill Icons Section */}
-                {Skills?.slice(0, 5).map((skill, index) => {
+                {LearningAreaIcons?.slice(0, 5).map((skill, index) => {
                   const skillTitle = skill.children?.[0]?.text; // Extract skill title
                   const iconUrl = getIconForSkill(skillTitle, icons); // Get icon URL using the passed prop
                   return (
@@ -87,6 +90,7 @@ export default function ActivityCard({ activity, activityUrl, icons }) {
                     >
                       {iconUrl && (
                         <img
+                        title={skillTitle}
                           src={iconUrl.src}
                           alt={skillTitle}
                           className="w-6 lg:w-10 lg:h-10 h-6"

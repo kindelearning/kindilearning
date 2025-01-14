@@ -11,23 +11,93 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-// import ReactQuill from "react-quill"; // Import React Quill
-// import "react-quill/dist/quill.snow.css";
+
 import ClaraMarkdownRichEditor from "../../Sections/TextEditor/ClaraMarkdownRichEditor";
-import MediaSelector, {
-  MultiMediaSelector,
-} from "../media/Section/MediaSelector";
+import { MultiMediaSelector } from "../media/Section/MediaSelector";
 import { Button } from "@/components/ui/button";
+
+export const learningAreaOptions = [
+  { value: "emotional_social_strength", label: "Emotional & Social Strength" },
+  { value: "confidence_independence", label: "Confidence & Independence" },
+  { value: "speech_language", label: "Speech & Language" },
+  { value: "physical_agility", label: "Physical Agility" },
+  { value: "reading_writing", label: "Reading & Writing" },
+  { value: "discovering_our_world", label: "Discovering Our World" },
+  { value: "creativity_imagination", label: "Creativity & Imagination" },
+  { value: "experiments_math", label: "Experiments & Math" },
+];
+
+export const MultiSelectDropdown = ({ onChange, defaultValue }) => {
+  const handleChange = (e) => {
+    const values = Array.from(
+      e.target.selectedOptions,
+      (option) => option.value
+    );
+
+    // Convert selected values to the required structure
+    const formattedValues = values.map((value) => ({
+      type: "paragraph",
+      children: [
+        {
+          type: "text",
+          text: value,
+        },
+      ],
+    }));
+
+    onChange(formattedValues); // Pass the formatted values to the parent
+  };
+
+  return (
+    <div className="my-4">
+      <label className="block text-gray-700 font-medium mb-2">
+        Select Learning Area Icons
+        <span className="text-[12px] text-red">
+          (Press Shift to Select Multiple)
+        </span>
+      </label>
+      <select
+        multiple // Ensure multiple selection is allowed
+        value={defaultValue.map((item) => item.children[0].text)} // Ensure that the selected values are passed
+        onChange={handleChange}
+        className="w-full border-gray-300 p-2 rounded-md"
+        size={5} // Display multiple items at once, improve user experience
+      >
+        {learningAreaOptions.map((option) => (
+          <option key={option.value} value={option.label}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+      {/* Display selected values below the dropdown */}
+      {defaultValue.length > 0 && (
+        <div className="mt-2 text-sm text-gray-600">
+          <strong>Selected:</strong>
+          <div className="flex flex-wrap gap-2">
+            {defaultValue.map((item, index) => (
+              <span
+                className="inline-flex items-center px-3 py-1 text-xs font-medium text-black bg-[#d4d4d4] rounded-full"
+                key={index}
+              >
+                {item.children[0].text}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
 
 export default function EditActivityForm({ documentId }) {
   const [title, setTitle] = useState("");
   const [theme, setTheme] = useState("");
   const [focusAge, setFocusAge] = useState("");
   const [learningArea, setLearningArea] = useState(""); // New field
+  const [learningAreaIcons, setLearningAreaIcons] = useState([]);
   const [activityDate, setActivityDate] = useState("");
   const [skills, setSkills] = useState("");
   const [formattedSkills, setFormattedSkills] = useState([]); // For holding structured skill data
-
   const [resource, setResource] = useState([]); // Store selected media
   const [media, setMedia] = useState([]); // Store selected media
   const [setUpTime, setSetUpTime] = useState("");
@@ -55,6 +125,7 @@ export default function EditActivityForm({ documentId }) {
         setSkills(data.data.Skills || "");
         setAccordions(data.data.Accordions || []); // Assuming Accordions is the field name in your Strapi model
         setActivityDate(data.data.ActivityDate || "");
+        setLearningAreaIcons(data.data.LearningAreaIcons || []);
         setMedia(data.data.Gallery || []);
         setSetUpTime(data.data.SetUpTime || "");
         setLearningArea(data.data.LearningArea || ""); // Initialize with fetched data
@@ -67,9 +138,14 @@ export default function EditActivityForm({ documentId }) {
 
     fetchActivityData();
   }, [documentId]);
+
   const prepareAccordionsPayload = () => {
     // Map over the accordions and exclude the 'id' field
     return accordions.map(({ id, ...rest }) => rest);
+  };
+
+  const handleLearningAreaChange = (values) => {
+    setLearningAreaIcons(values);
   };
 
   const handleSubmit = async (e) => {
@@ -83,8 +159,10 @@ export default function EditActivityForm({ documentId }) {
         Theme: theme,
         FocusAge: focusAge,
         ActivityDate: activityDate,
-        Skills: formattedSkills,
         SetUpTime: setUpTime,
+        LearningAreaIcons: learningAreaIcons, //
+        // Skills: formattedSkills,
+        Skills: skills,
         LearningArea: learningArea,
         isPopular: isPopular,
         Gallery: formattedGallery,
@@ -127,29 +205,32 @@ export default function EditActivityForm({ documentId }) {
     });
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target;
 
-    if (name === "Skills") {
-      // Update the raw skills text
-      setSkills(value);
+  //   if (name === "Skills") {
+  //     // Update the raw skills text
+  //     setSkills(value);
 
-      // Process the value for the structured format (for sending to the server)
-      const processedSkills = value
-        .split("\n")
-        .map((line) => ({
-          type: "paragraph",
-          children: [
-            {
-              text: line.trim(),
-              type: "text", // Add the text as per the required format
-            },
-          ],
-        }))
-        .filter((item) => item.children[0].text); // Remove empty lines
+  //     // Process the value for the structured format (for sending to the server)
+  //     const processedSkills = value
+  //       .split("\n")
+  //       .map((line) => ({
+  //         type: "paragraph",
+  //         children: [
+  //           {
+  //             text: line.trim(),
+  //             type: "text", // Add the text as per the required format
+  //           },
+  //         ],
+  //       }))
+  //       .filter((item) => item.children[0].text); // Remove empty lines
 
-      setFormattedSkills(processedSkills); // Update the structured data
-    }
+  //     setFormattedSkills(processedSkills); // Update the structured data
+  //   }
+  // };
+  const handleEditorChange = (newValue) => {
+    setSkills(newValue); // Update body state with the new value from the editor
   };
 
   // When you get data from the server, transform it into a string for the textarea
@@ -169,6 +250,7 @@ export default function EditActivityForm({ documentId }) {
 
     setMedia(selectedMediaIds);
   };
+
   const handleResourcesSelect = (selectedMediaIds) => {
     console.log("Selected Media IDs:", selectedMediaIds);
 
@@ -305,20 +387,31 @@ export default function EditActivityForm({ documentId }) {
             <option value="Experiments & Math">Experiments & Math</option>
           </select>
         </div>
+        <MultiSelectDropdown
+          onChange={handleLearningAreaChange}
+          defaultValue={learningAreaIcons}
+        />
         {/* Skills (Rich Text Editor with React Quill) */}
         <div>
           <label htmlFor="Skills" className="block">
-            Learning Area Icons & Skills (For Activity Detail Page)
+            Skills (For Activity Detail Page)
           </label>
-          <label htmlFor="Skills" className="text-[12px] text-red">
+          {/* <label htmlFor="Skills" className="text-[12px] text-red">
             (Please use List item so that it renders properly) These will be
             used to show Learning Area Icons on Activity Page
-          </label>
+          </label> */}
 
-          <textarea
+          {/* <BlocksRenderer content={skills} /> */}
+          {/* <textarea
             name="Skills"
             value={skills} // Display the string value for the textarea
-            onChange={handleChange} // Handle changes and format as you type
+            onChange={(e) => setSkills(e.target.value)} // Handle changes and format as you type
+            className="border p-2 w-full"
+            placeholder="Enter skills or descriptions here... (separate each skill with a new line)"
+          /> */}
+          <ClaraMarkdownRichEditor
+            value={skills} // Display the string value for the textarea
+            onChange={handleEditorChange} // Handle changes and format as you type
             className="border p-2 w-full"
             placeholder="Enter skills or descriptions here... (separate each skill with a new line)"
           />
@@ -423,12 +516,6 @@ export default function EditActivityForm({ documentId }) {
             Add New Accordion
           </button>
         </div>
-        {/* <button
-          type="submit"
-          className="px-4 py-2 bg-blue-500 text-white rounded"
-        >
-          Update Activity
-        </button> */}
         <section className="w-full h-auto shadow-upper bg-[#ffffff] -top-2 sticky bottom-0 z-10 rounded-t-[16px] items-center justify-center py-4 flex flex-row">
           <div className="claracontainer flex flex-row  justify-between w-full items-center gap-4 px-4">
             <Button type="submit">Update Activity</Button>

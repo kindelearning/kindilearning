@@ -27,20 +27,11 @@ import {
 } from "@/components/ui/dialog";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
-import NotFound from "@/app/not-found";
-import { ProductImages } from "@/app/shop";
-import { getActivityById, getUserDataByEmail } from "@/lib/hygraph";
 import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
-import Link from "next/link";
-import { useAuth } from "@/app/lib/useAuth";
-import { activityIcons } from "@/app/constant/activity";
-import ActivityResources from "../ActivityResources";
 import ProductMedia from "@/app/shop/sections/ProductMedia";
 import MarkActivityCompleteForm from "../ActivityCompleteButton";
-import { fetchKidDetails, fetchUserDetails } from "@/app/profile/api";
+import { fetchUserDetails } from "@/app/profile/api";
 import ResourceCard from "../Sections/ActivityResource";
-import ResourcesGrid from "../Sections/ActivityResource";
 import { getIconForSkill } from "../Sections/ActivityCard";
 
 async function fetchActivityByDocumentId(documentId) {
@@ -158,6 +149,7 @@ export default async function ActivityDetailPage({ params }) {
   const {
     Title,
     Skills,
+    LearningAreaIcons,
     Theme,
     FocusAge,
     ActivityDate,
@@ -226,8 +218,8 @@ export default async function ActivityDetailPage({ params }) {
                 </div>
 
                 <div className="items-center h-fit hover:h-full overflow-y-hidden overflow-x-scroll scrollbar-hidden w-full justify-start flex flex-row gap-1">
-                  {Skills && Skills.length > 0 ? (
-                    Skills.map((skill, index) => {
+                  {LearningAreaIcons && LearningAreaIcons.length > 0 ? (
+                    LearningAreaIcons.map((skill, index) => {
                       // Extract the skill title
                       const skillTitle = skill.children[0]?.text;
                       const icon = getIconForSkill(skillTitle); // Get the icon URL dynamically
@@ -254,11 +246,15 @@ export default async function ActivityDetailPage({ params }) {
                 <div className="text-[#0a1932]  text-start justify-start items-start w-full font-fredoka font-semibold text-[24px] md:text-[28px] lg:text-[28px]">
                   Skills{" "}
                 </div>
-                <ul className="text-[#0a1932] px-4 text-[16px] font-normal font-fredoka list-disc leading-none">
-                  {Skills.map((skill, index) => (
+                <div className="text-[#0a1932] px-0 text-[16px] font-normal font-fredoka list-disc leading-none">
+                  {/* {Skills.map((skill, index) => (
                     <li key={index}>{skill.children[0]?.text}</li>
-                  ))}
-                </ul>
+                  ))} */}
+                  <span
+                    className="prose leading-[14px] marker:text-[#0a1932]"
+                    dangerouslySetInnerHTML={{ __html: Skills }}
+                  />
+                </div>
               </div>
             </div>
             {/* Row - 2(C1) */}
@@ -347,7 +343,7 @@ export default async function ActivityDetailPage({ params }) {
                   <ActivityAttribute
                     image={KidBlack}
                     features={FocusAge || "Toddler"}
-                    title="Focus age"
+                    title="Difficulty"
                   />
                 </div>
               </div>
@@ -357,8 +353,8 @@ export default async function ActivityDetailPage({ params }) {
                 </div>
 
                 <div className="items-center overflow-x-scroll  scrollbar-hidden w-full justify-start flex flex-row gap-1">
-                  {Skills && Skills.length > 0 ? (
-                    Skills.map((skill, index) => {
+                  {LearningAreaIcons && LearningAreaIcons.length > 0 ? (
+                    LearningAreaIcons.map((skill, index) => {
                       // Extract the skill title
                       const skillTitle = skill.children[0]?.text;
                       const icon = getIconForSkill(skillTitle); // Get the icon URL dynamically
@@ -385,11 +381,17 @@ export default async function ActivityDetailPage({ params }) {
                 <div className="text-[#0a1932]  text-start justify-start items-start w-full font-fredoka font-semibold text-[24px] md:text-[28px] lg:text-[28px]">
                   Skills{" "}
                 </div>
-                <ul className="text-[#0a1932] px-4 text-[16px] font-normal font-fredoka list-disc leading-none">
-                  {Skills.map((skill, index) => (
+
+                <div className="text-[#0a1932] px-0 text-[16px] font-normal font-fredoka list-disc leading-none">
+                  <span
+                    className="prose leading-[14px] marker:text-[#0a1932]"
+                    dangerouslySetInnerHTML={{ __html: Skills }}
+                  />
+
+                  {/* {Skills.map((skill, index) => (
                     <li key={index}>{skill.children[0]?.text}</li>
-                  ))}
-                </ul>
+                  ))} */}
+                </div>
               </div>
             </div>
             <div className="items-center px-4 lg:hidden lg:px-0 w-full lg:min-w-[600px] justify-center flex flex-col gap-2">
@@ -525,14 +527,12 @@ export default async function ActivityDetailPage({ params }) {
                   Print
                 </Button>
               </div>
+
               <div className="md:flex hidden px-4 w-full py-6 bg-white rounded-xl shadow gap-3 flex-col justify-center items-center">
                 <div className="text-[#3f3a64] text-base font-semibold font-montserrat uppercase leading-[19px]">
                   Mark Activity as Complete{" "}
                 </div>
-
-                {/* THE PROBLEM The activity id we are fetching from the server att his point actually does not exist  */}
                 <MarkActivityCompleteForm passactivityId={matchedActivityId} />
-                {/* <MarkActivityCompleteForm passactivityId={activityData.id} /> */}
               </div>
             </div>
           </div>

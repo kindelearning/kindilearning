@@ -15,6 +15,7 @@ import {
 import ClaraMarkdownRichEditor from "../../Sections/TextEditor/ClaraMarkdownRichEditor";
 import { MultiMediaSelector } from "../media/Section/MediaSelector";
 import { Button } from "@/components/ui/button";
+import { MultiSelectDropdown } from "./EditActivityForm";
 
 export default function CreateActivityForm() {
   const [title, setTitle] = useState("");
@@ -35,6 +36,7 @@ export default function CreateActivityForm() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [dialogMessage, setDialogMessage] = useState("");
   const [dialogType, setDialogType] = useState("success");
+  const [learningAreaIcons, setLearningAreaIcons] = useState([]);
 
   useEffect(() => {
     // Fetching users from the provided endpoint
@@ -67,6 +69,10 @@ export default function CreateActivityForm() {
     return accordions.map(({ id, ...rest }) => rest);
   };
 
+  const handleLearningAreaChange = (values) => {
+    setLearningAreaIcons(values);
+  };
+
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -84,7 +90,8 @@ export default function CreateActivityForm() {
       Theme: theme,
       FocusAge: focusAge,
       ActivityDate: activityDate,
-      // Skills: skills,
+      Skills: skills,
+      LearningAreaIcons: learningAreaIcons,
       SetUpTime: setUpTime,
       LearningArea: learningArea,
       Gallery: formattedGallery,
@@ -117,7 +124,9 @@ export default function CreateActivityForm() {
         setActivityDate("");
         setSetUpTime("");
         setSkillCategory("");
-        // setResourceMedia(null);
+        setResourceMedia(null);
+        setMedia(null);
+        setLearningAreaIcons([]);
         setLearningArea("");
         setIsPopular("");
         setAccordions([]);
@@ -139,29 +148,29 @@ export default function CreateActivityForm() {
     setIsDialogOpen(true); // Open dialog after submit
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target;
 
-    if (name === "Skills") {
-      // Split the value by new lines and structure each line into the required format
-      const processedSkills = value
-        .split("\n")
-        .map((line) => ({
-          type: "paragraph",
-          children: [
-            {
-              text: line.trim(),
-              type: "text", // Add the text as per the required format
-            },
-          ],
-        }))
-        .filter((item) => item.children[0].text); // Remove empty lines
+  //   if (name === "Skills") {
+  //     // Split the value by new lines and structure each line into the required format
+  //     const processedSkills = value
+  //       .split("\n")
+  //       .map((line) => ({
+  //         type: "paragraph",
+  //         children: [
+  //           {
+  //             text: line.trim(),
+  //             type: "text", // Add the text as per the required format
+  //           },
+  //         ],
+  //       }))
+  //       .filter((item) => item.children[0].text); // Remove empty lines
 
-      setSkills(processedSkills); // Set the skills in the required format
-    } else {
-      setSkills(value); // For other fields, update the value normally
-    }
-  };
+  //     setSkills(processedSkills); // Set the skills in the required format
+  //   } else {
+  //     setSkills(value); // For other fields, update the value normally
+  //   }
+  // };
 
   // Handle Accordion Changes
   const handleAccordionChange = (index, field, value) => {
@@ -182,7 +191,9 @@ export default function CreateActivityForm() {
 
     setResource(selectedMediaIds);
   };
-
+  const handleEditorChange = (newValue) => {
+    setSkills(newValue); // Update body state with the new value from the editor
+  };
   return (
     <div className="p-0 font-fredoka">
       <head>
@@ -312,17 +323,21 @@ export default function CreateActivityForm() {
             <option value="Experiments & Math">Experiments & Math</option>
           </select>
         </div>
+        <MultiSelectDropdown
+          onChange={handleLearningAreaChange}
+          defaultValue={learningAreaIcons}
+        />
         {/* Skills (Rich Text Editor with React Quill) */}
         <div>
           <label htmlFor="Skills" className="block">
-            Learning Area Icons & Skills (For Activity Detail Page)
+          Skills (For Activity Detail Page)
+
           </label>
-          <label htmlFor="Skills" className="text-[12px] text-red">
+          {/* <label htmlFor="Skills" className="text-[12px] text-red">
             (Please use List item so that it renders properly) These will be
             used to show Learning Area Icons on Activity Page
-          </label>
-
-          <textarea
+          </label> */}
+          {/* <textarea
             name="Skills"
             value={
               Array.isArray(skills) && skills.length > 0
@@ -334,6 +349,12 @@ export default function CreateActivityForm() {
                 : ""
             }
             onChange={handleChange}
+            className="border p-2 w-full"
+            placeholder="Enter skills or descriptions here... (separate each skill with a new line)"
+          /> */}
+          <ClaraMarkdownRichEditor
+            value={skills} // Display the string value for the textarea
+            onChange={handleEditorChange} // Handle changes and format as you type
             className="border p-2 w-full"
             placeholder="Enter skills or descriptions here... (separate each skill with a new line)"
           />

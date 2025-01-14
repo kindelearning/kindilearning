@@ -69,18 +69,18 @@ export default function ActivitiesPage() {
         const uniqueLearningAreas = Array.from(
           new Set(data.data.map((activity) => activity.LearningArea))
         );
-        const uniqueSkills = Array.from(
-          new Set(
-            data.data.flatMap((activity) =>
-              activity.Skills.map((skill) => skill.children[0].text)
-            )
-          )
-        );
+        // const uniqueSkills = Array.from(
+        //   new Set(
+        //     data.data.flatMap((activity) =>
+        //       activity.Skills.map((skill) => skill.children[0].text)
+        //     )
+        //   )
+        // );
 
         setThemes(uniqueThemes);
         setAges(uniqueAges);
         setLearningAreas(uniqueLearningAreas);
-        setSkills(uniqueSkills);
+        // setSkills(uniqueSkills);
       } catch (err) {
         setError("Failed to fetch activities.");
       } finally {
@@ -105,14 +105,12 @@ export default function ActivitiesPage() {
       const learningAreaMatch = learningAreaFilter
         ? activity.LearningArea === learningAreaFilter
         : true;
-      const skillsMatch = skillsFilter
-        ? activity.Skills.some(
-            (skill) => skill.children[0].text === skillsFilter
-          )
-        : true;
-      return (
-        titleMatch && themeMatch && ageMatch && learningAreaMatch && skillsMatch
-      );
+      // const skillsMatch = skillsFilter
+      //   ? activity.Skills.some(
+      //       (skill) => skill.children[0].text === skillsFilter
+      //     )
+      //   : true;
+      return titleMatch && themeMatch && ageMatch && learningAreaMatch;
     })
     .sort((a, b) => {
       const aDate = new Date(a[sortConfig.key]);
@@ -247,7 +245,7 @@ export default function ActivitiesPage() {
             ))}
           </select>
 
-          <select
+          {/* <select
             value={skillsFilter}
             onChange={(e) => setSkillsFilter(e.target.value)}
             className="border p-2 text-[#676b74] rounded-full"
@@ -258,7 +256,7 @@ export default function ActivitiesPage() {
                 {skill}
               </option>
             ))}
-          </select>
+          </select> */}
         </div>
       </div>
 
@@ -347,11 +345,18 @@ export default function ActivitiesPage() {
                 </TableCell>
                 <TableCell>{activity.Title}</TableCell>
                 <TableCell>
-                  <ul>
+                  {/* <ul>
                     {activity.Skills.slice(0, 1).map((skill, index) => (
                       <li key={index}>{skill.children[0].text}</li>
                     ))}
-                  </ul>
+                  </ul> */}
+                  <span
+                    className="prose"
+                    dangerouslySetInnerHTML={{
+                      __html: activity.Skills.slice(0, 12),
+                    }}
+                  />
+                  ...
                 </TableCell>
                 <TableCell>{activity.Theme}</TableCell>
                 <TableCell>{activity.FocusAge}</TableCell>
