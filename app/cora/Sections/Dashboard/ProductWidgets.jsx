@@ -1,17 +1,26 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
 const ProductCard = ({ product }) => {
   return (
     <div className="flex items-start space-x-4 bg-gray-50 p-4 rounded-lg border border-gray-200 hover:bg-gray-100 transition-all">
       {/* Product Image */}
-      <img
-        src={product.FeaturedImage} // Assuming the product image URL is under 'thumbnail'
-        // src={`https://upbeat-life-04fe8098b1.strapiapp.com${product.FeaturedImage}`} // Assuming the product image URL is under 'thumbnail'
-        alt={product.Name}
-        className="w-16 h-16 object-cover rounded-lg"
-      />
+      {product.FeaturedImage ? (
+        <img
+          src={product.FeaturedImage} // Assuming the product image URL is under 'thumbnail'
+          // src={`https://upbeat-life-04fe8098b1.strapiapp.com${product.FeaturedImage}`} // Assuming the product image URL is under 'thumbnail'
+          alt={product.Name}
+          className="w-16 h-16 object-cover rounded-lg"
+        />
+      ) : (
+        <Image
+          src={BlogThumb} // Assuming the product image URL is under 'thumbnail'
+          alt={product.Name}
+          className="w-16 h-16 object-cover rounded-lg"
+        />
+      )}
       {/* Content */}
       <div className="flex-1">
         <h4 className="text-sm font-semibold text-gray-800">{product.Name}</h4>
