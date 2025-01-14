@@ -3,7 +3,12 @@
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import React, { useEffect, useState } from "react";
-import { LevelTwo, LevelOne, LevelThree } from "@/public/Images";
+import {
+  LevelTwo,
+  LevelOne,
+  LevelThree,
+  AchievementImage01,
+} from "@/public/Images";
 import {
   Dialog,
   DialogContent,
@@ -20,105 +25,85 @@ import LevelList from "@/app/Sections/Profile/LevelList";
 import { fetchKidDetails, fetchUserDetails } from "../api";
 import TopProfileCard from "../Sections/TopProfileCard";
 
-const HYGRAPH_ENDPOINT =
-  "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";
-const HYGRAPH_TOKEN =
-  "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImdjbXMtbWFpbi1wcm9kdWN0aW9uIn0.eyJ2ZXJzaW9uIjozLCJpYXQiOjE3MjcwNjQxNzcsImF1ZCI6WyJodHRwczovL2FwaS1hcC1zb3V0aC0xLmh5Z3JhcGguY29tL3YyL2NtMWRvbTFoaDAzeTEwN3V3d3hydXRwbXovbWFzdGVyIiwibWFuYWdlbWVudC1uZXh0LmdyYXBoY21zLmNvbSJdLCJpc3MiOiJodHRwczovL21hbmFnZW1lbnQtYXAtc291dGgtMS5oeWdyYXBoLmNvbS8iLCJzdWIiOiI2Yzg4NjI5YS1jMmU5LTQyYjctYmJjOC04OTI2YmJlN2YyNDkiLCJqdGkiOiJjbTFlaGYzdzYwcmZuMDdwaWdwcmpieXhyIn0.YMoI_XTrCZI-C7v_FX-oKL5VVtx95tPmOFReCdUcP50nIpE3tTjUtYdApDqSRPegOQai6wbyT0H8UbTTUYsZUnBbvaMd-Io3ru3dqT1WdIJMhSx6007fl_aD6gQcxb-gHxODfz5LmJdwZbdaaNnyKIPVQsOEb-uVHiDJP3Zag2Ec2opK-SkPKKWq-gfDv5JIZxwE_8x7kwhCrfQxCZyUHvIHrJb9VBPrCIq1XE-suyA03bGfh8_5PuCfKCAof7TbH1dtvaKjUuYY1Gd54uRgp8ELZTf13i073I9ZFRUU3PVjUKEOUoCdzNLksKc-mc-MF8tgLxSQ946AfwleAVkFCXduIAO7ASaWU3coX7CsXmZLGRT_a82wOORD8zihfJa4LG8bB-FKm2LVIu_QfqIHJKq-ytuycpeKMV_MTvsbsWeikH0tGPQxvAA902mMrYJr9wohOw0gru7mg_U6tLOwG2smcwuXBPnpty0oGuGwXWt_D6ryLwdNubLJpIWV0dOWF8N5D6VubNytNZlIbyFQKnGcPDw6hGRLMw2B7-1V2RpR6F3RibLFJf9GekI60UYdsXthAFE6Xzrlw03Gv5BOKImBoDPyMr0DCzneyAj9KDq4cbNNcihbHl1iA6lUCTNY3vkCBXmyujXZEcLu_Q0gvrAW3OvZMHeHY__CtXN6JFA";
+// const BadgesDisplay = ({ userID }) => {
+//   console.log("Received this UserID as Property: " + userID);
+//   const [badges, setBadges] = useState([]);
+//   const [loading, setLoading] = useState(true);
+//   const [error, setError] = useState(null);
 
-const badgeLevels = [
-  {
-    image: LevelOne,
-    condition: (level) => level === 1,
-  },
-  {
-    image: LevelTwo,
-    condition: (level) => level === 2,
-  },
-  {
-    image: LevelThree,
-    condition: (level) => level >= 3,
-  },
-];
+//   useEffect(() => {
+//     // Fetch the badges for the user
+//     const fetchBadges = async () => {
+//       try {
+//         const response = await fetchKidDetails();
+//         const data = await response.json();
 
-const BadgesDisplay = ({ userID }) => {
-  console.log("Received this UserID as Property: " + userID);
-  const [badges, setBadges] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+//         const filteredData = data.data.filter((user) => user.id === userID);
 
-  useEffect(() => {
-    // Fetch the badges for the user
-    const fetchBadges = async () => {
-      try {
-        const response = await fetchKidDetails();
-        const data = await response.json();
+//         if (data > 0) {
+//           setBadges(data); // Assuming you are getting only one matching user
+//         } else {
+//           setError("User not found");
+//         }
+//       } catch (error) {
+//         setError("Failed to load badges");
+//       } finally {
+//         setLoading(false);
+//       }
+//     };
 
-        const filteredData = data.data.filter((user) => user.id === userID);
+//     fetchBadges();
+//   }, [userID]);
 
-        if (data > 0) {
-          setBadges(data); // Assuming you are getting only one matching user
-        } else {
-          setError("User not found");
-        }
-      } catch (error) {
-        setError("Failed to load badges");
-      } finally {
-        setLoading(false);
-      }
-    };
+//   console.log("Filtered badge Data from BadgesDisplay Fucntion: ", badges);
 
-    fetchBadges();
-  }, [userID]);
+//   if (loading) return <p>Loading...</p>;
+//   if (error) return <p>Error: {error}</p>;
 
-  console.log("Filtered badge Data from BadgesDisplay Fucntion: ", badges);
+//   return (
+//     <div>
+//       {/* <div className="flex w-full overflow-x-scroll scrollbar-hidden gap-2">
+//         {badges.map((badge) => {
+//           // Select a random badge level based on your badgeLevels array
+//           const randomLevelIndex = Math.floor(
+//             Math.random() * badgeLevels.length
+//           );
+//           const selectedBadgeLevel = badgeLevels[randomLevelIndex];
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
+//           return (
+//             <div
+//               key={badge.id}
+//               className="flex flex-col justify-start items-center w-fit max-w-[100px] min-w-[80px] gap-0 cursor-pointer"
+//             >
+//               {badge.icon && (
+//                 <img
+//                   src={badge.icon.url}
+//                   alt={badge.name}
+//                   className="min-w-[80px] max-w-[80px] max-h-[80px] min-h-[80px] object-cover"
+//                 />
+//               )}
 
-  return (
-    <div>
-      {/* <div className="flex w-full overflow-x-scroll scrollbar-hidden gap-2">
-        {badges.map((badge) => {
-          // Select a random badge level based on your badgeLevels array
-          const randomLevelIndex = Math.floor(
-            Math.random() * badgeLevels.length
-          );
-          const selectedBadgeLevel = badgeLevels[randomLevelIndex];
-
-          return (
-            <div
-              key={badge.id}
-              className="flex flex-col justify-start items-center w-fit max-w-[100px] min-w-[80px] gap-0 cursor-pointer"
-            >
-              {badge.icon && (
-                <img
-                  src={badge.icon.url}
-                  alt={badge.name}
-                  className="min-w-[80px] max-w-[80px] max-h-[80px] min-h-[80px] object-cover"
-                />
-              )}
-
-              {selectedBadgeLevel && (
-                <div className="flex w-full justify-end items-end">
-                  <Image
-                    src={selectedBadgeLevel?.image}
-                    alt={`Badge Level ${randomLevelIndex + 1}`}
-                    className="-mt-[20px] lg:-mt-[22px] w-[24px] h-[24px] md:w-[32px] md:h-[32px] mr-0 lg:mr-[10px]"
-                  />
-                </div>
-              )}
-              <h2 className="w-full text-center text-sm text-[#000000] font-normal font-fredoka leading-tight">
-                {badge.name.length > 16
-                  ? badge.name.slice(0, 16) + "..."
-                  : badge.name}
-              </h2>
-            </div>
-          );
-        })}
-      </div> */}
-    </div>
-  );
-};
+//               {selectedBadgeLevel && (
+//                 <div className="flex w-full justify-end items-end">
+//                   <Image
+//                     src={selectedBadgeLevel?.image}
+//                     alt={`Badge Level ${randomLevelIndex + 1}`}
+//                     className="-mt-[20px] lg:-mt-[22px] w-[24px] h-[24px] md:w-[32px] md:h-[32px] mr-0 lg:mr-[10px]"
+//                   />
+//                 </div>
+//               )}
+//               <h2 className="w-full text-center text-sm text-[#000000] font-normal font-fredoka leading-tight">
+//                 {badge.name.length > 16
+//                   ? badge.name.slice(0, 16) + "..."
+//                   : badge.name}
+//               </h2>
+//             </div>
+//           );
+//         })}
+//       </div> */}
+//     </div>
+//   );
+// };
 
 const DisplayAllBadges = () => {
   const [allBadges, setAllBadges] = useState([]);
@@ -163,68 +148,83 @@ const DisplayAllBadges = () => {
   return (
     <>
       <div className="flex w-full flex-col gap-1">
-        <Dialog>
-          <DialogTrigger>
-            <div className="grid w-full overflow-hidden md:grid-cols-6 justify-between lg:grid-cols-9 grid-cols-3 gap-2">
-              {allBadges.map((badge) => {
-                const randomWidth = Math.floor(Math.random() * 46) + 10; // Random number between 10 and 100
-                return (
-                  <div
-                    className="flex cursor-pointer flex-col justify-start items-center w-fit max-w-[160px] min-w-[120px] gap-2"
-                    key={badge.id}
-                  >
-                    <img
-                      width={80}
-                      height={80}
-                      className="min-w-[80px] min-h-[80px] max-w-[80px] max-h-[80px] object-cover"
-                      src={badge.Thumbnail?.url}
-                      alt={badge.Name}
-                    />
-                    {/* Progress Bar */}
-                    <div className="w-full max-w-[80px] h-1 bg-[#bfbfbf] rounded">
+        {allBadges ? (
+          <div className="grid w-full overflow-hidden md:grid-cols-6 justify-between lg:grid-cols-9 grid-cols-3 gap-2">
+            {allBadges?.map((badge) => {
+              const randomWidth = Math.floor(Math.random() * 46) + 10; // Random number between 10 and 100
+              return (
+                <Dialog>
+                  <DialogTrigger>
+                    <div className="">
                       <div
-                        className="h-full bg-red rounded"
-                        style={{ width: `${randomWidth}%` }} // Set random width
-                      />
+                        className="flex cursor-pointer flex-col justify-start items-center w-fit max-w-[160px] min-w-[120px] gap-2"
+                        key={badge.id}
+                      >
+                        <img
+                          width={80}
+                          height={80}
+                          className="min-w-[80px] min-h-[80px] max-w-[80px] max-h-[80px] object-cover"
+                          src={
+                            badge.Thumbnail?.url ||
+                            "Images/AchievementImage01.svg"
+                          }
+                          alt={badge.Name}
+                        />
+                        {/* Progress Bar */}
+                        <div className="w-full max-w-[80px] h-1 bg-[#bfbfbf] rounded">
+                          <div
+                            className="h-full bg-red rounded"
+                            style={{ width: `${randomWidth}%` }} // Set random width
+                          />
+                        </div>
+                        <h2 className="w-full text-center text-sm text-[#000000] font-normal font-fredoka leading-tight">
+                          {badge.Name.length > 16
+                            ? badge.Name.slice(0, 16) + "..."
+                            : badge.Name}
+                        </h2>
+                      </div>
                     </div>
-                    <h2 className="w-full text-center text-sm text-[#000000] font-normal font-fredoka leading-tight">
-                      {badge.Name.length > 16
-                        ? badge.Name.slice(0, 16) + "..."
-                        : badge.Name}
-                    </h2>
-                  </div>
-                );
-              })}
-            </div>
-          </DialogTrigger>
-          <DialogContent className="bg-[#EAEAF5] max-w-[96%] lg:max-w-[800px] items-start max-h-[70%] scrollbar-hidden overflow-scroll p-0 overflow-x-hidden rounded-[16px] w-full claracontainer">
-            <DialogHeader className="p-4">
-              <DialogTitle>
-                <div className="text-center">
-                  <span className="text-[#3f3a64] text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
-                    How{" "}
-                  </span>
-                  <span className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
-                    to Earn
-                  </span>
-                </div>
-              </DialogTitle>
-              <DialogDescription className="flex w-full px-4 claracontainer gap-4 flex-col justify-center items-start">
-                {/* Render badge descriptions dynamically */}
-                {allBadges.map((badge) => (
-                  <div
-                    key={badge.id}
-                    className="w-full prose text-[#575757] text-[20px] font-medium font-fredoka leading-[24px]"
-                  >
-                    <div
-                      dangerouslySetInnerHTML={{ __html: badge.Description }}
-                    />
-                  </div>
-                ))}
-              </DialogDescription>
-            </DialogHeader>
-          </DialogContent>
-        </Dialog>
+                  </DialogTrigger>
+                  <DialogContent className="bg-[#EAEAF5] max-w-[96%] lg:max-w-[800px] items-start max-h-[70%] scrollbar-hidden overflow-scroll p-0 overflow-x-hidden rounded-[16px] w-full claracontainer">
+                    <DialogHeader className="p-4">
+                      <DialogTitle>
+                        <div className="text-center">
+                          <span className="text-[#3f3a64] text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
+                            How{" "}
+                          </span>
+                          <span className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
+                            to Earn
+                          </span>
+                        </div>
+                      </DialogTitle>
+                      <DialogDescription className="flex w-full px-4 claracontainer gap-4 flex-col justify-center items-start">
+                        {/* {allBadges.map((badge) => (
+                          <div
+                            key={badge.id}
+                            className="w-full prose text-[#575757] text-[20px] font-medium font-fredoka leading-[24px]"
+                          >
+                            <div
+                              dangerouslySetInnerHTML={{
+                                __html: badge.Description,
+                              }}
+                            />
+                          </div>
+                        ))} */}
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: badge.Description,
+                          }}
+                        />
+                      </DialogDescription>
+                    </DialogHeader>
+                  </DialogContent>
+                </Dialog>
+              );
+            })}
+          </div>
+        ) : (
+          <p>Badge Not Found</p>
+        )}
       </div>
     </>
   );

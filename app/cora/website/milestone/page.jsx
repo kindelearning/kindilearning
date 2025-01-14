@@ -810,7 +810,6 @@ export function CreateMilestoneForm() {
   const [title, setTitle] = useState("");
   const [subCategory, setSubCategory] = useState("");
   const [category, setCategory] = useState("");
-  const [media, setMedia] = useState(null); // Media state
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [dialogMessage, setDialogMessage] = useState("");
   const [dialogType, setDialogType] = useState("success"); // To distinguish between success/error messages
@@ -861,8 +860,6 @@ export function CreateMilestoneForm() {
         body: JSON.stringify({ data: newMilestone }),
       });
 
-      const responseData = await response.json();
-
       if (response.ok) {
         setDialogMessage("milestones created successfully!");
         setDialogType("success");
@@ -871,7 +868,6 @@ export function CreateMilestoneForm() {
         setCategory("");
         setSubCategory("");
         setDescription("");
-        setMedia(null);
       } else {
         setDialogMessage(
           "Failed to create Milestone. Please check the input and try again."
@@ -887,9 +883,7 @@ export function CreateMilestoneForm() {
 
     setIsDialogOpen(true); // Open dialog after submit
   };
-  const handleMediaSelect = (selectedMedia) => {
-    setMedia(selectedMedia); // Store the selected media object
-  };
+
   return (
     <div className="p-8 font-fredoka">
       <form onSubmit={handleSubmit} className="space-y-4">
