@@ -317,6 +317,7 @@ export default function Slider() {
     </>
   );
 }
+
 const hexToHsl = (hex) => {
   let r = 0,
     g = 0,
@@ -397,8 +398,6 @@ const hslToHex = (h, s, l) => {
     .slice(1)}`;
 };
 
-
-
 // Function to get the complementary color of a hex color
 const getComplementaryColor = (hex) => {
   const [h, s, l] = hexToHsl(hex);
@@ -417,7 +416,9 @@ const getComplementaryColor = (hex) => {
 //     // Fetch slider data
 //     const fetchSliderData = async () => {
 //       try {
-//         const response = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/slider?populate=Content.Media");
+//         const response = await fetch(
+//           "https://upbeat-life-04fe8098b1.strapiapp.com/api/slider?populate=Content.Media"
+//         );
 //         const data = await response.json();
 
 //         if (response.ok) {
@@ -451,74 +452,134 @@ const getComplementaryColor = (hex) => {
 //   return (
 //     <section className="w-full h-auto cursor-grab items-center justify-center flex flex-col gap-[20px] bg-purple">
 //       <div className="w-full bg-purple flex flex-col-reverse md:justify-center md:items-center py-0 gap-8 md:gap-8">
-//         <Carousel
+//         <div
 //           selectedItem={currentIndex} // Use currentIndex for controlling active slide
 //           onChange={(index) => setCurrentIndex(index)} // Update index on manual change
 //           className="w-full flex py-0 my-0 justify-center items-center"
 //         >
 //           {sliderData?.length > 0 ? (
-//             <CarouselContent className="w-full ml-0 p-0 flex justify-center items-center">
-//               {sliderData.map((item) => (
-//                 <CarouselItem
+//             <div className="w-full ml-0 p-0 flex justify-center items-center">
+//               {sliderData.slice(0, 1).map((item) => (
+//                 <div
 //                   key={item.id}
 //                   style={{ backgroundColor: item.bgcolor || "purple" }}
 //                   className="min-w-full justify-center shrink-0 grow-0 basis-full flex p-0 items-center"
 //                 >
-//                   <div className="w-full max-w-full claracontainer md:min-w-[300px] md:w-[300px] lg:w-full flex flex-col lg:flex-row justify-between items-center h-auto">
-//                     {item?.Media && item.Media[0]?.url ? (
-//                       <img
-//                         src={`https://upbeat-life-04fe8098b1.strapiapp.com${item.Media[0].url}`}
-//                         alt={item?.Title}
-//                         className="w-full md:min-w-[300px] md:w-[300px] lg:w-full lg:h-full lg:min-h-[400px] max-h-[400px] object-contain"
-//                         loading="lazy"
-//                       />
-//                     ) : (
-//                       <Image src={SlideGrow} alt={item?.Title} loading="lazy" />
-//                     )}
-//                     <div className="h-auto max-w-[400px] lg:min-w-[700px] lg:max-w-full w-full flex-col px-4 md:px-2 lg:px-4 justify-start items-start gap-6 md:gap-8 lg:gap-10 xl:gap-12 inline-flex">
-//                       <div className="w-fit text-[white] flex flex-col justify-start items-start h-auto gap-4">
-//                         <div className=" clarascript">{item.featuredText}</div>
-//                         <div className="flex flex-col w-fit justify-start items-start gap-4">
-//                           <span className="w-full claraheading">{item.Title}</span>
-
-//                           <div className="w-full max-w-full h-auto prose text-white clarabodyTwo">
-//                             <p dangerouslySetInnerHTML={{ __html: item.Body }} />
+//                   <section className="relative w-full h-auto bg-gray-900 text-white flex items-center justify-center">
+//                     <div className="w-full h-full flex overflow-hidden">
+//                       {sliderData.map((item, index) => (
+//                         <div
+//                           key={item.id}
+//                           className={`transition-opacity duration-500 ease-in-out ${
+//                             index === currentIndex ? "block" : "hidden"
+//                           } w-full`}
+//                           style={{ backgroundColor: item.bgcolor || "purple" }}
+//                         >
+//                           <div className="w-full py-12 mx-auto flex flex-col lg:flex-row gap-4 items-center">
+//                             {item?.Media && item.Media[0]?.url ? (
+//                               <img
+//                                 src={
+//                                   item?.Media?.[0]?.url
+//                                     ? `https://upbeat-life-04fe8098b1.strapiapp.com${item.Media[0].url}`
+//                                     : "/placeholder.jpg"
+//                                 }
+//                                 alt={item.Title || "Slider Image"}
+//                                 className="w-full  px-2  md:min-w-[300px] md:w-[300px] lg:w-full lg:h-full lg:min-h-[400px] max-h-[400px] object-contain"
+//                               />
+//                             ) : (
+//                               <Image
+//                                 src={SlideGrow}
+//                                 alt={item?.Title}
+//                                 loading="lazy"
+//                                 className="w-full md:min-w-[300px] md:w-[300px] lg:w-full lg:h-full lg:min-h-[400px] max-h-[400px] object-contain"
+//                               />
+//                             )}
+//                             <div className="w-full max-w-full claracontainer md:min-w-[300px] md:w-[300px] lg:w-full flex flex-col lg:flex-row justify-between items-center h-auto">
+//                               <div className="h-auto max-w-[400px] lg:min-w-[700px] lg:max-w-full w-full flex-col px-4 md:px-2 lg:px-4 justify-start items-start gap-6 md:gap-8 lg:gap-10 xl:gap-12 inline-flex">
+//                                 <div className="w-fit text-[white] flex flex-col justify-start items-start h-auto gap-4">
+//                                   <h3 className="clarascript text-lg font-semibold">
+//                                     {item.featuredText || "Default Body Title"}
+//                                   </h3>
+//                                   <div className="flex flex-col w-fit justify-start items-start gap-4">
+//                                     <h2 className="w-full claraheading">
+//                                       {item.Title || "Default Body Title"}
+//                                     </h2>
+//                                     <div className="w-full max-w-full h-auto prose text-white clarabodyTwo">
+//                                       <p
+//                                         // className="text-base"
+//                                         dangerouslySetInnerHTML={{
+//                                           __html:
+//                                             item.Body || "Default Body Text",
+//                                         }}
+//                                       />
+//                                     </div>
+//                                   </div>
+//                                 </div>
+//                                 <div className="w-fit">
+//                                   <Button
+//                                     style={{
+//                                       backgroundColor:
+//                                         item.buttonColor || "#000000",
+//                                       // backgroundColor: getComplementaryColor(
+//                                       //   item.buttonColor || "#000000"
+//                                       // ),
+//                                       color: item.bgcolor || "#FFFFFF",
+//                                     }}
+//                                     className="bg-purple-600 clarabutton hover:bg-purple-800 text-white px-6 py-3 rounded-md"
+//                                   >
+//                                     Get Started
+//                                   </Button>
+//                                 </div>
+//                               </div>
+//                             </div>
 //                           </div>
 //                         </div>
-//                       </div>
-//                       <div className="w-auto">
-//                         <Button
-//                           className="bg-white py-4 hover:bg-red hover:text-white clarabutton font-medium px-8 md:px-12 border-2 rounded-[10px]"
-//                           style={{
-//                             backgroundColor: getComplementaryColor(item.bgcolor || "#000000"),
-//                           }}
-//                         >
-//                           Get Started
-//                         </Button>
-//                       </div>
+//                       ))}
 //                     </div>
-//                   </div>
-//                 </CarouselItem>
+
+//                     <button
+//                       className="absolute left-2 bottom-0 lg:top-1/2 transform -translate-y-1/2 bg-white/20 hover:bg-white/50 text-[#ffffff] rounded-full p-2 shadow-md focus:outline-none"
+//                       onClick={() =>
+//                         setCurrentIndex(
+//                           (currentIndex - 1 + sliderData.length) %
+//                             sliderData.length
+//                         )
+//                       }
+//                       aria-label="Previous Slide"
+//                     >
+//                       <ChevronLeft className="w-6 h-6" />
+//                     </button>
+//                     <button
+//                       className="absolute right-2 bottom-0 lg:top-1/2 transform -translate-y-1/2 bg-white/20 hover:bg-white/50 text-[#ffffff] rounded-full p-2 shadow-md focus:outline-none"
+//                       onClick={() =>
+//                         setCurrentIndex((currentIndex + 1) % sliderData.length)
+//                       }
+//                       aria-label="Next Slide"
+//                     >
+//                       <ChevronRight className="w-6 h-6" />
+//                     </button>
+//                   </section>
+//                 </div>
 //               ))}
-//             </CarouselContent>
+//             </div>
 //           ) : (
 //             <OldSlider />
 //           )}
-//           <CarouselPrevious className="text-black" />
-//           <CarouselNext className="text-black" />
-//         </Carousel>
+//         </div>
 //       </div>
 //     </section>
 //   );
 // }
 
-
 export function Slider2() {
   const [sliderData, setSliderData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [currentIndex, setCurrentIndex] = useState(0); // Track the current slide index
+  const autoplayInterval = 1000; // Time interval for autoplay (in ms)
 
   useEffect(() => {
+    // Fetch slider data
     const fetchSliderData = async () => {
       try {
         const response = await fetch(
@@ -539,7 +600,15 @@ export function Slider2() {
     };
 
     fetchSliderData();
-  }, []);
+
+    // Autoplay logic: Change slide every few seconds
+    const intervalId = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % sliderData?.length); // Loop through slides
+    }, autoplayInterval);
+
+    // Cleanup the interval on component unmount
+    return () => clearInterval(intervalId);
+  }, [sliderData]);
 
   console.log("Slider Data", sliderData);
 
@@ -547,70 +616,123 @@ export function Slider2() {
   if (error) return <div>{error}</div>;
 
   return (
-    <>
-      <section className="w-full h-auto cursor-grab  items-center justify-center flex flex-col gap-[20px] bg-purple">
-        <div className=" w-full bg-purple flex flex-col-reverse md:justify-center md:items-center py-0  gap-8 md:gap-8">
-          <Carousel className="w-full flex py-0 my-0 justify-center items-center">
-            <CarouselContent className="w-full ml-0 p-0 flex justify-center items-center">
-              {sliderData?.map((item) => (
-                <CarouselItem
-                  style={{ backgroundColor: item.bgcolor || "purple" }}
+    <section className="w-full h-auto cursor-grab items-center justify-center flex flex-col gap-[20px] bg-purple">
+      <div className="w-full bg-purple flex flex-col-reverse md:justify-center md:items-center py-0 gap-8 md:gap-8">
+        <div
+          selectedItem={currentIndex} // Use currentIndex for controlling active slide
+          onChange={(index) => setCurrentIndex(index)} // Update index on manual change
+          className="w-full flex py-0 my-0 justify-center items-center"
+        >
+          {sliderData?.length > 0 ? (
+            <div className="w-full ml-0 p-0 flex justify-center items-center">
+              {sliderData.slice(0, 1).map((item) => (
+                <div
                   key={item.id}
-                  className="min-w-full justify-center  shrink-0 grow-0 basis-full flex p-0  items-center"
+                  style={{ backgroundColor: item.bgcolor || "purple" }}
+                  className="min-w-full justify-center shrink-0 grow-0 basis-full flex p-0 items-center"
                 >
-                  <div className="w-full max-w-full claracontainer  md:min-w-[300px] md:w-[300px] lg:w-full flex flex-col  lg:flex-row justify-between items-center h-auto ">
-                    {item?.Media && item?.Media[0]?.url ? (
-                      <img
-                        // src={`https://upbeat-life-04fe8098b1.strapiapp.com${item.Media[0]?.url}`}
-                        src={SlideGrow}
-                        alt={item?.Title}
-                        className="w-full md:min-w-[300px] md:w-[300px] lg:w-full lg:h-full lg:min-h-[400px] max-h-[400px] object-contain"
-                      />
-                    ) : (
-                      <Image
-                        src={SlideGrow}
-                        // className="w-full md:min-w-[300px] md:w-[300px] lg:w-full lg:h-full lg:min-h-[400px] max-h-[400px] object-contain"
-                        alt={item?.Title}
-                      />
-                    )}
-
-                    <div className="h-auto max-w-[400px] lg:min-w-[700px] lg:max-w-full w-full flex-col px-4 md:px-2 lg:px-4 justify-start items-start gap-6 md:gap-8 lg:gap-10 xl:gap-12 inline-flex  ">
-                      <div className="w-fit flex flex-col justify-start items-start h-auto gap-4">
-                        <div className={`text-white clarascript   `}>
-                          {item.featuredText}
-                        </div>
-                        <div className="flex flex-col w-fit justify-start items-start gap-4">
-                          <span className="text-white w-full claraheading">
-                            {item.Title}
-                          </span>
-
-                          <div className="w-full max-w-full h-auto prose text-white clarabodyTwo">
-                            <p
-                              dangerouslySetInnerHTML={{ __html: item.Body }}
-                            />
+                  <section className="relative w-full h-auto bg-gray-900 text-white flex items-center justify-center">
+                    <div className="w-full h-full flex overflow-hidden">
+                      {sliderData.map((item, index) => (
+                        <div
+                          key={item.id}
+                          className={`transition-opacity duration-500 ease-in-out ${
+                            index === currentIndex ? "block" : "hidden"
+                          } w-full`}
+                          style={{ backgroundColor: item.bgcolor || "purple" }}
+                        >
+                          <div className="w-full px-2 py-12 mx-auto flex flex-col lg:flex-row gap-4 items-center">
+                            {item?.Media && item.Media[0]?.url ? (
+                              <img
+                                src={
+                                  item?.Media?.[0]?.url
+                                    ? `https://upbeat-life-04fe8098b1.strapiapp.com${item.Media[0].url}`
+                                    : "/placeholder.jpg"
+                                }
+                                alt={item.Title || "Slider Image"}
+                                className="w-full px-2 md:min-w-[300px] md:w-[300px] lg:w-full lg:h-full lg:min-h-[400px] max-h-[400px] object-contain"
+                              />
+                            ) : (
+                              <Image
+                                src={SlideGrow}
+                                alt={item?.Title}
+                                loading="lazy"
+                                className="w-full md:min-w-[300px] md:w-[300px] lg:w-full lg:h-full lg:min-h-[400px] max-h-[400px] object-contain"
+                              />
+                            )}
+                            <div className="w-full max-w-full claracontainer md:min-w-[300px] md:w-[300px] lg:w-full flex flex-col lg:flex-row justify-between items-center h-auto">
+                              <div className="h-auto max-w-[400px] lg:min-w-[700px] lg:max-w-full w-full flex-col px-4 md:px-2 lg:px-4 justify-start items-start gap-6 md:gap-8 lg:gap-10 xl:gap-12 inline-flex">
+                                <div className="w-fit text-[white] flex flex-col justify-start items-start h-auto gap-4">
+                                  <h3 className="clarascript text-lg font-semibold">
+                                    {item.featuredText || "Default Body Title"}
+                                  </h3>
+                                  <div className="flex flex-col w-fit justify-start items-start gap-4">
+                                    <h2 className="w-full claraheading">
+                                      {item.Title || "Default Body Title"}
+                                    </h2>
+                                    <div className="w-full max-w-full h-auto prose text-white clarabodyTwo">
+                                      <p
+                                        // className="text-base"
+                                        dangerouslySetInnerHTML={{
+                                          __html:
+                                            item.Body || "Default Body Text",
+                                        }}
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="w-fit">
+                                  <Button
+                                    style={{
+                                      backgroundColor:
+                                        item.buttonColor || "#000000",
+                                      // backgroundColor: getComplementaryColor(
+                                      //   item.buttonColor || "#000000"
+                                      // ),
+                                      color: item.bgcolor || "#FFFFFF",
+                                    }}
+                                    className="bg-purple-600 clarabutton hover:bg-purple-800 text-white px-6 py-3 rounded-md"
+                                  >
+                                    Get Started
+                                  </Button>
+                                </div>
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <div className="w-auto">
-                        <Button
-                          className={`bg-white py-4 hover:bg-red hover: text-white clarabutton font-medium px-8 md:px-12 border-2  rounded-[10px]`}
-                          // style={{
-                          //   color: `#${slides[currentSlide].textcolor}`,
-                          // }}
-                        >
-                          Get Started{" "}
-                        </Button>
-                      </div>
+                      ))}
                     </div>
-                  </div>
-                </CarouselItem>
+
+                    <button
+                      className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white/20 hover:bg-white/50 text-black rounded-full p-2 shadow-md focus:outline-none"
+                      onClick={() =>
+                        setCurrentIndex(
+                          (currentIndex - 1 + sliderData.length) %
+                            sliderData.length
+                        )
+                      }
+                      aria-label="Previous Slide"
+                    >
+                      <ChevronLeft className="w-6 h-6" />
+                    </button>
+                    <button
+                      className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white/20 hover:bg-white/50 text-black rounded-full p-2 shadow-md focus:outline-none"
+                      onClick={() =>
+                        setCurrentIndex((currentIndex + 1) % sliderData.length)
+                      }
+                      aria-label="Next Slide"
+                    >
+                      <ChevronRight className="w-6 h-6" />
+                    </button>
+                  </section>
+                </div>
               ))}
-            </CarouselContent>
-            <CarouselPrevious className="text-black" />
-            <CarouselNext className="text-black" />
-          </Carousel>
+            </div>
+          ) : (
+            <OldSlider />
+          )}
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 }
