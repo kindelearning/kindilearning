@@ -12,6 +12,7 @@ import {
 
 import { useEffect, useState } from "react";
 import MediaSelector from "../../website/media/Section/MediaSelector";
+import { HelpCircle } from "lucide-react";
 
 export default function AnnualPriceing() {
   const [content, setContent] = useState(null); // To store the fetched data
@@ -43,13 +44,20 @@ export default function AnnualPriceing() {
   }, []);
 
   if (loading) {
-    return <div>Loading content...</div>;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full" />
+        <span className="ml-4 text-lg">Loading content...</span>
+      </div>
+    );
   }
-
   if (error) {
-    return <div className="text-red-500">{error}</div>;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="text-red-500 text-lg font-bold">{error}</div>
+      </div>
+    );
   }
-
   const { AnnualPlans } = content || {};
 
   return (
@@ -57,54 +65,80 @@ export default function AnnualPriceing() {
       <head>
         <title>Update Annual Pricing</title>
       </head>
-      <div className="plans-container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {AnnualPlans?.map((plan) => (
-          <div
-            key={plan.id}
-            className="plan-card p-2 border rounded-lg shadow-lg hover:bg-white hover:duration-300 ease-in-out transition-shadow"
-          >
-            {/* Thumbnail Image */}
-            {plan.Thumbnail?.url && (
-              <div className="thumbnail flex justify-center">
-                <img
-                  src={plan.Thumbnail?.url}
-                  // src={`https://upbeat-life-04fe8098b1.strapiapp.com${plan.Thumbnail?.url}`}
-                  alt={plan.Thumbnail?.name}
-                  className="rounded-lg object-cover w-full h-48  "
-                />
-              </div>
-            )}
-            <h3 className="text-2xl font-semibold text-center mt-4">
-              {plan.PriceTitle}
-            </h3>
-            <p className="text-lg text-start text-gray-700 mb-4 leading-[20px]">
-              {plan.PriceBody}
-            </p>
-            <p className="text-2xl font-bold text-start text-red text-primary mb-6">
-              ${plan.Price}
-            </p>
-
-            {/* Features Section */}
-            <div className="features mb-6">
-              {plan.Features?.map((feature) => (
-                <div key={feature.id} className="feature-item mb-4">
-                  <h4 className="text-lg font-medium text-gray-800">
-                    {feature.Title}
-                  </h4>
-                  <p className="text-sm text-gray-600 text-start">
-                    {feature.HelpText}
-                  </p>
+      {AnnualPlans?.length ? (
+        <div className="plans-container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {AnnualPlans?.map((plan) => (
+            <div
+              key={plan.id}
+              className="plan-card p-2 border rounded-lg shadow-lg hover:bg-white hover:duration-300 ease-in-out transition-shadow"
+            >
+              {/* Thumbnail Image */}
+              {plan.Thumbnail?.url && (
+                <div className="thumbnail flex justify-center">
+                  <img
+                    src={plan.Thumbnail?.url}
+                    // src={`https://upbeat-life-04fe8098b1.strapiapp.com${plan.Thumbnail?.url}`}
+                    alt={plan.Thumbnail?.name}
+                    className="rounded-lg object-cover w-full h-48  "
+                  />
                 </div>
-              ))}
+              )}
+              <h3 className="text-2xl font-semibold text-center mt-4">
+                {plan.PriceTitle}
+              </h3>
+              <p className="text-lg text-start text-gray-700 mb-4 leading-[20px]">
+                {plan.PriceBody}
+              </p>
+              <p className="text-2xl font-bold text-start text-red text-primary mb-6">
+                ${plan.Price}
+              </p>
+
+              {/* Features Section */}
+              {/* <div className="features mb-6">
+                {plan.Features?.map((feature) => (
+                  <div key={feature.id} className="feature-item mb-4">
+                    <h4 className="text-lg font-medium text-gray-800">
+                      {feature.Title}
+                    </h4>
+                    <p className="text-sm text-gray-600 text-start">
+                      {feature.HelpText}
+                    </p>
+                  </div>
+                ))}
+              </div> */}
+              {plan.Features ? (
+                <div className="features mb-6">
+                  {plan.Features?.map((feature) => (
+                    <div
+                      key={feature.id}
+                      className="feature-item flex items-center justify-between mb-4"
+                    >
+                      <h4 className="text-lg font-medium text-gray-800">
+                        {feature.Title}
+                      </h4>
+                      <div className="relative group">
+                        {/* Question Mark Icon */}
+                        <HelpCircle className="w-5 h-5 text-gray-500 cursor-pointer hover:text-gray-800" />
+                        {/* Tooltip */}
+                        <div className="absolute left-6 -top-6 hidden group-hover:block bg-gray-800 text-white text-xs rounded-md px-3 py-2 shadow-lg w-48">
+                          {feature.HelpText}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : null}
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      ) : (
+        <div className="text-center text-gray-600 text-xl mt-8">
+          No annual plans available at the moment.
+        </div>
+      )}
     </div>
   );
 }
-
-
 
 export function EditAnnualPricing() {
   const [monthlyPlans, setMonthlyPlans] = useState([]);

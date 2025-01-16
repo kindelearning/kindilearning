@@ -33,13 +33,13 @@ export default async function KindiSkillsCategories() {
               </p> */}
               {data.KindiSkillsCategoriesBody ? (
                 <p
-                  className="prose"
+                  className="prose clarabodyTwo text-[#ffffff]"
                   dangerouslySetInnerHTML={{
                     __html: data.KindiSkillsCategoriesBody,
                   }}
                 />
               ) : (
-                <p>
+                <p  className="prose text-[#ffffff] clarabodyTwo">
                   Encouraging children to tackle open-ended problems nurtures
                   their creative thinking and equips them with skills for a
                   successful life. Kindi supports this journey by providing

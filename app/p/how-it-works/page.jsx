@@ -6,8 +6,8 @@ import {
   PlayForLife,
 } from "@/app/Sections/HowItWorks";
 
-const page = () => (
-  <>
+export default function HowItWorksPage() {
+  return ( 
     <section className="w-full bg-[#EAEAF5] flex flex-col gap-0 justify-center items-start">
       <PlayForLife />
       <HowItWorks />
@@ -17,7 +17,5 @@ const page = () => (
       <MonthlyThemes />
       <PopularActivity />
     </section>
-  </>
-);
-
-export default page;
+  );
+}

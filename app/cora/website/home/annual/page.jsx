@@ -21,7 +21,7 @@ export default function AnnualPrice() {
                 Annual Pricing
               </span>
             </div>
-            <Dialog>
+            {/* <Dialog>
               <DialogTrigger className="text-purple w-[max-content] hover:scale-105 duration-200 hover:underline">
                 Edit Annual
               </DialogTrigger>
@@ -32,7 +32,7 @@ export default function AnnualPrice() {
                   </DialogDescription>
                 </DialogHeader>
               </DialogContent>
-            </Dialog>
+            </Dialog> */}
           </div>
           <div className="flex flex-col w-full gap-4 justify-center items-center">
             <AnnualPriceing />

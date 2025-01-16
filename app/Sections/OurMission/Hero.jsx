@@ -40,7 +40,7 @@ export default async function Hero() {
                       "The Kindi"}{" "}
                   </span>
                   <span className="text-red claraheading">
-                    {data.Hero.Title.split(" ").slice(2, 3).join(" ") ||
+                    {data.Hero.Title.split(" ").slice(2,14).join(" ") ||
                       "Mission"}
                   </span>
                 </div>

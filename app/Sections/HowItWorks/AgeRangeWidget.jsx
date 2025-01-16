@@ -46,7 +46,7 @@ const AgeCard = ({ bgImage, image, title, body, link }) => {
           href={link || "/p/community"}
           className="w-full justify-start items-start"
         >
-          <div className="w-full bg-[#ada5a500] border-0 text-center text-red hover:underline hover:bg-transparent clarabutton mt-8">
+          <div className="w-full bg-[#ada5a500] border-0 text-center text-red hover:underline hover:bg-transparent clarabutton mt-2">
             Read More
           </div>
         </Link>
@@ -172,6 +172,7 @@ export default function AgeRangeWidget() {
             <>
               {data.data.AgeGroup.Content.slice(1, 2).map((content, index) => (
                 <AgeCard
+                  image={content?.Icon.url || "/Images/AgeCardOne.svg"}
                   key={index}
                   // image={`https://upbeat-life-04fe8098b1.strapiapp.com${content.Icon.url}` || User}
                   bgImage="/Images/AgeRangeTwo.svg"
@@ -204,6 +205,7 @@ export default function AgeRangeWidget() {
             <>
               {data.data.AgeGroup.Content.slice(2, 3).map((content, index) => (
                 <AgeCard
+                  image={content?.Icon.url || "/Images/AgeCardOne.svg"}
                   key={index}
                   // image={AgeCardOne}
                   // image={`https://upbeat-life-04fe8098b1.strapiapp.com${content.Icon.url}` || User}
@@ -229,6 +231,7 @@ export default function AgeRangeWidget() {
             <>
               {data.data.AgeGroup.Content.slice(3, 4).map((content, index) => (
                 <AgeCard
+                  image={content?.Icon.url || "/Images/AgeCardOne.svg"}
                   key={index}
                   // image={AgeCardOne}
                   // image={`https://upbeat-life-04fe8098b1.strapiapp.com${content.Icon.url}` || User}

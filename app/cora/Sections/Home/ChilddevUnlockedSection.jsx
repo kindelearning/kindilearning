@@ -246,7 +246,7 @@ export default function ChildDevelopmentUnlock() {
 //   );
 // }
 
-export function UpdateChildDevelopmentContent() {
+export function UpdateChildDevelopmentContent() { 
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [featuredText, setFeaturedText] = useState("");

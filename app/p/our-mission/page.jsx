@@ -1,11 +1,10 @@
 import { DefaultReviews, PopularActivity } from "@/app/Sections"; //-
 import {
-  //-
-  Hero, //-
-  OurStory, //-
-  ParentWithKindi, //-
-  TheTeam, //-
-} from "@/app/Sections/OurMission"; //-
+  Hero,
+  OurStory,
+  ParentWithKindi,
+  TheTeam,
+} from "@/app/Sections/OurMission";
 
 export default function OurMission() {
   return (
@@ -15,7 +14,7 @@ export default function OurMission() {
         <OurStory />
         <ParentWithKindi />
         <TheTeam />
-        <DefaultReviews /> 
+        <DefaultReviews />
         <PopularActivity />
       </section>
     </>

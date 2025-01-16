@@ -379,7 +379,9 @@ export function UpdateParentWithKindiSection() {
 
     // console.log("Updated Gallery State:", formattedGallery);
   };
-
+  const handleEditorChange = (newValue) => {
+    setBody(newValue); // Update body state with the new value from the editor
+  };
   return (
     <div className="p-8">
       <h1 className="text-2xl font-bold mb-6">Edit Parentwithkindi</h1>
@@ -427,13 +429,18 @@ export function UpdateParentWithKindiSection() {
           <label htmlFor="BodyDescription" className="block">
             Body Description (Markdown)
           </label>
-          <textarea
-            id="BodyDescription"
-            name="BodyDescription"
+          {/* <textarea
+            id="Body"
+            name="Body"
             value={body}
             onChange={(e) => setBody(e.target.value)}
             className="border p-2 w-full"
             rows="5"
+          /> */}
+          <ClaraMarkdownRichEditor
+            name="Body"
+            value={body || ""} // Ensure the value is always a string
+            onChange={handleEditorChange}
           />
         </div>
 

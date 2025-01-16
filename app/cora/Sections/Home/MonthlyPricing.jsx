@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import MediaSelector from "../../website/media/Section/MediaSelector";
+import { HelpCircle } from "lucide-react";
 
 export default function MonthlyPricing() {
   const [content, setContent] = useState(null); // To store the fetched data
@@ -76,7 +77,7 @@ export default function MonthlyPricing() {
             </p>
 
             {/* Features Section */}
-            <div className="features mb-6">
+            {/* <div className="features mb-6">
               {plan.Features?.map((feature) => (
                 <div key={feature.id} className="feature-item mb-4">
                   <h4 className="text-lg font-medium text-gray-800">
@@ -87,7 +88,29 @@ export default function MonthlyPricing() {
                   </p>
                 </div>
               ))}
-            </div>
+            </div> */}
+            {plan.Features ? (
+              <div className="features mb-6">
+                {plan.Features?.map((feature) => (
+                  <div
+                    key={feature.id}
+                    className="feature-item flex items-center justify-between mb-4"
+                  >
+                    <h4 className="text-lg font-medium text-gray-800">
+                      {feature.Title}
+                    </h4>
+                    <div className="relative group">
+                      {/* Question Mark Icon */}
+                      <HelpCircle className="w-5 h-5 text-gray-500 cursor-pointer hover:text-gray-800" />
+                      {/* Tooltip */}
+                      <div className="absolute left-6 -top-6 hidden group-hover:block bg-gray-800 text-white text-xs rounded-md px-3 py-2 shadow-lg w-48">
+                        {feature.HelpText}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : null}
           </div>
         ))}
       </div>

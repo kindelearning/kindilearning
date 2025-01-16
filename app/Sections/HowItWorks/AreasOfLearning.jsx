@@ -26,11 +26,11 @@ export default async function AreasOfLearning() {
               {/* <p>{data.ArealearningBody}</p> */}
               {data.ArealearningBody ? (
                 <p
-                  className="prose"
+                  className="prose clarabodyTwo text-[#3f3a64] "
                   dangerouslySetInnerHTML={{ __html: data.ArealearningBody }}
                 />
               ) : (
-                <p>
+                <p className="prose clarabodyTwo text-[#3f3a64] ">
                   Unlocking your childs full potential. Kindi is here to equip
                   you with the tools to make it happen! Discover our early years
                   education activities across eight distinctive categories, all

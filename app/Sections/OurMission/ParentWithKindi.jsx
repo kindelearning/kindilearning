@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { BookOpen, PWKOne, PWKTwo } from "@/public/Images";
 import Image from "next/image";
@@ -24,17 +24,18 @@ const InternalChip = ({
   );
 };
 
-export default  function ParentWithKindi() {
+export default function ParentWithKindi() {
   const [missionData, setMissionData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
 
   // Fetch mission data
   useEffect(() => {
     const fetchMissionData = async () => {
       try {
-        const response = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/our-mission?populate[Parentwithkindi][populate]=Media");
+        const response = await fetch(
+          "https://upbeat-life-04fe8098b1.strapiapp.com/api/our-mission?populate[Parentwithkindi][populate]=Media"
+        );
         const data = await response.json();
 
         if (response.ok) {
@@ -58,15 +59,19 @@ export default  function ParentWithKindi() {
 
   const { Parentwithkindi } = missionData;
 
-  
-  // const data = await fetchOurMission();
-  
-  // if (!data) {
-    //   return <div>No content available.</div>;
-    // }
-    const mediaUrls = Parentwithkindi.Media.map(media => `${media.url}`);
-    // const mediaUrls = Parentwithkindi.Media.map(media => `https://upbeat-life-04fe8098b1.strapiapp.com${media.url}`);
-    console.log('Parentwithkindi mediaUrls Data', mediaUrls)
+  // const mediaUrls = Parentwithkindi?.Media?.map((media) => `${media.url}`);
+  const mediaUrls = Array.isArray(Parentwithkindi?.Media)
+    ? Parentwithkindi.Media.map((media) => `${media.url}`)
+    : [];
+  const fallbackUrls = [
+    "/Images/BlogThumb.png",
+    "/Images/ProfessionalThumb.svg",
+    "/Images/HowItWorkVideo.png",
+    "/Images/ActivityCard.svg",
+  ];
+  const imagesToDisplay = mediaUrls.length > 0 ? mediaUrls : fallbackUrls;
+
+  console.log("Parentwithkindi mediaUrls Data", mediaUrls);
   return (
     <>
       <section className="w-full h-auto bg-[#523373] items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">
@@ -78,9 +83,7 @@ export default  function ParentWithKindi() {
               <div className="text-start w-full">
                 <span className="text-red claraheading">
                   {Parentwithkindi.featuredText && (
-                    <p>
-                      {Parentwithkindi.featuredText || "Br a confident"}
-                    </p>
+                    <p>{Parentwithkindi.featuredText || "Br a confident"}</p>
                   )}{" "}
                 </span>
                 {/* <br className="flex md:hidden lg:flex" /> */}
@@ -112,9 +115,9 @@ export default  function ParentWithKindi() {
                     <span style="color: rgb(250, 204, 204); background-color: rgb(0, 0, 0);">
                       Parenthood{" "}
                     </span>
-                    is a whirlwind of responsibilities, and we get it. Thats
-                    why weve created Kindi, a haven for busy parents like you.
-                    No more endless scrolling for play ideas. With Kindi, every
+                    is a whirlwind of responsibilities, and we get it. Thats why
+                    weve created Kindi, a haven for busy parents like you. No
+                    more endless scrolling for play ideas. With Kindi, every
                     moment counts. Our platform offers curated activities for
                     children aged 6 months to 5 years, designed to make learning
                     enjoyable. Say goodbye to parenting uncertainties and hello
@@ -149,7 +152,7 @@ export default  function ParentWithKindi() {
             </div>
           </div>
 
-          <Claras3DGallery images={mediaUrls}/>
+          <Claras3DGallery images={imagesToDisplay} />
           {/* <Gallery /> */}
         </div>
       </section>
