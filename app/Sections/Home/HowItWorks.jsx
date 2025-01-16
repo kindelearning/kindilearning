@@ -20,22 +20,15 @@ export default async function HowItWorks() {
               <span className="text-white claraheading animate-fade-in">
                 {MainTitle
                   ? MainTitle.split(" ").slice(0, 2).join(" ")
-                  : "How It "}{" "}
+                  : "How It"}{" "}
               </span>
               <span className="text-red text-start md:text-center claraheading animate-fade-in">
                 {MainTitle
                   ? MainTitle.split(" ").slice(2, 6).join(" ")
-                  : " Works"}{" "}
+                  : "Works"}{" "}
               </span>
             </div>
-            {/* {MainBody?.map((desc, index) => (
-              <p
-                key={index}
-                className="w-full md:w-[500px] xl:w-[800px] text-start md:text-center animate-fade-in text-white clarabodyTwo"
-              >
-                {desc.children[0]?.text}
-              </p>
-            ))} */}
+            
             <p
               className="prose w-full md:w-[500px] xl:w-[800px] text-start md:text-center animate-fade-in text-white clarabodyTwo"
               dangerouslySetInnerHTML={{

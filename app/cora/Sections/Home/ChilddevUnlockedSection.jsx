@@ -328,6 +328,20 @@ export function UpdateChildDevelopmentContent() {
       {error && <div className="text-red-500">{error}</div>}
 
       <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Featured Text Field */}
+        <div>
+          <label htmlFor="featuredText" className="block">
+            Featured Text
+          </label>
+          <input
+            type="text"
+            id="FeaturedText"
+            name="featuredText"
+            value={featuredText}
+            onChange={(e) => setFeaturedText(e.target.value)}
+            className="border p-2 w-full"
+          />
+        </div>
         {/* Title Field */}
         <div>
           <label htmlFor="Title" className="block">
@@ -361,21 +375,6 @@ export function UpdateChildDevelopmentContent() {
             name="Body"
             value={body || ""} // Ensure the value is always a string
             onChange={handleEditorChange}
-          />
-        </div>
-
-        {/* Featured Text Field */}
-        <div>
-          <label htmlFor="featuredText" className="block">
-            Featured Text
-          </label>
-          <input
-            type="text"
-            id="FeaturedText"
-            name="featuredText"
-            value={featuredText}
-            onChange={(e) => setFeaturedText(e.target.value)}
-            className="border p-2 w-full"
           />
         </div>
 

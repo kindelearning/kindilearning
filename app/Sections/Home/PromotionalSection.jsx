@@ -13,12 +13,6 @@ export default function PromotionalSection() {
 
   // Fetch content when the component mounts
   useEffect(() => {
-    // async function loadContent() {
-    //   const fetchedContent = await fetchChildDevelopmentUnlock();
-    //   setContent(fetchedContent);
-    // }
-
-    // loadContent();
     const fetchContent = async () => {
       try {
         const response = await fetch(
@@ -51,7 +45,6 @@ export default function PromotionalSection() {
     return <p>No content...</p>; // Show loading state while fetching
   }
 
-  const mediaUrl = content.media;
 
   return (
     <>
@@ -70,7 +63,7 @@ export default function PromotionalSection() {
               {/* Title and Body */}
               <div className="flex flex-col w-full justify-start items-start heading animate-fade-in">
                 <span className="text-white claraheading capitalize animate-fade-in">
-                  {content.title || "Child Development Unlocked"}
+                  {content.Title || "Child Development Unlocked"}
                 </span>
 
                 {content.Body ? (
@@ -104,9 +97,9 @@ export default function PromotionalSection() {
           <div className="w-full px-4 md:px-8 xl:px-12 md:w-[50%] flex justify-center items-center h-auto animate-fade-in">
             <div className="w-[400px] h-auto">
               {/* Check if media URL exists and render the image */}
-              {mediaUrl ? (
+              {content.Media ? (
                 <img
-                  src={mediaUrl}
+                  src={content.Media[0]?.url}
                   alt="Child Development"
                   width={400}
                   height={400}

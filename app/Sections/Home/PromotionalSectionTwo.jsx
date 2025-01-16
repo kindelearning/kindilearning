@@ -67,7 +67,7 @@ export default async function PromotionalSectionTwo() {
                 </span>{" "}
                 <span className="text-purple claraheading">
                   {title.length > 2
-                    ? title.split(" ").slice(2, 3).join(" ")
+                    ? title.split(" ").slice(2, 12).join(" ")
                     : title || "Experts"}
                 </span>
               </div>
