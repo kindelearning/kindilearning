@@ -468,7 +468,6 @@ export default function ProgressSection() {
       if (!token) {
         return;
       }
-
       try {
         const data = await fetchUserDetails(token);
         setUserData(data);

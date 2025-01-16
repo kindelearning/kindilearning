@@ -729,7 +729,8 @@ export function Slider2() {
               ))}
             </div>
           ) : (
-            <OldSlider />
+            // <OldSlider />
+            null
           )}
         </div>
       </div>
