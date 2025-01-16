@@ -22,7 +22,6 @@ import { fetchKidDetails, fetchUserDetails } from "../api";
 import { getRandomImage } from "../milestone/page";
 import { fetchAllActivities } from "@/app/data/p/Dynamic/Activity";
 
-
 const ActivitiesCount = () => {
   const [activities, setActivities] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -100,13 +99,15 @@ const ActivitiesCount = () => {
                   className="md:w-full hover:shadow-md duration-200 min-w-[170px] w-full min-h-[250px] h-full bg-white items-start justify-start border rounded-3xl flex flex-col gap-4"
                 >
                   <div className="flex max-h-[180px] min-h-[150px] h-[150px] md:max-h-[200px] md:h-full lg:h-full lg:max-h-[182px] lg:min-h-[182px] overflow-clip rounded-t-3xl">
-                    <img
-                      src={activity.Gallery[0]?.url}
-                      alt={activity.Title}
-                      width={200}
-                      height={150}
-                      className="w-full max-h-[180px] duration-300 hover:scale-105 lg:h-full lg:max-h-[182px] lg:min-h-[182px] md:max-h-[300px] object-cover rounded-t-3xl"
-                    />
+                    {activity.Gallery ? (
+                      <img
+                        src={activity.Gallery[0]?.url}
+                        alt={activity.Title}
+                        width={200}
+                        height={150}
+                        className="w-full max-h-[180px] duration-300 hover:scale-105 lg:h-full lg:max-h-[182px] lg:min-h-[182px] md:max-h-[300px] object-cover rounded-t-3xl"
+                      />
+                    ) : null}
                   </div>
                   <div className="w-full overflow-clip p-2 flex-col justify-start items-start flex gap-2 md:gap-2 lg:gap-4">
                     <div className="flex-col w-full gap-[6px] justify-start items-start">
@@ -486,6 +487,9 @@ export default function ProgressSection() {
   return (
     <>
       <section className="w-full pb-24 h-full bg-[#EAEAF5] items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">
+        <head>
+          <title>Kid Progress</title>
+        </head>
         <div className="claracontainer items-center justify-center p-4 md:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-8">
           {userData ? (
             <div className="flex w-full py-6 flex-col justify-center items-center">
@@ -497,22 +501,24 @@ export default function ProgressSection() {
                   <div className="flex w-full max-w-[400px] lg:max-w-full lg:items-center lg:justify-center ">
                     {/* Main Frame: Shows up to 5 tabs */}
                     <TabsList className="flex gap-2 lg:gap-[2px] h-full bg-transparent py-6 overflow-x-scroll justify-center items-center w-full scrollbar-hidden">
-                      {userData.myKids.map((kid) => (
-                        <TabsTrigger
-                          key={kid.id}
-                          value={kid.id}
-                          className="flex-shrink-0 flex-col data-[state=active]:bg-[#f5f5f500] data-[state=active]:opacity-100 opacity-70  data-[state=active]:z-12 data-[state=active]:scale-125 duration-200 ease-ease-in-out  data-[state=active]:border-red border-2 p-0 rounded-full bg-transparent"
-                        >
-                          <Image
-                            src={getRandomImage()} // Random image for each kid's tab
-                            alt={`Profile of ${kid.Name}`}
-                            width={48}
-                            height={48}
-                            title={kid.Name}
-                            className={`w-16 h-16 p-0 m-0 rounded-full object-cover transition-all duration-200`}
-                          />
-                        </TabsTrigger>
-                      ))}
+                      {userData.myKids
+                        .filter((_, index) => index % 2 === 0)
+                        .map((kid) => (
+                          <TabsTrigger
+                            key={kid.id}
+                            value={kid.id}
+                            className="flex-shrink-0 flex-col data-[state=active]:bg-[#f5f5f500] data-[state=active]:opacity-100 opacity-70  data-[state=active]:z-12 data-[state=active]:scale-125 duration-200 ease-ease-in-out  data-[state=active]:border-red border-2 p-0 rounded-full bg-transparent"
+                          >
+                            <Image
+                              src={getRandomImage()} // Random image for each kid's tab
+                              alt={`Profile of ${kid.Name}`}
+                              width={48}
+                              height={48}
+                              title={kid.Name}
+                              className={`w-16 h-16 p-0 m-0 rounded-full object-cover transition-all duration-200`}
+                            />
+                          </TabsTrigger>
+                        ))}
                     </TabsList>
                   </div>
 
@@ -521,7 +527,7 @@ export default function ProgressSection() {
                     <TabsContent key={kid.id} value={kid.id} className="w-full">
                       <div className="w-full flex flex-col gap-2 lg:gap-4 justify-between items-center">
                         <div className="font-fredoka text-[12px] lg:text-[20px]">
-                         Track Progress for: {kid.Name}
+                          Track Progress for: {kid.Name}
                         </div>
 
                         <div className="flex gap-2 px-4 items-start lg:px-0 overflow-x-scroll scrollbar-hidden w-full">
@@ -542,26 +548,26 @@ export default function ProgressSection() {
             </div>
           ) : (
             <section className="w-full font-fredoka">
-            <div className="claracontainer h-[500px] flex flex-col gap-6 justify-center items-center">
-              <div className="flex-col gap-4 text-center">
-                <span className="text-[#3f3a64] claraheading uppercase">
-                  No User Data Found
-                </span>
-                <br />
-                <span className="text-red claraheading uppercase">
-                  Please log in to access your profile.
-                </span>
+              <div className="claracontainer h-[500px] flex flex-col gap-6 justify-center items-center">
+                <div className="flex-col gap-4 text-center">
+                  <span className="text-[#3f3a64] claraheading uppercase">
+                    No User Data Found
+                  </span>
+                  <br />
+                  <span className="text-red claraheading uppercase">
+                    Please log in to access your profile.
+                  </span>
+                </div>
+                <div className="flex w-full justify-center items-center gap-4 flex-col lg:flex-row text-white text-center">
+                  <Link
+                    href="/oAuth/signup" // Replace this with your login navigation logic
+                    className="bg-red text-white px-4 py-2 rounded shadow"
+                  >
+                    Go to Login
+                  </Link>
+                </div>
               </div>
-              <div className="flex w-full justify-center items-center gap-4 flex-col lg:flex-row text-white text-center">
-                <Link
-                  href="/oAuth/signup" // Replace this with your login navigation logic
-                  className="bg-red text-white px-4 py-2 rounded shadow"
-                >
-                  Go to Login
-                </Link>
-              </div>
-            </div>
-          </section>
+            </section>
           )}
 
           <div className="grid grid-cols-2 md:flex w-full px-2 lg:px-0 justify-start items-center gap-2 flex-wrap">
