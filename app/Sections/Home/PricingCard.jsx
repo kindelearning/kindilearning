@@ -20,7 +20,7 @@ export default function PricingCard({
     <div className="w-full min-w-[300px] md:min-w-[340px] lg:min-w-[300px] max-w-[360px] h-auto bg-[#ffffff] rounded-[32px] items-start justify-center flex flex-col gap-[20px] ">
       <div className="flex w-full rounded-t-[32px] h-full min-h-[260px] max-h-[260px] object-cover overflow-clip">
         <img
-          src={image || PricingThumb}
+          src={image}
           alt="Pricing Image"
           className="min-h-[260px] object-cover h-full w-full"
         />

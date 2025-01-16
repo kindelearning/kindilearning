@@ -18,7 +18,6 @@ export default function PricingTabs() {
   const [monthlypricingDataFeature, setMonthlyPricingDataFeature] =
     useState(null);
 
-
   const toggleAccordion = () => {
     setIsAccordionOpen((prev) => !prev);
   };
@@ -41,7 +40,7 @@ export default function PricingTabs() {
   useEffect(() => {
     const loadPricingData = async () => {
       const fetchedData = await fetchPricingDataFeatures();
-      // console.log("Fetched Data:", fetchedData); // Log data here
+      console.log("Fetched Data:", fetchedData); // Log data here
 
       if (fetchedData) {
         setPricingDataFeature(fetchedData);
@@ -159,7 +158,7 @@ export default function PricingTabs() {
                                   }}
                                 />
                               ) : (
-                                <p>
+                                <p className="prose clarabodyTwo ">
                                   No more guesswork! Unlock your childs full
                                   potential with our affordable Milestone
                                   Tracker—an essential tool for every parent.
@@ -176,7 +175,9 @@ export default function PricingTabs() {
                             )}
                             isOpen={isAccordionOpen} // Pass the state here
                             toggleAccordion={toggleAccordion} // Pass toggle function
-                            image={plan.Thumbnail?.url || "Images/PricingThumb.svg"}
+                            image={
+                              plan.Thumbnail?.url || "Images/PricingThumb.svg"
+                            }
                             // image={`https://upbeat-life-04fe8098b1.strapiapp.com${plan.Thumbnail?.url}`}
                           />
                         )
@@ -208,7 +209,7 @@ export default function PricingTabs() {
                                   }}
                                 />
                               ) : (
-                                <p>
+                                <p className="prose clarabodyTwo ">
                                   No more guesswork! Unlock your childs full
                                   potential with our affordable Milestone
                                   Tracker—an essential tool for every parent.
@@ -226,7 +227,9 @@ export default function PricingTabs() {
                             isOpen={isAccordionOpen} // Pass the state here
                             toggleAccordion={toggleAccordion} // Pass toggle function
                             // image={`https://upbeat-life-04fe8098b1.strapiapp.com${plan.Thumbnail?.url}`}
-                            image={plan.Thumbnail?.url || "Images/PricingThumb.svg"}
+                            image={
+                              plan.Thumbnail?.url || "Images/PricingThumb.svg"
+                            }
                           />
                         )
                       )

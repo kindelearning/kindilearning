@@ -91,7 +91,7 @@ export default function AnnualPriceing() {
               </p>
               <p className="text-2xl font-bold text-start text-red text-primary mb-6">
                 ${plan.Price}
-              </p>
+              </p> 
 
               {/* Features Section */}
               {/* <div className="features mb-6">

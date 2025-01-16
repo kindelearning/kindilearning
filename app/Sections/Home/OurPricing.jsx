@@ -29,7 +29,7 @@ export default async function OurPricing() {
           }}
         >
           <div className="w-full text-red clarascript px-4 md:px-0 text-start md:text-center">
-            {pricingData.featuredText}
+            {pricingData.featuredText || "Default featuredText"}
           </div>
           <div className="flex w-full px-4 md:px-0 container justify-start md:justify-center items-start md:items-center gap-4 flex-col">
             <div
@@ -42,12 +42,12 @@ export default async function OurPricing() {
               <span className="text-[#3f3a64] claraheading text-start md:text-center capitalize ">
                 {pricingData.SectionTitle
                   ? pricingData.SectionTitle.split(" ").slice(0, 1).join(" ")
-                  : "Our"}{" "}
+                  : "Our" || "Default SectionTitle"}{" "}
               </span>
               <span className="text-red claraheading text-start md:text-center capitalize">
                 {pricingData.SectionTitle
                   ? pricingData.SectionTitle.split(" ").slice(1, 2).join(" ")
-                  : "Pricing"}{" "}
+                  : "Pricing" || "Default SectionTitle"}{" "}
               </span>
             </div>
             <div
@@ -60,7 +60,7 @@ export default async function OurPricing() {
               <p>
                 <div
                   dangerouslySetInnerHTML={{
-                    __html: pricingData.SectionBody, // Render Markdown or Rich Text
+                    __html: pricingData.SectionBody || "Default Body Text", // Render Markdown or Rich Text
                   }}
                 />
               </p>

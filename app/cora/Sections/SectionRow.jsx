@@ -24,7 +24,7 @@ export function SectionRow({
               <Eye className="text-[#7f7f7f] w-5 h-5 duration-300 ease-in-out hover:text-black" />
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-h-[600px] font-fredoka max-w-[1000px] overflow-y-scroll">
+          <DialogContent className="max-h-[600px] bg-[#eaeaf5] font-fredoka max-w-[1000px] overflow-y-scroll">
             <DialogTitle>{sectionName} Section</DialogTitle>
             <DialogDescription>
               <ComponentPreview />
