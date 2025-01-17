@@ -345,6 +345,7 @@ export function UpdateSliderSection() {
           featuredText: section.featuredText,
           Body: section.Body,
           bgcolor: section.bgcolor,
+          buttonColor: section.buttonColor,
           Media: section.Media ? { id: section.Media.id } : null,
         })),
       },
@@ -481,6 +482,29 @@ export function UpdateSliderSection() {
                   const updatedSection = {
                     ...section,
                     bgcolor: e.target.value,
+                  };
+                  handleHIWSectionUpdate(index, updatedSection);
+                }}
+                className="mt-1 block w-16 border rounded-md"
+              />
+            </div>
+
+            {/* button Color Picker */}
+            <div>
+              <label
+                htmlFor={`buttonColor-${index}`}
+                className="block text-sm font-medium text-gray-700"
+              >
+                buttonColor:
+              </label>
+              <input
+                type="color"
+                id={`buttonColor-${index}`}
+                value={section.buttonColor}
+                onChange={(e) => {
+                  const updatedSection = {
+                    ...section,
+                    buttonColor: e.target.value,
                   };
                   handleHIWSectionUpdate(index, updatedSection);
                 }}

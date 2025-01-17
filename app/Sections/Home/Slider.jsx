@@ -19,6 +19,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { useSwipeable } from "react-swipeable";
 
 const SimpleLine = ({ SlideTitle = "Educational play for young children" }) => {
   return (
@@ -115,295 +116,385 @@ const slides = [
   },
 ];
 
+// export default function OldSlider() {
+//   const [loaded, setLoaded] = useState(false);
+//   const [currentSlide, setCurrentSlide] = useState(0);
+//   const [isHovered, setIsHovered] = useState(false);
+//   const [isTouched, setIsTouched] = useState(false); // Manage touch state
+
+//   let touchStartX = 0;
+//   let touchEndX = 0;
+//   let startX = 0;
+//   let moveX = 0;
+//   let isDragging = false;
+
+//   const handleTouchStart = (e) => {
+//     setIsTouched(true); // Show touch indication
+//     touchStartX = e.touches[0].clientX;
+//     startX = e.touches[0].clientX;
+//     isDragging = true;
+//     document.body.classList.add("draggable");
+//   };
+
+//   const handleTouchMove = (e) => {
+//     touchEndX = e.touches[0].clientX;
+//     if (!isDragging) return;
+//     moveX = e.touches[0].clientX;
+//   };
+
+//   const handleTouchEnd = () => {
+//     setIsTouched(false); // Hide touch indication
+//     if (touchStartX - touchEndX > 50) {
+//       // Swipe left
+//       setCurrentSlide((prev) => (prev + 1) % slides.length);
+//     } else if (touchStartX - touchEndX < -50) {
+//       // Swipe right
+//       setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
+//     }
+//     touchStartX = 0;
+//     touchEndX = 0;
+//     document.body.classList.remove("draggable");
+//     if (!isDragging) return;
+//     isDragging = false;
+//     if (startX - moveX > 50) {
+//       // Swipe left
+//       setCurrentSlide((prev) => (prev + 1) % slides.length);
+//     } else if (startX - moveX < -50) {
+//       // Swipe right
+//       setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
+//     }
+//   };
+
+//   useEffect(() => {
+//     const timeout = setTimeout(() => {
+//       setLoaded(true);
+//     }, 3000);
+
+//     const interval = setInterval(() => {
+//       if (!isHovered) {
+//         setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
+//       }
+//     }, 6000);
+
+//     return () => {
+//       clearTimeout(timeout);
+//       clearInterval(interval);
+//     };
+//   }, [isHovered, slides.length]);
+
+//   const handleMouseDown = (e) => {
+//     startX = e.clientX;
+//     isDragging = true;
+//   };
+//   const handleMouseMove = (e) => {
+//     if (!isDragging) return;
+//     moveX = e.clientX;
+//   };
+//   const handleMouseUp = () => {
+//     if (!isDragging) return;
+//     isDragging = false;
+//     if (startX - moveX > 50) {
+//       // Swipe left
+//       setCurrentSlide((prev) => (prev + 1) % slides.length);
+//     } else if (startX - moveX < -50) {
+//       // Swipe right
+//       setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
+//     }
+//   };
+//   const handleMouseEnter = () => {
+//     setIsHovered(true);
+//   };
+
+//   const handleMouseLeave = () => {
+//     setIsHovered(false);
+//   };
+
+//   const handlePrevSlide = () => {
+//     setCurrentSlide((prevSlide) =>
+//       prevSlide === 0 ? slides.length - 1 : prevSlide - 1
+//     );
+//   };
+
+//   const handleNextSlide = () => {
+//     setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
+//   };
+
+//   return (
+//     <>
+//       <section
+//         className={`w-full h-auto cursor-grab bg-purple py-12 md:pt-16 md:pb-4 items-center justify-center flex flex-col gap-[20px] `}
+//         style={{
+//           backgroundColor: `#${slides[currentSlide].backgroundColor}`,
+//         }}
+//         onMouseEnter={handleMouseEnter}
+//         onMouseLeave={handleMouseLeave}
+//         onTouchStart={handleTouchStart}
+//         onTouchMove={handleTouchMove}
+//         onTouchEnd={handleTouchEnd}
+//         onMouseDown={handleMouseDown}
+//         onMouseMove={handleMouseMove}
+//         onMouseUp={handleMouseUp}
+//       >
+//         <div className="claracontainer w-full flex flex-col-reverse md:flex-col-reverse md:justify-center md:items-center lg:flex-row-reverse xl:flex-row-reverse gap-8 md:gap-8">
+//           <button
+//             onClick={handlePrevSlide}
+//             className=" w-[32px] h-[32px] hidden lg:flex justify-center items-center left-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-30 backdrop-blur-lg text-[#000000] p-2 rounded-full z-10"
+//           >
+//             <ChevronRight />
+//           </button>
+//           {/* Left Column */}
+//           <div className="h-auto w-full flex-col px-4 md:px-2 lg:px-4 justify-start items-start gap-6 md:gap-8 lg:gap-10 xl:gap-12 inline-flex  ">
+//             <div className="w-full flex flex-col justify-start items-start h-auto gap-4">
+//               <div className={`text-white clarascript   `}>
+//                 {slides[currentSlide].script}
+//               </div>
+//               <div className="flex flex-col w-full justify-start items-start gap-4">
+//                 <div className="w-auto">
+//                   <span className="text-white claraheading">
+//                     {slides[currentSlide].heading}
+//                   </span>
+//                 </div>
+//                 <div className="w-full h-auto text-white clarabodyTwo">
+//                   {slides[currentSlide].description}
+//                 </div>
+//               </div>
+//             </div>
+//             <div className="w-auto">
+//               <Button
+//                 className={`bg-white py-4 hover:bg-red hover: text-white clarabutton font-medium px-8 md:px-12 border-2 border-[#${slides[currentSlide].backgroundColor}] rounded-[10px]`}
+//                 disabled={!loaded}
+//                 style={{
+//                   color: `#${slides[currentSlide].textcolor}`,
+//                 }}
+//               >
+//                 Get Started{" "}
+//               </Button>
+//             </div>
+//           </div>
+//           {/* Right Column */}
+//           <div className="w-full slide-in-from-left-2 duration-200 md:min-w-[300px] md:w-[300px] lg:w-full flex justify-center items-center h-auto ">
+//             <Image
+//               alt="Kindi"
+//               src={slides[currentSlide].image}
+//               className="w-full md:min-w-[300px] md:w-[300px] lg:w-full lg:h-full lg:min-h-[400px] max-h-[400px] object-contain"
+//               onLoad={() => setLoaded(true)}
+//             />
+//           </div>
+//           <button
+//             onClick={handleNextSlide}
+//             className=" w-[32px] h-[32px] hidden lg:flex justify-center items-center right-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-30 backdrop-blur-lg text-[#000000] p-2 rounded-full z-10"
+//           >
+//             <ChevronLeft />
+//           </button>
+//         </div>
+
+//         {/* Dot Navigation */}
+//         <div className="flex w-full px-4 justify-between items-center">
+//           <button
+//             onClick={handlePrevSlide}
+//             className="w-[32px]  h-[32px] lg:hidden flex justify-center items-center left-0  transform   bg-opacity-30 backdrop-blur-lg text-[#f6f6f6] p-2 rounded-full z-10"
+//           >
+//             <ChevronLeft />
+//           </button>
+//           <div className="flex cursor-pointer justify-center w-full">
+//             {slides.map((slide, index) => (
+//               <div
+//                 key={index}
+//                 className={`w-2 h-2 bg-gray-300 rounded-full mx-2 ${
+//                   currentSlide === index ? "bg-white" : ""
+//                 }`}
+//                 onClick={() => setCurrentSlide(index)}
+//               />
+//             ))}
+//           </div>
+//           <button
+//             onClick={handleNextSlide}
+//             className="w-[32px] h-[32px] lg:hidden flex justify-center items-center right-0  transform bg-opacity-30 backdrop-blur-lg text-[#d6d6d6] p-2 rounded-full z-10"
+//           >
+//             <ChevronRight />
+//           </button>
+//         </div>
+//       </section>
+//     </>
+//   );
+// }
+
 export default function Slider() {
-  const [loaded, setLoaded] = useState(false);
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
-  const [isTouched, setIsTouched] = useState(false); // Manage touch state
+  const [sliderData, setSliderData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [currentIndex, setCurrentIndex] = useState(0); // Track the current slide index
+  const autoplayInterval = 5000; // Time interval for autoplay (in ms)
 
-  let touchStartX = 0;
-  let touchEndX = 0;
-  let startX = 0;
-  let moveX = 0;
-  let isDragging = false;
+  // Fetch slider data
+  useEffect(() => {
+    const fetchSliderData = async () => {
+      try {
+        const response = await fetch(
+          "https://upbeat-life-04fe8098b1.strapiapp.com/api/slider?populate=Content.Media"
+        );
+        const data = await response.json();
 
-  const handleTouchStart = (e) => {
-    setIsTouched(true); // Show touch indication
-    touchStartX = e.touches[0].clientX;
-    startX = e.touches[0].clientX;
-    isDragging = true;
-    document.body.classList.add("draggable");
-  };
+        if (response.ok) {
+          setSliderData(data.data.Content);
+        } else {
+          setError("Error fetching data");
+        }
+      } catch (error) {
+        setError("Error fetching data");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const handleTouchMove = (e) => {
-    touchEndX = e.touches[0].clientX;
-    if (!isDragging) return;
-    moveX = e.touches[0].clientX;
-  };
-
-  const handleTouchEnd = () => {
-    setIsTouched(false); // Hide touch indication
-    if (touchStartX - touchEndX > 50) {
-      // Swipe left
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
-    } else if (touchStartX - touchEndX < -50) {
-      // Swipe right
-      setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
-    }
-    touchStartX = 0;
-    touchEndX = 0;
-    document.body.classList.remove("draggable");
-    if (!isDragging) return;
-    isDragging = false;
-    if (startX - moveX > 50) {
-      // Swipe left
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
-    } else if (startX - moveX < -50) {
-      // Swipe right
-      setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
-    }
-  };
+    fetchSliderData();
+  }, []); // Empty dependency array ensures this runs only once on mount
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      setLoaded(true);
-    }, 3000);
+    if (!sliderData || sliderData.length === 0) return; // Skip autoplay if no data
 
-    const interval = setInterval(() => {
-      if (!isHovered) {
-        setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
-      }
-    }, 6000);
+    const intervalId = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % sliderData.length);
+    }, autoplayInterval);
+    return () => clearInterval(intervalId);
+  }, [sliderData]);
 
-    return () => {
-      clearTimeout(timeout);
-      clearInterval(interval);
-    };
-  }, [isHovered, slides.length]);
+  console.log("Slider Data", sliderData);
 
-  const handleMouseDown = (e) => {
-    startX = e.clientX;
-    isDragging = true;
-  };
-  const handleMouseMove = (e) => {
-    if (!isDragging) return;
-    moveX = e.clientX;
-  };
-  const handleMouseUp = () => {
-    if (!isDragging) return;
-    isDragging = false;
-    if (startX - moveX > 50) {
-      // Swipe left
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
-    } else if (startX - moveX < -50) {
-      // Swipe right
-      setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
-    }
-  };
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-  };
+  // Swipe handlers
+  const swipeHandlers = useSwipeable({
+    onSwipedLeft: () => setCurrentIndex((currentIndex + 1) % sliderData.length),
+    onSwipedRight: () =>
+      setCurrentIndex(
+        (currentIndex - 1 + sliderData.length) % sliderData.length
+      ),
+    preventDefaultTouchmoveEvent: true,
+    trackMouse: true, // Optional for desktop swipe simulation
+  });
 
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-  };
-
-  const handlePrevSlide = () => {
-    setCurrentSlide((prevSlide) =>
-      prevSlide === 0 ? slides.length - 1 : prevSlide - 1
-    );
-  };
-
-  const handleNextSlide = () => {
-    setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
-  };
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
 
   return (
-    <>
-      <section
-        className={`w-full h-auto cursor-grab bg-purple py-12 md:pt-16 md:pb-4 items-center justify-center flex flex-col gap-[20px] `}
-        style={{
-          backgroundColor: `#${slides[currentSlide].backgroundColor}`,
-        }}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-      >
-        <div className="claracontainer w-full flex flex-col-reverse md:flex-col-reverse md:justify-center md:items-center lg:flex-row-reverse xl:flex-row-reverse gap-8 md:gap-8">
-          <button
-            onClick={handlePrevSlide}
-            className=" w-[32px] h-[32px] hidden lg:flex justify-center items-center left-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-30 backdrop-blur-lg text-[#000000] p-2 rounded-full z-10"
-          >
-            <ChevronRight />
-          </button>
-          {/* Left Column */}
-          <div className="h-auto w-full flex-col px-4 md:px-2 lg:px-4 justify-start items-start gap-6 md:gap-8 lg:gap-10 xl:gap-12 inline-flex  ">
-            <div className="w-full flex flex-col justify-start items-start h-auto gap-4">
-              <div className={`text-white clarascript   `}>
-                {slides[currentSlide].script}
-              </div>
-              <div className="flex flex-col w-full justify-start items-start gap-4">
-                <div className="w-auto">
-                  <span className="text-white claraheading">
-                    {slides[currentSlide].heading}
-                  </span>
-                </div>
-                <div className="w-full h-auto text-white clarabodyTwo">
-                  {slides[currentSlide].description}
-                </div>
-              </div>
-            </div>
-            <div className="w-auto">
-              <Button
-                className={`bg-white py-4 hover:bg-red hover: text-white clarabutton font-medium px-8 md:px-12 border-2 border-[#${slides[currentSlide].backgroundColor}] rounded-[10px]`}
-                disabled={!loaded}
-                style={{
-                  color: `#${slides[currentSlide].textcolor}`,
-                }}
-              >
-                Get Started{" "}
-              </Button>
-            </div>
-          </div>
-          {/* Right Column */}
-          <div className="w-full slide-in-from-left-2 duration-200 md:min-w-[300px] md:w-[300px] lg:w-full flex justify-center items-center h-auto ">
-            <Image
-              alt="Kindi"
-              src={slides[currentSlide].image}
-              className="w-full md:min-w-[300px] md:w-[300px] lg:w-full lg:h-full lg:min-h-[400px] max-h-[400px] object-contain"
-              onLoad={() => setLoaded(true)}
-            />
-          </div>
-          <button
-            onClick={handleNextSlide}
-            className=" w-[32px] h-[32px] hidden lg:flex justify-center items-center right-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-30 backdrop-blur-lg text-[#000000] p-2 rounded-full z-10"
-          >
-            <ChevronLeft />
-          </button>
-        </div>
+    <section className="w-full h-auto cursor-grab items-center justify-center flex flex-col gap-[20px] bg-purple">
+      <div className="w-full bg-purple flex flex-col-reverse md:justify-center md:items-center py-0 gap-8 md:gap-8">
+        <div
+          {...swipeHandlers}
+          selectedItem={currentIndex} // Use currentIndex for controlling active slide
+          onChange={(index) => setCurrentIndex(index)} // Update index on manual change
+          className="w-full flex py-0 my-0 justify-center items-center"
+        >
+          {sliderData?.length > 0 ? (
+            <div className="w-full ml-0 p-0 flex justify-center items-center">
+              {sliderData.slice(0, 1).map((item) => (
+                <div
+                  key={item.id}
+                  style={{ backgroundColor: item.bgcolor || "purple" }}
+                  className="min-w-full justify-center shrink-0 grow-0 basis-full flex p-0 items-center"
+                >
+                  <section className="relative w-full h-auto bg-gray-900 text-white flex items-center justify-center">
+                    <div className="w-full h-full flex overflow-hidden">
+                      {sliderData.map((item, index) => (
+                        <div
+                          key={item.id}
+                          className={`transition-opacity ease-in-out ${
+                            index === currentIndex ? "block" : "hidden"
+                          } w-full`}
+                          style={{ backgroundColor: item.bgcolor || "purple" }}
+                        >
+                          <div className="w-full py-12 mx-auto flex flex-col lg:flex-row gap-4 items-center">
+                            {item?.Media && item.Media[0]?.url ? (
+                              <img
+                                src={
+                                  item?.Media?.[0]?.url
+                                    ? `https://upbeat-life-04fe8098b1.strapiapp.com${item.Media[0].url}`
+                                    : "/placeholder.jpg"
+                                }
+                                alt={item.Title || "Slider Image"}
+                                className="w-full  px-2  md:min-w-[300px] md:w-[300px] lg:w-full lg:h-full lg:min-h-[400px] max-h-[400px] object-contain"
+                              />
+                            ) : (
+                              <Image
+                                src={SlideGrow}
+                                alt={item?.Title}
+                                loading="lazy"
+                                className="w-full md:min-w-[300px] md:w-[300px] lg:w-full lg:h-full lg:min-h-[400px] max-h-[400px] object-contain"
+                              />
+                            )}
+                            <div className="w-full max-w-full claracontainer md:min-w-[300px] md:w-[300px] lg:w-full flex flex-col lg:flex-row justify-between items-center h-auto">
+                              <div className="h-auto max-w-[400px] lg:min-w-[700px] lg:max-w-full w-full flex-col px-4 md:px-2 lg:px-4 justify-start items-start gap-6 md:gap-8 lg:gap-10 xl:gap-12 inline-flex">
+                                <div className="w-fit text-[white] flex flex-col justify-start items-start h-auto gap-4">
+                                  <h3 className="clarascript text-lg font-semibold">
+                                    {item.featuredText || "Default Body Title"}
+                                  </h3>
+                                  <div className="flex flex-col w-fit justify-start items-start gap-4">
+                                    <h2 className="w-full claraheading">
+                                      {item.Title || "Default Body Title"}
+                                    </h2>
+                                    <div className="w-full max-w-full h-auto prose text-white clarabodyTwo">
+                                      <p
+                                        // className="text-base"
+                                        dangerouslySetInnerHTML={{
+                                          __html:
+                                            item.Body || "Default Body Text",
+                                        }}
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="w-fit">
+                                  <Button
+                                    style={{
+                                      backgroundColor:
+                                        item.buttonColor || "#000000",
 
-        {/* Dot Navigation */}
-        <div className="flex w-full px-4 justify-between items-center">
-          <button
-            onClick={handlePrevSlide}
-            className="w-[32px]  h-[32px] lg:hidden flex justify-center items-center left-0  transform   bg-opacity-30 backdrop-blur-lg text-[#f6f6f6] p-2 rounded-full z-10"
-          >
-            <ChevronLeft />
-          </button>
-          <div className="flex cursor-pointer justify-center w-full">
-            {slides.map((slide, index) => (
-              <div
-                key={index}
-                className={`w-2 h-2 bg-gray-300 rounded-full mx-2 ${
-                  currentSlide === index ? "bg-white" : ""
-                }`}
-                onClick={() => setCurrentSlide(index)}
-              />
-            ))}
-          </div>
-          <button
-            onClick={handleNextSlide}
-            className="w-[32px] h-[32px] lg:hidden flex justify-center items-center right-0  transform bg-opacity-30 backdrop-blur-lg text-[#d6d6d6] p-2 rounded-full z-10"
-          >
-            <ChevronRight />
-          </button>
+                                      color: item.bgcolor || "#FFFFFF",
+                                    }}
+                                    className="bg-purple-600 clarabutton hover:bg-purple-800 text-white px-6 py-3 rounded-md"
+                                  >
+                                    Get Started
+                                  </Button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    <button
+                      className="absolute w-[40px] h-[40px] left-2 bottom-0 lg:top-1/2 transform -translate-y-1/2 bg-white/20 hover:bg-white/50 text-[#ffffff] rounded-full p-2 shadow-md focus:outline-none"
+                      onClick={() =>
+                        setCurrentIndex(
+                          (currentIndex - 1 + sliderData.length) %
+                            sliderData.length
+                        )
+                      }
+                      aria-label="Previous Slide"
+                    >
+                      <ChevronLeft className="w-6 h-6" />
+                    </button>
+                    <button
+                      className="absolute w-[40px] h-[40px]  right-2 bottom-0 lg:top-1/2 transform -translate-y-1/2 bg-white/20 hover:bg-white/50 text-[#ffffff] rounded-full p-2 shadow-md focus:outline-none"
+                      onClick={() =>
+                        setCurrentIndex((currentIndex + 1) % sliderData.length)
+                      }
+                      aria-label="Next Slide"
+                    >
+                      <ChevronRight className="w-6 h-6" />
+                    </button>
+                  </section>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <OldSlider />
+          )}
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 }
-
-const hexToHsl = (hex) => {
-  let r = 0,
-    g = 0,
-    b = 0;
-
-  // 3 digits
-  if (hex.length === 4) {
-    r = parseInt(hex[1] + hex[1], 16);
-    g = parseInt(hex[2] + hex[2], 16);
-    b = parseInt(hex[3] + hex[3], 16);
-  }
-  // 6 digits
-  else if (hex.length === 7) {
-    r = parseInt(hex[1] + hex[2], 16);
-    g = parseInt(hex[3] + hex[4], 16);
-    b = parseInt(hex[5] + hex[6], 16);
-  }
-
-  // Convert RGB to HSL
-  r /= 255;
-  g /= 255;
-  b /= 255;
-
-  const max = Math.max(r, g, b),
-    min = Math.min(r, g, b);
-  let h = (max + min) / 2;
-  let s = h;
-  let l = h;
-
-  if (max === min) {
-    h = s = 0; // achromatic
-  } else {
-    const d = max - min;
-    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-    if (max === r) {
-      h = (g - b) / d + (g < b ? 6 : 0);
-    } else if (max === g) {
-      h = (b - r) / d + 2;
-    } else {
-      h = (r - g) / d + 4;
-    }
-    h /= 6;
-  }
-
-  return [h, s, l];
-};
-
-// Function to convert HSL to Hex
-const hslToHex = (h, s, l) => {
-  let r, g, b;
-
-  if (s === 0) {
-    r = g = b = l; // achromatic
-  } else {
-    const hue2rgb = (p, q, t) => {
-      if (t < 0) t += 1;
-      if (t > 1) t -= 1;
-      if (t < 1 / 6) return p + (q - p) * 6 * t;
-      if (t < 1 / 2) return q;
-      if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
-      return p;
-    };
-
-    const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-    const p = 2 * l - q;
-    r = hue2rgb(p, q, h + 1 / 3);
-    g = hue2rgb(p, q, h);
-    b = hue2rgb(p, q, h - 1 / 3);
-  }
-
-  return `#${(
-    (1 << 24) +
-    (Math.round(r * 255) << 16) +
-    (Math.round(g * 255) << 8) +
-    Math.round(b * 255)
-  )
-    .toString(16)
-    .slice(1)}`;
-};
-
-// Function to get the complementary color of a hex color
-const getComplementaryColor = (hex) => {
-  const [h, s, l] = hexToHsl(hex);
-  const complementaryHue = (h + 0.5) % 1; // Shift the hue by 180 degrees
-  return hslToHex(complementaryHue, s, l);
-};
 
 // export default function Slider() {
 //   const [sliderData, setSliderData] = useState(null);
@@ -570,170 +661,3 @@ const getComplementaryColor = (hex) => {
 //     </section>
 //   );
 // }
-
-export function Slider2() {
-  const [sliderData, setSliderData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [currentIndex, setCurrentIndex] = useState(0); // Track the current slide index
-  const autoplayInterval = 1000; // Time interval for autoplay (in ms)
-
-  useEffect(() => {
-    // Fetch slider data
-    const fetchSliderData = async () => {
-      try {
-        const response = await fetch(
-          "https://upbeat-life-04fe8098b1.strapiapp.com/api/slider?populate=Content.Media"
-        );
-        const data = await response.json();
-
-        if (response.ok) {
-          setSliderData(data.data.Content);
-        } else {
-          setError("Error fetching data");
-        }
-      } catch (error) {
-        setError("Error fetching data");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchSliderData();
-
-    // Autoplay logic: Change slide every few seconds
-    const intervalId = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % sliderData?.length); // Loop through slides
-    }, autoplayInterval);
-
-    // Cleanup the interval on component unmount
-    return () => clearInterval(intervalId);
-  }, [sliderData]);
-
-  console.log("Slider Data", sliderData);
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
-
-  return (
-    <section className="w-full h-auto cursor-grab items-center justify-center flex flex-col gap-[20px] bg-purple">
-      <div className="w-full bg-purple flex flex-col-reverse md:justify-center md:items-center py-0 gap-8 md:gap-8">
-        <div
-          selectedItem={currentIndex} // Use currentIndex for controlling active slide
-          onChange={(index) => setCurrentIndex(index)} // Update index on manual change
-          className="w-full flex py-0 my-0 justify-center items-center"
-        >
-          {sliderData?.length > 0 ? (
-            <div className="w-full ml-0 p-0 flex justify-center items-center">
-              {sliderData.slice(0, 1).map((item) => (
-                <div
-                  key={item.id}
-                  style={{ backgroundColor: item.bgcolor || "purple" }}
-                  className="min-w-full justify-center shrink-0 grow-0 basis-full flex p-0 items-center"
-                >
-                  <section className="relative w-full h-auto bg-gray-900 text-white flex items-center justify-center">
-                    <div className="w-full h-full flex overflow-hidden">
-                      {sliderData.map((item, index) => (
-                        <div
-                          key={item.id}
-                          className={`transition-opacity duration-500 ease-in-out ${
-                            index === currentIndex ? "block" : "hidden"
-                          } w-full`}
-                          style={{ backgroundColor: item.bgcolor || "purple" }}
-                        >
-                          <div className="w-full px-2 py-12 mx-auto flex flex-col lg:flex-row gap-4 items-center">
-                            {item?.Media && item.Media[0]?.url ? (
-                              <img
-                                src={
-                                  item?.Media?.[0]?.url
-                                    ? `https://upbeat-life-04fe8098b1.strapiapp.com${item.Media[0].url}`
-                                    : "/placeholder.jpg"
-                                }
-                                alt={item.Title || "Slider Image"}
-                                className="w-full px-2 md:min-w-[300px] md:w-[300px] lg:w-full lg:h-full lg:min-h-[400px] max-h-[400px] object-contain"
-                              />
-                            ) : (
-                              <Image
-                                src={SlideGrow}
-                                alt={item?.Title}
-                                loading="lazy"
-                                className="w-full md:min-w-[300px] md:w-[300px] lg:w-full lg:h-full lg:min-h-[400px] max-h-[400px] object-contain"
-                              />
-                            )}
-                            <div className="w-full max-w-full claracontainer md:min-w-[300px] md:w-[300px] lg:w-full flex flex-col lg:flex-row justify-between items-center h-auto">
-                              <div className="h-auto max-w-[400px] lg:min-w-[700px] lg:max-w-full w-full flex-col px-4 md:px-2 lg:px-4 justify-start items-start gap-6 md:gap-8 lg:gap-10 xl:gap-12 inline-flex">
-                                <div className="w-fit text-[white] flex flex-col justify-start items-start h-auto gap-4">
-                                  <h3 className="clarascript text-lg font-semibold">
-                                    {item.featuredText || "Default Body Title"}
-                                  </h3>
-                                  <div className="flex flex-col w-fit justify-start items-start gap-4">
-                                    <h2 className="w-full claraheading">
-                                      {item.Title || "Default Body Title"}
-                                    </h2>
-                                    <div className="w-full max-w-full h-auto prose text-white clarabodyTwo">
-                                      <p
-                                        // className="text-base"
-                                        dangerouslySetInnerHTML={{
-                                          __html:
-                                            item.Body || "Default Body Text",
-                                        }}
-                                      />
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className="w-fit">
-                                  <Button
-                                    style={{
-                                      backgroundColor:
-                                        item.buttonColor || "#000000",
-                                      // backgroundColor: getComplementaryColor(
-                                      //   item.buttonColor || "#000000"
-                                      // ),
-                                      color: item.bgcolor || "#FFFFFF",
-                                    }}
-                                    className="bg-purple-600 clarabutton hover:bg-purple-800 text-white px-6 py-3 rounded-md"
-                                  >
-                                    Get Started
-                                  </Button>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-
-                    <button
-                      className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white/20 hover:bg-white/50 text-black rounded-full p-2 shadow-md focus:outline-none"
-                      onClick={() =>
-                        setCurrentIndex(
-                          (currentIndex - 1 + sliderData.length) %
-                            sliderData.length
-                        )
-                      }
-                      aria-label="Previous Slide"
-                    >
-                      <ChevronLeft className="w-6 h-6" />
-                    </button>
-                    <button
-                      className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white/20 hover:bg-white/50 text-black rounded-full p-2 shadow-md focus:outline-none"
-                      onClick={() =>
-                        setCurrentIndex((currentIndex + 1) % sliderData.length)
-                      }
-                      aria-label="Next Slide"
-                    >
-                      <ChevronRight className="w-6 h-6" />
-                    </button>
-                  </section>
-                </div>
-              ))}
-            </div>
-          ) : (
-            // <OldSlider />
-            null
-          )}
-        </div>
-      </div>
-    </section>
-  );
-}
