@@ -29,7 +29,7 @@ import SliderSection, { UpdateSliderSection } from "../../Sections/Home/Slider";
 import AnnualPrice from "./annual/page";
 import { EditAnnualPricing } from "../../Sections/Home/AnnualPricing";
 import MonthlyPricing from "../../Sections/Home/MonthlyPricing";
-import DefaultReview, { UpdateReviewForm } from "../../Sections/Home/DefaultReview";
+import DefaultReview, { CreateReviewForm, UpdateReviewForm } from "../../Sections/Home/DefaultReview";
 
 export default function HomePage() {
   return (
@@ -111,7 +111,7 @@ export default function HomePage() {
                 serialNo={7}
                 sectionName="Default Review"
                 ComponentPreview={DefaultReview}
-                ComponentForm={UpdateReviewForm} // Replace with an actual update form if necessary
+                ComponentForm={CreateReviewForm} // Replace with an actual update form if necessary
               />
               {/* Popular Activities */}
               <SectionRow

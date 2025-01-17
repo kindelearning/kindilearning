@@ -12,18 +12,18 @@ import React from "react";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { fetchAllActivities } from "@/app/data/p/Dynamic/Activity";
+import { getIconForSkill } from "@/app/p/activities/Sections/ActivityCard";
 
 const PopularActivityCarousel = () => {
   // const [activities, setActivities] = useState(null); // Activitie
   const [error, setError] = useState(null);
   const [popularActivities, setPopularActivities] = useState([]); // Popular activities state
-  
+
   // Mouse dragging state and refs
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
   const scrollRef = useRef(null); // Create a reference for the scroll container
-
 
   // Fetch activities data
   useEffect(() => {
@@ -36,9 +36,11 @@ const PopularActivityCarousel = () => {
 
         if (response.ok) {
           // setActivities(data.data);
-           // Filter activities with isPopular === "Yes"
-           const popularActivities = data.data.filter((activity) => activity.isPopular === "Yes");
-           setPopularActivities(popularActivities);
+          // Filter activities with isPopular === "Yes"
+          const popularActivities = data.data.filter(
+            (activity) => activity.isPopular === "Yes"
+          );
+          setPopularActivities(popularActivities);
         } else {
           setError("Error fetching activities data");
         }
@@ -53,9 +55,8 @@ const PopularActivityCarousel = () => {
   // if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
 
-  console.log("Activities fetched on Popular actviity componenet", );
+  console.log("Activities fetched on Popular actviity componenet");
 
- 
   const handleMouseDown = (e) => {
     setIsDragging(true);
     setStartX(e.pageX - scrollRef.current.offsetLeft);
@@ -158,46 +159,77 @@ const PopularActivityCarousel = () => {
                                   </div>
                                 </div>
                               </div>
-                              <div className="items-center justify-center gap-2 md:gap-4 grid grid-cols-5">
-                                <Image
-                                  alt="Kindi"
-                                  className="w-[20px] h-[24px] lg:w-[48px] lg:h-[48px]"
-                                  src={
-                                    SpeechLanguageActivity ||
-                                    "/path/to/default-icon.jpg"
-                                  } // Fallback for icon
-                                />
-                                <Image
-                                  alt="Kindi"
-                                  className="w-[20px] h-[24px] lg:w-[48px] lg:h-[48px]"
-                                  src={
-                                    DiscoveringOurWorldActivity ||
-                                    "/path/to/default-icon.jpg"
-                                  } // Fallback for icon
-                                />
-                                <Image
-                                  alt="Kindi"
-                                  className="w-[20px] h-[24px] lg:w-[48px] lg:h-[48px]"
-                                  src={
-                                    ReadingWritingActivity ||
-                                    "/path/to/default-icon.jpg"
-                                  } // Fallback for icon
-                                />
-                                <Image
-                                  alt="Kindi"
-                                  className="w-[20px] h-[24px] lg:w-[48px] lg:h-[48px]"
-                                  src={
-                                    ExperimentsMathActivity ||
-                                    "/path/to/default-icon.jpg"
-                                  } // Fallback for icon
-                                />
-                                <div
-                                  className={`w-[20px] lg:w-[36px] lg:h-[40px] h-[20px] flex lg:rounded-[12px] justify-center items-center bg-[#F6BEBF] rounded-[4px]`}
-                                >
-                                  <span className="text-red p-[2px] text-[12px] lg:text-[20px] font-medium font-fredoka">
-                                    +1
-                                  </span>
-                                </div>
+
+                              <div className="items-center justify-center gap-2">
+                                {activity?.LearningAreaIcons ? (
+                                  <>
+                                    {activity?.LearningAreaIcons?.length > 4 ? (
+                                      // Content for when length is greater than 4
+                                      <div className="items-center justify-center gap-2 md:gap-4 grid grid-cols-5">
+                                        {activity?.LearningAreaIcons?.slice(
+                                          0,
+                                          4
+                                        ).map((skill, index) => {
+                                          const skillTitle =
+                                            skill?.children?.[0]?.text;
+                                          const iconUrl =
+                                            getIconForSkill(skillTitle);
+                                          return (
+                                            <div
+                                              key={index}
+                                              className="activity-icon flex items-center gap-2"
+                                            >
+                                              {iconUrl && (
+                                                <img
+                                                  title={skillTitle}
+                                                  src={iconUrl.src}
+                                                  alt={skillTitle}
+                                                  className="w-6 lg:w-10 lg:h-10 h-6"
+                                                  width={iconUrl.width}
+                                                  height={iconUrl.height}
+                                                />
+                                              )}
+                                            </div>
+                                          );
+                                        })}
+                                        <div className="w-[20px] lg:w-[36px] lg:h-[40px] h-[20px] flex lg:rounded-[12px] justify-center items-center bg-[#F6BEBF] rounded-[4px]">
+                                          <span className="text-red p-[2px] text-[12px] lg:text-[20px] font-medium font-fredoka">
+                                            +1
+                                          </span>
+                                        </div>
+                                      </div>
+                                    ) : (
+                                      // Default content for 4 or fewer icons
+                                      <div className="items-center justify-center gap-2 md:gap-4 grid grid-cols-5">
+                                        {activity?.LearningAreaIcons?.map(
+                                          (skill, index) => {
+                                            const skillTitle =
+                                              skill?.children?.[0]?.text;
+                                            const iconUrl =
+                                              getIconForSkill(skillTitle);
+                                            return (
+                                              <div
+                                                key={index}
+                                                className="activity-icon flex items-center gap-2"
+                                              >
+                                                {iconUrl && (
+                                                  <img
+                                                    title={skillTitle}
+                                                    src={iconUrl.src}
+                                                    alt={skillTitle}
+                                                    className="w-6 lg:w-10 lg:h-10 h-6"
+                                                    width={iconUrl.width}
+                                                    height={iconUrl.height}
+                                                  />
+                                                )}
+                                              </div>
+                                            );
+                                          }
+                                        )}
+                                      </div>
+                                    )}
+                                  </>
+                                ) : null}
                               </div>
                             </div>
                           </div>
