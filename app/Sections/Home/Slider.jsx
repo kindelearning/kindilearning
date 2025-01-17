@@ -116,7 +116,7 @@ const slides = [
   },
 ];
 
-export default function OldSlider() {
+export function OldSlider() {
   const [loaded, setLoaded] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
