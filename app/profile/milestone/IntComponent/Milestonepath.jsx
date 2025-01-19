@@ -477,7 +477,7 @@ export default function DisplayAllMileStone({ passThecurrentUserId }) {
 
         // Milestone Data fetchcing
         const response = await fetch(
-          "https://upbeat-life-04fe8098b1.strapiapp.com/api/milestones?populate=*"
+          "https://kindiadmin.up.railway.app/api/milestones?populate=*"
         );
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);

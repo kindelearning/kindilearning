@@ -14,8 +14,8 @@ export default function ToggleCardGrid() {
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(
-        "https://upbeat-life-04fe8098b1.strapiapp.com/api/how-it-work-page?populate[AreaOflearningCards][populate]=Icon"
-        // "https://upbeat-life-04fe8098b1.strapiapp.com/api/how-it-work-page?populate=*"
+        "https://kindiadmin.up.railway.app/api/how-it-work-page?populate[AreaOflearningCards][populate]=Icon"
+        // "https://kindiadmin.up.railway.app/api/how-it-work-page?populate=*"
       );
       const data = await response.json();
       setCards(data.data.AreaOflearningCards);

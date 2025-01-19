@@ -16,7 +16,7 @@ export default function UpdateKidForm({ parentId, kidId }) {
   useEffect(() => {
     const fetchKidData = async () => {
       try {
-        const response = await fetch(`https://upbeat-life-04fe8098b1.strapiapp.com/api/kids/${kidId}`);
+        const response = await fetch(`https://kindiadmin.up.railway.app/api/kids/${kidId}`);
         const data = await response.json();
         if (response.ok) {
           const kid = data.data;
@@ -56,7 +56,7 @@ export default function UpdateKidForm({ parentId, kidId }) {
     };
 
     try {
-      const response = await fetch(`https://upbeat-life-04fe8098b1.strapiapp.com/api/kids/${kidId}`, {
+      const response = await fetch(`https://kindiadmin.up.railway.app/api/kids/${kidId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

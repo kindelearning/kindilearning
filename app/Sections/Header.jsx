@@ -448,7 +448,7 @@ export default function Header() {
                     {userData.profilepic ? (
                       <img
                         src={userData.profilepic.url}
-                        // src={`https://upbeat-life-04fe8098b1.strapiapp.com${userData.profilepic.url}`}
+                        // src={`https://kindiadmin.up.railway.app${userData.profilepic.url}`}
                         alt="Profile Picture"
                         className="w-[40px] h-[40px] object-cover rounded-full"
                       />
@@ -599,7 +599,7 @@ export default function Header() {
 //       </Link>
 //       <Link href="/profile" className="relative">
 //         <img
-//           src={`https://upbeat-life-04fe8098b1.strapiapp.com${userData.profilepic?.url}`}
+//           src={`https://kindiadmin.up.railway.app${userData.profilepic?.url}`}
 //           alt="Profile"
 //           className="w-10 h-10 rounded-full object-cover"
 //         />

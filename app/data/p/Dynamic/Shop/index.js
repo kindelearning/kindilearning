@@ -1,7 +1,7 @@
 export async function fetchShopProducts() {
   try {
     const response = await fetch(
-      "https://upbeat-life-04fe8098b1.strapiapp.com/api/products?populate=FeaturedImage"
+      "https://kindiadmin.up.railway.app/api/products?populate=FeaturedImage"
     );
 
     if (!response.ok) {

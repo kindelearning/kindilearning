@@ -23,7 +23,7 @@ export default function Ourpricing() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://upbeat-life-04fe8098b1.strapiapp.com/api/ourpricing?populate[MonthlyPlans][populate][0]=Features&populate[MonthlyPlans][populate][1]=Thumbnail&populate[AnnualPlans][populate][0]=Features&populate[AnnualPlans][populate][1]=Thumbnail"
+          "https://kindiadmin.up.railway.app/api/ourpricing?populate[MonthlyPlans][populate][0]=Features&populate[MonthlyPlans][populate][1]=Thumbnail&populate[AnnualPlans][populate][0]=Features&populate[AnnualPlans][populate][1]=Thumbnail"
         );
         const data = await response.json();
         console.log("Fetched data: ", data); // Log to inspect the structure
@@ -123,7 +123,7 @@ export function UpdatePricingForm() {
     const fetchPricingData = async () => {
       try {
         const response = await fetch(
-          "https://upbeat-life-04fe8098b1.strapiapp.com/api/ourpricing?populate=*"
+          "https://kindiadmin.up.railway.app/api/ourpricing?populate=*"
         );
         const result = await response.json();
 
@@ -163,7 +163,7 @@ export function UpdatePricingForm() {
 
     try {
       const response = await fetch(
-        `https://upbeat-life-04fe8098b1.strapiapp.com/api/ourpricing?ec3qtd8zh0b94uelu1bn9je6`,
+        `https://kindiadmin.up.railway.app/api/ourpricing?ec3qtd8zh0b94uelu1bn9je6`,
         {
           method: "PUT",
           headers: {

@@ -71,7 +71,7 @@ export default function CreateBlog() {
 
     console.log('Payload Sent', newBlog)
     try {
-      const response = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/blogs", {
+      const response = await fetch("https://kindiadmin.up.railway.app/api/blogs", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ data: newBlog }),
@@ -206,7 +206,7 @@ export default function CreateBlog() {
             {media ? (
               <div>
                 <img
-                  src={`https://upbeat-life-04fe8098b1.strapiapp.com${media.url}`}
+                  src={`https://kindiadmin.up.railway.app${media.url}`}
                   alt={media.name}
                   className="w-32 h-32 object-cover"
                 />

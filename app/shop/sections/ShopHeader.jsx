@@ -476,7 +476,7 @@ const ShopHeader = () => {
                     {userData.profilepic ? (
                       <img
                         src={userData.profilepic.url}
-                        // src={`https://upbeat-life-04fe8098b1.strapiapp.com${userData.profilepic.url}`}
+                        // src={`https://kindiadmin.up.railway.app${userData.profilepic.url}`}
                         alt="Profile Picture"
                         className="w-[40px] h-[40px] object-cover rounded-full"
                       />

@@ -1,7 +1,7 @@
 export async function fetchAllActivities() {
   try {
     const response = await fetch(
-      "https://upbeat-life-04fe8098b1.strapiapp.com/api/activities?populate=*"
+      "https://kindiadmin.up.railway.app/api/activities?populate=*"
     );
 
     if (!response.ok) {

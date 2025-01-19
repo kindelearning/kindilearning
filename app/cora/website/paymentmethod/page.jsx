@@ -36,7 +36,7 @@ export default function PaymentMethodsTable() {
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(
-        "https://upbeat-life-04fe8098b1.strapiapp.com/api/payment-methods?populate=*"
+        "https://kindiadmin.up.railway.app/api/payment-methods?populate=*"
       );
       const data = await response.json();
       setPaymentMethods(data.data || []);
@@ -53,7 +53,7 @@ export default function PaymentMethodsTable() {
     if (!selectedPaymentMethod) return;
 
     await fetch(
-      `https://upbeat-life-04fe8098b1.strapiapp.com/api/payment-methods/${selectedPaymentMethod.documentId}`,
+      `https://kindiadmin.up.railway.app/api/payment-methods/${selectedPaymentMethod.documentId}`,
       {
         method: "DELETE",
       }

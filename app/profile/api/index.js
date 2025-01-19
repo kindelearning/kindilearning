@@ -1,9 +1,9 @@
-// Its INvalid -------    "https://upbeat-life-04fe8098b1.strapiapp.com/api/users/me?populate[profilepic]=true&populate[myKids][populate][activity_completeds]=true&populate[myKids][populate][badge_completeds]=true&populate[myKids][populate][milestone_completeds]=true&populate[myPartners]=true&populate[myPayment]=true&populate[partnerOf]=true",
-// Its Valid ------   "https://upbeat-life-04fe8098b1.strapiapp.com/api/users/me?populate[profilepic]=true&populate[myKids]=*&populate[myPaymentMethods]=*&populate[myPartner]=*&populate[iAmPartnerOf]=*",
+// Its INvalid -------    "https://kindiadmin.up.railway.app/api/users/me?populate[profilepic]=true&populate[myKids][populate][activity_completeds]=true&populate[myKids][populate][badge_completeds]=true&populate[myKids][populate][milestone_completeds]=true&populate[myPartners]=true&populate[myPayment]=true&populate[partnerOf]=true",
+// Its Valid ------   "https://kindiadmin.up.railway.app/api/users/me?populate[profilepic]=true&populate[myKids]=*&populate[myPaymentMethods]=*&populate[myPartner]=*&populate[iAmPartnerOf]=*",
 export const fetchUserDetails = async (token) => {
   try {
     const response = await fetch(
-      "https://upbeat-life-04fe8098b1.strapiapp.com/api/users/me?populate=*",
+      "https://kindiadmin.up.railway.app/api/users/me?populate=*",
       {
         method: "GET",
         headers: {
@@ -26,7 +26,7 @@ export const fetchUserDetails = async (token) => {
 
 export const fetchKidDetails = async () => {
   try {
-    const response = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/kids?populate=*", {
+    const response = await fetch("https://kindiadmin.up.railway.app/api/kids?populate=*", {
       method: "GET",
     });
 
@@ -45,7 +45,7 @@ export const fetchKidDetails = async () => {
 export const fetchLevelDetails = async () => {
   try {
     const response = await fetch(
-      "https://upbeat-life-04fe8098b1.strapiapp.com/api/levels?populate=*",
+      "https://kindiadmin.up.railway.app/api/levels?populate=*",
       {
         method: "GET",
       }

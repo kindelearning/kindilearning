@@ -117,7 +117,7 @@ export default function ProductGrid() {
                     ? product.FeaturedImage[0].url
                     : "/Images/shop/ProductImage.png"
                 }
-                // image={`https://upbeat-life-04fe8098b1.strapiapp.com${product?.FeaturedImage[0]?.url}`}
+                // image={`https://kindiadmin.up.railway.app${product?.FeaturedImage[0]?.url}`}
                 price={product.DiscountPrice}
                 title={product.Name}
               />

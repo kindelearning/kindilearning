@@ -34,7 +34,7 @@ export default function AddKidForm({ parentId }) {
     console.log("New Kid data", newKid);
 
     try {
-      const response = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/kids", {
+      const response = await fetch("https://kindiadmin.up.railway.app/api/kids", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

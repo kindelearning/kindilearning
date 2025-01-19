@@ -1,7 +1,7 @@
 export async function fetchHowItWorks() {
   try {
     const response = await fetch(
-      "https://upbeat-life-04fe8098b1.strapiapp.com/api/how-it-work-page?populate=*"
+      "https://kindiadmin.up.railway.app/api/how-it-work-page?populate=*"
     );
     if (!response.ok) {
       throw new Error(`Error fetching data: ${response.statusText}`);

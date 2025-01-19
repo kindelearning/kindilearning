@@ -76,7 +76,7 @@ export default function ShopPage() {
     const fetchProducts = async () => {
       try {
         const res = await fetch(
-          `https://upbeat-life-04fe8098b1.strapiapp.com/api/products?populate=*&pagination[page]=${page}&pagination[pageSize]=${pageSize}&sort=createdAt:desc`
+          `https://kindiadmin.up.railway.app/api/products?populate=*&pagination[page]=${page}&pagination[pageSize]=${pageSize}&sort=createdAt:desc`
         );
         if (!res.ok) {
           throw new Error("Failed to fetch products");
@@ -100,7 +100,7 @@ export default function ShopPage() {
   const deleteProduct = async (documentId) => {
     try {
       const res = await fetch(
-        `https://upbeat-life-04fe8098b1.strapiapp.com/api/products/${documentId}`,
+        `https://kindiadmin.up.railway.app/api/products/${documentId}`,
         {
           method: "DELETE",
         }

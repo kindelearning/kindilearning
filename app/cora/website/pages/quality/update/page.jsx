@@ -33,7 +33,7 @@ export default function EditRefund() {
     const fetchContent = async () => {
       try {
         const response = await fetch(
-          "https://upbeat-life-04fe8098b1.strapiapp.com/api/qualitycontrol?populate=*"
+          "https://kindiadmin.up.railway.app/api/qualitycontrol?populate=*"
         );
         const data = await response.json();
 
@@ -67,7 +67,7 @@ export default function EditRefund() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/qualitycontrol", {
+    const response = await fetch("https://kindiadmin.up.railway.app/api/qualitycontrol", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

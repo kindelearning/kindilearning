@@ -24,7 +24,7 @@ export default function Monthlytheme() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://upbeat-life-04fe8098b1.strapiapp.com/api/Monthlytheme?populate=Content.Media"
+          "https://kindiadmin.up.railway.app/api/Monthlytheme?populate=Content.Media"
         );
         const data = await response.json();
         console.log("Monthlytheme Database", data);
@@ -87,7 +87,7 @@ export default function Monthlytheme() {
       {/* {content.Media ? (
         <img
           src={content.Media[0].url}
-          // src={`https://upbeat-life-04fe8098b1.strapiapp.com${content.Media[0].url}`}
+          // src={`https://kindiadmin.up.railway.app${content.Media[0].url}`}
           alt="Child Development Media"
           className="w-full h-auto"
         />
@@ -113,7 +113,7 @@ export default function Monthlytheme() {
 //     const fetchContent = async () => {
 //       try {
 //         const response = await fetch(
-//           "https://upbeat-life-04fe8098b1.strapiapp.com/api/Monthlytheme?populate=Content.Media"
+//           "https://kindiadmin.up.railway.app/api/Monthlytheme?populate=Content.Media"
 //         );
 //         const data = await response.json();
 //         setContent({
@@ -152,7 +152,7 @@ export default function Monthlytheme() {
 //       // console.log("Request Payload:", updatedContent);
 
 //       const response = await fetch(
-//         `https://upbeat-life-04fe8098b1.strapiapp.com/api/Monthlytheme?${documentId}`, // Correct URL with query parameter for documentId
+//         `https://kindiadmin.up.railway.app/api/Monthlytheme?${documentId}`, // Correct URL with query parameter for documentId
 //         {
 //           method: "PUT",
 //           headers: {
@@ -280,7 +280,7 @@ export function UpdateMonthlytheme() {
     const fetchContentData = async () => {
       try {
         const res = await fetch(
-          "https://upbeat-life-04fe8098b1.strapiapp.com/api/Monthlytheme/?populate=Content.Media"
+          "https://kindiadmin.up.railway.app/api/Monthlytheme/?populate=Content.Media"
         );
         const data = await res.json();
 
@@ -316,7 +316,7 @@ export function UpdateMonthlytheme() {
     console.log("Payload Created", payload);
 
     try {
-      const res = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/Monthlytheme", {
+      const res = await fetch("https://kindiadmin.up.railway.app/api/Monthlytheme", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -399,7 +399,7 @@ export function UpdateMonthlytheme() {
           {media ? (
             <div className="mt-4">
               <img
-                src={`https://upbeat-life-04fe8098b1.strapiapp.com${media.url}`}
+                src={`https://kindiadmin.up.railway.app${media.url}`}
                 alt={media.name}
                 className="w-32 h-32 object-cover"
               />

@@ -33,7 +33,7 @@ export function CreateContactForm() {
     setSuccess(false);
 
     try {
-      const res = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/contact-forms", {
+      const res = await fetch("https://kindiadmin.up.railway.app/api/contact-forms", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

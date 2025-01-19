@@ -25,7 +25,7 @@ export default function ChildDevelopmentUnlock() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://upbeat-life-04fe8098b1.strapiapp.com/api/childdevelopmentunlock?populate=Content.Media"
+          "https://kindiadmin.up.railway.app/api/childdevelopmentunlock?populate=Content.Media"
         );
         const data = await response.json();
         console.log("child development Database", data);
@@ -81,7 +81,7 @@ export default function ChildDevelopmentUnlock() {
           {content.Media ? (
             <img
               src={content.Media[0].url}
-              // src={`https://upbeat-life-04fe8098b1.strapiapp.com${content.Media[0].url}`}
+              // src={`https://kindiadmin.up.railway.app${content.Media[0].url}`}
               alt="Child Development Media"
               className="w-full h-auto"
             />
@@ -109,7 +109,7 @@ export default function ChildDevelopmentUnlock() {
 //     const fetchContent = async () => {
 //       try {
 //         const response = await fetch(
-//           "https://upbeat-life-04fe8098b1.strapiapp.com/api/childdevelopmentunlock?populate=Content.Media"
+//           "https://kindiadmin.up.railway.app/api/childdevelopmentunlock?populate=Content.Media"
 //         );
 //         const data = await response.json();
 //         setContent({
@@ -142,7 +142,7 @@ export default function ChildDevelopmentUnlock() {
 
 //     try {
 //       const response = await fetch(
-//         "https://upbeat-life-04fe8098b1.strapiapp.com/api/childdevelopmentunlock?nxfbah0rlj4nhjo381vg7x8q",
+//         "https://kindiadmin.up.railway.app/api/childdevelopmentunlock?nxfbah0rlj4nhjo381vg7x8q",
 //         {
 //           method: "PUT",
 //           headers: {
@@ -259,7 +259,7 @@ export function UpdateChildDevelopmentContent() {
     const fetchContentData = async () => {
       try {
         const res = await fetch(
-          "https://upbeat-life-04fe8098b1.strapiapp.com/api/childdevelopmentunlock?populate=Content.Media"
+          "https://kindiadmin.up.railway.app/api/childdevelopmentunlock?populate=Content.Media"
         );
         const data = await res.json();
 
@@ -295,7 +295,7 @@ export function UpdateChildDevelopmentContent() {
     console.log("Payload Created", payload);
     try {
       const res = await fetch(
-        "https://upbeat-life-04fe8098b1.strapiapp.com/api/childdevelopmentunlock?nxfbah0rlj4nhjo381vg7x8q",
+        "https://kindiadmin.up.railway.app/api/childdevelopmentunlock?nxfbah0rlj4nhjo381vg7x8q",
         {
           method: "PUT",
           headers: {

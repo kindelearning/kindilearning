@@ -53,7 +53,7 @@ export default function ActivitiesPage() {
     const fetchActivities = async () => {
       try {
         const response = await fetch(
-          "https://upbeat-life-04fe8098b1.strapiapp.com/api/activities?populate=*"
+          "https://kindiadmin.up.railway.app/api/activities?populate=*"
         );
         const data = await response.json();
         console.log("Data", data);
@@ -150,7 +150,7 @@ export default function ActivitiesPage() {
   const handleDelete = async (documentId) => {
     try {
       const response = await fetch(
-        `https://upbeat-life-04fe8098b1.strapiapp.com/api/activities/${documentId}`,
+        `https://kindiadmin.up.railway.app/api/activities/${documentId}`,
         {
           method: "DELETE",
         }

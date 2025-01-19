@@ -23,7 +23,7 @@ export default function KindiSkillsCategoriesCards() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://upbeat-life-04fe8098b1.strapiapp.com/api/how-it-work-page?populate[KindiSkillsCategoriesCards][populate]=Icon"
+          "https://kindiadmin.up.railway.app/api/how-it-work-page?populate[KindiSkillsCategoriesCards][populate]=Icon"
         );
         const data = await response.json();
         if (data?.data) {
@@ -75,7 +75,7 @@ export default function KindiSkillsCategoriesCards() {
             {card.Icon ? (
               <img
                 src={card.Icon.url}
-                // src={`https://upbeat-life-04fe8098b1.strapiapp.com${card.Icon.url}`}
+                // src={`https://kindiadmin.up.railway.app${card.Icon.url}`}
                 className="w-[60px] h-[60px]"
                 alt={card.Title}
               />
@@ -106,7 +106,7 @@ export default function KindiSkillsCategoriesCards() {
 //   // Fetch existing data
 //   useEffect(() => {
 //     fetch(
-//       "https://upbeat-life-04fe8098b1.strapiapp.com/api/how-it-work-page?populate[KindiSkillsCategoriesCards][populate]=Icon"
+//       "https://kindiadmin.up.railway.app/api/how-it-work-page?populate[KindiSkillsCategoriesCards][populate]=Icon"
 //     )
 //       .then((res) => res.json())
 //       .then((data) => {
@@ -141,7 +141,7 @@ export default function KindiSkillsCategoriesCards() {
 //     console.log("Sent Data", payload);
 
 //     try {
-//       const res = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/how-it-work-page", {
+//       const res = await fetch("https://kindiadmin.up.railway.app/api/how-it-work-page", {
 //         method: "PUT",
 //         headers: {
 //           "Content-Type": "application/json",
@@ -291,7 +291,7 @@ export default function KindiSkillsCategoriesCards() {
 //                 {media ? (
 //                   <div className="mt-4">
 //                     <img
-//                       src={`https://upbeat-life-04fe8098b1.strapiapp.com${media.url}`}
+//                       src={`https://kindiadmin.up.railway.app${media.url}`}
 //                       className="w-[300px] h-[200px] rounded-lg object-cover"
 //                     />
 //                     <p>{media.name}</p>
@@ -343,7 +343,7 @@ export function UpdateKindiSkillsCategoriesCards() {
     const fetchHIWData = async () => {
       try {
         const res = await fetch(
-          "https://upbeat-life-04fe8098b1.strapiapp.com/api/how-it-work-page?populate[KindiSkillsCategoriesCards][populate]=Icon"
+          "https://kindiadmin.up.railway.app/api/how-it-work-page?populate[KindiSkillsCategoriesCards][populate]=Icon"
         );
         const data = await res.json();
         const cardData = data.data;
@@ -397,7 +397,7 @@ export function UpdateKindiSkillsCategoriesCards() {
     console.log("payload sent", payload);
 
     try {
-      const res = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/how-it-work-page", {
+      const res = await fetch("https://kindiadmin.up.railway.app/api/how-it-work-page", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -534,7 +534,7 @@ export function UpdateKindiSkillsCategoriesCards() {
                 {section.Icon ? (
                   <div className="mt-2">
                     <img
-                      src={`https://upbeat-life-04fe8098b1.strapiapp.com${section.Icon.url}`}
+                      src={`https://kindiadmin.up.railway.app${section.Icon.url}`}
                       alt={section.Title}
                       className="w-32 h-32 object-cover border rounded-md"
                     />

@@ -16,7 +16,7 @@ export default function PromotionalSection() {
     const fetchContent = async () => {
       try {
         const response = await fetch(
-          "https://upbeat-life-04fe8098b1.strapiapp.com/api/childdevelopmentunlock?populate=Content.Media"
+          "https://kindiadmin.up.railway.app/api/childdevelopmentunlock?populate=Content.Media"
         );
         const data = await response.json();
 

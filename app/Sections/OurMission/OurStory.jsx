@@ -19,7 +19,7 @@ export default async function OurStory() {
                 <video className="w-full h-full " autoPlay loop muted>
                   <source
                     src={data?.OurStory?.Media[0]?.url}
-                    // src={`https://upbeat-life-04fe8098b1.strapiapp.com${data?.OurStory?.Media[0]?.url}`}
+                    // src={`https://kindiadmin.up.railway.app${data?.OurStory?.Media[0]?.url}`}
                     type="video/mp4"
                   />
                   Your browser does not support the video.

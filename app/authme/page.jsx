@@ -4,7 +4,7 @@ import React from "react";
 
 const Auth0LoginButton = () => {
   const handleAuth0Login = () => {
-    window.location.href = `https://kindilearning.uk.auth0.com/authorize?client_id=vFOi1TfNm38IcEv2ahsdAkykbj4of8q4&response_type=code&redirect_uri=https://upbeat-life-04fe8098b1.strapiapp.com/api/connect/auth0/callback&scope=openid email profile`;
+    window.location.href = `https://kindilearning.uk.auth0.com/authorize?client_id=vFOi1TfNm38IcEv2ahsdAkykbj4of8q4&response_type=code&redirect_uri=https://kindiadmin.up.railway.app/api/connect/auth0/callback&scope=openid email profile`;
   };
 
   return (

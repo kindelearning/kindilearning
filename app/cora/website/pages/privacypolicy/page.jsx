@@ -13,7 +13,7 @@ export default function ReadContent() {
     const fetchContent = async () => {
       try {
         const response = await fetch(
-          "https://upbeat-life-04fe8098b1.strapiapp.com/api/privacypolicy?populate=*"
+          "https://kindiadmin.up.railway.app/api/privacypolicy?populate=*"
         );
         const data = await response.json();
 

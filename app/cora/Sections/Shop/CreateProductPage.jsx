@@ -38,7 +38,7 @@ export default function CreateProductPage() {
     e.preventDefault();
 
     try {
-      const res = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/products", {
+      const res = await fetch("https://kindiadmin.up.railway.app/api/products", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -1,6 +1,6 @@
 export async function fetchOurBlogs() {
   try {
-    const response = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/blogs?populate=*");
+    const response = await fetch("https://kindiadmin.up.railway.app/api/blogs?populate=*");
 
     if (!response.ok) {
       throw new Error(`Error fetching data: ${response.statusText}`);

@@ -44,7 +44,7 @@ export default function ProfilePage() {
 
         // Fetch kids data
         const kidsResponse = await fetch(
-          "https://upbeat-life-04fe8098b1.strapiapp.com/api/kids?populate=*"
+          "https://kindiadmin.up.railway.app/api/kids?populate=*"
         );
         const kidsData = await kidsResponse.json();
         setKidsData(kidsData.data);

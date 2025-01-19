@@ -34,7 +34,7 @@ export default function ParentWithKindi() {
     const fetchMissionData = async () => {
       try {
         const response = await fetch(
-          "https://upbeat-life-04fe8098b1.strapiapp.com/api/our-mission?populate[Parentwithkindi][populate]=Media"
+          "https://kindiadmin.up.railway.app/api/our-mission?populate[Parentwithkindi][populate]=Media"
         );
         const data = await response.json();
 

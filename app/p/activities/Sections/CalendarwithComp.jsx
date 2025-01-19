@@ -145,7 +145,7 @@ function EventCard({ event, onDragStart, activityUrl }) {
           <div className="flex w-full  rounded-[4px]  max-w-[32px] object-cover h-[32px] overflow-clip">
             <img
               src={event.Gallery[0].url} // Make sure this matches the actual property name
-              // src={`https://upbeat-life-04fe8098b1.strapiapp.com${event.Gallery[0].url} `} // Make sure this matches the actual property name
+              // src={`https://kindiadmin.up.railway.app${event.Gallery[0].url} `} // Make sure this matches the actual property name
               alt="ScheduleEvent"
               className="w-[32px] rounded-[4px] object-cover h-[32px]"
               width={32}
@@ -277,7 +277,7 @@ export default function CalendarwithComp() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://upbeat-life-04fe8098b1.strapiapp.com/api/activities?populate=*"
+          "https://kindiadmin.up.railway.app/api/activities?populate=*"
         );
         const data = await response.json();
         console.log("Fetched activities:", data);

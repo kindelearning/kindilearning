@@ -33,7 +33,7 @@ export default async function PromotionalSectionTwo() {
                 >
                   <source
                     src={mediaUrl || "preloader.mp4"}
-                    // src={`https://upbeat-life-04fe8098b1.strapiapp.com${mediaUrl}`}
+                    // src={`https://kindiadmin.up.railway.app${mediaUrl}`}
                     type="video/mp4"
                   />
                 </video>

@@ -13,7 +13,7 @@ export default function PlayForLife() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://upbeat-life-04fe8098b1.strapiapp.com/api/how-it-work-page?populate[Hero][populate]=Media"
+          "https://kindiadmin.up.railway.app/api/how-it-work-page?populate[Hero][populate]=Media"
         );
         const data = await response.json();
         console.log("HIW Data", data);

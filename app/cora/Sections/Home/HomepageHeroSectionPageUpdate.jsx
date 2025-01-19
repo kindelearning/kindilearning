@@ -28,7 +28,7 @@ export default function HeroSectionForm() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://upbeat-life-04fe8098b1.strapiapp.com/api/homepage-hero-section?populate=Image"
+          "https://kindiadmin.up.railway.app/api/homepage-hero-section?populate=Image"
         );
         const data = await response.json();
 
@@ -68,7 +68,7 @@ export default function HeroSectionForm() {
 
     try {
       const response = await fetch(
-        "https://upbeat-life-04fe8098b1.strapiapp.com/api/homepage-hero-section?populate=Image",
+        "https://kindiadmin.up.railway.app/api/homepage-hero-section?populate=Image",
         {
           method: "PUT",
           headers: {
@@ -152,7 +152,7 @@ export default function HeroSectionForm() {
               <video
               autoPlay
               controls
-                src={`https://upbeat-life-04fe8098b1.strapiapp.com${media.url}`}
+                src={`https://kindiadmin.up.railway.app${media.url}`}
                 className="w-[300px] h-[200px] rounded-lg object-cover"
               />
               <p>{media.name}</p>

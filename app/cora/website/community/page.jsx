@@ -42,7 +42,7 @@ export default function AdminBlogs() {
   const fetchBlogs = async () => {
     try {
       const res = await fetch(
-        "https://upbeat-life-04fe8098b1.strapiapp.com/api/blogs?populate=comments&populate=FeaturedImage"
+        "https://kindiadmin.up.railway.app/api/blogs?populate=comments&populate=FeaturedImage"
       );
       const data = await res.json();
       // console.log("API Response:", data);
@@ -85,7 +85,7 @@ export default function AdminBlogs() {
     const newStatus = currentStatus === "published" ? "draft" : "published"; // Toggle status between published and draft
 
     const res = await fetch(
-      `https://upbeat-life-04fe8098b1.strapiapp.com/api/blogs/${id}?populate=comments&populate=FeaturedImage`,
+      `https://kindiadmin.up.railway.app/api/blogs/${id}?populate=comments&populate=FeaturedImage`,
       {
         method: "PATCH",
         headers: {
@@ -145,7 +145,7 @@ export default function AdminBlogs() {
   const handleDeleteComment = async (documentId) => {
     try {
       const response = await fetch(
-        `https://upbeat-life-04fe8098b1.strapiapp.com/api/comments/${documentId}`,
+        `https://kindiadmin.up.railway.app/api/comments/${documentId}`,
         {
           method: "DELETE",
         }
@@ -244,7 +244,7 @@ export default function AdminBlogs() {
                     <TableCell>
                       <img
                         src={blog?.FeaturedImage?.url}
-                        // src={`https://upbeat-life-04fe8098b1.strapiapp.com${blog?.FeaturedImage?.url}`}
+                        // src={`https://kindiadmin.up.railway.app${blog?.FeaturedImage?.url}`}
                         alt={blog?.Text}
                         className="w-[40px] border-2 border-[#333333] rounded-full h-[40px] object-cover"
                       />
@@ -333,7 +333,7 @@ export default function AdminBlogs() {
                                 {/* Featured Image */}
                                 <img
                                   src={selectedBlog?.FeaturedImage?.url}
-                                  // src={`https://upbeat-life-04fe8098b1.strapiapp.com${selectedBlog?.FeaturedImage?.url}`}
+                                  // src={`https://kindiadmin.up.railway.app${selectedBlog?.FeaturedImage?.url}`}
                                   alt={selectedBlog?.Text}
                                   className="w-full h-[300px] object-cover rounded-lg mb-6"
                                 />

@@ -15,7 +15,7 @@ export function GoogleCallback() {
       if (googleToken) {
         try {
           // Send the token to Strapi for validation and login
-          const res = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/auth/google", {
+          const res = await fetch("https://kindiadmin.up.railway.app/api/auth/google", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

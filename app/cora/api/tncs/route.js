@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-const STRAPI_API_URL = "https://upbeat-life-04fe8098b1.strapiapp.com/api/tnc?populate=*"; // Your Strapi API URL
+const STRAPI_API_URL = "https://kindiadmin.up.railway.app/api/tnc?populate=*"; // Your Strapi API URL
 
 // Handle GET request to fetch Tnc content with populate
 export async function GET(req) {

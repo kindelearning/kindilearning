@@ -168,7 +168,7 @@ export default function CartPage() {
                 <img
                   alt={item.title}
                   // src={item.image}
-                  src={`https://upbeat-life-04fe8098b1.strapiapp.com${item.image}`}
+                  src={`https://kindiadmin.up.railway.app${item.image}`}
                   width={120}
                   height={90}
                   className="w-[80px] h-[76px] md:w-[100px] lg:h-[80px] rounded-[10px]"

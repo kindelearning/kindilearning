@@ -178,7 +178,7 @@ export default function PricingTabs() {
                             image={
                               plan.Thumbnail?.url || "Images/PricingThumb.svg"
                             }
-                            // image={`https://upbeat-life-04fe8098b1.strapiapp.com${plan.Thumbnail?.url}`}
+                            // image={`https://kindiadmin.up.railway.app${plan.Thumbnail?.url}`}
                           />
                         )
                       )
@@ -226,7 +226,7 @@ export default function PricingTabs() {
                             )}
                             isOpen={isAccordionOpen} // Pass the state here
                             toggleAccordion={toggleAccordion} // Pass toggle function
-                            // image={`https://upbeat-life-04fe8098b1.strapiapp.com${plan.Thumbnail?.url}`}
+                            // image={`https://kindiadmin.up.railway.app${plan.Thumbnail?.url}`}
                             image={
                               plan.Thumbnail?.url || "Images/PricingThumb.svg"
                             }

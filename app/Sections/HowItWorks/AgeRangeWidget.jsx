@@ -61,7 +61,7 @@ export default function AgeRangeWidget() {
     const fetchHowItWorks = async () => {
       try {
         const response = await fetch(
-          "https://upbeat-life-04fe8098b1.strapiapp.com/api/how-it-work-page?populate[AgeGroup][populate]=Content.Icon"
+          "https://kindiadmin.up.railway.app/api/how-it-work-page?populate[AgeGroup][populate]=Content.Icon"
         );
         if (!response.ok) {
           throw new Error(`Error fetching data: ${response.statusText}`);
@@ -174,7 +174,7 @@ export default function AgeRangeWidget() {
                 <AgeCard
                 image={content?.Icon ? content?.Icon.url : "/Images/AgeCardOne.svg"}
                 key={index}
-                  // image={`https://upbeat-life-04fe8098b1.strapiapp.com${content.Icon.url}` || User}
+                  // image={`https://kindiadmin.up.railway.app${content.Icon.url}` || User}
                   bgImage="/Images/AgeRangeTwo.svg"
                   title={content?.Title || "Toddler"}
                   // body={content?.Body}
@@ -208,7 +208,7 @@ export default function AgeRangeWidget() {
                 image={content?.Icon ? content?.Icon.url : "/Images/AgeCardOne.svg"}
                 key={index}
                   // image={AgeCardOne}
-                  // image={`https://upbeat-life-04fe8098b1.strapiapp.com${content.Icon.url}` || User}
+                  // image={`https://kindiadmin.up.railway.app${content.Icon.url}` || User}
                   bgImage="/Images/AgeRangeThree.svg"
                   title={content?.Title}
                   // body={content?.Body}
@@ -234,7 +234,7 @@ export default function AgeRangeWidget() {
                 image={content?.Icon ? content?.Icon.url : "/Images/AgeCardOne.svg"}
                 key={index}
                   // image={AgeCardOne}
-                  // image={`https://upbeat-life-04fe8098b1.strapiapp.com${content.Icon.url}` || User}
+                  // image={`https://kindiadmin.up.railway.app${content.Icon.url}` || User}
                   bgImage="/Images/AgeRangeFour.svg"
                   title={content?.Title}
                   // body={content?.Body}

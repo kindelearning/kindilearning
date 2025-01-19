@@ -22,7 +22,7 @@ export default function MyLevel({ totalActivities }) {
     const fetchLevels = async () => {
       try {
         const response = await fetch(
-          "https://upbeat-life-04fe8098b1.strapiapp.com/api/levels?populate=*"
+          "https://kindiadmin.up.railway.app/api/levels?populate=*"
         );
         if (!response.ok) {
           throw new Error("Failed to fetch levels.");
@@ -145,7 +145,7 @@ export default function MyLevel({ totalActivities }) {
 //     const fetchLevels = async () => {
 //       try {
 //         const response = await fetch(
-//           "https://upbeat-life-04fe8098b1.strapiapp.com/api/levels?populate=*"
+//           "https://kindiadmin.up.railway.app/api/levels?populate=*"
 //         );
 //         if (!response.ok) {
 //           throw new Error("Failed to fetch levels.");

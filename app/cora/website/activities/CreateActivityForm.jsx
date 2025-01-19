@@ -43,7 +43,7 @@ export default function CreateActivityForm() {
     const fetchUsers = async () => {
       try {
         const response = await fetch(
-          "https://upbeat-life-04fe8098b1.strapiapp.com/api/users?populate=*"
+          "https://kindiadmin.up.railway.app/api/users?populate=*"
         );
         if (!response.ok) {
           throw new Error("Failed to fetch users.");
@@ -104,7 +104,7 @@ export default function CreateActivityForm() {
     console.log("New Activity data", newActivity);
 
     try {
-      const response = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/activities", {
+      const response = await fetch("https://kindiadmin.up.railway.app/api/activities", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

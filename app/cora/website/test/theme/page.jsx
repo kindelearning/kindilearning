@@ -60,7 +60,7 @@ const CreateThemePage = () => {
     }
 
     try {
-      const res = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/our-themes", {
+      const res = await fetch("https://kindiadmin.up.railway.app/api/our-themes", {
         method: "POST",
         body: formData,
       });

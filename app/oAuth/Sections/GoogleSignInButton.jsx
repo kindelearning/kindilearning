@@ -22,7 +22,7 @@ import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 //       const idToken = await user.getIdToken();
 
 //       // Send the token to your Strapi backend for verification
-//       const response = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/auth/google", {
+//       const response = await fetch("https://kindiadmin.up.railway.app/api/auth/google", {
 //         method: "POST",
 //         headers: {
 //           "Content-Type": "application/json",
@@ -65,7 +65,7 @@ const GoogleSignUp = () => {
 
     // Send the token to the correct Strapi endpoint
     try {
-      const res = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/auth/google", {
+      const res = await fetch("https://kindiadmin.up.railway.app/api/auth/google", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

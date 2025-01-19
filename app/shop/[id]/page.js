@@ -21,7 +21,7 @@ import { stripePromise } from "@/app/lib/stripe";
 
 async function fetchProductById(documentId) {
   const res = await fetch(
-    `https://upbeat-life-04fe8098b1.strapiapp.com/api/products/${documentId}?populate=Gallery&populate=FeaturedImage`
+    `https://kindiadmin.up.railway.app/api/products/${documentId}?populate=Gallery&populate=FeaturedImage`
   );
   if (!res.ok) {
     return null;

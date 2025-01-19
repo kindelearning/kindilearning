@@ -13,7 +13,7 @@ export default function Page() {
   const fetchBlogs = async () => {
     try {
       const res = await fetch(
-        "https://upbeat-life-04fe8098b1.strapiapp.com/api/blogs?populate=comments&populate=FeaturedImage"
+        "https://kindiadmin.up.railway.app/api/blogs?populate=comments&populate=FeaturedImage"
       );
       const data = await res.json();
       // console.log("API Response:", data);
@@ -133,7 +133,7 @@ export default function Page() {
     </>
   );
 }
-// image={`https://upbeat-life-04fe8098b1.strapiapp.com${item.FeaturedImage.url}`}
+// image={`https://kindiadmin.up.railway.app${item.FeaturedImage.url}`}
 // "use client";
 
 // import NotFound from "@/app/not-found";

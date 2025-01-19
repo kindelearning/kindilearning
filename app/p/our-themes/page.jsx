@@ -15,7 +15,7 @@ export default function Page() {
   const fetchThemes = async () => {
     try {
       const res = await fetch(
-        "https://upbeat-life-04fe8098b1.strapiapp.com/api/our-themes?populate=*"
+        "https://kindiadmin.up.railway.app/api/our-themes?populate=*"
       );
       const data = await res.json();
 

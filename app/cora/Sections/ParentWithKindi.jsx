@@ -25,8 +25,8 @@ export default function ParentWithKindi() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://upbeat-life-04fe8098b1.strapiapp.com/api/our-mission?populate[Parentwithkindi][populate]=Media"
-          // https://upbeat-life-04fe8098b1.strapiapp.com/api/how-it-works?populate[Hero][populate]=Media&populate[AgeGroup]=*&populate[Content]=*&populate[AreaOflearningCards][populate]=*&populate[KindiSkillsCategoriesCards][populate]=*
+          "https://kindiadmin.up.railway.app/api/our-mission?populate[Parentwithkindi][populate]=Media"
+          // https://kindiadmin.up.railway.app/api/how-it-works?populate[Hero][populate]=Media&populate[AgeGroup]=*&populate[Content]=*&populate[AreaOflearningCards][populate]=*&populate[KindiSkillsCategoriesCards][populate]=*
         );
         const data = await response.json();
         console.log("Fetched Parentwithkindi data:", data); // Log the response structure
@@ -133,7 +133,7 @@ export function UpdateParentWithKindiSection2() {
     const fetchContent = async () => {
       try {
         const response = await fetch(
-          "https://upbeat-life-04fe8098b1.strapiapp.com/api/our-mission?populate[Parentwithkindi][populate]=Media"
+          "https://kindiadmin.up.railway.app/api/our-mission?populate[Parentwithkindi][populate]=Media"
         );
         const data = await response.json();
         setContent({
@@ -165,7 +165,7 @@ export function UpdateParentWithKindiSection2() {
     };
 
     try {
-      const response = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/our-mission", {
+      const response = await fetch("https://kindiadmin.up.railway.app/api/our-mission", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -303,7 +303,7 @@ export function UpdateParentWithKindiSection() {
     const fetchContentData = async () => {
       try {
         const res = await fetch(
-          "https://upbeat-life-04fe8098b1.strapiapp.com/api/our-mission?populate[Parentwithkindi][populate]=Media"
+          "https://kindiadmin.up.railway.app/api/our-mission?populate[Parentwithkindi][populate]=Media"
         );
         const data = await res.json();
 
@@ -347,7 +347,7 @@ export function UpdateParentWithKindiSection() {
     console.log("Payload Created for Parentwithkindi", payload);
 
     try {
-      const res = await fetch("https://upbeat-life-04fe8098b1.strapiapp.com/api/our-mission", {
+      const res = await fetch("https://kindiadmin.up.railway.app/api/our-mission", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

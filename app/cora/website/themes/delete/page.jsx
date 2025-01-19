@@ -10,7 +10,7 @@ export default function DeleteContent({ documentId, onDelete }) {
 
     try {
       const response = await fetch(
-        `https://upbeat-life-04fe8098b1.strapiapp.com/api/our-themes/${documentId}`,
+        `https://kindiadmin.up.railway.app/api/our-themes/${documentId}`,
         {
           method: "DELETE",
         }

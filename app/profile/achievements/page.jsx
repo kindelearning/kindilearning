@@ -114,7 +114,7 @@ const DisplayAllBadges = () => {
     const fetchBadges = async () => {
       try {
         const response = await fetch(
-          "https://upbeat-life-04fe8098b1.strapiapp.com/api/badges?populate=*"
+          "https://kindiadmin.up.railway.app/api/badges?populate=*"
         );
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -256,7 +256,7 @@ export default function Achievement() {
 
          // Fetch kids data
          const kidsResponse = await fetch(
-          "https://upbeat-life-04fe8098b1.strapiapp.com/api/kids?populate=*"
+          "https://kindiadmin.up.railway.app/api/kids?populate=*"
         );
         const kidsData = await kidsResponse.json();
         setKidsData(kidsData.data);

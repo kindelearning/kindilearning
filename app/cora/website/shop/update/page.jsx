@@ -34,7 +34,7 @@ export default function ProductUpdateForm({ documentId }) {
     const fetchProductData = async () => {
       try {
         const res = await fetch(
-          `https://upbeat-life-04fe8098b1.strapiapp.com/api/products/${documentId}?populate=*`
+          `https://kindiadmin.up.railway.app/api/products/${documentId}?populate=*`
         );
         const data = await res.json();
         if (res.ok) {
@@ -83,7 +83,7 @@ export default function ProductUpdateForm({ documentId }) {
 
     try {
       const res = await fetch(
-        `https://upbeat-life-04fe8098b1.strapiapp.com/api/products/${documentId}`,
+        `https://kindiadmin.up.railway.app/api/products/${documentId}`,
         {
           method: "PUT",
           headers: {
@@ -134,7 +134,7 @@ export default function ProductUpdateForm({ documentId }) {
                       <div className="flex flex-col">
                         <img
                           src={media.url}
-                          // src={`https://upbeat-life-04fe8098b1.strapiapp.com${media.url}`}
+                          // src={`https://kindiadmin.up.railway.app${media.url}`}
                           className="w-32 h-32 object-cover rounded-full flex "
                         />
                         <p>{media.name}</p>

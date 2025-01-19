@@ -14,8 +14,8 @@ export default function SkillToggleCardGrid() {
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(
-        // "https://upbeat-life-04fe8098b1.strapiapp.com/api/how-it-work-page?populate=*"
-        "https://upbeat-life-04fe8098b1.strapiapp.com/api/how-it-work-page?populate[KindiSkillsCategoriesCards][populate]=Icon"
+        // "https://kindiadmin.up.railway.app/api/how-it-work-page?populate=*"
+        "https://kindiadmin.up.railway.app/api/how-it-work-page?populate[KindiSkillsCategoriesCards][populate]=Icon"
       );
       const data = await response.json();
       setCards(data.data.KindiSkillsCategoriesCards);

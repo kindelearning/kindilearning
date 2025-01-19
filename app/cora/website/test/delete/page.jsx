@@ -10,7 +10,7 @@ const DeleteContent = ({ documentId, onDelete }) => {
     setError(null);
 
     try {
-      const response = await fetch(`https://upbeat-life-04fe8098b1.strapiapp.com/api/contents/${documentId}`, {
+      const response = await fetch(`https://kindiadmin.up.railway.app/api/contents/${documentId}`, {
         method: 'DELETE',
       });
 
