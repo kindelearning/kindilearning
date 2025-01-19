@@ -26,7 +26,9 @@ export default async function TheTeam() {
             <Team
               key={index}
               bgColor="#ff8e00"
-              imageSrc={member?.MemberPic.url || "/Images/Thomas.png"}
+              imageSrc={
+                member?.MemberPic ? member?.MemberPic.url : "/Images/Thomas.png"
+              }
               title={member.Name || "Jannie"}
               degree={member.Degree || "BA (Hons) Childhood Studies (Level 16)"}
               description={
@@ -47,7 +49,9 @@ export default async function TheTeam() {
               bgColor="#f15c57"
               title={member.Name || "Thomas"}
               degree={member.Degree || "BA (Hons) Childhood Studies (Level 16)"}
-              imageSrc={member?.MemberPic.url || "/Images/Thomas.png"}
+              imageSrc={
+                member?.MemberPic ? member?.MemberPic.url : "/Images/Thomas.png"
+              }
               // imageSrc={Thomas}
               description={
                 <p

@@ -147,7 +147,7 @@ export default function AgeRangeWidget() {
               {data.data.AgeGroup.Content.slice(0, 1).map((content, index) => (
                 <AgeCard
                   key={index}
-                  image={content?.Icon.url || "/Images/AgeCardOne.svg"}
+                  image={content?.Icon ? content?.Icon.url : "/Images/AgeCardOne.svg"}
                   bgImage="/Images/AgeRangeOne.svg"
                   title={content?.Title}
                   body={
@@ -172,8 +172,8 @@ export default function AgeRangeWidget() {
             <>
               {data.data.AgeGroup.Content.slice(1, 2).map((content, index) => (
                 <AgeCard
-                  image={content?.Icon.url || "/Images/AgeCardOne.svg"}
-                  key={index}
+                image={content?.Icon ? content?.Icon.url : "/Images/AgeCardOne.svg"}
+                key={index}
                   // image={`https://upbeat-life-04fe8098b1.strapiapp.com${content.Icon.url}` || User}
                   bgImage="/Images/AgeRangeTwo.svg"
                   title={content?.Title || "Toddler"}
@@ -205,8 +205,8 @@ export default function AgeRangeWidget() {
             <>
               {data.data.AgeGroup.Content.slice(2, 3).map((content, index) => (
                 <AgeCard
-                  image={content?.Icon.url || "/Images/AgeCardOne.svg"}
-                  key={index}
+                image={content?.Icon ? content?.Icon.url : "/Images/AgeCardOne.svg"}
+                key={index}
                   // image={AgeCardOne}
                   // image={`https://upbeat-life-04fe8098b1.strapiapp.com${content.Icon.url}` || User}
                   bgImage="/Images/AgeRangeThree.svg"
@@ -231,8 +231,8 @@ export default function AgeRangeWidget() {
             <>
               {data.data.AgeGroup.Content.slice(3, 4).map((content, index) => (
                 <AgeCard
-                  image={content?.Icon.url || "/Images/AgeCardOne.svg"}
-                  key={index}
+                image={content?.Icon ? content?.Icon.url : "/Images/AgeCardOne.svg"}
+                key={index}
                   // image={AgeCardOne}
                   // image={`https://upbeat-life-04fe8098b1.strapiapp.com${content.Icon.url}` || User}
                   bgImage="/Images/AgeRangeFour.svg"

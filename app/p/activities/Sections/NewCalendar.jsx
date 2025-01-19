@@ -128,7 +128,7 @@ function ActivityCard({ activityData }) {
               alt="ScheduleEvent"
               className="min-w-[32px] min-h-[32px] rounded-[4px] object-cover h-[32px]"
               width={32}
-              height={32}
+              height={32} 
             />
           </div>
 
@@ -147,7 +147,7 @@ function ActivityCard({ activityData }) {
               </div>
             </div>
             <div className="grid grid-cols-4 overflow-x-scroll gap-1 justify-between items-center  scrollbar-hidden">
-              {activityData?.myActivity?.Skills.map((skill, index) => {
+              {activityData?.myActivity?.LearningAreaIcons.map((skill, index) => {
                 // Extract the skill title
                 const skillTitle = skill.children[0]?.text;
                 const icon = getIconForSkill(skillTitle); // Get the icon URL dynamically

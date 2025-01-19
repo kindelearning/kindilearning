@@ -45,7 +45,9 @@ export default function ShopPage() {
   useEffect(() => {
     async function getProducts() {
       const fetchedProducts = await fetchShopProducts();
-      if (fetchedProducts.length === 0) {
+      if (!Array.isArray(fetchedProducts)) {
+        setError("Invalid data format: Products data is not an array.");
+      } else if (fetchedProducts.length === 0) {
         setError("No products available.");
       } else {
         setProducts(fetchedProducts);
