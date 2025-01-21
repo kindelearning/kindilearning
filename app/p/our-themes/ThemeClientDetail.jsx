@@ -77,8 +77,8 @@ export default function ThemeClientDetail({
             <img
               width={1400}
               height={600}
-              src={Thumbnail?.url}
-              // src={`https://kindiadmin.up.railway.app${Thumbnail?.url}`}
+              // src={Thumbnail?.url}
+              src={`https://kindiadmin.up.railway.app${Thumbnail?.url}`}
               alt={Title}
               className="w-full hover:scale-105 duration-300 lg:max-w-[960px] lg:rounded-xl h-60 md:h-[400px] lg:h-[400px] object-cover"
             />

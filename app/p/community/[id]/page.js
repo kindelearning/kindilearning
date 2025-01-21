@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import RichTextRender from "@/app/Sections/Global/RichTextRender";
 import { CommentForm } from "../comments/CommentForm";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function BlogDetailPage({ params }) {
   const { id } = params;
@@ -113,13 +114,25 @@ export default function BlogDetailPage({ params }) {
   return (
     <section className="w-full font-fredoka h-auto py-0 lg:py-12 bg-[#EAEAF5] items-center justify-center pb-24 flex flex-col gap-[20px]">
       <div className="w-full flex overflow-clip lg:rounded-xl lg:max-w-[960px]">
-        <img
-          width={1400}
-          height={600}
-          src={FeaturedImage?.url ? FeaturedImage?.url : BlogThumb}
-          alt={`Featured Image for ${Text}`}
-          className="w-full hover:scale-105 duration-300 lg:max-w-[960px] lg:rounded-xl h-60 md:h-[400px] lg:h-[400px] object-cover"
-        />
+        {FeaturedImage ? (
+          <img
+            width={1400}
+            height={600}
+            // src={FeaturedImage?.url ? FeaturedImage?.url : BlogThumb}
+            src={`https://kindiadmin.up.railway.app${FeaturedImage?.url}`}
+            alt={`Featured Image for ${Text}`}
+            className="w-full hover:scale-105 duration-300 lg:max-w-[960px] lg:rounded-xl h-60 md:h-[400px] lg:h-[400px] object-cover"
+          />
+        ) : (
+          <Image
+            width={1400}
+            height={600}
+            // src={FeaturedImage?.url ? FeaturedImage?.url : BlogThumb}
+            src={BlogThumb}
+            alt={`Featured Image for ${Text}`}
+            className="w-full hover:scale-105 duration-300 lg:max-w-[960px] lg:rounded-xl h-60 md:h-[400px] lg:h-[400px] object-cover"
+          />
+        )}
       </div>
 
       <div className="flex justify-center gap-6 mt-8">
