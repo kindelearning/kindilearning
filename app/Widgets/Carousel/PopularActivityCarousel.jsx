@@ -35,7 +35,6 @@ const PopularActivityCarousel = () => {
         const data = await response.json();
 
         if (response.ok) {
-
           const popularActivities = data.data.filter(
             (activity) => activity.isPopular === "Yes"
           );
@@ -126,10 +125,14 @@ const PopularActivityCarousel = () => {
                                 height={250}
                                 alt={activity?.Title || "No Title"} // Fallback for alt text
                                 className="w-full max-h-[180px] duration-300 hover:scale-105 lg:min-h-[276px] lg:h-full lg:max-h-[276px] md:max-h-[300px] object-cover rounded-t-3xl"
+                                // src={
+                                //   activity?.Gallery?.[0]?.url ||
+                                //   "/Images/shop/ProductImage.png"
+                                // } // Fallback for image source
                                 src={
-                                  activity?.Gallery?.[0]?.url ||
+                                  `https://kindiadmin.up.railway.app${activity?.Gallery?.[0]?.url}` ||
                                   "/Images/shop/ProductImage.png"
-                                } // Fallback for image source
+                                }
                               />
                             </div>
                             <div className="w-full p-2 flex-col justify-start lg:p-4 items-start flex gap-2 md:gap-2 lg:gap-4">

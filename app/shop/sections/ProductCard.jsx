@@ -27,7 +27,8 @@ export default function ProductCard({ image, title, productUrl, price }) {
       <div className="flex rounded-t-[24px] overflow-clip w-full">
         {image ? (
           <img
-            src={image}
+            // src={image}
+            src={`https://kindiadmin.up.railway.app${image}`}
             alt={title}
             width={200}
             height={200}

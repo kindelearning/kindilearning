@@ -44,7 +44,8 @@ export default function ActivityCard({ activity, activityUrl, icons }) {
                   height={250}
                   alt={Title}
                   className="w-full max-h-[180px] duration-300 hover:scale-105 lg:min-h-[276px] lg:h-full lg:max-h-[276px] md:max-h-[300px] object-cover rounded-t-3xl"
-                  src={imageUrl}
+                          src={`https://kindiadmin.up.railway.app${imageUrl}`}
+                  // src={imageUrl}
                 />
               ) : (
                 <Image

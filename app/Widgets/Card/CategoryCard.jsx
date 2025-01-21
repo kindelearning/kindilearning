@@ -16,7 +16,9 @@ const CategoryCard = ({
           <img
             width={400}
             height={300}
-            src={image || ThemeDummy}
+            // src={image || ThemeDummy}
+            src={`https://kindiadmin.up.railway.app${image}` || "/Images/ThemeDummy.png"}
+
             alt="Category Image"
             className="w-full hover:scale-110  duration-500 ease-out h-48 object-cover"
           />
