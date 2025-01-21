@@ -243,8 +243,8 @@ export default function AdminBlogs() {
                     </TableCell>
                     <TableCell>
                       <img
-                        src={blog?.FeaturedImage?.url}
-                        // src={`https://kindiadmin.up.railway.app${blog?.FeaturedImage?.url}`}
+                        // src={blog?.FeaturedImage?.url}
+                        src={`https://kindiadmin.up.railway.app${blog?.FeaturedImage?.url}`}
                         alt={blog?.Text}
                         className="w-[40px] border-2 border-[#333333] rounded-full h-[40px] object-cover"
                       />

@@ -257,7 +257,9 @@ export default function ShopPage() {
                         {product.FeaturedImage ? (
                           <img
                             className="w-16 h-16 rounded-full"
-                            src={product.FeaturedImage[0]?.url}
+                            // src={product.FeaturedImage[0]?.url}
+                      src={`https://kindiadmin.up.railway.app${product.FeaturedImage[0]?.url}`}
+
                             alt={product.Name}
                           />
                         ) : (

@@ -247,13 +247,13 @@ export default function MediaPage() {
                     <video
                       controls
                       className="w-24 rounded-[8px] bg-[#a0a0a0] h-16 object-cover"
-                      src={asset.url}
-                      // src={`https://kindiadmin.up.railway.app${asset.url}`}
+                      // src={asset.url}
+                      src={`https://kindiadmin.up.railway.app${asset.url}`}
                     />
                   ) : (
                     <img
-                      src={asset.url}
-                      // src={`https://kindiadmin.up.railway.app${asset.url}`}
+                      // src={asset.url}
+                      src={`https://kindiadmin.up.railway.app${asset.url}`}
                       alt={asset.name}
                       className="w-24 rounded-[8px] bg-[#a0a0a0] h-16 object-cover"
                     />

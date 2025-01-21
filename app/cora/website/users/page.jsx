@@ -38,6 +38,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import Image from "next/image";
+import { ProfilePlaceholder01 } from "@/public/Images";
 
 const Pagination = ({ total, perPage, currentPage, onPageChange }) => {
   const totalPages = Math.ceil(total / perPage);
@@ -282,8 +284,8 @@ export default function AdminUsersPage() {
               <TableHead>Username</TableHead>
               <TableHead>Email</TableHead>
               <TableHead>Role</TableHead>
-              <TableHead >Status</TableHead>
-              <TableHead >isConfirmed</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>isConfirmed</TableHead>
               <TableHead>Plan</TableHead>
               <TableHead>Created At</TableHead>
               <TableHead>Updated At</TableHead>
@@ -300,12 +302,18 @@ export default function AdminUsersPage() {
                 <TableCell>
                   {user.profilepic ? (
                     <img
-                      src={user.profilepic.url}
+                      // src={user.profilepic.url}
+                      src={`https://kindiadmin.up.railway.app${user.profilepic.url}`}
                       alt="Profile"
                       className="w-10 h-10 rounded-full"
                     />
                   ) : (
-                    <span>No Image</span>
+                    <Image
+                      src={ProfilePlaceholder01}
+                      // src={`https://kindiadmin.up.railway.app${user.profilepic.url}`}
+                      alt="Profile"
+                      className="w-10 h-10 rounded-full"
+                    />
                   )}
                 </TableCell>
                 <TableCell>{user.id}</TableCell>
@@ -317,7 +325,7 @@ export default function AdminUsersPage() {
                     className="font-medium  border-black rounded-full"
                     variant={user.blocked ? "destructive" : "success"}
                   >
-                    {user.blocked ? "Blocked" : "Active"} 
+                    {user.blocked ? "Blocked" : "Active"}
                   </div>
                 </TableCell>
                 <TableCell className="min-w-[max-content]">
@@ -346,7 +354,7 @@ export default function AdminUsersPage() {
                   {/* View */}
                   <Dialog>
                     <DialogTrigger>
-                      <Eye className="font-[30px] text-[#111b3753] hover:text-black"/>
+                      <Eye className="font-[30px] text-[#111b3753] hover:text-black" />
                     </DialogTrigger>
                     <DialogContent className="max-w-[800px] max-h-[600px] overflow-y-scroll">
                       <DialogHeader>

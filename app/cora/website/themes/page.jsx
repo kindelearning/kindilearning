@@ -156,7 +156,7 @@ export default function AdminThemes() {
                   <TableHead>Status</TableHead>
                   <TableHead className="w-[100px]">Thumbnail</TableHead>
                   <TableHead>Title</TableHead>
-                  <TableHead>Meta Description</TableHead>
+                  <TableHead className="min-w-[200px]">Meta Description</TableHead>
                   <TableHead
                     className=" cursor-pointer"
                     onClick={() => handleSort("LaunchTime")}
@@ -188,14 +188,14 @@ export default function AdminThemes() {
                     </TableCell>
                     <TableCell>
                       <img
-                        src={theme?.Thumbnail?.url}
-                        // src={`https://kindiadmin.up.railway.app${theme?.Thumbnail?.url}`}
+                        // src={theme?.Thumbnail?.url}
+                        src={`https://kindiadmin.up.railway.app${theme?.Thumbnail?.url}`}
                         alt={theme?.Title}
-                        className="w-[40px] border-2 border-[#333333] rounded-full h-[40px] object-cover"
+                        className="w-[40px] border border-[#333333] rounded-full h-[40px] object-cover"
                       />
                     </TableCell>
                     <TableCell>{theme.Title}</TableCell>
-                    <TableCell>{theme.metaDesc.slice(0, 100)}...</TableCell>
+                    <TableCell>{theme.metaDesc.slice(0, 50)}...</TableCell>
                     <TableCell>
                       {new Date(theme.LaunchTime).toLocaleString()}
                     </TableCell>

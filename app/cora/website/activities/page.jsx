@@ -328,7 +328,9 @@ export default function ActivitiesPage() {
                       activity.Gallery.slice(0, 1).map((image, index) => (
                         <img
                           key={index}
-                          src={image?.url}
+                          // src={image?.url}
+                      src={`https://kindiadmin.up.railway.app${image?.url}`}
+
                           alt={`Gallery ${index}`}
                           className="min-w-16 rounded-md h-16 object-cover"
                         />

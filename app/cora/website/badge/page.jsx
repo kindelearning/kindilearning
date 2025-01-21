@@ -177,8 +177,8 @@ export default function BadgesTable() {
                 <TableCell>
                   {badge.Thumbnail?.url ? (
                     <img
-                      src={badge.Thumbnail.url}
-                      // src={`https://kindiadmin.up.railway.app${badge.Thumbnail.url}`}
+                      // src={badge.Thumbnail.url}
+                      src={`https://kindiadmin.up.railway.app${badge.Thumbnail.url}`}
                       alt={badge.Thumbnail?.alternativeText || badge.Name}
                       className="w-10 h-10 rounded"
                     />

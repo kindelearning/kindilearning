@@ -306,8 +306,8 @@ export default function UpdateThemeForm({ documentId }) {
           {media ? (
             <div className="mt-4">
               <img
-                src={media.url}
-                // src={`https://kindiadmin.up.railway.app${media.url}`}
+                // src={media.url}
+                src={`https://kindiadmin.up.railway.app${media.url}`}
                 className="w-32 h-32 object-cover"
               />
               <p>{media.name}</p>

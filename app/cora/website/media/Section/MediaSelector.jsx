@@ -82,7 +82,7 @@ export default function MediaSelector({ onMediaSelect }) {
             Select Media
           </button>
         </DialogTrigger>
-        <DialogContent className="max-w-[1000px] max-h-[400px] overflow-y-scroll">
+        <DialogContent className="max-w-[1000px] max-h-[600px] overflow-y-scroll">
           <DialogHeader>
             <DialogTitle>Select Media</DialogTitle>
             <DialogDescription>
@@ -126,13 +126,13 @@ export default function MediaSelector({ onMediaSelect }) {
                         className={`w-full h-32 object-cover rounded transition ${
                           selectedMediaId === mediaFile.id ? "opacity-90" : ""
                         }`}
-                        src={mediaFile.url}
-                        // src={`https://kindiadmin.up.railway.app${mediaFile.url}`}
+                        // src={mediaFile.url}
+                        src={`https://kindiadmin.up.railway.app${mediaFile.url}`}
                       />
                     ) : (
                       <img
-                        src={mediaFile.url}
-                        // src={`https://kindiadmin.up.railway.app${mediaFile.url}`}
+                        // src={mediaFile.url}
+                        src={`https://kindiadmin.up.railway.app${mediaFile.url}`}
                         alt={mediaFile.name}
                         className={`w-full h-32 object-cover rounded transition ${
                           selectedMediaId === mediaFile.id ? "opacity-90" : ""
@@ -337,7 +337,7 @@ export function MultiMediaSelector({ onMediaSelect }) {
             Select Media
           </button>
         </DialogTrigger>
-        <DialogContent className="max-w-[1000px] max-h-[400px] overflow-y-scroll">
+        <DialogContent className="max-w-[1000px] max-h-[600px] overflow-y-scroll">
           <DialogHeader>
             <DialogTitle>Select Media</DialogTitle>
             <DialogDescription>
@@ -382,10 +382,14 @@ export function MultiMediaSelector({ onMediaSelect }) {
                           selectedMediaIds.includes(mediaFile.id) ? "opacity-90" : ""
                         }`}
                         src={mediaFile.url}
+                      // src={`https://kindiadmin.up.railway.app${mediaFile.url}`}
+
                       />
                     ) : (
                       <img
-                        src={mediaFile.url}
+                        // src={mediaFile.url}
+                      src={`https://kindiadmin.up.railway.app${mediaFile.url}`}
+
                         alt={mediaFile.name}
                         className={`w-full h-32 object-cover rounded transition ${
                           selectedMediaIds.includes(mediaFile.id) ? "opacity-90" : ""
