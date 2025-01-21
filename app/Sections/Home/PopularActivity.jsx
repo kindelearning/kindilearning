@@ -7,7 +7,7 @@ import PopularActivityCarousel from "@/app/Widgets/Carousel/PopularActivityCarou
 
 export default async function PopularActivity() {
   const content = await fetchPopularLearning();
-
+console.log('Popular Learning Activvity Content', content)
   if (!content || !content.Content) {
     return <p>No content available</p>;
   }
