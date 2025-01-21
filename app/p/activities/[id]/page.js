@@ -280,7 +280,7 @@ export default async function ActivityDetailPage({ params }) {
                       Resources
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="w-full max-w-[96%] p-0 lg:max-w-[800px] max-h-[500px] overflow-y-scroll rounded-lg">
+                  <DialogContent className="w-full max-w-[96%] p-0 lg:max-w-[600px] max-h-[500px] overflow-y-scroll rounded-lg">
                     <DialogHeader>
                       <DialogTitle></DialogTitle>
                       <DialogDescription>
@@ -481,7 +481,7 @@ export default async function ActivityDetailPage({ params }) {
                       Resources
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="bg-[#EAEAF5] max-w-[1000px] flex flex-col justify-between max-h-[70%] lg:min-h-[600px] min-h-[400px] overflow-y-scroll p-0 overflow-x-hidden rounded-[16px] w-full claracontainer">
+                  <DialogContent className="bg-[#EAEAF5] max-w-[600px] flex flex-col justify-between max-h-[600px] lg:max-w-[800px] lg:max-h-[600px] min-h-[400px] overflow-y-scroll p-0 overflow-x-hidden rounded-[16px] w-full claracontainer">
                     <DialogHeader>
                       <div className="flex flex-row justify-center items-center w-full">
                         <DialogTitle>

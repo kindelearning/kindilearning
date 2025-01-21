@@ -28,8 +28,12 @@ import Ourpricing, { UpdatePricingForm } from "../../Sections/Home/Ourpricing";
 import SliderSection, { UpdateSliderSection } from "../../Sections/Home/Slider";
 import AnnualPrice from "./annual/page";
 import { EditAnnualPricing } from "../../Sections/Home/AnnualPricing";
-import MonthlyPricing from "../../Sections/Home/MonthlyPricing";
-import DefaultReview, { CreateReviewForm, UpdateReviewForm } from "../../Sections/Home/DefaultReview";
+import MonthlyPricing, {
+  EditMonthlyPricing,
+} from "../../Sections/Home/MonthlyPricing";
+import DefaultReview, {
+  CreateReviewForm,
+} from "../../Sections/Home/DefaultReview";
 
 export default function HomePage() {
   return (
@@ -48,7 +52,7 @@ export default function HomePage() {
                 <TableHead>Parent Page</TableHead>
                 <TableHead>Actions</TableHead>
               </TableRow>
-            </TableHeader> 
+            </TableHeader>
             <TableBody>
               {/* Hero Secton */}
               <SectionRow
@@ -104,7 +108,7 @@ export default function HomePage() {
                 serialNo="6(b)"
                 sectionName="Monthly Pricing"
                 ComponentPreview={MonthlyPricing}
-                ComponentForm={EditAnnualPricing} // Replace with an actual update form if necessary
+                ComponentForm={EditMonthlyPricing} // Replace with an actual update form if necessary
               />
               {/* Default Review */}
               <SectionRow
