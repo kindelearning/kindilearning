@@ -151,8 +151,9 @@ export default function AgeRangeWidget() {
                   //   content?.Icon ? content?.Icon.url : "/Images/AgeCardOne.svg"
                   // }
                   image={
-                    `https://kindiadmin.up.railway.app${content.Icon.url}` ||
-                    "/Images/AgeCardOne.svg"
+                    content.Icon
+                      ? `https://kindiadmin.up.railway.app${content.Icon.url}`
+                      : "/Images/AgeCardOne.svg"
                   }
                   bgImage="/Images/AgeRangeOne.svg"
                   title={content?.Title}
@@ -181,8 +182,9 @@ export default function AgeRangeWidget() {
                   // image={content?.Icon ? content?.Icon.url : "/Images/AgeCardOne.svg"}
                   key={index}
                   image={
-                    `https://kindiadmin.up.railway.app${content.Icon.url}` ||
-                    "/Images/AgeCardOne.svg"
+                    content.Icon
+                      ? `https://kindiadmin.up.railway.app${content.Icon.url}`
+                      : "/Images/AgeCardOne.svg"
                   }
                   bgImage="/Images/AgeRangeTwo.svg"
                   title={content?.Title || "Toddler"}
@@ -219,9 +221,11 @@ export default function AgeRangeWidget() {
                   // }
                   key={index}
                   image={
-                    `https://kindiadmin.up.railway.app${content.Icon.url}` ||
-                    "/Images/AgeCardOne.svg"
-                  }                  bgImage="/Images/AgeRangeThree.svg"
+                    content.Icon
+                      ? `https://kindiadmin.up.railway.app${content.Icon.url}`
+                      : "/Images/AgeCardOne.svg"
+                  }
+                  bgImage="/Images/AgeRangeThree.svg"
                   title={content?.Title}
                   // body={content?.Body}
                   body={
@@ -248,8 +252,9 @@ export default function AgeRangeWidget() {
                   // }
                   key={index}
                   image={
-                    `https://kindiadmin.up.railway.app${content.Icon.url}` ||
-                    "/Images/AgeCardOne.svg"
+                    content.Icon
+                      ? `https://kindiadmin.up.railway.app${content.Icon.url}`
+                      : "/Images/AgeCardOne.svg"
                   }
                   bgImage="/Images/AgeRangeFour.svg"
                   title={content?.Title}
