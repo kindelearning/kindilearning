@@ -14,11 +14,7 @@ export default async function PopularActivity() {
 
   const { featuredText, title, BodyDescription, Media } = content.Content;
 
-  // const activities = await fetchAllActivities();
-
-  // if (!activities || activities.length === 0) {
-  //   return <div>No activities found!</div>;
-  // }
+  // Slider Data 
 
   return (
     <>

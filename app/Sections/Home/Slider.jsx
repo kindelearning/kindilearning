@@ -359,7 +359,7 @@ export default function Slider() {
     return () => clearInterval(intervalId);
   }, [sliderData]);
 
-  console.log("Slider Data", sliderData);
+  // console.log("Slider Data", sliderData);
 
   // Swipe handlers
   const swipeHandlers = useSwipeable({

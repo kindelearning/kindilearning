@@ -26,7 +26,7 @@ export default function Ourpricing() {
           "https://kindiadmin.up.railway.app/api/ourpricing?populate[MonthlyPlans][populate][0]=Features&populate[MonthlyPlans][populate][1]=Thumbnail&populate[AnnualPlans][populate][0]=Features&populate[AnnualPlans][populate][1]=Thumbnail"
         );
         const data = await response.json();
-        console.log("Fetched data: ", data); // Log to inspect the structure
+        // console.log("Fetched data: ", data); // Log to inspect the structure
         if (data?.data) {
           setContent(data.data); // Set the fetched data
         } else {

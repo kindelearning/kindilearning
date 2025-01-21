@@ -27,7 +27,7 @@ export default function TeamSection() {
           "https://kindiadmin.up.railway.app/api/our-mission?populate[Hero][populate]=Media&populate[Parentwithkindi][populate]=Media&populate[OurStory][populate]=Media&populate[OurTeam][populate]=*"
         );
         const data = await response.json();
-        console.log("Fetched data:", data); // Log the response structure
+        // console.log("Fetched data:", data); // Log the response structure
         if (data?.data) {
           setContent(data.data); // Set the fetched data
         } else {

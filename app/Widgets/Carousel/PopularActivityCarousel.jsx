@@ -35,8 +35,7 @@ const PopularActivityCarousel = () => {
         const data = await response.json();
 
         if (response.ok) {
-          // setActivities(data.data);
-          // Filter activities with isPopular === "Yes"
+
           const popularActivities = data.data.filter(
             (activity) => activity.isPopular === "Yes"
           );

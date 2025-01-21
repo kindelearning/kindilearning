@@ -67,7 +67,7 @@ export default function AgeRangeWidget() {
           throw new Error(`Error fetching data: ${response.statusText}`);
         }
         const data = await response.json();
-        console.log("Fetched data:", data);
+        // console.log("Fetched data:", data);
 
         // Set fetched data and stop loading
         setData(data);

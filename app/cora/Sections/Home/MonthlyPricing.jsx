@@ -18,7 +18,7 @@ export default function MonthlyPricing() {
           "https://kindiadmin.up.railway.app/api/ourpricing?populate[MonthlyPlans][populate][0]=Features&populate[MonthlyPlans][populate][1]=Thumbnail&populate[AnnualPlans][populate][0]=Features&populate[AnnualPlans][populate][1]=Thumbnail"
         );
         const data = await response.json();
-        console.log("Fetched data: ", data); // Log to inspect the structure
+        // console.log("Fetched data: ", data); // Log to inspect the structure
         if (data?.data) {
           setContent(data.data); // Set the fetched data
         } else {
@@ -59,8 +59,8 @@ export default function MonthlyPricing() {
             {plan.Thumbnail?.url && (
               <div className="thumbnail flex justify-center">
                 <img
-                  src={plan.Thumbnail?.url}
-                  // src={`https://kindiadmin.up.railway.app${plan.Thumbnail?.url}`}
+                  // src={plan.Thumbnail?.url}
+                  src={`https://kindiadmin.up.railway.app${plan.Thumbnail?.url}`}
                   alt={plan.Thumbnail?.name}
                   className="rounded-lg object-cover w-full h-48  "
                 />
