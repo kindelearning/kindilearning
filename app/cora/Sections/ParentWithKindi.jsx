@@ -98,7 +98,8 @@ export default function ParentWithKindi() {
                   <div key={index}>
                     <img
                       className="w-[200px] h-[200px]"
-                      src={img.url}
+                      // src={img.url}
+                      src={`https://kindiadmin.up.railway.app${img.url}`}
                       alt="text"
                     />
                   </div>
@@ -165,13 +166,16 @@ export function UpdateParentWithKindiSection2() {
     };
 
     try {
-      const response = await fetch("https://kindiadmin.up.railway.app/api/our-mission", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(updatedContent),
-      });
+      const response = await fetch(
+        "https://kindiadmin.up.railway.app/api/our-mission",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedContent),
+        }
+      );
 
       const result = await response.json();
       if (response.ok) {
@@ -347,13 +351,16 @@ export function UpdateParentWithKindiSection() {
     console.log("Payload Created for Parentwithkindi", payload);
 
     try {
-      const res = await fetch("https://kindiadmin.up.railway.app/api/our-mission", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
+      const res = await fetch(
+        "https://kindiadmin.up.railway.app/api/our-mission",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        }
+      );
 
       const data = await res.json();
       console.log("Updated our-mission Content:", data);

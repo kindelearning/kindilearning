@@ -14,7 +14,7 @@ import OurMissionHero, {
 } from "../../Sections/ourmission/TeamSection";
 import TeamSection from "../../Sections/ourmission/TeamSection";
 import HeroOueMission, {
-  UpdateHeroSection,
+  UpdateHeroSection, 
 } from "../../Sections/ourmission/HeroOueMission";
 import ParentWithKindi, {
   UpdateParentWithKindiSection,

@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default async function Hero() {
-  const data = await fetchOurMission();
+  const data = await fetchOurMission(); 
 
   if (!data) {
     return <div>No content available.</div>;

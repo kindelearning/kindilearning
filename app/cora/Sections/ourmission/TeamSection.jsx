@@ -95,7 +95,9 @@ export default function TeamSection() {
               <div className="relative">
                 {teamMember.MemberPic ? (
                   <img
-                    src={teamMember.MemberPic.url}
+                    // src={teamMember.MemberPic.url}
+                    src={`https://kindiadmin.up.railway.app${teamMember.MemberPic.url}`}
+
                     alt={teamMember.Name}
                     className="w-full h-56 object-cover"
                   />

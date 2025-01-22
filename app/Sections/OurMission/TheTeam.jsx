@@ -1,11 +1,55 @@
+"use client";
+
 import { fetchOurMission } from "@/app/data/p/OurMission";
 import { Team } from "@/app/Widgets";
 import { Thomas } from "@/public/Images";
+import { useEffect, useState } from "react";
 
-export default async function TheTeam() {
-  const data = await fetchOurMission();
+export default function TheTeam() {
+  const [content, setContent] = useState(null); // To store the fetched data
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  if (!data) {
+  // const data = await fetchOurMission();
+
+  // if (!data) {
+  //   return <div>No content available.</div>;
+  // }
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          "https://kindiadmin.up.railway.app/api/our-mission?populate[Hero][populate]=Media&populate[Parentwithkindi][populate]=Media&populate[OurStory][populate]=Media&populate[OurTeam][populate]=*"
+        );
+        const data = await response.json();
+        // console.log("Fetched data:", data); // Log the response structure
+        if (data?.data) {
+          setContent(data.data); // Set the fetched data
+        } else {
+          setError("No data found.");
+        }
+      } catch (err) {
+        setError("Error fetching data: " + err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return <div>Loading content...</div>;
+  }
+
+  if (error) {
+    return <div className="text-red-500">{error}</div>;
+  }
+
+  console.log("Content:", content); // Log content before rendering
+
+  // Check if content is null or undefined
+  if (!content) {
     return <div>No content available.</div>;
   }
 
@@ -22,12 +66,14 @@ export default async function TheTeam() {
           </h1>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-[20px] justify-between items-start">
-          {data.OurTeam?.slice(0, 1).map((member, index) => (
+          {content.OurTeam?.slice(0, 1).map((member, index) => (
             <Team
               key={index}
               bgColor="#ff8e00"
               imageSrc={
-                member?.MemberPic ? member?.MemberPic.url : "/Images/Thomas.png"
+                member?.MemberPic
+                  ? `https://kindiadmin.up.railway.app${member?.MemberPic.url}`
+                  : "/Images/Thomas.png"
               }
               title={member.Name || "Jannie"}
               degree={member.Degree || "BA (Hons) Childhood Studies (Level 16)"}
@@ -43,14 +89,16 @@ export default async function TheTeam() {
               }
             />
           ))}
-          {data.OurTeam?.slice(1, 2).map((member, index) => (
+          {content.OurTeam?.slice(1, 2).map((member, index) => (
             <Team
               key={index}
               bgColor="#f15c57"
               title={member.Name || "Thomas"}
               degree={member.Degree || "BA (Hons) Childhood Studies (Level 16)"}
               imageSrc={
-                member?.MemberPic ? member?.MemberPic.url : "/Images/Thomas.png"
+                member?.MemberPic
+                  ? `https://kindiadmin.up.railway.app${member?.MemberPic.url}`
+                  : "/Images/Thomas.png"
               }
               // imageSrc={Thomas}
               description={
