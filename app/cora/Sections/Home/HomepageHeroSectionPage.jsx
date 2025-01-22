@@ -6,7 +6,6 @@ import { BlocksRenderer } from "@strapi/blocks-react-renderer";
 export default function HomepageHeroSection() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [updateData, setUpdateData] = useState({
     featuredText: "",
     HeroTitle: "",
@@ -55,33 +54,33 @@ export default function HomepageHeroSection() {
   return (
     <div>
       {/* The Hero Section */}
-      <section className="homepage-hero-section bg-gray-100 py-16 px-6 sm:px-12 md:px-16">
+      <section
+        style={{
+          backgroundColor: data.bgColor || "#f3f4f6", // Default to a light gray if bgColor is not provided
+        }}
+        className="homepage-hero-section py-16 px-6 sm:px-12 md:px-16"
+      >
         <div className="max-w-6xl flex mx-auto text-center">
           <div className="hero-text max-w-[60%] mb-12">
-            <p className="text-lg text-start sm:text-xl text-gray-600 mb-2">
+            <p className="text-lg text-start sm:text-xl text-white mb-2">
               {data.featuredText}
             </p>
-            <h1 className="text-3xl text-start font-bold text-gray-700 mb-6">
+            <h1 className="text-3xl text-start text-red claraheading lg:text-[50px] lg:leading-[56px] animate-fade-in font-bold mb-6">
               {data.HeroTitle}
             </h1>
 
             {/* Render BodyDescription if available */}
-            <div className="rich-text text-start prose text-lg sm:text-xl text-gray-700 leading-relaxed">
-              {/* {data.BodyDescription ? (
-                <BlocksRenderer content={data.BodyDescription} />
-              ) : (
-                <p>No description available</p>
-              )} */}
-               <p
-                  className="prose text-start w-full h-auto clarabody animate-fade-in] text-base md:text-lg lg:text-xl mt-4 leading-relaxed  animate-fadeIn animate-delay-2000"
-                  dangerouslySetInnerHTML={{ __html: data.BodyDescription }}
-                />
+            <div className="rich-text text-start prose text-lg sm:text-xl text-white leading-relaxed">
+              <p
+                className="prose text-start w-full text-white h-auto clarabody animate-fade-in] text-base md:text-lg lg:text-xl mt-4 leading-relaxed  animate-fadeIn animate-delay-2000"
+                dangerouslySetInnerHTML={{ __html: data.BodyDescription }}
+              />
             </div>
           </div>
 
           {/* Render media (image or video) based on file extension */}
           {data.Image?.url ? (
-            <video
+            <video autoPlay controls
               // src={data.Image.url}
               src={`https://kindiadmin.up.railway.app${data.Image.url}`}
               width={1200}

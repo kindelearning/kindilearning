@@ -16,6 +16,7 @@ import MediaSelector from "../../website/media/Section/MediaSelector";
 export default function HeroSectionForm() {
   const [featuredText, setFeaturedText] = useState("");
   const [heroTitle, setHeroTitle] = useState("");
+  const [bgcolor, setBgcolor] = useState("");
   const [bodyDescription, setBodyDescription] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -35,9 +36,8 @@ export default function HeroSectionForm() {
         if (data?.data) {
           setFeaturedText(data.data.featuredText || "");
           setHeroTitle(data.data.HeroTitle || "");
-          setBodyDescription(
-            data.data.BodyDescription || ""
-          );
+          setBgcolor(data.data.bgColor || "");
+          setBodyDescription(data.data.BodyDescription || "");
         } else {
           setError("Unable to fetch current data.");
         }
@@ -60,6 +60,7 @@ export default function HeroSectionForm() {
         featuredText,
         HeroTitle: heroTitle,
         BodyDescription: bodyDescription,
+        bgColor: bgcolor,
         Image: media.id,
       },
     };
@@ -109,7 +110,12 @@ export default function HeroSectionForm() {
   }
 
   return (
-    <div className="container mx-auto font-fredoka px-8 py-12">
+    <div
+      style={{
+        backgroundColor: bgcolor, // Default to a light gray if bgColor is not provided
+      }}
+      className="container mx-auto font-fredoka px-8 py-12"
+    >
       <h2 className="text-3xl font-medium mb-8">Update Hero Section</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
@@ -135,6 +141,17 @@ export default function HeroSectionForm() {
             required
           />
         </div>
+        <div>
+          <label className="block text-gray-700">Bg Color Title</label>
+          <input
+            type="color"
+            value={bgcolor}
+            onChange={(e) => setBgcolor(e.target.value)}
+            className="w-full px-4 py-2 border border-gray-300 rounded-md"
+            placeholder="Enter hero title"
+            required
+          />
+        </div>
 
         <div>
           <label className="block text-gray-700">Body Description</label>
@@ -150,8 +167,8 @@ export default function HeroSectionForm() {
           {media ? (
             <div className="mt-4">
               <video
-              autoPlay
-              controls
+                autoPlay
+                controls
                 src={`https://kindiadmin.up.railway.app${media.url}`}
                 className="w-[300px] h-[200px] rounded-lg object-cover"
               />
