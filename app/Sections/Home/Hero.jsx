@@ -72,16 +72,24 @@ export default async function Hero() {
           </div>
           <div className="w-full flex md:min-w-[300px] items-start justify-center h-fit min-h-[400px] md:w-[300px] lg:w-full">
             <div className="w-full h-fit md:h-[460px] animate-fade-in md:max-w-[500px] flex items-end justify-end">
-              {heroMediaUrl ? (
-                heroMediaUrl.endsWith(".mp4") ? (
-                  <video autoPlay loop muted>
-                    <source src={`https://kindiadmin.up.railway.app${heroMediaUrl}`} type="video/mp4" />
-                    Your browser does not support the video.
-                  </video>
-                ) : (
-                  <Image src={`https://kindiadmin.up.railway.app${heroMediaUrl}`} alt="Hero" />
-                )
+              {result.Image ? (
+                <video autoPlay loop muted>
+                  <source
+                    src={`https://kindiadmin.up.railway.app${result.Image?.url}`}
+                    type="video/mp4"
+                  />
+                  Your browser does not support the video.
+                </video>
               ) : (
+                // heroMediaUrl.endsWith(".mp4") ? (
+                //   <video autoPlay loop muted>
+                //     <source src={`https://kindiadmin.up.railway.app${heroMediaUrl}`} type="video/mp4" />
+                //     Your browser does not support the video.
+                //   </video>
+                // )
+                // : (
+                //   <Image src={`https://kindiadmin.up.railway.app${heroMediaUrl}`} alt="Hero" />
+                // )
                 <video autoPlay loop muted>
                   <source src="/preloader.mp4" type="video/mp4" />
                 </video>
