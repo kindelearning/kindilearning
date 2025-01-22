@@ -31,15 +31,24 @@ export default function ToggleCardGrid() {
             key={card.id}
             title={card?.Title || "Default Title"} //
             description={
-              <div dangerouslySetInnerHTML={{ __html: card.Body || "<em>No description available.</em>" }} />
-            } 
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: card.Body || "<em>No description available.</em>",
+                }}
+              />
+            }
             // description={card.Body}
             backgroundColor={card?.bgcolor || "#f0f0f0"}
             isOpen={isOpen}
             setIsOpen={handleCardClick}
             color={card?.color || "white"} // F
-            icon={card?.Icon?.url}
-            />
+            // icon={card?.Icon?.url}
+            icon={
+              card?.Icon
+                ? `https://kindiadmin.up.railway.app${card?.Icon?.url}`
+                : "/Images/KindiHeart.svg"
+            }
+          />
         ))}
       </div>
     </>

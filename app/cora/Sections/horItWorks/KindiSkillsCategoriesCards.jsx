@@ -74,8 +74,8 @@ export default function KindiSkillsCategoriesCards() {
           >
             {card.Icon ? (
               <img
-                src={card.Icon.url}
-                // src={`https://kindiadmin.up.railway.app${card.Icon.url}`}
+                // src={card.Icon.url}
+                src={`https://kindiadmin.up.railway.app${card.Icon.url}`}
                 className="w-[60px] h-[60px]"
                 alt={card.Title}
               />
@@ -330,7 +330,7 @@ export default function KindiSkillsCategoriesCards() {
 //       </Dialog>
 //     </>
 //   );
-// };
+// }; 
 
 export function UpdateKindiSkillsCategoriesCards() {
   const [skillsCategoriesCards, setSkillsCategoriesCards] = useState([]);

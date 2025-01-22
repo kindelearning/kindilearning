@@ -72,8 +72,8 @@ export default function HowItWorksSection() {
             {section.Media ? (
               <img
                 className="rounded-lg max-w-[300px] h-[300px] w-full object-contain"
-                src={section.Media.url}
-                // src={`https://kindiadmin.up.railway.app${section.Media.url}`}
+                // src={section.Media.url}
+                src={`https://kindiadmin.up.railway.app${section.Media.url}`}
                 alt={section.Media.name || "How it works image"}
               />
             ) : (

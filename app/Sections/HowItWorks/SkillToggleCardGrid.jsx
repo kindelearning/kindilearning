@@ -42,7 +42,7 @@ export default function SkillToggleCardGrid() {
           isOpen={isOpen}
           setIsOpen={handleCardClick}
           color={card?.color || "white"}
-          icon={card?.Icon?.url}
+          icon={card?.Icon ? `https://kindiadmin.up.railway.app${card?.Icon?.url}` : "/Images/KindiHeart.svg"}
         />
       ))}
     </div>

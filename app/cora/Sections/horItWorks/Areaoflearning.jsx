@@ -70,8 +70,8 @@ export default function AreaOfLearning() {
           >
             {card.Icon ? (
               <img
-                // src={`https://kindiadmin.up.railway.app${card.Icon.url}`}
-                src={card.Icon.url}
+                src={`https://kindiadmin.up.railway.app${card.Icon.url}`}
+                // src={card.Icon.url}
                 className="w-[60px] h-[60px]"
                 alt={card.Title}
               />
@@ -324,7 +324,7 @@ export default function AreaOfLearning() {
 //     </>
 //   );
 // };
-
+ 
 export function UpdateAreaOfLearning() {
   const [areaOflearningCards, setAreaOflearningCards] = useState([]);
   const [areaoflearningTitle, setAreaoflearningTitle] = useState();
@@ -353,10 +353,17 @@ export function UpdateAreaOfLearning() {
     fetchHIWData();
   }, []);
 
+  // const handleHIWSectionUpdate = (index, updatedSection) => {
+  //   const updatedHIWSections = [...areaOflearningCards];
+  //   updatedHIWSections[index] = updatedSection;
+  //   setAreaOflearningCards(updatedHIWSections);
+  // };
   const handleHIWSectionUpdate = (index, updatedSection) => {
-    const updatedHIWSections = [...areaOflearningCards];
-    updatedHIWSections[index] = updatedSection;
-    setAreaOflearningCards(updatedHIWSections);
+    setAreaOflearningCards((prevCards) => {
+      const updatedCards = [...prevCards];
+      updatedCards[index] = updatedSection;
+      return updatedCards;
+    });
   };
 
   const handleMediaSelect = (selectedMedia, index) => {

@@ -47,7 +47,13 @@ export default function PlayForLife() {
           <div className="w-full flex justify-center items-center h-auto">
             <div className="w-full lg:w-[400px] h-full lg:h-[340px] xl:w-[500px] animate-fadeIn animate-delay-500 duration-300">
               {Hero?.Media?.[0]?.url ? (
-                <video className="w-full lg:w-[400px] rounded-xl  border-[12px] border-[#ffffff] xl:w-[500px] h-auto animate-fadeIn animate-delay-500" autoPlay loop muted src={Hero.Media[0].url} />
+                <video
+                  className="w-full lg:w-[400px] rounded-xl  border-[12px] border-[#ffffff] xl:w-[500px] h-auto animate-fadeIn animate-delay-500"
+                  autoPlay
+                  loop
+                  muted
+                  src={`https://kindiadmin.up.railway.app${Hero.Media[0].url}`}
+                />
               ) : (
                 <div className="w-full lg:w-[400px] rounded-xl  border-[12px] border-[#ffffff] xl:w-[500px] h-auto animate-fadeIn animate-delay-500">
                   <video autoPlay loop muted>
@@ -76,7 +82,6 @@ export default function PlayForLife() {
                   </span>
                 </div>
                 <div className="w-auto h-auto text-white  clarabodyTwo">
-            
                   {Hero?.Body ? (
                     <div dangerouslySetInnerHTML={{ __html: Hero.Body }} />
                   ) : (
