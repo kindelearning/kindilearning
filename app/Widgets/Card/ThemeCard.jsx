@@ -37,7 +37,7 @@ const ThemeCard = ({ image, title, metaDesc, theTime }) => {
               width={400}
               height={100}
               // src={image || ThemeDummy}
-              src={image ? `https://kindiadmin.up.railway.app${content.Icon.url}` :" /Images/ThemeDummy.png"}
+              src={image ? `https://kindiadmin.up.railway.app${image}` :" /Images/ThemeDummy.png"}
               className={`w-full max-w-[130px] md:max-w-[200px] lg:max-w-[240px]  h-full object-cover rounded-r-[28px] animate-fade-in`}
             />
           </div>

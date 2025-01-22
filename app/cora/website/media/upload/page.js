@@ -160,14 +160,17 @@ const UploadMediaPage = () => {
             <h2 className="text-xl font-semibold">Uploaded Media</h2>
             {file && file.type.startsWith("image") ? (
               <img
-                src={uploadedFileUrl}
+                // src={uploadedFileUrl}
+                src={`https://kindiadmin.up.railway.app${uploadedFileUrl}` }
                 alt="Uploaded Media"
                 className="mt-4 rounded-lg max-w-full h-auto"
               />
             ) : file && file.type.startsWith("video") ? (
               <video controls className="mt-4 rounded-lg max-w-full">
                 <source
-                  src={uploadedFileUrl}
+                  // src={uploadedFileUrl}
+                src={`https://kindiadmin.up.railway.app${uploadedFileUrl}` }
+
                   type={file.type}
                 />
                 Your browser does not support the video tag.
