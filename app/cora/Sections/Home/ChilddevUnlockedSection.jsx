@@ -384,7 +384,9 @@ export function UpdateChildDevelopmentContent() {
           {media ? (
             <div className="mt-4">
               <img
-                src={media.url}
+                // src={media.url}
+                src={`https://kindiadmin.up.railway.app${media.url}`}
+
                 alt={media.name}
                 className="w-32 h-32 object-cover"
               />

@@ -1,16 +1,39 @@
+"use client";
+import { useEffect, useState } from "react";
 import { fetchHowItWorksData } from "@/app/data/p/Home";
 import { Curve, CurveTwo, HIWOne, HIWThree, HIWTwo } from "@/public/Images";
 import Image from "next/image";
 import Link from "next/link";
 
-export default async function HowItWorks() {
-  const content = await fetchHowItWorksData();
+export default function HowItWorks() {
+  const [data, setData] = useState(null);
 
-  if (!content) {
-    return <p>Unable to load content data. Please try again later.</p>;
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch(
+        "https://kindiadmin.up.railway.app/api/howitwork?populate=HIWSection.Media"
+      );
+      const result = await response.json();
+      setData(result.data);
+    };
+
+    fetchData();
+  }, []);
+
+  if (!data) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="text-xl font-semibold text-gray-500">Loading...</div>
+      </div>
+    );
   }
+  // // const content = await fetchHowItWorksData();
 
-  const { MainTitle, MainBody, HIWSection } = content;
+  // if (!content) {
+  //   return <p>Unable to load content data. Please try again later.</p>;
+  // }
+
+  // const { MainTitle, MainBody, HIWSection } = content;
   return (
     <>
       <section className="w-full h-auto bg-[#4e2f71] items-center justify-center py-4 flex flex-col md:flex-row gap-[20px] duration-300 animate-fade-in">
@@ -18,22 +41,22 @@ export default async function HowItWorks() {
           <div className="w-auto claracontainer flex-col justify-start items-start md:items-center gap-6 inline-flex">
             <div className="w-full text-start md:text-center">
               <span className="text-white claraheading animate-fade-in">
-                {MainTitle
-                  ? MainTitle.split(" ").slice(0, 2).join(" ")
+                {data.MainTitle
+                  ? data.MainTitle.split(" ").slice(0, 2).join(" ")
                   : "How It"}{" "}
               </span>
               <span className="text-red text-start md:text-center claraheading animate-fade-in">
-                {MainTitle
-                  ? MainTitle.split(" ").slice(2, 6).join(" ")
+                {data.MainTitle
+                  ? data.MainTitle.split(" ").slice(2, 6).join(" ")
                   : "Works"}{" "}
               </span>
             </div>
-            
+
             <p
               className="prose w-full md:w-[500px] xl:w-[800px] text-start md:text-center animate-fade-in text-white clarabodyTwo"
               dangerouslySetInnerHTML={{
                 __html:
-                  MainBody ||
+                  data.MainBody ||
                   "Regardless of parenting approaches or the development stage of children, Kindi delivers a wholesome, engaging and beautiful early childhood learning experience.",
               }}
             />
@@ -41,7 +64,7 @@ export default async function HowItWorks() {
 
           <div className="flex w-full justify-center items-center flex-col gap-12">
             {/* Section One */}
-            {HIWSection?.slice(0, 1).map((section, index) => (
+            {data.HIWSection?.slice(0, 1).map((section, index) => (
               <div
                 key={index}
                 className="flex flex-col-reverse lg:flex-row xl:flex-row w-full items-center justify-between py-8 gap-4"
@@ -99,7 +122,8 @@ export default async function HowItWorks() {
                 <div className="w-full h-[460px] animate-fade-in md:max-w-[500px] flex items-end justify-end">
                   {section.Media && section.Media.url ? (
                     <img
-                      src={section.Media.url}
+                      // src={`https://kindiadmin.up.railway.app${section.Media.url}`}
+                      src={`https://kindiadmin.up.railway.app${section.Media.url}`}
                       alt="Kindi"
                       width={100}
                       height={100}
@@ -124,7 +148,7 @@ export default async function HowItWorks() {
             />
 
             {/* Section Two */}
-            {HIWSection?.slice(1, 2).map((section, index) => (
+            {data.HIWSection?.slice(1, 2).map((section, index) => (
               <div
                 key={index}
                 className="flex flex-col-reverse lg:flex-row xl:flex-row w-full items-center justify-between py-8 gap-4"
@@ -132,7 +156,7 @@ export default async function HowItWorks() {
                 <div className="w-full h-[460px] animate-fade-in md:max-w-[500px] flex items-end justify-end">
                   {section.Media && section.Media.url ? (
                     <img
-                      src={section.Media.url}
+                      src={`https://kindiadmin.up.railway.app${section.Media.url}`}
                       alt="Kindi"
                       width={100}
                       height={100}
@@ -206,7 +230,7 @@ export default async function HowItWorks() {
             />
 
             {/* Section Three */}
-            {HIWSection?.slice(2, 3).map((section, index) => (
+            {data.HIWSection?.slice(2, 3).map((section, index) => (
               <div
                 key={index}
                 className="flex flex-col-reverse lg:flex-row xl:flex-row w-full items-center justify-between py-8 gap-4"
@@ -261,7 +285,7 @@ export default async function HowItWorks() {
                 <div className="w-full h-[460px] animate-fade-in md:max-w-[500px] flex items-end justify-end">
                   {section.Media && section.Media.url ? (
                     <img
-                      src={section.Media.url}
+                      src={`https://kindiadmin.up.railway.app${section.Media.url}`}
                       alt="Kindi"
                       width={100}
                       height={100}

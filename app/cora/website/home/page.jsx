@@ -118,7 +118,7 @@ export default function HomePage() {
                 ComponentForm={CreateReviewForm} // Replace with an actual update form if necessary
               />
               {/* Popular Activities */}
-              <SectionRow
+              <SectionRow 
                 serialNo={8}
                 sectionName="Popular Activities"
                 ComponentPreview={PopularActivities}

@@ -77,8 +77,8 @@ export default function EarlyLearningExpert() {
       {content?.Media?.url ? (
         <div className="w-full max-w-[400px] mx-auto">
           <video
-            src={content.Media.url}
-            // src={`https://kindiadmin.up.railway.app${content.Media.url}`}
+            // src={content.Media.url}
+            src={`https://kindiadmin.up.railway.app${content.Media.url}`}
             controls
             autoPlay
             className="w-full rounded-xl shadow-lg"

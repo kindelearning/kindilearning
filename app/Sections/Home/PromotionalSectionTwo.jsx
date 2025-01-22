@@ -1,44 +1,77 @@
+"use client";
 import { fetchEarlyLearningExpert } from "@/app/data/p/Home";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 // const PromotionalSectionTwo = async () => {
-export default async function PromotionalSectionTwo() {
-  const content = await fetchEarlyLearningExpert();
+export default function PromotionalSectionTwo() {
+  const [content, setContent] = useState(null); // To store the fetched data
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  if (!content) {
-    return <p>No data available</p>;
+  // const content = await fetchEarlyLearningExpert();
+
+  // if (!content) {
+  //   return <p>No data available</p>;
+  // }
+
+  // const { featuredText, title, BodyDescription, Media } = content;
+  // const mediaUrl = Media?.url ? Media.url : null;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          "https://kindiadmin.up.railway.app/api/early-learning-expert?populate=Content.Media"
+        );
+        const data = await response.json();
+        console.log("Monthlytheme Database", data);
+        if (data?.data) {
+          setContent(data.data.Content); // Set the fetched data
+        } else {
+          setError("No data found.");
+        }
+      } catch (err) {
+        setError("Error fetching data: " + err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return <div>Loading content...</div>;
   }
 
-  const { featuredText, title, BodyDescription, Media } = content;
-  const mediaUrl = Media?.url ? Media.url : null;
-
-  // Log the media URL to check
-  // console.log("Media URL:", mediaUrl);
-
+  if (error) {
+    return <div className="text-red-500">{error}</div>;
+  }
   return (
     <section className="w-full h-auto bg-[#eaeaf5] items-center justify-center py-4 flex flex-col md:flex-row gap-4 transition-all duration-300 animate-fade-in">
       <div className="claracontainer p-4 py-8 md:px-2 md:py-12 lg:py-20 w-full flex flex-col md:justify-center md:items-center lg:flex-row xl:flex-row overflow-hidden gap-9 animate-slide-up">
         <div className="w-full md:w-[100%] lg:w-[540px] flex justify-start items-start h-auto animate-fade-in">
           <div className="w-full md:w-full flex items-start justify-start flex-col lg:w-[540px] h-auto">
-            {mediaUrl ? (
-              mediaUrl.endsWith(".mp4") ? (
+            {content?.Media ? (
+              content?.Media.url.endsWith(".mp4") ? (
                 <video
                   controls
                   autoPlay
+                  src={`https://kindiadmin.up.railway.app${content.Media.url}`}
                   loop
                   muted
                   className="object-cover max-h-[260px] md:min-h-[400px] md:h-[400px] lg:h-[360px] lg:max-h-[400px] rounded-[24px] w-full md:w-full lg:w-[540px] h-full"
-                >
-                  <source
-                    src={mediaUrl || "preloader.mp4"}
-                    // src={`https://kindiadmin.up.railway.app${mediaUrl}`}
-                    type="video/mp4"
-                  />
-                </video>
+                />
               ) : (
-                <img src={mediaUrl} alt="Hero" width={540} height={360} />
+                <img
+                  src={`https://kindiadmin.up.railway.app${content.Media.url}`}
+                  alt="Hero"
+                  width={540}
+                  height={360}
+                />
               )
             ) : (
               <video
@@ -48,7 +81,7 @@ export default async function PromotionalSectionTwo() {
                 muted
                 className="object-cover max-h-[260px] md:min-h-[400px] md:h-[400px] lg:h-[360px] lg:max-h-[400px] rounded-[24px] w-full md:w-full lg:w-[540px] h-full"
               >
-                <source src="preloader.mp4" type="video/mp4" />
+                <source src="/preloader.mp4" type="video/mp4" />
               </video>
             )}
           </div>
@@ -56,25 +89,26 @@ export default async function PromotionalSectionTwo() {
         <div className="w-full flex-col justify-center items-start gap-6 flex md:gap-8 xl:gap-10 animate-fade-in">
           <div className="w-full h-auto gap-6 flex flex-col justify-start items-start">
             <div className="text-red clarascript animate-fade-in">
-              {featuredText}
+              {content?.featuredText}
             </div>
             <div className="flex w-full justify-start items-start gap-4 flex-col">
               <div className="w-full claraheading animate-fade-in">
                 <span className="text-red claraheading ">
-                  {title.length > 2
-                    ? title.split(" ").slice(0, 2).join(" ")
-                    : title || "Early Learning"}
+                  {content?.title.length > 2
+                    ? content?.title.split(" ").slice(0, 2).join(" ")
+                    : content?.title || "Early Learning"}
                 </span>{" "}
                 <span className="text-purple claraheading">
-                  {title.length > 2
-                    ? title.split(" ").slice(2, 12).join(" ")
-                    : title || "Experts"}
+                  {content?.title.length > 2
+                    ? content?.title.split(" ").slice(2, 12).join(" ")
+                    : content?.title || "Experts"}
                 </span>
               </div>
-              {BodyDescription && BodyDescription.length > 0 ? (
+              {content?.BodyDescription &&
+              content?.BodyDescription.length > 0 ? (
                 <p
                   className="prose w-full text-start text-[#696969] text-base md:text-lg lg:text-xl mt-4 leading-relaxed  animate-fadeIn animate-delay-2000"
-                  dangerouslySetInnerHTML={{ __html: BodyDescription }}
+                  dangerouslySetInnerHTML={{ __html: content?.BodyDescription }}
                 />
               ) : (
                 <p>

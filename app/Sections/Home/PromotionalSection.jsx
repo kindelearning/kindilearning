@@ -99,7 +99,9 @@ export default function PromotionalSection() {
               {/* Check if media URL exists and render the image */}
               {content.Media ? (
                 <img
-                  src={content.Media[0]?.url}
+                  // src={content.Media[0]?.url}
+                src={`https://kindiadmin.up.railway.app${content.Media[0]?.url}`}
+
                   alt="Child Development"
                   width={400}
                   height={400}
