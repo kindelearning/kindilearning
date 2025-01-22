@@ -53,7 +53,7 @@ const PopularActivityCarousel = () => {
   // if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
 
-  console.log("Activities fetched on Popular actviity componenet");
+  // console.log("Activities fetched on Popular actviity componenet");
 
   const handleMouseDown = (e) => {
     setIsDragging(true);

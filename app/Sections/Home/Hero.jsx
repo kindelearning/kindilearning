@@ -10,7 +10,8 @@ export default async function Hero() {
     return <p>No Hero Section data found.</p>;
   }
 
-  const { heroData, heroMediaUrl } = result;
+  const { heroData } = result;
+  console.log(" Hero Section data", result);
 
   // Helper function to slice the first 3 and last words
   const getFirstThreeWords = (text) => {
@@ -24,13 +25,13 @@ export default async function Hero() {
     <>
       <section
         style={{
-          backgroundColor: heroData.bgColor, // Default to a light gray if bgColor is not provided
+          backgroundColor: heroData.bgColor || "#4A4096", // Default to a light gray if bgColor is not provided
         }}
-        className="w-full min-h-screen h-full md:min-h-[600px] md:h-full lg:h-full   pt-4 pb-12 md:py-24 lg:py-28 items-start md:items-center justify-center flex flex-col md:flex-row gap-[20px]"
+        className="w-full min-h-screen h-full md:min-h-[600px] md:h-full lg:h-full pt-4 pb-12 md:py-24 lg:py-28 items-start md:items-center justify-center flex flex-col md:flex-row gap-[20px]"
       >
         <div
           style={{
-            backgroundColor: heroData.bgColor, // Default to a light gray if bgColor is not provided
+            backgroundColor: heroData.bgColor || "#4A4096", // Default to a light gray if bgColor is not provided
           }}
           className="claracontainer w-full flex flex-col-reverse justify-between md:items-center lg:flex-row px-0 md:px-2 lg:px-0 xl:px-0  xl:flex-row gap-4 md:gap-0 lg:gap-4"
         >
@@ -76,19 +77,17 @@ export default async function Hero() {
             >
               <Button className="bg-red hover:bg-[#eaeaf5] hover:text-red clarabutton">
                 Get Started
-                {/* {session ? "Upgrade" : "Get Started"} */}
               </Button>
             </Link>
           </div>
           <div className="w-full flex md:min-w-[300px] items-start justify-center h-fit min-h-[400px] md:w-[300px] lg:w-full">
             <div className="w-full h-fit md:h-[460px] animate-fade-in md:max-w-[500px] flex items-end justify-end">
-              {result.Image ? (
+              {result?.Image?.url ? (
                 <video autoPlay loop muted>
                   <source
                     src={`https://kindiadmin.up.railway.app${result.Image?.url}`}
                     type="video/mp4"
                   />
-                  Your browser does not support the video.
                 </video>
               ) : (
                 // heroMediaUrl.endsWith(".mp4") ? (
