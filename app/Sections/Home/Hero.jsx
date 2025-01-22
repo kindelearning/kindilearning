@@ -75,11 +75,11 @@ export default async function Hero() {
               {heroMediaUrl ? (
                 heroMediaUrl.endsWith(".mp4") ? (
                   <video autoPlay loop muted>
-                    <source src={heroMediaUrl} type="video/mp4" />
+                    <source src={`https://kindiadmin.up.railway.app${heroMediaUrl}`} type="video/mp4" />
                     Your browser does not support the video.
                   </video>
                 ) : (
-                  <Image src={heroMediaUrl} alt="Hero" />
+                  <Image src={`https://kindiadmin.up.railway.app${heroMediaUrl}`} alt="Hero" />
                 )
               ) : (
                 <video autoPlay loop muted>
