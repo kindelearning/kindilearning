@@ -1,17 +1,56 @@
+"use client";
+
 import { fetchPricingData } from "@/app/data/p/Home";
 import PricingTabs from "./PricingTabs";
+import { useEffect, useState } from "react";
 
-export default async function OurPricing() {
-  const pricingData = await fetchPricingData(); // Fetch pricing data from your server-side API
+export default function OurPricing() {
+  // const pricingData = await fetchPricingData(); // Fetch pricing data from your server-side API
 
-  if (!pricingData) {
-    return <div>Error loading pricing data</div>;
+  // if (!pricingData) {
+  //   return <div>Error loading pricing data</div>;
+  // }
+
+  // if (!pricingData || !pricingData.SectionTitle) {
+  //   return <div>No pricing data available.</div>;
+  // }
+  const [content, setContent] = useState(null); // To store the fetched data
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          "https://kindiadmin.up.railway.app/api/ourpricing?populate[MonthlyPlans][populate][0]=Features&populate[MonthlyPlans][populate][1]=Thumbnail&populate[AnnualPlans][populate][0]=Features&populate[AnnualPlans][populate][1]=Thumbnail"
+        );
+        const data = await response.json();
+        // console.log("Fetched data: ", data); // Log to inspect the structure
+        if (data?.data) {
+          setContent(data.data); // Set the fetched data
+        } else {
+          setError("No content found.");
+        }
+      } catch (err) {
+        setError("Error fetching data: " + err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return <div>Loading content...</div>;
   }
 
-  if (!pricingData || !pricingData.SectionTitle) {
-    return <div>No pricing data available.</div>;
+  if (error) {
+    return <div className="text-red-500">{error}</div>;
   }
 
+  const { SectionTitle, featuredText, SectionBody, MonthlyPlans, AnnualPlans } =
+    content || {};
   return (
     <>
       <section
@@ -29,7 +68,7 @@ export default async function OurPricing() {
           }}
         >
           <div className="w-full text-red clarascript px-4 md:px-0 text-start md:text-center">
-            {pricingData.featuredText || "Default featuredText"}
+            {featuredText || "Default featuredText"}
           </div>
           <div className="flex w-full px-4 md:px-0 container justify-start md:justify-center items-start md:items-center gap-4 flex-col">
             <div
@@ -40,13 +79,13 @@ export default async function OurPricing() {
               }}
             >
               <span className="text-[#3f3a64] claraheading text-start md:text-center capitalize ">
-                {pricingData.SectionTitle
-                  ? pricingData.SectionTitle.split(" ").slice(0, 1).join(" ")
+                {SectionTitle
+                  ?SectionTitle.split(" ").slice(0, 1).join(" ")
                   : "Our" || "Default SectionTitle"}{" "}
               </span>
               <span className="text-red claraheading text-start md:text-center capitalize">
-                {pricingData.SectionTitle
-                  ? pricingData.SectionTitle.split(" ").slice(1, 2).join(" ")
+                {SectionTitle
+                  ? SectionTitle.split(" ").slice(1, 2).join(" ")
                   : "Pricing" || "Default SectionTitle"}{" "}
               </span>
             </div>
@@ -60,7 +99,7 @@ export default async function OurPricing() {
               <p>
                 <div
                   dangerouslySetInnerHTML={{
-                    __html: pricingData.SectionBody || "Default Body Text", // Render Markdown or Rich Text
+                    __html: SectionBody || "Default Body Text", // Render Markdown or Rich Text
                   }}
                 />
               </p>
