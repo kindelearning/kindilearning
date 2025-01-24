@@ -1,3 +1,5 @@
+"use client";
+
 import { fetchOurThemes } from "@/app/data/p/Dynamic/OurTheme";
 import { fetchMonthlyTheme } from "@/app/data/p/Home";
 import NotFound from "@/app/not-found";
@@ -5,55 +7,75 @@ import ThemeCard from "@/app/Widgets/Card/ThemeCard";
 import { ThemeDummy } from "@/public/Images";
 import Link from "next/link";
 import ThemeGrid from "./ThemeGrid";
+import { useEffect, useState } from "react";
 
-export default async function MonthlyThemes() {
-  const content = await fetchMonthlyTheme();
+export default function MonthlyThemes() {
+  // const content =  fetchMonthlyTheme();
+  const [content, setContent] = useState(null); // To store the fetched data
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Fetch data when the component mounts
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          "https://lionfish-app-98urn.ondigitalocean.app/api/Monthlytheme?populate=Content.Media"
+        );
+        const data = await response.json();
+        // console.log("Monthlytheme Database", data);
+        if (data?.data) {
+          setContent(data.data.Content); // Set the fetched data
+        } else {
+          setError("No data found.");
+        }
+      } catch (err) {
+        setError("Error fetching data: " + err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   if (!content) {
     return <p>No data available</p>;
   }
 
-  const themes = await fetchOurThemes();
-  if (!themes || themes.length === 0) {
-    return <NotFound />;
-  }
-  console.log("Themes for Home Page,", themes);
-
-  const monthlyTheme = content?.Content;
-
-  if (!monthlyTheme) {
-    return <p>No theme content available</p>;
+  if (error) {
+    return <div className="text-red-500">{error}</div>;
   }
 
   return (
     <>
       <section className="w-full h-auto bg-[#F3BD40] items-center justify-center py-12 flex transition-all animate-fade-in  duration-300 flex-col md:flex-row gap-[20px]">
         <div className="claracontainer w-full flex-col justify-start items-center script inline-flex">
-          {monthlyTheme.featuredText && (
+          {content.featuredText && (
             <div className="w-full claracontainer animate-fade-in px-4 duration-150 text-start  md:text-center text-[#eaeaf5] clarascript">
-              {monthlyTheme.featuredText ||
+              {content.featuredText ||
                 "Enjoy every Precious Moment with your Children"}
             </div>
           )}
           <div className="w-auto  flex-col justify-center items-center px-4 heading inline-flex">
             <div className="w-full text-start md:text-center">
               <span className="text-[#3f3a64] claraheading animate-fade-in  duration-150">
-                {monthlyTheme.title
-                  ? monthlyTheme.title.split(" ").slice(0, 2).join(" ")
+                {content.title
+                  ? content.title.split(" ").slice(0, 2).join(" ")
                   : "This Months"}{" "}
               </span>
               <br />
               <span className="text-[#ffffff] claraheading animate-fade-in  duration-150">
-                {monthlyTheme.title
-                  ? monthlyTheme.title.split(" ").slice(3, 12).join(" ")
+                {content.title
+                  ? content.title.split(" ").slice(3, 12).join(" ")
                   : "Learning Themes"}{" "}
               </span>
             </div>
-            {monthlyTheme.BodyDescription ? (
+            {content.BodyDescription ? (
               <p
                 className="prose w-full md:w-[500px] xl:w-[800px] animate-fade-in  duration-150 text-start md:text-center text-purple clarabodyTwo"
                 dangerouslySetInnerHTML={{
-                  __html: monthlyTheme.BodyDescription,
+                  __html: content.BodyDescription,
                 }}
               />
             ) : (
