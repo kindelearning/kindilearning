@@ -31,7 +31,7 @@ export default function Page() {
       }
     } catch (error) {
       console.error("Error fetching blogs:", error);
-    } 
+    }
   };
 
   useEffect(() => {
@@ -97,7 +97,9 @@ export default function Page() {
                         }
                         title={item?.Text || "Untitled Post"}
                         image={
-                          item?.FeaturedImage?.url || "/Images/BlogThumb.png"
+                          item?.FeaturedImage
+                            ? `https://lionfish-app-98urn.ondigitalocean.app${item?.FeaturedImage?.url}`
+                            : "/Images/BlogThumb.png"
                         }
                         initialLikes={item.likes || 0} // Replace with actual value from your CMS
                         initialDislikes={item.dislikes || 0} // Replace with actual value from your CMS
