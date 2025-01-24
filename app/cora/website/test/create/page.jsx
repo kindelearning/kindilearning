@@ -23,7 +23,7 @@ import LocalHeader from "../Topbar";
 //     };
 
 //     try {
-//       const response = await fetch("https://kindiadmin.up.railway.app/api/contents", {
+//       const response = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/contents", {
 //         method: "POST",
 //         headers: {
 //           "Content-Type": "application/json",
@@ -130,7 +130,7 @@ export default function ContentList() {
     const fetchContent = async () => {
       try {
         const response = await fetch(
-          "https://kindiadmin.up.railway.app/api/contents?populate=*"
+          "https://lionfish-app-98urn.ondigitalocean.app/api/contents?populate=*"
         );
         const data = await response.json();
 
@@ -151,7 +151,7 @@ export default function ContentList() {
 
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`https://kindiadmin.up.railway.app/api/contents/${id}`, {
+      const response = await fetch(`https://lionfish-app-98urn.ondigitalocean.app/api/contents/${id}`, {
         method: "DELETE",
       });
 
@@ -171,7 +171,7 @@ export default function ContentList() {
   const handleUpdate = async (updatedData) => {
     try {
       const response = await fetch(
-        `https://kindiadmin.up.railway.app/api/contents/${updatedData.id}`,
+        `https://lionfish-app-98urn.ondigitalocean.app/api/contents/${updatedData.id}`,
         {
           method: "PUT",
           headers: {

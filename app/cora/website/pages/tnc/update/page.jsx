@@ -33,7 +33,7 @@ export default function EditTnc() {
     const fetchContent = async () => {
       try {
         const response = await fetch(
-          "https://kindiadmin.up.railway.app/api/tnc?populate=*"
+          "https://lionfish-app-98urn.ondigitalocean.app/api/tnc?populate=*"
         );
         const data = await response.json();
 
@@ -58,12 +58,18 @@ export default function EditTnc() {
       [e.target.name]: e.target.value,
     });
   };
+  const handleChange2 = (value, delta, source, editor) => {
+    setContent({
+      ...content,
+      Pagecontent: value, // Only update Pagecontent
+    });
+  };
 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await fetch("https://kindiadmin.up.railway.app/api/tnc", {
+    const response = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/tnc", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -173,7 +179,7 @@ export default function EditTnc() {
               className="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             /> */}
             <ClaraMarkdownRichEditor
-              onChange={handleChange}
+              onChange={handleChange2}
               value={content.Pagecontent || ""}
               className="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             />
@@ -222,7 +228,7 @@ export default function EditTnc() {
 //     const fetchContent = async () => {
 //       try {
 //         const response = await fetch(
-//           "https://kindiadmin.up.railway.app/api/tnc?populate=*"
+//           "https://lionfish-app-98urn.ondigitalocean.app/api/tnc?populate=*"
 //         );
 //         const data = await response.json();
 
@@ -251,7 +257,7 @@ export default function EditTnc() {
 //   const handleSubmit = async (e) => {
 //     e.preventDefault();
 
-//     const response = await fetch("https://kindiadmin.up.railway.app/api/tnc", {
+//     const response = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/tnc", {
 //       method: "PUT",
 //       headers: {
 //         "Content-Type": "application/json",

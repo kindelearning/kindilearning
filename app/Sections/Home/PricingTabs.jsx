@@ -40,7 +40,7 @@ export default function PricingTabs() {
   useEffect(() => {
     const loadPricingData = async () => {
       const fetchedData = await fetchPricingDataFeatures();
-      console.log("Fetched Data:", fetchedData); // Log data here
+      // console.log("Fetched Data:", fetchedData); // Log data here
 
       if (fetchedData) {
         setPricingDataFeature(fetchedData);
@@ -177,10 +177,10 @@ export default function PricingTabs() {
                             toggleAccordion={toggleAccordion} // Pass toggle function
                             image={
                               plan.Thumbnail?.url
-                                ? `https://kindiadmin.up.railway.app${plan.Thumbnail?.url}`
+                                ? `https://lionfish-app-98urn.ondigitalocean.app${plan.Thumbnail?.url}`
                                 : "Images/PricingThumb.svg"
                             }
-                            // image={`https://kindiadmin.up.railway.app${plan.Thumbnail?.url}`}
+                            // image={`https://lionfish-app-98urn.ondigitalocean.app${plan.Thumbnail?.url}`}
                           />
                         )
                       )
@@ -228,10 +228,10 @@ export default function PricingTabs() {
                             )}
                             isOpen={isAccordionOpen} // Pass the state here
                             toggleAccordion={toggleAccordion} // Pass toggle function
-                            // image={`https://kindiadmin.up.railway.app${plan.Thumbnail?.url}`}
+                            // image={`https://lionfish-app-98urn.ondigitalocean.app${plan.Thumbnail?.url}`}
                             image={
                               plan.Thumbnail?.url
-                                ? `https://kindiadmin.up.railway.app${plan.Thumbnail?.url}`
+                                ? `https://lionfish-app-98urn.ondigitalocean.app${plan.Thumbnail?.url}`
                                 : "Images/PricingThumb.svg"
                             }
                           />

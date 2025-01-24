@@ -113,7 +113,7 @@ export default function EditActivityForm({ documentId }) {
       setError(null);
       try {
         const res = await fetch(
-          `https://kindiadmin.up.railway.app/api/activities/${documentId}?populate=*`
+          `https://lionfish-app-98urn.ondigitalocean.app/api/activities/${documentId}?populate=*`
         );
         if (!res.ok) throw new Error("Failed to fetch activity data.");
 
@@ -175,7 +175,7 @@ export default function EditActivityForm({ documentId }) {
 
     try {
       const res = await fetch(
-        `https://kindiadmin.up.railway.app/api/activities/${documentId}`,
+        `https://lionfish-app-98urn.ondigitalocean.app/api/activities/${documentId}`,
         {
           method: "PUT",
           headers: {
@@ -568,7 +568,7 @@ export default function EditActivityForm({ documentId }) {
 //     const fetchContentData = async () => {
 //       try {
 //         const res = await fetch(
-//           `https://kindiadmin.up.railway.app/api/activities/${documentId}?populate=*`
+//           `https://lionfish-app-98urn.ondigitalocean.app/api/activities/${documentId}?populate=*`
 //         );
 //         const data = await res.json();
 
@@ -640,7 +640,7 @@ export default function EditActivityForm({ documentId }) {
 //     console.log("Payload created", payload);
 //     try {
 //       const res = await fetch(
-//         `https://kindiadmin.up.railway.app/api/activities/${documentId}?populate=*`,
+//         `https://lionfish-app-98urn.ondigitalocean.app/api/activities/${documentId}?populate=*`,
 //         {
 //           method: "PUT",
 //           headers: { "Content-Type": "application/json" },
@@ -871,7 +871,7 @@ export default function EditActivityForm({ documentId }) {
 //       {media ? (
 //         <div className="mt-4">
 //           <img
-//             // src={`https://kindiadmin.up.railway.app${media.url}`}
+//             // src={`https://lionfish-app-98urn.ondigitalocean.app${media.url}`}
 //             src={media.url}
 //             className="w-32 h-32 object-cover"
 //           />

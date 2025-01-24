@@ -15,7 +15,7 @@ export default function TopProfileCard({ userData, totalactitivuty }) {
                 <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
                   <img
                     src={userData.profilepic.url}
-                    // src={`https://kindiadmin.up.railway.app${userData.profilepic.url}`}
+                    // src={`https://lionfish-app-98urn.ondigitalocean.app${userData.profilepic.url}`}
                     alt="Profile Picture"
                     className="w-[72px] h-[72px] lg:w-36 lg:h-36 object-cover overflow-clip rounded-full"
                   />
@@ -28,7 +28,7 @@ export default function TopProfileCard({ userData, totalactitivuty }) {
                 <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
                   <img
                     src="/Images/ProfileDP.svg"
-                    // src={`https://kindiadmin.up.railway.app${userData.profilepic.url}`}
+                    // src={`https://lionfish-app-98urn.ondigitalocean.app${userData.profilepic.url}`}
                     alt="Profile Picture"
                     className="w-[72px] h-[72px] lg:w-36 lg:h-36 object-cover overflow-clip rounded-full"
                   />

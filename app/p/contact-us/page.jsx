@@ -33,7 +33,7 @@ export function CreateContactForm() {
     setSuccess(false);
 
     try {
-      const res = await fetch("https://kindiadmin.up.railway.app/api/contact-forms", {
+      const res = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/contact-forms", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -22,7 +22,7 @@ export default function BlogCard({
     const fetchCounts = async () => {
       try {
         const response = await fetch(
-          `https://kindiadmin.up.railway.app/api/blogs/${documentId}`
+          `https://lionfish-app-98urn.ondigitalocean.app/api/blogs/${documentId}`
         );
         const data = await response.json();
 
@@ -58,7 +58,7 @@ export default function BlogCard({
   const updateLikesDislikes = async (newLikes, newDislikes) => {
     try {
       const response = await fetch(
-        `https://kindiadmin.up.railway.app/api/blogs/${documentId}`,
+        `https://lionfish-app-98urn.ondigitalocean.app/api/blogs/${documentId}`,
         {
           method: "PUT",
           headers: {
@@ -101,7 +101,7 @@ export default function BlogCard({
             width={400}
             height={300}
             // src={image || BlogThumb}
-            src={`https://kindiadmin.up.railway.app${image}` || "/Images/BlogThumb.png"}
+            src={`https://lionfish-app-98urn.ondigitalocean.app${image}` || "/Images/BlogThumb.png"}
 
             alt={title}
             className="w-full hover:scale-110 duration-500 ease-out h-48 object-cover"

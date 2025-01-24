@@ -33,7 +33,7 @@ export default function EditInvestment() {
     const fetchContent = async () => {
       try {
         const response = await fetch(
-          "https://kindiadmin.up.railway.app/api/investmentoppertunite?populate=*"
+          "https://lionfish-app-98urn.ondigitalocean.app/api/investmentoppertunite?populate=*"
         );
         const data = await response.json();
 
@@ -68,7 +68,7 @@ export default function EditInvestment() {
     e.preventDefault();
 
     const response = await fetch(
-      "https://kindiadmin.up.railway.app/api/investmentoppertunite",
+      "https://lionfish-app-98urn.ondigitalocean.app/api/investmentoppertunite",
       {
         method: "PUT",
         headers: {
@@ -114,6 +114,9 @@ export default function EditInvestment() {
 
   return (
     <div className="container mx-auto px-8 py-12 font-poppins">
+      <head>
+        <title>Investment - Kindi</title>
+      </head>
       <div className="mb-8">
         <h1 className="text-3xl font-semibold text-gray-800">
           Edit Your Investment Policy Page

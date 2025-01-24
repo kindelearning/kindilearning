@@ -13,10 +13,10 @@ export default function PlayForLife() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://kindiadmin.up.railway.app/api/how-it-work-page?populate[Hero][populate]=Media"
+          "https://lionfish-app-98urn.ondigitalocean.app/api/how-it-work-page?populate[Hero][populate]=Media"
         );
         const data = await response.json();
-        console.log("HIW Data", data);
+        // console.log("HIW Data", data);
         if (data?.data) {
           setContent(data.data);
         } else {
@@ -44,7 +44,7 @@ export default function PlayForLife() {
         className="w-full h-auto bg-[#0097cb] items-center justify-center py-8 lg:py-16 flex flex-col gap-[20px] md:flex-row"
       >
         <div className="claracontainer px-4 md:px-2 lg:px-4 items-start justify-start-4 w-full flex flex-col md:flex-col lg:flex-row xl:flex-row overflow-hidden gap-8">
-          <div className="w-full flex justify-center items-center h-auto">
+          <div className="w-full lg:max-w-[600px] flex justify-center items-center h-auto">
             <div className="w-full lg:w-[400px] h-full lg:h-[340px] xl:w-[500px] animate-fadeIn animate-delay-500 duration-300">
               {Hero?.Media?.[0]?.url ? (
                 <video
@@ -52,7 +52,7 @@ export default function PlayForLife() {
                   autoPlay
                   loop
                   muted
-                  src={`https://kindiadmin.up.railway.app${Hero.Media[0].url}`}
+                  src={`https://lionfish-app-98urn.ondigitalocean.app${Hero.Media[0].url}`}
                 />
               ) : (
                 <div className="w-full lg:w-[400px] rounded-xl  border-[12px] border-[#ffffff] xl:w-[500px] h-auto animate-fadeIn animate-delay-500">

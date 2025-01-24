@@ -34,7 +34,7 @@ export default function ParentWithKindi() {
     const fetchMissionData = async () => {
       try {
         const response = await fetch(
-          "https://kindiadmin.up.railway.app/api/our-mission?populate[Parentwithkindi][populate]=Media"
+          "https://lionfish-app-98urn.ondigitalocean.app/api/our-mission?populate[Parentwithkindi][populate]=Media"
         );
         const data = await response.json();
 
@@ -61,7 +61,7 @@ export default function ParentWithKindi() {
 
   // const mediaUrls = Parentwithkindi?.Media?.map((media) => `${media.url}`);
   const mediaUrls = Array.isArray(Parentwithkindi?.Media)
-    ? Parentwithkindi.Media.map((media) => `https://kindiadmin.up.railway.app${media.url}`)
+    ? Parentwithkindi.Media.map((media) => `https://lionfish-app-98urn.ondigitalocean.app${media.url}`)
     : [];
   const fallbackUrls = [
     "/Images/BlogThumb.png",

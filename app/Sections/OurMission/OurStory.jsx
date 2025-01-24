@@ -13,13 +13,13 @@ export default async function OurStory() {
     <>
       <section className="w-full h-auto bg-[#EEBA00] items-center justify-center py-4 flex flex-col gap-[20px] md:flex-row">
         <div className="claracontainer px-4 md:px-0 lg:px-4 py-8 md:py-8 xl:py-12 w-full flex flex-col md:flex-col lg:flex-row xl:flex-row overflow-hidden gap-8">
-          <div className="w-full flex justify-center items-start h-auto">
+          <div className="w-full lg:max-w-[600px] flex justify-center items-start h-auto">
             <div className="w-full lg:w-[400px] rounded-xl  border-[12px] border-[#ffffff] xl:w-[500px] h-auto animate-fadeIn animate-delay-500">
               {data?.OurStory?.Media ? (
                 <video className="w-full h-full " autoPlay loop muted>
                   <source
                     // src={data?.OurStory?.Media[0]?.url}
-                    src={`https://kindiadmin.up.railway.app${data?.OurStory?.Media[0]?.url}`}
+                    src={`https://lionfish-app-98urn.ondigitalocean.app${data?.OurStory?.Media[0]?.url}`}
                     type="video/mp4"
                   />
                   Your browser does not support the video.

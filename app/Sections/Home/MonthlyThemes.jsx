@@ -74,7 +74,11 @@ export default async function MonthlyThemes() {
               >
                 <ThemeCard
                   key={theme.id}
-                  image={theme?.Thumbnail?.url || "/Images/ThemeDummy.png"} // Fallback to default image if URL is missing
+                  image={
+                    theme?.Thumbnail
+                      ? `https://lionfish-app-98urn.ondigitalocean.app${theme?.Thumbnail?.url}`
+                      : "/Images/ThemeDummy.png"
+                  } // Fallback to default image if URL is missing
                   theTime={theme?.LaunchTime || "No launch time specified"} // Fallback if LaunchTime is missing
                   metaDesc={
                     theme?.metaDesc

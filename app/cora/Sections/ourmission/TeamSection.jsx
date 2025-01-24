@@ -24,7 +24,7 @@ export default function TeamSection() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://kindiadmin.up.railway.app/api/our-mission?populate[Hero][populate]=Media&populate[Parentwithkindi][populate]=Media&populate[OurStory][populate]=Media&populate[OurTeam][populate]=*"
+          "https://lionfish-app-98urn.ondigitalocean.app/api/our-mission?populate[Hero][populate]=Media&populate[Parentwithkindi][populate]=Media&populate[OurStory][populate]=Media&populate[OurTeam][populate]=*"
         );
         const data = await response.json();
         // console.log("Fetched data:", data); // Log the response structure
@@ -96,7 +96,7 @@ export default function TeamSection() {
                 {teamMember.MemberPic ? (
                   <img
                     // src={teamMember.MemberPic.url}
-                    src={`https://kindiadmin.up.railway.app${teamMember.MemberPic.url}`}
+                    src={`https://lionfish-app-98urn.ondigitalocean.app${teamMember.MemberPic.url}`}
 
                     alt={teamMember.Name}
                     className="w-full h-56 object-cover"
@@ -145,7 +145,7 @@ export default function TeamSection() {
 //     const fetchContent = async () => {
 //       try {
 //         const response = await fetch(
-//           "https://kindiadmin.up.railway.app/api/our-mission?populate[OurTeam][populate]=MemberPic"
+//           "https://lionfish-app-98urn.ondigitalocean.app/api/our-mission?populate[OurTeam][populate]=MemberPic"
 //         );
 //         const data = await response.json();
 //         setContent({
@@ -177,7 +177,7 @@ export default function TeamSection() {
 
 //     try {
 //       const response = await fetch(
-//         `https://kindiadmin.up.railway.app/api/our-mission`, // Remove the `populate` query here
+//         `https://lionfish-app-98urn.ondigitalocean.app/api/our-mission`, // Remove the `populate` query here
 //         {
 //           method: "PUT",
 //           headers: {
@@ -304,7 +304,7 @@ export function UpdateTeamSection() {
     const fetchHIWData = async () => {
       try {
         const res = await fetch(
-          "https://kindiadmin.up.railway.app/api/our-mission?populate[OurTeam][populate]=MemberPic"
+          "https://lionfish-app-98urn.ondigitalocean.app/api/our-mission?populate[OurTeam][populate]=MemberPic"
         );
         const data = await res.json();
         const teamData = data.data;
@@ -347,7 +347,7 @@ export function UpdateTeamSection() {
     console.log("payload sent", payload);
 
     try {
-      const res = await fetch("https://kindiadmin.up.railway.app/api/our-mission", {
+      const res = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/our-mission", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -455,7 +455,7 @@ export function UpdateTeamSection() {
               {section.MemberPic ? (
                 <div className="mt-2">
                   <img
-                    src={`https://kindiadmin.up.railway.app${section.MemberPic.url}`}
+                    src={`https://lionfish-app-98urn.ondigitalocean.app${section.MemberPic.url}`}
                     alt={section.Name}
                     className="w-32 h-32 object-cover border rounded-md"
                   />

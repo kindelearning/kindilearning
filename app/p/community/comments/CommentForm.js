@@ -19,7 +19,7 @@ export function CommentForm({ blogId, onCommentAdded }) {
     setError("");
 
     try {
-      const res = await fetch("https://kindiadmin.up.railway.app/api/comments", {
+      const res = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/comments", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

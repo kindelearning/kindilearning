@@ -44,7 +44,7 @@ export default function ProfilePage() {
 
         // Fetch kids data
         const kidsResponse = await fetch(
-          "https://kindiadmin.up.railway.app/api/kids?populate=*"
+          "https://lionfish-app-98urn.ondigitalocean.app/api/kids?populate=*"
         );
         const kidsData = await kidsResponse.json();
         setKidsData(kidsData.data);

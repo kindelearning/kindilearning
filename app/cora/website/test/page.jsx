@@ -29,7 +29,7 @@ export default function ContentList() {
     const fetchContent = async () => {
       try {
         const response = await fetch(
-          "https://kindiadmin.up.railway.app/api/contents?populate=*"
+          "https://lionfish-app-98urn.ondigitalocean.app/api/contents?populate=*"
         );
         const data = await response.json();
 
@@ -69,7 +69,7 @@ export default function ContentList() {
 
     try {
       const response = await fetch(
-        `https://kindiadmin.up.railway.app/api/contents/${documentId}`,
+        `https://lionfish-app-98urn.ondigitalocean.app/api/contents/${documentId}`,
         {
           method: "PUT",
           headers: {
@@ -250,7 +250,7 @@ export function UpdateContentForm({ documentId }) {
     const fetchActivityData = async () => {
       try {
         const res = await fetch(
-          `https://kindiadmin.up.railway.app/api/contents/${documentId}?populate=Media`
+          `https://lionfish-app-98urn.ondigitalocean.app/api/contents/${documentId}?populate=Media`
         );
         const data = await res.json();
 
@@ -273,7 +273,7 @@ export function UpdateContentForm({ documentId }) {
   useEffect(() => {
     const fetchMediaFiles = async () => {
       try {
-        const response = await fetch("https://kindiadmin.up.railway.app/api/upload/files");
+        const response = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/upload/files");
         const data = await response.json();
 
         if (data && Array.isArray(data)) {
@@ -300,7 +300,7 @@ export function UpdateContentForm({ documentId }) {
 
     try {
       const res = await fetch(
-        `https://kindiadmin.up.railway.app/api/contents/${documentId}?populate=Media`,
+        `https://lionfish-app-98urn.ondigitalocean.app/api/contents/${documentId}?populate=Media`,
         {
           method: "PUT",
           headers: {
@@ -375,7 +375,7 @@ export function UpdateContentForm({ documentId }) {
           {media ? (
             <div className="mt-4">
               <img
-                src={`https://kindiadmin.up.railway.app${media.url}`}
+                src={`https://lionfish-app-98urn.ondigitalocean.app${media.url}`}
                 alt={media.name}
                 className="w-32 h-32 object-cover"
               />
@@ -438,7 +438,7 @@ export function UpdateContentForm({ documentId }) {
 
 //     try {
 //       const res = await fetch(
-//         `https://kindiadmin.up.railway.app/api/contents/${documentId}?populate=Media`,
+//         `https://lionfish-app-98urn.ondigitalocean.app/api/contents/${documentId}?populate=Media`,
 //         {
 //           method: "PUT",
 //           headers: { "Content-Type": "application/json" },
@@ -487,7 +487,7 @@ export function UpdateContentForm({ documentId }) {
 //         {media && (
 //           <div className="mt-4">
 //             <img
-//               src={`https://kindiadmin.up.railway.app${media.url}`}
+//               src={`https://lionfish-app-98urn.ondigitalocean.app${media.url}`}
 //               alt={media.name}
 //               className="w-32 h-32 object-cover"
 //             />

@@ -1,7 +1,7 @@
 export async function fetchShopProducts() {
   try {
     const response = await fetch(
-      "https://kindiadmin.up.railway.app/api/products?populate=FeaturedImage"
+      "https://lionfish-app-98urn.ondigitalocean.app/api/products?populate=FeaturedImage"
     );
 
     if (!response.ok) {

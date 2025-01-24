@@ -24,10 +24,10 @@ export default function PromotionalSectionTwo() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://kindiadmin.up.railway.app/api/early-learning-expert?populate=Content.Media"
+          "https://lionfish-app-98urn.ondigitalocean.app/api/early-learning-expert?populate=Content.Media"
         );
         const data = await response.json();
-        console.log("Monthlytheme Database", data);
+        // console.log("Monthlytheme Database", data);
         if (data?.data) {
           setContent(data.data.Content); // Set the fetched data
         } else {
@@ -60,14 +60,14 @@ export default function PromotionalSectionTwo() {
                 <video
                   controls
                   autoPlay
-                  src={`https://kindiadmin.up.railway.app${content.Media.url}`}
+                  src={`https://lionfish-app-98urn.ondigitalocean.app${content.Media.url}`}
                   loop
                   muted
                   className="object-cover max-h-[260px] md:min-h-[400px] md:h-[400px] lg:h-[360px] lg:max-h-[400px] rounded-[24px] w-full md:w-full lg:w-[540px] h-full"
                 />
               ) : (
                 <img
-                  src={`https://kindiadmin.up.railway.app${content.Media.url}`}
+                  src={`https://lionfish-app-98urn.ondigitalocean.app${content.Media.url}`}
                   alt="Hero"
                   width={540}
                   height={360}

@@ -26,7 +26,7 @@ export default function DefaultReview() {
     const fetchReviews = async () => {
       try {
         const response = await fetch(
-          "https://kindiadmin.up.railway.app/api/reviews?populate=*"
+          "https://lionfish-app-98urn.ondigitalocean.app/api/reviews?populate=*"
         );
         if (!response.ok) {
           throw new Error("Failed to fetch reviews");
@@ -153,7 +153,7 @@ export function UpdateReviewForm({ reviewId }) {
     const fetchReview = async () => {
       try {
         const response = await fetch(
-          `https://kindiadmin.up.railway.app/api/reviews/${reviewId}?populate=*`
+          `https://lionfish-app-98urn.ondigitalocean.app/api/reviews/${reviewId}?populate=*`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch review data");
@@ -197,7 +197,7 @@ export function UpdateReviewForm({ reviewId }) {
     console.log("Payload Created:", payload);
 
     try {
-      const res = await fetch(`https://kindiadmin.up.railway.app/api/reviews/${reviewId}`, {
+      const res = await fetch(`https://lionfish-app-98urn.ondigitalocean.app/api/reviews/${reviewId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -301,7 +301,7 @@ export function DeleteReview({ reviewId }) {
 
     try {
       const response = await fetch(
-        `https://kindiadmin.up.railway.app/api/reviews/${reviewId}`,
+        `https://lionfish-app-98urn.ondigitalocean.app/api/reviews/${reviewId}`,
         {
           method: "DELETE",
           headers: {
@@ -362,7 +362,7 @@ export function CreateReviewForm() {
     console.log("Payload Created:", payload);
 
     try {
-      const response = await fetch("https://kindiadmin.up.railway.app/api/reviews", {
+      const response = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/reviews", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

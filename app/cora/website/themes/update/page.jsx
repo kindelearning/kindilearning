@@ -28,7 +28,7 @@ import MediaSelector from "../../media/Section/MediaSelector";
 //     const fetchThemeData = async () => {
 //       try {
 //         const res = await fetch(
-//           `https://kindiadmin.up.railway.app/api/our-themes/${documentId}?populate=*`
+//           `https://lionfish-app-98urn.ondigitalocean.app/api/our-themes/${documentId}?populate=*`
 //         );
 //         const data = await res.json();
 //         setExistingData(data.data);
@@ -58,7 +58,7 @@ import MediaSelector from "../../media/Section/MediaSelector";
 
 //     try {
 //       const res = await fetch(
-//         `https://kindiadmin.up.railway.app/api/our-themes/${documentId}?populate=Thumbnail`,
+//         `https://lionfish-app-98urn.ondigitalocean.app/api/our-themes/${documentId}?populate=Thumbnail`,
 //         {
 //           method: "PUT",
 //           body: formData,
@@ -151,7 +151,7 @@ import MediaSelector from "../../media/Section/MediaSelector";
 //         {thumbnail ? (
 //           <div>
 //             <img
-//               src={`https://kindiadmin.up.railway.app${thumbnail.url}`}
+//               src={`https://lionfish-app-98urn.ondigitalocean.app${thumbnail.url}`}
 //               alt="Thumbnail"
 //               className="w-32 h-32 object-cover mb-2"
 //             />
@@ -180,7 +180,7 @@ import MediaSelector from "../../media/Section/MediaSelector";
 //           {thumbnail ? (
 //             <div className="mt-4">
 //               <img
-//                 src={`https://kindiadmin.up.railway.app${thumbnail.url}`}
+//                 src={`https://lionfish-app-98urn.ondigitalocean.app${thumbnail.url}`}
 //                 alt={thumbnail.name}
 //                 className="w-32 h-32 object-cover"
 //               />
@@ -235,7 +235,7 @@ export default function UpdateThemeForm({ documentId }) {
     const fetchContentData = async () => {
       try {
         const res = await fetch(
-          `https://kindiadmin.up.railway.app/api/our-themes/${documentId}?populate=*`
+          `https://lionfish-app-98urn.ondigitalocean.app/api/our-themes/${documentId}?populate=*`
         );
         const data = await res.json();
 
@@ -273,7 +273,7 @@ export default function UpdateThemeForm({ documentId }) {
 
     try {
       const res = await fetch(
-        `https://kindiadmin.up.railway.app/api/our-themes/${documentId}?populate=Thumbnail`,
+        `https://lionfish-app-98urn.ondigitalocean.app/api/our-themes/${documentId}?populate=Thumbnail`,
         {
           method: "PUT",
           headers: {
@@ -307,7 +307,7 @@ export default function UpdateThemeForm({ documentId }) {
             <div className="mt-4">
               <img
                 // src={media.url}
-                src={`https://kindiadmin.up.railway.app${media.url}`}
+                src={`https://lionfish-app-98urn.ondigitalocean.app${media.url}`}
                 className="w-32 h-32 object-cover"
               />
               <p>{media.name}</p>

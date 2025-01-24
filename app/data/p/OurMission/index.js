@@ -1,8 +1,8 @@
 export async function fetchOurMission() {
   try {
     const response = await fetch(
-      "https://kindiadmin.up.railway.app/api/our-mission?populate[Hero][populate]=Media&populate[Parentwithkindi][populate]=Media&populate[OurStory][populate]=Media&populate[OurTeam][populate]=*"
-      // "https://kindiadmin.up.railway.app/api/our-mission?populate=*"
+      "https://lionfish-app-98urn.ondigitalocean.app/api/our-mission?populate[Hero][populate]=Media&populate[Parentwithkindi][populate]=Media&populate[OurStory][populate]=Media&populate[OurTeam][populate]=*"
+      // "https://lionfish-app-98urn.ondigitalocean.app/api/our-mission?populate=*"
     );
     if (!response.ok) {
       throw new Error(`Error fetching data: ${response.statusText}`);

@@ -32,7 +32,7 @@ export default function LoginPage() {
   //   e.preventDefault();
 
   //   try {
-  //     const response = await fetch("https://kindiadmin.up.railway.app/api/auth/local", {
+  //     const response = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/auth/local", {
   //       method: "POST",
   //       headers: { "Content-Type": "application/json" },
   //       body: JSON.stringify(formData),
@@ -54,7 +54,7 @@ export default function LoginPage() {
     e.preventDefault();
 
     try {
-      const response = await fetch("https://kindiadmin.up.railway.app/api/auth/local", {
+      const response = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/auth/local", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

@@ -23,7 +23,7 @@ export default function AreaOfLearning() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://kindiadmin.up.railway.app/api/how-it-work-page?populate[AreaOflearningCards][populate]=Icon"
+          "https://lionfish-app-98urn.ondigitalocean.app/api/how-it-work-page?populate[AreaOflearningCards][populate]=Icon"
         );
         const data = await response.json();
         if (data?.data) {
@@ -70,7 +70,7 @@ export default function AreaOfLearning() {
           >
             {card.Icon ? (
               <img
-                src={`https://kindiadmin.up.railway.app${card.Icon.url}`}
+                src={`https://lionfish-app-98urn.ondigitalocean.app${card?.Icon?.url}`}
                 // src={card.Icon.url}
                 className="w-[60px] h-[60px]"
                 alt={card.Title}
@@ -103,7 +103,7 @@ export default function AreaOfLearning() {
 //   // Fetch existing data
 //   useEffect(() => {
 //     fetch(
-//       "https://kindiadmin.up.railway.app/api/how-it-work-page?populate[AreaOflearningCards][populate]=Icon"
+//       "https://lionfish-app-98urn.ondigitalocean.app/api/how-it-work-page?populate[AreaOflearningCards][populate]=Icon"
 //     )
 //       .then((res) => res.json())
 //       .then((data) => {
@@ -135,7 +135,7 @@ export default function AreaOfLearning() {
 //     };
 //     console.log("Sent Data", payload);
 //     try {
-//       const res = await fetch("https://kindiadmin.up.railway.app/api/how-it-work-page", {
+//       const res = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/how-it-work-page", {
 //         method: "PUT",
 //         headers: {
 //           "Content-Type": "application/json",
@@ -267,7 +267,7 @@ export default function AreaOfLearning() {
 //                 {media ? (
 //                   <div className="mt-4">
 //                     <img
-//                       src={`https://kindiadmin.up.railway.app${media.url}`}
+//                       src={`https://lionfish-app-98urn.ondigitalocean.app${media.url}`}
 //                       className="w-[300px] h-[200px] rounded-lg object-cover"
 //                     />
 //                     <p>{media.name}</p>
@@ -321,7 +321,7 @@ export default function AreaOfLearning() {
 //           </DialogFooter>
 //         </DialogContent>
 //       </Dialog>
-//     </>
+//     </> 
 //   );
 // };
  
@@ -336,7 +336,7 @@ export function UpdateAreaOfLearning() {
     const fetchHIWData = async () => {
       try {
         const res = await fetch(
-          "https://kindiadmin.up.railway.app/api/how-it-work-page?populate[AreaOflearningCards][populate]=Icon"
+          "https://lionfish-app-98urn.ondigitalocean.app/api/how-it-work-page?populate[AreaOflearningCards][populate]=Icon"
         );
         const data = await res.json();
         const cardData = data.data;
@@ -390,7 +390,7 @@ export function UpdateAreaOfLearning() {
     console.log("payload sent", payload);
 
     try {
-      const res = await fetch("https://kindiadmin.up.railway.app/api/how-it-work-page", {
+      const res = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/how-it-work-page", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -527,7 +527,7 @@ export function UpdateAreaOfLearning() {
                 {section.Icon ? (
                   <div className="mt-2">
                     <img
-                      src={`https://kindiadmin.up.railway.app${section.Icon.url}`}
+                      src={`https://lionfish-app-98urn.ondigitalocean.app${section.Icon.url}`}
                       alt={section.Title}
                       className="w-32 h-32 object-cover border rounded-md"
                     />

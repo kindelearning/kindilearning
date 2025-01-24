@@ -18,7 +18,7 @@ export default function Hero() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://kindiadmin.up.railway.app/api/homepage-hero-section?populate=Image"
+          "https://lionfish-app-98urn.ondigitalocean.app/api/homepage-hero-section?populate=Image"
         );
         const result = await response.json();
         console.log("Hero section", result);
@@ -53,7 +53,7 @@ export default function Hero() {
 
 
   // const { heroData } = result;
-  console.log(" Hero Section data", data);
+  // console.log(" Hero Section data", data);
 
   // Helper function to slice the first 3 and last words
   const getFirstThreeWords = (text) => {
@@ -127,19 +127,19 @@ export default function Hero() {
               {data?.Image?.url ? (
                 <video autoPlay loop muted>
                   <source
-                    src={`https://kindiadmin.up.railway.app${data.Image?.url}`}
+                    src={`https://lionfish-app-98urn.ondigitalocean.app${data.Image?.url}`}
                     type="video/mp4"
                   />
                 </video>
               ) : (
                 // heroMediaUrl.endsWith(".mp4") ? (
                 //   <video autoPlay loop muted>
-                //     <source src={`https://kindiadmin.up.railway.app${heroMediaUrl}`} type="video/mp4" />
+                //     <source src={`https://lionfish-app-98urn.ondigitalocean.app${heroMediaUrl}`} type="video/mp4" />
                 //     Your browser does not support the video.
                 //   </video>
                 // )
                 // : (
-                //   <Image src={`https://kindiadmin.up.railway.app${heroMediaUrl}`} alt="Hero" />
+                //   <Image src={`https://lionfish-app-98urn.ondigitalocean.app${heroMediaUrl}`} alt="Hero" />
                 // )
                 <video autoPlay loop muted>
                   <source src="/preloader.mp4" type="video/mp4" />

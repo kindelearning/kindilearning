@@ -106,7 +106,7 @@ const UpdateKidButton = ({ kidDocumentId, activityId }) => {
 
     try {
       const response = await fetch(
-        `https://kindiadmin.up.railway.app/api/kids/${kidDocumentId}?populate=*`,
+        `https://lionfish-app-98urn.ondigitalocean.app/api/kids/${kidDocumentId}?populate=*`,
         {
           method: "PUT",
           headers: {
@@ -183,7 +183,7 @@ function DynamicButton({ activityId, kidId }) {
 
       // Send the updated data to the backend
       const updateResponse = await fetch(
-        `https://kindiadmin.up.railway.app/api/kids/${kidId}?populate=*`,
+        `https://lionfish-app-98urn.ondigitalocean.app/api/kids/${kidId}?populate=*`,
         {
           method: "PUT",
           headers: {

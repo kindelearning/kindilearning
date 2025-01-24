@@ -53,7 +53,7 @@ export default function ActivitiesPage() {
     const fetchActivities = async () => {
       try {
         const response = await fetch(
-          "https://kindiadmin.up.railway.app/api/activities?populate=*"
+          "https://lionfish-app-98urn.ondigitalocean.app/api/activities?populate=*"
         );
         const data = await response.json();
         console.log("Data", data);
@@ -150,7 +150,7 @@ export default function ActivitiesPage() {
   const handleDelete = async (documentId) => {
     try {
       const response = await fetch(
-        `https://kindiadmin.up.railway.app/api/activities/${documentId}`,
+        `https://lionfish-app-98urn.ondigitalocean.app/api/activities/${documentId}`,
         {
           method: "DELETE",
         }
@@ -329,7 +329,7 @@ export default function ActivitiesPage() {
                         <img
                           key={index}
                           // src={image?.url}
-                      src={`https://kindiadmin.up.railway.app${image?.url}`}
+                      src={`https://lionfish-app-98urn.ondigitalocean.app${image?.url}`}
 
                           alt={`Gallery ${index}`}
                           className="min-w-16 rounded-md h-16 object-cover"

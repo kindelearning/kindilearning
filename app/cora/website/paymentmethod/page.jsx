@@ -36,7 +36,7 @@ export default function PaymentMethodsTable() {
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(
-        "https://kindiadmin.up.railway.app/api/payment-methods?populate=*"
+        "https://lionfish-app-98urn.ondigitalocean.app/api/payment-methods?populate=*"
       );
       const data = await response.json();
       setPaymentMethods(data.data || []);
@@ -53,7 +53,7 @@ export default function PaymentMethodsTable() {
     if (!selectedPaymentMethod) return;
 
     await fetch(
-      `https://kindiadmin.up.railway.app/api/payment-methods/${selectedPaymentMethod.documentId}`,
+      `https://lionfish-app-98urn.ondigitalocean.app/api/payment-methods/${selectedPaymentMethod.documentId}`,
       {
         method: "DELETE",
       }

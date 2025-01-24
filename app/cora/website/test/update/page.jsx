@@ -31,7 +31,7 @@ export default function EditContent() {
     const fetchContent = async () => {
       try {
         const response = await fetch(
-          "https://kindiadmin.up.railway.app/api/content?populate=*"
+          "https://lionfish-app-98urn.ondigitalocean.app/api/content?populate=*"
         );
         const data = await response.json();
 
@@ -60,7 +60,7 @@ export default function EditContent() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await fetch("https://kindiadmin.up.railway.app/api/content", {
+    const response = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/content", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -101,6 +101,9 @@ export default function EditContent() {
 
   return (
     <div className="container mx-auto px-8 py-12 font-poppins">
+       <head>
+        <title>Privacy Policy - Kindi</title>
+      </head>
       <div className="mb-8">
         <h1 className="text-3xl font-semibold text-gray-800">Edit Content</h1>
         <p className="text-lg text-gray-600 mt-2">

@@ -71,7 +71,7 @@ export default function CreateBlog() {
 
     console.log('Payload Sent', newBlog)
     try {
-      const response = await fetch("https://kindiadmin.up.railway.app/api/blogs", {
+      const response = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/blogs", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ data: newBlog }),
@@ -206,7 +206,7 @@ export default function CreateBlog() {
             {media ? (
               <div>
                 <img
-                  src={`https://kindiadmin.up.railway.app${media.url}`}
+                  src={`https://lionfish-app-98urn.ondigitalocean.app${media.url}`}
                   alt={media.name}
                   className="w-32 h-32 object-cover"
                 />

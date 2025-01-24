@@ -29,7 +29,7 @@ export default function HeroSectionForm() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://kindiadmin.up.railway.app/api/homepage-hero-section?populate=Image"
+          "https://lionfish-app-98urn.ondigitalocean.app/api/homepage-hero-section?populate=Image"
         );
         const data = await response.json();
 
@@ -69,7 +69,7 @@ export default function HeroSectionForm() {
 
     try {
       const response = await fetch(
-        "https://kindiadmin.up.railway.app/api/homepage-hero-section?populate=Image",
+        "https://lionfish-app-98urn.ondigitalocean.app/api/homepage-hero-section?populate=Image",
         {
           method: "PUT",
           headers: {
@@ -169,7 +169,7 @@ export default function HeroSectionForm() {
               <video
                 autoPlay
                 controls
-                src={`https://kindiadmin.up.railway.app${media.url}`}
+                src={`https://lionfish-app-98urn.ondigitalocean.app${media.url}`}
                 className="w-[300px] h-[200px] rounded-lg object-cover"
               />
               <p>{media.name}</p>

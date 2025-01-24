@@ -25,7 +25,7 @@ export default function MediaSelector({ onMediaSelect }) {
   useEffect(() => {
     const fetchMediaFiles = async () => {
       try {
-        const response = await fetch("https://kindiadmin.up.railway.app/api/upload/files");
+        const response = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/upload/files");
         if (!response.ok) throw new Error("Failed to fetch media files");
         const data = await response.json();
         setMediaFiles(data);
@@ -113,7 +113,7 @@ export default function MediaSelector({ onMediaSelect }) {
                 {paginatedMedia.map((mediaFile, index) => (
                   <div
                     key={mediaFile.id}
-                    className={`cursor-pointer border rounded shadow-sm p-2 relative ${
+                    className={`cursor-pointer overflow-clip border rounded shadow-sm p-2 relative ${
                       selectedMediaId === mediaFile.id
                         ? "border-blue-500 shadow-lg transform scale-105"
                         : "hover:border-gray-400"
@@ -127,12 +127,12 @@ export default function MediaSelector({ onMediaSelect }) {
                           selectedMediaId === mediaFile.id ? "opacity-90" : ""
                         }`}
                         // src={mediaFile.url}
-                        src={`https://kindiadmin.up.railway.app${mediaFile.url}`}
+                        src={`https://lionfish-app-98urn.ondigitalocean.app${mediaFile.url}`}
                       />
                     ) : (
                       <img
                         // src={mediaFile.url}
-                        src={`https://kindiadmin.up.railway.app${mediaFile.url}`}
+                        src={`https://lionfish-app-98urn.ondigitalocean.app${mediaFile.url}`}
                         alt={mediaFile.name}
                         className={`w-full h-32 object-cover rounded transition ${
                           selectedMediaId === mediaFile.id ? "opacity-90" : ""
@@ -206,7 +206,7 @@ export default function MediaSelector({ onMediaSelect }) {
 //   useEffect(() => {
 //     const fetchMediaFiles = async () => {
 //       try {
-//         const response = await fetch("https://kindiadmin.up.railway.app/api/upload/files");
+//         const response = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/upload/files");
 //         if (!response.ok) throw new Error("Failed to fetch media files");
 //         const data = await response.json();
 //         setMediaFiles(data);
@@ -243,7 +243,7 @@ export default function MediaSelector({ onMediaSelect }) {
 //                     onClick={() => handleMediaSelect(mediaFile)}
 //                   >
 //                     <img
-//                       src={`https://kindiadmin.up.railway.app${mediaFile.url}`}
+//                       src={`https://lionfish-app-98urn.ondigitalocean.app${mediaFile.url}`}
 //                       alt={mediaFile.name}
 //                       className="w-full h-32 object-cover"
 //                     />
@@ -271,7 +271,7 @@ export function MultiMediaSelector({ onMediaSelect }) {
   useEffect(() => {
     const fetchMediaFiles = async () => {
       try {
-        const response = await fetch("https://kindiadmin.up.railway.app/api/upload/files");
+        const response = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/upload/files");
         if (!response.ok) throw new Error("Failed to fetch media files");
         const data = await response.json();
         setMediaFiles(data);
@@ -368,7 +368,7 @@ export function MultiMediaSelector({ onMediaSelect }) {
                 {paginatedMedia.map((mediaFile, index) => (
                   <div
                     key={mediaFile.id}
-                    className={`cursor-pointer border rounded shadow-sm p-2 relative ${
+                    className={`cursor-pointer overflow-clip border rounded shadow-sm p-2 relative ${
                       selectedMediaIds.includes(mediaFile.id)
                         ? "border-blue-500 shadow-lg transform scale-105"
                         : "hover:border-gray-400"
@@ -382,13 +382,13 @@ export function MultiMediaSelector({ onMediaSelect }) {
                           selectedMediaIds.includes(mediaFile.id) ? "opacity-90" : ""
                         }`}
                         src={mediaFile.url}
-                      // src={`https://kindiadmin.up.railway.app${mediaFile.url}`}
+                      // src={`https://lionfish-app-98urn.ondigitalocean.app${mediaFile.url}`}
 
                       />
                     ) : (
                       <img
                         // src={mediaFile.url}
-                      src={`https://kindiadmin.up.railway.app${mediaFile.url}`}
+                      src={`https://lionfish-app-98urn.ondigitalocean.app${mediaFile.url}`}
 
                         alt={mediaFile.name}
                         className={`w-full h-32 object-cover rounded transition ${
@@ -468,7 +468,7 @@ export function MultiMediaSelector({ onMediaSelect }) {
 //   useEffect(() => {
 //     const fetchMediaFiles = async () => {
 //       try {
-//         const response = await fetch("https://kindiadmin.up.railway.app/api/upload/files");
+//         const response = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/upload/files");
 //         if (!response.ok) throw new Error("Failed to fetch media files");
 //         const data = await response.json();
 //         setMediaFiles(data);
@@ -591,11 +591,11 @@ export function MultiMediaSelector({ onMediaSelect }) {
 //                             ? "opacity-90"
 //                             : ""
 //                         }`}
-//                         src={`https://kindiadmin.up.railway.app${mediaFile.url}`}
+//                         src={`https://lionfish-app-98urn.ondigitalocean.app${mediaFile.url}`}
 //                       />
 //                     ) : (
 //                       <img
-//                         src={`https://kindiadmin.up.railway.app${mediaFile.url}`}
+//                         src={`https://lionfish-app-98urn.ondigitalocean.app${mediaFile.url}`}
 //                         alt={mediaFile.name}
 //                         className={`w-full h-32 object-cover rounded transition ${
 //                           selectedMedia.some(

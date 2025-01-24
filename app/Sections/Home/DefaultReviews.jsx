@@ -14,7 +14,7 @@ export default function DefaultReviews() {
     const fetchReviews = async () => {
       try {
         setLoading(true); // Start loading
-        const res = await fetch("https://kindiadmin.up.railway.app/api/reviews?populate=*");
+        const res = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/reviews?populate=*");
         if (!res.ok) throw new Error("Failed to fetch reviews");
 
         const responseData = await res.json();

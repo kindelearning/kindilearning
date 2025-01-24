@@ -28,7 +28,7 @@ export default function UserAnalytics() {
     const fetchUserCounts = async () => {
       try {
         // Fetch all users from the Strapi API
-        const response = await fetch("https://kindiadmin.up.railway.app/api/users");
+        const response = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/users");
         const users = await response.json();
 
         // Calculate the counts based on the user data

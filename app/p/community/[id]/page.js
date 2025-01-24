@@ -32,7 +32,7 @@ export default function BlogDetailPage({ params }) {
 
   const fetchBlogData = async () => {
     const res = await fetch(
-      `https://kindiadmin.up.railway.app/api/blogs/${id}?populate=comments&populate=FeaturedImage`
+      `https://lionfish-app-98urn.ondigitalocean.app/api/blogs/${id}?populate=comments&populate=FeaturedImage`
     );
     const data = await res.json();
 
@@ -119,7 +119,7 @@ export default function BlogDetailPage({ params }) {
             width={1400}
             height={600}
             // src={FeaturedImage?.url ? FeaturedImage?.url : BlogThumb}
-            src={`https://kindiadmin.up.railway.app${FeaturedImage?.url}`}
+            src={`https://lionfish-app-98urn.ondigitalocean.app${FeaturedImage?.url}`}
             alt={`Featured Image for ${Text}`}
             className="w-full hover:scale-105 duration-300 lg:max-w-[960px] lg:rounded-xl h-60 md:h-[400px] lg:h-[400px] object-cover"
           />
@@ -309,7 +309,7 @@ export default function BlogDetailPage({ params }) {
 
 //   const fetchBlogData = async () => {
 //     const res = await fetch(
-//       `https://kindiadmin.up.railway.app/api/blogs/${id}?populate=comments&populate=FeaturedImage`
+//       `https://lionfish-app-98urn.ondigitalocean.app/api/blogs/${id}?populate=comments&populate=FeaturedImage`
 //     );
 //     const data = await res.json();
 
@@ -397,7 +397,7 @@ export default function BlogDetailPage({ params }) {
 //         <meta property="og:description" content={Description} />
 //         <meta
 //           property="og:image"
-//           content={`https://kindiadmin.up.railway.app${FeaturedImage.url}`}
+//           content={`https://lionfish-app-98urn.ondigitalocean.app${FeaturedImage.url}`}
 //         />
 //         <meta property="og:url" content={window.location.href} />
 //         <meta property="og:type" content="article" />
@@ -408,7 +408,7 @@ export default function BlogDetailPage({ params }) {
 //         <meta name="twitter:description" content={Description} />
 //         <meta
 //           name="twitter:image"
-//           content={`https://kindiadmin.up.railway.app${FeaturedImage.url}`}
+//           content={`https://lionfish-app-98urn.ondigitalocean.app${FeaturedImage.url}`}
 //         />
 //       </head>
 
@@ -419,7 +419,7 @@ export default function BlogDetailPage({ params }) {
 //             height={600}
 //             src={
 //               FeaturedImage?.url
-//                 ? `https://kindiadmin.up.railway.app${FeaturedImage.url}`
+//                 ? `https://lionfish-app-98urn.ondigitalocean.app${FeaturedImage.url}`
 //                 : BlogThumb
 //             }
 //             alt={`Featured Image for ${Text}`}

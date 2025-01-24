@@ -25,8 +25,8 @@ export default function ParentWithKindi() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://kindiadmin.up.railway.app/api/our-mission?populate[Parentwithkindi][populate]=Media"
-          // https://kindiadmin.up.railway.app/api/how-it-works?populate[Hero][populate]=Media&populate[AgeGroup]=*&populate[Content]=*&populate[AreaOflearningCards][populate]=*&populate[KindiSkillsCategoriesCards][populate]=*
+          "https://lionfish-app-98urn.ondigitalocean.app/api/our-mission?populate[Parentwithkindi][populate]=Media"
+          // https://lionfish-app-98urn.ondigitalocean.app/api/how-it-works?populate[Hero][populate]=Media&populate[AgeGroup]=*&populate[Content]=*&populate[AreaOflearningCards][populate]=*&populate[KindiSkillsCategoriesCards][populate]=*
         );
         const data = await response.json();
         console.log("Fetched Parentwithkindi data:", data); // Log the response structure
@@ -99,7 +99,7 @@ export default function ParentWithKindi() {
                     <img
                       className="w-[200px] h-[200px]"
                       // src={img.url}
-                      src={`https://kindiadmin.up.railway.app${img.url}`}
+                      src={`https://lionfish-app-98urn.ondigitalocean.app${img.url}`}
                       alt="text"
                     />
                   </div>
@@ -134,7 +134,7 @@ export function UpdateParentWithKindiSection2() {
     const fetchContent = async () => {
       try {
         const response = await fetch(
-          "https://kindiadmin.up.railway.app/api/our-mission?populate[Parentwithkindi][populate]=Media"
+          "https://lionfish-app-98urn.ondigitalocean.app/api/our-mission?populate[Parentwithkindi][populate]=Media"
         );
         const data = await response.json();
         setContent({
@@ -167,7 +167,7 @@ export function UpdateParentWithKindiSection2() {
 
     try {
       const response = await fetch(
-        "https://kindiadmin.up.railway.app/api/our-mission",
+        "https://lionfish-app-98urn.ondigitalocean.app/api/our-mission",
         {
           method: "PUT",
           headers: {
@@ -307,7 +307,7 @@ export function UpdateParentWithKindiSection() {
     const fetchContentData = async () => {
       try {
         const res = await fetch(
-          "https://kindiadmin.up.railway.app/api/our-mission?populate[Parentwithkindi][populate]=Media"
+          "https://lionfish-app-98urn.ondigitalocean.app/api/our-mission?populate[Parentwithkindi][populate]=Media"
         );
         const data = await res.json();
 
@@ -352,7 +352,7 @@ export function UpdateParentWithKindiSection() {
 
     try {
       const res = await fetch(
-        "https://kindiadmin.up.railway.app/api/our-mission",
+        "https://lionfish-app-98urn.ondigitalocean.app/api/our-mission",
         {
           method: "PUT",
           headers: {

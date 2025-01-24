@@ -23,12 +23,12 @@ export default function OurStory() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://kindiadmin.up.railway.app/api/our-mission?populate[OurStory][populate]=Media"
+          "https://lionfish-app-98urn.ondigitalocean.app/api/our-mission?populate[OurStory][populate]=Media"
         );
         const data = await response.json();
         console.log("HIW Data", data);
         if (data?.data) {
-          setContent(data.data);
+          // setContent(data.data);
         } else {
           setError("No content found.");
         }
@@ -57,7 +57,7 @@ export default function OurStory() {
             <video
               autoPlay
               controls
-              // src={`https://kindiadmin.up.railway.app${OurStory.Media[0].url}`}
+              // src={`https://lionfish-app-98urn.ondigitalocean.app${OurStory.Media[0].url}`}
               src={OurStory.Media[0].url}
               className="w-full max-w-[800px] h-auto border-2 border-[#ddd] shadow-lg rounded-lg overflow-hidden"
             />
@@ -119,7 +119,7 @@ export default function OurStory() {
 //     const fetchContent = async () => {
 //       try {
 //         const response = await fetch(
-//           "https://kindiadmin.up.railway.app/api/our-mission?populate[OurStory][populate]=Media"
+//           "https://lionfish-app-98urn.ondigitalocean.app/api/our-mission?populate[OurStory][populate]=Media"
 //         );
 //         const data = await response.json();
 //         if (data && data.data) {
@@ -154,7 +154,7 @@ export default function OurStory() {
 
 //     try {
 //       const response = await fetch(
-//         "https://kindiadmin.up.railway.app/api/our-mission?populate[OurStory][populate]=Media",
+//         "https://lionfish-app-98urn.ondigitalocean.app/api/our-mission?populate[OurStory][populate]=Media",
 //         {
 //           method: "PUT",
 //           headers: {
@@ -206,7 +206,7 @@ export default function OurStory() {
 //       formData.append("refId", content.OurStory.id);
 //       formData.append("field", "Media");
 
-//       fetch("https://kindiadmin.up.railway.app/api/upload", {
+//       fetch("https://lionfish-app-98urn.ondigitalocean.app/api/upload", {
 //         method: "POST",
 //         body: formData,
 //       })
@@ -361,7 +361,7 @@ export function UpdateOurStorySection() {
     const fetchContentData = async () => {
       try {
         const res = await fetch(
-          "https://kindiadmin.up.railway.app/api/our-mission?populate[OurStory][populate]=Media"
+          "https://lionfish-app-98urn.ondigitalocean.app/api/our-mission?populate[OurStory][populate]=Media"
         );
         const data = await res.json();
 
@@ -399,7 +399,7 @@ export function UpdateOurStorySection() {
     console.log("Payload Created", payload);
 
     try {
-      const res = await fetch("https://kindiadmin.up.railway.app/api/our-mission", {
+      const res = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/our-mission", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -487,9 +487,9 @@ export function UpdateOurStorySection() {
               <video
                 autoPlay
                 controls
-                src={media.url}
-                // src={`https://kindiadmin.up.railway.app${media.url}`}
-                className="w-32 h-32 object-cover"
+                // src={media.url}
+                src={`https://lionfish-app-98urn.ondigitalocean.app${media.url}`}
+                className="w-60 rounded-lg h-32 object-cover"
               />
               <p>{media.name}</p>
             </div>

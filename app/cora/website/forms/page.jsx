@@ -33,7 +33,7 @@ export default function ContactFormPage() {
   useEffect(() => {
     const fetchContactForms = async () => {
       const res = await fetch(
-        "https://kindiadmin.up.railway.app/api/contact-forms?populate=*"
+        "https://lionfish-app-98urn.ondigitalocean.app/api/contact-forms?populate=*"
       );
       if (res.ok) {
         const data = await res.json();

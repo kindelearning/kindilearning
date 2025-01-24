@@ -331,7 +331,7 @@ export default function Slider() {
     const fetchSliderData = async () => {
       try {
         const response = await fetch(
-          "https://kindiadmin.up.railway.app/api/slider?populate=Content.Media"
+          "https://lionfish-app-98urn.ondigitalocean.app/api/slider?populate=Content.Media"
         );
         const data = await response.json();
 
@@ -407,7 +407,7 @@ export default function Slider() {
                               <img
                                 src={
                                   item?.Media?.[0]?.url
-                                    ? `https://kindiadmin.up.railway.app${item.Media[0].url}`
+                                    ? `https://lionfish-app-98urn.ondigitalocean.app${item.Media[0].url}`
                                     : "/placeholder.jpg"
                                 }
                                 alt={item.Title || "Slider Image"}
@@ -508,7 +508,7 @@ export default function Slider() {
 //     const fetchSliderData = async () => {
 //       try {
 //         const response = await fetch(
-//           "https://kindiadmin.up.railway.app/api/slider?populate=Content.Media"
+//           "https://lionfish-app-98urn.ondigitalocean.app/api/slider?populate=Content.Media"
 //         );
 //         const data = await response.json();
 
@@ -571,7 +571,7 @@ export default function Slider() {
 //                               <img
 //                                 src={
 //                                   item?.Media?.[0]?.url
-//                                     ? `https://kindiadmin.up.railway.app${item.Media[0].url}`
+//                                     ? `https://lionfish-app-98urn.ondigitalocean.app${item.Media[0].url}`
 //                                     : "/placeholder.jpg"
 //                                 }
 //                                 alt={item.Title || "Slider Image"}

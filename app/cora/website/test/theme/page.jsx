@@ -60,7 +60,7 @@ const CreateThemePage = () => {
     }
 
     try {
-      const res = await fetch("https://kindiadmin.up.railway.app/api/our-themes", {
+      const res = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/our-themes", {
         method: "POST",
         body: formData,
       });

@@ -161,7 +161,7 @@ const UploadMediaPage = () => {
             {file && file.type.startsWith("image") ? (
               <img
                 // src={uploadedFileUrl}
-                src={`https://kindiadmin.up.railway.app${uploadedFileUrl}` }
+                src={`https://lionfish-app-98urn.ondigitalocean.app${uploadedFileUrl}` }
                 alt="Uploaded Media"
                 className="mt-4 rounded-lg max-w-full h-auto"
               />
@@ -169,7 +169,7 @@ const UploadMediaPage = () => {
               <video controls className="mt-4 rounded-lg max-w-full">
                 <source
                   // src={uploadedFileUrl}
-                src={`https://kindiadmin.up.railway.app${uploadedFileUrl}` }
+                src={`https://lionfish-app-98urn.ondigitalocean.app${uploadedFileUrl}` }
 
                   type={file.type}
                 />

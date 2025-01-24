@@ -34,7 +34,7 @@ export default function AddKidForm({ parentId }) {
     console.log("New Kid data", newKid);
 
     try {
-      const response = await fetch("https://kindiadmin.up.railway.app/api/kids", {
+      const response = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/kids", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

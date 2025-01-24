@@ -21,7 +21,7 @@ import { stripePromise } from "@/app/lib/stripe";
 
 async function fetchProductById(documentId) {
   const res = await fetch(
-    `https://kindiadmin.up.railway.app/api/products/${documentId}?populate=Gallery&populate=FeaturedImage`
+    `https://lionfish-app-98urn.ondigitalocean.app/api/products/${documentId}?populate=Gallery&populate=FeaturedImage`
   );
   if (!res.ok) {
     return null;

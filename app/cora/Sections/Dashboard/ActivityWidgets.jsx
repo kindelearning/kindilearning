@@ -85,7 +85,7 @@ export default function ActivityWidgets() {
   useEffect(() => {
     const fetchActivities = async () => {
       try {
-        const response = await fetch("https://kindiadmin.up.railway.app/api/activities");
+        const response = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/activities");
         const result = await response.json();
         const data = result.data; // Extracting data array from the response
 
@@ -191,7 +191,7 @@ export function RecentActivities() {
   useEffect(() => {
     const fetchActivities = async () => {
       try {
-        const response = await fetch("https://kindiadmin.up.railway.app/api/activities");
+        const response = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/activities");
         const data = await response.json();
 
         // Sort by 'publishedAt' and slice the latest 5 activities

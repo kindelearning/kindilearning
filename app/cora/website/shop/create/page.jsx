@@ -69,7 +69,7 @@ import ClaraMarkdownRichEditor from "@/app/cora/Sections/TextEditor/ClaraMarkdow
 //     };
 
 //     try {
-//       const res = await fetch("https://kindiadmin.up.railway.app/api/products", {
+//       const res = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/products", {
 //         method: "POST",
 //         headers: {
 //           "Content-Type": "application/json",
@@ -274,7 +274,7 @@ export default function CreateProductPage() {
 
     console.log("New Product data", newProducts);
     try {
-      const response = await fetch("https://kindiadmin.up.railway.app/api/products", {
+      const response = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/products", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -354,7 +354,7 @@ export default function CreateProductPage() {
                     <div className="flex flex-col">
                       <img
                         src={media.url}
-                        // src={`https://kindiadmin.up.railway.app${media.url}`}
+                        // src={`https://lionfish-app-98urn.ondigitalocean.app${media.url}`}
                         className="w-32 h-32 object-cover rounded-full flex "
                       />
                       <p>{media.name}</p>

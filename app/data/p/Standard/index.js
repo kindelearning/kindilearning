@@ -1,7 +1,7 @@
 export async function fetchInvestmentOpportunity() {
   try {
     const response = await fetch(
-      "https://kindiadmin.up.railway.app/api/investmentoppertunite?populate=*"
+      "https://lionfish-app-98urn.ondigitalocean.app/api/investmentoppertunite?populate=*"
     );
     if (!response.ok) {
       throw new Error(`Error fetching data: ${response.statusText}`);
@@ -23,7 +23,7 @@ export async function fetchInvestmentOpportunity() {
 
 export async function fetchTnc() {
   try {
-    const response = await fetch("https://kindiadmin.up.railway.app/api/tnc?populate=*");
+    const response = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/tnc?populate=*");
     if (!response.ok) {
       throw new Error(`Error fetching data: ${response.statusText}`);
     }
@@ -45,7 +45,7 @@ export async function fetchTnc() {
 export async function fetchRefundPolicy() {
   try {
     const response = await fetch(
-      "https://kindiadmin.up.railway.app/api/refundpolicy?populate=*"
+      "https://lionfish-app-98urn.ondigitalocean.app/api/refundpolicy?populate=*"
     );
     if (!response.ok) {
       throw new Error(`Error fetching data: ${response.statusText}`);
@@ -67,7 +67,7 @@ export async function fetchRefundPolicy() {
 
 export async function fetchFaq() {
   try {
-    const response = await fetch("https://kindiadmin.up.railway.app/api/faqs?populate=*");
+    const response = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/faqs?populate=*");
     if (!response.ok) {
       throw new Error(`Error fetching data: ${response.statusText}`);
     }
@@ -89,7 +89,7 @@ export async function fetchFaq() {
 export async function fetchPrivacyPolicy() {
   try {
     const response = await fetch(
-      "https://kindiadmin.up.railway.app/api/privacypolicy?populate=*"
+      "https://lionfish-app-98urn.ondigitalocean.app/api/privacypolicy?populate=*"
     );
     if (!response.ok) {
       throw new Error(`Error fetching data: ${response.statusText}`);
@@ -112,7 +112,7 @@ export async function fetchPrivacyPolicy() {
 export async function fetchQualityControl() {
   try {
     const response = await fetch(
-      "https://kindiadmin.up.railway.app/api/qualitycontrol?populate=*"
+      "https://lionfish-app-98urn.ondigitalocean.app/api/qualitycontrol?populate=*"
     );
 
     if (!response.ok) {

@@ -28,7 +28,8 @@ export default function ProductCard({ image, title, productUrl, price }) {
         {image ? (
           <img
             // src={image}
-            src={`https://kindiadmin.up.railway.app${image}`}
+            src={image}
+            // src={`https://lionfish-app-98urn.ondigitalocean.app${image}`}
             alt={title}
             width={200}
             height={200}

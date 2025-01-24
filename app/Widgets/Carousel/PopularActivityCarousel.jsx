@@ -30,7 +30,7 @@ const PopularActivityCarousel = () => {
     const fetchActivitiesData = async () => {
       try {
         const response = await fetch(
-          "https://kindiadmin.up.railway.app/api/activities?populate=*"
+          "https://lionfish-app-98urn.ondigitalocean.app/api/activities?populate=*"
         );
         const data = await response.json();
 
@@ -130,7 +130,7 @@ const PopularActivityCarousel = () => {
                                 //   "/Images/shop/ProductImage.png"
                                 // } // Fallback for image source
                                 src={
-                                  `https://kindiadmin.up.railway.app${activity?.Gallery?.[0]?.url}` ||
+                                  `https://lionfish-app-98urn.ondigitalocean.app${activity?.Gallery?.[0]?.url}` ||
                                   "/Images/shop/ProductImage.png"
                                 }
                               />

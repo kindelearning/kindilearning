@@ -1,6 +1,6 @@
 export async function fetchOurBlogs() {
   try {
-    const response = await fetch("https://kindiadmin.up.railway.app/api/blogs?populate=*");
+    const response = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/blogs?populate=*");
 
     if (!response.ok) {
       throw new Error(`Error fetching data: ${response.statusText}`);

@@ -477,7 +477,7 @@ export default function DisplayAllMileStone({ passThecurrentUserId }) {
 
         // Milestone Data fetchcing
         const response = await fetch(
-          "https://kindiadmin.up.railway.app/api/milestones?populate=*"
+          "https://lionfish-app-98urn.ondigitalocean.app/api/milestones?populate=*"
         );
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);

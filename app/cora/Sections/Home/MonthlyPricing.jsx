@@ -15,7 +15,7 @@ export default function MonthlyPricing() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://kindiadmin.up.railway.app/api/ourpricing?populate[MonthlyPlans][populate][0]=Features&populate[MonthlyPlans][populate][1]=Thumbnail&populate[AnnualPlans][populate][0]=Features&populate[AnnualPlans][populate][1]=Thumbnail"
+          "https://lionfish-app-98urn.ondigitalocean.app/api/ourpricing?populate[MonthlyPlans][populate][0]=Features&populate[MonthlyPlans][populate][1]=Thumbnail&populate[AnnualPlans][populate][0]=Features&populate[AnnualPlans][populate][1]=Thumbnail"
         );
         const data = await response.json();
         // console.log("Fetched data: ", data); // Log to inspect the structure
@@ -60,7 +60,7 @@ export default function MonthlyPricing() {
               <div className="thumbnail flex justify-center">
                 <img
                   // src={plan.Thumbnail?.url}
-                  src={`https://kindiadmin.up.railway.app${plan.Thumbnail?.url}`}
+                  src={`https://lionfish-app-98urn.ondigitalocean.app${plan.Thumbnail?.url}`}
                   alt={plan.Thumbnail?.name}
                   className="rounded-lg object-cover w-full h-48  "
                 />
@@ -127,7 +127,7 @@ export function EditMonthlyPricing() {
     const fetchPricingData = async () => {
       try {
         const response = await fetch(
-          "https://kindiadmin.up.railway.app/api/ourpricing?populate[MonthlyPlans][populate][0]=Features&populate[MonthlyPlans][populate][1]=Thumbnail"
+          "https://lionfish-app-98urn.ondigitalocean.app/api/ourpricing?populate[MonthlyPlans][populate][0]=Features&populate[MonthlyPlans][populate][1]=Thumbnail"
         );
         const data = await response.json();
         if (response.ok) {
@@ -205,7 +205,7 @@ export function EditMonthlyPricing() {
     console.log("Submitting FormData:", formData);
 
     try {
-      const response = await fetch("https://kindiadmin.up.railway.app/api/ourpricing", {
+      const response = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/ourpricing", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -259,7 +259,7 @@ export function EditMonthlyPricing() {
                 {plan.Thumbnail ? (
                   <div className="mt-4">
                     <img
-                      src={`https://kindiadmin.up.railway.app${plan.Thumbnail.url}`}
+                      src={`https://lionfish-app-98urn.ondigitalocean.app${plan.Thumbnail.url}`}
                       alt={plan.name}
                       className="w-32 h-32 object-cover rounded-md"
                     />
@@ -460,7 +460,7 @@ export function EditMonthlyPricing() {
 //     const fetchPricingData = async () => {
 //       try {
 //         const response = await fetch(
-//           "https://kindiadmin.up.railway.app/api/ourpricing?populate[AnnualPlans][populate][0]=Features&populate[AnnualPlans][populate][1]=Thumbnail"
+//           "https://lionfish-app-98urn.ondigitalocean.app/api/ourpricing?populate[AnnualPlans][populate][0]=Features&populate[AnnualPlans][populate][1]=Thumbnail"
 //         );
 //         const data = await response.json();
 //         if (response.ok) {
@@ -538,7 +538,7 @@ export function EditMonthlyPricing() {
 //     console.log("Submitting FormData:", formData);
 
 //     try {
-//       const response = await fetch("https://kindiadmin.up.railway.app/api/ourpricing", {
+//       const response = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/ourpricing", {
 //         method: "PUT",
 //         headers: { "Content-Type": "application/json" },
 //         body: JSON.stringify(formData),
@@ -592,7 +592,7 @@ export function EditMonthlyPricing() {
 //                 {plan.Thumbnail ? (
 //                   <div className="mt-4">
 //                     <img
-//                       src={`https://kindiadmin.up.railway.app${plan.Thumbnail.url}`}
+//                       src={`https://lionfish-app-98urn.ondigitalocean.app${plan.Thumbnail.url}`}
 //                       alt={plan.name}
 //                       className="w-32 h-32 object-cover rounded-md"
 //                     />

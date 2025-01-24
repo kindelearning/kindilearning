@@ -57,7 +57,7 @@ export default function EditRefund() {
     const fetchContent = async () => {
       try {
         const response = await fetch(
-          "https://kindiadmin.up.railway.app/api/privacypolicy?populate=*"
+          "https://lionfish-app-98urn.ondigitalocean.app/api/privacypolicy?populate=*"
         );
         const data = await response.json();
         setEditorLoaded(true); // Set editorLoaded to true once the component is mounted
@@ -87,7 +87,7 @@ export default function EditRefund() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await fetch("https://kindiadmin.up.railway.app/api/privacypolicy", {
+    const response = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/privacypolicy", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -125,9 +125,12 @@ export default function EditRefund() {
 
   return (
     <div className="container font-fredoka mx-auto px-8 py-12 font-poppins">
+       <head>
+        <title>Privacy Policy - Kindi</title>
+      </head>
       <div className="mb-8">
         <h1 className="text-3xl font-semibold text-gray-800">
-          Edit Your Refund Policy Page
+          Edit Your Privacy Policy  Page
         </h1>
         <p className="text-lg text-gray-600 mt-2">
           Make necessary changes and save.

@@ -284,7 +284,7 @@ function CalendarDay({
 //       try {
 //         // Send the PUT request using the documentId
 //         const response = await fetch(
-//           `https://kindiadmin.up.railway.app/api/rescheduled-events/${updatedEvent.documentId}`,
+//           `https://lionfish-app-98urn.ondigitalocean.app/api/rescheduled-events/${updatedEvent.documentId}`,
 //           {
 //             method: "PUT",
 //             headers: {
@@ -416,7 +416,7 @@ export default function NewCalendar({ activities }) {
       try {
         // Send the PUT request using the documentId
         const response = await fetch(
-          `https://kindiadmin.up.railway.app/api/rescheduled-events/${updatedEvent.documentId}`,
+          `https://lionfish-app-98urn.ondigitalocean.app/api/rescheduled-events/${updatedEvent.documentId}`,
           {
             method: "PUT",
             headers: {
@@ -503,7 +503,7 @@ export default function NewCalendar({ activities }) {
 
       try {
         const response = await fetch(
-          `https://kindiadmin.up.railway.app/api/rescheduled-events/${updatedEvent.documentId}`,
+          `https://lionfish-app-98urn.ondigitalocean.app/api/rescheduled-events/${updatedEvent.documentId}`,
           {
             method: "PUT",
             headers: {

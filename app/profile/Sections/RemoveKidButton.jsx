@@ -35,7 +35,7 @@ export default function RemoveKidButton({ kidId }) {
     };
 
     try {
-      const response = await fetch(`https://kindiadmin.up.railway.app/api/kids/${kidId}`, {
+      const response = await fetch(`https://lionfish-app-98urn.ondigitalocean.app/api/kids/${kidId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

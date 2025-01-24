@@ -23,7 +23,7 @@ export default function AgeGroupSection() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://kindiadmin.up.railway.app/api/how-it-work-page?populate[AgeGroup][populate]=Content.Icon"
+          "https://lionfish-app-98urn.ondigitalocean.app/api/how-it-work-page?populate[AgeGroup][populate]=Content.Icon"
         );
         const data = await response.json();
         console.log("Age Group Data", data);
@@ -78,7 +78,7 @@ export default function AgeGroupSection() {
               <div className="text-center mb-4">
                 <img
                   // src={ageGroup.Icon.url}
-                  src={`https://kindiadmin.up.railway.app${ageGroup.Icon.url}`}
+                  src={`https://lionfish-app-98urn.ondigitalocean.app${ageGroup.Icon.url}`}
                   alt={
                     ageGroup.Icon.alternativeText ||
                     `Icon for ${ageGroup.Title}`
@@ -117,7 +117,7 @@ export default function AgeGroupSection() {
 //   // Fetch existing data
 //   useEffect(() => {
 //     fetch(
-//       "https://kindiadmin.up.railway.app/api/how-it-work-page?populate[AgeGroup][populate]=*"
+//       "https://lionfish-app-98urn.ondigitalocean.app/api/how-it-work-page?populate[AgeGroup][populate]=*"
 //     )
 //       .then((res) => res.json())
 //       .then((data) => {
@@ -151,7 +151,7 @@ export default function AgeGroupSection() {
 //     console.log("Sent Data", payload);
 
 //     try {
-//       const res = await fetch("https://kindiadmin.up.railway.app/api/how-it-work-page", {
+//       const res = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/how-it-work-page", {
 //         method: "PUT",
 //         headers: {
 //           "Content-Type": "application/json",
@@ -297,13 +297,16 @@ export default function AgeGroupSection() {
 export function UpdateAgeGroupSection() {
   const [ageGroupCards, setAgeGroupCards] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
+  const [ageFeaturedText, setAgeFeaturedText] = useState();
+  const [ageGroupTitle, setAgeGroupTitle] = useState();
+  const [ageGroupBody, setAgeGroupBody] = useState();
   const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchHIWData = async () => {
       try {
         const res = await fetch(
-          "https://kindiadmin.up.railway.app/api/how-it-work-page?populate[AgeGroup][populate]=Content.Icon"
+          "https://lionfish-app-98urn.ondigitalocean.app/api/how-it-work-page?populate[AgeGroup][populate]=Content.Icon"
         );
         const data = await res.json();
         console.log("Complete API response:", data);
@@ -311,6 +314,9 @@ export function UpdateAgeGroupSection() {
         // Extract data correctly based on the API structure
         const content = data.data?.AgeGroup?.Content;
         if (content && Array.isArray(content)) {
+          setAgeFeaturedText(data.data?.AgeGroup?.featuredText); // Populate ageGroupCards with the array
+          setAgeGroupTitle(data.data?.AgeGroup?.Title); // Populate ageGroupCards with the array
+          setAgeGroupBody(data.data?.AgeGroup?.Body); // Populate ageGroupCards with the array
           setAgeGroupCards(content); // Populate ageGroupCards with the array
         } else {
           throw new Error("Invalid response structure for Content");
@@ -344,6 +350,9 @@ export function UpdateAgeGroupSection() {
     const payload = {
       data: {
         AgeGroup: {
+          featuredText: ageFeaturedText,
+          Title: ageGroupTitle,
+          Body: ageGroupBody,
           Content: ageGroupCards.map((section) => ({
             Body: section.Body,
             Title: section.Title,
@@ -355,13 +364,16 @@ export function UpdateAgeGroupSection() {
     console.log("payload sent", payload);
 
     try {
-      const res = await fetch("https://kindiadmin.up.railway.app/api/how-it-work-page", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
+      const res = await fetch(
+        "https://lionfish-app-98urn.ondigitalocean.app/api/how-it-work-page",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        }
+      );
 
       const data = await res.json();
       console.log("Updated our-mission? Data:", data);
@@ -383,10 +395,54 @@ export function UpdateAgeGroupSection() {
         <div className="bg-red-500 text-white p-3 rounded mb-4">{error}</div>
       )}
 
-      <form onSubmit={handleSubmit} className="w-full flex flex-col">
-        <div className="grid w-full grid-cols-2 justify-between gap-2">
-          {/* Looping through each slider content section */}
+      <form onSubmit={handleSubmit} className="w-full gap-4 flex flex-col">
+        {/* Looping through each slider content section */}
+        <div className="flex gap-2 flex-col w-full justify-center items-center">
+          {/* <div className="w-full">
+            <label
+              htmlFor={`areaoflearningTitle-`}
+              className="block text-sm font-medium text-gray-700"
+            >
+              Age Group FeaturedText:
+            </label>
+            <input
+              type="text"
+              id={`ageFeaturedText-`}
+              value={ageFeaturedText}
+              onChange={(e) => setAgeFeaturedText(e.target.value)}
+              className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div> */}
+          <div className="w-full">
+            <label
+              htmlFor={`areaoflearningTitle-`}
+              className="block text-sm font-medium text-gray-700"
+            >
+              Age Group Title:
+            </label>
+            <input
+              type="text"
+              id={`ageGroupTitle-`}
+              value={ageGroupTitle}
+              onChange={(e) => setAgeGroupTitle(e.target.value)}
+              className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div className="w-full">
+            <label
+              htmlFor={`ageGroupBody-`}
+              className="block text-sm font-medium text-gray-700"
+            >
+              Age Group Body:
+            </label>
 
+            <ClaraMarkdownRichEditor
+              value={ageGroupBody}
+              onChange={(newContent) => setAgeGroupBody(newContent)} // update the state with new content
+            />
+          </div>
+        </div>
+        <div className="grid w-full grid-cols-2 justify-between gap-2">
           {ageGroupCards.map((section, index) => (
             <div
               key={index}
@@ -439,7 +495,7 @@ export function UpdateAgeGroupSection() {
                 {section.Icon ? (
                   <div className="mt-2">
                     <img
-                      src={`https://kindiadmin.up.railway.app${section.Icon.url}`}
+                      src={`https://lionfish-app-98urn.ondigitalocean.app${section.Icon.url}`}
                       alt={section.Title}
                       className="w-32 h-32 object-cover border rounded-md"
                     />

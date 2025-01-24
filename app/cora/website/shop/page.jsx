@@ -76,7 +76,7 @@ export default function ShopPage() {
     const fetchProducts = async () => {
       try {
         const res = await fetch(
-          `https://kindiadmin.up.railway.app/api/products?populate=*&pagination[page]=${page}&pagination[pageSize]=${pageSize}&sort=createdAt:desc`
+          `https://lionfish-app-98urn.ondigitalocean.app/api/products?populate=*&pagination[page]=${page}&pagination[pageSize]=${pageSize}&sort=createdAt:desc`
         );
         if (!res.ok) {
           throw new Error("Failed to fetch products");
@@ -100,7 +100,7 @@ export default function ShopPage() {
   const deleteProduct = async (documentId) => {
     try {
       const res = await fetch(
-        `https://kindiadmin.up.railway.app/api/products/${documentId}`,
+        `https://lionfish-app-98urn.ondigitalocean.app/api/products/${documentId}`,
         {
           method: "DELETE",
         }
@@ -258,7 +258,7 @@ export default function ShopPage() {
                           <img
                             className="w-16 h-16 rounded-full"
                             // src={product.FeaturedImage[0]?.url}
-                      src={`https://kindiadmin.up.railway.app${product.FeaturedImage[0]?.url}`}
+                      src={`https://lionfish-app-98urn.ondigitalocean.app${product.FeaturedImage[0]?.url}`}
 
                             alt={product.Name}
                           />

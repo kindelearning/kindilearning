@@ -39,7 +39,7 @@ export default function LevelData() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://kindiadmin.up.railway.app/api/levels?populate=*"
+          "https://lionfish-app-98urn.ondigitalocean.app/api/levels?populate=*"
         );
         const data = await response.json();
         if (data?.data) {
@@ -104,7 +104,7 @@ export default function LevelData() {
 
     try {
       const response = await fetch(
-        `https://kindiadmin.up.railway.app/api/levels/${documentId}`,
+        `https://lionfish-app-98urn.ondigitalocean.app/api/levels/${documentId}`,
         {
           method: "DELETE",
         }
@@ -311,7 +311,7 @@ export function UpdateLevelData({ documentId }) {
     // Fetch activity data using the documentId
     async function fetchData() {
       const res = await fetch(
-        `https://kindiadmin.up.railway.app/api/levels/${documentId}?populate=*`
+        `https://lionfish-app-98urn.ondigitalocean.app/api/levels/${documentId}?populate=*`
       );
       const data = await res.json();
       const levels = data.data;
@@ -339,7 +339,7 @@ export function UpdateLevelData({ documentId }) {
 
     try {
       const response = await fetch(
-        `https://kindiadmin.up.railway.app/api/levels/${documentId}`,
+        `https://lionfish-app-98urn.ondigitalocean.app/api/levels/${documentId}`,
         {
           method: "PUT",
           headers: {
@@ -427,7 +427,7 @@ export function CreateLevelForm() {
     console.log("Data to be sent:", { data: newLevel });
 
     try {
-      const response = await fetch("https://kindiadmin.up.railway.app/api/levels", {
+      const response = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/levels", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

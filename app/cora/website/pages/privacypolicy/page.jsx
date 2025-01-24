@@ -13,7 +13,7 @@ export default function ReadContent() {
     const fetchContent = async () => {
       try {
         const response = await fetch(
-          "https://kindiadmin.up.railway.app/api/privacypolicy?populate=*"
+          "https://lionfish-app-98urn.ondigitalocean.app/api/privacypolicy?populate=*"
         );
         const data = await response.json();
 

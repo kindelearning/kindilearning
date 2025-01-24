@@ -27,7 +27,7 @@ export default function Schedule() {
       // Fetch activities
       try {
         const response = await fetch(
-          "https://kindiadmin.up.railway.app/api/kids?populate[myRescheduledActivities][populate]=*"
+          "https://lionfish-app-98urn.ondigitalocean.app/api/kids?populate[myRescheduledActivities][populate]=*"
         );
         const data = await response.json();
         const rescheduledActivities = data.data;
@@ -44,7 +44,7 @@ export default function Schedule() {
         setUserData(userResponse);
 
         // const gettingNestedActivities = await fetch(
-        //   "https://kindiadmin.up.railway.app/api/activities?populate[nested_activities][populate]=*"
+        //   "https://lionfish-app-98urn.ondigitalocean.app/api/activities?populate[nested_activities][populate]=*"
         // );
         // const fetchedActivitiesData = await gettingNestedActivities.json()
         // setNestedActivity(fetchedActivitiesData.data);

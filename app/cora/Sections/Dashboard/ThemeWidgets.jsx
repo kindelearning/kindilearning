@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 const fetchThemesData = async () => {
-  const response = await fetch("https://kindiadmin.up.railway.app/api/our-themes");
+  const response = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/our-themes");
   const data = await response.json();
 
   // Sort the themes based on LaunchTime in ascending order
@@ -80,7 +80,7 @@ export default function ThemeWidgets() {
   useEffect(() => {
     const fetchThemes = async () => {
       try {
-        const response = await fetch("https://kindiadmin.up.railway.app/api/our-themes");
+        const response = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/our-themes");
         const result = await response.json();
         const data = result.data; // Extracting data array from the response
 
@@ -155,7 +155,7 @@ export function RecentThemes() {
   useEffect(() => {
     const fetchThemes = async () => {
       try {
-        const response = await fetch("https://kindiadmin.up.railway.app/api/our-themes");
+        const response = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/our-themes");
         const result = await response.json();
         const data = result.data;
 

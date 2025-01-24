@@ -38,7 +38,7 @@ export default function RemovePaymentMethodButton({ paymentId }) {
 
     try {
       const response = await fetch(
-        `https://kindiadmin.up.railway.app/api/payment-methods/${paymentId}`,
+        `https://lionfish-app-98urn.ondigitalocean.app/api/payment-methods/${paymentId}`,
         {
           method: "PUT",
           headers: {
@@ -138,7 +138,7 @@ export const AddPaymentMethodForm = ({ parentId }) => {
 
     try {
       const response = await fetch(
-        "https://kindiadmin.up.railway.app/api/payment-methods",
+        "https://lionfish-app-98urn.ondigitalocean.app/api/payment-methods",
         {
           method: "POST",
           headers: {
@@ -331,7 +331,7 @@ export const UpdatePaymentDataForm = ({ parentId, paymentId }) => {
     const fetchKidData = async () => {
       try {
         const response = await fetch(
-          `https://kindiadmin.up.railway.app/api/payment-methods/${paymentId}`
+          `https://lionfish-app-98urn.ondigitalocean.app/api/payment-methods/${paymentId}`
         );
         const data = await response.json();
         if (response.ok) {
@@ -371,7 +371,7 @@ export const UpdatePaymentDataForm = ({ parentId, paymentId }) => {
 
     try {
       const response = await fetch(
-        `https://kindiadmin.up.railway.app/api/payment-methods/${paymentId}`,
+        `https://lionfish-app-98urn.ondigitalocean.app/api/payment-methods/${paymentId}`,
         {
           method: "PUT",
           headers: {

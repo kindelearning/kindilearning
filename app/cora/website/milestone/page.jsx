@@ -40,7 +40,7 @@ export default function MilestoneData() {
     const fetchMilestones = async () => {
       try {
         const response = await fetch(
-          `https://kindiadmin.up.railway.app/api/milestones?populate=*&_limit=${itemsPerPage}&_start=${
+          `https://lionfish-app-98urn.ondigitalocean.app/api/milestones?populate=*&_limit=${itemsPerPage}&_start=${
             (currentPage - 1) * itemsPerPage
           }`
         );
@@ -118,7 +118,7 @@ export default function MilestoneData() {
   const handleDeleteConfirm = async () => {
     try {
       const response = await fetch(
-        `https://kindiadmin.up.railway.app/api/milestones/${milestoneToDelete}`,
+        `https://lionfish-app-98urn.ondigitalocean.app/api/milestones/${milestoneToDelete}`,
         {
           method: "DELETE",
         }
@@ -236,7 +236,7 @@ export default function MilestoneData() {
                     {milestone.Thumbnail && (
                       <img
                         src={milestone.Thumbnail.url}
-                        // src={`https://kindiadmin.up.railway.app${milestone.Thumbnail.url}`}
+                        // src={`https://lionfish-app-98urn.ondigitalocean.app${milestone.Thumbnail.url}`}
                         alt={milestone.Title}
                       />
                     )}
@@ -359,7 +359,7 @@ export default function MilestoneData() {
 //     // Fetch activity data using the documentId
 //     async function fetchData() {
 //       const res = await fetch(
-//         `https://kindiadmin.up.railway.app/api/milestones/${documentId}?populate=*`
+//         `https://lionfish-app-98urn.ondigitalocean.app/api/milestones/${documentId}?populate=*`
 //       );
 //       const data = await res.json();
 //       const milestone = data.data;
@@ -389,7 +389,7 @@ export default function MilestoneData() {
 
 //     try {
 //       const response = await fetch(
-//         `https://kindiadmin.up.railway.app/api/milestones/${documentId}`,
+//         `https://lionfish-app-98urn.ondigitalocean.app/api/milestones/${documentId}`,
 //         {
 //           method: "PUT",
 //           headers: {
@@ -488,7 +488,7 @@ export function UpdateMilestoneData({ documentId }) {
     const fetchContentData = async () => {
       try {
         const res = await fetch(
-          `https://kindiadmin.up.railway.app/api/milestones/${documentId}?populate=*`
+          `https://lionfish-app-98urn.ondigitalocean.app/api/milestones/${documentId}?populate=*`
         );
         const data = await res.json();
 
@@ -526,7 +526,7 @@ export function UpdateMilestoneData({ documentId }) {
 
     try {
       const res = await fetch(
-        `https://kindiadmin.up.railway.app/api/milestones/${documentId}`,
+        `https://lionfish-app-98urn.ondigitalocean.app/api/milestones/${documentId}`,
         {
           method: "PUT",
           headers: {
@@ -610,7 +610,7 @@ export function UpdateMilestoneData({ documentId }) {
             <div className="mt-4">
               <img
                 src={media.url}
-                // src={`https://kindiadmin.up.railway.app${media.url}`}
+                // src={`https://lionfish-app-98urn.ondigitalocean.app${media.url}`}
                 className="w-32 h-32 object-cover"
               />
               <p>{media.name}</p>
@@ -677,7 +677,7 @@ export function UpdateMilestoneData({ documentId }) {
 //     };
 
 //     try {
-//       const response = await fetch("https://kindiadmin.up.railway.app/api/milestones", {
+//       const response = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/milestones", {
 //         method: "POST",
 //         headers: {
 //           "Content-Type": "application/json",
@@ -821,7 +821,7 @@ export function CreateMilestoneForm() {
     const fetchUsers = async () => {
       try {
         const response = await fetch(
-          "https://kindiadmin.up.railway.app/api/users?populate=*"
+          "https://lionfish-app-98urn.ondigitalocean.app/api/users?populate=*"
         );
         const data = await response.json();
         setUserList(data); // Save the list of users
@@ -852,7 +852,7 @@ export function CreateMilestoneForm() {
     console.log("New milestones data", newMilestone);
     try {
       const response = await fetch(
-        "https://kindiadmin.up.railway.app/api/milestones",
+        "https://lionfish-app-98urn.ondigitalocean.app/api/milestones",
         {
           method: "POST",
           headers: {
@@ -895,7 +895,7 @@ export function CreateMilestoneForm() {
             <div className="mt-4">
               <img
                 src={media.url}
-                // src={`https://kindiadmin.up.railway.app${media.url}`}
+                // src={`https://lionfish-app-98urn.ondigitalocean.app${media.url}`}
                 className="w-32 h-32 object-cover"
               />
               <p>{media.name}</p>

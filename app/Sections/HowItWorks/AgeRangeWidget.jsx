@@ -38,9 +38,9 @@ const AgeCard = ({ bgImage, image, title, body, link }) => {
             {title || "title"}
           </h2>
 
-          <p className="text-[#0a1932] prose w-full text-[16px] font-medium font-fredoka leading-[20px] text-start mt-2">
+          <div className="text-[#0a1932] prose w-full text-[16px] font-medium font-fredoka leading-[20px] text-start mt-2">
             {body || "Description"}
-          </p>
+          </div>
         </div>
         <Link
           href={link || "/p/community"}
@@ -61,7 +61,7 @@ export default function AgeRangeWidget() {
     const fetchHowItWorks = async () => {
       try {
         const response = await fetch(
-          "https://kindiadmin.up.railway.app/api/how-it-work-page?populate[AgeGroup][populate]=Content.Icon"
+          "https://lionfish-app-98urn.ondigitalocean.app/api/how-it-work-page?populate[AgeGroup][populate]=Content.Icon"
         );
         if (!response.ok) {
           throw new Error(`Error fetching data: ${response.statusText}`);
@@ -152,7 +152,7 @@ export default function AgeRangeWidget() {
                   // }
                   image={
                     content.Icon
-                      ? `https://kindiadmin.up.railway.app${content.Icon.url}`
+                      ? `https://lionfish-app-98urn.ondigitalocean.app${content.Icon.url}`
                       : "/Images/AgeCardOne.svg"
                   }
                   bgImage="/Images/AgeRangeOne.svg"
@@ -183,12 +183,11 @@ export default function AgeRangeWidget() {
                   key={index}
                   image={
                     content.Icon
-                      ? `https://kindiadmin.up.railway.app${content.Icon.url}`
+                      ? `https://lionfish-app-98urn.ondigitalocean.app${content.Icon.url}`
                       : "/Images/AgeCardOne.svg"
                   }
                   bgImage="/Images/AgeRangeTwo.svg"
                   title={content?.Title || "Toddler"}
-                  // body={content?.Body}
                   body={
                     <p
                       dangerouslySetInnerHTML={{
@@ -222,12 +221,11 @@ export default function AgeRangeWidget() {
                   key={index}
                   image={
                     content.Icon
-                      ? `https://kindiadmin.up.railway.app${content.Icon.url}`
+                      ? `https://lionfish-app-98urn.ondigitalocean.app${content.Icon.url}`
                       : "/Images/AgeCardOne.svg"
                   }
                   bgImage="/Images/AgeRangeThree.svg"
                   title={content?.Title}
-                  // body={content?.Body}
                   body={
                     <p dangerouslySetInnerHTML={{ __html: content?.Body }} />
                   }
@@ -253,12 +251,11 @@ export default function AgeRangeWidget() {
                   key={index}
                   image={
                     content.Icon
-                      ? `https://kindiadmin.up.railway.app${content.Icon.url}`
+                      ? `https://lionfish-app-98urn.ondigitalocean.app${content.Icon.url}`
                       : "/Images/AgeCardOne.svg"
                   }
                   bgImage="/Images/AgeRangeFour.svg"
                   title={content?.Title}
-                  // body={content?.Body}
                   body={
                     <p dangerouslySetInnerHTML={{ __html: content?.Body }} />
                   }
@@ -272,7 +269,6 @@ export default function AgeRangeWidget() {
 
         {/* Right Arrow Button */}
         <button
-          // className="absolute right-0 z-10 bg-gray-500 bg-opacity-30 rounded-full p-2"
           className="absolute w-[32px] h-[32px] hidden lg:flex justify-center items-center right-0 transform -translate-y-1/2 bg-[#6f6f6f] bg-opacity-30 backdrop-blur-lg text-[#000000] p-2 rounded-full z-10"
           onClick={() => handleScroll("right")}
           aria-label="Scroll Right"

@@ -19,7 +19,7 @@ export default function SliderSection() {
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(
-        "https://kindiadmin.up.railway.app/api/slider?populate=Content.Media"
+        "https://lionfish-app-98urn.ondigitalocean.app/api/slider?populate=Content.Media"
       );
       const result = await response.json();
       setData(result.data);
@@ -55,7 +55,7 @@ export default function SliderSection() {
                     <img
                       className="rounded-lg max-w-[300px] h-[300px] w-full object-contain"
                       // src={section?.Media[0]?.url}
-                      src={`https://kindiadmin.up.railway.app${section?.Media[0]?.url}`}
+                      src={`https://lionfish-app-98urn.ondigitalocean.app${section?.Media[0]?.url}`}
                       alt={section.Media.name}
                     />
                   </>
@@ -95,7 +95,7 @@ export default function SliderSection() {
 //   const [openDialog, setOpenDialog] = useState(false);
 
 //   useEffect(() => {
-//     fetch("https://kindiadmin.up.railway.app/api/slider?populate=*")
+//     fetch("https://lionfish-app-98urn.ondigitalocean.app/api/slider?populate=*")
 //       .then((res) => res.json())
 //       .then((data) => {
 //         setFormData(data.data);
@@ -125,7 +125,7 @@ export default function SliderSection() {
 //     console.log("Sent Data", payload);
 
 //     try {
-//       const res = await fetch("https://kindiadmin.up.railway.app/api/slider", {
+//       const res = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/slider", {
 //         method: "PUT",
 //         headers: {
 //           "Content-Type": "application/json",
@@ -309,7 +309,7 @@ export function UpdateSliderSection() {
     const fetchHIWData = async () => {
       try {
         const res = await fetch(
-          "https://kindiadmin.up.railway.app/api/slider?populate=Content.Media"
+          "https://lionfish-app-98urn.ondigitalocean.app/api/slider?populate=Content.Media"
         );
         const data = await res.json();
         const sliderData = data.data;
@@ -353,7 +353,7 @@ export function UpdateSliderSection() {
     console.log("payload sent", payload);
 
     try {
-      const res = await fetch("https://kindiadmin.up.railway.app/api/slider", {
+      const res = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/slider", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -520,7 +520,7 @@ export function UpdateSliderSection() {
               {section.Media ? (
                 <div className="mt-2">
                   <img
-                    src={`https://kindiadmin.up.railway.app${section.Media.url}`}
+                    src={`https://lionfish-app-98urn.ondigitalocean.app${section.Media.url}`}
                     alt={section.Title}
                     className="w-32 h-32 object-cover border rounded-md"
                   />

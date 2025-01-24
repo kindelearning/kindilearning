@@ -20,7 +20,7 @@ export default function HowItWorksSection() {
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(
-        "https://kindiadmin.up.railway.app/api/howitwork?populate=HIWSection.Media"
+        "https://lionfish-app-98urn.ondigitalocean.app/api/how-it-work-section?populate=HIWSection.Media"
       );
       const result = await response.json();
       setData(result.data);
@@ -73,7 +73,7 @@ export default function HowItWorksSection() {
               <img
                 className="rounded-lg max-w-[300px] h-[300px] w-full object-contain"
                 // src={section.Media.url}
-                src={`https://kindiadmin.up.railway.app${section.Media.url}`}
+                src={`https://lionfish-app-98urn.ondigitalocean.app${section.Media.url}`}
                 alt={section.Media.name || "How it works image"}
               />
             ) : (
@@ -118,7 +118,7 @@ export default function HowItWorksSection() {
 //   const [media, setMedia] = useState(null); // Use `null` for initial media
 
 //   useEffect(() => {
-//     fetch("https://kindiadmin.up.railway.app/api/howitwork?populate=*")
+//     fetch("https://lionfish-app-98urn.ondigitalocean.app/api/how-it-work-section?populate=*")
 //       .then((res) => res.json())
 //       .then((data) => {
 //         setFormData(data.data);
@@ -159,7 +159,7 @@ export default function HowItWorksSection() {
 //     console.log("Sent Data", payload);
 
 //     try {
-//       const res = await fetch("https://kindiadmin.up.railway.app/api/howitwork", {
+//       const res = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/how-it-work-section", {
 //         method: "PUT",
 //         headers: {
 //           "Content-Type": "application/json",
@@ -303,7 +303,7 @@ export default function HowItWorksSection() {
 //                   {media ? (
 //                     <div className="mt-4">
 //                       <img
-//                         src={`https://kindiadmin.up.railway.app${media.url}`}
+//                         src={`https://lionfish-app-98urn.ondigitalocean.app${media.url}`}
 //                         className="w-[300px] h-[200px] rounded-lg object-cover"
 //                       />
 //                       <p>{media.name}</p>
@@ -357,7 +357,7 @@ export function UpdateHowItWorks() {
     const fetchHIWData = async () => {
       try {
         const res = await fetch(
-          "https://kindiadmin.up.railway.app/api/howitwork?populate=HIWSection.Media"
+          "https://lionfish-app-98urn.ondigitalocean.app/api/how-it-work-section?populate=HIWSection.Media"
         );
         const data = await res.json();
 
@@ -407,7 +407,7 @@ export function UpdateHowItWorks() {
     console.log("payload sent", payload);
 
     try {
-      const res = await fetch("https://kindiadmin.up.railway.app/api/howitwork", {
+      const res = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/how-it-work-section", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -531,7 +531,7 @@ export function UpdateHowItWorks() {
                 {section.Media ? (
                   <div className="mt-4">
                     <img
-                      src={`https://kindiadmin.up.railway.app${section.Media.url}`}
+                      src={`https://lionfish-app-98urn.ondigitalocean.app${section.Media.url}`}
                       alt={section.title}
                       className="w-32 h-32 object-cover"
                     />

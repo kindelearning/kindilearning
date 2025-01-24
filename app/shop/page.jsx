@@ -444,16 +444,20 @@ export default function ShopPage() {
               {/* Display Filtered Products First */}
               <div className="w-full lg:grid lg:grid-cols-3 xl:grid-cols-3 pl-4 md:px-2 lg:px-0 flex flex-row overflow-x-scroll scrollbar-hidden gap-2">
                 {/* Product Dom, all filters/sorted products will be shown here */}
-
+                {/* `https://lionfish-app-98urn.ondigitalocean.app${image}` */}
                 {paginatedProducts.map((product) => {
                   return (
                     <div key={product.id} className="product-card">
                       <ProductCard
                         productUrl={`/shop/${product.documentId}`}
                         image={
-                          product?.FeaturedImage?.[0]?.url ||
+                          product?.FeaturedImage? `https://lionfish-app-98urn.ondigitalocean.app${product?.FeaturedImage?.[0]?.url}` :
                           "/Images/BlogThumb.png"
                         }
+                        // image={
+                        //   product?.FeaturedImage?.[0]?.url ||
+                        //   "/Images/BlogThumb.png"
+                        // }
                         price={
                           product.DiscountPrice ||
                           product.Price ||
@@ -465,7 +469,7 @@ export default function ShopPage() {
                   );
                 })}
               </div>
-              {/* // image={`https://kindiadmin.up.railway.app${
+              {/* // image={`https://lionfish-app-98urn.ondigitalocean.app${
                 //   product?.FeaturedImage?.[0]?.url ||
                 //   "/uploads/default-image.webp"
                 // }`} */}
@@ -1318,7 +1322,7 @@ export default function ShopPage() {
 //                         <div key={product.id} className="border">
 //                           <Link href={`/shop/${product.documentId}`}>
 //                             <ProductCard
-//                               image={`https://kindiadmin.up.railway.app${product.FeaturedImage.url}`}
+//                               image={`https://lionfish-app-98urn.ondigitalocean.app${product.FeaturedImage.url}`}
 //                               price={product.DiscountPrice}
 //                               title={product.Name}
 //                             />

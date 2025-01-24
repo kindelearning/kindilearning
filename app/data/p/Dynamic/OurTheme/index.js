@@ -1,6 +1,6 @@
 export async function fetchOurThemes() {
     try {
-      const response = await fetch("https://kindiadmin.up.railway.app/api/our-themes?populate=*");
+      const response = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/our-themes?populate=*");
   
       if (!response.ok) {
         throw new Error(`Error fetching data: ${response.statusText}`);

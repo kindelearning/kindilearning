@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-const STRAPI_API_URL = "https://kindiadmin.up.railway.app/api/tnc?populate=*"; // Your Strapi API URL
+const STRAPI_API_URL = "https://lionfish-app-98urn.ondigitalocean.app/api/tnc?populate=*"; // Your Strapi API URL
 
 // Handle GET request to fetch Tnc content with populate
 export async function GET(req) {

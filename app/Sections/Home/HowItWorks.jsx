@@ -11,7 +11,7 @@ export default function HowItWorks() {
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(
-        "https://kindiadmin.up.railway.app/api/howitwork?populate=HIWSection.Media"
+        "https://lionfish-app-98urn.ondigitalocean.app/api/how-it-work-section?populate=HIWSection.Media"
       );
       const result = await response.json();
       setData(result.data);
@@ -110,20 +110,19 @@ export default function HowItWorks() {
                       rel="noopener noreferrer"
                       className="w-full h-12 "
                     >
-                      <Link
-                        href="/p/how-it-works"
+                      <div
                         className="absolute text-center py-2 animate-fade-in hover:bg-red bg-white hover:text-white text-red shadow border-2 border-white clarabutton"
                       >
                         SHOW ME
-                      </Link>
+                      </div>
                     </Link>
                   </div>
                 </div>
                 <div className="w-full h-[460px] animate-fade-in md:max-w-[500px] flex items-end justify-end">
                   {section.Media && section.Media.url ? (
                     <img
-                      // src={`https://kindiadmin.up.railway.app${section.Media.url}`}
-                      src={`https://kindiadmin.up.railway.app${section.Media.url}`}
+                      // src={`https://lionfish-app-98urn.ondigitalocean.app${section.Media.url}`}
+                      src={`https://lionfish-app-98urn.ondigitalocean.app${section.Media.url}`}
                       alt="Kindi"
                       width={100}
                       height={100}
@@ -151,12 +150,12 @@ export default function HowItWorks() {
             {data.HIWSection?.slice(1, 2).map((section, index) => (
               <div
                 key={index}
-                className="flex flex-col-reverse lg:flex-row xl:flex-row w-full items-center justify-between py-8 gap-4"
+                className="flex flex-col lg:flex-row xl:flex-row w-full items-center justify-between py-8 gap-4"
               >
                 <div className="w-full h-[460px] animate-fade-in md:max-w-[500px] flex items-end justify-end">
                   {section.Media && section.Media.url ? (
                     <img
-                      src={`https://kindiadmin.up.railway.app${section.Media.url}`}
+                      src={`https://lionfish-app-98urn.ondigitalocean.app${section.Media.url}`}
                       alt="Kindi"
                       width={100}
                       height={100}
@@ -211,12 +210,11 @@ export default function HowItWorks() {
                       rel="noopener noreferrer"
                       className="w-full h-12 "
                     >
-                      <Link
-                        href="/p/how-it-works"
+                      <div
                         className="absolute text-center py-2 animate-fade-in hover:bg-red bg-white hover:text-white text-red shadow border-2 border-white clarabutton"
                       >
                         SHOW ME
-                      </Link>
+                      </div>
                     </Link>
                   </div>
                 </div>
@@ -273,19 +271,18 @@ export default function HowItWorks() {
                       rel="noopener noreferrer"
                       className="w-full h-12 "
                     >
-                      <Link
-                        href="/p/how-it-works"
+                      <span
                         className="absolute text-center py-2 animate-fade-in hover:bg-red bg-white hover:text-white text-red shadow border-2 border-white clarabutton"
                       >
                         SHOW ME
-                      </Link>
+                      </span>
                     </Link>
                   </div>
                 </div>
                 <div className="w-full h-[460px] animate-fade-in md:max-w-[500px] flex items-end justify-end">
                   {section.Media && section.Media.url ? (
                     <img
-                      src={`https://kindiadmin.up.railway.app${section.Media.url}`}
+                      src={`https://lionfish-app-98urn.ondigitalocean.app${section.Media.url}`}
                       alt="Kindi"
                       width={100}
                       height={100}

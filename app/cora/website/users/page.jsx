@@ -100,7 +100,7 @@ export default function AdminUsersPage() {
     const fetchUsers = async () => {
       try {
         const response = await fetch(
-          "https://kindiadmin.up.railway.app/api/users?populate=*",
+          "https://lionfish-app-98urn.ondigitalocean.app/api/users?populate=*",
           {
             method: "GET",
             headers: {
@@ -128,7 +128,7 @@ export default function AdminUsersPage() {
 
   const handleUpdate = (updatedUser) => {
     // Here, you can send a PUT request to update the user's details
-    fetch(`https://kindiadmin.up.railway.app/api/users`, {
+    fetch(`https://lionfish-app-98urn.ondigitalocean.app/api/users`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -303,14 +303,14 @@ export default function AdminUsersPage() {
                   {user.profilepic ? (
                     <img
                       // src={user.profilepic.url}
-                      src={`https://kindiadmin.up.railway.app${user.profilepic.url}`}
+                      src={`https://lionfish-app-98urn.ondigitalocean.app${user.profilepic.url}`}
                       alt="Profile"
                       className="w-10 h-10 rounded-full"
                     />
                   ) : (
                     <Image
                       src={ProfilePlaceholder01}
-                      // src={`https://kindiadmin.up.railway.app${user.profilepic.url}`}
+                      // src={`https://lionfish-app-98urn.ondigitalocean.app${user.profilepic.url}`}
                       alt="Profile"
                       className="w-10 h-10 rounded-full"
                     />
@@ -574,7 +574,7 @@ const UserEditForm = ({ userId, onUpdate }) => {
     const fetchUserData = async () => {
       try {
         const response = await fetch(
-          `https://kindiadmin.up.railway.app/api/users/${userId}?populate=*`
+          `https://lionfish-app-98urn.ondigitalocean.app/api/users/${userId}?populate=*`
         );
         const data = await response.json();
 
@@ -611,7 +611,7 @@ const UserEditForm = ({ userId, onUpdate }) => {
 
     try {
       const response = await fetch(
-        `https://kindiadmin.up.railway.app/api/users/${userId}`,
+        `https://lionfish-app-98urn.ondigitalocean.app/api/users/${userId}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

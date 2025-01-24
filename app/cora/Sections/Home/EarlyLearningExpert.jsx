@@ -25,10 +25,10 @@ export default function EarlyLearningExpert() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://kindiadmin.up.railway.app/api/early-learning-expert?populate=Content.Media"
+          "https://lionfish-app-98urn.ondigitalocean.app/api/early-learning-expert?populate=Content.Media"
         );
         const data = await response.json();
-        console.log("Monthlytheme Database", data);
+        // console.log("Monthlytheme Database", data);
         if (data?.data) {
           setContent(data.data.Content); // Set the fetched data
         } else {
@@ -78,7 +78,7 @@ export default function EarlyLearningExpert() {
         <div className="w-full max-w-[400px] mx-auto">
           <video
             // src={content.Media.url}
-            src={`https://kindiadmin.up.railway.app${content.Media.url}`}
+            src={`https://lionfish-app-98urn.ondigitalocean.app${content.Media.url}`}
             controls
             autoPlay
             className="w-full rounded-xl shadow-lg"
@@ -107,7 +107,7 @@ export default function EarlyLearningExpert() {
 //     const fetchContent = async () => {
 //       try {
 //         const response = await fetch(
-//           "https://kindiadmin.up.railway.app/api/early-learning-expert?populate=*"
+//           "https://lionfish-app-98urn.ondigitalocean.app/api/early-learning-expert?populate=*"
 //         );
 //         const data = await response.json();
 //         setContent({
@@ -142,7 +142,7 @@ export default function EarlyLearningExpert() {
 //     try {
 //       // Use documentId in the PUT request URL
 //       const response = await fetch(
-//         `https://kindiadmin.up.railway.app/api/early-learning-expert`,
+//         `https://lionfish-app-98urn.ondigitalocean.app/api/early-learning-expert`,
 //         {
 //           method: "PUT",
 //           headers: {
@@ -265,7 +265,7 @@ export function UpdateEarlyLearningExpert() {
     const fetchContentData = async () => {
       try {
         const res = await fetch(
-          "https://kindiadmin.up.railway.app/api/early-learning-expert?populate=Content.Media"
+          "https://lionfish-app-98urn.ondigitalocean.app/api/early-learning-expert?populate=Content.Media"
         );
         const data = await res.json();
 
@@ -303,7 +303,7 @@ export function UpdateEarlyLearningExpert() {
     console.log("Payload Created", payload);
 
     try {
-      const res = await fetch("https://kindiadmin.up.railway.app/api/early-learning-expert", {
+      const res = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/early-learning-expert", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -388,9 +388,9 @@ export function UpdateEarlyLearningExpert() {
               <video
                 autoPlay
                 controls
-                src={media.url}
-                // src={`https://kindiadmin.up.railway.app${media.url}`}
-                className="w-32 h-32 object-cover"
+                // src={media.url}
+                src={`https://lionfish-app-98urn.ondigitalocean.app${media.url}`}
+                className="w-60 rounded-lg h-32 object-cover"
               />
               <p>{media.name}</p>
             </div>

@@ -15,7 +15,7 @@ export function GoogleCallback() {
       if (googleToken) {
         try {
           // Send the token to Strapi for validation and login
-          const res = await fetch("https://kindiadmin.up.railway.app/api/auth/google", {
+          const res = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/auth/google", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

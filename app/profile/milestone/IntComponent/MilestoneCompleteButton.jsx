@@ -173,7 +173,7 @@ const MilestoneCOmpletedButton = ({ kidDocumentId, milestoneId }) => {
 
     try {
       const response = await fetch(
-        `https://kindiadmin.up.railway.app/api/kids/${kidDocumentId}?populate=*`,
+        `https://lionfish-app-98urn.ondigitalocean.app/api/kids/${kidDocumentId}?populate=*`,
         {
           method: "PUT",
           headers: {

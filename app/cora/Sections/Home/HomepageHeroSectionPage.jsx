@@ -17,10 +17,10 @@ export default function HomepageHeroSection() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://kindiadmin.up.railway.app/api/homepage-hero-section?populate=Image"
+          "https://lionfish-app-98urn.ondigitalocean.app/api/homepage-hero-section?populate=Image"
         );
         const result = await response.json();
-        console.log("Hero section", result);
+        // console.log("Hero section", result);
 
         if (result.data) {
           setData(result.data);
@@ -82,7 +82,7 @@ export default function HomepageHeroSection() {
           {data.Image?.url ? (
             <video autoPlay controls
               // src={data.Image.url}
-              src={`https://kindiadmin.up.railway.app${data.Image.url}`}
+              src={`https://lionfish-app-98urn.ondigitalocean.app${data.Image.url}`}
               width={1200}
               height={800}
               className="w-full max-w-[300px] mx-auto rounded-xl "

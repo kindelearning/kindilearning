@@ -10,7 +10,7 @@ const DeleteContent = ({ documentId, onDelete }) => {
     setError(null);
 
     try {
-      const response = await fetch(`https://kindiadmin.up.railway.app/api/contents/${documentId}`, {
+      const response = await fetch(`https://lionfish-app-98urn.ondigitalocean.app/api/contents/${documentId}`, {
         method: 'DELETE',
       });
 

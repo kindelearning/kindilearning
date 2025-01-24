@@ -23,7 +23,7 @@ export default function PopularActivities() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://kindiadmin.up.railway.app/api/popularlearning?populate=Content.Media"
+          "https://lionfish-app-98urn.ondigitalocean.app/api/popularlearning?populate=Content.Media"
         );
         const data = await response.json();
         console.log("popularlearning Database", data);
@@ -71,7 +71,7 @@ export default function PopularActivities() {
 
       {/* {content.Media ? (
         <img
-          // src={`https://kindiadmin.up.railway.app${content.Media[0].url}`}
+          // src={`https://lionfish-app-98urn.ondigitalocean.app${content.Media[0].url}`}
           src={content.Media[0].url}
           alt="Child Development Media"
           className="w-full h-auto"
@@ -83,7 +83,7 @@ export default function PopularActivities() {
   );
 }
 
-// https://kindiadmin.up.railway.app/api/popularlearning?ite9ryv5396fqmfyrmj29lv2
+// https://lionfish-app-98urn.ondigitalocean.app/api/popularlearning?ite9ryv5396fqmfyrmj29lv2
 export function UpdatePopularLearningForm() {
   const [content, setContent] = useState({
     title: "",
@@ -100,7 +100,7 @@ export function UpdatePopularLearningForm() {
     const fetchContent = async () => {
       try {
         const response = await fetch(
-          "https://kindiadmin.up.railway.app/api/popularlearning?populate=*"
+          "https://lionfish-app-98urn.ondigitalocean.app/api/popularlearning?populate=*"
         );
         const data = await response.json();
         setContent({
@@ -133,7 +133,7 @@ export function UpdatePopularLearningForm() {
 
     try {
       const response = await fetch(
-        "https://kindiadmin.up.railway.app/api/popularlearning?nxfbah0rlj4nhjo381vg7x8q",
+        "https://lionfish-app-98urn.ondigitalocean.app/api/popularlearning?nxfbah0rlj4nhjo381vg7x8q",
         {
           method: "PUT",
           headers: {

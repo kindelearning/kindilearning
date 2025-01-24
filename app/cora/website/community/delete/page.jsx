@@ -10,7 +10,7 @@ export default function DeleteContent({ documentId, onDelete }) {
 
     try {
       const response = await fetch(
-        `https://kindiadmin.up.railway.app/api/blogs/${documentId}`,
+        `https://lionfish-app-98urn.ondigitalocean.app/api/blogs/${documentId}`,
         {
           method: "DELETE",
         }

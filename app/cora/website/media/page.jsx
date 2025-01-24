@@ -45,7 +45,7 @@ export default function MediaPage() {
   useEffect(() => {
     const fetchMediaAssets = async () => {
       try {
-        const response = await fetch("https://kindiadmin.up.railway.app/api/upload/files");
+        const response = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/upload/files");
         const result = await response.json();
 
         if (Array.isArray(result)) {
@@ -122,7 +122,7 @@ export default function MediaPage() {
   const deleteMediaAsset = async (documentId) => {
     try {
       const response = await fetch(
-        `https://kindiadmin.up.railway.app/api/upload/files/${documentId}`,
+        `https://lionfish-app-98urn.ondigitalocean.app/api/upload/files/${documentId}`,
         {
           method: "DELETE",
         }
@@ -248,12 +248,12 @@ export default function MediaPage() {
                       controls
                       className="w-24 rounded-[8px] bg-[#a0a0a0] h-16 object-cover"
                       // src={asset.url}
-                      src={`https://kindiadmin.up.railway.app${asset.url}`}
+                      src={`https://lionfish-app-98urn.ondigitalocean.app${asset.url}`}
                     />
                   ) : (
                     <img
                       // src={asset.url}
-                      src={`https://kindiadmin.up.railway.app${asset.url}`}
+                      src={`https://lionfish-app-98urn.ondigitalocean.app${asset.url}`}
                       alt={asset.name}
                       className="w-24 rounded-[8px] bg-[#a0a0a0] h-16 object-cover"
                     />

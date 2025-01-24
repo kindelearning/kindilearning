@@ -15,7 +15,7 @@ export default function Page() {
   const fetchThemes = async () => {
     try {
       const res = await fetch(
-        "https://kindiadmin.up.railway.app/api/our-themes?populate=*"
+        "https://lionfish-app-98urn.ondigitalocean.app/api/our-themes?populate=*"
       );
       const data = await res.json();
 

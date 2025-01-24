@@ -3,7 +3,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 
 async function fetchThemeById(documentId) {
-  const res = await fetch(`https://kindiadmin.up.railway.app/api/our-themes/${documentId}?populate=*`);
+  const res = await fetch(`https://lionfish-app-98urn.ondigitalocean.app/api/our-themes/${documentId}?populate=*`);
   const data = await res.json();
 
   if (!data || !data.data) {
@@ -32,7 +32,7 @@ export default async function ThemePage({ params }) {
             <img
               width={1400}
               height={600}
-              src={`https://kindiadmin.up.railway.app${Thumbnail?.url}`}
+              src={`https://lionfish-app-98urn.ondigitalocean.app${Thumbnail?.url}`}
               // src={Thumbnail?.url}
               alt={`Thumbnail for ${Title}`}
               className="w-full hover:scale-105 duration-300 lg:max-w-[960px] lg:rounded-xl h-60 md:h-[400px] lg:h-[400px] object-cover"
@@ -41,7 +41,7 @@ export default async function ThemePage({ params }) {
             <Image
               width={1400}
               height={600}
-              // src={`https://kindiadmin.up.railway.app${Thumbnail?.url}`}
+              // src={`https://lionfish-app-98urn.ondigitalocean.app${Thumbnail?.url}`}
               src={ThemeDummy}
               alt={`Thumbnail for ${Title}`}
               className="w-full hover:scale-105 duration-300 lg:max-w-[960px] lg:rounded-xl h-60 md:h-[400px] lg:h-[400px] object-cover"

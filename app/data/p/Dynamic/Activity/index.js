@@ -1,7 +1,7 @@
 export async function fetchAllActivities() {
   try {
     const response = await fetch(
-      "https://kindiadmin.up.railway.app/api/activities?populate=*"
+      "https://lionfish-app-98urn.ondigitalocean.app/api/activities?populate=*"
     );
 
     if (!response.ok) {

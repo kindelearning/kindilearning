@@ -10,7 +10,7 @@ const ProductCard = ({ product }) => {
       {product.FeaturedImage ? (
         <img
           src={product.FeaturedImage} // Assuming the product image URL is under 'thumbnail'
-          // src={`https://kindiadmin.up.railway.app${product.FeaturedImage}`} // Assuming the product image URL is under 'thumbnail'
+          // src={`https://lionfish-app-98urn.ondigitalocean.app${product.FeaturedImage}`} // Assuming the product image URL is under 'thumbnail'
           alt={product.Name}
           className="w-16 h-16 object-cover rounded-lg"
         />
@@ -48,7 +48,7 @@ export default function ProductWidgets() {
   // Function to fetch product data from the API
   const fetchProductData = async () => {
     try {
-      const response = await fetch("https://kindiadmin.up.railway.app/api/products"); // Replace with the correct API endpoint for fetching all products
+      const response = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/products"); // Replace with the correct API endpoint for fetching all products
       const data = await response.json();
       setProductData(data.data); // Assuming the response structure has a 'data' field containing an array of products
     } catch (error) {
@@ -144,7 +144,7 @@ export function LatestProducts() {
   const fetchProducts = async () => {
     try {
       const response = await fetch(
-        "https://kindiadmin.up.railway.app/api/products?populate=*"
+        "https://lionfish-app-98urn.ondigitalocean.app/api/products?populate=*"
       );
       const data = await response.json();
 

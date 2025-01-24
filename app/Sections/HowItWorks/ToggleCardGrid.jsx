@@ -14,8 +14,8 @@ export default function ToggleCardGrid() {
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(
-        "https://kindiadmin.up.railway.app/api/how-it-work-page?populate[AreaOflearningCards][populate]=Icon"
-        // "https://kindiadmin.up.railway.app/api/how-it-work-page?populate=*"
+        "https://lionfish-app-98urn.ondigitalocean.app/api/how-it-work-page?populate[AreaOflearningCards][populate]=Icon"
+        // "https://lionfish-app-98urn.ondigitalocean.app/api/how-it-work-page?populate=*"
       );
       const data = await response.json();
       setCards(data.data.AreaOflearningCards);
@@ -45,7 +45,7 @@ export default function ToggleCardGrid() {
             // icon={card?.Icon?.url}
             icon={
               card?.Icon
-                ? `https://kindiadmin.up.railway.app${card?.Icon?.url}`
+                ? `https://lionfish-app-98urn.ondigitalocean.app${card?.Icon?.url}`
                 : "/Images/KindiHeart.svg"
             }
           />

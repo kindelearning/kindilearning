@@ -19,7 +19,7 @@ export default function TheTeam() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://kindiadmin.up.railway.app/api/our-mission?populate[Hero][populate]=Media&populate[Parentwithkindi][populate]=Media&populate[OurStory][populate]=Media&populate[OurTeam][populate]=*"
+          "https://lionfish-app-98urn.ondigitalocean.app/api/our-mission?populate[Hero][populate]=Media&populate[Parentwithkindi][populate]=Media&populate[OurStory][populate]=Media&populate[OurTeam][populate]=*"
         );
         const data = await response.json();
         // console.log("Fetched data:", data); // Log the response structure
@@ -72,7 +72,7 @@ export default function TheTeam() {
               bgColor="#ff8e00"
               imageSrc={
                 member?.MemberPic
-                  ? `https://kindiadmin.up.railway.app${member?.MemberPic.url}`
+                  ? `https://lionfish-app-98urn.ondigitalocean.app${member?.MemberPic.url}`
                   : "/Images/Thomas.png"
               }
               title={member.Name || "Jannie"}
@@ -97,7 +97,7 @@ export default function TheTeam() {
               degree={member.Degree || "BA (Hons) Childhood Studies (Level 16)"}
               imageSrc={
                 member?.MemberPic
-                  ? `https://kindiadmin.up.railway.app${member?.MemberPic.url}`
+                  ? `https://lionfish-app-98urn.ondigitalocean.app${member?.MemberPic.url}`
                   : "/Images/Thomas.png"
               }
               // imageSrc={Thomas}

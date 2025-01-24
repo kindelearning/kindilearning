@@ -13,7 +13,7 @@ export default function Page() {
   const fetchBlogs = async () => {
     try {
       const res = await fetch(
-        "https://kindiadmin.up.railway.app/api/blogs?populate=comments&populate=FeaturedImage"
+        "https://lionfish-app-98urn.ondigitalocean.app/api/blogs?populate=comments&populate=FeaturedImage"
       );
       const data = await res.json();
       // console.log("API Response:", data);
@@ -133,7 +133,7 @@ export default function Page() {
     </>
   );
 }
-// image={`https://kindiadmin.up.railway.app${item.FeaturedImage.url}`}
+// image={`https://lionfish-app-98urn.ondigitalocean.app${item.FeaturedImage.url}`}
 // "use client";
 
 // import NotFound from "@/app/not-found";

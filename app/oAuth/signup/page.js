@@ -20,7 +20,7 @@ export function GoogleSignUp() {
 
       // Send the token to your Strapi backend for authentication
       const res = await fetch(
-        "https://kindiadmin.up.railway.app/api/auth/google/callback",
+        "https://lionfish-app-98urn.ondigitalocean.app/api/auth/google/callback",
         {
           method: "POST",
           headers: {
@@ -73,7 +73,7 @@ export default function SignupPage() {
 
     try {
       const response = await fetch(
-        "https://kindiadmin.up.railway.app/api/auth/local/register",
+        "https://lionfish-app-98urn.ondigitalocean.app/api/auth/local/register",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

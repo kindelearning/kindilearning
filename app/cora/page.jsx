@@ -54,7 +54,7 @@ export function AdminPanel() {
   useEffect(() => {
     const fetchUserRole = async () => {
       try {
-        const response = await fetch("https://kindiadmin.up.railway.app/api/users/me", {
+        const response = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/users/me", {
           method: "GET",
           headers: {
             Authorization: `Bearer ${localStorage.getItem("jwt")}`, // Fetch the JWT token

@@ -61,7 +61,7 @@ export default async function HeroOueMission() {
 //   const [openDialog, setOpenDialog] = useState(false);
 
 //   useEffect(() => {
-//     fetch("https://kindiadmin.up.railway.app/api/our-mission?populate=*")
+//     fetch("https://lionfish-app-98urn.ondigitalocean.app/api/our-mission?populate=*")
 //       .then((res) => res.json())
 //       .then((data) => {
 //         // Assuming the response structure is { data: { Hero: {...} } }
@@ -100,7 +100,7 @@ export default async function HeroOueMission() {
 //     console.log("Sent Data", payload);
 
 //     try {
-//       const res = await fetch("https://kindiadmin.up.railway.app/api/our-mission", {
+//       const res = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/our-mission", {
 //         method: "PUT",
 //         headers: {
 //           "Content-Type": "application/json",
@@ -210,7 +210,7 @@ export function UpdateHeroSection() {
     const fetchContentData = async () => {
       try {
         const res = await fetch(
-          "https://kindiadmin.up.railway.app/api/our-mission?populate=Hero.Media"
+          "https://lionfish-app-98urn.ondigitalocean.app/api/our-mission?populate=Hero.Media"
         );
         const data = await res.json();
 
@@ -248,7 +248,7 @@ export function UpdateHeroSection() {
     console.log("Payload Created", payload);
 
     try {
-      const res = await fetch("https://kindiadmin.up.railway.app/api/our-mission", {
+      const res = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/our-mission", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -333,7 +333,7 @@ export function UpdateHeroSection() {
           {media ? (
             <div className="mt-4">
               <img
-                src={`https://kindiadmin.up.railway.app${media.url}`}
+                src={`https://lionfish-app-98urn.ondigitalocean.app${media.url}`}
                 alt={media.name}
                 className="w-32 h-32 object-cover"
               />

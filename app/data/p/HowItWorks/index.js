@@ -1,7 +1,7 @@
 export async function fetchHowItWorks() {
   try {
     const response = await fetch(
-      "https://kindiadmin.up.railway.app/api/how-it-work-page?populate=*"
+      "https://lionfish-app-98urn.ondigitalocean.app/api/how-it-work-page?populate=*"
     );
     if (!response.ok) {
       throw new Error(`Error fetching data: ${response.statusText}`);

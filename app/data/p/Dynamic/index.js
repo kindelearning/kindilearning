@@ -1,7 +1,7 @@
 export async function fetchDynamicPageContent() {
   try {
     const response = await fetch(
-      "https://kindiadmin.up.railway.app/api/dynammic-page-content?populate=*"
+      "https://lionfish-app-98urn.ondigitalocean.app/api/dynammic-page-content?populate=*"
     );
 
     if (!response.ok) {

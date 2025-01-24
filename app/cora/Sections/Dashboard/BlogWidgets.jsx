@@ -208,7 +208,7 @@ const BlogCard = ({ post }) => {
     <div className="flex items-start space-x-4 bg-gray-50 p-4 rounded-lg border border-gray-200 hover:bg-gray-100 transition-all">
       {/* Thumbnail */}
       <img
-        // src={`https://kindiadmin.up.railway.app${post.thumbnail}`}
+        // src={`https://lionfish-app-98urn.ondigitalocean.app${post.thumbnail}`}
         src={post.thumbnail || "/Images/BlogThumb.png"}
         alt={post.title}
         className="w-16 h-16 object-cover rounded-lg"
@@ -236,7 +236,7 @@ export function RecentBlogs() {
     const fetchBlogs = async () => {
       try {
         const response = await fetch(
-          "https://kindiadmin.up.railway.app/api/blogs?populate=*"
+          "https://lionfish-app-98urn.ondigitalocean.app/api/blogs?populate=*"
         );
         const data = await response.json();
 
@@ -293,7 +293,7 @@ const CommentCard = ({ comment, onDelete }) => {
   const handleDelete = async () => {
     try {
       const response = await fetch(
-        `https://kindiadmin.up.railway.app/api/comments/${comment.documentId}`,
+        `https://lionfish-app-98urn.ondigitalocean.app/api/comments/${comment.documentId}`,
         {
           method: "DELETE",
           headers: {
@@ -365,7 +365,7 @@ export function RecentComment() {
   useEffect(() => {
     const fetchComments = async () => {
       try {
-        const response = await fetch("https://kindiadmin.up.railway.app/api/comments");
+        const response = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/comments");
         const data = await response.json();
 
         // Sort the comments by publishedAt to get the recent ones

@@ -33,7 +33,7 @@ export default function EditRefund() {
     const fetchContent = async () => {
       try {
         const response = await fetch(
-          "https://kindiadmin.up.railway.app/api/qualitycontrol?populate=*"
+          "https://lionfish-app-98urn.ondigitalocean.app/api/qualitycontrol?populate=*"
         );
         const data = await response.json();
 
@@ -67,7 +67,7 @@ export default function EditRefund() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await fetch("https://kindiadmin.up.railway.app/api/qualitycontrol", {
+    const response = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/qualitycontrol", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -113,10 +113,7 @@ export default function EditRefund() {
     <>
       <head>
         <title>Quality Controls | Update</title>
-        <meta
-          name="description"
-          content="At Kindi, we blend cutting-edge technology with research-backed early childhood education practices to deliver a seamless, engaging, and effective learning experience for children, carers, and educators."
-        />
+        
       </head>
       <div className="container mx-auto px-8 py-12 font-poppins">
         <div className="mb-8">

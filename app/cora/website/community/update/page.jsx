@@ -30,7 +30,7 @@ import MediaSelector from "../../media/Section/MediaSelector";
 //     const fetchBlogData = async () => {
 //       try {
 //         const res = await fetch(
-//           `https://kindiadmin.up.railway.app/api/blogs/${documentId}?populate=*`
+//           `https://lionfish-app-98urn.ondigitalocean.app/api/blogs/${documentId}?populate=*`
 //         );
 //         const data = await res.json();
 //         setExistingData(data.data);
@@ -62,7 +62,7 @@ import MediaSelector from "../../media/Section/MediaSelector";
 //     formData.append("data[Dislikes]", dislikes);
 
 //     try {
-//       const res = await fetch(`https://kindiadmin.up.railway.app/api/blogs/${documentId}`, {
+//       const res = await fetch(`https://lionfish-app-98urn.ondigitalocean.app/api/blogs/${documentId}`, {
 //         method: "PUT",
 //         body: formData,
 //       });
@@ -185,7 +185,7 @@ const BlogUpdateForm = ({ documentId }) => {
     const fetchBlogData = async () => {
       try {
         const res = await fetch(
-          `https://kindiadmin.up.railway.app/api/blogs/${documentId}?populate=*`
+          `https://lionfish-app-98urn.ondigitalocean.app/api/blogs/${documentId}?populate=*`
         );
         const data = await res.json();
 
@@ -233,7 +233,7 @@ const BlogUpdateForm = ({ documentId }) => {
     console.log("Payload Created", payload);
 
     try {
-      const res = await fetch(`https://kindiadmin.up.railway.app/api/blogs/${documentId}`, {
+      const res = await fetch(`https://lionfish-app-98urn.ondigitalocean.app/api/blogs/${documentId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -284,7 +284,7 @@ const BlogUpdateForm = ({ documentId }) => {
             <div className="mt-4">
               <img
                 // src={media.url}
-                src={`https://kindiadmin.up.railway.app${media.url}`}
+                src={`https://lionfish-app-98urn.ondigitalocean.app${media.url}`}
                 className="w-32 h-32 object-cover"
               />
               <p>{media.name}</p>

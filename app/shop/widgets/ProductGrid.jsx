@@ -117,7 +117,7 @@ export default function ProductGrid() {
                     ? product.FeaturedImage[0].url
                     : "/Images/shop/ProductImage.png"
                 }
-                // image={`https://kindiadmin.up.railway.app${product?.FeaturedImage[0]?.url}`}
+                // image={`https://lionfish-app-98urn.ondigitalocean.app${product?.FeaturedImage[0]?.url}`}
                 price={product.DiscountPrice}
                 title={product.Name}
               />

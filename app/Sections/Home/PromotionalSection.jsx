@@ -16,7 +16,7 @@ export default function PromotionalSection() {
     const fetchContent = async () => {
       try {
         const response = await fetch(
-          "https://kindiadmin.up.railway.app/api/childdevelopmentunlock?populate=Content.Media"
+          "https://lionfish-app-98urn.ondigitalocean.app/api/childdevelopmentunlock?populate=Content.Media"
         );
         const data = await response.json();
 
@@ -100,7 +100,7 @@ export default function PromotionalSection() {
               {content.Media ? (
                 <img
                   // src={content.Media[0]?.url}
-                src={`https://kindiadmin.up.railway.app${content.Media[0]?.url}`}
+                src={`https://lionfish-app-98urn.ondigitalocean.app${content.Media[0]?.url}`}
 
                   alt="Child Development"
                   width={400}
