@@ -323,11 +323,20 @@ export function UpdateSliderSection() {
     fetchHIWData();
   }, []);
 
+  // const handleHIWSectionUpdate = (index, updatedSection) => {
+  //   const updatedHIWSections = [...sliderContent];
+  //   updatedHIWSections[index] = updatedSection;
+  //   setSliderContent(updatedHIWSections);
+  // };
   const handleHIWSectionUpdate = (index, updatedSection) => {
-    const updatedHIWSections = [...sliderContent];
-    updatedHIWSections[index] = updatedSection;
-    setSliderContent(updatedHIWSections);
+    // Use functional update to avoid unnecessary state updates
+    setSliderContent((prevContent) => {
+      const updatedContent = [...prevContent];
+      updatedContent[index] = updatedSection;
+      return updatedContent;
+    });
   };
+
 
   const handleMediaSelect = (selectedMedia, index) => {
     const updatedSection = [...sliderContent];
