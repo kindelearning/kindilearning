@@ -128,7 +128,7 @@ function ActivityCard({ activityData }) {
               alt="ScheduleEvent"
               className="min-w-[32px] min-h-[32px] rounded-[4px] object-cover h-[32px]"
               width={32}
-              height={32} 
+              height={32}
             />
           </div>
 
@@ -147,24 +147,27 @@ function ActivityCard({ activityData }) {
               </div>
             </div>
             <div className="grid grid-cols-4 overflow-x-scroll gap-1 justify-between items-center  scrollbar-hidden">
-              {activityData?.myActivity?.LearningAreaIcons.map((skill, index) => {
-                // Extract the skill title
-                const skillTitle = skill.children[0]?.text;
-                const icon = getIconForSkill(skillTitle); // Get the icon URL dynamically
+              {Array.isArray(activityData?.myActivity?.LearningAreaIcons) &&
+                activityData?.myActivity?.LearningAreaIcons.map(
+                  (skill, index) => {
+                    // Extract the skill title
+                    const skillTitle = skill.children[0]?.text;
+                    const icon = getIconForSkill(skillTitle); // Get the icon URL dynamically
 
-                // console.log("Icon fetched ", icon); // You can remove this in production
-                return (
-                  <Image
-                    key={index}
-                    src={icon || KindiHeart} // Using the icon image URL here
-                    alt={skillTitle}
-                    width={20}
-                    title={skillTitle}
-                    height={20}
-                    className="w-5 h-5 cursor-pointer text-opacity-50 hover:opacity-100 duration-150 ease-out" // Set the size for the image
-                  />
-                );
-              })}
+                    // console.log("Icon fetched ", icon); // You can remove this in production
+                    return (
+                      <Image
+                        key={index}
+                        src={icon || KindiHeart} // Using the icon image URL here
+                        alt={skillTitle}
+                        width={20}
+                        title={skillTitle}
+                        height={20}
+                        className="w-5 h-5 cursor-pointer text-opacity-50 hover:opacity-100 duration-150 ease-out" // Set the size for the image
+                      />
+                    );
+                  }
+                )}
             </div>
           </div>
         </div>

@@ -490,8 +490,8 @@ export function UpdateBadgesTable({ documentId }) {
           {media ? (
             <div className="mt-4">
               <img
-                src={media.url}
-                // src={`https://lionfish-app-98urn.ondigitalocean.app${media.url}`}
+                // src={media.url}
+                src={`https://lionfish-app-98urn.ondigitalocean.app${media.url}`}
                 className="w-32 h-32 object-cover"
               />
               <p>{media.name}</p>
@@ -711,8 +711,8 @@ export function CreateBadgeForm() {
           {media ? (
             <div className="mt-4">
               <img
-                src={media.url}
-                // src={`https://lionfish-app-98urn.ondigitalocean.app${media.url}`}
+                // src={media.url}
+                src={`https://lionfish-app-98urn.ondigitalocean.app${media.url}`}
                 className="w-32 h-32 object-cover"
               />
               <p>{media.name}</p>

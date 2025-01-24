@@ -165,7 +165,7 @@ const DisplayAllBadges = () => {
                           height={80}
                           className="min-w-[80px] min-h-[80px] max-w-[80px] max-h-[80px] object-cover"
                           src={
-                            badge.Thumbnail?.url ||
+                            badge.Thumbnail? `https://lionfish-app-98urn.ondigitalocean.app${badge.Thumbnail?.url}` :
                             "Images/AchievementImage01.svg"
                           }
                           alt={badge.Name}
@@ -301,6 +301,9 @@ export default function Achievement() {
   return (
     <>
       <section className="w-full h-auto bg-[#F5F5F5] md:bg-[#EAEAF5] items-center justify-center flex flex-col md:flex-row px-0">
+        <head>
+          <title> Achievements - Kindi Learning</title>
+        </head>
         {/* Topbar */}
         <div className="w-full flex pt-4 pb-7 md:hidden bg-red">
           <div className="text-center w-full text-white text-[20px] font-semibold font-fredoka leading-tight">
@@ -311,11 +314,11 @@ export default function Achievement() {
           <div className="claracontainer bg-[#F5F5F5] md:bg-[#EAEAF5] -mt-4 rounded-t-[12px] z-2 lg:m-12 px-4 py-6 rounded-xl md:px-2 lg:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-[20px]">
             <TopProfileCard userData={userData} totalactitivuty={myLevels} />
             <div className="flex flex-col w-full gap-12">
-              <div className="flex flex-col w-full gap-2">
+              {/* <div className="flex flex-col w-full gap-2">
                 <div className="text-[#0a1932] text-2xl font-medium font-fredoka w-full">
                   Your acievements
                 </div>
-              </div>
+              </div> */}
               <div className="flex flex-col w-full gap-2">
                 <div className="text-[#0a1932] text-2xl font-medium font-fredoka w-full">
                   To Be Completed

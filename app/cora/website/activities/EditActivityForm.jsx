@@ -187,7 +187,7 @@ export default function EditActivityForm({ documentId }) {
       if (!res.ok) throw new Error("Error updating activity.");
 
       const data = await res.json();
-      // console.log("Updated Activity:", data);
+      console.log("Updated Activity:", data);
       setOpenDialog(true); // Show the success dialog
     } catch (error) {
       console.error("Error updating activity:", error);
