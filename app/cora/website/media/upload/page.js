@@ -33,9 +33,9 @@ const UploadMediaPage = () => {
           "Please select a valid file (JPEG, PNG, GIF, MP4, SVG, WebP, PDF, ZIP)."
         );
         setFile(null); // Clear file if invalid
-      } else if (selectedFile.size > 10 * 1024 * 1024) {
+      } else if (selectedFile.size > 50 * 1024 * 1024) {
         // Limit file size to 10MB
-        setErrorMessage("File size should be under 10MB.");
+        setErrorMessage("File size should be under 50MB.");
         setFile(null); // Clear file if too large
       }
     }

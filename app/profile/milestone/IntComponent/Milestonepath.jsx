@@ -20,6 +20,7 @@ import { Badge } from "@/components/ui/badge";
 import { DialogClose } from "@radix-ui/react-dialog";
 import MarkMilestoneCompleteForm from "./MilestoneCompleteButton";
 import { fetchUserDetails } from "../../api";
+import { activityIcons } from "@/app/constant/menu";
 
 export function CurvePath({
   milestones = [],
@@ -385,68 +386,68 @@ export const TrigSnakeCurve = ({
   );
 };
 
-const OptionSlider = ({
-  options,
-  selectedOption,
-  onSelect,
-  visibleCount = 1,
-}) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+// const OptionSlider = ({
+//   options,
+//   selectedOption,
+//   onSelect,
+//   visibleCount = 1,
+// }) => {
+//   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const handlePrev = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? options.length - visibleCount : prevIndex - 1
-    );
-  };
+//   const handlePrev = () => {
+//     setCurrentIndex((prevIndex) =>
+//       prevIndex === 0 ? options.length - visibleCount : prevIndex - 1
+//     );
+//   };
 
-  const handleNext = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === options.length - visibleCount ? 0 : prevIndex + 1
-    );
-  };
+//   const handleNext = () => {
+//     setCurrentIndex((prevIndex) =>
+//       prevIndex === options.length - visibleCount ? 0 : prevIndex + 1
+//     );
+//   };
 
-  // Automatically select the option when it becomes visible
-  useEffect(() => {
-    const currentOption = options[currentIndex];
-    if (currentOption && currentOption.title !== selectedOption) {
-      onSelect(currentOption.title);
-    }
-  }, [currentIndex, options, selectedOption, onSelect]);
+//   // Automatically select the option when it becomes visible
+//   useEffect(() => {
+//     const currentOption = options[currentIndex];
+//     if (currentOption && currentOption.title !== selectedOption) {
+//       onSelect(currentOption.title);
+//     }
+//   }, [currentIndex, options, selectedOption, onSelect]);
 
-  return (
-    <div className="flex items-center w-full justify-between gap-1">
-      <button
-        onClick={handlePrev}
-        className="w-[32px] h-[32px] flex justify-center items-center left-0 top-1/2 transform bg-white bg-opacity-30 backdrop-blur-lg text-[#000000] p-2 rounded-full z-10"
-      >
-        <ChevronLeft />
-      </button>
-      <div className="flex w-full justify-center">
-        {options
-          .slice(currentIndex, currentIndex + visibleCount)
-          .map(({ title, icon }, index) => (
-            <div
-              key={index}
-              className={`px-4 py-2 w-full max-w-[260px] rounded-full gap-2 bg-white transition duration-200 flex items-center ${
-                title === selectedOption ? "text-gray-800" : "text-gray-500"
-              }`}
-            >
-              <Image className="w-[24px] h-[24px]" src={icon} />
-              <span className="font-fredoka min-w-[max-content] font-semibold">
-                {title}
-              </span>
-            </div>
-          ))}
-      </div>
-      <button
-        onClick={handleNext}
-        className="w-[32px] h-[32px] flex justify-center items-center right-0 top-1/2 transform bg-white bg-opacity-30 backdrop-blur-lg text-[#000000] p-2 rounded-full z-10"
-      >
-        <ChevronRight />
-      </button>
-    </div>
-  );
-};
+//   return (
+//     <div className="flex items-center w-full justify-between gap-1">
+//       <button
+//         onClick={handlePrev}
+//         className="w-[32px] h-[32px] flex justify-center items-center left-0 top-1/2 transform bg-white bg-opacity-30 backdrop-blur-lg text-[#000000] p-2 rounded-full z-10"
+//       >
+//         <ChevronLeft />
+//       </button>
+//       <div className="flex w-full justify-center">
+//         {options
+//           .slice(currentIndex, currentIndex + visibleCount)
+//           .map(({ title, icon }, index) => (
+//             <div
+//               key={index}
+//               className={`px-4 py-2 w-full max-w-[260px] rounded-full gap-2 bg-white transition duration-200 flex items-center ${
+//                 title === selectedOption ? "text-gray-800" : "text-gray-500"
+//               }`}
+//             >
+//               <Image className="w-[24px] h-[24px]" src={icon} />
+//               <span className="font-fredoka min-w-[max-content] font-semibold">
+//                 {title}
+//               </span>
+//             </div>
+//           ))}
+//       </div>
+//       <button
+//         onClick={handleNext}
+//         className="w-[32px] h-[32px] flex justify-center items-center right-0 top-1/2 transform bg-white bg-opacity-30 backdrop-blur-lg text-[#000000] p-2 rounded-full z-10"
+//       >
+//         <ChevronRight />
+//       </button>
+//     </div>
+//   );
+// };
 
 export default function DisplayAllMileStone({ passThecurrentUserId }) {
   const [milestones, setMilestones] = useState([]);
@@ -508,7 +509,7 @@ export default function DisplayAllMileStone({ passThecurrentUserId }) {
 
   // Extract unique categories and subcategories
   const categories = [
-    "All",
+    // "All",
     ...new Set(milestones.map((m) => m.Category).filter(Boolean)),
   ];
 
@@ -538,21 +539,8 @@ export default function DisplayAllMileStone({ passThecurrentUserId }) {
 
   return (
     <>
-      {/* Filters Section */}
-
       <div className=" mx-auto flex flex-col gap-4">
-        {/* <div className="flex w-full lg:max-w-[340px] rounded-[12px] px-2 py-2 bg-white max-w-full  flex-col items-start">
-          <OptionSlider
-            options={activityIcons}
-            selectedOption={selectedCategory}
-            onSelect={(value) => {
-              setSelectedCategory(value);
-              setSelectedSubCategory("All"); // Reset subcategory selection when category changes
-            }}
-          />
-        </div> */}
-        {/* Category Filter */}
-        <div className="flex gap-2 w-full max-w-full overflow-x-scroll scrollbar-hidden">
+        {/* <div className="flex gap-2 w-full max-w-full overflow-x-scroll scrollbar-hidden">
           {categories.map((cat) => (
             <button
               key={cat}
@@ -566,10 +554,44 @@ export default function DisplayAllMileStone({ passThecurrentUserId }) {
                   : "bg-gray-200  text-gray-700"
               }`}
             >
-              {cat.split(" ").slice(0, 2).join(" ")}
+              {cat}
             </button>
           ))}
+        </div> */}
+        <div className="flex gap-2 w-full max-w-full overflow-x-scroll scrollbar-hidden">
+          {/* {categories.map((cat) => {
+            // Find the icon from the activityIcons array based on the category name
+            const matchedIcon = activityIcons.find(
+              (icon) => icon.title === cat
+            );
+
+            return (
+              <button
+                key={cat}
+                onClick={() => {
+                  setSelectedCategory(cat);
+                  setSelectedSubCategory("All"); // Reset subcategory when category changes
+                }}
+                className={`px-4 py-2 hover:bg-red flex items-center justify-center gap-2 hover:text-white rounded-full text-sm ${
+                  selectedCategory === cat
+                    ? "bg-red text-white"
+                    : "bg-gray-200  text-gray-700"
+                }`}
+              >
+                {matchedIcon && (
+                  <Image
+                    src={matchedIcon.icon} // Use the icon from the matched category
+                    alt={cat} // Alt text for accessibility
+                    className="w-6 h-6 mr-2" // Adjust the icon size
+                  />
+                )}
+                {cat}
+              </button>
+            );
+          })} */}
+          {categories && <CategorySlider categories={categories} />}
         </div>
+
         {/* SubCategory Filter */}
         <div className="flex gap-2 w-full max-w-full overflow-x-scroll scrollbar-hidden">
           {subCategories.map((subCat) => (
@@ -582,7 +604,7 @@ export default function DisplayAllMileStone({ passThecurrentUserId }) {
                   : "bg-gray-200  text-gray-700"
               }`}
             >
-              {subCat.split(" ").slice(0, 2).join(" ")}
+              {subCat}
             </Badge>
           ))}
         </div>
@@ -601,5 +623,68 @@ export default function DisplayAllMileStone({ passThecurrentUserId }) {
         currentUserId={passThecurrentUserId}
       />
     </>
+  );
+}
+
+export function CategorySlider({ categories }) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  // Function to move to the next category
+  const nextSlide = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === categories.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
+  // Function to move to the previous category
+  const prevSlide = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? categories.length - 1 : prevIndex - 1
+    );
+  };
+
+  // Find the matched icon from the activityIcons array based on the category name
+  const matchedIcon = activityIcons.find(
+    (icon) => icon.title === categories[currentIndex]
+  );
+
+  return (
+    <div className="flex items-center rounded-[20px] w-full bg-white justify-between gap-0">
+      {/* Slider Container */}
+      <div className="flex justify-center items-center gap-1 w-full">
+        {/* Previous Button */}
+        <button
+          onClick={prevSlide}
+          className="w-[32px] h-[32px] flex justify-center items-center left-0 top-1/2 transform bg-white bg-opacity-30 backdrop-blur-lg text-[#000000] p-2 rounded-full z-10"
+        >
+          <ChevronLeft />
+        </button>
+
+        {/* Current Category Display */}
+        <div className="flex w-full justify-center">
+          <div className="px-2 py-2 w-full max-w-[260px] rounded-full gap-2 bg-white transition duration-200 flex items-center">
+            {matchedIcon && (
+              <Image
+                src={matchedIcon.icon}
+                alt={categories[currentIndex]}
+                className="w-[24px] h-[24px]"
+              />
+            )}
+
+            <span className="font-fredoka min-w-[max-content] font-semibold">
+              {categories[currentIndex]}
+            </span>
+          </div>
+        </div>
+
+        {/* Next Button */}
+        <button
+          onClick={nextSlide}
+          className="w-[32px] h-[32px] flex justify-center items-center right-0 top-1/2 transform bg-white bg-opacity-30 backdrop-blur-lg text-[#000000] p-2 rounded-full z-10"
+        >
+          <ChevronRight />
+        </button>
+      </div>
+    </div>
   );
 }

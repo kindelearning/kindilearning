@@ -369,8 +369,8 @@ export default function CreateActivityForm() {
               <input
                 type="radio"
                 name="isPopular"
-                value="Yes"
-                checked={isPopular === "Yes"}
+                value="true"
+                checked={isPopular === "true"}
                 onChange={(e) => setIsPopular(e.target.value)}
               />
               Yes
@@ -379,8 +379,8 @@ export default function CreateActivityForm() {
               <input
                 type="radio"
                 name="isPopular"
-                value="No"
-                checked={isPopular === "No"}
+                value="false"
+                checked={isPopular === "false"}
                 onChange={(e) => setIsPopular(e.target.value)}
               />
               No

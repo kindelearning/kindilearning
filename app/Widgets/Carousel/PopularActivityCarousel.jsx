@@ -1,12 +1,6 @@
 "use client";
 import { use, useEffect, useRef, useState } from "react";
 
-import {
-  DiscoveringOurWorldActivity,
-  ExperimentsMathActivity,
-  ReadingWritingActivity,
-  SpeechLanguageActivity,
-} from "@/public/Images";
 import Image from "next/image";
 import React from "react";
 import Link from "next/link";
@@ -36,7 +30,7 @@ const PopularActivityCarousel = () => {
 
         if (response.ok) {
           const popularActivities = data.data.filter(
-            (activity) => activity.isPopular === "Yes"
+            (activity) => activity.isPopular === true
           );
           setPopularActivities(popularActivities);
         } else {
@@ -130,8 +124,9 @@ const PopularActivityCarousel = () => {
                                 //   "/Images/shop/ProductImage.png"
                                 // } // Fallback for image source
                                 src={
-                                  `https://lionfish-app-98urn.ondigitalocean.app${activity?.Gallery?.[0]?.url}` ||
-                                  "/Images/shop/ProductImage.png"
+                                  activity?.Gallery
+                                    ? `https://lionfish-app-98urn.ondigitalocean.app${activity?.Gallery?.[0]?.url}`
+                                    : "/Images/shop/ProductImage.png"
                                 }
                               />
                             </div>
@@ -141,23 +136,19 @@ const PopularActivityCarousel = () => {
                                   {activity?.Title?.length > 25
                                     ? `${activity.Title.slice(0, 20)}...`
                                     : activity?.Title || "Untitled"}{" "}
-                                  {/* Fallback for Title */}
                                 </div>
                                 <div className="justify-start list-disc w-full items-center gap-1 inline-flex">
                                   <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-6 flex pr-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
                                     {activity?.SetUpTime || "No setup time"}{" "}
-                                    {/* Fallback for SetUpTime */}
                                   </div>
                                   •
                                   <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-6 flex pr-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
                                     {activity?.Theme || "No theme"}{" "}
-                                    {/* Fallback for Theme */}
                                   </div>
                                   •
                                   <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-6 flex pr-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
                                     {activity?.FocusAge ||
                                       "No focus age specified"}{" "}
-                                    {/* Fallback for FocusAge */}
                                   </div>
                                 </div>
                               </div>
@@ -255,3 +246,59 @@ const PopularActivityCarousel = () => {
 };
 
 export default PopularActivityCarousel;
+
+// const ActivityFetcher = () => {
+//   const [activities, setActivities] = useState(null);
+//   const [popularActivities, setPopularActivities] = useState([]);
+//   const [error, setError] = useState(null);
+
+//   useEffect(() => {
+//     // Define an async function to fetch the data
+//     const fetchData = async () => {
+//       try {
+//         const response = await fetch(
+//           "https://lionfish-app-98urn.ondigitalocean.app/api/activities?populate=*"
+//         );
+
+//         // Check if the response is okay
+//         if (!response.ok) {
+//           throw new Error(`HTTP error! status: ${response.status}`);
+//         }
+
+//         const data = await response.json();
+//         console.log("Data of Popular Activitye", data);
+//         setActivities(data);
+
+//         // Filter the activities to get only popular ones
+//         const filteredActivities = data.data.filter(
+//           (activity) => activity.attributes.isPopular === true
+//         );
+//         setPopularActivities(filteredActivities);
+
+//         console.log("Fetched Activities:", data); // Log all activities
+//         console.log("Popular Activities:", filteredActivities); // Log filtered activities
+//       } catch (error) {
+//         setError(error.message);
+//         console.error("Error fetching activities:", error);
+//       }
+//     };
+
+//     fetchData();
+//   }, []); // Empty dependency array ensures this runs once on mount
+
+//   return (
+//     <div>
+//       {error && <p style={{ color: "red" }}>Error: {error}</p>}
+//       {activities ? (
+//         <>
+//           <h2>Popular Activities:</h2>
+//           <pre style={{ textAlign: "left", whiteSpace: "pre-wrap" }}>
+//             {JSON.stringify(popularActivities, null, 2)}
+//           </pre>
+//         </>
+//       ) : (
+//         <p>Loading activities...</p>
+//       )}
+//     </div>
+//   );
+// };

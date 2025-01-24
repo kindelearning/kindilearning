@@ -22,13 +22,15 @@ const ToggleCard = ({
             <h5 className="text-white font-bold text-[24px] font-fredoka leading-[28px]">
               {title}
             </h5>
-            <img
-              width={32}
-              height={32}
-              alt="Kindi"
-              src={icon || "/Images/KindiHeart.svg"}
-              className="flex justify-center w-[40px] h-[40px]"
-            />
+            {icon && (
+              <img
+                width={32}
+                height={32}
+                alt="Kindi"
+                src={icon}
+                className="flex justify-center w-[40px] h-[40px]"
+              />
+            )}
           </div>
           <div
             className={`my-4 h-full justify-between flex flex-col gap-2 w-full px-4 lg:px-0 transition-all duration-1000 overflow-hidden ${

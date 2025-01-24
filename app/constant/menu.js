@@ -336,17 +336,14 @@ export const progressData = [
   },
   {
     id: 2,
-
     icon: ConfidenceIndependence,
     title: "Confidence & Independence",
-
     backgroundColor: "19262d",
   },
   {
     id: 3,
     icon: SpeechLanguage,
     title: "Speech & Language",
-
     backgroundColor: "036e9a",
   },
   {
@@ -366,21 +363,18 @@ export const progressData = [
     id: 6,
     icon: DiscoveringWorld,
     title: "Discovering Our World",
-
     backgroundColor: "0aab84",
   },
   {
     id: 7,
     icon: CreativityImagination,
     title: "Creativity & Imagination",
-
     backgroundColor: "f0c84a",
   },
   {
     id: 8,
     icon: Experiments,
     title: "Experiments & Math",
-
     backgroundColor: "0f172a",
   },
 ];

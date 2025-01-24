@@ -3,7 +3,6 @@ import { ActivityImage, ThemeDummy } from "@/public/Images";
 import Image from "next/image";
 import Link from "next/link";
 
-
 export const getIconForSkill = (skillTitle) => {
   const foundIcon = activityIcons.find(
     (iconData) => iconData.title === skillTitle
@@ -44,8 +43,8 @@ export default function ActivityCard({ activity, activityUrl, icons }) {
                   height={250}
                   alt={Title}
                   className="w-full max-h-[180px] duration-300 hover:scale-105 lg:min-h-[276px] lg:h-full lg:max-h-[276px] md:max-h-[300px] object-cover rounded-t-3xl"
-                          src={`https://lionfish-app-98urn.ondigitalocean.app${imageUrl}`}
-                  // src={imageUrl}
+                  // src={ `https://lionfish-app-98urn.ondigitalocean.app${imageUrl}`}
+                  src={imageUrl}
                 />
               ) : (
                 <Image
@@ -91,7 +90,7 @@ export default function ActivityCard({ activity, activityUrl, icons }) {
                     >
                       {iconUrl && (
                         <img
-                        title={skillTitle}
+                          title={skillTitle}
                           src={iconUrl.src}
                           alt={skillTitle}
                           className="w-6 lg:w-10 lg:h-10 h-6"

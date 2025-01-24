@@ -119,7 +119,7 @@ export default function EditActivityForm({ documentId }) {
 
         const data = await res.json();
         setExistingData(data.data);
-        setTitle(data.data.Title || "");
+        setTitle(data.data.Title || ""); 
         setTheme(data.data.Theme || "");
         setFocusAge(data.data.FocusAge || "");
         setSkills(data.data.Skills || "");
@@ -205,30 +205,6 @@ export default function EditActivityForm({ documentId }) {
     });
   };
 
-  // const handleChange = (e) => {
-  //   const { name, value } = e.target;
-
-  //   if (name === "Skills") {
-  //     // Update the raw skills text
-  //     setSkills(value);
-
-  //     // Process the value for the structured format (for sending to the server)
-  //     const processedSkills = value
-  //       .split("\n")
-  //       .map((line) => ({
-  //         type: "paragraph",
-  //         children: [
-  //           {
-  //             text: line.trim(),
-  //             type: "text", // Add the text as per the required format
-  //           },
-  //         ],
-  //       }))
-  //       .filter((item) => item.children[0].text); // Remove empty lines
-
-  //     setFormattedSkills(processedSkills); // Update the structured data
-  //   }
-  // };
   const handleEditorChange = (newValue) => {
     setSkills(newValue); // Update body state with the new value from the editor
   };
@@ -396,19 +372,7 @@ export default function EditActivityForm({ documentId }) {
           <label htmlFor="Skills" className="block">
             Skills (For Activity Detail Page)
           </label>
-          {/* <label htmlFor="Skills" className="text-[12px] text-red">
-            (Please use List item so that it renders properly) These will be
-            used to show Learning Area Icons on Activity Page
-          </label> */}
-
-          {/* <BlocksRenderer content={skills} /> */}
-          {/* <textarea
-            name="Skills"
-            value={skills} // Display the string value for the textarea
-            onChange={(e) => setSkills(e.target.value)} // Handle changes and format as you type
-            className="border p-2 w-full"
-            placeholder="Enter skills or descriptions here... (separate each skill with a new line)"
-          /> */}
+          
           <ClaraMarkdownRichEditor
             value={skills} // Display the string value for the textarea
             onChange={handleEditorChange} // Handle changes and format as you type
@@ -425,8 +389,8 @@ export default function EditActivityForm({ documentId }) {
               <input
                 type="radio"
                 name="isPopular"
-                value="Yes"
-                checked={isPopular === "Yes"}
+                value="true"
+                checked={isPopular === "true"}
                 onChange={(e) => setIsPopular(e.target.value)}
               />
               Yes
@@ -435,8 +399,8 @@ export default function EditActivityForm({ documentId }) {
               <input
                 type="radio"
                 name="isPopular"
-                value="No"
-                checked={isPopular === "No"}
+                value="false"
+                checked={isPopular === "false"}
                 onChange={(e) => setIsPopular(e.target.value)}
               />
               No

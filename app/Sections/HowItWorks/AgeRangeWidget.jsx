@@ -152,7 +152,7 @@ export default function AgeRangeWidget() {
                   // }
                   image={
                     content.Icon
-                      ? `https://lionfish-app-98urn.ondigitalocean.app${content.Icon.url}`
+                      ? `https://lionfish-app-98urn.ondigitalocean.app${content?.Icon[0]?.url}`
                       : "/Images/AgeCardOne.svg"
                   }
                   bgImage="/Images/AgeRangeOne.svg"
@@ -183,7 +183,7 @@ export default function AgeRangeWidget() {
                   key={index}
                   image={
                     content.Icon
-                      ? `https://lionfish-app-98urn.ondigitalocean.app${content.Icon.url}`
+                      ? `https://lionfish-app-98urn.ondigitalocean.app${content?.Icon[0]?.url}`
                       : "/Images/AgeCardOne.svg"
                   }
                   bgImage="/Images/AgeRangeTwo.svg"
@@ -221,7 +221,7 @@ export default function AgeRangeWidget() {
                   key={index}
                   image={
                     content.Icon
-                      ? `https://lionfish-app-98urn.ondigitalocean.app${content.Icon.url}`
+                      ? `https://lionfish-app-98urn.ondigitalocean.app${content?.Icon[0]?.url}`
                       : "/Images/AgeCardOne.svg"
                   }
                   bgImage="/Images/AgeRangeThree.svg"
@@ -251,7 +251,7 @@ export default function AgeRangeWidget() {
                   key={index}
                   image={
                     content.Icon
-                      ? `https://lionfish-app-98urn.ondigitalocean.app${content.Icon.url}`
+                      ? `https://lionfish-app-98urn.ondigitalocean.app${content?.Icon[0]?.url}`
                       : "/Images/AgeCardOne.svg"
                   }
                   bgImage="/Images/AgeRangeFour.svg"

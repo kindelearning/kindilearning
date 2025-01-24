@@ -475,7 +475,6 @@ export default function MilestoneData() {
 
 export function UpdateMilestoneData({ documentId }) {
   const [description, setDescription] = useState("");
-  const [name, setName] = useState("");
   const [title, setTitle] = useState("");
   const [subCategory, setSubCategory] = useState("");
   const [category, setCategory] = useState("");
@@ -571,14 +570,39 @@ export function UpdateMilestoneData({ documentId }) {
           <label htmlFor="Category" className="block">
             Category
           </label>
-          <input
+          {/* <input
             type="text"
             id="Category"
             name="Category"
             value={category}
             onChange={(e) => setCategory(e.target.value)}
             className="border p-2 w-full"
-          />
+          /> */}
+          <select
+            id="Category"
+            name="Category"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            className="border p-2 w-full"
+          >
+            <option value="" disabled>
+              Select a Category for Milestone
+            </option>
+            <option value="Emotional & Social Strength">
+              Emotional & Social Strength
+            </option>
+            <option value="Confidence & Independence">
+              Confidence & Independence
+            </option>
+            <option value="Speech & Language">Speech & Language</option>
+            <option value="Physical Agility">Physical Agility</option>
+            <option value="Reading & Writing">Reading & Writing</option>
+            <option value="Discovering Our World">Discovering Our World</option>
+            <option value="Creativity & Imagination">
+              Creativity & Imagination
+            </option>
+            <option value="Experiments & Math">Experiments & Math</option>
+          </select>
         </div>
         <div>
           <label htmlFor="subCategory" className="block">
@@ -923,7 +947,7 @@ export function CreateMilestoneForm() {
           <label htmlFor="category" className="block">
             category
           </label>
-          <input
+          {/* <input
             type="text"
             id="category"
             name="category"
@@ -931,7 +955,32 @@ export function CreateMilestoneForm() {
             onChange={(e) => setCategory(e.target.value)}
             className="border p-2 w-full"
             required
-          />
+          /> */}
+          <select
+            id="Category"
+            name="Category"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            className="border p-2 w-full"
+          >
+            <option value="" disabled>
+              Select a Category for Milestone
+            </option>
+            <option value="Emotional & Social Strength">
+              Emotional & Social Strength
+            </option>
+            <option value="Confidence & Independence">
+              Confidence & Independence
+            </option>
+            <option value="Speech & Language">Speech & Language</option>
+            <option value="Physical Agility">Physical Agility</option>
+            <option value="Reading & Writing">Reading & Writing</option>
+            <option value="Discovering Our World">Discovering Our World</option>
+            <option value="Creativity & Imagination">
+              Creativity & Imagination
+            </option>
+            <option value="Experiments & Math">Experiments & Math</option>
+          </select>
         </div>
         <div>
           <label htmlFor="subCategory" className="block">

@@ -18,6 +18,7 @@ export default function ToggleCardGrid() {
         // "https://lionfish-app-98urn.ondigitalocean.app/api/how-it-work-page?populate=*"
       );
       const data = await response.json();
+      console.log('AreaOflearningCards Data', data)
       setCards(data.data.AreaOflearningCards);
     };
     fetchData();
@@ -45,7 +46,7 @@ export default function ToggleCardGrid() {
             // icon={card?.Icon?.url}
             icon={
               card?.Icon
-                ? `https://lionfish-app-98urn.ondigitalocean.app${card?.Icon?.url}`
+                ? `https://lionfish-app-98urn.ondigitalocean.app${card?.Icon[0]?.url}`
                 : "/Images/KindiHeart.svg"
             }
           />

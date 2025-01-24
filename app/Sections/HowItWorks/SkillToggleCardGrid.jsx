@@ -42,7 +42,7 @@ export default function SkillToggleCardGrid() {
           isOpen={isOpen}
           setIsOpen={handleCardClick}
           color={card?.color || "white"}
-          icon={card?.Icon ? `https://lionfish-app-98urn.ondigitalocean.app${card?.Icon?.url}` : "/Images/KindiHeart.svg"}
+          icon={card?.Icon ? `https://lionfish-app-98urn.ondigitalocean.app${card?.Icon[0]?.url}` : "/Images/KindiHeart.svg"}
         />
       ))}
     </div>

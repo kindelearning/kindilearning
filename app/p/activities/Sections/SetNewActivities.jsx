@@ -225,7 +225,7 @@ export default function SetNewActivities({ kidId }) {
   return (
     <Dialog className="font-fredoka"> 
       <DialogTrigger className="font-fredoka">Assign More Activities</DialogTrigger>
-      <DialogContent className="w-full font-fredoka max-w-[1000px] max-h-[600px] overflow-y-scroll">
+      <DialogContent className="w-full font-fredoka max-w-[600px] max-h-[600px] overflow-y-scroll">
         <DialogHeader>
           <DialogTitle>
             Select Activity to Assign, then Schedule Visually in Scheduler
@@ -255,7 +255,7 @@ export default function SetNewActivities({ kidId }) {
                   >
                     <option value="">Select an activity</option>
                     {filteredActivities.length > 0 ? (
-                      filteredActivities.map((activity) => (
+                      filteredActivities.filter((_, index) => index % 3 === 0).map((activity) => (
                         <option
                           key={activity?.id || Math.random()}
                           value={activity?.id || ""}
