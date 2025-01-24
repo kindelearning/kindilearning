@@ -39,7 +39,9 @@ export default function AdminThemes() {
 
   // Fetch all themes
   const fetchThemes = async () => {
-    const res = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/our-themes?populate=*");
+    const res = await fetch(
+      "https://lionfish-app-98urn.ondigitalocean.app/api/our-themes?populate=*"
+    );
     const data = await res.json();
 
     if (data && data.data) {
@@ -156,7 +158,9 @@ export default function AdminThemes() {
                   <TableHead>Status</TableHead>
                   <TableHead className="w-[100px]">Thumbnail</TableHead>
                   <TableHead>Title</TableHead>
-                  <TableHead className="min-w-[200px]">Meta Description</TableHead>
+                  <TableHead className="min-w-[200px]">
+                    Meta Description
+                  </TableHead>
                   <TableHead
                     className=" cursor-pointer"
                     onClick={() => handleSort("LaunchTime")}
@@ -187,12 +191,14 @@ export default function AdminThemes() {
                       {theme.status === "published" ? "Draft" : " Published"}
                     </TableCell>
                     <TableCell>
-                      <img
-                        // src={theme?.Thumbnail?.url}
-                        src={`https://lionfish-app-98urn.ondigitalocean.app${theme?.Thumbnail?.url}`}
-                        alt={theme?.Title}
-                        className="w-[40px] border border-[#333333] rounded-full h-[40px] object-cover"
-                      />
+                      {theme?.Thumbnail ? (
+                        <img
+                          // src={theme?.Thumbnail?.url}
+                          src={`https://lionfish-app-98urn.ondigitalocean.app${theme?.Thumbnail[0]?.url}`}
+                          alt={theme?.Title}
+                          className="w-[40px] border border-[#333333] rounded-full h-[40px] object-cover"
+                        />
+                      ) : null}
                     </TableCell>
                     <TableCell>{theme.Title}</TableCell>
                     <TableCell>{theme.metaDesc.slice(0, 50)}...</TableCell>
@@ -291,8 +297,8 @@ export default function AdminThemes() {
                               <div className="flex w-full gap-4 justify-between items-start">
                                 {/* Thumbnail Image */}
                                 <img
-                                  src={selectedTheme?.Thumbnail?.url} // Assuming the image URL is in the 'image' property
-                                  // src={`https://lionfish-app-98urn.ondigitalocean.app${selectedTheme?.Thumbnail?.url}`} // Assuming the image URL is in the 'image' property
+                                  // src={selectedTheme?.Thumbnail?.url} // Assuming the image URL is in the 'image' property
+                                  src={`https://lionfish-app-98urn.ondigitalocean.app${selectedTheme?.Thumbnail[0]?.url}`} // Assuming the image URL is in the 'image' property
                                   alt={selectedTheme?.Title}
                                   className="w-full h-[300px] object-cover rounded-lg  mb-6"
                                 />

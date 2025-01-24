@@ -319,7 +319,7 @@ export default function CreateTheme() {
       Thumbnail: media?.id || null, // Use media ID if selected
     };
 
-    console.log("New Badge data", newBadge);
+    console.log("New Theme data", newBadge);
     try {
       const response = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/our-themes", {
         method: "POST",
@@ -332,7 +332,7 @@ export default function CreateTheme() {
       const responseData = await response.json();
 
       if (response.ok) {
-        setDialogMessage("Badge created successfully!");
+        setDialogMessage("Theme created successfully!");
         setDialogType("success");
 
         setMainContent("");
@@ -342,10 +342,10 @@ export default function CreateTheme() {
         setMedia(null);
       } else {
         setDialogMessage(
-          "Failed to create badge. Please check the input and try again."
+          "Failed to create Theme. Please check the input and try again."
         );
         setDialogType("error");
-        throw new Error("Failed to create badge");
+        throw new Error("Failed to create Theme");
       }
     } catch (error) {
       console.error("Error:", error.message); // Log any error that occurs
@@ -362,7 +362,7 @@ export default function CreateTheme() {
     <div className="p-8 font-fredoka">
       <head>
         <title>
-          Create a new badge | Kindi Learning
+          Create a new Theme | Kindi Learning
         </title>
       </head>
       <form onSubmit={handleSubmit} className="space-y-4">
