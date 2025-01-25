@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-
+ 
 export default function PlayForLife() {
   const [content, setContent] = useState(null);
   const [loading, setLoading] = useState(true);

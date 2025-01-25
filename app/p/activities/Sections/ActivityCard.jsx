@@ -44,7 +44,12 @@ export default function ActivityCard({ activity, activityUrl, icons }) {
                   alt={Title}
                   className="w-full max-h-[180px] duration-300 hover:scale-105 lg:min-h-[276px] lg:h-full lg:max-h-[276px] md:max-h-[300px] object-cover rounded-t-3xl"
                   // src={ `https://lionfish-app-98urn.ondigitalocean.app${imageUrl}`}
-                  src={imageUrl}
+                  src={
+                    imageUrl
+                      ? `https://lionfish-app-98urn.ondigitalocean.app${imageUrl}`
+                      : "/Images/ActivityImage.png"
+                  }
+                  // src={imageUrl}
                 />
               ) : (
                 <Image

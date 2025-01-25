@@ -72,7 +72,13 @@ export default function Page() {
                     <article className="rounded-lg">
                       <CategoryCard
                         schedulesDate={item?.LaunchTime || "2024-12-25"} // Fallback for LaunchTime
-                        image={item?.Thumbnail?.url || "/Images/ThemeDummy.png"} // Fallback for image URL
+                        image={
+                          item?.Thumbnail
+                            ? `https://lionfish-app-98urn.ondigitalocean.app${item?.Thumbnail[0]?.url}`
+                            : "/Images/ThemeDummy.png"
+                        } // Fallback for image URL
+                        // src={`https://lionfish-app-98urn.ondigitalocean.app${image}` || "/Images/ThemeDummy.png"}
+
                         description={
                           item?.metaDesc
                             ? item.metaDesc.slice(0, 100)

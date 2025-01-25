@@ -50,7 +50,11 @@ const ActivitiesList = ({ activities }) => {
                           alt={activity.title}
                           className="w-full max-h-[180px] duration-300 hover:scale-105 lg:min-h-[276px] lg:h-full lg:max-h-[276px] md:max-h-[300px] object-cover rounded-t-3xl"
                           // src={activity.thumbnail.url}
-                          src={`https://lionfish-app-98urn.ondigitalocean.app${activity.thumbnail.url}`}
+                          src={
+                            activity.thumbnail
+                              ? `https://lionfish-app-98urn.ondigitalocean.app${activity.thumbnail.url}`
+                              : "/Images/ActivityImage.png"
+                          }
                         />
                       </div>
                       <div className="w-full p-2 md:p-4 flex-col justify-start lg:p-4 items-start flex gap-2 md:gap-2 lg:gap-4">

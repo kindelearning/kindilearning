@@ -1,11 +1,49 @@
+"use client";
+
 import { fetchHowItWorks } from "@/app/data/p/HowItWorks";
 import AgeRangeWidget from "./AgeRangeWidget";
+import { useEffect, useState } from "react";
 
-export default async function AgeRanges() {
-  const data = await fetchHowItWorks();
-  if (!data) {
-    return <div>Error loading page content</div>;
-  }
+export default function AgeRanges() {
+  const [content, setContent] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          "https://lionfish-app-98urn.ondigitalocean.app/api/how-it-work-page?populate[AgeGroup][populate]=Content.Icon"
+        );
+        const data = await response.json();
+        console.log("Age Group Data", data);
+        if (data?.data) {
+          setContent(data.data);
+        } else {
+          setError("No content found.");
+        }
+      } catch (err) {
+        setError("Error fetching data: " + err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) return <div className="text-gray-500">Loading content...</div>;
+  if (error) return <div className="text-red-500">{error}</div>;
+  if (!content) return <div>No content available.</div>;
+
+  const { AgeGroup } = content;
+  const { featuredText, Title, Body, Content } = AgeGroup;
+
+  // const data = await fetchHowItWorks();
+
+  // if (!data) {
+  //   return <div>Error loading page content</div>;
+  // }
 
   return (
     <>
@@ -16,11 +54,12 @@ export default async function AgeRanges() {
             <div className="text-start w-full md:text-center">
               <div>
                 <span className="text-[#3f3a64] claraheading">
-                  {data.AgeGroup?.Title || "Kindi"}
-                </span>
+                  {Title.split(" ").slice(0, 3).join(" ") || "Kindi"}
+                </span> {" "}
                 <span className="text-red claraheading">
-                  {" "}
-                  {data.AgeGroup?.featuredText || " Age Ranges"}
+                  {/* {featuredText || " Age Ranges"} */}
+                  {Title.split(" ").slice(2, 12).join(" ") || "Age Ranges"}
+
                 </span>
               </div>
             </div>
@@ -29,7 +68,7 @@ export default async function AgeRanges() {
                 <div
                   dangerouslySetInnerHTML={{
                     __html:
-                      data.AgeGroup?.Body ||
+                      Body ||
                       "We created Kindi to empower both par with resources, you have everything you need to customize a unique learning path for your child amidst your other commitments.",
                   }}
                 />

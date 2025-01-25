@@ -28,7 +28,7 @@ export default function OurStory() {
         const data = await response.json();
         console.log("HIW Data", data);
         if (data?.data) {
-          // setContent(data.data);
+          setContent(data.data?.OurStory);
         } else {
           setError("No content found.");
         }
@@ -46,19 +46,19 @@ export default function OurStory() {
   if (error) return <div className="text-red-500">{error}</div>;
   if (!content) return <div>No content available.</div>;
 
-  const { OurStory } = content;
+  // const { OurStory } = content;
 
   return (
     <>
       <section className="max-w-[1000px] min-h-screen h-full md:h-full lg:h-full flex flex-col items-center bg-[#ffffff] w-full gap-4 py-8">
         {/* Media Section */}
         <div className="w-full flex justify-center items-center mt-8">
-          {OurStory?.Media?.[0]?.url ? (
+          {content?.Media?.[0]?.url ? (
             <video
               autoPlay
               controls
-              // src={`https://lionfish-app-98urn.ondigitalocean.app${OurStory.Media[0].url}`}
-              src={OurStory.Media[0].url}
+              src={`https://lionfish-app-98urn.ondigitalocean.app${content?.Media[0]?.url}`}
+              // src={content.Media[0].url}
               className="w-full max-w-[800px] h-auto border-2 border-[#ddd] shadow-lg rounded-lg overflow-hidden"
             />
           ) : (
@@ -67,31 +67,31 @@ export default function OurStory() {
             </p>
           )}
         </div>
-        <div className="w-full flex flex-col justify-start items-start animate-fadeIn animate-delay-500">
+        <div className="w-full px-4 flex flex-col justify-start items-start animate-fadeIn animate-delay-500">
           {/* Featured Text */}
-          {OurStory?.featuredText && (
+          {content?.featuredText && (
             <p className="text-[#1d1d1d] clarascript text-lg md:text-xl lg:text-2xl font-semibold animate-slideInLeft animate-delay-1000">
-              {OurStory.featuredText}
+              {content.featuredText}
             </p>
           )}
 
           {/* Title */}
-          {OurStory?.Title && (
+          {content?.Title && (
             <div className="flex flex-wrap justify-center items-center text-[#1d1d1d] claraheading text-3xl md:text-4xl lg:text-5xl font-bold text-center animate-slideInLeft animate-delay-1500">
               <span className="mx-1">
-                {OurStory.Title.split(" ").slice(0, 2).join(" ")}
+                {content.Title.split(" ").slice(0, 2).join(" ")}
               </span>
               <span className="mx-1">
-                {OurStory.Title.split(" ").slice(2, 4).join(" ")}
+                {content.Title.split(" ").slice(2, 14).join(" ")}
               </span>
             </div>
           )}
 
           {/* Body */}
-          {OurStory?.Body && (
+          {content?.Body && (
             <p
               className="prose w-full text-start text-[#696969] text-base md:text-lg lg:text-xl mt-4 leading-relaxed  animate-fadeIn animate-delay-2000"
-              dangerouslySetInnerHTML={{ __html: OurStory.Body }}
+              dangerouslySetInnerHTML={{ __html: content.Body }}
             />
           )}
         </div>
@@ -346,8 +346,6 @@ export default function OurStory() {
 //   );
 // }
 
-
-
 export function UpdateOurStorySection() {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
@@ -399,13 +397,16 @@ export function UpdateOurStorySection() {
     console.log("Payload Created", payload);
 
     try {
-      const res = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/our-mission", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
+      const res = await fetch(
+        "https://lionfish-app-98urn.ondigitalocean.app/api/our-mission",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        }
+      );
 
       const data = await res.json();
       console.log("Updated our-mission Content:", data);
@@ -420,9 +421,8 @@ export function UpdateOurStorySection() {
     setMedia(selectedMedia); // Store the selected media object
   };
 
-
   const handleEditorChange = (newValue) => {
-    setBody(newValue);  // Update body state with the new value from the editor
+    setBody(newValue); // Update body state with the new value from the editor
   };
 
   return (
@@ -457,7 +457,7 @@ export function UpdateOurStorySection() {
             className="border p-2 w-full"
             rows="5"
           /> */}
-           <ClaraMarkdownRichEditor
+          <ClaraMarkdownRichEditor
             name="Body"
             value={body || ""} // Ensure the value is always a string
             onChange={handleEditorChange}

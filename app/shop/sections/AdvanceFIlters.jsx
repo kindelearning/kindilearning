@@ -130,10 +130,10 @@ export function ProductsWithPagination({ products }) {
           <ProductCard
             key={product.documentId}
             productUrl={`/shop/${product.documentId}`}
-            image={product?.FeaturedImage?.[0]?.url}
-            // image={`https://lionfish-app-98urn.ondigitalocean.app${
-            //   product?.FeaturedImage?.[0]?.url || "/uploads/default-image.webp"
-            // }`}
+            // image={product?.FeaturedImage?.[0]?.url}
+            image={`https://lionfish-app-98urn.ondigitalocean.app${
+              product?.FeaturedImage?.[0]?.url || "/uploads/default-image.webp"
+            }`}
             price={product.DiscountPrice || product.Price}
             title={product.Name}
           />

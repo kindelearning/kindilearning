@@ -1,15 +1,50 @@
+"use client";
+
 import { fetchOurMission } from "@/app/data/p/OurMission";
 import { Button } from "@/components/ui/button";
 import { HeroBGOurStoryTwo } from "@/public/Images";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
-export default async function Hero() {
-  const data = await fetchOurMission(); 
+export default function Hero() {
+  const [content, setContent] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  if (!data) {
-    return <div>No content available.</div>;
-  }
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          "https://lionfish-app-98urn.ondigitalocean.app/api/our-mission?populate=*"
+        );
+        const data = await response.json();
+        console.log("Hero Data", data?.data?.Hero);
+        if (data?.data) {
+          setContent(data?.data?.Hero);
+        } else {
+          setError("No content found.");
+        }
+      } catch (err) {
+        setError("Error fetching data: " + err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) return <div className="text-gray-500">Loading content...</div>;
+  if (error) return <div className="text-red-500">{error}</div>;
+  if (!content) return <div>No content available.</div>;
+
+  const { OurStory } = content;
+  // const data = await fetchOurMission();
+
+  // if (!data) {
+  //   return <div>No content available.</div>;
+  // }
 
   return (
     <>
@@ -26,9 +61,9 @@ export default async function Hero() {
           <div className="claracontainer w-full px-4 lg:pr-4 lg:pl-[92px] lg:max-w-[56%] flex flex-col body md:justify-between min-h-fit lg:justify-between xl:justify-between justify-center items-start  lg:py-24 animate-slideInUp">
             <div className="w-full py-0 md:py-2 flex-col flex justify-start items-start script animate-fadeIn animate-delay-500">
               <div className="w-full text-red clarascript animate-slideInLeft script animate-delay-1000">
-                {data.Hero.featuredText && (
+                {content?.featuredText && (
                   <p>
-                    {data.Hero.featuredText ||
+                    {content?.featuredText ||
                       "Maximising Potential for a Lifetime of Achievement"}
                   </p>
                 )}
@@ -36,18 +71,18 @@ export default async function Hero() {
               <div className="flex flex-col w-full justify-start items-start heading animate-fadeIn animate-delay-1500">
                 <div className="text-start flex-wrap w-full animate-slideInLeft animate-delay-2000">
                   <span className="text-[#3f3a64] claraheading">
-                    {data.Hero.Title.split(" ").slice(0, 2).join(" ") ||
+                    {content?.Title.split(" ").slice(0, 2).join(" ") ||
                       "The Kindi"}{" "}
                   </span>
                   <span className="text-red claraheading">
-                    {data.Hero.Title.split(" ").slice(2,14).join(" ") ||
+                    {content?.Title.split(" ").slice(2, 14).join(" ") ||
                       "Mission"}
                   </span>
                 </div>
                 <div className="w-full text-start justify-start items-start px-0 animate-fadeIn animate-delay-2500">
-                  {data.Hero.Body ? (
+                  {content?.Body ? (
                     <div
-                      dangerouslySetInnerHTML={{ __html: data.Hero.Body }}
+                      dangerouslySetInnerHTML={{ __html: content?.Body }}
                       className="w-full prose text-start text-[#696969] text-[16px] leading-[20px] md:text-[18px] md:leading-[22px] lg:text-[22px] lg:leading-[24px] xl:text-[22px] xl:leading-[24px] font-medium font-fredoka animate-slideInLeft animate-delay-3000"
                     />
                   ) : (

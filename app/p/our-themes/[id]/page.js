@@ -3,7 +3,9 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 
 async function fetchThemeById(documentId) {
-  const res = await fetch(`https://lionfish-app-98urn.ondigitalocean.app/api/our-themes/${documentId}?populate=*`);
+  const res = await fetch(
+    `https://lionfish-app-98urn.ondigitalocean.app/api/our-themes/${documentId}?populate=*`
+  );
   const data = await res.json();
 
   if (!data || !data.data) {
@@ -28,7 +30,7 @@ export default async function ThemePage({ params }) {
     <>
       <section className="w-full h-auto py-0 lg:py-12 bg-[#EAEAF5] items-center justify-center pb-24 flex flex-col gap-[20px]">
         <div className="flex overflow-clip lg:rounded-xl lg:max-w-[960px] w-full">
-          {Thumbnail? (
+          {Thumbnail ? (
             <img
               width={1400}
               height={600}
@@ -63,9 +65,11 @@ export default async function ThemePage({ params }) {
               <h3 className="text-2xl md:text-3xl font-semibold font-fredoka">
                 About the theme
               </h3>
-              <div className="w-full text-[#757575] text-[20px] font-medium font-fredoka leading-[24px]">
-                {MainContent || "  MainContent"}
-              </div>
+              <div
+                dangerouslySetInnerHTML={{ __html: MainContent }}
+                className="w-full prose text-[#757575] text-[20px] font-medium font-fredoka leading-[24px]"
+              />
+              {/* {MainContent || "  MainContent"} */}
             </div>
           </div>
         </div>

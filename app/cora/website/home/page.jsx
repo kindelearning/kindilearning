@@ -34,6 +34,7 @@ import MonthlyPricing, {
 import DefaultReview, {
   CreateReviewForm,
 } from "../../Sections/Home/DefaultReview";
+import ShopBanner, { UpdateShopBanner } from "../../Sections/Home/ShopBanner";
 
 export default function HomePage() {
   return (
@@ -130,6 +131,13 @@ export default function HomePage() {
                 sectionName="Early Learning Expert"
                 ComponentPreview={EarlyLearningExpert}
                 ComponentForm={UpdateEarlyLearningExpert} // Replace with an actual update form if necessary
+              />
+              {/* Shop Banner Text */}
+              <SectionRow
+                serialNo={10}
+                sectionName="Shop Banner"
+                ComponentPreview={ShopBanner}
+                ComponentForm={UpdateShopBanner} // Replace with an actual update form if necessary
               />
             </TableBody>
           </Table>

@@ -529,7 +529,7 @@ export function UpdateSliderSection() {
               {section.Media ? (
                 <div className="mt-2">
                   <img
-                    src={`https://lionfish-app-98urn.ondigitalocean.app${section.Media.url}`}
+                    src={`https://lionfish-app-98urn.ondigitalocean.app${section.Media[0].url}`}
                     alt={section.Title}
                     className="w-32 h-32 object-cover border rounded-md"
                   />

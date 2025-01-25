@@ -57,8 +57,8 @@ export default async function PopularActivity() {
                   ? content?.title.split(" ").slice(0, 2).join(" ")
                   : "Popular Learning"}{" "}
               </span>
-              <span className="claraheading text-red">
                 {" "}
+              <span className="claraheading text-red">
                 {content?.title
                   ? content?.title.split(" ").slice(2, 3).join(" ")
                   : "Activities"}{" "}

@@ -16,8 +16,8 @@ const CategoryCard = ({
           <img
             width={400}
             height={300}
-            // src={image || ThemeDummy}
-            src={`https://lionfish-app-98urn.ondigitalocean.app${image}` || "/Images/ThemeDummy.png"}
+            src={image || ThemeDummy}
+            // src={`https://lionfish-app-98urn.ondigitalocean.app${image}` || "/Images/ThemeDummy.png"}
             alt="Category Image"
             className="w-full hover:scale-110  duration-500 ease-out h-48 object-cover"
           />
