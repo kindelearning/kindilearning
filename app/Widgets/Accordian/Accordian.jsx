@@ -44,7 +44,7 @@ const Accordian = ({ title, description }) => {
           <ChevronRight />
         </span>
       </div>
-      {isOpen && (
+      {!isOpen && (
         <div className="pb-4">
           <div className="w-full prose text-[#757575] text-[20px] font-medium font-fredoka leading-[24px]">
             <span
