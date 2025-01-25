@@ -36,7 +36,9 @@ import RemovePaymentMethodButton, {
   AddPaymentMethodForm,
   UpdatePaymentDataForm,
 } from "./RemovePaymentMethodButton";
- 
+import { Button } from "@/components/ui/button";
+import { Pencil } from "lucide-react";
+
 const CustomDialog = ({
   image,
   iconBackgroundColor,
@@ -151,10 +153,10 @@ export default function IndividualTabs({ userData }) {
                           </div>
                         </div>
 
-                        <div className="flex flex-col w-fit items-center justify-between  gap-2">
+                        <div className="flex w-fit items-center justify-between  gap-2">
                           <Dialog>
                             <DialogTrigger>
-                              {/* <Penci className="w-[24px] h-[24px] text-red"/> */}
+                              <Pencil className="w-[24px] h-[24px] text-red" />
                             </DialogTrigger>
                             <DialogContent>
                               <DialogHeader>
@@ -182,7 +184,11 @@ export default function IndividualTabs({ userData }) {
             </div>
             {currentKidsCount < maxKidsAllowed ? (
               <Dialog>
-                <DialogTrigger>Add New Kid</DialogTrigger>
+                <DialogTrigger>
+                  <Button className="clarabutton my-4 bg-red hover:bg-hoverRed">
+                    Add New Kid
+                  </Button>
+                </DialogTrigger>
                 <DialogContent>
                   <DialogHeader>
                     <DialogDescription>
@@ -254,62 +260,66 @@ export default function IndividualTabs({ userData }) {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 px-2 md:px-4 lg:px-6 py-6 w-full claracontainer gap-4">
             {userData.myPaymentMethods &&
             userData.myPaymentMethods.length > 0 ? (
-              userData.myPaymentMethods.map((kid, index) => (
-                <div
-                  key={index}
-                  className="p-4 h-[200px] flex flex-col  justify-between bg-gray-50 rounded-lg shadow-sm"
-                  style={{
-                    backgroundImage: `url('/Images/DebitCardBackground.svg')`,
-                    backgroundSize: "cover",
-                    backgroundRepeat: "no-repeat",
-                    backgroundPosition: "center",
-                  }}
-                >
-                  <div className="flex w-full justify-end items-center">
-                    <RemovePaymentMethodButton paymentId={kid.documentId} />
-                  </div>
+              userData.myPaymentMethods
+                .filter((_, index) => index % 2 === 0)
+                .map((kid, index) => (
+                  <div
+                    key={index}
+                    className="p-4 h-[200px] flex flex-col  justify-between bg-gray-50 rounded-lg shadow-sm"
+                    style={{
+                      backgroundImage: `url('/Images/DebitCardBackground.svg')`,
+                      backgroundSize: "cover",
+                      backgroundRepeat: "no-repeat",
+                      backgroundPosition: "center",
+                    }}
+                  >
+                    <div className="flex w-full justify-end items-center">
+                      <RemovePaymentMethodButton paymentId={kid.documentId} />
+                    </div>
 
-                  <div className="flex w-full flex-col justify-start items-start">
-                    <p>
-                      <strong>Id:</strong> {kid.id}
-                    </p>
-                    <p>
-                      <strong>Name:</strong> {kid.Name}
-                    </p>
-                    <p>
-                      <strong>Number:</strong> {kid.Number}
-                    </p>
-                    <p>
-                      <strong>ExpiryDate:</strong> {kid.ExpiryDate}
-                    </p>
-                    <p>
-                      <strong>CVV:</strong> {kid.CVV}
-                    </p>
-                    <Dialog>
-                      <DialogTrigger className="text-red font-fredoka">
-                        Update Payment Method
-                      </DialogTrigger>
-                      <DialogContent>
-                        <DialogHeader>
-                          <DialogTitle>Are you absolutely sure?</DialogTitle>
-                          <DialogDescription>
-                            <UpdatePaymentDataForm
-                              paymentId={kid.documentId}
-                              parentId={userData.id}
-                            />
-                          </DialogDescription>
-                        </DialogHeader>
-                      </DialogContent>
-                    </Dialog>
+                    <div className="flex w-full flex-col justify-start items-start">
+                      <p>
+                        <strong>Id:</strong> {kid.id}
+                      </p>
+                      <p>
+                        <strong>Name:</strong> {kid.Name}
+                      </p>
+                      <p>
+                        <strong>Number:</strong> {kid.Number}
+                      </p>
+                      <p>
+                        <strong>ExpiryDate:</strong> {kid.ExpiryDate}
+                      </p>
+                      <p>
+                        <strong>CVV:</strong> {kid.CVV}
+                      </p>
+                      <Dialog>
+                        <DialogTrigger className="text-red font-fredoka">
+                          Update Payment Method
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>Are you absolutely sure?</DialogTitle>
+                            <DialogDescription>
+                              <UpdatePaymentDataForm
+                                paymentId={kid.documentId}
+                                parentId={userData.id}
+                              />
+                            </DialogDescription>
+                          </DialogHeader>
+                        </DialogContent>
+                      </Dialog>
+                    </div>
                   </div>
-                </div>
-              ))
+                ))
             ) : (
               <p>No kids profiles available.</p>
             )}
           </div>
           <Dialog>
-            <DialogTrigger className="font-fredoka text-red">Create Payment Method</DialogTrigger>
+            <DialogTrigger className="font-fredoka text-red">
+              Create Payment Method
+            </DialogTrigger>
             <DialogContent>
               <DialogHeader>
                 <DialogDescription>

@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { fetchUserDetails } from "./api";
 import TopProfileCard from "./Sections/TopProfileCard";
 import QuickNavigation from "./Sections/QuickNavigation";
-
+import ReferralCard from "@/app/Sections/Profile/ReferralCard";
 import IndividualTabs from "./Sections/IndividualTabs";
 import { LogoutButton } from "../oAuth/Sections/Logout";
 import { LevelList } from "./Sections/MyLevel";
@@ -104,6 +104,9 @@ export default function ProfilePage() {
             <TopProfileCard userData={userData} totalactitivuty={myLevels} />
             <QuickNavigation />
             <IndividualTabs userData={userData} />
+            <div className="claracontainer px-4 lg:px-0 w-full flex flex-col justify-start items-start overflow-hidden gap-8">
+              <ReferralCard />
+            </div>
             <LogoutButton />
           </div>
         ) : (

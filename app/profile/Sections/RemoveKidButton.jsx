@@ -10,6 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Trash, Trash2 } from "lucide-react";
 import { useState } from "react";
 
 export default function RemoveKidButton({ kidId }) {
@@ -66,7 +67,9 @@ export default function RemoveKidButton({ kidId }) {
       <Dialog open={openDialog} onOpenChange={setOpenDialog}>
         <DialogTrigger asChild>
           <button className="btn font-fredoka text-red-500" disabled={isSubmitting}>
-            {isSubmitting ? "Removing..." : "Remove"}
+            {isSubmitting ? "Removing..." : (
+              <Trash2 className="text-red"/>
+            )}
           </button>
         </DialogTrigger>
 
