@@ -6,20 +6,76 @@ import Claras3DGallery from "./ClaraGallery";
 import { fetchOurMission } from "@/app/data/p/OurMission";
 import { useEffect, useState } from "react";
 
-const InternalChip = ({
-  image,
-  title = "Delivered by highly experienced early years professionals",
-}) => {
+// const InternalChip = ({
+
+//   image,
+//   title = "Delivered by highly experienced early years professionals",
+// }) => {
+//   return (
+//     <div className="claracontainer  liquid-hover cursor-pointer w-full pl-4  bg-white rounded-[26px] flex justify-start gap-[12px] flex-row items-center">
+//       <Image
+//         alt="Kindi"
+//         src={image || BookOpen}
+//         className="w-[24px] h-[24px]"
+//       />
+//       <div className="text-black text-[16px] w-full font-medium py-4 pr-4 rounded-r-[24px] hover:text-[white] duration-150 liquid-hover font-montserrat leading-[16px]">
+//         {title}{" "}
+//       </div>
+//     </div>
+//   );
+// };
+
+const InternalChip = ({ image, title }) => {
   return (
-    <div className="claracontainer  liquid-hover cursor-pointer w-full pl-4  bg-white rounded-[26px] flex justify-start gap-[12px] flex-row items-center">
+    <div className="claracontainer liquid-hover cursor-pointer w-full pl-4 bg-white rounded-[26px] flex justify-start gap-[12px] flex-row items-center">
       <Image
         alt="Kindi"
         src={image || BookOpen}
         className="w-[24px] h-[24px]"
       />
       <div className="text-black text-[16px] w-full font-medium py-4 pr-4 rounded-r-[24px] hover:text-[white] duration-150 liquid-hover font-montserrat leading-[16px]">
-        {title}{" "}
+        {title}
       </div>
+    </div>
+  );
+};
+
+function parseAdditionalField(htmlString) {
+  // Create a temporary element to hold the HTML string
+  const tempDiv = document.createElement("div");
+  tempDiv.innerHTML = htmlString;
+
+  // Extract the <li> elements from the <ol> (ordered list)
+  const listItems = tempDiv.querySelectorAll("ol li");
+
+  // Convert the NodeList to an array of text content
+  const listArray = Array.from(listItems).map((item) =>
+    item.textContent.trim()
+  );
+
+  return listArray;
+}
+
+const MissionComponent = ({ additionalField }) => {
+  const [bulletPoints, setBulletPoints] = useState([]);
+
+  useEffect(() => {
+    const parsedData = parseAdditionalField(additionalField);
+    setBulletPoints(parsedData);
+  }, [additionalField]);
+
+  // Images associated with the bullet points
+  const images = [PWKOne, PWKTwo, BookOpen]; // Add more images here if needed
+
+  return (
+    <div className="py-3 w-full flex-col justify-start items-center gap-1 inline-flex">
+      {bulletPoints.slice(0, 3).map((point, index) => (
+        <InternalChip
+          key={index}
+          image={images[index]} // Dynamically pass the image
+          title={point}
+        />
+      ))}
     </div>
   );
 };
@@ -61,7 +117,9 @@ export default function ParentWithKindi() {
 
   // const mediaUrls = Parentwithkindi?.Media?.map((media) => `${media.url}`);
   const mediaUrls = Array.isArray(Parentwithkindi?.Media)
-    ? Parentwithkindi.Media.map((media) => `https://lionfish-app-98urn.ondigitalocean.app${media.url}`)
+    ? Parentwithkindi.Media.map(
+        (media) => `https://lionfish-app-98urn.ondigitalocean.app${media.url}`
+      )
     : [];
   const fallbackUrls = [
     "/Images/BlogThumb.png",
@@ -92,17 +150,6 @@ export default function ParentWithKindi() {
                 </span>
               </div>
               <div className="flex w-full container justify-start px-0 items-center flex-col">
-                {/* {storyData.map((story, id) => (
-                  <div key={id} className="w-full px-0 text-start clarabodyTwo text-[white] font-medium font-fredoka">
-                    {story.parentWithKindi?.json && (
-                      <RichTextRender content={story.parentWithKindi.json} />
-                    )}
-                  </div>
-                ))} */}
-                {/* <div className="w-full px-0 text-start clarabodyTwo text-[white] font-medium font-fredoka">
-                  {Parentwithkindi.Body}
-                </div> */}
-
                 {Parentwithkindi.Body ? (
                   <p
                     className="prose w-full px-0 text-start clarabodyTwo text-[white] font-medium font-fredoka"
@@ -136,7 +183,13 @@ export default function ParentWithKindi() {
                 )}
               </div>
             </div>
-            <div className="py-3 w-full flex-col justify-start items-center gap-1 inline-flex">
+            {Parentwithkindi.additionalField ? (
+              <MissionComponent
+                additionalField={Parentwithkindi.additionalField}
+              />
+            ) : null}
+
+            {/* <div className="py-3 w-full flex-col justify-start items-center gap-1 inline-flex">
               <InternalChip
                 image={PWKOne}
                 title="Delivered by highly experienced early years professionals"
@@ -149,7 +202,7 @@ export default function ParentWithKindi() {
                 image={BookOpen}
                 title="Targeted learning for early learners of all stages of development "
               />
-            </div>
+            </div> */}
           </div>
 
           <Claras3DGallery images={imagesToDisplay} />

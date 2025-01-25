@@ -1,8 +1,26 @@
+"use client";
+
 import { fetchInvestmentOpportunity } from "@/app/data/p/Standard";
-// import RichTextRender from "@/app/Sections/Global/RichTextRender";
+import { useEffect, useState } from "react";
 
 export default async function InvestmentOpportunity() {
-  const content = await fetchInvestmentOpportunity();
+  const [content, setContent] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const getRefundPolicyData = async () => {
+      const data = await fetchInvestmentOpportunity();
+      // console.log("Fetched Data:", data); // Log the data to check if it's set correctly
+      setContent(data);
+      setLoading(false);
+    };
+
+    getRefundPolicyData();
+  }, []);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
   if (!content) {
     return <p>No data available</p>;

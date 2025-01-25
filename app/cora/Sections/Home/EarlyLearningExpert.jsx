@@ -67,7 +67,7 @@ export default function EarlyLearningExpert() {
         <div className="prose ">
           {/* Render the markdown content as HTML */}
           <p
-            className="prose w-full text-start text-[#696969] text-base md:text-lg lg:text-xl mt-4 leading-relaxed  animate-fadeIn animate-delay-2000"
+            className="prose w-full text-start font-fredoka text-[#696969] text-base md:text-lg lg:text-xl mt-4 leading-relaxed  animate-fadeIn animate-delay-2000"
             dangerouslySetInnerHTML={{ __html: content?.BodyDescription }}
           />
         </div>

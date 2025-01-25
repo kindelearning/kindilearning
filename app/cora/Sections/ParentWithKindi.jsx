@@ -91,6 +91,18 @@ export default function ParentWithKindi() {
                 <p> content not available</p>
               )}
             </div>
+            <div className="text-lg text-gray-700 space-y-6 leading-relaxed">
+              {content.additionalField ? (
+                <p
+                  className="prose w-full px-0 text-start clarabodyTwo  font-medium font-fredoka"
+                  dangerouslySetInnerHTML={{
+                    __html: content.additionalField,
+                  }}
+                />
+              ) : (
+                <p>additionalField not available</p>
+              )}
+            </div>
 
             {content?.Media ? (
               <div className="grid grid-cols-3 gap-2 justify-between items-center w-full">
@@ -119,6 +131,7 @@ export function UpdateParentWithKindiSection2() {
   const [content, setContent] = useState({
     Parentwithkindi: {
       Body: "",
+      additionalField: "",
       featuredText: "",
       Title: "",
       Media: null, // Handle media if required
@@ -158,6 +171,7 @@ export function UpdateParentWithKindiSection2() {
       data: {
         Parentwithkindi: {
           Body: content.Parentwithkindi.Body,
+          additionalField: content.Parentwithkindi.additionalField,
           featuredText: content.Parentwithkindi.featuredText,
           Title: content.Parentwithkindi.Title,
           Media: content.Parentwithkindi.Media, // If you want to handle media as well
@@ -252,6 +266,25 @@ export function UpdateParentWithKindiSection2() {
             }
           />
         </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
+            Bullets
+          </label>
+
+          <ClaraMarkdownRichEditor
+            name="additionalField"
+            value={content.Parentwithkindi.additionalField}
+            onChange={(value) =>
+              setContent({
+                ...content,
+                Parentwithkindi: {
+                  ...content.Parentwithkindi,
+                  additionalField: value,
+                },
+              })
+            }
+          />
+        </div>
 
         <div>
           <label className="block text-sm font-medium text-gray-700">
@@ -297,6 +330,7 @@ export function UpdateParentWithKindiSection2() {
 export function UpdateParentWithKindiSection() {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
+  const [additionalField, setAdditionalField] = useState("");
   const [featuredText, setFeaturedText] = useState("");
   const [media, setMedia] = useState(null); // Media state
   const [openDialog, setOpenDialog] = useState(false);
@@ -315,6 +349,7 @@ export function UpdateParentWithKindiSection() {
         if (content) {
           setTitle(content.Parentwithkindi?.Title || ""); // Set default values if not found
           setBody(content.Parentwithkindi?.Body || "");
+          setAdditionalField(content.Parentwithkindi?.additionalField || "");
           setFeaturedText(content.Parentwithkindi?.featuredText || "");
           setMedia(content.Parentwithkindi?.Media?.id || null); // Set the media ID or null if no media is selected
           setMedia(
@@ -343,6 +378,7 @@ export function UpdateParentWithKindiSection() {
         Parentwithkindi: {
           Title: title,
           Body: body,
+          additionalField: additionalField,
           featuredText: featuredText,
           Media: formattedGallery, // Use media ID if selected
         },
@@ -389,6 +425,9 @@ export function UpdateParentWithKindiSection() {
   const handleEditorChange = (newValue) => {
     setBody(newValue); // Update body state with the new value from the editor
   };
+  const handleEditorChangw = (newValue) => {
+    setAdditionalField(newValue); // Update body state with the new value from the editor
+  };
   return (
     <div className="p-8">
       <h1 className="text-2xl font-bold mb-6">Edit Parentwithkindi</h1>
@@ -414,6 +453,20 @@ export function UpdateParentWithKindiSection() {
               No items selected yet.
             </p>
           )}
+        </div>
+        {/* Featured Text Field */}
+        <div>
+          <label htmlFor="FeaturedText" className="block">
+            Featured Text
+          </label>
+          <input
+            type="text"
+            id="FeaturedText"
+            name="FeaturedText"
+            value={featuredText}
+            onChange={(e) => setFeaturedText(e.target.value)}
+            className="border p-2 w-full"
+          />
         </div>
 
         {/* Title Field */}
@@ -450,19 +503,15 @@ export function UpdateParentWithKindiSection() {
             onChange={handleEditorChange}
           />
         </div>
-
-        {/* Featured Text Field */}
         <div>
-          <label htmlFor="FeaturedText" className="block">
-            Featured Text
+          <label htmlFor="BodyDescription" className="block">
+          additionalField Description (Markdown)
           </label>
-          <input
-            type="text"
-            id="FeaturedText"
-            name="FeaturedText"
-            value={featuredText}
-            onChange={(e) => setFeaturedText(e.target.value)}
-            className="border p-2 w-full"
+
+          <ClaraMarkdownRichEditor
+            name="additionalField"
+            value={additionalField || ""} // Ensure the value is always a string
+            onChange={handleEditorChangw}
           />
         </div>
 

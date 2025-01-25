@@ -113,8 +113,8 @@ export default function ProductGrid() {
               <ProductCard
                 productUrl={`/shop/${product.documentId}`}
                 image={
-                  product?.FeaturedImage?.[0]?.url
-                    ? product.FeaturedImage[0].url
+                  product?.FeaturedImage
+                    ? `https://lionfish-app-98urn.ondigitalocean.app${product?.FeaturedImage[0]?.url}`
                     : "/Images/shop/ProductImage.png"
                 }
                 // image={`https://lionfish-app-98urn.ondigitalocean.app${product?.FeaturedImage[0]?.url}`}

@@ -45,7 +45,7 @@ export default function OurStory() {
           <div className="w-full lg:max-w-[600px] flex justify-center items-start h-auto">
             <div className="w-full lg:w-[400px] rounded-xl  border-[12px] border-[#ffffff] xl:w-[500px] h-auto animate-fadeIn animate-delay-500">
               {content?.Media ? (
-                <video className="w-full h-full " autoPlay loop muted>
+                <video className="w-full h-full " autoPlay controls loop muted>
                   <source
                     src={`https://lionfish-app-98urn.ondigitalocean.app${content?.Media[0]?.url}`}
                     type="video/mp4"

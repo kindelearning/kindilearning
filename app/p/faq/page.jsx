@@ -1,12 +1,47 @@
+"use client";
+
 import { fetchFaq } from "@/app/data/p/Standard";
 import Accordion from "@/app/Sections/Global/MyAccordion";
+import { useEffect, useState } from "react";
 
-export default async function FaqPage() {
-  const faqContent = await fetchFaq();
+export default function FaqPage() {
+  const [faqs, setFaqs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  useEffect(() => {
+    const fetchFAQs = async () => {
+      try {
+        const response = await fetch(
+          "https://lionfish-app-98urn.ondigitalocean.app/api/faqs?populate=*"
+        );
+        const data = await response.json();
 
-  if (!faqContent || faqContent.length === 0) {
-    return <p>No FAQ data available</p>;
+        if (data?.data) {
+          setFaqs(data.data);
+        } else {
+          setError("No FAQ data found");
+        }
+      } catch (err) {
+        setError("Error fetching FAQs: " + err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFAQs();
+  }, []);
+
+
+   // Show loading message while fetching
+   if (loading) {
+    return <div>Loading FAQs...</div>;
   }
+
+  // Show error if any
+  if (error) {
+    return <div className="text-red-500">{error}</div>;
+  }
+
 
   return (
     <section className="w-full h-auto bg-[#eaeaf5] items-center justify-center py-0 flex flex-col md:flex-row gap-[20px]">
@@ -26,9 +61,9 @@ export default async function FaqPage() {
           </div>
         </div>
         <div className="items-center w-full justify-center flex flex-col gap-2">
-          {faqContent ? (
+          {faqs ? (
             <>
-              {faqContent.map((faqItem, index) => {
+              {faqs.map((faqItem, index) => {
                 const { Question, Answer } = faqItem;
                 return (
                   <div key={index} className="w-full ">

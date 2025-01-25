@@ -234,7 +234,7 @@ export default function BlogDetailPage({ params }) {
           <div className="content prose font-fredoka py-4 flex flex-col gap-2 justify-center">
             {Content ? (
               <div
-                className="text-lg text-gray-600 prose leading-relaxed mb-6"
+                className="text-lg leading-tight text-gray-600 prose mb-6"
                 dangerouslySetInnerHTML={{ __html: Content }}
               />
             ) : (

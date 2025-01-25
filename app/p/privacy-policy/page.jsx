@@ -1,7 +1,27 @@
+"use client";
+
 import { fetchPrivacyPolicy } from "@/app/data/p/Standard";
+import { useEffect, useState } from "react";
 
 export default async function PrivacyPolicy() {
-  const content = await fetchPrivacyPolicy();
+  const [content, setContent] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch the refund policy when the component mounts
+  useEffect(() => {
+    const getRefundPolicyData = async () => {
+      const data = await fetchPrivacyPolicy();
+      // console.log("Fetched Data:", data); // Log the data to check if it's set correctly
+      setContent(data);
+      setLoading(false);
+    };
+
+    getRefundPolicyData();
+  }, []);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
   if (!content) {
     return <p>No data available</p>;

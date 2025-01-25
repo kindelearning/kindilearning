@@ -337,7 +337,6 @@ export function UpdateSliderSection() {
     });
   };
 
-
   const handleMediaSelect = (selectedMedia, index) => {
     const updatedSection = [...sliderContent];
     updatedSection[index].Media = selectedMedia;
@@ -362,13 +361,16 @@ export function UpdateSliderSection() {
     console.log("payload sent", payload);
 
     try {
-      const res = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/slider", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
+      const res = await fetch(
+        "https://lionfish-app-98urn.ondigitalocean.app/api/slider",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        }
+      );
 
       const data = await res.json();
       console.log("Updated How It Works Data:", data);
@@ -522,21 +524,36 @@ export function UpdateSliderSection() {
             </div>
 
             {/* Media Selection */}
-            <div>
+            {/* <div>
               <label className="block text-sm font-medium text-gray-700">
                 Media:
               </label>
-              {section.Media ? (
+               {section.Media ? (
                 <div className="mt-2">
                   <img
-                    src={`https://lionfish-app-98urn.ondigitalocean.app${section.Media[0].url}`}
+                    // src={`https://lionfish-app-98urn.ondigitalocean.app${section.Media[0].url}`}
+                    src={
+                      section.Media  > 0
+                        ? `https://lionfish-app-98urn.ondigitalocean.app${section?.Media[0]?.url}`
+                        : "/Images/SlidePlay.svg" // Use a fallback image if no media is available
+                    }
                     alt={section.Title}
                     className="w-32 h-32 object-cover border rounded-md"
                   />
                 </div>
               ) : (
                 <p className="mt-2 text-gray-500">No media selected</p>
-              )}
+              )} 
+              <MediaSelector
+                onMediaSelect={(media) => handleMediaSelect(media, index)}
+              />
+            </div>*/}
+
+            <div className="w-full p-2 bg-[#e4e1e1a8] rounded-lg">
+              <label htmlFor="Media" className="block">
+                Media
+              </label>
+
               <MediaSelector
                 onMediaSelect={(media) => handleMediaSelect(media, index)}
               />

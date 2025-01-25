@@ -1,7 +1,27 @@
+"use client";
+
 import { fetchTnc } from "@/app/data/p/Standard";
+import { useEffect, useState } from "react";
 
 export default async function TermsAndCondition() {
-  const content = await fetchTnc();
+  const [content, setContent] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch the refund policy when the component mounts
+  useEffect(() => {
+    const getRefundPolicyData = async () => {
+      const data = await fetchTnc();
+      // console.log("Fetched Data:", data); // Log the data to check if it's set correctly
+      setContent(data);
+      setLoading(false);
+    };
+
+    getRefundPolicyData();
+  }, []);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
   if (!content) {
     return <p>No data available</p>;
@@ -24,9 +44,8 @@ export default async function TermsAndCondition() {
                   Condition
                 </span>
               </div>
-              <hr className="text-[#3f3a64] h-[2px]" />
             </div>
-            {Body ? (
+            {/* {Body ? (
               <div className="flex flex-col w-full justify-start items-start heading animate-fade-in">
                 <span className="text-[#3f3a64] text-base font-normal font-fredoka leading-tight">
                   {Body}
@@ -36,20 +55,19 @@ export default async function TermsAndCondition() {
               <div className="flex flex-col w-full justify-start items-start heading animate-fade-in">
                 <span className="text-[#3f3a64] text-base font-normal font-fredoka leading-tight"></span>
               </div>
-            )}
+            )} */}
           </div>
           {Lastupdated ? (
             <div className="text-purple  clarabodyTwo animate-fade-in">
               Last updated: {new Date(Lastupdated).toLocaleDateString()}
             </div>
           ) : null}
-          <div className="h-[1.5px] prose bg-[black] rounded-full my-4" />
+          {/* <div className=" prose bg-[black] rounded-full my-4" /> */}
           {Pagecontent ? (
             <div
+              className="prose font-fredoka"
               dangerouslySetInnerHTML={{
-                __html:
-                  Pagecontent.replace(/\n/g, "<br />") ||
-                  "<p>No additional content available</p>",
+                __html: Pagecontent,
               }}
             />
           ) : (
@@ -62,3 +80,4 @@ export default async function TermsAndCondition() {
     </>
   );
 }
+// .replace(/\n/g, "<br />") 

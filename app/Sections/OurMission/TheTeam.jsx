@@ -103,7 +103,7 @@ export default function TheTeam() {
               // imageSrc={Thomas}
               description={
                 <p
-                  className="prose text-white"
+                  className="prose text-[16px] text-white"
                   dangerouslySetInnerHTML={{
                     __html:
                       member.About ||

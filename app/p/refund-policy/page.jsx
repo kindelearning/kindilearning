@@ -1,7 +1,7 @@
 "use client";
 
 import { fetchRefundPolicy } from "@/app/data/p/Standard";
-
+ 
 import React, { useEffect, useState } from "react";
 
 export default function RefundPolicy() {

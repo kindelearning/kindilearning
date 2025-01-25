@@ -1,8 +1,27 @@
+"use client";
+
 import { fetchQualityControl } from "@/app/data/p/Standard";
+import { useEffect, useState } from "react";
 
 export default async function QualityControll() {
-  const content = await fetchQualityControl();
-  // console.log("Quality Controls Content:", content); // Debug: Log the content
+  const [content, setContent] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch the refund policy when the component mounts
+  useEffect(() => {
+    const getRefundPolicyData = async () => {
+      const data = await fetchQualityControl();
+      // console.log("Fetched Data:", data); // Log the data to check if it's set correctly
+      setContent(data);
+      setLoading(false);
+    };
+
+    getRefundPolicyData();
+  }, []);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
   if (!content) {
     return <p>No data available</p>;
@@ -12,7 +31,6 @@ export default async function QualityControll() {
 
   return (
     <>
-     
       <section className="w-full bg-[#EAEAF5] flex flex-col gap-0 justify-center items-center">
         <div className="claracontainer px-4 md:px-2 lg:px-4 pb-24 pt-8 w-full bg-[#eaeaf5] flex flex-col overflow-hidden gap-8">
           <div className="claracontainer w-full flex flex-col overflow-hidden gap-4">

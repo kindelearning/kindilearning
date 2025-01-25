@@ -333,7 +333,7 @@ export default function AdminBlogs() {
                                 {/* Featured Image */}
                                 <img
                                   // src={selectedBlog?.FeaturedImage?.url}
-                                  src={`https://lionfish-app-98urn.ondigitalocean.app/${selectedBlog?.FeaturedImage?.url}`}
+                                  src={`https://lionfish-app-98urn.ondigitalocean.app${selectedBlog?.FeaturedImage?.url}`}
                                   alt={selectedBlog?.Text}
                                   className="w-full h-[300px] object-cover rounded-lg mb-6"
                                 />
