@@ -116,7 +116,7 @@ export default function UpdatePartnerForm({userId}) {
             htmlFor="email"
             className="block text-sm font-medium text-gray-700"
           >
-            Partner's Email
+            Partner&apos;s Email
           </label>
           <input
             type="email"
