@@ -168,7 +168,6 @@ const AvailableDaysForm = ({ userId }) => {
 export default function ProfileEdit() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-
   const [userData, setUserData] = useState(null);
   const [kidsData, setKidsData] = useState([]);
   const [myLevels, setMyLevels] = useState(null);
@@ -258,7 +257,7 @@ export default function ProfileEdit() {
             <span className="text-red uppercase claraheading">Account</span>
           </div>
 
-          <div className="claracontainer lg:px-[144px] flex flex-col gap-8 justify-center items-center">
+          <div className="claracontainer lg:px-[24px] flex flex-col gap-8 justify-center items-center">
             <div className="flex w-full justify-center items-center">
               {/* <AvatarSelectionForm /> */}
             </div>
@@ -297,7 +296,7 @@ export default function ProfileEdit() {
                           <DialogTrigger>
                             <Pencil className="text-gray-500 hover:text-indigo-600 transition-colors duration-200 cursor-pointer" />
                           </DialogTrigger>
-                          <DialogContent>
+                          <DialogContent className="max-w-[1000px] max-h-[600px] overflow-y-scroll">
                             <DialogHeader>
                               <DialogTitle>Update Kid</DialogTitle>
                               <DialogDescription>
@@ -363,7 +362,7 @@ export default function ProfileEdit() {
                 {userData && (
                   <Dialog>
                     <DialogTrigger className="claraButton">
-                      AddNew Payment Method
+                      Add New Partners
                     </DialogTrigger>
                     <DialogContent className="w-full max-w-[800px] max-h-[600px] overflow-y-scroll">
                       <DialogHeader>
@@ -407,7 +406,7 @@ export default function ProfileEdit() {
                 {userData && (
                   <Dialog>
                     <DialogTrigger className="claraButton">
-                      AddNew Payment Method
+                      Add New Payment Method
                     </DialogTrigger>
                     <DialogContent className="w-full max-w-[800px] max-h-[600px] overflow-y-scroll">
                       <DialogHeader>
@@ -492,9 +491,12 @@ export function UpdateRawProfile() {
         return;
       }
       try {
-        const response = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/users/me", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const response = await fetch(
+          "https://lionfish-app-98urn.ondigitalocean.app/api/users/me",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
         if (!response.ok) throw new Error("Failed to fetch user data.");
         const data = await response.json();
 
@@ -565,7 +567,10 @@ export function UpdateRawProfile() {
   return (
     <div className="claraContainer w-full font-fredoka py-12">
       <h2 className="text-3xl font-medium mb-8">Update Profile</h2>
-      <form onSubmit={handleSubmit} className="w-full flex flex-col gap-4">
+      <form
+        onSubmit={handleSubmit}
+        className="max-w-full mx-auto font-fredoka bg-white rounded-lg p-4 space-y-6"
+      >
         <div className="claracontainer w-full flex flex-col gap-2">
           <div className="py-2 w-full bg-white rounded-lg">
             <label className="block text-[#757575] text-[10px] lg:text-[14px] px-3 font-fredoka">
@@ -664,13 +669,16 @@ const AddKidForm = ({ parentId }) => {
     console.log("New Kid data", newKid);
 
     try {
-      const response = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/kids", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newKid),
-      });
+      const response = await fetch(
+        "https://lionfish-app-98urn.ondigitalocean.app/api/kids",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newKid),
+        }
+      );
 
       const data = await response.json();
       console.log("Payload sent", data);
@@ -795,17 +803,42 @@ const UpdateKidForm = ({ parentId, kidId }) => {
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
   const [dob, setDob] = useState("");
+  const [dp, setDP] = useState(null); // Store the selected media
   const [attendingNursery, setAttendingNursery] = useState(false);
   const [gender, setGender] = useState("");
-
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [mediaList, setMediaList] = useState([]); // Store the media list fetched from the server
+
+  // Fetch media data from the server
+  useEffect(() => {
+    const fetchMedia = async () => {
+      try {
+        const response = await fetch(
+          "https://lionfish-app-98urn.ondigitalocean.app/api/upload/files"
+        );
+        const data = await response.json();
+
+        // Filter media with ids between 159 and 169
+        const filteredMedia = data.filter(
+          (item) => item.id >= 159 && item.id <= 169
+        );
+        setMediaList(filteredMedia); // Update the state with the filtered media
+      } catch (err) {
+        setError("An error occurred while fetching media files");
+      }
+    };
+
+    fetchMedia();
+  }, []);
 
   // Fetch existing kid's data when component mounts
   useEffect(() => {
     const fetchKidData = async () => {
       try {
-        const response = await fetch(`https://lionfish-app-98urn.ondigitalocean.app/api/kids/${kidId}`);
+        const response = await fetch(
+          `https://lionfish-app-98urn.ondigitalocean.app/api/kids/${kidId}`
+        );
         const data = await response.json();
         if (response.ok) {
           const kid = data.data;
@@ -814,6 +847,7 @@ const UpdateKidForm = ({ parentId, kidId }) => {
           setDob(kid.dob || "");
           setAttendingNursery(kid.AttendingNursury || false);
           setGender(kid.Gender || "");
+          setDP(kid.kidDP || null); // Set existing media if available
         } else {
           setError("Failed to fetch kid data");
         }
@@ -838,6 +872,7 @@ const UpdateKidForm = ({ parentId, kidId }) => {
         dob: dob,
         AttendingNursury: attendingNursery,
         Gender: gender,
+        kidDP: dp?.id || null, // Include the media id if available
         myParent: [
           { id: parentId }, // Ensure we keep the parent's reference
         ],
@@ -845,13 +880,16 @@ const UpdateKidForm = ({ parentId, kidId }) => {
     };
 
     try {
-      const response = await fetch(`https://lionfish-app-98urn.ondigitalocean.app/api/kids/${kidId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(updatedKid),
-      });
+      const response = await fetch(
+        `https://lionfish-app-98urn.ondigitalocean.app/api/kids/${kidId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedKid),
+        }
+      );
 
       const data = await response.json();
 
@@ -860,6 +898,7 @@ const UpdateKidForm = ({ parentId, kidId }) => {
         setName("");
         setAge("");
         setDob("");
+        setDP(null); // Reset media
         setAttendingNursery(false);
         setGender("");
       } else {
@@ -871,18 +910,61 @@ const UpdateKidForm = ({ parentId, kidId }) => {
       setIsSubmitting(false);
     }
   };
-
+  const handleMediaSelect = (selectedMedia) => {
+    setDP(selectedMedia); // Store the selected media object
+  };
   return (
     <div className="max-w-full font-fredoka bg-white rounded-lg">
       {error && <p className="text-red-500 mb-4">{error}</p>}
       <form onSubmit={handleSubmit} className="space-y-4">
         {error && <p className="text-red-500">{error}</p>}
         <div className="claracontainer w-full flex flex-col gap-2">
+          <div>
+            <label>Media:</label>
+            <div className="mt-4 flex gap-4">
+              {mediaList.length === 0 ? (
+                <p>Loading media...</p>
+              ) : (
+                mediaList.map((media) => (
+                  <div
+                    key={media.id}
+                    className={`cursor-pointer min-w-16 min-h-16 w-12 h-12 p-2 rounded-lg border-2 ${
+                      dp?.id === media.id
+                        ? "border-blue-500"
+                        : "border-gray-300"
+                    }`}
+                    onClick={() => handleMediaSelect(media)}
+                  >
+                    <img
+                      src={`https://lionfish-app-98urn.ondigitalocean.app${media.url}`}
+                      // src={media.url}
+                      alt={media.name}
+                      className="min-w-12 min-h-12 w-12 h-12 object-cover rounded-full"
+                    />
+                    {/* <p className="text-center mt-2">{media.name}</p> */}
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+
+          {dp && (
+            <div className="mt-4">
+              <p>Selected Media:</p>
+              <img
+                src={`https://lionfish-app-98urn.ondigitalocean.app${dp.url}`}
+                alt={dp.name}
+                className="w-32 h-32 object-cover"
+              />
+              <p>{dp.name}</p>
+            </div>
+          )}
+
           <div className="w-full gap-1 py-2 bg-white rounded-lg">
             <label htmlFor="name" className="block">
               Name
             </label>
-            <input
+            <Input
               type="text"
               id="name"
               name="name"
@@ -893,66 +975,67 @@ const UpdateKidForm = ({ parentId, kidId }) => {
             />
           </div>
 
-          <div className="w-full gap-1 py-2 bg-white rounded-lg">
-            <label htmlFor="age" className="block">
-              Age
-            </label>
-            <input
-              type="number"
-              id="age"
-              name="age"
-              value={age}
-              onChange={(e) => setAge(e.target.value)}
-              required
-              className="w-full rounded-lg focus-visible:scale-100 shadow-none border-transparent bg-white text-gray-500 text-base font-fredoka focus:text-black focus:ring-0 focus:outline-none transition-colors duration-150 ease-in-out"
-            />
+          <div className="flex w-full justify-between gap-2">
+            <div className="w-full gap-1 py-2 bg-white rounded-lg">
+              <label htmlFor="age" className="block">
+                Age
+              </label>
+              <Input
+                type="number"
+                id="age"
+                name="age"
+                value={age}
+                onChange={(e) => setAge(e.target.value)}
+                required
+                className="w-full rounded-lg focus-visible:scale-100 shadow-none border-transparent bg-white text-gray-500 text-base font-fredoka focus:text-black focus:ring-0 focus:outline-none transition-colors duration-150 ease-in-out"
+              />
+            </div>
+            <div className="w-full gap-1 py-2 bg-white rounded-lg">
+              <label htmlFor="dob" className="block">
+                Date of Birth
+              </label>
+              <Input
+                type="date"
+                id="dob"
+                name="dob"
+                value={dob}
+                onChange={(e) => setDob(e.target.value)}
+                required
+                className="input"
+              />
+            </div>
           </div>
-
-          <div className="w-full gap-1 py-2 bg-white rounded-lg">
-            <label htmlFor="dob" className="block">
-              Date of Birth
-            </label>
-            <input
-              type="date"
-              id="dob"
-              name="dob"
-              value={dob}
-              onChange={(e) => setDob(e.target.value)}
-              required
-              className="input"
-            />
-          </div>
-
-          <div className="w-full gap-1 py-2 bg-white rounded-lg">
-            <label htmlFor="attendingNursery" className="block">
-              Attending Nursery
-            </label>
-            <input
-              type="checkbox"
-              id="attendingNursery"
-              name="attendingNursery"
-              checked={attendingNursery}
-              onChange={(e) => setAttendingNursery(e.target.checked)}
-              className="input"
-            />
-          </div>
-
-          <div className="w-full gap-1 py-2 bg-white rounded-lg">
-            <label htmlFor="gender" className="block">
-              Gender
-            </label>
-            <select
-              id="gender"
-              name="gender"
-              value={gender}
-              onChange={(e) => setGender(e.target.value)}
-              required
-              className="input"
-            >
-              <option value="">Select Gender</option>
-              <option value="M">Male</option>
-              <option value="F">Female</option>
-            </select>
+          <div className="flex w-full justify-between gap-2">
+            <div className="w-full gap-1 py-2 bg-white rounded-lg">
+              <label htmlFor="attendingNursery" className="block">
+                Attending Nursery
+              </label>
+              <Input
+                type="checkbox"
+                id="attendingNursery"
+                name="attendingNursery"
+                checked={attendingNursery}
+                onChange={(e) => setAttendingNursery(e.target.checked)}
+                className="input"
+              />
+            </div>
+            <div className="w-full gap-1 py-2 bg-white rounded-lg">
+              <label htmlFor="gender" className="block">
+                Gender
+              </label>
+              <select
+                id="gender"
+                name="gender"
+                value={gender}
+                onChange={(e) => setGender(e.target.value)}
+                required
+                className="input"
+              >
+                <option value="">Select Gender</option>
+                <option value="M">Male</option>
+                <option value="F">Female</option>
+              </select>
+            </div>
           </div>
         </div>
 
@@ -991,13 +1074,16 @@ const RemoveKidButton = ({ kidId }) => {
     };
 
     try {
-      const response = await fetch(`https://lionfish-app-98urn.ondigitalocean.app/api/kids/${kidId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(updatedKid),
-      });
+      const response = await fetch(
+        `https://lionfish-app-98urn.ondigitalocean.app/api/kids/${kidId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedKid),
+        }
+      );
 
       const data = await response.json();
 
@@ -1127,7 +1213,7 @@ const AddPaymentMethodForm = ({ parentId }) => {
             <label htmlFor="name" className="block">
               Name
             </label>
-            <input
+            <Input
               type="text"
               id="name"
               name="name"
@@ -1142,7 +1228,7 @@ const AddPaymentMethodForm = ({ parentId }) => {
             <label htmlFor="number" className="block">
               Number
             </label>
-            <input
+            <Input
               type="number"
               id="number"
               name="number"
@@ -1158,7 +1244,7 @@ const AddPaymentMethodForm = ({ parentId }) => {
               <label htmlFor="expiryDate" className="block">
                 ExpiryDate
               </label>
-              <input
+              <Input
                 type="date"
                 id="expiryDate"
                 name="expiryDate"
@@ -1173,7 +1259,7 @@ const AddPaymentMethodForm = ({ parentId }) => {
               <label htmlFor="cvv" className="block">
                 CVV
               </label>
-              <input
+              <Input
                 type="number"
                 id="cvv"
                 name="cvv"
@@ -1290,7 +1376,7 @@ const UpdatePaymentDataForm = ({ parentId, paymentId }) => {
             <label htmlFor="name" className="block">
               Name
             </label>
-            <input
+            <Input
               type="text"
               id="name"
               name="name"
@@ -1305,7 +1391,7 @@ const UpdatePaymentDataForm = ({ parentId, paymentId }) => {
             <label htmlFor="number" className="block">
               Number
             </label>
-            <input
+            <Input
               type="number"
               id="number"
               name="number"
@@ -1320,7 +1406,7 @@ const UpdatePaymentDataForm = ({ parentId, paymentId }) => {
               <label htmlFor="expiryDate" className="block">
                 Expiry
               </label>
-              <input
+              <Input
                 type="date"
                 id="expiryDate"
                 name="expiryDate"
@@ -1335,7 +1421,7 @@ const UpdatePaymentDataForm = ({ parentId, paymentId }) => {
               <label htmlFor="cvv" className="block">
                 CVV
               </label>
-              <input
+              <Input
                 type="number"
                 id="cvv"
                 name="cvv"

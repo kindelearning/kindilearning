@@ -25,7 +25,9 @@ export default function MediaSelector({ onMediaSelect }) {
   useEffect(() => {
     const fetchMediaFiles = async () => {
       try {
-        const response = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/upload/files");
+        const response = await fetch(
+          "https://lionfish-app-98urn.ondigitalocean.app/api/upload/files"
+        );
         if (!response.ok) throw new Error("Failed to fetch media files");
         const data = await response.json();
         setMediaFiles(data);
@@ -271,7 +273,9 @@ export function MultiMediaSelector({ onMediaSelect }) {
   useEffect(() => {
     const fetchMediaFiles = async () => {
       try {
-        const response = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/upload/files");
+        const response = await fetch(
+          "https://lionfish-app-98urn.ondigitalocean.app/api/upload/files"
+        );
         if (!response.ok) throw new Error("Failed to fetch media files");
         const data = await response.json();
         setMediaFiles(data);
@@ -379,20 +383,22 @@ export function MultiMediaSelector({ onMediaSelect }) {
                       <video
                         controls
                         className={`w-full h-32 object-cover rounded transition ${
-                          selectedMediaIds.includes(mediaFile.id) ? "opacity-90" : ""
+                          selectedMediaIds.includes(mediaFile.id)
+                            ? "opacity-90"
+                            : ""
                         }`}
                         src={mediaFile.url}
-                      // src={`https://lionfish-app-98urn.ondigitalocean.app${mediaFile.url}`}
-
+                        // src={`https://lionfish-app-98urn.ondigitalocean.app${mediaFile.url}`}
                       />
                     ) : (
                       <img
                         // src={mediaFile.url}
-                      src={`https://lionfish-app-98urn.ondigitalocean.app${mediaFile.url}`}
-
+                        src={`https://lionfish-app-98urn.ondigitalocean.app${mediaFile.url}`}
                         alt={mediaFile.name}
                         className={`w-full h-32 object-cover rounded transition ${
-                          selectedMediaIds.includes(mediaFile.id) ? "opacity-90" : ""
+                          selectedMediaIds.includes(mediaFile.id)
+                            ? "opacity-90"
+                            : ""
                         }`}
                       />
                     )}
@@ -455,217 +461,195 @@ export function MultiMediaSelector({ onMediaSelect }) {
     </>
   );
 }
-// export function MultiMediaSelector({ onMediaSelect, maxSelection = 10 }) {
-//   const [mediaFiles, setMediaFiles] = useState([]);
-//   const [filteredMedia, setFilteredMedia] = useState([]);
-//   const [searchTerm, setSearchTerm] = useState("");
-//   const [filterType, setFilterType] = useState("all");
-//   const [currentPage, setCurrentPage] = useState(1);
-//   const itemsPerPage = 24; // Number of media cards per page
-//   const [selectedMedia, setSelectedMedia] = useState([]); // Track selected media entries
 
-//   // Fetch media files from the API
-//   useEffect(() => {
-//     const fetchMediaFiles = async () => {
-//       try {
-//         const response = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/upload/files");
-//         if (!response.ok) throw new Error("Failed to fetch media files");
-//         const data = await response.json();
-//         setMediaFiles(data);
-//         setFilteredMedia(data); // Set initial filtered data
-//       } catch (error) {
-//         console.error("Error fetching media files:", error);
-//       }
-//     };
-//     fetchMediaFiles();
-//   }, []);
+export function KidMediaSelector({ onMediaSelect }) {
+  const [mediaFiles, setMediaFiles] = useState([]);
+  const [filteredMedia, setFilteredMedia] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterType, setFilterType] = useState("all");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 24; // Number of media cards per page
+  const [selectedMediaId, setSelectedMediaId] = useState(null); // Track the selected media ID
 
-//   // Handle search and filter
-//   useEffect(() => {
-//     let filtered = mediaFiles;
+  // Fetch media files from the API, filter by ID range (159 to 168)
+  useEffect(() => {
+    const fetchMediaFiles = async () => {
+      try {
+        const response = await fetch(
+          "https://lionfish-app-98urn.ondigitalocean.app/api/upload/files"
+        );
+        if (!response.ok) throw new Error("Failed to fetch media files");
+        const data = await response.json();
 
-//     if (filterType !== "all") {
-//       filtered = filtered.filter((file) =>
-//         filterType === "images"
-//           ? file.mime.startsWith("image/")
-//           : file.mime.startsWith("video/")
-//       );
-//     }
+        // Filter the data to include only files with IDs between 159 and 168
+        const filteredData = data.filter((file) => {
+          const id = parseInt(file.id, 10); // Ensure the ID is a number
+          return id >= 159 && id <= 168;
+        });
 
-//     if (searchTerm) {
-//       filtered = filtered.filter((file) =>
-//         file.name.toLowerCase().includes(searchTerm.toLowerCase())
-//       );
-//     }
+        setMediaFiles(filteredData);
+        setFilteredMedia(filteredData); // Set initial filtered data
+      } catch (error) {
+        console.error("Error fetching media files:", error);
+      }
+    };
+    fetchMediaFiles();
+  }, []);
 
-//     setFilteredMedia(filtered);
-//     setCurrentPage(1); // Reset to the first page after filtering
-//   }, [searchTerm, filterType, mediaFiles]);
+  // Handle search and filter
+  useEffect(() => {
+    let filtered = mediaFiles;
 
-//   // Paginated data
-//   const paginatedMedia = filteredMedia.slice(
-//     (currentPage - 1) * itemsPerPage,
-//     currentPage * itemsPerPage
-//   );
+    if (filterType !== "all") {
+      filtered = filtered.filter((file) =>
+        filterType === "images"
+          ? file.mime.startsWith("image/")
+          : file.mime.startsWith("video/")
+      );
+    }
 
-//   // Handle media selection
-//   const handleMediaSelect = (selectedMediaItem) => {
-//     // Check if the item is already selected
-//     const isSelected = selectedMedia.some(
-//       (media) => media.id === selectedMediaItem.id
-//     );
+    if (searchTerm) {
+      filtered = filtered.filter((file) =>
+        file.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
 
-//     if (isSelected) {
-//       // Remove from selected list
-//       const updatedSelection = selectedMedia.filter(
-//         (media) => media.id !== selectedMediaItem.id
-//       );
-//       setSelectedMedia(updatedSelection);
-//     } else {
-//       // Add to selected list if under the max selection limit
-//       if (selectedMedia.length < maxSelection) {
-//         setSelectedMedia([...selectedMedia, selectedMediaItem]);
-//       } else {
-//         alert(`You can only select up to ${maxSelection} items.`);
-//       }
-//     }
-//   };
+    setFilteredMedia(filtered);
+    setCurrentPage(1); // Reset to the first page after filtering
+  }, [searchTerm, filterType, mediaFiles]);
 
-//   const handleConfirmSelection = () => {
-//     onMediaSelect(selectedMedia); // Pass the selected media back to the parent
-//   };
+  // Paginated data
+  const paginatedMedia = filteredMedia.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
-//   return (
-//     <>
-//       <Dialog>
-//         <DialogTrigger>
-//           <button className="px-4 py-2 bg-blue-500 text-white rounded">
-//             Select Media
-//           </button>
-//         </DialogTrigger>
-//         <DialogContent className="max-w-[1000px] max-h-[400px] overflow-y-scroll">
-//           <DialogHeader>
-//             <DialogTitle>Select Media</DialogTitle>
-//             <DialogDescription>
-//               <div className="mb-4 flex justify-between items-center">
-//                 {/* Search Bar */}
-//                 <input
-//                   type="text"
-//                   placeholder="Search by name..."
-//                   className="border px-3 py-1 rounded w-1/3"
-//                   value={searchTerm}
-//                   onChange={(e) => setSearchTerm(e.target.value)}
-//                 />
+  // Handle media selection
+  const handleMediaSelect = (selectedMedia) => {
+    setSelectedMediaId(selectedMedia.id); // Highlight the selected image
+    onMediaSelect(selectedMedia); // Pass the selected media back to the parent
+  };
 
-//                 {/* Filter Options */}
-//                 <select
-//                   className="border px-3 py-1 rounded"
-//                   value={filterType}
-//                   onChange={(e) => setFilterType(e.target.value)}
-//                 >
-//                   <option value="all">All</option>
-//                   <option value="images">Images</option>
-//                   <option value="videos">Videos</option>
-//                 </select>
-//               </div>
+  return (
+    <>
+      <Dialog>
+        <DialogTrigger>
+          <button className="px-4 py-2 bg-blue-500 text-white rounded">
+            Select Media
+          </button>
+        </DialogTrigger>
+        <DialogContent className="max-w-[1000px] max-h-[600px] overflow-y-scroll">
+          <DialogHeader>
+            <DialogTitle>Select Media</DialogTitle>
+            <DialogDescription>
+              <div className="mb-4 flex justify-between items-center">
+                {/* Search Bar */}
+                <input
+                  type="text"
+                  placeholder="Search by name..."
+                  className="border px-3 py-1 rounded w-1/3"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
 
-//               {/* Media Grid */}
-//               <div className="grid grid-cols-3 gap-4">
-//                 {paginatedMedia.map((mediaFile) => (
-//                   <div
-//                     key={mediaFile.id}
-//                     className={`cursor-pointer border rounded shadow-sm p-2 relative ${
-//                       selectedMedia.some((media) => media.id === mediaFile.id)
-//                         ? "border-blue-500 shadow-lg transform scale-105"
-//                         : "hover:border-gray-400"
-//                     }`}
-//                     onClick={() => handleMediaSelect(mediaFile)}
-//                   >
-//                     {mediaFile.url.endsWith(".mp4") ? (
-//                       <video
-//                         controls
-//                         className={`w-full h-32 object-cover rounded transition ${
-//                           selectedMedia.some(
-//                             (media) => media.id === mediaFile.id
-//                           )
-//                             ? "opacity-90"
-//                             : ""
-//                         }`}
-//                         src={`https://lionfish-app-98urn.ondigitalocean.app${mediaFile.url}`}
-//                       />
-//                     ) : (
-//                       <img
-//                         src={`https://lionfish-app-98urn.ondigitalocean.app${mediaFile.url}`}
-//                         alt={mediaFile.name}
-//                         className={`w-full h-32 object-cover rounded transition ${
-//                           selectedMedia.some(
-//                             (media) => media.id === mediaFile.id
-//                           )
-//                             ? "opacity-90"
-//                             : ""
-//                         }`}
-//                       />
-//                     )}
-//                     <div className="mt-2">
-//                       <p className="text-sm font-semibold">{mediaFile.name}</p>
-//                       <p className="text-xs text-gray-500">
-//                         Type: {mediaFile.mime}
-//                       </p>
-//                       <p className="text-xs text-gray-500">
-//                         Size: {(mediaFile.size / 1024).toFixed(2)} KB
-//                       </p>
-//                     </div>
-//                   </div>
-//                 ))}
-//               </div>
+                {/* Filter Options */}
+                <select
+                  className="border px-3 py-1 rounded"
+                  value={filterType}
+                  onChange={(e) => setFilterType(e.target.value)}
+                >
+                  <option value="all">All</option>
+                  <option value="images">Images</option>
+                  <option value="videos">Videos</option>
+                </select>
+              </div>
 
-//               {/* Pagination */}
-//               <div className="flex justify-center mt-4">
-//                 <button
-//                   className="px-3 py-1 border rounded-l bg-gray-200 hover:bg-gray-300"
-//                   onClick={() =>
-//                     setCurrentPage((prev) => Math.max(prev - 1, 1))
-//                   }
-//                   disabled={currentPage === 1}
-//                 >
-//                   Prev
-//                 </button>
-//                 <span className="px-4 py-1 border-t border-b">
-//                   Page {currentPage} of{" "}
-//                   {Math.ceil(filteredMedia.length / itemsPerPage)}
-//                 </span>
-//                 <button
-//                   className="px-3 py-1 border rounded-r bg-gray-200 hover:bg-gray-300"
-//                   onClick={() =>
-//                     setCurrentPage((prev) =>
-//                       Math.min(
-//                         prev + 1,
-//                         Math.ceil(filteredMedia.length / itemsPerPage)
-//                       )
-//                     )
-//                   }
-//                   disabled={
-//                     currentPage ===
-//                     Math.ceil(filteredMedia.length / itemsPerPage)
-//                   }
-//                 >
-//                   Next
-//                 </button>
-//               </div>
+              {/* Media Grid */}
+              <div className="grid grid-cols-3 gap-4">
+                {paginatedMedia.map((mediaFile, index) => (
+                  <div
+                    key={mediaFile.id}
+                    className={`cursor-pointer overflow-clip border rounded shadow-sm p-2 relative ${
+                      selectedMediaId === mediaFile.id
+                        ? "border-blue-500 shadow-lg transform scale-105"
+                        : "hover:border-gray-400"
+                    }`}
+                    onClick={() => handleMediaSelect(mediaFile)}
+                  >
+                    {mediaFile.url.endsWith(".mp4") ? (
+                      <video
+                        controls
+                        className={`w-full h-32 object-cover rounded transition ${
+                          selectedMediaId === mediaFile.id ? "opacity-90" : ""
+                        }`}
+                        src={`https://lionfish-app-98urn.ondigitalocean.app${mediaFile.url}`}
+                      />
+                    ) : (
+                      <img
+                        src={`https://lionfish-app-98urn.ondigitalocean.app${mediaFile.url}`}
+                        alt={mediaFile.name}
+                        className={`w-full h-32 object-cover rounded transition ${
+                          selectedMediaId === mediaFile.id ? "opacity-90" : ""
+                        }`}
+                      />
+                    )}
+                    {/* Checkmark Icon for Selected */}
+                    {selectedMediaId === mediaFile.id && (
+                      <div className="absolute top-2 right-2 bg-blue-500 text-white w-6 h-6 rounded-full flex items-center justify-center">
+                        ✓
+                      </div>
+                    )}
+                    <div className="mt-2">
+                      <p className="text-sm font-semibold">{mediaFile.name}</p>
+                      <p className="text-xs text-gray-500">
+                        Type: {mediaFile.mime}
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        Size: {(mediaFile.size / 1024).toFixed(2)} KB
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
 
-//               {/* Confirm Button */}
-//               <div className="mt-4">
-//                 <button
-//                   className="px-4 py-2 bg-green-500 text-white rounded"
-//                   onClick={handleConfirmSelection}
-//                 >
-//                   Confirm Selection
-//                 </button>
-//               </div>
-//             </DialogDescription>
-//           </DialogHeader>
-//         </DialogContent>
-//       </Dialog>
-//     </>
-//   );
-// }
+              {/* Pagination */}
+              <div className="flex justify-center mt-4">
+                <button
+                  className="px-3 py-1 border rounded-l bg-gray-200 hover:bg-gray-300"
+                  onClick={() =>
+                    setCurrentPage((prev) => Math.max(prev - 1, 1))
+                  }
+                  disabled={currentPage === 1}
+                >
+                  Prev
+                </button>
+                <span className="px-4 py-1 border-t border-b">
+                  Page {currentPage} of{" "}
+                  {Math.ceil(filteredMedia.length / itemsPerPage)}
+                </span>
+                <button
+                  className="px-3 py-1 border rounded-r bg-gray-200 hover:bg-gray-300"
+                  onClick={() =>
+                    setCurrentPage((prev) =>
+                      Math.min(
+                        prev + 1,
+                        Math.ceil(filteredMedia.length / itemsPerPage)
+                      )
+                    )
+                  }
+                  disabled={
+                    currentPage ===
+                    Math.ceil(filteredMedia.length / itemsPerPage)
+                  }
+                >
+                  Next
+                </button>
+              </div>
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+    </>
+  );
+}
+

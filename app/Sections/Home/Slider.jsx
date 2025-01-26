@@ -319,6 +319,79 @@ export function OldSlider() {
   );
 }
 
+// const ListParser = ({ htmlContent }) => {
+//   const [listItems, setListItems] = useState([]);
+
+//   useEffect(() => {
+//     if (htmlContent) {
+//       // Create a temporary div to parse the HTML content
+//       const div = document.createElement("div");
+//       div.innerHTML = htmlContent;
+
+//       // Extract the <li> items and store them in the state
+//       const items = Array.from(div.querySelectorAll("li")).map(
+//         (item) => item.textContent
+//       );
+//       setListItems(items);
+//     }
+//   }, [htmlContent]);
+
+//   return (
+//     <div>
+//       <ul>
+//         {listItems.length > 0 ? (
+//           listItems.map((item, index) => <li key={index}>{item}</li>)
+//         ) : (
+//           <p></p>
+//         )}
+//       </ul>
+//     </div>
+//   );
+// };
+
+const ListParser = ({ htmlContent }) => {
+  const [listItems, setListItems] = useState([]);
+
+  useEffect(() => {
+    if (htmlContent) {
+      // Create a temporary div to parse the HTML content
+      const div = document.createElement("div");
+      div.innerHTML = htmlContent;
+
+      // Extract the <li> items and store them in the state
+      const items = Array.from(div.querySelectorAll("li")).map(
+        (item) => item.textContent
+      );
+      setListItems(items);
+    }
+  }, [htmlContent]);
+
+  // Split the listItems array into two columns
+  const midIndex = Math.ceil(listItems.length / 2);
+  const firstColumn = listItems.slice(0, midIndex);
+  const secondColumn = listItems.slice(midIndex);
+
+  return (
+    <div className="flex gap-4">
+      <ul className="w-1/2">
+        {firstColumn.length > 0 ? (
+          firstColumn.map((item, index) => <li key={index}>{item}</li>)
+        ) : (
+          <p> </p>
+        )}
+      </ul>
+
+      <ul className="w-1/2">
+        {secondColumn.length > 0 ? (
+          secondColumn.map((item, index) => <li key={index}>{item}</li>)
+        ) : (
+          <p> </p>
+        )}
+      </ul>
+    </div>
+  );
+};
+
 export default function Slider() {
   const [sliderData, setSliderData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -359,9 +432,6 @@ export default function Slider() {
     return () => clearInterval(intervalId);
   }, [sliderData]);
 
-  // console.log("Slider Data", sliderData);
-
-  // Swipe handlers
   const swipeHandlers = useSwipeable({
     onSwipedLeft: () => setCurrentIndex((currentIndex + 1) % sliderData.length),
     onSwipedRight: () =>
@@ -433,12 +503,22 @@ export default function Slider() {
                                     </h2>
                                     <div className="w-full max-w-full h-auto prose text-white clarabodyTwo">
                                       <p
-                                        // className="text-base"
                                         dangerouslySetInnerHTML={{
                                           __html:
                                             item.Body || "Default Body Text",
                                         }}
                                       />
+                                      <ListParser
+                                        htmlContent={item.additionalField}
+                                      />
+                                      {/* {item.additionalField} */}
+                                      {/* <p
+                                        dangerouslySetInnerHTML={{
+                                          __html:
+                                            item.additionalField ||
+                                            "Default Body Text",
+                                        }}
+                                      /> */}
                                     </div>
                                   </div>
                                 </div>

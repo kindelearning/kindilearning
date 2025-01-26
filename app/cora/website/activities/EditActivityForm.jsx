@@ -109,7 +109,7 @@ export default function EditActivityForm({ documentId }) {
 
   // Fetch existing activity data based on documentId
   useEffect(() => {
-    const fetchActivityData = async () => {
+    const fetchActivityData = async () => { 
       setError(null);
       try {
         const res = await fetch(

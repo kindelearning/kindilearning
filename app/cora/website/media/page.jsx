@@ -22,7 +22,8 @@ import {
 } from "@/components/ui/dialog";
 
 import { Link, PencilIcon, TrashIcon } from "lucide-react";
-import UploadMediaPage from "./upload/page";
+import UploadMediaPage, { BulkUploadMediaPage } from "./upload/page";
+import { Button } from "@/components/ui/button";
 
 export default function MediaPage() {
   const [mediaAssets, setMediaAssets] = useState([]);
@@ -39,13 +40,15 @@ export default function MediaPage() {
   const [editTitle, setEditTitle] = useState(""); // State to store the edited title
   const [editAltText, setEditAltText] = useState(""); // State to store the edited alt text
   const [documentIdToEdit, setDocumentIdToEdit] = useState(null); // Store the documentId of the asset being edited
-  const itemsPerPage = 20;
+  const itemsPerPage = 40;
 
   // Fetch media assets from Strapi
   useEffect(() => {
     const fetchMediaAssets = async () => {
       try {
-        const response = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/upload/files");
+        const response = await fetch(
+          "https://lionfish-app-98urn.ondigitalocean.app/api/upload/files"
+        );
         const result = await response.json();
 
         if (Array.isArray(result)) {
@@ -102,15 +105,19 @@ export default function MediaPage() {
   const handlePreviousPage = () => {
     if (currentPage > 1) setCurrentPage((prev) => prev - 1);
   };
-
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+    // Fetch data for the specific page here
+  };
   // Copy to clipboard functionality
   const copyToClipboard = (url) => {
-    navigator.clipboard.writeText(url).then(
+    const prefix = "https://lionfish-app-98urn.ondigitalocean.app"; // Define the prefix
+    const fullUrl = `${prefix}${url}`;
+    navigator.clipboard.writeText(fullUrl).then(
       () => {
         setIsDialogOpen(true);
         setTimeout(() => setIsDialogOpen(true), 500);
         alert("URL Copied successfully.");
-
       },
       () => {
         alert("Failed to copy URL.");
@@ -174,9 +181,9 @@ export default function MediaPage() {
 
   return (
     <div className="container font-fredoka mx-auto p-4">
-       <head>
-          <title>Media - Kindi Learning</title>
-        </head>
+      <head>
+        <title>Media - Kindi Learning</title>
+      </head>
       <h1 className="text-3xl text-[#666666] font-semibold mb-4">
         Kindi Media Assets
       </h1>
@@ -202,21 +209,41 @@ export default function MediaPage() {
           </select>
         </div>
 
-        <Dialog>
-          <DialogTrigger>
-            <div className="text-red hover:text-black px-4 py-2 rounded-md text-[16px] font-medium duration-200 ease-in-out">
-              Upload New
-            </div>
-          </DialogTrigger>
-          <DialogContent className="max-w-[800px] max-h-[600px] overflow-y-scroll">
-          <DialogTitle></DialogTitle>
-            <DialogHeader>
-              <DialogDescription>
-                <UploadMediaPage />
-              </DialogDescription>
-            </DialogHeader>
-          </DialogContent>
-        </Dialog>
+        <div className="w-full justify-end gap-2 flex">
+          <Dialog>
+            <DialogTrigger>
+              <div className="text-red hover:text-black px-4 py-2 rounded-md text-[16px] font-medium duration-200 ease-in-out">
+                Upload New
+              </div>
+            </DialogTrigger>
+            <DialogContent className="max-w-[800px] max-h-[600px] overflow-y-scroll">
+              <DialogTitle></DialogTitle>
+              <DialogHeader>
+                <DialogDescription>
+                  <UploadMediaPage />
+                </DialogDescription>
+              </DialogHeader>
+            </DialogContent>
+          </Dialog>
+          <Dialog>
+            <DialogTrigger>
+              <Button
+                variant="outline"
+                className="text-purple hover:text-black px-4 py-2 rounded-md text-[16px] font-medium duration-200 ease-in-out"
+              >
+                Upload Bulk
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-[800px] max-h-[600px] overflow-y-scroll">
+              <DialogTitle></DialogTitle>
+              <DialogHeader>
+                <DialogDescription>
+                  <BulkUploadMediaPage />
+                </DialogDescription>
+              </DialogHeader>
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
 
       {/* Media Table */}
@@ -268,9 +295,7 @@ export default function MediaPage() {
                 <TableCell>
                   <div className="flex gap-2">
                     <button
-                      onClick={() =>
-                        copyToClipboard(asset.url)
-                      }
+                      onClick={() => copyToClipboard(asset.url)}
                       className="text-[#515151] hover:underline"
                     >
                       <Link />
@@ -303,9 +328,25 @@ export default function MediaPage() {
         >
           Previous
         </button>
-        <span>
+        {/* <span>
           Page {currentPage} of {totalPages}
-        </span>
+        </span> */}
+        <div className="flex items-center gap-2">
+          {[...Array(totalPages)].map((_, index) => (
+            <button
+              key={index}
+              onClick={() => handlePageChange(index + 1)}
+              className={`px-4 py-2 rounded ${
+                currentPage === index + 1
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-200 text-gray-700"
+              } hover:bg-blue-300`}
+            >
+              {index + 1}
+            </button>
+          ))}
+        </div>
+
         <button
           onClick={handleNextPage}
           disabled={currentPage === totalPages}

@@ -38,6 +38,8 @@ import RemovePaymentMethodButton, {
 } from "./RemovePaymentMethodButton";
 import { Button } from "@/components/ui/button";
 import { Pencil } from "lucide-react";
+import UpdatePartnerForm from "./AddPartnerForm";
+import { useEffect } from "react";
 
 const CustomDialog = ({
   image,
@@ -91,10 +93,36 @@ const subscriptionLimits = {
   Professional: 30,
 };
 
-export default function IndividualTabs({ userData }) {
+export default function IndividualTabs({ userData, kidId }) {
+  // const [dp, setDP] = useState(null); // Store the selected media
+  // const [error, setError] = useState("");
+
   const currentKidsCount = userData.myKids.length / 2;
   const subscriptionLevel = userData.SubscriptionLevel;
   const maxKidsAllowed = subscriptionLimits[subscriptionLevel] || 0;
+
+  // useEffect(() => {
+  //   const fetchKidData = async () => {
+  //     try {
+  //       const response = await fetch(
+  //         `https://lionfish-app-98urn.ondigitalocean.app/api/kids/${kidId}?populate=*`
+  //       );
+  //       const data = await response.json();
+  //       console.log("Kids Data on the Form", data);
+  //       if (response.ok) {
+  //         const kid = data.data;
+
+  //         setDP(kid.kidDP || null); // Set existing media if available
+  //       } else {
+  //         setError("Failed to fetch kid data");
+  //       }
+  //     } catch (err) {
+  //       setError("An error occurred while fetching data");
+  //     }
+  //   };
+
+  //   fetchKidData();
+  // }, [kidId]);
 
   return (
     <>
@@ -131,7 +159,7 @@ export default function IndividualTabs({ userData }) {
                       <div className="flex flex-row gap-2 w-full justify-start items-center">
                         <div className="w-16 h-16 overflow-clip flex justify-center items-center">
                           <Image
-                            src={kid.profileImage || ProfilePlaceholder01} // Dynamic placeholder
+                            src={kid.kidDP || ProfilePlaceholder01} // Dynamic placeholder
                             alt={`${kid.Name}'s Profile`}
                             width={64}
                             height={64}
@@ -158,7 +186,7 @@ export default function IndividualTabs({ userData }) {
                             <DialogTrigger>
                               <Pencil className="w-[24px] h-[24px] text-red" />
                             </DialogTrigger>
-                            <DialogContent>
+                            <DialogContent className="max-w-[1000px] max-h-[600px] overflow-y-scroll">
                               <DialogHeader>
                                 <DialogTitle>
                                   Update Profile for {kid.Name}
@@ -247,6 +275,7 @@ export default function IndividualTabs({ userData }) {
               </div>
             </div>
           </div>
+          {/* <UpdatePartnerForm userId={userData.documentId} /> */}
         </CustomDialog>
         {/* Payment Method Model */}
         <CustomDialog
@@ -318,7 +347,9 @@ export default function IndividualTabs({ userData }) {
           </div>
           <Dialog>
             <DialogTrigger className="font-fredoka text-red">
-              Create Payment Method
+              <Button className="clarabutton my-4 bg-red hover:bg-hoverRed">
+                Create Payment Method
+              </Button>
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>

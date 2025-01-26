@@ -389,7 +389,7 @@ export default function BadgesTable() {
 
 export function UpdateBadgesTable({ documentId }) {
   const [description, setDescription] = useState("");
-  const [name, setName] = useState("");
+  const [name, setName] = useState(""); 
   const [media, setMedia] = useState(null); // Media state
   const [openDialog, setOpenDialog] = useState(false);
   const [error, setError] = useState("");

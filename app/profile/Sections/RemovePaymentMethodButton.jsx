@@ -1,5 +1,7 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Trash, Trash2 } from "lucide-react";
 import { useEffect } from "react";
 
@@ -90,16 +92,16 @@ export default function RemovePaymentMethodButton({ paymentId }) {
 
           <div className="mt-4 flex justify-end space-x-2">
             <DialogClose asChild className="btn-secondary">
-              <button>Cancel</button>
+              <Button variant="outline">Cancel</Button>
             </DialogClose>
 
-            <button
-              className="btn-danger"
+            <Button variant="danger"
+              className="btn-danger text-red"
               onClick={handleRemoveKid}
               disabled={isSubmitting}
             >
               {isSubmitting ? "Removing..." : "Confirm Remove"}
-            </button>
+            </Button>
           </div>
         </DialogContent>
       </Dialog>
@@ -402,7 +404,7 @@ export const UpdatePaymentDataForm = ({ parentId, paymentId }) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="space-y-6 bg-white p-6 rounded-lg sha dow-lg max-w-md mx-auto"
+      className="space-y-6 bg-white p-2 rounded-xl  max-w-md mx-auto  border-gray-200"
     >
       {error && (
         <div className="text-sm text-red-600 bg-red-50 p-3 rounded-md">
@@ -410,65 +412,7 @@ export const UpdatePaymentDataForm = ({ parentId, paymentId }) => {
         </div>
       )}
 
-      {/* <div>
-        <label htmlFor="name" className="block">
-          Name
-        </label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-          className="input"
-        />
-      </div>
-
-      <div>
-        <label htmlFor="number" className="block">
-          Number
-        </label>
-        <input
-          type="number"
-          id="number"
-          name="number"
-          value={number}
-          onChange={(e) => setNumber(e.target.value)}
-          required
-          className="input"
-        />
-      </div>
-
-      <div>
-        <label htmlFor="expiryDate" className="block">
-          Expiry
-        </label>
-        <input
-          type="date"
-          id="expiryDate"
-          name="expiryDate"
-          value={expiryDate}
-          onChange={(e) => setExpiryDate(e.target.value)}
-          required
-          className="input"
-        />
-      </div>
-
-      <div>
-        <label htmlFor="cvv" className="block">
-          CVV
-        </label>
-        <input
-          type="number"
-          id="cvv"
-          name="cvv"
-          value={cvv}
-          onChange={(e) => setCVV(e.target.value)}
-          required
-          className="input"
-        />
-      </div> */}
+      
 
       <div>
         <label
@@ -477,14 +421,14 @@ export const UpdatePaymentDataForm = ({ parentId, paymentId }) => {
         >
           Name
         </label>
-        <input
+        <Input
           type="text"
           id="name"
           name="name"
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+          className="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
         />
       </div>
 
@@ -495,14 +439,14 @@ export const UpdatePaymentDataForm = ({ parentId, paymentId }) => {
         >
           Card Number
         </label>
-        <input
+        <Input
           type="text"
           id="number"
           name="number"
           value={number}
           onChange={(e) => setNumber(e.target.value)}
           required
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+          className="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
         />
       </div>
 
@@ -514,15 +458,15 @@ export const UpdatePaymentDataForm = ({ parentId, paymentId }) => {
           >
             Expiry Date
           </label>
-          <input
+          <Input
             type="date"
             id="expiryDate"
             name="expiryDate"
             value={expiryDate}
             onChange={(e) => setExpiryDate(e.target.value)}
             required
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-          />
+            className="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            />
         </div>
 
         <div className="flex-1">
@@ -532,21 +476,21 @@ export const UpdatePaymentDataForm = ({ parentId, paymentId }) => {
           >
             CVV
           </label>
-          <input
+          <Input
             type="text"
             id="cvv"
             name="cvv"
             value={cvv}
             onChange={(e) => setCVV(e.target.value)}
             required
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-          />
+            className="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            />
         </div>
       </div>
 
-      <button type="submit" disabled={isSubmitting} className="btn">
+      <Button type="submit" disabled={isSubmitting} className="w-full py-3 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-200">
         {isSubmitting ? "Updating..." : "Update "}
-      </button>
+      </Button>
     </form>
   );
 };

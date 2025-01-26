@@ -167,8 +167,7 @@ export default function AddKidForm({ parentId }) {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="w-full px-4 py-2 text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-      >
+        className="w-full py-3 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-200"      >
         {isSubmitting ? "Adding..." : "Add Kid"}
       </button>
     </form>

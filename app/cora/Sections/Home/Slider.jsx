@@ -76,6 +76,13 @@ export default function SliderSection() {
                       __html: section.Body,
                     }}
                   />
+
+                  <p
+                    className="prose w-full text-start text-[#101010] clarabodyTwo"
+                    dangerouslySetInnerHTML={{
+                      __html: section.additionalField,
+                    }}
+                  />
                 </div>
               </div>
             ))}
@@ -300,6 +307,12 @@ export default function SliderSection() {
 //   );
 // }
 
+// const handleHIWSectionUpdate = (index, updatedSection) => {
+//   const updatedHIWSections = [...sliderContent];
+//   updatedHIWSections[index] = updatedSection;
+//   setSliderContent(updatedHIWSections);
+// };
+
 export function UpdateSliderSection() {
   const [sliderContent, setSliderContent] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
@@ -323,11 +336,6 @@ export function UpdateSliderSection() {
     fetchHIWData();
   }, []);
 
-  // const handleHIWSectionUpdate = (index, updatedSection) => {
-  //   const updatedHIWSections = [...sliderContent];
-  //   updatedHIWSections[index] = updatedSection;
-  //   setSliderContent(updatedHIWSections);
-  // };
   const handleHIWSectionUpdate = (index, updatedSection) => {
     // Use functional update to avoid unnecessary state updates
     setSliderContent((prevContent) => {
@@ -352,6 +360,7 @@ export function UpdateSliderSection() {
           Title: section.Title,
           featuredText: section.featuredText,
           Body: section.Body,
+          additionalField: section.additionalField,
           bgcolor: section.bgcolor,
           buttonColor: section.buttonColor,
           Media: section.Media ? { id: section.Media.id } : null,
@@ -457,20 +466,37 @@ export function UpdateSliderSection() {
               >
                 Body Description (Markdown):
               </label>
-              {/* <textarea
-                id={`bodyDescription-${index}`}
-                value={section.Body}
-                onChange={(e) => {
-                  const updatedSection = { ...section, Body: e.target.value };
-                  handleHIWSectionUpdate(index, updatedSection);
-                }}
-                className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                rows="4"
-              /> */}
+
               <ClaraMarkdownRichEditor
                 value={section.Body || ""} // Ensure the value is always a string (fallback to an empty string if undefined)
                 onChange={(newBodyValue) => {
                   const updatedSection = { ...section, Body: newBodyValue }; // Update section with the new body value
+                  handleHIWSectionUpdate(index, updatedSection); // Call your handler to update the section
+                }}
+                className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            {/* additional Field  */}
+            <div>
+              <label
+                htmlFor={`additionalField-${index}`}
+                className="block text-sm font-medium text-gray-700"
+              >
+                additionalField{" "}
+                <span className="text-red">
+                  (Note: This section is only for the First(Main) Slide of the
+                  carousel, so please keep it empty for the other slides):
+                </span>
+              </label>
+
+              <ClaraMarkdownRichEditor
+                value={section.additionalField || ""} // Ensure the value is always a string (fallback to an empty string if undefined)
+                onChange={(newBodyValue) => {
+                  const updatedSection = {
+                    ...section,
+                    additionalField: newBodyValue,
+                  }; // Update section with the new body value
                   handleHIWSectionUpdate(index, updatedSection); // Call your handler to update the section
                 }}
                 className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -523,33 +549,7 @@ export function UpdateSliderSection() {
               />
             </div>
 
-            {/* Media Selection */}
-            {/* <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Media:
-              </label>
-               {section.Media ? (
-                <div className="mt-2">
-                  <img
-                    // src={`https://lionfish-app-98urn.ondigitalocean.app${section.Media[0].url}`}
-                    src={
-                      section.Media  > 0
-                        ? `https://lionfish-app-98urn.ondigitalocean.app${section?.Media[0]?.url}`
-                        : "/Images/SlidePlay.svg" // Use a fallback image if no media is available
-                    }
-                    alt={section.Title}
-                    className="w-32 h-32 object-cover border rounded-md"
-                  />
-                </div>
-              ) : (
-                <p className="mt-2 text-gray-500">No media selected</p>
-              )} 
-              <MediaSelector
-                onMediaSelect={(media) => handleMediaSelect(media, index)}
-              />
-            </div>*/}
-
-            <div className="w-full p-2 bg-[#e4e1e1a8] rounded-lg">
+            {/* <div className="w-full p-2 bg-[#e4e1e1a8] rounded-lg">
               <label htmlFor="Media" className="block">
                 Media
               </label>
@@ -557,6 +557,45 @@ export function UpdateSliderSection() {
               <MediaSelector
                 onMediaSelect={(media) => handleMediaSelect(media, index)}
               />
+            </div> */}
+            <div className="w-full p-2 bg-[#e4e1e1a8] rounded-lg">
+              <label htmlFor="Media" className="block mb-2">
+                Media
+              </label>
+
+              {/* Media Selector */}
+              <MediaSelector
+                onMediaSelect={(media) => handleMediaSelect(media, index)}
+              />
+
+              {/* Media Preview */}
+              {section.Media ? (
+                <div className="mt-4 flex items-center space-x-4">
+                  {/* Media Preview Thumbnail */}
+                  {section.Media.url ? (
+                    <img
+                      // src={section.Media.url}
+                      src={`https://lionfish-app-98urn.ondigitalocean.app${section.Media.url}`}
+                      alt="Selected Media"
+                      className="w-16 h-16 rounded-md object-cover"
+                    />
+                  ) : (
+                    <span className="text-gray-500 italic">
+                      No preview available
+                    </span>
+                  )}
+
+                  {/* Media Info */}
+                  <div className="text-sm">
+                    <p className="font-medium text-gray-800">Selected Media:</p>
+                    <p className="text-gray-600">
+                      {section.Media.name || "Unnamed Media"}
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <p className="text-gray-500 mt-2 italic">No media selected</p>
+              )}
             </div>
           </div>
         ))}
@@ -590,4 +629,27 @@ export function UpdateSliderSection() {
       </Dialog>
     </div>
   );
+}
+
+{
+  /* <div>
+  <label className="block text-sm font-medium text-gray-700">Media:</label>
+  {section.Media ? (
+    <div className="mt-2">
+      <img
+        // src={`https://lionfish-app-98urn.ondigitalocean.app${section.Media[0].url}`}
+        src={
+          section.Media > 0
+            ? `https://lionfish-app-98urn.ondigitalocean.app${section?.Media[0]?.url}`
+            : "/Images/SlidePlay.svg" // Use a fallback image if no media is available
+        }
+        alt={section.Title}
+        className="w-32 h-32 object-cover border rounded-md"
+      />
+    </div>
+  ) : (
+    <p className="mt-2 text-gray-500">No media selected</p>
+  )}
+  <MediaSelector onMediaSelect={(media) => handleMediaSelect(media, index)} />
+</div>; */
 }
