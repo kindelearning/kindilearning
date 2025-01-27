@@ -33,8 +33,9 @@ import MarkActivityCompleteForm from "../ActivityCompleteButton";
 import { fetchUserDetails } from "@/app/profile/api";
 import ResourceCard from "../Sections/ActivityResource";
 import { getIconForSkill } from "../Sections/ActivityCard";
+import PrintDocument from "../Sections/Prinables/MyDocument";
 
-async function fetchActivityByDocumentId(documentId) {
+export async function fetchActivityByDocumentId(documentId) {
   const res = await fetch(
     `https://lionfish-app-98urn.ondigitalocean.app/api/activities/${documentId}?populate=*`
   );
@@ -46,7 +47,7 @@ async function fetchActivityByDocumentId(documentId) {
   return data.data;
 }
 
-const ActivityAttribute = ({
+export const ActivityAttribute = ({
   title = " Event Timeline",
   features = " 18th September 2023",
   image,
@@ -70,9 +71,9 @@ const ActivityAttribute = ({
   );
 };
 
-const handlePrint = () => {
-  window.print();
-};
+// const handlePrint = () => {
+//   window.print();
+// };
 
 export default async function ActivityDetailPage({ params }) {
   const [loading, setLoading] = useState(true);
@@ -142,9 +143,6 @@ export default async function ActivityDetailPage({ params }) {
   if (!userData || !activityData) {
     return <div>Failed to load data or activity not found.</div>; // Fallback message if data is not found
   }
-
-  // console.log("Fetched userData on activity detail page:", userData);
-  // console.log("Fetched activityData:", activityData);
 
   const {
     Title,
@@ -320,7 +318,7 @@ export default async function ActivityDetailPage({ params }) {
             <div className="claracontainer hidden lg:flex w-full flex-col px-4 lg:px-0 justify-start items-start gap-4">
               <div className="flex w-full flex-col justify-normal items-center gap-2">
                 <div className="text-[#0a1932] text-start justify-start items-start w-full font-fredoka font-semibold text-[24px] md:text-[28px] lg:text-[28px]">
-                  {Title} 
+                  {Title}
                   {/* | {activityData.id} | */}
                 </div>
                 <div className="items-center w-full justify-center flex flex-col gap-2">
@@ -388,10 +386,6 @@ export default async function ActivityDetailPage({ params }) {
                     className="prose leading-[14px] marker:text-[#0a1932]"
                     dangerouslySetInnerHTML={{ __html: Skills }}
                   />
-
-                  {/* {Skills.map((skill, index) => (
-                    <li key={index}>{skill.children[0]?.text}</li>
-                  ))} */}
                 </div>
               </div>
             </div>
@@ -521,12 +515,8 @@ export default async function ActivityDetailPage({ params }) {
                 <div className="text-[#3f3a64] text-base font-semibold font-montserrat uppercase leading-[19px]">
                   Print Activity{" "}
                 </div>
-                <Button
-                  onClick={handlePrint}
-                  className="w-full bg-[#3f3a64] text-white text-sm font-normal font-fredoka uppercase leading-[18px] tracking-wide rounded-2xl shadow border-2 border-white"
-                >
-                  Print
-                </Button>
+
+                <PrintDocument actiuvityid={activityData.documentId} />
               </div>
 
               <div className="md:flex hidden px-4 w-full py-6 bg-white rounded-xl shadow gap-3 flex-col justify-center items-center">
@@ -540,13 +530,8 @@ export default async function ActivityDetailPage({ params }) {
 
           {/* Mobile Specific Row */}
           <div className="flex md:hidden max-w-full overflow-hidden z-50 shadow-upper pt-2 pb-4 px-2 mb-[72px] rounded-t-[8px] justify-between items-center gap-1 bg-[white] shadow-sm fixed bottom-0 left-0 w-full">
-            <Button
-              onClick={handlePrint}
-              className="flex bg-[#3f3a64] gap-[4px] py-2 text-center text-white text-xs font-semibold font-fredoka rounded-2xl shadow border-2 border-white flex-row justify-center items-center w-full"
-            >
-              <Image alt="Kindi" src={Print || KindiHeart} />
-              Print
-            </Button>
+            <PrintDocument />
+
             <MarkActivityCompleteForm passactivityId={matchedActivityId} />
           </div>
         </div>{" "}
