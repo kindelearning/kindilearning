@@ -516,8 +516,7 @@ export default async function ActivityDetailPage({ params }) {
                   Print Activity{" "}
                 </div>
 
-                <PrintDocument actiuvityid={activityData.documentId} />
-              </div>
+                <PrintDocument activityid={activityData.documentId} />              </div>
 
               <div className="md:flex hidden px-4 w-full py-6 bg-white rounded-xl shadow gap-3 flex-col justify-center items-center">
                 <div className="text-[#3f3a64] text-base font-semibold font-montserrat uppercase leading-[19px]">
@@ -530,8 +529,7 @@ export default async function ActivityDetailPage({ params }) {
 
           {/* Mobile Specific Row */}
           <div className="flex md:hidden max-w-full overflow-hidden z-50 shadow-upper pt-2 pb-4 px-2 mb-[72px] rounded-t-[8px] justify-between items-center gap-1 bg-[white] shadow-sm fixed bottom-0 left-0 w-full">
-            <PrintDocument />
-
+          <PrintDocument activityid={activityData.documentId} />
             <MarkActivityCompleteForm passactivityId={matchedActivityId} />
           </div>
         </div>{" "}

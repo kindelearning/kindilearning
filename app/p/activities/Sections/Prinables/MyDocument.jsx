@@ -22,104 +22,108 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-
 import { getIconForSkill } from "../ActivityCard";
-import ResourceCard from "../ActivityResource";
-import { Accordian } from "@/app/Widgets";
+import { saveAs } from "file-saver";
+import { jsPDF } from "jspdf"; 
 
-export default function PrintDocument({ actiuvityid }) {
-  const [activityData, setActivityData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [variant, setVariant] = useState("classic"); // Default variant
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const fetchedData = await fetchActivityByDocumentId(actiuvityid);
-        if (fetchedData) {
-          setActivityData(fetchedData);
-        } else {
-          setError("Activity not found.");
+export default function PrintDocument({ activityid }) {
+    const [activityData, setActivityData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [variant, setVariant] = useState("classic"); // Default variant
+  
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const fetchedData = await fetchActivityByDocumentId(activityid);
+          if (fetchedData) {
+            setActivityData(fetchedData);
+          } else {
+            setError("Activity not found.");
+          }
+        } catch (err) {
+          setError("Failed to load data. Please try again.");
+          console.error("Error fetching data:", err);
+        } finally {
+          setLoading(false); // Stop loading state once fetching is done
         }
-      } catch (err) {
-        setError("Failed to load data. Please try again.");
-        console.error("Error fetching data:", err);
-      } finally {
-        setLoading(false); // Stop loading state once fetching is done
+      };
+  
+      if (activityid) {
+        setLoading(true); // Start loading when a new ID is provided
+        fetchData();
       }
-    };
-
-    if (actiuvityid) {
-      setLoading(true); // Start loading when a new ID is provided
-      fetchData();
+    }, [activityid]); // Add `activityid` as a dependency so it fetches when the ID changes
+  
+    // If loading, show a loading message
+    if (loading) {
+      return <div>Loading...</div>;
     }
-  }, [actiuvityid]); // Add `actiuvityid` as a dependency so it fetches when the ID changes
-
-  // If loading, show a loading message
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  // If there was an error, show the error message
-  if (error) {
-    return <div>{error}</div>;
-  }
-
-  // If there's no activity data, show the fallback message
-  if (!activityData) {
-    return <div>Failed to load data or activity not found.</div>;
-  }
-
-  console.log("Activity Data", activityData);
-  const SelectedImages = activityData.Gallery?.filter((image) => image?.url);
-  const handleDownload = () => {
-    const element = document.getElementById("contentToDownload");
-
-    // Options for html2pdf.js
-    const options = {
-      margin: 1,
-      filename: "myActivity.pdf",
-      html2canvas: { scale: 2 },
-      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+  
+    // If there was an error, show the error message
+    if (error) {
+      return <div>{error}</div>;
+    }
+  
+    // If there's no activity data, show the fallback message
+    if (!activityData) {
+      return <div>Failed to load data or activity not found.</div>;
+    }
+  
+    console.log("Activity Data", activityData);
+    const SelectedImages = activityData.Gallery?.filter((image) => image?.url);
+  
+    // PDF download logic
+    const handleDownload = () => {
+      const element = document.getElementById("contentToDownload");
+  
+      // Options for html2pdf.js
+      const options = {
+        margin: 1,
+        filename: "myActivity.pdf",
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+      };
+  
+      // Trigger the download
+      html2pdf().from(element).set(options).save();
     };
-
-    // Trigger the download
-    html2pdf().from(element).set(options).save();
-  };
-
-  return (
-    <>
-      <Dialog>
-        <DialogTrigger className="w-full">
-          <Button className="w-full bg-[#3f3a64] gap-[4px] text-white text-sm font-normal font-fredoka uppercase leading-[18px] tracking-wide rounded-2xl shadow border-2 border-white">
-            <Image alt="Kindi" src={Print} />
-            Print
-          </Button>
-        </DialogTrigger>
-        <DialogContent className="max-w-[800px] max-h-[600px] overflow-y-scroll">
-          <DialogHeader>
-            <DialogTitle>Select the Template</DialogTitle>
-            <DialogDescription>
-              <VariantSelector setVariant={setVariant} />
-
-              <div id="contentToDownload">
-                <DownloadableContent
-                  activityData={activityData}
-                  images={SelectedImages}
-                  variant="minimal"
-                />
-              </div>
-              <Button variant="outline" onClick={handleDownload}>
-                Print
-              </Button>
-            </DialogDescription>
-          </DialogHeader>
-        </DialogContent>
-      </Dialog>
-    </>
-  );
-}
+  
+    return (
+      <>
+        <Dialog>
+          <DialogTrigger className="w-full">
+            <Button className="w-full bg-[#3f3a64] gap-[4px] text-white text-sm font-normal font-fredoka uppercase leading-[18px] tracking-wide rounded-2xl shadow border-2 border-white">
+              Print
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="max-w-[800px] max-h-[600px] overflow-y-scroll">
+            <DialogHeader>
+              <DialogTitle>Select the Template</DialogTitle>
+              <DialogDescription>
+                {/* Variant selector */}
+                <VariantSelector setVariant={setVariant} />
+  
+                {/* Content to be downloaded as PDF */}
+                <div id="contentToDownload">
+                  <DownloadableContent
+                    activityData={activityData}
+                    images={SelectedImages}
+                    variant={variant} // Pass the selected variant
+                  />
+                </div>
+  
+                {/* Print button */}
+                <Button variant="outline" onClick={handleDownload}>
+                  Print
+                </Button>
+              </DialogDescription>
+            </DialogHeader>
+          </DialogContent>
+        </Dialog>
+      </>
+    );
+  }
 
 const VariantSelector = ({ setVariant }) => {
   return (
