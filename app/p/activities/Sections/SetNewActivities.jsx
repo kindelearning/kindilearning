@@ -10,6 +10,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { fetchUserDetails } from "@/app/profile/api";
+import { Badge } from "@/components/ui/badge";
 
 // export default function SetNewActivities({ kidId }) {
 //   const [myActivity, setMyActivity] = useState(null);
@@ -223,8 +224,15 @@ export default function SetNewActivities({ kidId }) {
   };
 
   return (
-    <Dialog className="font-fredoka"> 
-      <DialogTrigger className="font-fredoka">Assign More Activities</DialogTrigger>
+    <Dialog className="font-fredoka">
+      {/* <DialogTrigger className="font-fredoka text-red">
+        Assign More Activities
+      </DialogTrigger> */}
+      <div className="flex items-center justify-center  ">
+        <DialogTrigger className="font-fredoka text-red font-semibold bg-red-500 hover:bg-red-600 px-6 py-3 rounded-lg transform transition-transform duration-300 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-red-300 animate-bounce">
+          Assign More Activities
+        </DialogTrigger>
+      </div>
       <DialogContent className="w-full font-fredoka max-w-[600px] max-h-[600px] overflow-y-scroll">
         <DialogHeader>
           <DialogTitle>
@@ -255,14 +263,18 @@ export default function SetNewActivities({ kidId }) {
                   >
                     <option value="">Select an activity</option>
                     {filteredActivities.length > 0 ? (
-                      filteredActivities.filter((_, index) => index % 3 === 0).map((activity) => (
-                        <option
-                          key={activity?.id || Math.random()}
-                          value={activity?.id || ""}
-                        >
-                          {activity?.Title || "Unnamed Activity"}
-                        </option>
-                      ))
+                      filteredActivities
+                        .filter((_, index) => index % 3 === 0)
+                        .map((activity) => (
+                          <option
+                            className="flex justify-between items-center w-full px-2"
+                            key={activity?.id || Math.random()}
+                            value={activity?.id || ""}
+                          >
+                            <p>{activity?.Title || "Unnamed Activity"}</p>
+                            {/* <Badge className="text-red"> View Activity</Badge> */}
+                          </option>
+                        ))
                     ) : (
                       <option value="" disabled>
                         No activities available

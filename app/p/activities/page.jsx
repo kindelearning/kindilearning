@@ -276,15 +276,6 @@ export default function ActivitiesData() {
     setCurrentPage(pageNumber);
   };
 
-  // Function to get the icon for each skill based on title
-  const getIconForSkill = (skillTitle) => {
-    const foundIcon = activityIcons.find(
-      (iconData) => iconData.title === skillTitle
-    );
-    // return foundIcon ? foundIcon.icon : null; // Return the icon or null if not found
-    return foundIcon ? foundIcon.iconUrl : null; // Return the icon URL or null if not found
-  };
-
   if (!filteredActivities) {
     return <div>Loading...</div>;
   }

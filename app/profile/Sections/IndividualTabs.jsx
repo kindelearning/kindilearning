@@ -1,5 +1,7 @@
 import { data } from "@/app/constant/menu";
-import CreateContactFormPage from "@/app/p/contact-us/page";
+import CreateContactFormPage, {
+  CreateContactFormforProfilePage,
+} from "@/app/p/contact-us/page";
 import { PopupFooter } from "@/app/Sections";
 import MyProfileRoutes from "@/app/Sections/Profile/MyProfileRoutes";
 import ProductCard from "@/app/Sections/Profile/ProductCard";
@@ -38,8 +40,8 @@ import RemovePaymentMethodButton, {
 } from "./RemovePaymentMethodButton";
 import { Button } from "@/components/ui/button";
 import { Pencil } from "lucide-react";
-import UpdatePartnerForm from "./AddPartnerForm";
-import { useEffect } from "react";
+import UpdatePartnerForm, { MyPartners } from "./AddPartnerForm";
+import { useEffect, useState } from "react";
 
 const CustomDialog = ({
   image,
@@ -93,36 +95,78 @@ const subscriptionLimits = {
   Professional: 30,
 };
 
-export default function IndividualTabs({ userData, kidId }) {
-  // const [dp, setDP] = useState(null); // Store the selected media
-  // const [error, setError] = useState("");
+export const SkeletonLoader = () => {
+  return (
+    <div
+      className="w-64 h-64 rounded-full bg-gray-200 animate-pulse flex justify-center items-center overflow-hidden"
+      aria-label="Loading"
+    >
+      <div className="w-full h-full bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 animateskeleton"></div>
+    </div>
+  );
+};
 
+export const KidsDP = ({ kidId }) => {
+  const [dp, setDP] = useState(null); // Store the selected media
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchKidData = async () => {
+      setLoading(true); // Start loading
+      try {
+        const response = await fetch(
+          `https://lionfish-app-98urn.ondigitalocean.app/api/kids/${kidId}?populate=*`
+        );
+        const data = await response.json();
+
+        if (response.ok) {
+          const kid = data.data;
+          setDP(kid || null); // Update based on Strapi's typical structure
+        } else {
+          setError("Failed to fetch kid data");
+        }
+      } catch (err) {
+        setError("An error occurred while fetching data");
+      } finally {
+        setLoading(false); // End loading
+      }
+    };
+
+    if (kidId) fetchKidData(); // Ensure kidId exists before fetching
+  }, [kidId]);
+
+  return (
+    <div className="w-16 h-16 overflow-clip flex justify-center items-center">
+      {loading ? (
+        <SkeletonLoader />
+      ) : error ? (
+        <p className="text-red-500 text-sm">{error}</p> // Display error if it exists
+      ) : dp ? (
+        <img
+          src={`https://lionfish-app-98urn.ondigitalocean.app${dp?.kidDP?.url}`}
+          alt={`${kidId}'s Profile`}
+          width={64}
+          height={64}
+          className="min-w-16 min-h-16 object-cover rounded-full"
+        />
+      ) : (
+        <Image
+          src={ProfilePlaceholder01}
+          alt={`${kidId}'s Profile`}
+          width={64}
+          height={64}
+          className="min-w-16 min-h-16 object-cover rounded-full"
+        />
+      )}
+    </div>
+  );
+};
+
+export default function IndividualTabs({ userData }) {
   const currentKidsCount = userData.myKids.length / 2;
   const subscriptionLevel = userData.SubscriptionLevel;
   const maxKidsAllowed = subscriptionLimits[subscriptionLevel] || 0;
-
-  // useEffect(() => {
-  //   const fetchKidData = async () => {
-  //     try {
-  //       const response = await fetch(
-  //         `https://lionfish-app-98urn.ondigitalocean.app/api/kids/${kidId}?populate=*`
-  //       );
-  //       const data = await response.json();
-  //       console.log("Kids Data on the Form", data);
-  //       if (response.ok) {
-  //         const kid = data.data;
-
-  //         setDP(kid.kidDP || null); // Set existing media if available
-  //       } else {
-  //         setError("Failed to fetch kid data");
-  //       }
-  //     } catch (err) {
-  //       setError("An error occurred while fetching data");
-  //     }
-  //   };
-
-  //   fetchKidData();
-  // }, [kidId]);
 
   return (
     <>
@@ -157,15 +201,7 @@ export default function IndividualTabs({ userData, kidId }) {
                       key={index}
                     >
                       <div className="flex flex-row gap-2 w-full justify-start items-center">
-                        <div className="w-16 h-16 overflow-clip flex justify-center items-center">
-                          <Image
-                            src={kid.kidDP || ProfilePlaceholder01} // Dynamic placeholder
-                            alt={`${kid.Name}'s Profile`}
-                            width={64}
-                            height={64}
-                            className="min-w-16 min-h-16 object-cover rounded-full"
-                          />
-                        </div>
+                        <KidsDP kidId={kid.documentId} />
                         <div className="w-full flex-col justify-start items-start inline-flex">
                           <div className="text-[#0a1932] w-full text-[28px] font-semibold font-fredoka leading-tight">
                             {kid.Name}
@@ -260,22 +296,40 @@ export default function IndividualTabs({ userData, kidId }) {
           dialogSubtitle="A Partner"
           footerText="Save and Continue"
         >
-          <div className="flex flex-col md:flex-row px-2 md:px-6 max-w-[1000px] justify-center items-start claracontainer gap-4">
-            <div className="flex w-full max-w-[20%]">
-              <Image
-                alt="Kindi"
-                src={ConnectPartner}
-                className="w-full h-auto"
-              />
-            </div>
-            <div className="flex w-full flex-col justify-start items-start gap-4">
-              <div className="text-[#757575] text-[16px] leading-[18px] md:text-2xl md:leading-[26px] font-normal font-fredoka">
-                Securely grant access to your child&apos;s progress, activities,
-                and milestones, ensuring both parents stay involved.
+          <div className="flex flex-col gap-4 w-full justify-center items-center">
+            <Dialog>
+              <DialogTrigger className="justify-end w-full flex">
+              <Button className="px-4 md:mx-6" variant="outline" >
+
+                My Partners</Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-[600px] max-h-[800px] overflow-y-scroll">
+                <DialogHeader>
+                  <DialogTitle>Your Current Partners </DialogTitle>
+                  <DialogDescription>
+                    <MyPartners userData={userData} />
+                  </DialogDescription>
+                </DialogHeader>
+              </DialogContent>
+            </Dialog>
+            <div className="flex flex-col md:flex-row px-2 md:px-6 max-w-[1000px] justify-center items-start claracontainer gap-4">
+              <div className="flex w-full max-w-[20%]">
+                <Image
+                  alt="Kindi"
+                  src={ConnectPartner}
+                  className="w-full h-auto"
+                />
+              </div>
+              <div className="flex w-full flex-col justify-start items-start gap-4">
+                <div className="text-[#757575] text-[16px] leading-[18px] md:text-2xl md:leading-[26px] font-normal font-fredoka">
+                  Securely grant access to your child&apos;s progress,
+                  activities, and milestones, ensuring both parents stay
+                  involved.
+                </div>
+                <UpdatePartnerForm userId={userData.id} />
               </div>
             </div>
           </div>
-          {/* <UpdatePartnerForm userId={userData.documentId} /> */}
         </CustomDialog>
         {/* Payment Method Model */}
         <CustomDialog
@@ -419,7 +473,7 @@ export default function IndividualTabs({ userData, kidId }) {
         >
           <section className="w-full bg-[#EAEAF5] items-center justify-center flex flex-col md:flex-row gap-[20px]">
             <div className="flex flex-col gap-4 justify-center items-center w-full">
-              <CreateContactFormPage />
+              <CreateContactFormforProfilePage />
               <Link
                 target="_blank"
                 href="/p/faq"

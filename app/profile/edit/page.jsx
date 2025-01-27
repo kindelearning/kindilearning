@@ -17,153 +17,153 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-const HYGRAPH_TOKEN =
-  "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImdjbXMtbWFpbi1wcm9kdWN0aW9uIn0.eyJ2ZXJzaW9uIjozLCJpYXQiOjE3MjcwNjQxNzcsImF1ZCI6WyJodHRwczovL2FwaS1hcC1zb3V0aC0xLmh5Z3JhcGguY29tL3YyL2NtMWRvbTFoaDAzeTEwN3V3d3hydXRwbXovbWFzdGVyIiwibWFuYWdlbWVudC1uZXh0LmdyYXBoY21zLmNvbSJdLCJpc3MiOiJodHRwczovL21hbmFnZW1lbnQtYXAtc291dGgtMS5oeWdyYXBoLmNvbS8iLCJzdWIiOiI2Yzg4NjI5YS1jMmU5LTQyYjctYmJjOC04OTI2YmJlN2YyNDkiLCJqdGkiOiJjbTFlaGYzdzYwcmZuMDdwaWdwcmpieXhyIn0.YMoI_XTrCZI-C7v_FX-oKL5VVtx95tPmOFReCdUcP50nIpE3tTjUtYdApDqSRPegOQai6wbyT0H8UbTTUYsZUnBbvaMd-Io3ru3dqT1WdIJMhSx6007fl_aD6gQcxb-gHxODfz5LmJdwZbdaaNnyKIPVQsOEb-uVHiDJP3Zag2Ec2opK-SkPKKWq-gfDv5JIZxwE_8x7kwhCrfQxCZyUHvIHrJb9VBPrCIq1XE-suyA03bGfh8_5PuCfKCAof7TbH1dtvaKjUuYY1Gd54uRgp8ELZTf13i073I9ZFRUU3PVjUKEOUoCdzNLksKc-mc-MF8tgLxSQ946AfwleAVkFCXduIAO7ASaWU3coX7CsXmZLGRT_a82wOORD8zihfJa4LG8bB-FKm2LVIu_QfqIHJKq-ytuycpeKMV_MTvsbsWeikH0tGPQxvAA902mMrYJr9wohOw0gru7mg_U6tLOwG2smcwuXBPnpty0oGuGwXWt_D6ryLwdNubLJpIWV0dOWF8N5D6VubNytNZlIbyFQKnGcPDw6hGRLMw2B7-1V2RpR6F3RibLFJf9GekI60UYdsXthAFE6Xzrlw03Gv5BOKImBoDPyMr0DCzneyAj9KDq4cbNNcihbHl1iA6lUCTNY3vkCBXmyujXZEcLu_Q0gvrAW3OvZMHeHY__CtXN6JFA";
-const HYGRAPH_ENDPOINT =
-  "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";
+// const HYGRAPH_TOKEN =
+//   "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImdjbXMtbWFpbi1wcm9kdWN0aW9uIn0.eyJ2ZXJzaW9uIjozLCJpYXQiOjE3MjcwNjQxNzcsImF1ZCI6WyJodHRwczovL2FwaS1hcC1zb3V0aC0xLmh5Z3JhcGguY29tL3YyL2NtMWRvbTFoaDAzeTEwN3V3d3hydXRwbXovbWFzdGVyIiwibWFuYWdlbWVudC1uZXh0LmdyYXBoY21zLmNvbSJdLCJpc3MiOiJodHRwczovL21hbmFnZW1lbnQtYXAtc291dGgtMS5oeWdyYXBoLmNvbS8iLCJzdWIiOiI2Yzg4NjI5YS1jMmU5LTQyYjctYmJjOC04OTI2YmJlN2YyNDkiLCJqdGkiOiJjbTFlaGYzdzYwcmZuMDdwaWdwcmpieXhyIn0.YMoI_XTrCZI-C7v_FX-oKL5VVtx95tPmOFReCdUcP50nIpE3tTjUtYdApDqSRPegOQai6wbyT0H8UbTTUYsZUnBbvaMd-Io3ru3dqT1WdIJMhSx6007fl_aD6gQcxb-gHxODfz5LmJdwZbdaaNnyKIPVQsOEb-uVHiDJP3Zag2Ec2opK-SkPKKWq-gfDv5JIZxwE_8x7kwhCrfQxCZyUHvIHrJb9VBPrCIq1XE-suyA03bGfh8_5PuCfKCAof7TbH1dtvaKjUuYY1Gd54uRgp8ELZTf13i073I9ZFRUU3PVjUKEOUoCdzNLksKc-mc-MF8tgLxSQ946AfwleAVkFCXduIAO7ASaWU3coX7CsXmZLGRT_a82wOORD8zihfJa4LG8bB-FKm2LVIu_QfqIHJKq-ytuycpeKMV_MTvsbsWeikH0tGPQxvAA902mMrYJr9wohOw0gru7mg_U6tLOwG2smcwuXBPnpty0oGuGwXWt_D6ryLwdNubLJpIWV0dOWF8N5D6VubNytNZlIbyFQKnGcPDw6hGRLMw2B7-1V2RpR6F3RibLFJf9GekI60UYdsXthAFE6Xzrlw03Gv5BOKImBoDPyMr0DCzneyAj9KDq4cbNNcihbHl1iA6lUCTNY3vkCBXmyujXZEcLu_Q0gvrAW3OvZMHeHY__CtXN6JFA";
+// const HYGRAPH_ENDPOINT =
+//   "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";
 
-const AvailableDaysForm = ({ userId }) => {
-  // Ensure userId is passed as a prop
-  const weekdays = ["S", "M", "T", "WE", "Th", "F", "S"];
-  const [selectedDays, setSelectedDays] = useState([]);
-  const [successMessage, setSuccessMessage] = useState("");
-  const [isLoading, setIsLoading] = useState(false); // State to track loading status
+// const AvailableDaysForm = ({ userId }) => {
+//   // Ensure userId is passed as a prop
+//   const weekdays = ["S", "M", "T", "WE", "Th", "F", "S"];
+//   const [selectedDays, setSelectedDays] = useState([]);
+//   const [successMessage, setSuccessMessage] = useState("");
+//   const [isLoading, setIsLoading] = useState(false); // State to track loading status
 
-  const updateAvailableDays = async (userId, availableDays) => {
-    const mutation = `
-      mutation UpdateAvailableDays($id: ID!, $availableDays: [String!]) {
-        updateAccount(
-          where: { id: $id }
-          data: { availableDays: $availableDays }
-        ) {
-          id
-          availableDays
-        }
-      }
-    `;
+//   const updateAvailableDays = async (userId, availableDays) => {
+//     const mutation = `
+//       mutation UpdateAvailableDays($id: ID!, $availableDays: [String!]) {
+//         updateAccount(
+//           where: { id: $id }
+//           data: { availableDays: $availableDays }
+//         ) {
+//           id
+//           availableDays
+//         }
+//       }
+//     `;
 
-    const variables = {
-      id: userId,
-      availableDays,
-    };
+//     const variables = {
+//       id: userId,
+//       availableDays,
+//     };
 
-    const response = await fetch(HYGRAPH_ENDPOINT, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${HYGRAPH_TOKEN}`,
-      },
-      body: JSON.stringify({ query: mutation, variables }),
-    });
+//     const response = await fetch(HYGRAPH_ENDPOINT, {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//         Authorization: `Bearer ${HYGRAPH_TOKEN}`,
+//       },
+//       body: JSON.stringify({ query: mutation, variables }),
+//     });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Failed to update available days: ${errorText}`);
-    }
+//     if (!response.ok) {
+//       const errorText = await response.text();
+//       throw new Error(`Failed to update available days: ${errorText}`);
+//     }
 
-    const data = await response.json();
-    console.log("Updated available days:", data);
-    return data.data.updateAccount; // Adjust based on your needs
-  };
+//     const data = await response.json();
+//     console.log("Updated available days:", data);
+//     return data.data.updateAccount; // Adjust based on your needs
+//   };
 
-  const handleToggleDay = (day) => {
-    setSelectedDays((prev) => {
-      if (prev.includes(day)) {
-        return prev.filter((d) => d !== day);
-      } else {
-        return [...prev, day];
-      }
-    });
-  };
+//   const handleToggleDay = (day) => {
+//     setSelectedDays((prev) => {
+//       if (prev.includes(day)) {
+//         return prev.filter((d) => d !== day);
+//       } else {
+//         return [...prev, day];
+//       }
+//     });
+//   };
 
-  useEffect(() => {
-    const storedDays = localStorage.getItem("selectedDays");
-    if (storedDays) {
-      setSelectedDays(JSON.parse(storedDays));
-    }
-  }, []);
+//   useEffect(() => {
+//     const storedDays = localStorage.getItem("selectedDays");
+//     if (storedDays) {
+//       setSelectedDays(JSON.parse(storedDays));
+//     }
+//   }, []);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+//   const handleSubmit = async (event) => {
+//     event.preventDefault();
 
-    if (selectedDays.length > 0) {
-      try {
-        // Store selected days in local storage
-        localStorage.setItem("selectedDays", JSON.stringify(selectedDays));
+//     if (selectedDays.length > 0) {
+//       try {
+//         // Store selected days in local storage
+//         localStorage.setItem("selectedDays", JSON.stringify(selectedDays));
 
-        // Set loading state to true
-        setIsLoading(true);
+//         // Set loading state to true
+//         setIsLoading(true);
 
-        // Call the mutation to update the user profile
-        await updateAvailableDays(userId, selectedDays);
+//         // Call the mutation to update the user profile
+//         await updateAvailableDays(userId, selectedDays);
 
-        // Set success message
-        setSuccessMessage("Successfully updated available days!");
+//         // Set success message
+//         setSuccessMessage("Successfully updated available days!");
 
-        // Optionally, you can clear the message after a few seconds
-        setTimeout(() => setSuccessMessage(""), 3000);
-      } catch (error) {
-        console.error("Failed to update available days:", error);
-      } finally {
-        // Reset loading state
-        setIsLoading(false);
-      }
-    } else {
-      alert("Please select at least one day.");
-    }
-  };
+//         // Optionally, you can clear the message after a few seconds
+//         setTimeout(() => setSuccessMessage(""), 3000);
+//       } catch (error) {
+//         console.error("Failed to update available days:", error);
+//       } finally {
+//         // Reset loading state
+//         setIsLoading(false);
+//       }
+//     } else {
+//       alert("Please select at least one day.");
+//     }
+//   };
 
-  return (
-    <form
-      className="w-full px-4 flex flex-col gap-2 justify-start items-center py-2 rounded-xl bg-white"
-      onSubmit={handleSubmit}
-    >
-      <div className="flex w-full justify-between items-center">
-        <div className="flex w-full justify-start items-start gap-2 flex-col">
-          <div className="text-[#757575] text-[10px] font-normal font-fredoka leading-none">
-            Select Dates
-          </div>
-          <div className="text-[#0a1932] text-sm font-medium font-fredoka leading-tight">
-            Nursery days
-          </div>
-        </div>
-        <Button
-          type="submit"
-          className={`transition w-fit duration-300 ease-in-out font-fredoka font-bold hover:border-2 hover:border-[#ffffff] px-2 p-2 md:px-4 border-2 rounded-[32px] flex flex-row gap-1 text-[12px] lg:text-[16px] items-center justify-center bg-[#029871] ${
-            isLoading ? "" : ""
-          }`}
-        >
-          <RefreshCcw
-            className={`w-2 h-2 lg:w-5 lg:h-5 ${
-              isLoading ? "animate-spin" : ""
-            }`}
-          />
-          Sync Nursery
-        </Button>
-      </div>
-      <div className="flex w-full gap-2 flow-row">
-        {weekdays.map((day) => (
-          <button
-            key={day}
-            type="button"
-            onClick={() => handleToggleDay(day)}
-            className={`w-10 h-10 clarabodyTwo rounded-full p-2 cursor-pointer ${
-              selectedDays.includes(day)
-                ? "bg-red text-white"
-                : "bg-[#F8F8F8] text-[#3f3a64]"
-            }`}
-          >
-            {day}
-          </button>
-        ))}
-      </div>
-      {/* Success message display */}
-      {successMessage && (
-        <div className="mt-2 text-green-600 font-medium">{successMessage}</div>
-      )}
-    </form>
-  );
-};
+//   return (
+//     <form
+//       className="w-full px-4 flex flex-col gap-2 justify-start items-center py-2 rounded-xl bg-white"
+//       onSubmit={handleSubmit}
+//     >
+//       <div className="flex w-full justify-between items-center">
+//         <div className="flex w-full justify-start items-start gap-2 flex-col">
+//           <div className="text-[#757575] text-[10px] font-normal font-fredoka leading-none">
+//             Select Dates
+//           </div>
+//           <div className="text-[#0a1932] text-sm font-medium font-fredoka leading-tight">
+//             Nursery days
+//           </div>
+//         </div>
+//         <Button
+//           type="submit"
+//           className={`transition w-fit duration-300 ease-in-out font-fredoka font-bold hover:border-2 hover:border-[#ffffff] px-2 p-2 md:px-4 border-2 rounded-[32px] flex flex-row gap-1 text-[12px] lg:text-[16px] items-center justify-center bg-[#029871] ${
+//             isLoading ? "" : ""
+//           }`}
+//         >
+//           <RefreshCcw
+//             className={`w-2 h-2 lg:w-5 lg:h-5 ${
+//               isLoading ? "animate-spin" : ""
+//             }`}
+//           />
+//           Sync Nursery
+//         </Button>
+//       </div>
+//       <div className="flex w-full gap-2 flow-row">
+//         {weekdays.map((day) => (
+//           <button
+//             key={day}
+//             type="button"
+//             onClick={() => handleToggleDay(day)}
+//             className={`w-10 h-10 clarabodyTwo rounded-full p-2 cursor-pointer ${
+//               selectedDays.includes(day)
+//                 ? "bg-red text-white"
+//                 : "bg-[#F8F8F8] text-[#3f3a64]"
+//             }`}
+//           >
+//             {day}
+//           </button>
+//         ))}
+//       </div>
+//       {/* Success message display */}
+//       {successMessage && (
+//         <div className="mt-2 text-green-600 font-medium">{successMessage}</div>
+//       )}
+//     </form>
+//   );
+// };
 
 export default function ProfileEdit() {
   const [loading, setLoading] = useState(false);

@@ -41,7 +41,7 @@ export function CurvePath({
     setCurrentDate(formattedDate);
   }, []);
 
-  console.log("realMilestoneData from CurevePath", custommilestoneidfromuser);
+  // console.log("realMilestoneData from CurevePath", custommilestoneidfromuser);
 
   // Dynamically set container height based on the number of nodes
   const nodeSpacing = 200; // Define the desired spacing between nodes
@@ -386,69 +386,6 @@ export const TrigSnakeCurve = ({
   );
 };
 
-// const OptionSlider = ({
-//   options,
-//   selectedOption,
-//   onSelect,
-//   visibleCount = 1,
-// }) => {
-//   const [currentIndex, setCurrentIndex] = useState(0);
-
-//   const handlePrev = () => {
-//     setCurrentIndex((prevIndex) =>
-//       prevIndex === 0 ? options.length - visibleCount : prevIndex - 1
-//     );
-//   };
-
-//   const handleNext = () => {
-//     setCurrentIndex((prevIndex) =>
-//       prevIndex === options.length - visibleCount ? 0 : prevIndex + 1
-//     );
-//   };
-
-//   // Automatically select the option when it becomes visible
-//   useEffect(() => {
-//     const currentOption = options[currentIndex];
-//     if (currentOption && currentOption.title !== selectedOption) {
-//       onSelect(currentOption.title);
-//     }
-//   }, [currentIndex, options, selectedOption, onSelect]);
-
-//   return (
-//     <div className="flex items-center w-full justify-between gap-1">
-//       <button
-//         onClick={handlePrev}
-//         className="w-[32px] h-[32px] flex justify-center items-center left-0 top-1/2 transform bg-white bg-opacity-30 backdrop-blur-lg text-[#000000] p-2 rounded-full z-10"
-//       >
-//         <ChevronLeft />
-//       </button>
-//       <div className="flex w-full justify-center">
-//         {options
-//           .slice(currentIndex, currentIndex + visibleCount)
-//           .map(({ title, icon }, index) => (
-//             <div
-//               key={index}
-//               className={`px-4 py-2 w-full max-w-[260px] rounded-full gap-2 bg-white transition duration-200 flex items-center ${
-//                 title === selectedOption ? "text-gray-800" : "text-gray-500"
-//               }`}
-//             >
-//               <Image className="w-[24px] h-[24px]" src={icon} />
-//               <span className="font-fredoka min-w-[max-content] font-semibold">
-//                 {title}
-//               </span>
-//             </div>
-//           ))}
-//       </div>
-//       <button
-//         onClick={handleNext}
-//         className="w-[32px] h-[32px] flex justify-center items-center right-0 top-1/2 transform bg-white bg-opacity-30 backdrop-blur-lg text-[#000000] p-2 rounded-full z-10"
-//       >
-//         <ChevronRight />
-//       </button>
-//     </div>
-//   );
-// };
-
 export default function DisplayAllMileStone({ passThecurrentUserId }) {
   const [milestones, setMilestones] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -472,7 +409,7 @@ export default function DisplayAllMileStone({ passThecurrentUserId }) {
         const evenIndexedMilestones = data.allMilestones.filter(
           (_, index) => index % 2 === 0
         );
-
+        console.log("even Indexed Milestones", evenIndexedMilestones);
         // setRealMilestoneData(data.allMilestones);
         setRealMilestoneData(evenIndexedMilestones);
 
@@ -500,8 +437,8 @@ export default function DisplayAllMileStone({ passThecurrentUserId }) {
   }, [router]);
 
   console.log("Fetched milestones:", milestones);
-  console.log("Fetched euserData on Milestone pag:", userData);
-  console.log("Fetched setRealMilestoneId ", realMilestoneData);
+  // console.log("Fetched euserData on Milestone pag:", userData);
+  // console.log("Fetched setRealMilestoneId ", realMilestoneData);
 
   if (!Array.isArray(milestones)) {
     return <p>Error: Expected milestones to be an array.</p>;
@@ -532,7 +469,10 @@ export default function DisplayAllMileStone({ passThecurrentUserId }) {
       (selectedSubCategory === "All" || m.SubCategory === selectedSubCategory)
   );
 
-  console.log("Filtered Milestone", filteredMilestones);
+  console.log(
+    "Filtered Milestone based on category and subcategory",
+    filteredMilestones
+  );
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
@@ -540,60 +480,12 @@ export default function DisplayAllMileStone({ passThecurrentUserId }) {
   return (
     <>
       <div className=" mx-auto flex flex-col gap-4">
-        {/* <div className="flex gap-2 w-full max-w-full overflow-x-scroll scrollbar-hidden">
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => {
-                setSelectedCategory(cat);
-                setSelectedSubCategory("All"); // Reset subcategory when category changes
-              }}
-              className={`px-4 py-1 hover:bg-red hover:text-white rounded-full text-sm ${
-                selectedCategory === cat
-                  ? "bg-red text-white"
-                  : "bg-gray-200  text-gray-700"
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
-        </div> */}
-        <div className="flex gap-2 w-full max-w-full overflow-x-scroll scrollbar-hidden">
-          {/* {categories.map((cat) => {
-            // Find the icon from the activityIcons array based on the category name
-            const matchedIcon = activityIcons.find(
-              (icon) => icon.title === cat
-            );
-
-            return (
-              <button
-                key={cat}
-                onClick={() => {
-                  setSelectedCategory(cat);
-                  setSelectedSubCategory("All"); // Reset subcategory when category changes
-                }}
-                className={`px-4 py-2 hover:bg-red flex items-center justify-center gap-2 hover:text-white rounded-full text-sm ${
-                  selectedCategory === cat
-                    ? "bg-red text-white"
-                    : "bg-gray-200  text-gray-700"
-                }`}
-              >
-                {matchedIcon && (
-                  <Image
-                    src={matchedIcon.icon} // Use the icon from the matched category
-                    alt={cat} // Alt text for accessibility
-                    className="w-6 h-6 mr-2" // Adjust the icon size
-                  />
-                )}
-                {cat}
-              </button>
-            );
-          })} */}
+        <div className="flex gap-2 w-full  items-center justify-center max-w-full overflow-x-scroll scrollbar-hidden">
           {categories && <CategorySlider categories={categories} />}
         </div>
 
         {/* SubCategory Filter */}
-        <div className="flex gap-2 w-full max-w-full overflow-x-scroll scrollbar-hidden">
+        <div className="flex gap-2 w-full max-w-full items-center justify-center overflow-x-scroll scrollbar-hidden">
           {subCategories.map((subCat) => (
             <Badge
               key={subCat}
@@ -649,9 +541,9 @@ export function CategorySlider({ categories }) {
   );
 
   return (
-    <div className="flex items-center rounded-[20px] w-full bg-white justify-between gap-0">
+    <div className="flex items-center rounded-[20px] w-fit bg-white justify-between gap-0">
       {/* Slider Container */}
-      <div className="flex justify-center items-center gap-1 w-full">
+      <div className="flex justify-center items-center gap-1 w-fit">
         {/* Previous Button */}
         <button
           onClick={prevSlide}
@@ -661,7 +553,7 @@ export function CategorySlider({ categories }) {
         </button>
 
         {/* Current Category Display */}
-        <div className="flex w-full justify-center">
+        <div className="flex w-fit justify-center">
           <div className="px-2 py-2 w-full max-w-[260px] rounded-full gap-2 bg-white transition duration-200 flex items-center">
             {matchedIcon && (
               <Image
@@ -688,3 +580,141 @@ export function CategorySlider({ categories }) {
     </div>
   );
 }
+
+// export default function MilestoneList() {
+//   const [milestones, setMilestones] = useState([]);
+//   const [loading, setLoading] = useState(true);
+//   const [selectedCategory, setSelectedCategory] = useState(null);
+//   const [selectedSubCategory, setSelectedSubCategory] = useState(null);
+
+//   useEffect(() => {
+//     const fetchMilestones = async () => {
+//       try {
+//         const response = await fetch(
+//           "https://lionfish-app-98urn.ondigitalocean.app/api/milestones?populate=*"
+//         );
+//         const data = await response.json();
+//         setMilestones(data.data);
+//         setLoading(false);
+//       } catch (error) {
+//         console.error("Error fetching milestones:", error);
+//         setLoading(false);
+//       }
+//     };
+
+//     fetchMilestones();
+//   }, []);
+
+//   // Group milestones by category and subcategory
+//   const groupMilestones = () => {
+//     const groupedData = {};
+
+//     milestones.forEach((milestone) => {
+//       const { Category, SubCategory } = milestone;
+
+//       if (!groupedData[Category]) {
+//         groupedData[Category] = {};
+//       }
+
+//       if (!groupedData[Category][SubCategory]) {
+//         groupedData[Category][SubCategory] = [];
+//       }
+
+//       groupedData[Category][SubCategory].push(milestone);
+//     });
+
+//     return groupedData;
+//   };
+
+//   const groupedMilestones = groupMilestones();
+
+//   const categories = Object.keys(groupedMilestones);
+
+//   const subCategories = selectedCategory
+//     ? Object.keys(groupedMilestones[selectedCategory])
+//     : [];
+
+//   const filteredMilestones = () => {
+//     if (selectedCategory) {
+//       if (selectedSubCategory) {
+//         return groupedMilestones[selectedCategory][selectedSubCategory];
+//       }
+//       return Object.values(groupedMilestones[selectedCategory]).flat();
+//     }
+//     return Object.values(groupedMilestones).flatMap((category) =>
+//       Object.values(category).flat()
+//     );
+//   };
+
+//   if (loading) {
+//     return <div className="text-center text-lg font-medium">Loading...</div>;
+//   }
+
+//   return (
+//     <div className="container mx-auto p-6">
+//       {/* Category Filters (Chips/Tags) */}
+//       <div className="flex flex-wrap gap-4 mb-6">
+//         {categories.map((category) => (
+//           <button
+//             key={category}
+//             className={`px-6 py-2 rounded-full text-sm font-semibold cursor-pointer transition duration-300 
+//               ${
+//                 selectedCategory === category
+//                   ? "bg-blue-500 text-white"
+//                   : "bg-gray-200 text-gray-700 hover:bg-blue-100"
+//               }`}
+//             onClick={() =>
+//               setSelectedCategory(
+//                 selectedCategory === category ? null : category
+//               )
+//             }
+//           >
+//             {category}
+//           </button>
+//         ))}
+//       </div>
+
+//       {/* Subcategory Filters (only visible if a category is selected) */}
+//       {selectedCategory && (
+//         <div className="flex flex-wrap gap-4 mb-6">
+//           {subCategories.map((subCategory) => (
+//             <button
+//               key={subCategory}
+//               className={`px-6 py-2 rounded-full text-sm font-semibold cursor-pointer transition duration-300
+//                 ${
+//                   selectedSubCategory === subCategory
+//                     ? "bg-green-500 text-white"
+//                     : "bg-gray-200 text-gray-700 hover:bg-green-100"
+//                 }`}
+//               onClick={() =>
+//                 setSelectedSubCategory(
+//                   selectedSubCategory === subCategory ? null : subCategory
+//                 )
+//               }
+//             >
+//               {subCategory}
+//             </button>
+//           ))}
+//         </div>
+//       )}
+
+//       {/* Displaying Filtered Milestones */}
+//       <div>
+//         {filteredMilestones().map((milestone) => (
+//           <div
+//             key={milestone.id}
+//             className="mb-6 p-6 rounded-lg shadow-lg bg-white"
+//           >
+//             <h4 className="text-xl font-semibold text-blue-600">
+//               {milestone.Title}
+//             </h4>
+//             <div
+//               className="mt-4 text-gray-700"
+//               dangerouslySetInnerHTML={{ __html: milestone.Description }}
+//             />
+//           </div>
+//         ))}
+//       </div>
+//     </div>
+//   );
+// }

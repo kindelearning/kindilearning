@@ -1,50 +1,48 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { useState } from "react";
 
-export default function UpdatePartnerForm({userId}) {
+export default function UpdatePartnerForm({ userId }) {
   const [email, setEmail] = useState("");
-  const [partners, setPartners] = useState([]); // To store existing partners
+  const [partners, setPartners] = useState([]);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [existingUser, setExistingUser] = useState(null); // To store existing user details
-  const [isChecking, setIsChecking] = useState(false); // To handle loading state for checking user
+  const [existingUser, setExistingUser] = useState(null);
+  const [isChecking, setIsChecking] = useState(false);
 
-  // Handle email change
   const handleEmailChange = (event) => {
-    setEmail(event.target.value);
+    setEmail(event.target.value.toLowerCase());
+    setError("");
   };
 
-  // Function to handle the "Check Now" button click
   const handleCheckUser = async () => {
     if (!email) {
-      setError("Email is required");
+      setError("Please provide an email.");
       return;
     }
 
-    setIsChecking(true); // Start loading
-
+    setIsChecking(true);
     try {
       const response = await fetch(
         `https://lionfish-app-98urn.ondigitalocean.app/api/users?filters[email][$eq]=${email}&populate=*`
       );
       const data = await response.json();
-      console.log("Existed User", data);
 
-      // Ensure data is in expected structure
-      if (data  && data.length > 0) {
-        setExistingUser(data[0]); // Store the matching user
-        setError(""); // Clear any previous errors
+      if (data && data.length > 0) {
+        setExistingUser(data[0]);
+        setError("");
       } else {
-        setExistingUser(null); // Clear if no match
-        setError("No user found with this email");
+        setExistingUser(null);
+        setError("No user found with this email.");
       }
     } catch (error) {
-      console.error("Error checking user:", error);
-      setError("Error checking user.");
-      setExistingUser(null); // Clear on error
+      setError("An error occurred while checking the user.");
     } finally {
-      setIsChecking(false); // Stop loading
+      setIsChecking(false);
     }
   };
 
@@ -52,135 +50,218 @@ export default function UpdatePartnerForm({userId}) {
     event.preventDefault();
 
     if (!email) {
-      setError("Email is required");
-      return;
-    }
-
-    // Check if the email already exists in the partners array
-    if (partners.includes(email)) {
-      setError("This email is already a partner.");
+      setError("Please enter an email.");
       return;
     }
 
     if (!existingUser) {
-      setError("No matching user found to add as a partner.");
+      setError("No matching user found. Please check the email.");
       return;
     }
 
-    const updatedPartners = [...partners, { id: existingUser.id }]; // Add the user ID as an object
+    // Check if the partner is already in the list
+    const isPartnerExists = partners.some(
+      (partner) => partner.id === existingUser.id
+    );
+    if (isPartnerExists) {
+      setError("This user is already a partner.");
+      return;
+    }
 
-    console.log("Payload sent", updatedPartners);
+    // Add the new partner to the existing partners array
+    const updatedPartners = [...partners, { id: existingUser.id }]; // Add the new partner to the existing partners
+
     setIsSubmitting(true);
-    setError("");
+
+    const token = localStorage.getItem("jwt");
+    if (!token) {
+      setError("Please log in to continue.");
+      setIsSubmitting(false);
+      return;
+    }
 
     try {
       const response = await fetch(
-        `https://proper-fun-404805c7d9.strapiapp.com/api/users/${userId}`,
+        `https://lionfish-app-98urn.ondigitalocean.app/api/users/${userId}`,
         {
           method: "PUT",
           headers: {
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            myPartner: updatedPartners, // The field that we want to update
-          }),
+          body: JSON.stringify({ myPartner: updatedPartners }), // Send updated list of partners
         }
       );
 
       if (!response.ok) {
-        throw new Error("Failed to update partners");
+        const responseData = await response.json();
+        setError(
+          responseData.error
+            ? responseData.error.message
+            : "Failed to update partners."
+        );
+        return;
       }
 
-      // Update local state to reflect changes
-      setPartners(updatedPartners);
-      setEmail(""); // Clear input
-      alert("Partner added successfully!");
+      const responseData = await response.json();
+      setPartners(updatedPartners); // Update state with the new list of partners
+      setEmail("");
+      setSuccess("Partner added successfully!");
+      setError("");
     } catch (error) {
-      console.error("Error updating partners:", error);
-      setError("An error occurred while updating the partners.");
+      setError("An error occurred while adding the partner.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <div className="p-6 max-w-md mx-auto">
-      <h2 className="text-2xl font-semibold mb-4">Add Partner</h2>
+    <Card className="p-2 bg-transparent w-full rounded-lg">
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {error && (
+          <div className="text-red-500 text-sm bg-red-100 p-2 rounded-lg">
+            {error}
+          </div>
+        )}
+        {success && (
+          <div className="text-green-500 text-sm bg-green-100 p-2 rounded-lg">
+            {success}
+          </div>
+        )}
 
-      {/* Form to add partner */}
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        {error && <div className="text-red-500">{error}</div>}
-
-        <div>
-          <label
-            htmlFor="email"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Partner&apos;s Email
-          </label>
-          <input
-            type="email"
+        <div className="space-y-2">
+          <Input
             id="email"
+            type="email"
             value={email}
             onChange={handleEmailChange}
-            className="mt-2 p-2 border border-gray-300 rounded-md w-full"
+            className={`p-3 w-full text-sm border rounded-lg shadow-sm ${
+              error ? "border-red-500" : "border-gray-300"
+            } focus:ring-2 focus:ring-blue-500`}
+            placeholder="Enter partner's email"
             required
           />
         </div>
 
-        <button
-          type="button"
-          onClick={handleCheckUser}
-          className={`mt-4 py-2 px-4 bg-green-500 text-white rounded-md ${
-            isChecking ? "opacity-50 cursor-not-allowed" : ""
-          }`}
-          disabled={isChecking}
-        >
-          {isChecking ? "Checking..." : "Check Now"}
-        </button>
-
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className={`mt-4 py-2 px-4 bg-blue-500 text-white rounded-md ${
-            isSubmitting ? "opacity-50 cursor-not-allowed" : ""
-          }`}
-        >
-          {isSubmitting ? "Submitting..." : "Add Partner"}
-        </button>
-      </form>
-
-      {/* Display existing user if available */}
-      {existingUser && (
-        <div className="mt-4 bg-yellow-100 p-4 rounded-md">
-          <h3 className="text-lg font-semibold">Matching User</h3>
-          <p>
-            <strong>id:</strong> {existingUser.id}
-          </p>
-          <p>
-            <strong>Email:</strong> {existingUser.email}
-          </p>
-          <p>
-            <strong>Name:</strong> {existingUser.name || "N/A"}
-          </p>
-          {/* Add more fields if necessary */}
+        <div className="flex w-full gap-2 justify-between">
+          <Button
+            type="button"
+            onClick={handleCheckUser}
+            disabled={isChecking}
+            className={`w-full py-3 px-4 text-white rounded-lg transition-all ${
+              isChecking
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-red hover:bg-hoverRed"
+            }`}
+          >
+            {isChecking ? "Checking..." : "Check Now"}
+          </Button>
         </div>
-      )}
+        {existingUser ? (
+          <div className="mt-6 p-6 bg-gradient-to-r from-gray-100 via-gray-200 to-gray-300 rounded-lg shadow-2xl border-l-4 border-gray-600">
+            <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+              Matching User Found
+            </h2>
 
-      <div className="mt-4">
-        <h3 className="text-lg font-semibold">Current Partners</h3>
-        <ul className="mt-2">
-          {partners.length > 0 ? (
-            partners.map((partner, index) => (
-              <li key={index} className="text-gray-700">
-                {partner.id} {/* Display ID instead of email */}
-              </li>
-            ))
-          ) : (
-            <li className="text-gray-500">No partners added yet.</li>
-          )}
-        </ul>
-      </div>
+            <div className="space-y-2">
+              <p className="text-gray-600">
+                <strong>ID:</strong> {existingUser.id}
+              </p>
+              <p className="text-gray-600">
+                <strong>Email:</strong> {existingUser.email}
+              </p>
+              <p className="text-gray-600">
+                <strong>Name:</strong> {existingUser.name || "N/A"}
+              </p>
+            </div>
+
+            <div className="mt-6 space-x-4 flex">
+              <Button
+                type="submit"
+                onClick={() => console.log("Add Partner Clicked")}
+                className={`inline-flex items-center justify-center px-6 py-3 text-sm font-medium ${
+                  isSubmitting
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-indigo-600 hover:bg-indigo-700"
+                } text-white rounded-full focus:ring-2 focus:ring-indigo-500 transition-all`}
+              >
+                {isSubmitting ? "Submitting..." : "Add Partner"}
+              </Button>
+
+              <Button
+                disabled
+                type="button"
+                onClick={() => console.log("Send Email Invite Clicked")}
+                className="inline-flex items-center justify-center px-6 py-3 text-sm font-medium text-white bg-teal-600 rounded-full hover:bg-teal-700 focus:ring-2 focus:ring-teal-500 transition-all"
+              >
+                <span className="mr-2">Send Email Invite</span>
+              </Button>
+            </div>
+          </div>
+        ) : (
+          <div className="mt-6 p-6 bg-gradient-to-r from-gray-100 via-gray-200 to-gray-300 rounded-lg shadow-2xl border-l-4 border-gray-600">
+            <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+              No User Found
+            </h2>
+
+            <div className="mt-6 space-x-4 flex">
+              <Button
+                type="button"
+                disabled
+                onClick={() => console.log("Send Email Invite Clicked")}
+                className="inline-flex items-center justify-center px-6 py-3 text-sm font-medium text-white bg-teal-600 rounded-full hover:bg-teal-700 focus:ring-2 focus:ring-teal-500 transition-all"
+              >
+                <span className="mr-2">Send Email Invite</span>
+              </Button>
+            </div>
+          </div>
+        )}
+      </form>
+    </Card>
+  );
+}
+
+export function MyPartners({ userData }) {
+  return (
+    <div className="font-fredoka">
+      {userData?.myPartner?.length > 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          {userData.myPartner.map((partner, index) => (
+            <div
+              className="flex flex-col p-6 bg-gradient-to-r from-gray-50 via-gray-100 to-gray-200 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300"
+              key={index}
+            >
+              <div className="space-y-4">
+                <p className="text-lg font-semibold text-gray-800">
+                  <strong>ID:</strong> {partner.id}
+                </p>
+                <p className="text-sm text-gray-600">
+                  <strong>Email:</strong> {partner.email}
+                </p>
+                <p className="text-sm text-gray-600">
+                  <strong>Name:</strong> {partner.name || "N/A"}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p className="text-gray-600 text-center">No Partner added</p>
+      )}
     </div>
   );
+}
+
+{
+  /* <Button
+  type="submit"
+  disabled={isSubmitting}
+  className={`w-full py-3 px-4 text-white rounded-lg transition-all ${
+    isSubmitting
+      ? "bg-gray-400 cursor-not-allowed"
+      : "bg-blue-500 hover:bg-blue-600"
+  }`}
+>
+  {isSubmitting ? "Submitting..." : "Add Partner"}
+</Button>; */
 }

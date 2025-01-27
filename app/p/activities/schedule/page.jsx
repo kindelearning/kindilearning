@@ -11,6 +11,7 @@ import NewCalendar from "../Sections/NewCalendar";
 import { fetchAllActivities } from "@/app/data/p/Dynamic/Activity";
 import SetNewActivities from "../Sections/SetNewActivities";
 import Link from "next/link";
+import { KidsDP } from "@/app/profile/Sections/IndividualTabs";
 
 export default function Schedule() {
   const [userData, setUserData] = useState(null);
@@ -114,14 +115,15 @@ export default function Schedule() {
                             value={kid.id}
                             className="flex-shrink-0 flex-col data-[state=active]:bg-[#f5f5f500] data-[state=active]:opacity-100 opacity-70  data-[state=active]:z-12 data-[state=active]:scale-125 duration-200 ease-ease-in-out  data-[state=active]:border-red border-2 p-0 rounded-full bg-transparent"
                           >
-                            <Image
+                            {/* <Image
                               src={getRandomImage()} // Random image for each kid's tab
                               alt={`Profile of ${kid.Name}`}
                               width={48}
                               height={48}
                               title={kid.Name}
                               className={`w-16 h-16 p-0 m-0 rounded-full object-cover transition-all duration-200`}
-                            />
+                            /> */}
+                            <KidsDP kidId={kid.documentId} />
                           </TabsTrigger>
                         ))}
                     </TabsList>

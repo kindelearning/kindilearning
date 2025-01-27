@@ -28,28 +28,8 @@ export default function LoginPage() {
     setFormData({ ...formData, [name]: value });
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   try {
-  //     const response = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/auth/local", {
-  //       method: "POST",
-  //       headers: { "Content-Type": "application/json" },
-  //       body: JSON.stringify(formData),
-  //     });
-
-  //     const data = await response.json();
-  //     if (response.ok) {
-  //       setMessage("Login successful!");
-  //       console.log("JWT Token:", data.jwt); // Save this token for authenticated requests
-  //       // router.push("/profile"); // Redirect to activity page or any desired page
-  //     } else {
-  //       setMessage(data.error.message || "Login failed");
-  //     }
-  //   } catch (error) {
-  //     setMessage("An error occurred: " + error.message);
-  //   }
-  // };
+ 
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -69,7 +49,7 @@ export default function LoginPage() {
         localStorage.setItem("jwt", data.jwt);
 
         // Optionally redirect to the profile page or another page
-        window.open("/profile", "_blank");
+        // window.open("/profile", "_blank");
       } else {
         setMessage(data.error.message || "Login failed");
       }
