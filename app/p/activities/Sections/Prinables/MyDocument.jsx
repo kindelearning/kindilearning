@@ -253,6 +253,23 @@ export default function PrintDocument({ activityid }) {
     }
   };
 
+  // Handle the print functionality
+  const handlePrint = () => {
+    const content = document.getElementById("contentToDownload");
+
+    if (content) {
+      const printWindow = window.open("", "", "height=800,width=1200");
+      printWindow.document.write("<html><head><title>Print Document</title>");
+      printWindow.document.write("</head><body>");
+      printWindow.document.write(content.innerHTML);
+      printWindow.document.write("</body></html>");
+      printWindow.document.close(); // Close the document and trigger the print dialog
+      printWindow.print(); // Trigger the print dialog
+    } else {
+      alert("Content not found for printing.");
+    }
+  };
+
   return (
     <Dialog>
       <DialogTrigger className="w-full">
@@ -284,6 +301,14 @@ export default function PrintDocument({ activityid }) {
                   onClick={handleGeneratePDF}
                 >
                   Download PDF with Password Protection
+                </Button>
+                {/* Add Print Button */}
+                <Button
+                  variant="success" 
+                  className="my-2 bg-blue text-red"
+                  onClick={handlePrint} // Trigger the print functionality
+                >
+                  Print Document
                 </Button>
               </div>
             </section>
