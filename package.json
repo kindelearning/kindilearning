@@ -41,6 +41,7 @@
     "firebase": "^11.0.1",
     "graphql": "^16.9.0",
     "graphql-request": "^7.1.0",
+    "html2canvas": "^1.4.1",
     "html2pdf.js": "^0.10.2",
     "input-otp": "^1.2.4",
     "is-extglob": "^2.1.1",
