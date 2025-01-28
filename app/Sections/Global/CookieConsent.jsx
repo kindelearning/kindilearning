@@ -147,7 +147,7 @@ export default function CookieConsentDialog() {
             </DialogTitle>
           </DialogHeader>
           <div className="text-[12px] text-muted-foreground">
-            Select which types of cookies you'd like to allow:
+            Select which types of cookies you&apos;d like to allow:
           </div>
           <div className="mt-2 font-fredoka space-y-2">
             <label className="flex items-center space-x-2">
