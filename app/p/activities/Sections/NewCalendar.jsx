@@ -17,6 +17,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { KindiHeart, ThemeThumb } from "@/public/Images";
 import Image from "next/image";
 import { getIconForSkill } from "./ActivityCard";
+import Link from "next/link";
 
 function CalendarNavigation({ currentDate, onPrevMonth, onNextMonth }) {
   const formattedDate = format(currentDate, "MMMM yyyy");
@@ -134,15 +135,15 @@ function ActivityCard({ activityData }) {
 
           <div className="flex w-full justify-between flex-col items-start">
             <div className="flex gap-1 items-center ">
-              <div className="text-[#0a1932] text-[12px] leading-[14px] lg:text-[9px] lg:leading-[10px] font-semibold font-fredoka">
+              <div className="text-[#0a1932] text-start text-[12px] leading-[14px] lg:text-[9px] lg:leading-[10px] font-semibold font-fredoka">
                 {activityData?.myActivity?.FocusAge || "Toddles"}
               </div>
               <span className="flex items-center">•</span>
-              <div className="text-[#0a1932] text-[12px] leading-[14px] lg:text-[9px] lg:leading-[10px] font-semibold font-fredoka">
+              <div className="text-[#0a1932] text-start text-[12px] leading-[14px] lg:text-[9px] lg:leading-[10px] font-semibold font-fredoka">
                 {activityData?.myActivity?.Theme || "Winter"}
               </div>
               <span className="flex items-center">•</span>
-              <div className="text-[#0a1932] text-[12px] leading-[14px] lg:text-[9px] lg:leading-[10px] font-semibold font-fredoka">
+              <div className="text-[#0a1932] text-start lg:hidden text-[12px] leading-[14px] lg:text-[9px] lg:leading-[10px] font-semibold font-fredoka">
                 {activityData?.myActivity?.SetUpTime || "5 min"}
               </div>
             </div>
