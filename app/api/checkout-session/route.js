@@ -71,7 +71,7 @@ export async function POST(req) {
           product_data: {
             name: item.title, // Ensure item.title is defined
             description: item.description,
-            images: [process.env.NEXT_PUBLIC_URL + item.image], // Ensure this is correct
+            images: [process.env.NEXT_PUBLIC_STRAPI_API_URL + item.image], // Ensure this is correct
           },
           unit_amount: item.price * 100, // Convert price to cents
         },

@@ -133,9 +133,11 @@ export function CurvePath({
                 <div className="text-[#0a1932] text-[32px] font-semibold leading-8 font-fredoka">
                   {milestone.Title}
                 </div>
-                <div className="w-full prose text-[#4a4a4a] clarabodyTwo justify-center items-center">
-                  {milestone.Description}
-                </div>
+                <div
+                  className="w-full prose text-[#4a4a4a] clarabodyTwo justify-center items-center"
+                  dangerouslySetInnerHTML={{ __html: milestone.Description }}
+                />
+                {/* </div> */}
                 <div className="w-full p-2 flex flex-col gap-2 bg-white rounded-lg shadow">
                   <div className="text-[#757575] clarabodyTwo ">
                     Date of Completion
@@ -348,10 +350,15 @@ export const TrigSnakeCurve = ({
                   <div className="text-[#0a1932] w-full text-start font-fredoka text-[20px] font-[600]">
                     {mileStoneCustomData[index]?.Title}
                   </div>
-                  <div className="w-full text-start text-[#4a4a4a] clarabodyTwo justify-center items-center">
-                    {mileStoneCustomData[index]?.Description ||
-                      "Description not found"}
-                  </div>
+                  <div
+                    className="w-full text-start text-[#4a4a4a] clarabodyTwo justify-center items-center prose"
+                    dangerouslySetInnerHTML={{
+                      __html:
+                        mileStoneCustomData[index]?.Description ||
+                        "Description not found",
+                    }}
+                  />
+
                   <div className="w-full p-2 flex flex-col gap-2 bg-white rounded-lg shadow">
                     <div className="text-[#757575] clarabodyTwo">
                       Date of Completion
@@ -386,7 +393,7 @@ export const TrigSnakeCurve = ({
   );
 };
 
-export default function DisplayAllMileStone({ passThecurrentUserId }) {
+export function DisplayAllMileStone2({ passThecurrentUserId }) {
   const [milestones, setMilestones] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -543,7 +550,7 @@ export function CategorySlider({ categories }) {
   return (
     <div className="flex items-center rounded-[20px] w-fit bg-white justify-between gap-0">
       {/* Slider Container */}
-      <div className="flex justify-center items-center gap-1 w-fit">
+      <div className="flex justify-center items-center gap-2 w-fit">
         {/* Previous Button */}
         <button
           onClick={prevSlide}
@@ -581,140 +588,308 @@ export function CategorySlider({ categories }) {
   );
 }
 
-// export default function MilestoneList() {
-//   const [milestones, setMilestones] = useState([]);
-//   const [loading, setLoading] = useState(true);
-//   const [selectedCategory, setSelectedCategory] = useState(null);
-//   const [selectedSubCategory, setSelectedSubCategory] = useState(null);
+export default function DisplayAllMileStone({ passThecurrentUserId }) {
+  const [milestones, setMilestones] = useState([]); // Stores all milestones
+  const [loading, setLoading] = useState(true); // Loading state
+  const [selectedCategory, setSelectedCategory] = useState(null); // Selected category
+  const [selectedSubCategory, setSelectedSubCategory] = useState(null); // Selected subcategory
+  const [filteredData, setFilteredData] = useState([]); // Stores filtered milestones
+  const [realMilestoneData, setRealMilestoneData] = useState([]);
+  const [userData, setUserData] = useState(null);
 
-//   useEffect(() => {
-//     const fetchMilestones = async () => {
-//       try {
-//         const response = await fetch(
-//           "https://lionfish-app-98urn.ondigitalocean.app/api/milestones?populate=*"
-//         );
-//         const data = await response.json();
-//         setMilestones(data.data);
-//         setLoading(false);
-//       } catch (error) {
-//         console.error("Error fetching milestones:", error);
-//         setLoading(false);
-//       }
-//     };
+  // Fetch milestones from the API
+  useEffect(() => {
+    const fetchMilestones = async () => {
+      const token = localStorage.getItem("jwt");
+      if (!token) {
+        return;
+      }
+      try {
+        const myData = await fetchUserDetails(token);
+        setUserData(myData);
+        const evenIndexedMilestones = myData.allMilestones.filter(
+          (_, index) => index % 2 === 0
+        );
+        console.log("even Indexed Milestones", evenIndexedMilestones);
+        // setRealMilestoneData(data.allMilestones);
+        setRealMilestoneData(evenIndexedMilestones);
 
-//     fetchMilestones();
-//   }, []);
+        const response = await fetch(
+          "https://lionfish-app-98urn.ondigitalocean.app/api/milestones?populate=*"
+        );
+        const data = await response.json();
+        setMilestones(data.data); // Set fetched milestones
+        setLoading(false); // Stop loading
+      } catch (error) {
+        console.error("Error fetching milestones:", error);
+        setLoading(false); // Stop loading even on error
+      }
+    };
 
-//   // Group milestones by category and subcategory
-//   const groupMilestones = () => {
-//     const groupedData = {};
+    fetchMilestones();
+  }, []);
 
-//     milestones.forEach((milestone) => {
-//       const { Category, SubCategory } = milestone;
+  // Group milestones by Category and SubCategory
+  const groupMilestones = () => {
+    const groupedData = {};
 
-//       if (!groupedData[Category]) {
-//         groupedData[Category] = {};
-//       }
+    milestones.forEach((milestone) => {
+      const { Category, SubCategory } = milestone;
 
-//       if (!groupedData[Category][SubCategory]) {
-//         groupedData[Category][SubCategory] = [];
-//       }
+      if (!groupedData[Category]) {
+        groupedData[Category] = {};
+      }
 
-//       groupedData[Category][SubCategory].push(milestone);
-//     });
+      if (!groupedData[Category][SubCategory]) {
+        groupedData[Category][SubCategory] = [];
+      }
 
-//     return groupedData;
-//   };
+      groupedData[Category][SubCategory].push(milestone);
+    });
 
-//   const groupedMilestones = groupMilestones();
+    return groupedData;
+  };
 
-//   const categories = Object.keys(groupedMilestones);
+  // Set default selected category and subcategory
+  useEffect(() => {
+    if (milestones.length > 0) {
+      const groupedMilestones = groupMilestones();
+      const firstCategory = Object.keys(groupedMilestones)[0];
+      const firstSubCategory =
+        firstCategory && Object.keys(groupedMilestones[firstCategory])[0];
 
-//   const subCategories = selectedCategory
-//     ? Object.keys(groupedMilestones[selectedCategory])
-//     : [];
+      setSelectedCategory(firstCategory || null);
+      setSelectedSubCategory(firstSubCategory || null);
+    }
+  }, [milestones]);
 
-//   const filteredMilestones = () => {
-//     if (selectedCategory) {
-//       if (selectedSubCategory) {
-//         return groupedMilestones[selectedCategory][selectedSubCategory];
-//       }
-//       return Object.values(groupedMilestones[selectedCategory]).flat();
-//     }
-//     return Object.values(groupedMilestones).flatMap((category) =>
-//       Object.values(category).flat()
-//     );
-//   };
+  // Update filtered data when category or subcategory changes
+  // Update filtered data and handle category or subcategory selection
+  useEffect(() => {
+    const groupedMilestones = groupMilestones();
 
-//   if (loading) {
-//     return <div className="text-center text-lg font-medium">Loading...</div>;
-//   }
+    if (selectedCategory) {
+      const subCategories = Object.keys(
+        groupedMilestones[selectedCategory] || {}
+      );
+      if (subCategories.length > 0) {
+        // Preselect the first subcategory only when switching categories
+        if (
+          !selectedSubCategory ||
+          !subCategories.includes(selectedSubCategory)
+        ) {
+          setSelectedSubCategory(subCategories[0]); // Automatically select the first subcategory
+        }
+      } else {
+        setSelectedSubCategory(null); // Reset subcategory if none exist
+      }
 
-//   return (
-//     <div className="container mx-auto p-6">
-//       {/* Category Filters (Chips/Tags) */}
-//       <div className="flex flex-wrap gap-4 mb-6">
-//         {categories.map((category) => (
-//           <button
-//             key={category}
-//             className={`px-6 py-2 rounded-full text-sm font-semibold cursor-pointer transition duration-300 
-//               ${
-//                 selectedCategory === category
-//                   ? "bg-blue-500 text-white"
-//                   : "bg-gray-200 text-gray-700 hover:bg-blue-100"
-//               }`}
-//             onClick={() =>
-//               setSelectedCategory(
-//                 selectedCategory === category ? null : category
-//               )
-//             }
-//           >
-//             {category}
-//           </button>
-//         ))}
-//       </div>
+      // Filter milestones based on selected category and subcategory
+      setFilteredData(
+        selectedSubCategory
+          ? groupedMilestones[selectedCategory][selectedSubCategory] || []
+          : Object.values(groupedMilestones[selectedCategory] || {}).flat()
+      );
+    } else {
+      setFilteredData([]); // Clear filtered data if no category is selected
+      setSelectedSubCategory(null); // Reset subcategory
+    }
+  }, [selectedCategory, selectedSubCategory, milestones]);
 
-//       {/* Subcategory Filters (only visible if a category is selected) */}
-//       {selectedCategory && (
-//         <div className="flex flex-wrap gap-4 mb-6">
-//           {subCategories.map((subCategory) => (
-//             <button
-//               key={subCategory}
-//               className={`px-6 py-2 rounded-full text-sm font-semibold cursor-pointer transition duration-300
-//                 ${
-//                   selectedSubCategory === subCategory
-//                     ? "bg-green-500 text-white"
-//                     : "bg-gray-200 text-gray-700 hover:bg-green-100"
-//                 }`}
-//               onClick={() =>
-//                 setSelectedSubCategory(
-//                   selectedSubCategory === subCategory ? null : subCategory
-//                 )
-//               }
-//             >
-//               {subCategory}
-//             </button>
-//           ))}
-//         </div>
-//       )}
+  // Handle loading state
+  if (loading) {
+    return <div className="text-center text-lg font-medium">Loading...</div>;
+  }
 
-//       {/* Displaying Filtered Milestones */}
-//       <div>
-//         {filteredMilestones().map((milestone) => (
-//           <div
-//             key={milestone.id}
-//             className="mb-6 p-6 rounded-lg shadow-lg bg-white"
-//           >
-//             <h4 className="text-xl font-semibold text-blue-600">
-//               {milestone.Title}
-//             </h4>
-//             <div
-//               className="mt-4 text-gray-700"
-//               dangerouslySetInnerHTML={{ __html: milestone.Description }}
-//             />
-//           </div>
-//         ))}
-//       </div>
-//     </div>
-//   );
-// }
+  const groupedMilestones = groupMilestones();
+  const categories = Object.keys(groupedMilestones);
+  const subCategories = selectedCategory
+    ? Object.keys(groupedMilestones[selectedCategory] || {})
+    : [];
+
+  return (
+    <div className="w-full flex flex-col items-center justify-center gap-4">
+      {/* Categories */}
+      {categories && (
+        <CategoryCarousel
+          categories={categories}
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
+        />
+      )}
+      {/* {categories && (
+        <div className="flex gap-2 w-full max-w-full items-center justify-center overflow-x-scroll scrollbar-hidden">
+          {categories.map((category) => (
+            <Badge
+              key={category}
+              className={`px-4 py-1 hover:bg-red hover:text-white rounded-full text-sm 
+              ${
+                selectedCategory === category
+                  ? "bg-red text-white"
+                  : "bg-gray-200  text-gray-700"
+              }
+            hover:bg-hoverRed cursor-pointer transition`}
+              onClick={() =>
+                setSelectedCategory(
+                  selectedCategory === category ? null : category
+                )
+              }
+            >
+              {category}
+            </Badge>
+          ))}
+        </div>
+      )} */}
+
+      {/* Subcategories */}
+      {selectedCategory && (
+        <div className="flex gap-2 w-full max-w-full items-center justify-center overflow-x-scroll scrollbar-hidden">
+          {subCategories.map((subCategory) => (
+            <Badge
+              key={subCategory}
+              className={`px-4 py-1 hover:bg-red hover:text-white rounded-full text-sm
+                ${
+                  selectedSubCategory === subCategory
+                    ? "bg-red text-white"
+                    : "bg-gray-200  text-gray-700"
+                }
+              hover:bg-hoverRed cursor-pointer transition`}
+              onClick={() =>
+                setSelectedSubCategory(
+                  selectedSubCategory === subCategory ? null : subCategory
+                )
+              }
+            >
+              {subCategory}
+            </Badge>
+          ))}
+        </div>
+      )}
+
+      <div className="flex flex-col lg:py-12 w-full">
+        {Array.isArray(filteredData) ? (
+          <CurvePath
+            custommilestoneidfromuser={realMilestoneData}
+            milestones={filteredData}
+            currentUserId={passThecurrentUserId}
+          />
+        ) : null}
+        {Array.isArray(filteredData) ? (
+          <TrigSnakeCurve
+            amplitude={6}
+            custommilestoneidfromuser={realMilestoneData}
+            mileStoneCustomData={filteredData}
+            currentUserId={passThecurrentUserId}
+          />
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
+{
+  /* Filtered Milestones
+{Array.isArray(filteredData) ? (
+    filteredData.map((milestone) => (
+      <div
+        key={milestone.id}
+        className="p-4 border rounded-lg shadow-sm hover:shadow-md transition"
+      >
+        <h4 className="text-lg font-semibold mb-2">{milestone.Title}</h4>
+        <p
+          className="text-gray-700"
+          dangerouslySetInnerHTML={{ __html: milestone.Description }}
+        />
+      </div>
+    ))
+  ) : (
+    <p className="text-gray-500">
+      No milestones found for the selected category or subcategory.
+    </p>
+  );
+}
+ */
+}
+function CategoryCarousel({
+  categories,
+  selectedCategory,
+  setSelectedCategory,
+}) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  // Update selectedCategory whenever currentIndex changes
+  useEffect(() => {
+    setSelectedCategory(categories[currentIndex]);
+  }, [currentIndex, categories, setSelectedCategory]);
+
+  const handlePrev = () => {
+    if (currentIndex > 0) {
+      setCurrentIndex(currentIndex - 1);
+    }
+  };
+
+  const handleNext = () => {
+    if (currentIndex < categories.length - 1) {
+      setCurrentIndex(currentIndex + 1);
+    }
+  };
+
+  const matchedIcon = activityIcons.find(
+    (icon) => icon.title === categories[currentIndex]
+  );
+
+  return (
+    <div className="flex py-1 px-1 items-center rounded-[20px] w-fit bg-white justify-between gap-0">
+      <div className="flex justify-center items-center gap-2 w-fit">
+        {/* Left Arrow */}
+        <button
+          className={`w-[32px] h-[32px] ${
+            currentIndex === 0
+              ? "opacity-50 cursor-not-allowed"
+              : "hover:bg-gray-200"
+          }  flex justify-center items-center left-0 top-1/2 transform bg-white bg-opacity-30 backdrop-blur-lg text-[#000000] p-2 rounded-full z-10`}
+          onClick={handlePrev}
+          disabled={currentIndex === 0}
+        >
+          <ChevronLeft size={20} />
+        </button>
+
+        {/* Visible Category */}
+        <div className="flex w-fit justify-center">
+          <div className="px-2 py-2 w-full max-w-[360px] rounded-full gap-2 bg-white transition duration-200 flex items-center">
+          {matchedIcon && (
+              <Image
+                src={matchedIcon.icon}
+                alt={categories[currentIndex]}
+                className="w-[24px] h-[24px]"
+              />
+            )}
+            <div
+              className={`px-2 font-fredoka min-w-[max-content] rounded-full text-lg font-medium 
+          ${
+            selectedCategory === categories[currentIndex]
+              ? "bg-red-600 text-red"
+              : "bg-transparent text-gray-700"
+          }`}
+            >
+              {categories[currentIndex]}
+            </div>
+          </div>
+        </div>
+
+        {/* Right Arrow */}
+        <button
+          className={`w-[32px] h-[32px] ${
+            currentIndex === categories.length - 1
+              ? "opacity-50 cursor-not-allowed"
+              : "hover:bg-gray-200"
+          } flex justify-center items-center right-0 top-1/2 transform bg-white bg-opacity-30 backdrop-blur-lg text-[#000000] p-2 rounded-full z-10 rounded-full`}
+          onClick={handleNext}
+          disabled={currentIndex === categories.length - 1}
+        >
+          <ChevronRight size={20} />
+        </button>
+      </div>
+    </div>
+  );
+}

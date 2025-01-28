@@ -501,7 +501,7 @@ export default function Slider() {
                                     <h2 className="w-full claraheading">
                                       {item.Title || "Default Body Title"}
                                     </h2>
-                                    <div className="w-full max-w-full h-auto prose text-white clarabodyTwo">
+                                    <div className="w-full max-w-full pr-0 lg:pr-6 h-auto prose text-white clarabodyTwo">
                                       <p
                                         dangerouslySetInnerHTML={{
                                           __html:

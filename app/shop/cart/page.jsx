@@ -10,13 +10,12 @@ import { loadStripe } from "@stripe/stripe-js";
 import { useUser } from "@/app/context/UserContext";
 import { QuantityControl } from "../[id]/page";
 
-const stripePromise = loadStripe(
-  "pk_test_51NcT49CjBezv2y8roAoIWTNnaSyTsf8vaAICyY4MTx5sDq2fBi0vNQ4e3QshqT0f8KSgtCaXq7g4R95WBEbpaQet003oUhYRiJ"
-
-);
-// const stripe = new Stripe(
-//   "sk_test_51NcT49CjBezv2y8roX6Ue51YBKbLz3lhKZOZfcUr9JtPAbsS1hXe21UjrByPkU7AHi51gWMv5vfT9WfUuygJhQsb00i2OkGohI"
+// const stripePromise = loadStripe(
+//   "pk_test_51NcT49CjBezv2y8roAoIWTNnaSyTsf8vaAICyY4MTx5sDq2fBi0vNQ4e3QshqT0f8KSgtCaXq7g4R95WBEbpaQet003oUhYRiJ"
 // );
+const stripePromise = loadStripe(
+  "pk_live_51NcT49CjBezv2y8r9rE0b8L5W37kGyDZ4ER8m3gCrcFJW0pA1C7P7goLmUx2yaAftCibKGcvwRuhEkDq6Mlymz7b00oBy7wN5m"
+);
 
 export default function CartPage() {
   const { user } = useUser(); // Retrieve user data from context
@@ -40,7 +39,7 @@ export default function CartPage() {
   const handleCheckout = async () => {
     try {
       setLoading(true);
-  
+
       const response = await fetch("/api/checkout-session", {
         method: "POST",
         headers: {
@@ -48,25 +47,25 @@ export default function CartPage() {
         },
         body: JSON.stringify({ cartItems }),
       });
-  
+
       const session = await response.json();
       console.log("Checkout Session Response", session);
-  
+
       if (session.error) {
         console.error("Error creating checkout session:", session.error);
         alert("There was an issue with your checkout. Please try again.");
         return;
       }
-  
+
       if (session.id) {
         // Make sure Stripe is loaded before redirecting
         const stripe = await stripePromise;
-  
+
         // Redirect to Stripe Checkout
         const { error } = await stripe.redirectToCheckout({
           sessionId: session.id,
         });
-  
+
         if (error) {
           console.error("Stripe redirect error:", error);
           alert("There was an error redirecting to the checkout page.");
@@ -167,8 +166,8 @@ export default function CartPage() {
               >
                 <img
                   alt={item.title}
-                  // src={item.image}
-                  src={`https://lionfish-app-98urn.ondigitalocean.app${item.image}`}
+                  src={item.image}
+                  // src={`https://lionfish-app-98urn.ondigitalocean.app${item.image}`}
                   width={120}
                   height={90}
                   className="w-[80px] h-[76px] md:w-[100px] lg:h-[80px] rounded-[10px]"
@@ -176,13 +175,14 @@ export default function CartPage() {
                 <div className="flex w-full justify-between items-start">
                   <div className="flex flex-col w-full gap-1 md:gap-2">
                     <h5 className="text-black clarabodyTwo">{item.title}</h5>
-                    <div className="w-full text-[#0a1932] text-[12px] font-normal font-fredoka leading-tight">
-                    {item.description}
-                    </div>
+                    <div
+                      className="w-full text-[#0a1932] text-[12px] font-normal font-fredoka leading-tight prose"
+                      dangerouslySetInnerHTML={{ __html: item.description }}
+                    />
                   </div>
                   <div className="flex flex-col justify-end items-end w-full gap-2">
                     <div className="w-full text-red text-3xl text-end font-semibold font-fredoka capitalize leading-10">
-                      ${((item.price * item.quantity)).toFixed(2)}
+                      ${(item.price * item.quantity).toFixed(2)}
                     </div>
                     <div className="w-full gap-[2px] flex justify-end items-center">
                       <button onClick={() => removeFromCart(item.id)}>
@@ -216,7 +216,7 @@ export default function CartPage() {
             </Button> */}
 
             <div>
-              <h3>Total Price: ${(totalPrice).toFixed(2)}</h3>
+              <h3>Total Price: ${totalPrice.toFixed(2)}</h3>
             </div>
             <Button
               disabled={loading}
@@ -251,7 +251,7 @@ export default function CartPage() {
 //   const handleCheckout = async () => {
 //     try {
 //       setLoading(true);
-  
+
 //       const response = await fetch("/api/checkout-session", {
 //         method: "POST",
 //         headers: {
@@ -259,25 +259,25 @@ export default function CartPage() {
 //         },
 //         body: JSON.stringify({ cartItems }),
 //       });
-  
+
 //       const session = await response.json();
 //       console.log("Checkout Session Response", session);
-  
+
 //       if (session.error) {
 //         console.error("Error creating checkout session:", session.error);
 //         alert("There was an issue with your checkout. Please try again.");
 //         return;
 //       }
-  
+
 //       if (session.id) {
 //         // Make sure Stripe is loaded before redirecting
 //         const stripe = await stripePromise;
-  
+
 //         // Redirect to Stripe Checkout
 //         const { error } = await stripe.redirectToCheckout({
 //           sessionId: session.id,
 //         });
-  
+
 //         if (error) {
 //           console.error("Stripe redirect error:", error);
 //           alert("There was an error redirecting to the checkout page.");
@@ -292,7 +292,6 @@ export default function CartPage() {
 //       setLoading(false);
 //     }
 //   };
-  
 
 //   return (
 //     <div>

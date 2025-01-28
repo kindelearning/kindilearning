@@ -45,7 +45,7 @@ export default function MileStone() {
     fetchData();
   }, [router]);
 
-  console.log("Fetched euserData on Milestone pag:", userData);
+  // console.log("Fetched euserData on Milestone page:", userData);
 
   if (loading) return <p>Loading...</p>;
 
@@ -74,14 +74,6 @@ export default function MileStone() {
                             value={kid.id}
                             className="flex-shrink-0 flex-col data-[state=active]:bg-[#f5f5f500] data-[state=active]:opacity-100 opacity-70  data-[state=active]:z-12 data-[state=active]:scale-125 duration-200 ease-ease-in-out  data-[state=active]:border-red border-2 p-0 rounded-full bg-transparent"
                           >
-                            {/* <Image
-                              src={getRandomImage()} // Random image for each kid's tab
-                              alt={`Profile of ${kid.Name}`}
-                              width={48}
-                              height={48}
-                              title={kid.Name}
-                              className={`w-16 h-16 p-0 m-0 rounded-full object-cover transition-all duration-200`}
-                            /> */}
                             <KidsDP kidId={kid.documentId} />
                           </TabsTrigger>
                         ))}
@@ -134,4 +126,15 @@ export default function MileStone() {
       </section>
     </>
   );
+}
+
+{
+  /* <Image
+  src={getRandomImage()} // Random image for each kid's tab
+  alt={`Profile of ${kid.Name}`}
+  width={48}
+  height={48}
+  title={kid.Name}
+  className={`w-16 h-16 p-0 m-0 rounded-full object-cover transition-all duration-200`}
+/>; */
 }
