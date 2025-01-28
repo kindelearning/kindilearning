@@ -18,7 +18,7 @@ export default function ToggleCardGrid() {
         // "https://lionfish-app-98urn.ondigitalocean.app/api/how-it-work-page?populate=*"
       );
       const data = await response.json();
-      console.log('AreaOflearningCards Data', data)
+      console.log("AreaOflearningCards Data", data);
       setCards(data.data.AreaOflearningCards);
     };
     fetchData();
@@ -29,6 +29,7 @@ export default function ToggleCardGrid() {
       <div className="claracontainer px-4 md:pl-0  flex flex-row overflow-x-scroll scrollbar-hidden md:grid md:grid-cols-3 lg:grid lg:grid-cols-4 xl:grid xl:grid-cols-4 gap-4 justify-between">
         {cards.map((card) => (
           <MyToggleCard
+            link={card?.additionalField || "/p/community"}
             key={card.id}
             title={card?.Title || "Default Title"} //
             description={

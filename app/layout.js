@@ -7,6 +7,7 @@ import { CartProvider } from "./context/CartContext";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { UserProvider } from "./context/UserContext";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import CustomCookieConsent from "./Sections/Global/CookieConsent";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -54,7 +55,8 @@ export default function RootLayout({ children }) {
               <SessionProvider>
                 <CartProvider>
                   {children}
-                  <SpeedInsights />
+
+                 <CustomCookieConsent />
                 </CartProvider>
               </SessionProvider>
             </UserProvider>

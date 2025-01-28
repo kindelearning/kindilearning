@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import ClaraMarkdownRichEditor from "../TextEditor/ClaraMarkdownRichEditor";
 import MediaSelector from "../../website/media/Section/MediaSelector";
+import Link from "next/link";
 
 export default function KindiSkillsCategoriesCards() {
   const [content, setContent] = useState(null);
@@ -75,7 +76,7 @@ export default function KindiSkillsCategoriesCards() {
             {card.Icon ? (
               <img
                 // src={card.Icon.url}
-                src={`https://lionfish-app-98urn.ondigitalocean.app${card.Icon.url}`}
+                src={`https://lionfish-app-98urn.ondigitalocean.app${card.Icon[0].url}`}
                 className="w-[60px] h-[60px]"
                 alt={card.Title}
               />
@@ -86,10 +87,19 @@ export default function KindiSkillsCategoriesCards() {
             <h3 className="text-2xl font-semibold mb-4">{card.Title}</h3>
 
             {/* Card Body */}
-            <ul
+            <p
               className="space-y-2 list-disc list-inside"
               dangerouslySetInnerHTML={{ __html: card.Body }}
             />
+            <Link
+              href={card.additionalField}
+              target="_blank"
+              className="text-purple bg-white px-2 rounded-2xl  text-lg"
+            >
+              {/* {card.additionalField} */}
+              Read More Link
+
+            </Link>
           </div>
         ))}
       </div>
@@ -330,7 +340,7 @@ export default function KindiSkillsCategoriesCards() {
 //       </Dialog>
 //     </>
 //   );
-// }; 
+// };
 
 export function UpdateKindiSkillsCategoriesCards() {
   const [skillsCategoriesCards, setSkillsCategoriesCards] = useState([]);
@@ -390,6 +400,7 @@ export function UpdateKindiSkillsCategoriesCards() {
           Body: section.Body,
           bgcolor: section.bgcolor.replace("#", ""),
           Title: section.Title,
+          additionalField: section.additionalField,
           Icon: section.Icon ? { id: section.Icon.id } : null,
         })),
       },
@@ -397,13 +408,16 @@ export function UpdateKindiSkillsCategoriesCards() {
     console.log("payload sent", payload);
 
     try {
-      const res = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/how-it-work-page", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
+      const res = await fetch(
+        "https://lionfish-app-98urn.ondigitalocean.app/api/how-it-work-page",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        }
+      );
 
       const data = await res.json();
       console.log("Updated our-mission? Data:", data);
@@ -486,7 +500,29 @@ export function UpdateKindiSkillsCategoriesCards() {
                   className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
-
+              <div>
+                <label
+                  htmlFor={`additionalField-${index}`}
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Read More Link:
+                </label>
+                <input
+                  type="url" // Changed type to 'url' for built-in URL validation
+                  id={`additionalField-${index}`}
+                  value={section.additionalField}
+                  placeholder="https://kindilearning.com/p/community"
+                  onChange={(e) => {
+                    const updatedSection = {
+                      ...section,
+                      additionalField: e.target.value,
+                    };
+                    handleHIWSectionUpdate(index, updatedSection);
+                  }}
+                  pattern="https?://.*" // Optional, if you want more control over URL format (e.g., allowing only http or https)
+                  className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
               <div>
                 <label
                   htmlFor={`bgcolor-${index}`}
@@ -534,7 +570,7 @@ export function UpdateKindiSkillsCategoriesCards() {
                 {section.Icon ? (
                   <div className="mt-2">
                     <img
-                      src={`https://lionfish-app-98urn.ondigitalocean.app${section.Icon.url}`}
+                      src={`https://lionfish-app-98urn.ondigitalocean.app${section.Icon[0].url}`}
                       alt={section.Title}
                       className="w-32 h-32 object-cover border rounded-md"
                     />

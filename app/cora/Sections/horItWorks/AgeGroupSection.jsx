@@ -5,7 +5,7 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
+  DialogDescription, 
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import ClaraMarkdownRichEditor from "../TextEditor/ClaraMarkdownRichEditor";
 import MediaSelector from "../../website/media/Section/MediaSelector";
+import Link from "next/link";
 
 export default function AgeGroupSection() {
   const [content, setContent] = useState(null);
@@ -47,7 +48,7 @@ export default function AgeGroupSection() {
   if (!content) return <div>No content available.</div>;
 
   const { AgeGroup } = content;
-  const { featuredText, Title, Body, Content } = AgeGroup;
+  const { featuredText, Title, Body, Content, additionalField } = AgeGroup;
 
   return (
     <section className="max-w-7xl mx-auto py-12 px-6">
@@ -100,6 +101,14 @@ export default function AgeGroupSection() {
                 className="text-gray-600 prose mt-4"
                 dangerouslySetInnerHTML={{ __html: ageGroup.Body }}
               />
+              <Link
+                href={ageGroup.additionalField}
+                target="_blank"
+                className="text-red mt-4 text-lg"
+              >
+                {/* {ageGroup.additionalField} */}
+                Read More Link
+              </Link>
             </div>
           </div>
         ))}
@@ -296,6 +305,7 @@ export default function AgeGroupSection() {
 
 export function UpdateAgeGroupSection() {
   const [ageGroupCards, setAgeGroupCards] = useState([]);
+  // const [ageGroupCards, setAgeGroupCards] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [ageFeaturedText, setAgeFeaturedText] = useState();
   const [ageGroupTitle, setAgeGroupTitle] = useState();
@@ -356,6 +366,7 @@ export function UpdateAgeGroupSection() {
           Content: ageGroupCards.map((section) => ({
             Body: section.Body,
             Title: section.Title,
+            additionalField: section.additionalField,
             Icon: section.Icon ? { id: section.Icon.id } : null,
           })),
         },
@@ -428,6 +439,7 @@ export function UpdateAgeGroupSection() {
               className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
+
           <div className="w-full">
             <label
               htmlFor={`ageGroupBody-`}
@@ -470,6 +482,50 @@ export function UpdateAgeGroupSection() {
                   className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
+              {/* <div>
+                <label
+                  htmlFor={`additionalField-${index}`}
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Read More Link:
+                </label>
+                <input
+                  type="text"
+                  id={`additionalField-${index}`}
+                  value={section.additionalField}
+                  onChange={(e) => {
+                    const updatedSection = {
+                      ...section,
+                      additionalField: e.target.value,
+                    };
+                    handleHIWSectionUpdate(index, updatedSection);
+                  }}
+                  className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div> */}
+              <div>
+                <label
+                  htmlFor={`additionalField-${index}`}
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Read More Link:
+                </label>
+                <input
+                  type="url" // Changed type to 'url' for built-in URL validation
+                  id={`additionalField-${index}`}
+                  value={section.additionalField}
+                  placeholder="https://kindilearning.com/p/community"
+                  onChange={(e) => {
+                    const updatedSection = {
+                      ...section,
+                      additionalField: e.target.value,
+                    };
+                    handleHIWSectionUpdate(index, updatedSection);
+                  }}
+                  pattern="https?://.*" // Optional, if you want more control over URL format (e.g., allowing only http or https)
+                  className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
 
               <div>
                 <label
@@ -495,7 +551,7 @@ export function UpdateAgeGroupSection() {
                 {section.Icon ? (
                   <div className="mt-2">
                     <img
-                      src={`https://lionfish-app-98urn.ondigitalocean.app${section.Icon.url}`}
+                      src={`https://lionfish-app-98urn.ondigitalocean.app${section.Icon[0]?.url}`}
                       alt={section.Title}
                       className="w-32 h-32 object-cover border rounded-md"
                     />

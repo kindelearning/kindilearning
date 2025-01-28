@@ -41,6 +41,7 @@ const ToggleCard = ({
               {description}
             </p>
             <a
+              target="_blank"
               href={link}
               className="text-center text-white text-lg font-bold font-fredoka uppercase leading-relaxed mt-2 relative inline-block"
             >

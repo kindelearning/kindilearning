@@ -44,7 +44,7 @@ export default function AgeRanges() {
   // if (!data) {
   //   return <div>Error loading page content</div>;
   // }
-
+ 
   return (
     <>
       <section className="w-full h-auto bg-[#EAEAF5] items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">

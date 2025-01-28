@@ -42,7 +42,7 @@ const AgeCard = ({ bgImage, image, title, body, link }) => {
             {body || "Description"}
           </div>
         </div>
-        <Link
+        <Link target="_blank"
           href={link || "/p/community"}
           className="w-full justify-start items-start"
         >
@@ -150,6 +150,7 @@ export default function AgeRangeWidget() {
                   // image={
                   //   content?.Icon ? content?.Icon.url : "/Images/AgeCardOne.svg"
                   // }
+                  link={content?.additionalField}
                   image={
                     content.Icon
                       ? `https://lionfish-app-98urn.ondigitalocean.app${content?.Icon[0]?.url}`
@@ -186,6 +187,7 @@ export default function AgeRangeWidget() {
                       ? `https://lionfish-app-98urn.ondigitalocean.app${content?.Icon[0]?.url}`
                       : "/Images/AgeCardOne.svg"
                   }
+                  link={content?.additionalField}
                   bgImage="/Images/AgeRangeTwo.svg"
                   title={content?.Title || "Toddler"}
                   body={
@@ -215,6 +217,7 @@ export default function AgeRangeWidget() {
             <>
               {data.data.AgeGroup.Content.slice(2, 3).map((content, index) => (
                 <AgeCard
+                  link={content?.additionalField}
                   // image={
                   //   content?.Icon ? content?.Icon.url : "/Images/AgeCardOne.svg"
                   // }
@@ -245,6 +248,7 @@ export default function AgeRangeWidget() {
             <>
               {data.data.AgeGroup.Content.slice(3, 4).map((content, index) => (
                 <AgeCard
+                  link={content?.additionalField}
                   // image={
                   //   content?.Icon ? content?.Icon.url : "/Images/AgeCardOne.svg"
                   // }
