@@ -10,12 +10,12 @@ import { loadStripe } from "@stripe/stripe-js";
 import { useUser } from "@/app/context/UserContext";
 import { QuantityControl } from "../[id]/page";
 
-// const stripePromise = loadStripe(
-//   "pk_test_51NcT49CjBezv2y8roAoIWTNnaSyTsf8vaAICyY4MTx5sDq2fBi0vNQ4e3QshqT0f8KSgtCaXq7g4R95WBEbpaQet003oUhYRiJ"
-// );
 const stripePromise = loadStripe(
-  "pk_live_51NcT49CjBezv2y8r9rE0b8L5W37kGyDZ4ER8m3gCrcFJW0pA1C7P7goLmUx2yaAftCibKGcvwRuhEkDq6Mlymz7b00oBy7wN5m"
+  "pk_test_51NcT49CjBezv2y8roAoIWTNnaSyTsf8vaAICyY4MTx5sDq2fBi0vNQ4e3QshqT0f8KSgtCaXq7g4R95WBEbpaQet003oUhYRiJ"
 );
+// const stripePromise = loadStripe(
+//   "pk_live_51NcT49CjBezv2y8r9rE0b8L5W37kGyDZ4ER8m3gCrcFJW0pA1C7P7goLmUx2yaAftCibKGcvwRuhEkDq6Mlymz7b00oBy7wN5m"
+// );
 
 export default function CartPage() {
   const { user } = useUser(); // Retrieve user data from context
@@ -172,13 +172,13 @@ export default function CartPage() {
                   height={90}
                   className="w-[80px] h-[76px] md:w-[100px] lg:h-[80px] rounded-[10px]"
                 />
-                <div className="flex w-full justify-between items-start">
+                <div className="flex flex-col w-full justify-between items-start">
                   <div className="flex flex-col w-full gap-1 md:gap-2">
                     <h5 className="text-black clarabodyTwo">{item.title}</h5>
                     <div
                       className="w-full text-[#0a1932] text-[12px] font-normal font-fredoka leading-tight prose"
-                      dangerouslySetInnerHTML={{ __html: item.description }}
-                    />
+                      dangerouslySetInnerHTML={{ __html: item.description.slice(0,300) }}
+                    />...
                   </div>
                   <div className="flex flex-col justify-end items-end w-full gap-2">
                     <div className="w-full text-red text-3xl text-end font-semibold font-fredoka capitalize leading-10">
