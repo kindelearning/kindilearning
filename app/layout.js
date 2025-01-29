@@ -4,10 +4,9 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { SessionProvider } from "next-auth/react";
 import { CartProvider } from "./context/CartContext";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import { UserProvider } from "./context/UserContext";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-import CustomCookieConsent from "./Sections/Global/CookieConsent";
+// import CustomCookieConsent from "./Sections/Global/CookieConsent";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -56,7 +55,7 @@ export default function RootLayout({ children }) {
                 <CartProvider>
                   {children}
 
-                 <CustomCookieConsent />
+                 {/* <CustomCookieConsent /> */}
                 </CartProvider>
               </SessionProvider>
             </UserProvider>
