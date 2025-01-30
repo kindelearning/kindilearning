@@ -55,7 +55,7 @@ export default function RootLayout({ children }) {
                 <CartProvider>
                   {children}
 
-                 <CustomCookieConsent />
+                 {/* <CustomCookieConsent /> */}
                 </CartProvider>
               </SessionProvider>
             </UserProvider>
