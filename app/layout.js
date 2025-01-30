@@ -6,7 +6,7 @@ import { SessionProvider } from "next-auth/react";
 import { CartProvider } from "./context/CartContext";
 import { UserProvider } from "./context/UserContext";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-// import CustomCookieConsent from "./Sections/Global/CookieConsent";
+import CustomCookieConsent from "./Sections/Global/CookieConsent";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -26,11 +26,11 @@ export default function RootLayout({ children }) {
           />
 
           <link rel="shortcut icon" href="/favicon.ico" />
-          <script
+          {/* <script
             src="https://accounts.google.com/gsi/client"
             async
             defer
-          ></script>
+          ></script> */}
           <link
             rel="apple-touch-icon"
             sizes="180x180"
@@ -55,7 +55,7 @@ export default function RootLayout({ children }) {
                 <CartProvider>
                   {children}
 
-                 {/* <CustomCookieConsent /> */}
+                 <CustomCookieConsent />
                 </CartProvider>
               </SessionProvider>
             </UserProvider>

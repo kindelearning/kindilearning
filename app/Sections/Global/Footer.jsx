@@ -56,9 +56,9 @@ const Footer = () => {
               special offers and latest news about our products directly{" "}
             </div>
 
-            {/* <div className="hidden lg:flex w-full">
+            <div className="hidden lg:flex w-full">
               <GoogleTranslate />
-            </div> */}
+            </div>
           </div>
         </div>
         <div className="claracontainer w-full py-8 px-2 flex flex-col justify-center items-center gap-1">

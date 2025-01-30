@@ -3,7 +3,7 @@
 import { fetchQualityControl } from "@/app/data/p/Standard";
 import { useEffect, useState } from "react";
 
-export default async function QualityControll() {
+export default  function QualityControll() {
   const [content, setContent] = useState(null);
   const [loading, setLoading] = useState(true);
 

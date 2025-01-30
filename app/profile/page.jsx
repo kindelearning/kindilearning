@@ -10,6 +10,7 @@ import IndividualTabs from "./Sections/IndividualTabs";
 import { LogoutButton } from "../oAuth/Sections/Logout";
 import { LevelList } from "./Sections/MyLevel";
 import Link from "next/link";
+import { GoogleTranslate } from "../Sections/GoogleTranslate";
 
 export default function ProfilePage() {
   const [userData, setUserData] = useState(null);

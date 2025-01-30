@@ -25,6 +25,7 @@ import Loading from "../loading";
 import { useCart } from "../context/CartContext";
 import { useRouter } from "next/navigation";
 import { fetchUserDetails } from "../profile/api";
+import { GoogleTranslate } from "./GoogleTranslate";
 
 const LocalNavitem = ({
   Link = "#",
@@ -383,6 +384,7 @@ export default function Header() {
                     )}
                   </div>
                 </section>
+                <GoogleTranslate />
                 <SheetDescription>#KindiLearning</SheetDescription>
               </SheetHeader>
             </SheetContent>

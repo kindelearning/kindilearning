@@ -3,7 +3,7 @@
 import { fetchInvestmentOpportunity } from "@/app/data/p/Standard";
 import { useEffect, useState } from "react";
 
-export default async function InvestmentOpportunity() {
+export default function InvestmentOpportunity() {
   const [content, setContent] = useState(null);
   const [loading, setLoading] = useState(true);
 

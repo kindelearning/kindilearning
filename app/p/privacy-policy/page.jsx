@@ -3,7 +3,7 @@
 import { fetchPrivacyPolicy } from "@/app/data/p/Standard";
 import { useEffect, useState } from "react";
 
-export default async function PrivacyPolicy() {
+export default  function PrivacyPolicy() {
   const [content, setContent] = useState(null);
   const [loading, setLoading] = useState(true);
 
