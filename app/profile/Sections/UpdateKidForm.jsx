@@ -207,7 +207,7 @@ export default function UpdateKidForm({ parentId, kidId }) {
 
         // Filter media with ids between 159 and 169
         const filteredMedia = data.filter(
-          (item) => item.id >= 159 && item.id <= 169
+          (item) => item.id >= 159 && item.id <= 168
         );
         setMediaList(filteredMedia); // Update the state with the filtered media
       } catch (err) {

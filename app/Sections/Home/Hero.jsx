@@ -1,18 +1,12 @@
 "use client";
+
 import { Button } from "@/components/ui/button";
-import { fetchHeroSection } from "../../data/p/Home";
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function Hero() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
-  // const result = await fetchHeroSection();
-
-  // if (!result) {
-  //   return <p>No Hero Section data found.</p>;
-  // }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,12 +19,6 @@ export default function Hero() {
 
         if (result.data) {
           setData(result.data);
-          // setUpdateData({
-          //   featuredText: result.data.featuredText || "",
-          //   HeroTitle: result.data.HeroTitle || "",
-          //   BodyDescription: result.data.BodyDescription || "",
-          //   Image: result.data.Image || null,
-          // });
         } else {
           console.error("No data found");
         }
@@ -51,11 +39,6 @@ export default function Hero() {
     return <div>No data available</div>;
   }
 
-
-  // const { heroData } = result;
-  // console.log(" Hero Section data", data);
-
-  // Helper function to slice the first 3 and last words
   const getFirstThreeWords = (text) => {
     return text ? text.split(" ").slice(0, 3).join(" ") : "No Text";
   };
@@ -90,8 +73,7 @@ export default function Hero() {
                   <br />
                   <span className="text-light-purple-100 claraheading md:text-[24px] md:leading-[26px] font-normal font-fredoka capitalize animate-fade-in"></span>
                   <span className="text-red claraheading lg:text-[50px] lg:leading-[56px] animate-fade-in">
-                    {getLastThreeWords(data.HeroTitle) ||
-                      "For 0-5 Year kids"}
+                    {getLastThreeWords(data.HeroTitle) || "For 0-5 Year kids"}
                   </span>
                 </div>
                 {data.BodyDescription ? (
@@ -124,8 +106,9 @@ export default function Hero() {
           </div>
           <div className="w-full flex md:min-w-[300px] items-start justify-center h-fit min-h-[400px] md:w-[300px] lg:w-full">
             <div className="w-full h-fit md:h-[460px] animate-fade-in md:max-w-[500px] flex items-end justify-end">
+            {/* poster="favicon-48x48.png" */}
               {data?.Image?.url ? (
-                <video autoPlay loop muted>
+                <video autoPlay playsInline loop muted >
                   <source
                     src={`https://lionfish-app-98urn.ondigitalocean.app${data.Image?.url}`}
                     type="video/mp4"

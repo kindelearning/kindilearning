@@ -10,7 +10,7 @@ export default function RootLayout({ children }) {
           {children}
           <Newsletter />
           <BottomNavigation />
-          <Footer />
+          {/* <Footer /> */}
         </body>
       </html>
     </>

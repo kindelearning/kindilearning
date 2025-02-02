@@ -171,7 +171,7 @@ export default async function ActivityDetailPage({ params }) {
               ) : (
                 <div className="w-full overflow-clip rounded-lg h-[300px] max-h-[300px] lg:h-[400px] lg:max-h-[400px] mb-4">
                   <Image
-                    className="w-full h-full object-cover rounded-lg"
+                    className="w-full h-full rounded-lg max-h-[300px] lg:h-[400px] lg:max-h-[400px object-cover rounded-lg"
                     alt="Placholder Image"
                     src={ActivityImage}
                   />
@@ -192,11 +192,6 @@ export default async function ActivityDetailPage({ params }) {
                     }
                   />
                   <ActivityAttribute
-                    image={TimerBlack}
-                    features={SetUpTime || "5 Min"}
-                    title="Set up Time"
-                  />
-                  <ActivityAttribute
                     image={Themes}
                     className="text-[black]"
                     features={Theme || "Winter"}
@@ -206,6 +201,11 @@ export default async function ActivityDetailPage({ params }) {
                     image={KidBlack}
                     features={FocusAge || "Toddler"}
                     title="Difficulty"
+                  />
+                  <ActivityAttribute
+                    image={TimerBlack}
+                    features={SetUpTime || "5 Min"}
+                    title="Set up Time"
                   />
                 </div>
               </div>
@@ -327,12 +327,7 @@ export default async function ActivityDetailPage({ params }) {
                     features={
                       new Date(ActivityDate).toDateString() || "Thu Dec 26 2024"
                     }
-                  />
-                  <ActivityAttribute
-                    image={TimerBlack}
-                    features={SetUpTime || "5 Min"}
-                    title="Set up Time"
-                  />
+                  />{" "}
                   <ActivityAttribute
                     image={Themes}
                     className="text-[black]"
@@ -343,6 +338,11 @@ export default async function ActivityDetailPage({ params }) {
                     image={KidBlack}
                     features={FocusAge || "Toddler"}
                     title="Difficulty"
+                  />{" "}
+                  <ActivityAttribute
+                    image={TimerBlack}
+                    features={SetUpTime || "5 Min"}
+                    title="Set up Time"
                   />
                 </div>
               </div>
@@ -515,8 +515,8 @@ export default async function ActivityDetailPage({ params }) {
                 <div className="text-[#3f3a64] text-base font-semibold font-montserrat uppercase leading-[19px]">
                   Print Activity{" "}
                 </div>
-
-                <PrintDocument activityid={activityData.documentId} />              </div>
+                <PrintDocument activityid={activityData.documentId} />{" "}
+              </div>
 
               <div className="md:flex hidden px-4 w-full py-6 bg-white rounded-xl shadow gap-3 flex-col justify-center items-center">
                 <div className="text-[#3f3a64] text-base font-semibold font-montserrat uppercase leading-[19px]">
@@ -529,7 +529,7 @@ export default async function ActivityDetailPage({ params }) {
 
           {/* Mobile Specific Row */}
           <div className="flex md:hidden max-w-full overflow-hidden z-50 shadow-upper pt-2 pb-4 px-2 mb-[72px] rounded-t-[8px] justify-between items-center gap-1 bg-[white] shadow-sm fixed bottom-0 left-0 w-full">
-          <PrintDocument activityid={activityData.documentId} />
+            <PrintDocument activityid={activityData.documentId} />
             <MarkActivityCompleteForm passactivityId={matchedActivityId} />
           </div>
         </div>{" "}

@@ -75,7 +75,7 @@ export default function DefaultReviews() {
             transition: "background-color 0.5s ease-in-out",
           }}
         >
-          <div className="w-full py-6 lg:py-2 lg:px-4 cursor-pointer items-center justify-between flex flex-row gap-1 lg:gap-[20px]">
+          <div className="w-full py-6 lg:py-2 px-2 lg:px-4 cursor-pointer items-center justify-between flex flex-row gap-1 lg:gap-[20px]">
             {/* Previous Button */}
             <button
               onClick={handlePrev}
@@ -85,10 +85,10 @@ export default function DefaultReviews() {
             </button>
 
             {/* Review Content */}
-            <div className="claracontainer w-full flex-col duration-150 animate-fade-in justify-center items-center inline-flex md:py-6 sm:py-4">
+            <div className="claracontainer w-full px-2 flex-col duration-150 animate-fade-in justify-center items-center inline-flex md:py-6 sm:py-4">
               <h2 className="text-3xl text-center font-fredoka font-bold md:text-2xl sm:text-xl">
                 <span
-                  className="text-center"
+                  className="text-center text-[20px] leading-[20px]  lg:text-[28px]  lg:leading-[28px]"
                   style={{
                     color: data[currentIndex]?.MainLineColor || "#FFFFFF",
                   }}
@@ -97,7 +97,7 @@ export default function DefaultReviews() {
                 </span>
                 <br />
                 <span
-                  className="text-center"
+                  className="text-center text-[20px] leading-[20px]  lg:text-[28px]  lg:leading-[28px]"
                   style={{
                     color: data[currentIndex]?.SecondLineColor || "#FFFFFF",
                   }}
@@ -106,7 +106,7 @@ export default function DefaultReviews() {
                 </span>
               </h2>
               <p
-                className="text-lg text-white text-center md:text-base sm:text-sm"
+                className="text-lg text-white text-[12px] leading-[18px] font-fredoka text-center"
                 dangerouslySetInnerHTML={{
                   __html: data[currentIndex]?.Body || "No content available",
                 }}
@@ -123,7 +123,7 @@ export default function DefaultReviews() {
           </div>
 
           {/* Dot Navigation */}
-          <div className="flex mt-4 space-x-2">
+          <div className="flex mb-6 space-x-2">
             {data.map((_, index) => (
               <button
                 key={index}

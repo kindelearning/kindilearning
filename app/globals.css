@@ -160,7 +160,7 @@
   .prose p {
     margin-top: 2px; /* Adjust the top margin as needed */
     margin-bottom: 2px; /* Adjust the bottom margin as needed */
-    line-height: 1; /* Adjust the line height for better readability */
+    line-height: 1.2; /* Adjust the line height for better readability */
   }
   .prose h1,
   .prose h2,
@@ -168,7 +168,7 @@
   .prose h4 {
     margin-top: 24px; /* Adjust the top margin as needed */
     margin-bottom: 16px; /* Adjust the bottom margin as needed */
-    line-height: 1; /* Adjust the line height for better readability */
+    line-height: 1.2; /* Adjust the line height for better readability */
   }
   .goog-te-banner-frame {
     display: none !important;

@@ -9,7 +9,7 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
+  DialogFooter, 
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -52,10 +52,16 @@ export default function EditTnc() {
     fetchContent();
   }, []);
 
-  const handleChange = (e) => {
+  // const handleChange = (e) => {
+  //   setContent({
+  //     ...content,
+  //     [e.target.name]: e.target.value,
+  //   });
+  // };
+  const handleChange = (value, delta, source, editor) => {
     setContent({
       ...content,
-      [e.target.name]: e.target.value,
+      Body: value, // Only update Pagecontent
     });
   };
   const handleChange2 = (value, delta, source, editor) => {
@@ -162,6 +168,21 @@ export default function EditTnc() {
             </div>
           </div>
 
+          {/* Body field */}
+          <div className="flex w-full flex-col">
+            <label
+              htmlFor="Body"
+              className="block text-lg font-medium text-gray-700"
+            >
+              Body
+            </label>
+           
+            <ClaraMarkdownRichEditor
+              onChange={handleChange}
+              value={content.Body || ""}
+              className="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            />
+          </div>
           {/* Pagecontent field */}
           <div className="flex w-full flex-col">
             <label

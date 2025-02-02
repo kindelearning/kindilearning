@@ -23,8 +23,15 @@ import {
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import DeleteContent from "./delete/page";
-import { Eye, FilePenLine, MessageCircleMore, ThumbsUp, TrashIcon } from "lucide-react";
+import {
+  Eye,
+  FilePenLine,
+  MessageCircleMore,
+  ThumbsUp,
+  TrashIcon,
+} from "lucide-react";
 import BlogUpdateForm from "./update/page";
+import ClaraMarkdownRichEditor from "../../Sections/TextEditor/ClaraMarkdownRichEditor";
 
 export default function AdminBlogs() {
   const [blogs, setBlogs] = useState([]);
@@ -148,6 +155,9 @@ export default function AdminBlogs() {
         `https://lionfish-app-98urn.ondigitalocean.app/api/comments/${documentId}`,
         {
           method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
       );
 
@@ -156,11 +166,17 @@ export default function AdminBlogs() {
           `Comment with Document ID: ${documentId} deleted successfully.`
         );
         // Update your state/UI here
+        setComments((prevComments) =>
+          prevComments.filter((comment) => comment.documentId !== documentId)
+        );
+        alert("Comment deleted successfully!");
       } else {
         console.error("Failed to delete comment", response.status);
+        alert("Failed to delete comment.");
       }
     } catch (error) {
       console.error("Error deleting comment:", error);
+      alert("An error occurred while deleting the comment.");
     }
   };
   return (
@@ -169,6 +185,7 @@ export default function AdminBlogs() {
         <head>
           <title>Manage Blog - Kindi</title>
         </head>
+        <DynamicPageContent />
         <div className="container mx-auto">
           <div className="flex w-full justify-between items-center">
             <div className="flex items-center mb-4">
@@ -315,6 +332,7 @@ export default function AdminBlogs() {
                           <Eye className="text-[#7f7f7f]  w-5 h-5 duration-300 ease-in-out hover:text-black" />
                         </Link>
                       </Button>
+                      {/* Preview Live */}
                       <Dialog>
                         <DialogTrigger>
                           <Button
@@ -475,7 +493,7 @@ export default function AdminBlogs() {
                                       onClick={() =>
                                         handleDeleteComment(comment.documentId)
                                       }
-                                      className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded hover:bg-red-600"
+                                      className="bg-red-500 text-red text-xs font-bold px-2 py-1 rounded hover:bg-red-600"
                                     >
                                       Delete
                                     </button>
@@ -532,5 +550,199 @@ export default function AdminBlogs() {
         </div>
       </section>
     </>
+  );
+}
+const DynamicPageContent = () => {
+  const [content, setContent] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          "https://lionfish-app-98urn.ondigitalocean.app/api/dynammic-page-content?populate=*"
+        );
+        const data = await response.json();
+        setContent(data.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) return <p>Loading...</p>;
+  if (!content) return <p>No content available.</p>;
+
+  return (
+    <>
+      <div
+        className="p-6 rounded-lg"
+        style={{
+          backgroundColor: `#${content.Community.bgcolor}`,
+          color: `#${content.Community.buttonColor}`,
+        }}
+      >
+        <Dialog>
+          <DialogTrigger className="text-red justify-end text-end w-full hover:text-purple duration-100 ">Update the Data</DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Update the Page Data for Kindi Community Page</DialogTitle>
+              <DialogDescription>
+                <UpdateDynamicPage />
+              </DialogDescription>
+            </DialogHeader>
+          </DialogContent>
+        </Dialog>
+        <h1 className="text-2xl font-bold">{content.Community.Title}</h1>
+        {/* <p className="mt-2">{content.Community.Body}</p> */}
+        <span
+          className="prose"
+          dangerouslySetInnerHTML={{ __html: content.Community.Body }}
+        />
+        {/* <p className="mt-2 text-sm font-semibold">
+          {content.Community.featuredText}
+        </p> */}
+      </div>
+    </>
+  );
+};
+
+function UpdateDynamicPage() {
+  const [title, setTitle] = useState("");
+  const [body, setBody] = useState("");
+  const [featuredText, setFeaturedText] = useState("");
+  const [openDialog, setOpenDialog] = useState(false);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const fetchBlogData = async () => {
+      try {
+        const res = await fetch(
+          `https://lionfish-app-98urn.ondigitalocean.app/api/dynammic-page-content?populate=*`
+        );
+        const data = await res.json();
+
+        const content = data.data.Community;
+
+        if (content) {
+          setTitle(content.Title || "");
+          setBody(content.Body || "");
+          setFeaturedText(content.featuredText || "");
+        }
+        console.log("Fetched Blog Content", content);
+      } catch (err) {
+        console.error("Error fetching blog data:", err);
+        setError("Error fetching content");
+      }
+    };
+
+    fetchBlogData();
+  }, []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const payload = {
+      data: {
+        Community: {
+          Title: title,
+          Body: body,
+          // featuredText: featuredText,
+        },
+      },
+    };
+    console.log("Payload Created", payload);
+
+    try {
+      const res = await fetch(
+        `https://lionfish-app-98urn.ondigitalocean.app/api/dynammic-page-content`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        }
+      );
+
+      const data = await res.json();
+      console.log("Updated Badge Content:", data);
+      setOpenDialog(true); // Show success dialog
+    } catch (error) {
+      console.error("Error updating content:", error);
+      alert("Error updating content.");
+    }
+  };
+
+  return (
+    <div className="container mx-auto p-4">
+      <head>
+        <title>Update Blog - Kindi</title>
+      </head>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label className="block">Text</label>
+          <input
+            type="text"
+            name="Title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded-md"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block">Description</label>
+          <ClaraMarkdownRichEditor
+            onChange={(value) => setBody(value)}
+            value={body || ""}
+          />
+        </div>
+
+        {/* <div>
+          <label className="block">Featurd Text</label>
+          <input
+            type="text"
+            name="featureText"
+            value={featuredText}
+            onChange={(e) => setFeaturedText(e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded-md"
+            required
+          />
+        </div> */}
+        <div className="flex justify-end">
+          <button
+            type="submit"
+            className="bg-blue-500 text-white px-4 py-2 rounded-md"
+          >
+            Update Blog
+          </button>
+        </div>
+      </form>
+
+      {/* Custom Success Dialog */}
+      <Dialog open={openDialog} onOpenChange={(open) => setOpenDialog(open)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Success!</DialogTitle>
+          </DialogHeader>
+          <DialogDescription>
+            Your blog has been successfully updated.
+          </DialogDescription>
+          <DialogFooter>
+            <DialogClose asChild>
+              <button className="bg-blue-500 text-white px-4 py-2 rounded-md">
+                Close
+              </button>
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </div>
   );
 }

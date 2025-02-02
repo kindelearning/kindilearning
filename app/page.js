@@ -30,8 +30,8 @@ export default async function Home() {
           <Hero />
           <Slider />
           <PromotionalSection />
-          <HowItWorks />
           <PromotionalSectionTwo />
+          <HowItWorks />
           <MonthlyThemes />
           <PopularActivity />
           <DefaultReviews />

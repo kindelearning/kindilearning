@@ -66,13 +66,16 @@ export default function ReadContent() {
           <h1 className="text-4xl font-semibold text-gray-800 mb-6">
             {content.Title}
           </h1>
-          {/* <p className="text-lg text-gray-600 prose leading-relaxed mb-6">
-            {content.Pagecontent}
-          </p> */}
+          <span
+            className="text-lg text-gray-600 prose leading-relaxed mb-6"
+            dangerouslySetInnerHTML={{ __html: content.Body }}
+          />
+
+          <p className="py-6"/>
           <div
-              className="text-lg text-gray-600 prose leading-relaxed mb-6"
-              dangerouslySetInnerHTML={{ __html: content.Pagecontent }}
-            />
+            className="text-lg text-gray-600 prose leading-relaxed mb-6"
+            dangerouslySetInnerHTML={{ __html: content.Pagecontent }}
+          />
         </Card>
       </div>
     </div>

@@ -63,7 +63,7 @@ export default function Page() {
       <section className="w-full h-auto bg-[#EAEAF5] items-center pb-32 justify-center flex flex-col gap-[20px]">
         <div className="claracontainer w-full flex flex-col overflow-hidden gap-8">
           <div className="claracontainer p-4 w-full flex flex-col items-center justify-center overflow-hidden gap-4 lg:gap-12">
-            <div className="claracontainer w-full flex flex-col overflow-hidden gap-2 md:gap-4">
+            {/* <div className="claracontainer w-full flex flex-col overflow-hidden gap-2 md:gap-4">
               <div className="w-full text-center">
                 <span className="text-[#3f3a64] text-[32px] tracking-tight font-semibold font-fredoka uppercase leading-10">
                   The Kindi{" "}
@@ -79,7 +79,8 @@ export default function Page() {
                 Additionally, sync your schedule with your child&apos;s nursery
                 for a smooth and integrated learning experience.
               </div>
-            </div>
+            </div> */}
+            <KindiCOnnectData />
 
             <div className="claracontainer ">
               {blogs.length === 0 ? (
@@ -133,6 +134,59 @@ export default function Page() {
         </div>
       </section>
     </>
+  );
+}
+
+function KindiCOnnectData() {
+  const [content, setContent] = useState(null);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          "https://lionfish-app-98urn.ondigitalocean.app/api/dynammic-page-content?populate=*"
+        );
+        const data = await response.json();
+        setContent(data.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) return <p>Loading...</p>;
+  if (!content) return <p>No content available.</p>;
+
+  return (
+    <div className="claracontainer w-full flex flex-col overflow-hidden gap-2 md:gap-4">
+      <div className="w-full text-center">
+        <span className="text-[#3f3a64] text-[32px] tracking-tight font-semibold font-fredoka uppercase leading-10">
+          {content.Community.Title.split(" ").slice(0, 2).join(" ") || "The Kindi"}
+        </span>{" "}
+        <span className="text-[#f05c5c] text-[32px] font-semibold font-fredoka uppercase leading-10">
+          {content.Community.Title.split(" ").slice(2, 12).join(" ") || "Connect"}
+        </span>
+      </div>
+
+      {content.Community.Body ? (
+        <span
+          className="w-full prose text-center px-0 md:px-12 lg:px-24 xl:px-28 text-[#3f3a64] clarabodyTwo"
+          dangerouslySetInnerHTML={{ __html: content.Community.Body }}
+        />
+      ) : (
+        <span className="w-full text-center px-0 md:px-12 lg:px-24 xl:px-28 text-[#3f3a64] clarabodyTwo">
+          Here&apos;s where you&apos;ll discover your daily educational play
+          activities. Utilize our drag-and-drop feature to rearrange learning,
+          ensuring development seamlessly fits your schedule. Additionally, sync
+          your schedule with your child&apos;s nursery for a smooth and
+          integrated learning experience.
+        </span>
+      )}
+    </div>
   );
 }
 // image={`https://lionfish-app-98urn.ondigitalocean.app${item.FeaturedImage.url}`}

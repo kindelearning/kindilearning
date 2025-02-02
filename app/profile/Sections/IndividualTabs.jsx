@@ -175,8 +175,8 @@ export default function IndividualTabs({ userData }) {
         <CustomDialog
           image={Kid}
           iconBackgroundColor="#029871"
-          title="Kids Profile"
-          dialogTitle="My"
+          title="Child Profile"
+          dialogTitle="Child"
           dialogSubtitle="Profile"
           footerText="Save and Continue"
         >
@@ -186,7 +186,7 @@ export default function IndividualTabs({ userData }) {
               <span className="font-medium text-red">
                 {currentKidsCount} out of {maxKidsAllowed}
               </span>{" "}
-              kids allowed for your{" "}
+              Child allowed for your{" "}
               <span className="font-medium text-red">{subscriptionLevel}</span>{" "}
               subscription.
             </p>
@@ -243,14 +243,14 @@ export default function IndividualTabs({ userData }) {
                     </div>
                   ))
               ) : (
-                <p className="text-[#757575]">No kids available to display.</p>
+                <p className="text-[#757575]">No Child available to display.</p>
               )}
             </div>
             {currentKidsCount < maxKidsAllowed ? (
               <Dialog>
                 <DialogTrigger>
                   <Button className="clarabutton my-4 bg-red hover:bg-hoverRed">
-                    Add New Kid
+                    Add New Child
                   </Button>
                 </DialogTrigger>
                 <DialogContent>
@@ -263,7 +263,7 @@ export default function IndividualTabs({ userData }) {
               </Dialog>
             ) : (
               <p className="text-red-500">
-                You have reached the maximum limit of {maxKidsAllowed} kids for
+                You have reached the maximum limit of {maxKidsAllowed} Child for
                 your {subscriptionLevel} subscription.
               </p>
             )}
@@ -280,11 +280,10 @@ export default function IndividualTabs({ userData }) {
         >
           <div className="grid grid-cols-1 md:grid-cols-4 h-auto w-full claracontainer gap-4">
             {/* Replace with dynamic data */}
+            {/* <ProductCard data={data} />
             <ProductCard data={data} />
+            <ProductCard data={data} /> */}
             <ProductCard data={data} />
-            <ProductCard data={data} />
-            <ProductCard data={data} />
-            {/* Add more ProductCards as needed */}
           </div>
         </CustomDialog>
         {/* Connect a partner Model */}
@@ -419,8 +418,8 @@ export default function IndividualTabs({ userData }) {
           image={ProfileSettingIcon}
           iconBackgroundColor="#C42797"
           title="Settings"
-          dialogTitle="Connect"
-          dialogSubtitle="My"
+          dialogTitle="My "
+          dialogSubtitle="Account"
           footerText="Settings"
         >
           <section className="w-full h-auto bg-[#EAEAF5] items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">

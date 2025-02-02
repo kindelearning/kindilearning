@@ -20,7 +20,7 @@ const ProductCard = ({ image, title, rating, price }) => {
       <div className="claracontainer flex flex-col justify-start items-center w-full gap-2">
         <div className="flex items-center  px-4 w-full justify-between gap-2">
           <h1 className="flex text-[24px] leading-tight font-semibold text-[#0A1932] font-fredoka">
-            $ {price || "29"}
+          £ {price || "29"}
           </h1>
           <div className="flex flex-row justify-center gap-[2px] items-center">
             <Image

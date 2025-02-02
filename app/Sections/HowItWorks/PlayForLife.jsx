@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useEffect, useState } from "react";
- 
+
 export default function PlayForLife() {
   const [content, setContent] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -50,6 +50,7 @@ export default function PlayForLife() {
                 <video
                   className="w-full lg:w-[400px] rounded-xl  border-[12px] border-[#ffffff] xl:w-[500px] h-auto animate-fadeIn animate-delay-500"
                   autoPlay
+                  controls
                   loop
                   muted
                   src={`https://lionfish-app-98urn.ondigitalocean.app${Hero.Media[0].url}`}

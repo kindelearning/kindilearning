@@ -335,7 +335,7 @@ export default function AreaOfLearning() {
 //   );
 // };
 
-export function UpdateAreaOfLearning() {
+export function UpdateAreaOfLearning() { 
   const [areaOflearningCards, setAreaOflearningCards] = useState([]);
   const [areaoflearningTitle, setAreaoflearningTitle] = useState();
   const [arealearningBody, setArealearningBody] = useState();

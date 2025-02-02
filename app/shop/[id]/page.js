@@ -74,13 +74,13 @@ function ProductInfo({ product }) {
         </div>
       </div>
       {/* Product Pricing */}
-      <div className="claracontainer w-full flex flex-row p-0 justify-start items-start gap-1">
-        <div className="w-[max-content] text-red text-[40px] leading-[40px]  font-semibold font-fredoka ">
-          {product.DiscountPrice || "N/A"}
-        </div>
-        <div className="w-full text-gray-500 text-[24px] leading-[24px] font-semibold font-fredoka line-through ">
-          {product.Price || "N/A"}
-        </div>
+      <div className="claracontainer w-full flex flex-row p-0 justify-start items-start gap-2">
+        <span className="w-[max-content] text-red text-[40px] leading-[40px] text-4xl  font-semibold font-fredoka ">
+          £ {product.DiscountPrice || "N/A"}
+        </span>
+        <span className="w-[max-content] text-gray-500 text-[24px] leading-[24px] font-semibold font-fredoka line-through ">
+          £ {product.Price || "N/A"}
+        </span>
       </div>
       <RatingGrid />
       <div className="claracontainer">
@@ -136,7 +136,7 @@ function CustomerReviews({ formData }) {
       </div>
       <Dialog className="p-2 lg:p-4">
         <DialogTrigger>
-          <div className="text-center w-[max-content]  text-red clarabodyTwo font-semibold capitalize ">
+          <div className="text-center w-[max-content]  text-transparent clarabodyTwo font-semibold capitalize ">
             Write a Review
           </div>
         </DialogTrigger>

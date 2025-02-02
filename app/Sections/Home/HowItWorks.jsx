@@ -110,9 +110,7 @@ export default function HowItWorks() {
                       rel="noopener noreferrer"
                       className="w-full h-12 "
                     >
-                      <div
-                        className="absolute text-center py-2 animate-fade-in hover:bg-red bg-white hover:text-white text-red shadow border-2 border-white clarabutton"
-                      >
+                      <div className="absolute text-center py-2 animate-fade-in hover:bg-red bg-white hover:text-white text-red shadow border-2 border-white clarabutton">
                         SHOW ME
                       </div>
                     </Link>
@@ -210,9 +208,7 @@ export default function HowItWorks() {
                       rel="noopener noreferrer"
                       className="w-full h-12 "
                     >
-                      <div
-                        className="absolute text-center py-2 animate-fade-in hover:bg-red bg-white hover:text-white text-red shadow border-2 border-white clarabutton"
-                      >
+                      <div className="absolute text-center py-2 animate-fade-in hover:bg-red bg-white hover:text-white text-red shadow border-2 border-white clarabutton">
                         SHOW ME
                       </div>
                     </Link>
@@ -244,7 +240,10 @@ export default function HowItWorks() {
                           {section.featuredText || "Enjoy"}{" "}
                         </span>
                         <span className="text-red animate-fade-in w-[max-content] claraheading lg:text-[44px]">
-                          {section.title || "Precious Time"}
+                          {section.title.split(" ").slice(0, 2).join(" ") || "Precious Time"}
+                        </span>{" "}
+                        <span className="text-white animate-fade-in w-[max-content] claraheading lg:text-[44px]">
+                          {section.title.split(" ").slice(2, 12).join(" ") || "Together"}
                         </span>
                       </div>
                       {section.BodyDescription ? (
@@ -271,9 +270,7 @@ export default function HowItWorks() {
                       rel="noopener noreferrer"
                       className="w-full h-12 "
                     >
-                      <span
-                        className="absolute text-center py-2 animate-fade-in hover:bg-red bg-white hover:text-white text-red shadow border-2 border-white clarabutton"
-                      >
+                      <span className="absolute text-center py-2 animate-fade-in hover:bg-red bg-white hover:text-white text-red shadow border-2 border-white clarabutton">
                         SHOW ME
                       </span>
                     </Link>

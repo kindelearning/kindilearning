@@ -18,7 +18,7 @@ export default function RefundPolicy() {
     };
 
     getRefundPolicyData();
-  }, []);
+  }, []); 
 
   if (loading) {
     return <p>Loading...</p>;
@@ -49,9 +49,15 @@ export default function RefundPolicy() {
             </div>
             {Body ? (
               <div className="flex flex-col w-full justify-start items-start heading animate-fade-in">
-                <span className="text-[#3f3a64] text-base font-normal font-fredoka leading-tight">
+                {/* <span className="text-[#3f3a64] text-base font-normal font-fredoka leading-tight">
                   {Body}
-                </span>
+                </span> */}
+                 <span
+                  className="text-[#3f3a64] text-base font-normal font-fredoka leading-tight"
+                  dangerouslySetInnerHTML={{
+                    __html: Body, // Render markdown or rich text content
+                  }}
+                />
               </div>
             ) : (
               <div className="flex flex-col w-full justify-start items-start heading animate-fade-in">

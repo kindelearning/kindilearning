@@ -2,13 +2,11 @@
 
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import { KindiHeart, ProfilePlaceholder01 } from "@/public/Images";
+import { KindiHeart } from "@/public/Images";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ReferralCard from "@/app/Sections/Profile/ReferralCard";
 import { progressData } from "@/app/constant/menu";
-import { getAllActivities, getUserDataByEmail } from "@/lib/hygraph";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/app/lib/useAuth";
 import Link from "next/link";
 import {
   Dialog,
@@ -19,9 +17,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { fetchKidDetails, fetchUserDetails } from "../api";
-import { getRandomImage } from "../milestone/page";
 import { fetchAllActivities } from "@/app/data/p/Dynamic/Activity";
 import { KidsDP } from "../Sections/IndividualTabs";
+import { getIconForSkill } from "@/app/p/activities/Sections/ActivityCard";
 
 const ActivitiesCount = () => {
   const [activities, setActivities] = useState([]);
@@ -37,7 +35,7 @@ const ActivitiesCount = () => {
       try {
         const activities = await fetchAllActivities();
         setActivities(activities); // Set the fetched activities
-        console.log("All activities: ", activities);
+        // console.log("All activities: ", activities);
       } catch (error) {
         setError("Failed to fetch activities: " + error.message);
       } finally {
@@ -102,7 +100,8 @@ const ActivitiesCount = () => {
                   <div className="flex max-h-[180px] min-h-[150px] h-[150px] md:max-h-[200px] md:h-full lg:h-full lg:max-h-[182px] lg:min-h-[182px] overflow-clip rounded-t-3xl">
                     {activity.Gallery ? (
                       <img
-                        src={activity.Gallery[0]?.url}
+                        src={`https://lionfish-app-98urn.ondigitalocean.app${activity.Gallery[0]?.url}`}
+                        // src={activity.Gallery[0]?.url}
                         alt={activity.Title}
                         width={200}
                         height={150}
@@ -125,6 +124,32 @@ const ActivitiesCount = () => {
                         <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-6 flex pr-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
                           {activity.FocusAge}
                         </div>
+                      </div>
+                      <div className="items-center justify-center gap-2 md:gap-4 grid grid-cols-5">
+                        {/* Skill Icons Section */}
+                        {activity.LearningAreaIcons?.slice(0, 5).map(
+                          (skill, index) => {
+                            const skillTitle = skill.children?.[0]?.text; // Extract skill title
+                            const iconUrl = getIconForSkill(skillTitle); // Get icon URL using the passed prop
+                            return (
+                              <div
+                                key={index}
+                                className="activity-icon  flex items-center gap-2"
+                              >
+                                {iconUrl && (
+                                  <img
+                                    title={skillTitle}
+                                    src={iconUrl.src}
+                                    alt={skillTitle}
+                                    className="w-6 lg:w-10 lg:h-10 h-6"
+                                    width={iconUrl.width} // Optionally set width and height
+                                    height={iconUrl.height}
+                                  />
+                                )}
+                              </div>
+                            );
+                          }
+                        )}
                       </div>
                     </div>
                   </div>
@@ -218,15 +243,23 @@ const SubProfileRoutes = ({
 
 const RemainingActivities = ({ userID }) => {
   const [totalActivities, setTotalActivities] = useState(0);
+  const [allActivities, setAllActivities] = useState([]);
+  const [allCompletedActivities, setAllCompletedActivities] = useState([]);
+  const [remainingActivitiesId, setRemainingActivitiesId] = useState([]);
   const [completedActivities, setCompletedActivities] = useState(0);
   const [loadingTotal, setLoadingTotal] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8; // Number of items per page
+  const totalPages = Math.ceil(remainingActivitiesId.length / itemsPerPage);
 
   useEffect(() => {
     const fetchTotalActivities = async () => {
       try {
         const activities = await fetchAllActivities();
+        const documentIds = activities.map((activity) => activity.documentId);
+        setAllActivities(documentIds);
         setTotalActivities(activities.length);
       } catch (error) {
         setError("Failed to fetch total activities: " + error.message);
@@ -238,14 +271,52 @@ const RemainingActivities = ({ userID }) => {
     fetchTotalActivities();
   }, []);
 
-  console.log(
-    "Total Activities from Remaining Activities function",
-    totalActivities
-  );
+  // console.log(
+  //   "Total Activities from Remaining Activities function",
+  //   totalActivities
+  // );
+  // // console.log("AllsetAllActivities", allActivities);
+
+  // useEffect(() => {
+  //   const fetchKid = async () => {
+  //     setLoading(true); // Start loading when data fetching begins
+  //     try {
+  //       const data = await fetchKidDetails();
+  //       const filteredData = data.data.filter(
+  //         (user) => user.documentId === userID
+  //       );
+
+  //       if (filteredData.length > 0) {
+  //         const user = filteredData[0];
+  //         const completedDocumentIds = user.myActivities.map(
+  //           (activity) => activity.documentId
+  //         );
+  //         setAllCompletedActivities(completedDocumentIds);
+  //         setCompletedActivities(user.myActivities.length); // Store the length of completed activities
+
+  //         const remainingIds = allActivities.filter(
+  //           (activityId) => !allCompletedActivities.includes(activityId)
+  //         );
+  //         setRemainingActivitiesId(remainingIds);
+  //       } else {
+  //         setError("User not found");
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching user data", error);
+  //       setError("Error fetching user data");
+  //     } finally {
+  //       setLoading(false); // End loading once data is fetched
+  //     }
+  //   };
+
+  //   fetchKid();
+  // }, [userID]);
 
   useEffect(() => {
+    if (!allActivities.length) return; // Ensure allActivities is fetched first
+
     const fetchKid = async () => {
-      setLoading(true); // Start loading when data fetching begins
+      setLoading(true);
       try {
         const data = await fetchKidDetails();
         const filteredData = data.data.filter(
@@ -254,7 +325,17 @@ const RemainingActivities = ({ userID }) => {
 
         if (filteredData.length > 0) {
           const user = filteredData[0];
-          setCompletedActivities(user.myActivities.length); // Store the length of completed activities
+          const completedDocumentIds = user.myActivities.map(
+            (activity) => activity.documentId
+          );
+          setAllCompletedActivities(completedDocumentIds);
+          setCompletedActivities(user.myActivities.length);
+
+          const remainingIds = allActivities.filter(
+            (activityId) => !completedDocumentIds.includes(activityId)
+          );
+          // Only set the remaining activities if there is a change
+          setRemainingActivitiesId(remainingIds);
         } else {
           setError("User not found");
         }
@@ -262,17 +343,19 @@ const RemainingActivities = ({ userID }) => {
         console.error("Error fetching user data", error);
         setError("Error fetching user data");
       } finally {
-        setLoading(false); // End loading once data is fetched
+        setLoading(false);
       }
     };
 
     fetchKid();
-  }, [userID]);
+  }, [userID, allActivities]);
 
-  console.log(
-    "Completed Activities from RemainingActivities function",
-    completedActivities
-  );
+  // console.log("remainingActivitiesId", remainingActivitiesId);
+  // console.log("Completed ActivitiesId", allCompletedActivities);
+  // console.log(
+  //   "Completed Activities from RemainingActivities function",
+  //   completedActivities
+  // );
 
   if (error) {
     return <p>{error}</p>;
@@ -280,22 +363,95 @@ const RemainingActivities = ({ userID }) => {
 
   // Calculate remaining activities
   const remainingActivities = totalActivities - completedActivities;
-  console.log("Finally Remaining:", remainingActivities);
+  // console.log("Finally Remaining:", remainingActivities);
+
+  const handlePageChange = (newPage) => {
+    if (newPage > 0 && newPage <= totalPages) {
+      setCurrentPage(newPage);
+    }
+  };
+
+  // Paginated activities for the current page
+  const paginatedActivities = remainingActivitiesId.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   return (
     <>
-      <SubBagde
-        number={remainingActivities}
-        title="Remaining Activities"
-        backgroundColor="#f5a623"
-        borderColor="#f5d08e"
-      />
+      <Dialog>
+        <DialogTrigger>
+          <SubBagde
+            number={remainingActivities}
+            title="Remaining Activities"
+            backgroundColor="#f5a623"
+            borderColor="#f5d08e"
+          />
+        </DialogTrigger>
+        <DialogContent className="w-full lg:max-w-[1000px] lg:max-h-[600px] overflow-x-hidden overflow-y-scroll">
+          <DialogHeader className="p-4">
+            <div className="flex flex-row justify-center items-center w-full">
+              <DialogTitle>
+                <div className="text-center">
+                  <span className="text-[#3f3a64] text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
+                    Remaining{" "}
+                  </span>
+                  <span className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
+                    Activities
+                  </span>
+                </div>
+              </DialogTitle>
+            </div>
+            <DialogDescription>
+              <div className="grid grid-cols-2 lg:grid-cols-4 w-full gap-2 md:gap-4 justify-between items-start">
+                {remainingActivitiesId.map((documentId) => (
+                  <CompleteActivityCardForRemainingActivity
+                    key={documentId} // Adding a key for performance optimization and to avoid warnings
+                    documentId={documentId}
+                  />
+                ))}
+              </div>
+              {paginatedActivities.length === 0 && (
+                <p>No activities available.</p>
+              )}
+              {/* Pagination Controls */}
+              <div className="flex justify-between items-center mt-4">
+                <button
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className={`px-4 py-2 rounded-lg ${
+                    currentPage === 1
+                      ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                      : "bg-red text-white"
+                  }`}
+                >
+                  Previous
+                </button>
+                <span className="text-gray-600">
+                  Page {currentPage} of {totalPages}
+                </span>
+                <button
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  className={`px-4 py-2 rounded-lg ${
+                    currentPage === totalPages
+                      ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                      : "bg-red text-white"
+                  }`}
+                >
+                  Next
+                </button>
+              </div>
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };
 
 const MyActivity = ({ userID }) => {
-  console.log("Received this UserID as Property: " + userID);
+  // console.log("Received this UserID as Property: " + userID);
   const [activities, setActivities] = useState([]);
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -331,7 +487,7 @@ const MyActivity = ({ userID }) => {
     fetchKid();
   }, [userID]); // Dependency on userID so data updates when it changes
 
-  console.log("Filtered Kids Data from Progress Page: ", userData);
+  // console.log("Filtered Kids Data from Progress Page: ", userData);
 
   const handlePageChange = (newPage) => {
     if (newPage > 0 && newPage <= totalPages) {
@@ -392,6 +548,7 @@ const MyActivity = ({ userID }) => {
                         >
                           <div className="flex max-h-[180px] min-h-[150px] h-[150px] md:max-h-[200px] md:h-full lg:h-full lg:max-h-[182px] lg:min-h-[182px]  overflow-clip rounded-t-3xl">
                             {/* Image Placeholder */}
+                            <ActivityGallery documentId={activity.documentId} />
                           </div>
                           <div className="w-full overflow-clip p-2 flex-col justify-start items-start flex gap-2 md:gap-2 lg:gap-4">
                             <div className="flex-col w-full gap-[6px] justify-start items-start">
@@ -458,6 +615,171 @@ const MyActivity = ({ userID }) => {
   );
 };
 
+const ActivityGallery = ({ documentId }) => {
+  const [imageUrl, setImageUrl] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchActivityData = async () => {
+      try {
+        const response = await fetch(
+          `https://lionfish-app-98urn.ondigitalocean.app/api/activities/${documentId}?populate=*`
+        );
+        const data = await response.json();
+        const activity = data.data.find((item) =>
+          item.Gallery.some(
+            (galleryItem) => galleryItem.documentId === documentId
+          )
+        );
+
+        if (activity) {
+          const image = activity.Gallery[0]; // Get the first image from the gallery
+          setImageUrl(image.formats.medium.url); // Set the medium image URL (you can change the size here)
+        }
+      } catch (error) {
+        console.error("Error fetching activity data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (documentId) {
+      fetchActivityData();
+    }
+  }, [documentId]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!imageUrl) {
+    return <div>No image found for this activity.</div>;
+  }
+
+  return (
+    <div>
+      <img src={imageUrl} alt="Activity" />
+      <img
+        src={`https://lionfish-app-98urn.ondigitalocean.app${imageUrl}`}
+        alt="Activity"
+      />
+    </div>
+  );
+};
+
+const CompleteActivityCardForRemainingActivity = ({ documentId }) => {
+  const [activitData, setActivitData] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  useEffect(() => {
+    const fetchActivityData = async () => {
+      setLoading(true); // Start loading
+      setError(null); // Reset previous errors
+      try {
+        const response = await fetch(
+          `https://lionfish-app-98urn.ondigitalocean.app/api/activities/${documentId}?populate=*`
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch activity data");
+        }
+        const data = await response.json();
+        // console.log("Activity Data from Remainig ActivityCard", data);
+        setActivitData(data?.data);
+      } catch (error) {
+        console.error("Error fetching activity data:", error);
+        setError(error.message);
+      } finally {
+        setLoading(false); // End loading
+      }
+    };
+
+    if (documentId) {
+      fetchActivityData();
+    }
+  }, [documentId]);
+
+  // console.log("Activity Data from Remainig ActivityCard", activitData);
+  useEffect(() => {
+    // // console.log("Activity Data from Remaining ActivityCard", activitData);
+  }, [activitData]); // This will log every time activityData changes
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+  if (!activitData) {
+    return <div>No activity data available</div>;
+  }
+  return (
+    <>
+      <Link
+        target="_blank"
+        href={`/p/activities/${activitData.documentId}`}
+        className="md:w-full hover:shadow-md duration-200 min-w-[170px] w-full min-h-[250px] h-full bg-white items-start justify-start border rounded-3xl flex flex-col gap-4"
+      >
+        <div className="flex max-h-[180px] min-h-[150px] h-[150px] md:max-h-[200px] md:h-full lg:h-full lg:max-h-[182px] lg:min-h-[182px] overflow-clip rounded-t-3xl">
+          {activitData.Gallery ? (
+            <img
+              src={`https://lionfish-app-98urn.ondigitalocean.app${activitData.Gallery[0]?.url}`}
+              // src={activity.Gallery[0]?.url}
+              alt={activitData.Title}
+              width={200}
+              height={150}
+              className="w-full max-h-[180px] duration-300 hover:scale-105 lg:h-full lg:max-h-[182px] lg:min-h-[182px] md:max-h-[300px] object-cover rounded-t-3xl"
+            />
+          ) : null}
+        </div>
+        <div className="w-full overflow-clip p-2 flex-col justify-start items-start flex gap-2 md:gap-2 lg:gap-4">
+          <div className="flex-col w-full gap-[6px] justify-start items-start">
+            <div className="text-[#0a1932] text-[16px] md:text-xl font-semibold font-fredoka leading-[20px]">
+              {activitData.Title.length > 14
+                ? `${activitData.Title.slice(0, 14)}...`
+                : activitData.Title}
+            </div>
+            <div className="justify-start pb-1 w-full items-center gap-1 lg:gap-2 inline-flex">
+              <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-6 flex pr-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
+                {activitData.Theme}
+              </div>
+              •
+              <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-6 flex pr-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
+                {activitData.FocusAge}
+              </div>
+            </div>
+            <div className="items-center justify-center gap-2 md:gap-4 grid grid-cols-5">
+              {activitData.LearningAreaIcons?.slice(0, 5).map(
+                (skill, index) => {
+                  const skillTitle = skill.children?.[0]?.text; // Extract skill title
+                  const iconUrl = getIconForSkill(skillTitle); // Get icon URL using the passed prop
+                  return (
+                    <div
+                      key={index}
+                      className="activity-icon  flex items-center gap-2"
+                    >
+                      {iconUrl && (
+                        <img
+                          title={skillTitle}
+                          src={iconUrl.src}
+                          alt={skillTitle}
+                          className="w-6 lg:w-10 lg:h-10 h-6"
+                          width={iconUrl.width} // Optionally set width and height
+                          height={iconUrl.height}
+                        />
+                      )}
+                    </div>
+                  );
+                }
+              )}
+            </div>
+          </div>
+        </div>
+      </Link>
+    </>
+  );
+};
+
 export default function ProgressSection() {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -509,14 +831,6 @@ export default function ProgressSection() {
                             value={kid.id}
                             className="flex-shrink-0 flex-col data-[state=active]:bg-[#f5f5f500] data-[state=active]:opacity-100 opacity-70  data-[state=active]:z-12 data-[state=active]:scale-125 duration-200 ease-ease-in-out  data-[state=active]:border-red border-2 p-0 rounded-full bg-transparent"
                           >
-                            {/* <Image
-                              src={getRandomImage()} // Random image for each kid's tab
-                              alt={`Profile of ${kid.Name}`}
-                              width={48}
-                              height={48}
-                              title={kid.Name}
-                              className={`w-16 h-16 p-0 m-0 rounded-full object-cover transition-all duration-200`}
-                            /> */}
                             <KidsDP kidId={kid.documentId} />
                           </TabsTrigger>
                         ))}

@@ -397,7 +397,8 @@ export default function Slider() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0); // Track the current slide index
-  const autoplayInterval = 5000; // Time interval for autoplay (in ms)
+  const autoplayInterval = 7000; // Time interval for autoplay (in ms)
+  const [isPaused, setIsPaused] = useState(false);
 
   // Fetch slider data
   useEffect(() => {
@@ -424,13 +425,13 @@ export default function Slider() {
   }, []); // Empty dependency array ensures this runs only once on mount
 
   useEffect(() => {
-    if (!sliderData || sliderData.length === 0) return; // Skip autoplay if no data
+    if (!sliderData || sliderData.length === 0 || isPaused) return; // Skip autoplay if no data
 
     const intervalId = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % sliderData.length);
     }, autoplayInterval);
     return () => clearInterval(intervalId);
-  }, [sliderData]);
+  }, [sliderData, isPaused]);
 
   const swipeHandlers = useSwipeable({
     onSwipedLeft: () => setCurrentIndex((currentIndex + 1) % sliderData.length),
@@ -450,6 +451,8 @@ export default function Slider() {
       <div className="w-full bg-purple flex flex-col-reverse md:justify-center md:items-center py-0 gap-8 md:gap-8">
         <div
           {...swipeHandlers}
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
           selectedItem={currentIndex} // Use currentIndex for controlling active slide
           onChange={(index) => setCurrentIndex(index)} // Update index on manual change
           className="w-full flex py-0 my-0 justify-center items-center"

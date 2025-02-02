@@ -570,7 +570,7 @@ export function UpdateKindiSkillsCategoriesCards() {
                 {section.Icon ? (
                   <div className="mt-2">
                     <img
-                      src={`https://lionfish-app-98urn.ondigitalocean.app${section.Icon[0].url}`}
+                      src={`https://lionfish-app-98urn.ondigitalocean.app${section.Icon.url}`}
                       alt={section.Title}
                       className="w-32 h-32 object-cover border rounded-md"
                     />

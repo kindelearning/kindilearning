@@ -22,12 +22,13 @@ export default function ProductMedia({ gallery }) {
             // src={currentMedia.url}
             src={`https://lionfish-app-98urn.ondigitalocean.app${currentMedia.url}`}
             alt={currentMedia.name || "Product Media"}
-            // className="w-full h-auto object-cover  rounded-lg shadow-md"
-          />
+            className="w-full h-full rounded-lg max-h-[300px] lg:h-[400px] lg:max-h-[400px] object-cover "
+            />
         ) : currentMedia.mime.includes("video") ? (
           <video controls className="w-full h-auto rounded-lg shadow-md">
             <source
               // src={currentMedia.url}
+              className="w-full h-full rounded-lg max-h-[300px] lg:h-[400px] lg:max-h-[400px] object-cover "
               src={`https://lionfish-app-98urn.ondigitalocean.app${currentMedia.url}`}
               type={currentMedia.mime}
             />
@@ -37,11 +38,12 @@ export default function ProductMedia({ gallery }) {
       </div>
 
       {/* Thumbnail Tray */}
-      <div className="flex gap-3 justify-start  overflow-x-scroll scrollbar-hidden">
+
+      <div className="flex flex-row gap-3 justify-start w-full px-2 lg:px-0 overflow-x-scroll scrollbar-hidden">
         {gallery.map((item, index) => (
           <div
             key={index}
-            className={`w-16 h-16 rounded-lg cursor-pointer `}
+            className={`min-w-20 min-h-16 max-w-20 max-h-16 rounded-lg cursor-pointer `}
             onClick={() => setCurrentIndex(index)}
           >
             {item.mime.includes("image") ? (
@@ -57,6 +59,7 @@ export default function ProductMedia({ gallery }) {
                 <source
                   src={`https://lionfish-app-98urn.ondigitalocean.app${item.url}`}
                   // src={item.url}
+                  // className="w-full h-full rounded-lg max-h-[300px] lg:h-[400px] lg:max-h-[400px object-cover rounded-lg"
 
                   type={item.mime}
                 />

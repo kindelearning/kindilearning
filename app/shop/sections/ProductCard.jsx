@@ -22,7 +22,7 @@ export default function ProductCard({ image, title, productUrl, price }) {
     <Link
       href={productUrl}
       target="_blank"
-      className="flex min-w-[190px] lg:min-w-[280px] lg:max-w-full xl:min-w-[280px] xl:max-w-full  max-w-[176px] md:min-w-full lg:w-full w-full flex-col rounded-[24px] lg:rounded-[24px] items-center gap-2 lg:gap-4 bg-white hover:shadow-md"
+      className="flex min-w-[184px] w-full lg:min-w-[280px] lg:max-w-full xl:min-w-[280px] xl:max-w-full  max-w-[176px] md:min-w-full lg:w-full flex-col rounded-[24px] lg:rounded-[24px] items-center gap-2 lg:gap-4 bg-white hover:shadow-md"
     >
       <div className="flex rounded-t-[24px] overflow-clip w-full">
         {image ? (
@@ -48,7 +48,7 @@ export default function ProductCard({ image, title, productUrl, price }) {
       <div className="claracontainer flex flex-col justify-start items-center w-full gap-2">
         <div className="flex items-center  px-4 w-full justify-between gap-2">
           <h1 className="flex text-[24px] leading-tight font-semibold text-[#0A1932] font-fredoka">
-            $ {price || "29"}
+          £{price || "29"}
           </h1>
           <div className="flex flex-row justify-center gap-[2px] items-center">
             <Image

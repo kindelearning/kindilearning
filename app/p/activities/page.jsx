@@ -354,18 +354,18 @@ export default function ActivitiesData() {
               onCancel={() => console.log("Filter canceled")}
             >
               <SelectFilter
-                id="focusAge-filter"
-                value={selectedFocusAge}
-                onChange={setSelectedFocusAge}
-                options={focusAges}
-                label="Select an age group"
+                id="learningArea-filter"
+                value={selectedLearningArea}
+                onChange={setSelectedLearningArea}
+                options={learningAreas}
+                label="Select based on Learning Areas"
               />
               <SelectFilter
-                id="setupTime-filter"
-                value={selectedSetUpTime}
-                onChange={setSelectedSetUpTime}
-                options={setupTimes}
-                label="Select an Setup Times"
+                id="skillCategory-filter"
+                value={selectedSkillCategory}
+                onChange={setSelectedSkillCategory}
+                options={skillCategories}
+                label="Select a Skill"
               />
               <SelectFilter
                 id="theme-filter"
@@ -379,7 +379,7 @@ export default function ActivitiesData() {
                 value={selectedFocusAge}
                 onChange={setSelectedFocusAge}
                 options={focusAges}
-                label=" Select an age group"
+                label="Select an age group"
               />
               <SelectFilter
                 id="setupTime-filter"
@@ -444,6 +444,22 @@ export default function ActivitiesData() {
                 FILTER ACTIVITIES BY FEATURE
               </div>
               <div className="flex flex-col gap-2 items-center justify-center w-full">
+                {/* Learning Area Filter */}
+                <FilterSelect
+                  id="learningArea-filter"
+                  label="Learning Areas"
+                  value={selectedLearningArea}
+                  onChange={setSelectedLearningArea}
+                  options={learningAreas}
+                />
+                {/* Skill Category Filter */}
+                <FilterSelect
+                  id="skillCategory-filter"
+                  label="Skill Categories"
+                  value={selectedSkillCategory}
+                  onChange={setSelectedSkillCategory}
+                  options={skillCategories}
+                />
                 {/* Theme Filter */}
                 <FilterSelect
                   id="theme-filter"
@@ -462,15 +478,6 @@ export default function ActivitiesData() {
                   options={focusAges}
                 />
 
-                {/* Learning Area Filter */}
-                <FilterSelect
-                  id="learningArea-filter"
-                  label="Learning Areas"
-                  value={selectedLearningArea}
-                  onChange={setSelectedLearningArea}
-                  options={learningAreas}
-                />
-
                 {/* SetUp Time Filter */}
                 <FilterSelect
                   id="setupTime-filter"
@@ -478,15 +485,6 @@ export default function ActivitiesData() {
                   value={selectedSetUpTime}
                   onChange={setSelectedSetUpTime}
                   options={setupTimes}
-                />
-
-                {/* Skill Category Filter */}
-                <FilterSelect
-                  id="skillCategory-filter"
-                  label="Skill Categories"
-                  value={selectedSkillCategory}
-                  onChange={setSelectedSkillCategory}
-                  options={skillCategories}
                 />
               </div>
             </div>

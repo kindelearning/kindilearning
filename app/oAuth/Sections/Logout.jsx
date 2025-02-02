@@ -12,18 +12,16 @@ export function LogoutButton() {
     setLoading(true);
 
     try {
-      // Clear the token from localStorage or cookies
       localStorage.removeItem("jwt");
-      // If you're using cookies, you can clear the jwt like this:
-      // document.cookie = "jwt=; Max-Age=-99999999; path=/";
-
-      // Optional: Send logout request to Strapi (if necessary)
-      await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/auth/logout", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("jwt")}`, // Send the JWT in the request headers if necessary
-        },
-      });
+      await fetch(
+        "https://lionfish-app-98urn.ondigitalocean.app/api/auth/logout",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("jwt")}`, // Send the JWT in the request headers if necessary
+          },
+        }
+      );
 
       // Redirect user to login page or homepage
       router.push("/oAuth/signin"); // Redirect to login page after logout
@@ -41,7 +39,7 @@ export function LogoutButton() {
         disabled={loading}
         className="clarabutton max-w-[300px] bg-red hover:bg-hoverRed"
       >
-        {loading ? "Logging out..." : "Log out"}
+        {loading ? "Signing out..." : "Sign out"}
       </Button>
     </div>
   );

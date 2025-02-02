@@ -45,24 +45,27 @@ export default async function TermsAndCondition() {
                 </span>
               </div>
             </div>
-            {/* {Body ? (
+            {Body ? (
               <div className="flex flex-col w-full justify-start items-start heading animate-fade-in">
-                <span className="text-[#3f3a64] text-base font-normal font-fredoka leading-tight">
-                  {Body}
-                </span>
+                <span
+                  className="text-[#3f3a64] text-base font-normal font-fredoka leading-tight"
+                  dangerouslySetInnerHTML={{
+                    __html: Body, // Render markdown or rich text content
+                  }}
+                />
               </div>
             ) : (
               <div className="flex flex-col w-full justify-start items-start heading animate-fade-in">
                 <span className="text-[#3f3a64] text-base font-normal font-fredoka leading-tight"></span>
               </div>
-            )} */}
+            )}
           </div>
           {Lastupdated ? (
             <div className="text-purple  clarabodyTwo animate-fade-in">
               Last updated: {new Date(Lastupdated).toLocaleDateString()}
             </div>
           ) : null}
-          {/* <div className=" prose bg-[black] rounded-full my-4" /> */}
+          <div className="h-[1.5px] bg-[black] rounded-full my-4" />
           {Pagecontent ? (
             <div
               className="prose font-fredoka"
@@ -80,4 +83,4 @@ export default async function TermsAndCondition() {
     </>
   );
 }
-// .replace(/\n/g, "<br />") 
+// .replace(/\n/g, "<br />")
