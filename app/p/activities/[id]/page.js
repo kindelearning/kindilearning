@@ -1,18 +1,11 @@
 "use client";
 
-import { notFound, useRouter } from "next/navigation";
-
 import { Accordian } from "@/app/Widgets";
 import { Button } from "@/components/ui/button";
-import { GraphQLClient, gql } from "graphql-request";
 import {
   ActivityBlack,
-  ActivityCard,
   ActivityImage,
-  CompletedMark,
   KidBlack,
-  KindiHeart,
-  Print,
   SpeechLanguageActivity,
   Themes,
   TimerBlack,
@@ -70,10 +63,6 @@ export const ActivityAttribute = ({
     </div>
   );
 };
-
-// const handlePrint = () => {
-//   window.print();
-// };
 
 export default async function ActivityDetailPage({ params }) {
   const [loading, setLoading] = useState(true);

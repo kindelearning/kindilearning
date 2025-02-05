@@ -22,13 +22,13 @@ export default function ProductMedia({ gallery }) {
             // src={currentMedia.url}
             src={`https://lionfish-app-98urn.ondigitalocean.app${currentMedia.url}`}
             alt={currentMedia.name || "Product Media"}
-            className="w-full h-full rounded-lg max-h-[300px] lg:h-[400px] lg:max-h-[400px] object-cover "
+            className="w-full h-full rounded-lg max-h-[300px] lg:h-[500px] lg:max-h-[400px] object-cover "
             />
         ) : currentMedia.mime.includes("video") ? (
           <video controls className="w-full h-auto rounded-lg shadow-md">
             <source
               // src={currentMedia.url}
-              className="w-full h-full rounded-lg max-h-[300px] lg:h-[400px] lg:max-h-[400px] object-cover "
+              className="w-full h-full rounded-lg max-h-[300px] lg:h-[500px] lg:max-h-[400px] object-cover "
               src={`https://lionfish-app-98urn.ondigitalocean.app${currentMedia.url}`}
               type={currentMedia.mime}
             />
