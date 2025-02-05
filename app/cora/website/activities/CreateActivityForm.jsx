@@ -20,6 +20,7 @@ import { MultiSelectDropdown } from "./EditActivityForm";
 export default function CreateActivityForm() {
   const [title, setTitle] = useState("");
   const [theme, setTheme] = useState("");
+  const [category, setCategory] = useState("");
   const [focusAge, setFocusAge] = useState("");
   const [learningArea, setLearningArea] = useState("");
   const [activityDate, setActivityDate] = useState("");
@@ -88,6 +89,7 @@ export default function CreateActivityForm() {
     const newActivity = {
       Title: title,
       Theme: theme,
+      category: category,
       FocusAge: focusAge,
       ActivityDate: activityDate,
       Skills: skills,
@@ -120,6 +122,7 @@ export default function CreateActivityForm() {
         setDialogType("success");
         setTitle("");
         setTheme("");
+        setCategory("");
         setFocusAge("");
         setActivityDate("");
         setSetUpTime("");
@@ -148,29 +151,7 @@ export default function CreateActivityForm() {
     setIsDialogOpen(true); // Open dialog after submit
   };
 
-  // const handleChange = (e) => {
-  //   const { name, value } = e.target;
-
-  //   if (name === "Skills") {
-  //     // Split the value by new lines and structure each line into the required format
-  //     const processedSkills = value
-  //       .split("\n")
-  //       .map((line) => ({
-  //         type: "paragraph",
-  //         children: [
-  //           {
-  //             text: line.trim(),
-  //             type: "text", // Add the text as per the required format
-  //           },
-  //         ],
-  //       }))
-  //       .filter((item) => item.children[0].text); // Remove empty lines
-
-  //     setSkills(processedSkills); // Set the skills in the required format
-  //   } else {
-  //     setSkills(value); // For other fields, update the value normally
-  //   }
-  // };
+  
 
   // Handle Accordion Changes
   const handleAccordionChange = (index, field, value) => {
@@ -276,6 +257,19 @@ export default function CreateActivityForm() {
             name="Theme"
             value={theme}
             onChange={(e) => setTheme(e.target.value)}
+            className="border p-2 w-full"
+          />
+        </div>
+        <div>
+          <label htmlFor="Theme" className="block">
+          Category (App)
+          </label>
+          <input
+            type="text"
+            id="category"
+            name="category"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
             className="border p-2 w-full"
           />
         </div>

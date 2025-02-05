@@ -92,6 +92,7 @@ export const MultiSelectDropdown = ({ onChange, defaultValue }) => {
 export default function EditActivityForm({ documentId }) {
   const [title, setTitle] = useState("");
   const [theme, setTheme] = useState("");
+  const [category, setCategory] = useState("");
   const [focusAge, setFocusAge] = useState("");
   const [learningArea, setLearningArea] = useState(""); // New field
   const [learningAreaIcons, setLearningAreaIcons] = useState([]);
@@ -121,6 +122,7 @@ export default function EditActivityForm({ documentId }) {
         setExistingData(data.data);
         setTitle(data.data.Title || ""); 
         setTheme(data.data.Theme || "");
+        setCategory(data.data.category || "");
         setFocusAge(data.data.FocusAge || "");
         setSkills(data.data.Skills || "");
         setAccordions(data.data.Accordions || []); // Assuming Accordions is the field name in your Strapi model
@@ -157,6 +159,7 @@ export default function EditActivityForm({ documentId }) {
       data: {
         Title: title,
         Theme: theme,
+        category: category,
         FocusAge: focusAge,
         ActivityDate: activityDate,
         SetUpTime: setUpTime,
@@ -316,6 +319,19 @@ export default function EditActivityForm({ documentId }) {
             name="Theme"
             value={theme}
             onChange={(e) => setTheme(e.target.value)}
+            className="border p-2 w-full"
+          />
+        </div>
+        <div>
+          <label htmlFor="Theme" className="block">
+          Category (App)
+          </label>
+          <input
+            type="text"
+            id="category"
+            name="category"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
             className="border p-2 w-full"
           />
         </div>

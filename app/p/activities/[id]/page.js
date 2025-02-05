@@ -65,10 +65,10 @@ export const ActivityAttribute = ({
 };
 
 export default async function ActivityDetailPage({ params }) {
+  const { id } = params;
   const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState(null);
   const [activityData, setActivityData] = useState(null);
-  const { id } = params;
   const [matchedActivityId, setMatchedActivityId] = useState(null); // State to hold the matched activity ID
 
   useEffect(() => {
@@ -114,7 +114,7 @@ export default async function ActivityDetailPage({ params }) {
 
         // Fetch activity data by id
         const activityDataResponse = await fetchActivityByDocumentId(id);
-        setActivityData(activityDataResponse); // Store the fetched activity data
+        setActivityData(activityDataResponse); // Store -my-[12] the fetched activity data
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {

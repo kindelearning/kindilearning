@@ -69,13 +69,7 @@ export default function ActivitiesPage() {
         const uniqueLearningAreas = Array.from(
           new Set(data.data.map((activity) => activity.LearningArea))
         );
-        // const uniqueSkills = Array.from(
-        //   new Set(
-        //     data.data.flatMap((activity) =>
-        //       activity.Skills.map((skill) => skill.children[0].text)
-        //     )
-        //   )
-        // );
+        
 
         setThemes(uniqueThemes);
         setAges(uniqueAges);
@@ -105,11 +99,7 @@ export default function ActivitiesPage() {
       const learningAreaMatch = learningAreaFilter
         ? activity.LearningArea === learningAreaFilter
         : true;
-      // const skillsMatch = skillsFilter
-      //   ? activity.Skills.some(
-      //       (skill) => skill.children[0].text === skillsFilter
-      //     )
-      //   : true;
+     
       return titleMatch && themeMatch && ageMatch && learningAreaMatch;
     })
     .sort((a, b) => {
@@ -272,6 +262,7 @@ export default function ActivitiesPage() {
               <TableHead>Skills</TableHead>
               <TableHead>Theme</TableHead>
               <TableHead>Focus Age</TableHead>
+              <TableHead>Category (App)</TableHead>
               <TableHead>isPopular</TableHead>
               <TableHead>
                 <button
@@ -347,11 +338,7 @@ export default function ActivitiesPage() {
                 </TableCell>
                 <TableCell>{activity.Title}</TableCell>
                 <TableCell>
-                  {/* <ul>
-                    {activity.Skills.slice(0, 1).map((skill, index) => (
-                      <li key={index}>{skill.children[0].text}</li>
-                    ))}
-                  </ul> */}
+                 
                   <span
                     className="prose"
                     dangerouslySetInnerHTML={{
@@ -362,6 +349,7 @@ export default function ActivitiesPage() {
                 </TableCell>
                 <TableCell>{activity.Theme}</TableCell>
                 <TableCell>{activity.FocusAge}</TableCell>
+                <TableCell>{activity.category}</TableCell>
                 <TableCell>{activity.isPopular}</TableCell>
                 <TableCell>
                   {new Date(activity.ActivityDate).toLocaleString()}
