@@ -30,7 +30,7 @@ export default function RemoveKidButton({ kidId }) {
       data: {
         myParent: [
           // We are setting the parent field to null or to another parentId
-          { id: 19 }, // Setting parent ID to null, or you can use another parent ID
+          { id: 1 }, // Setting parent ID to null, or you can use another parent ID
         ],
       },
     };
