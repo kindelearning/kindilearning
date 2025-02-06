@@ -16,13 +16,13 @@ export default function ProductMedia({ gallery }) {
   return (
     <div className="flex w-full flex-col items-start justify-between">
       {/* Main Media Frame */}
-      <div className="w-full overflow-clip rounded-lg h-[300px] max-h-[300px] lg:h-[400px] lg:max-h-[400px] mb-4">
+      <div className="w-full overflow-clip rounded-lg h-[300px] max-h-[300px] lg:h-[500px] lg:max-h-[500px] mb-4">
         {currentMedia.mime.includes("image") ? (
           <img
             // src={currentMedia.url}
             src={`https://lionfish-app-98urn.ondigitalocean.app${currentMedia.url}`}
             alt={currentMedia.name || "Product Media"}
-            className="w-full h-full rounded-lg max-h-[300px] lg:h-[500px] lg:max-h-[400px] object-cover "
+            className="w-full h-full rounded-lg max-h-[300px] lg:h-[500px] lg:max-h-[500px] object-cover "
             />
         ) : currentMedia.mime.includes("video") ? (
           <video controls className="w-full h-auto rounded-lg shadow-md">
