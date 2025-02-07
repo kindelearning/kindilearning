@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { BlocksRenderer } from "@strapi/blocks-react-renderer";
+import Link from "next/link";
 
 export default function HomepageHeroSection() {
   const [data, setData] = useState(null);
@@ -9,6 +10,7 @@ export default function HomepageHeroSection() {
   const [updateData, setUpdateData] = useState({
     featuredText: "",
     HeroTitle: "",
+    additionalField: "",
     BodyDescription: "",
     Image: null,
   });
@@ -28,6 +30,7 @@ export default function HomepageHeroSection() {
             featuredText: result.data.featuredText || "",
             HeroTitle: result.data.HeroTitle || "",
             BodyDescription: result.data.BodyDescription || "",
+            additionalField: result.data.additionalField || "",
             Image: result.data.Image || null,
           });
         } else {
@@ -61,7 +64,7 @@ export default function HomepageHeroSection() {
         className="homepage-hero-section py-16 px-6 sm:px-12 md:px-16"
       >
         <div className="max-w-6xl flex mx-auto text-center">
-          <div className="hero-text max-w-[60%] mb-12">
+          <div className="hero-text flex flex-col gap-4 max-w-[60%] mb-12">
             <p className="text-lg text-start sm:text-xl text-white mb-2">
               {data.featuredText}
             </p>
@@ -76,11 +79,24 @@ export default function HomepageHeroSection() {
                 dangerouslySetInnerHTML={{ __html: data.BodyDescription }}
               />
             </div>
+            {/* Get Started Link */}
+            {data?.additionalField && (
+              <div>
+                <Link
+                  href={data.additionalField}
+                  target="_blank"
+                  className="bg-[#a396ff] text-white px-6 py-3 rounded-xl text-lg font-medium shadow-md transition hover:shadow-lg hover:bg-[#2d2a4b]"
+                >
+                  Get Started
+                </Link>
+              </div>
+            )}
           </div>
-
           {/* Render media (image or video) based on file extension */}
           {data.Image?.url ? (
-            <video autoPlay controls
+            <video
+              autoPlay
+              controls
               // src={data.Image.url}
               src={`https://lionfish-app-98urn.ondigitalocean.app${data.Image.url}`}
               width={1200}

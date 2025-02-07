@@ -14,6 +14,7 @@ import {
 import ClaraMarkdownRichEditor from "../TextEditor/ClaraMarkdownRichEditor";
 import MediaSelector from "../../website/media/Section/MediaSelector";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function ChildDevelopmentUnlock() {
   const [content, setContent] = useState(null); // To store the fetched data
@@ -73,6 +74,19 @@ export default function ChildDevelopmentUnlock() {
             />
           )}
         </div>
+        {/* Get Started Link */}
+        {content?.additionalField && (
+            <div>
+              <Link
+                href={content.additionalField}
+                target="_blank"
+                className="bg-[#3f3a64] text-white px-6 py-3 rounded-xl text-lg font-medium shadow-md transition hover:shadow-lg hover:bg-[#2d2a4b]"
+              >
+                Get Started
+              </Link>
+            </div>
+          )}
+
       </div>
 
       {/* Media */}
@@ -93,6 +107,7 @@ export default function ChildDevelopmentUnlock() {
     </div>
   );
 }
+
 // export function UpdateChildDevelopmentContent() {
 //   const [content, setContent] = useState({
 //     Title: "",
@@ -250,6 +265,7 @@ export function UpdateChildDevelopmentContent() {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [featuredText, setFeaturedText] = useState("");
+  const [additionalField, setAdditionalField] = useState("");
   const [media, setMedia] = useState(null); // Media state
   const [openDialog, setOpenDialog] = useState(false);
   const [error, setError] = useState("");
@@ -267,6 +283,7 @@ export function UpdateChildDevelopmentContent() {
         if (content) {
           setTitle(content.Content?.Title || ""); // Set default values if not found
           setBody(content.Content?.Body || "");
+          setAdditionalField(content.Content?.additionalField || ""); // Set the media ID or null if no media is selected
           setFeaturedText(content.Content?.featuredText || "");
           setMedia(content.Content?.Media?.id || null); // Set the media ID or null if no media is selected
         }
@@ -288,6 +305,7 @@ export function UpdateChildDevelopmentContent() {
           Title: title,
           Body: body,
           featuredText: featuredText,
+          additionalField: additionalField,
           Media: media?.id || null, // Use media ID if selected
         },
       },
@@ -377,7 +395,24 @@ export function UpdateChildDevelopmentContent() {
             onChange={handleEditorChange}
           />
         </div>
-
+  {/* additionalField Field */}
+  <div>
+          <label
+            htmlFor={`additionalField`}
+            className="block text-sm font-medium text-gray-700"
+          >
+            Read More Link:
+          </label>
+          <input
+            type="url" // Changed type to 'url' for built-in URL validation
+            id={`additionalField`}
+            value={additionalField}
+            placeholder="https://kindilearning.com/p/community"
+            onChange={(e) => setAdditionalField(e.target.value)}
+            pattern="https?://.*" // Optional, if you want more control over URL format (e.g., allowing only http or https)
+            className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
         {/* Media Field */}
         <div>
           <label>Media:</label>

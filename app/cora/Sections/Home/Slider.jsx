@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import ClaraMarkdownRichEditor from "../TextEditor/ClaraMarkdownRichEditor";
 import MediaSelector from "../../website/media/Section/MediaSelector";
+import Link from "next/link";
 
 export default function SliderSection() {
   const [data, setData] = useState(null);
@@ -83,6 +84,19 @@ export default function SliderSection() {
                       __html: section.additionalField,
                     }}
                   />
+
+                  {/* Get Started Link */}
+                  {/* {section?.additionalField && (
+                    <div>
+                      <Link
+                        href={section.additionalField}
+                        target="_blank"
+                        className="bg-[#3f3a64] text-white px-6 py-3 rounded-xl text-lg font-medium shadow-md transition hover:shadow-lg hover:bg-[#2d2a4b]"
+                      >
+                        Get Started
+                      </Link>
+                    </div>
+                  )} */}
                 </div>
               </div>
             ))}

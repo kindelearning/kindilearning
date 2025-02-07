@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import ClaraMarkdownRichEditor from "../TextEditor/ClaraMarkdownRichEditor";
 import MediaSelector from "../../website/media/Section/MediaSelector";
+import Link from "next/link";
 
 export default function OurStory() {
   const [content, setContent] = useState(null);
@@ -50,49 +51,58 @@ export default function OurStory() {
 
   return (
     <>
-      <section className="max-w-[1000px] min-h-screen h-full md:h-full lg:h-full flex flex-col items-center bg-[#ffffff] w-full gap-4 py-8">
+      <section className="container mx-auto min-h-screen flex flex-col items-center bg-white py-12 space-y-6">
         {/* Media Section */}
-        <div className="w-full flex justify-center items-center mt-8">
+        <div className="w-full flex justify-center">
           {content?.Media?.[0]?.url ? (
             <video
               autoPlay
               controls
               src={`https://lionfish-app-98urn.ondigitalocean.app${content?.Media[0]?.url}`}
-              // src={content.Media[0].url}
-              className="w-full max-w-[800px] h-auto border-2 border-[#ddd] shadow-lg rounded-lg overflow-hidden"
+              className="w-full max-w-3xl border border-gray-300 shadow-lg rounded-lg"
             />
           ) : (
-            <p className="text-gray-600 text-center text-lg md:text-xl">
+            <p className="text-gray-600 text-lg md:text-xl text-center">
               No media available.
             </p>
           )}
         </div>
-        <div className="w-full px-4 flex flex-col justify-start items-start animate-fadeIn animate-delay-500">
+
+        <div className="w-full max-w-2xl px-4 flex flex-col items-center text-center animate-fadeIn delay-500">
           {/* Featured Text */}
           {content?.featuredText && (
-            <p className="text-[#1d1d1d] clarascript text-lg md:text-xl lg:text-2xl font-semibold animate-slideInLeft animate-delay-1000">
+            <p className="text-gray-900 text-lg md:text-xl font-semibold animate-slideInLeft delay-1000">
               {content.featuredText}
             </p>
           )}
 
           {/* Title */}
           {content?.Title && (
-            <div className="flex flex-wrap justify-center items-center text-[#1d1d1d] claraheading text-3xl md:text-4xl lg:text-5xl font-bold text-center animate-slideInLeft animate-delay-1500">
-              <span className="mx-1">
-                {content.Title.split(" ").slice(0, 2).join(" ")}
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight animate-slideInLeft delay-1500">
+              {content.Title.split(" ").slice(0, 2).join(" ")}{" "}
+              <span className="text-gray-800">
+                {content.Title.split(" ").slice(2).join(" ")}
               </span>
-              <span className="mx-1">
-                {content.Title.split(" ").slice(2, 14).join(" ")}
-              </span>
-            </div>
+            </h1>
           )}
 
           {/* Body */}
           {content?.Body && (
             <p
-              className="prose w-full text-start text-[#696969] text-base md:text-lg lg:text-xl mt-4 leading-relaxed  animate-fadeIn animate-delay-2000"
+              className="text-gray-700 text-base md:text-lg lg:text-xl mt-4 leading-relaxed animate-fadeIn delay-2000"
               dangerouslySetInnerHTML={{ __html: content.Body }}
             />
+          )}
+
+          {/* Get Started Button */}
+          {content?.additionalField && (
+            <Link
+              href={content.additionalField}
+              target="_blank"
+              className="mt-6 bg-indigo-600 text-white px-6 py-3 rounded-lg text-lg font-medium shadow-md transition hover:shadow-lg hover:bg-indigo-700 animate-slideInLeft delay-2500"
+            >
+              Get Started
+            </Link>
           )}
         </div>
       </section>
@@ -350,6 +360,7 @@ export function UpdateOurStorySection() {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [featuredText, setFeaturedText] = useState("");
+  const [additionalField, setAdditionalField] = useState("");
   const [media, setMedia] = useState(null); // Media state
   const [openDialog, setOpenDialog] = useState(false);
   const [error, setError] = useState("");
@@ -369,6 +380,7 @@ export function UpdateOurStorySection() {
           setBody(content.OurStory?.Body || "");
           setFeaturedText(content.OurStory?.featuredText || "");
           setMedia(content.OurStory?.Media?.id || null); // Set the media ID or null if no media is selected
+          setAdditionalField(content.OurStory?.additionalField || ""); // Set the media ID or null if no media is selected
         }
 
         console.log("Fetched OurStory Content", content);
@@ -390,6 +402,7 @@ export function UpdateOurStorySection() {
           Title: title,
           Body: body,
           featuredText: featuredText,
+          additionalField: additionalField,
           Media: media?.id || null, // Use media ID if selected
         },
       },
@@ -476,6 +489,25 @@ export function UpdateOurStorySection() {
             value={featuredText}
             onChange={(e) => setFeaturedText(e.target.value)}
             className="border p-2 w-full"
+          />
+        </div>
+
+        {/* additionalField Field */}
+        <div>
+          <label
+            htmlFor={`additionalField`}
+            className="block text-sm font-medium text-gray-700"
+          >
+            Read More Link:
+          </label>
+          <input
+            type="url" // Changed type to 'url' for built-in URL validation
+            id={`additionalField`}
+            value={additionalField}
+            placeholder="https://kindilearning.com/p/community"
+            onChange={(e) => setAdditionalField(e.target.value)}
+            pattern="https?://.*" // Optional, if you want more control over URL format (e.g., allowing only http or https)
+            className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 

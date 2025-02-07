@@ -126,7 +126,7 @@ export default function PromotionalSectionTwo() {
             </div>
           </div>
           <Link
-            href="/profile"
+            href={content?.additionalField || "/profile"}  
             target="_blank"
             className="w-full h-auto animate-fade-in"
           >

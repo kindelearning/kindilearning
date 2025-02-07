@@ -1,6 +1,6 @@
 "use client";
 import { fetchOurMission } from "@/app/data/p/OurMission";
-import { 
+import {
   Dialog,
   DialogClose,
   DialogContent,
@@ -13,6 +13,7 @@ import {
 import { useEffect, useState } from "react";
 import ClaraMarkdownRichEditor from "../TextEditor/ClaraMarkdownRichEditor";
 import MediaSelector from "../../website/media/Section/MediaSelector";
+import Link from "next/link";
 
 export default async function HeroOueMission() {
   const data = await fetchOurMission();
@@ -23,26 +24,40 @@ export default async function HeroOueMission() {
 
   return (
     <>
-      <section className="max-w-[1500px] min-h-screen h-full  md:h-full lg:h-full flex justify-start bg-[#ffffff] w-full items-start">
-        <div className="w-full py-0 md:py-2 flex-col flex justify-start items-start script animate-fadeIn animate-delay-500">
-          <div className="w-full text-[#1d1d1d] clarascript animate-slideInLeft script animate-delay-1000">
-            {data.Hero.featuredText && <p>{data.Hero.featuredText}</p>}
-          </div>
-          <div className="flex flex-col w-full justify-start items-start heading animate-fadeIn animate-delay-1500">
-            <div className="text-start flex-wrap w-full animate-slideInLeft animate-delay-2000">
-              <span className="text-[#1d1d1d] claraheading">
-                {data.Hero.Title.split(" ").slice(0, 2).join(" ")}{" "}
+      <section className="container mx-auto min-h-screen flex items-start bg-white">
+        <div className="w-full py-4 flex flex-col items-start animate-fadeIn">
+          {/* Featured Text */}
+          {data.Hero.featuredText && (
+            <p className="text-gray-900 animate-slideInLeft delay-1000">
+              {data.Hero.featuredText}
+            </p>
+          )}
+
+          {/* Heading */}
+          <div className="flex flex-col w-full items-start space-y-3 animate-fadeIn delay-1500">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight animate-slideInLeft delay-2000">
+              {data.Hero.Title.split(" ").slice(0, 2).join(" ")}{data.Hero.Title.split(" ").slice(2).join(" ")}
+              <span className="block text-gray-800">
+                
               </span>
-              <span className="text-[#1d1d1d] claraheading">
-                {data.Hero.Title.split(" ").slice(2, 3).join(" ")}
-              </span>
-            </div>
-            <div className="w-full text-start justify-start items-start px-0 animate-fadeIn animate-delay-2500">
-              <div
-                dangerouslySetInnerHTML={{ __html: data.Hero.Body }}
-                className="w-full prose text-start text-[#696969] text-[16px] leading-[20px] md:text-[18px] md:leading-[22px] lg:text-[22px] lg:leading-[24px] xl:text-[22px] xl:leading-[24px] font-medium font-fredoka animate-slideInLeft animate-delay-3000"
-              />
-            </div>
+            </h1>
+
+            {/* Body Content */}
+            <div
+              dangerouslySetInnerHTML={{ __html: data.Hero.Body }}
+              className="text-gray-700 text-base md:text-lg lg:text-xl leading-relaxed animate-slideInLeft delay-3000"
+            />
+
+            {/* Get Started Button */}
+            {data.Hero?.additionalField && (
+              <Link
+                href={data.Hero.additionalField}
+                target="_blank"
+                className="bg-indigo-600 text-white px-5 py-2 rounded-lg text-lg font-medium shadow-md transition hover:shadow-lg hover:bg-indigo-700 animate-slideInLeft delay-3500"
+              >
+                Get Started
+              </Link>
+            )}
           </div>
         </div>
       </section>
@@ -201,6 +216,8 @@ export function UpdateHeroSection() {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [featuredText, setFeaturedText] = useState("");
+  const [additionalField, setAdditionalField] = useState("");
+
   const [media, setMedia] = useState(null); // Media state
   const [openDialog, setOpenDialog] = useState(false);
   const [error, setError] = useState("");
@@ -219,6 +236,7 @@ export function UpdateHeroSection() {
           setTitle(content.Hero?.Title || ""); // Set default values if not found
           setBody(content.Hero?.Body || "");
           setFeaturedText(content.Hero?.featuredText || "");
+          setAdditionalField(content.Hero?.additionalField || ""); // Set the media ID or null if no media is selected
           setMedia(content.Hero?.Media?.id || null); // Set the media ID or null if no media is selected
         }
 
@@ -240,6 +258,8 @@ export function UpdateHeroSection() {
         Hero: {
           Title: title,
           Body: body,
+          additionalField: additionalField,
+
           featuredText: featuredText,
           // Media: media?.id || null, // Use media ID if selected
         },
@@ -248,13 +268,16 @@ export function UpdateHeroSection() {
     console.log("Payload Created", payload);
 
     try {
-      const res = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/our-mission", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
+      const res = await fetch(
+        "https://lionfish-app-98urn.ondigitalocean.app/api/our-mission",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        }
+      );
 
       const data = await res.json();
       console.log("Updated our-mission Content:", data);
@@ -266,9 +289,8 @@ export function UpdateHeroSection() {
   };
 
   const handleEditorChange = (newValue) => {
-    setBody(newValue);  // Update body state with the new value from the editor
+    setBody(newValue); // Update body state with the new value from the editor
   };
-
 
   const handleMediaSelect = (selectedMedia) => {
     setMedia(selectedMedia); // Store the selected media object
@@ -326,6 +348,26 @@ export function UpdateHeroSection() {
             className="border p-2 w-full"
           />
         </div>
+
+        {/* additionalField Field */}
+        <div>
+          <label
+            htmlFor={`additionalField`}
+            className="block text-sm font-medium text-gray-700"
+          >
+            Get Started Link:
+          </label>
+          <input
+            type="url" // Changed type to 'url' for built-in URL validation
+            id={`additionalField`}
+            value={additionalField}
+            placeholder="https://kindilearning.com/p/community"
+            onChange={(e) => setAdditionalField(e.target.value)}
+            pattern="https?://.*" // Optional, if you want more control over URL format (e.g., allowing only http or https)
+            className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+
 
         {/* Media Field */}
         {/* <div>

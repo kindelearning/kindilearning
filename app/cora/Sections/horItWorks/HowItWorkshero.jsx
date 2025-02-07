@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import MediaSelector from "../../website/media/Section/MediaSelector";
 import ClaraMarkdownRichEditor from "../TextEditor/ClaraMarkdownRichEditor";
+import Link from "next/link";
 
 export default function HowItWorks() {
   const [content, setContent] = useState(null);
@@ -56,53 +57,55 @@ export default function HowItWorks() {
 
   return (
     <>
-      <section className="max-w-[1000px] min-h-screen h-full md:h-full lg:h-full flex flex-col items-center bg-[#ffffff] w-full gap-4 py-8">
+      <section className="max-w-screen-lg w-full min-h-screen flex flex-col items-center bg-white gap-6 py-10 px-4">
         {/* Media Section */}
-        <div className="w-full flex justify-center items-center mt-8">
+        <div className="w-full flex justify-center">
           {Hero?.Media?.[0]?.url ? (
             <video
               autoPlay
               controls
               src={Hero.Media[0].url}
-              // src={`https://lionfish-app-98urn.ondigitalocean.app${Hero.Media[0].url}`}
-              className="w-full max-w-[800px] h-auto border-2 border-[#ddd] shadow-lg rounded-lg overflow-hidden"
+              className="w-full max-w-3xl h-auto border border-gray-300 shadow-md rounded-lg"
             />
           ) : (
-            <p className="text-gray-600 text-center text-lg md:text-xl">
-              No media available.
-            </p>
+            <p className="text-gray-500 text-lg">No media available.</p>
           )}
         </div>
 
-        <div className="w-full flex flex-col justify-start items-center animate-fadeIn animate-delay-500">
+        {/* Text Content */}
+        <div className="w-full text-center space-y-4">
           {/* Featured Text */}
           {Hero?.featuredText && (
-            <div className="w-full text-[#1d1d1d] clarascript animate-slideInLeft script animate-delay-1000">
+            <div className="text-gray-600 text-lg md:text-xl font-medium">
               {Hero.featuredText}
             </div>
           )}
 
           {/* Title */}
-          <div className="flex flex-col w-full justify-start items-start heading animate-fadeIn animate-delay-1500">
-            <div className="text-start flex-wrap w-full animate-slideInLeft animate-delay-2000">
-              {Hero?.Title && (
-                <div className="flex flex-wrap justify-center items-center text-[#1d1d1d] claraheading text-3xl md:text-4xl lg:text-5xl font-bold text-center animate-slideInLeft animate-delay-1500">
-                  <span className="mx-1">
-                    {Hero.Title.split(" ").slice(0, 2).join(" ")}
-                  </span>
-                  <span className="mx-1">
-                    {Hero.Title.split(" ").slice(2, 3).join(" ")}
-                  </span>
-                </div>
-              )}
-            </div>
-          </div>
+          {Hero?.Title && (
+            <h1 className="text-gray-900 text-3xl md:text-5xl font-bold">
+              {Hero.Title}
+            </h1>
+          )}
 
-          {/* Body */}
+          {/* Get Started Link */}
+          {Hero?.additionalField && (
+            <div>
+              <Link
+                href={Hero.additionalField}
+                target="_blank"
+                className="bg-[#3f3a64] text-white px-6 py-3 rounded-xl text-lg font-medium shadow-md transition hover:shadow-lg hover:bg-[#2d2a4b]"
+              >
+                Get Started
+              </Link>
+            </div>
+          )}
+
+          {/* Body Content */}
           {Hero?.Body && (
             <div
               dangerouslySetInnerHTML={{ __html: Hero.Body }}
-              className="w-full prose text-start text-[#696969] text-[16px] leading-[20px] md:text-[18px] md:leading-[22px] lg:text-[22px] lg:leading-[24px] xl:text-[22px] xl:leading-[24px] font-medium font-fredoka animate-slideInLeft animate-delay-3000"
+              className="prose text-gray-700 text-lg leading-relaxed md:text-xl"
             />
           )}
         </div>
@@ -111,185 +114,212 @@ export default function HowItWorks() {
   );
 }
 
-export function UpdateHowItWorkSection2() {
-  const [content, setContent] = useState({
-    Hero: {
-      Title: "",
-      featuredText: "",
-      Body: "",
-    },
-  });
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [dialogMessage, setDialogMessage] = useState("");
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+// export function UpdateHowItWorkSection2() {
+//   const [content, setContent] = useState({
+//     Hero: {
+//       Title: "",
+//       featuredText: "",
+//       Body: "",
+//       additionalField: "",
+//     },
+//   });
+//   const [loading, setLoading] = useState(false);
+//   const [error, setError] = useState("");
+//   const [dialogMessage, setDialogMessage] = useState("");
+//   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  // Fetch initial data for the Hero section
-  useEffect(() => {
-    const fetchContent = async () => {
-      try {
-        const response = await fetch(
-          "https://lionfish-app-98urn.ondigitalocean.app/api/how-it-work-page?populate[Hero][populate]=Media"
-        );
-        const data = await response.json();
-        if (data && data.data) {
-          setContent({
-            Hero: data.data.Hero || {},
-          });
-        }
-      } catch (err) {
-        setError("Error fetching content");
-      }
-    };
+//   // Fetch initial data for the Hero section
+//   useEffect(() => {
+//     const fetchContent = async () => {
+//       try {
+//         const response = await fetch(
+//           "https://lionfish-app-98urn.ondigitalocean.app/api/how-it-work-page?populate[Hero][populate]=Media"
+//         );
+//         const data = await response.json();
+//         if (data && data.data) {
+//           setContent({
+//             Hero: data.data.Hero || {},
+//           });
+//         }
+//       } catch (err) {
+//         setError("Error fetching content");
+//       }
+//     };
 
-    fetchContent();
-  }, []);
+//     fetchContent();
+//   }, []);
 
-  // Handle form submission
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+//   // Handle form submission
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     setLoading(true);
 
-    // Prepare the data to update
-    const updatedContent = {
-      data: {
-        Hero: {
-          Body: content.Hero.Body,
-          featuredText: content.Hero.featuredText,
-          Title: content.Hero.Title,
-        },
-      },
-    };
+//     // Prepare the data to update
+//     const updatedContent = {
+//       data: {
+//         Hero: {
+//           Body: content.Hero.Body,
+//           featuredText: content.Hero.featuredText,
+//           Title: content.Hero.Title,
+//           additionalField: content.Hero.additionalField,
+//         },
+//       },
+//     };
 
-    try {
-      const response = await fetch(
-        "https://lionfish-app-98urn.ondigitalocean.app/api/how-it-work-page?populate[Hero][populate]=Media",
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(updatedContent),
-        }
-      );
+//     try {
+//       const response = await fetch(
+//         "https://lionfish-app-98urn.ondigitalocean.app/api/how-it-work-page?populate[Hero][populate]=Media",
+//         {
+//           method: "PUT",
+//           headers: {
+//             "Content-Type": "application/json",
+//           },
+//           body: JSON.stringify(updatedContent),
+//         }
+//       );
 
-      if (response.ok) {
-        const result = await response.json();
-        setDialogMessage("Hero content updated successfully!");
-      } else {
-        const result = await response.json();
-        setDialogMessage(
-          `Error updating content: ${result.message || response.statusText}`
-        );
-      }
-    } catch (err) {
-      setDialogMessage(`Error updating content: ${err.message}`);
-    } finally {
-      setIsDialogOpen(true);
-      setLoading(false);
-    }
-  };
+//       if (response.ok) {
+//         const result = await response.json();
+//         setDialogMessage("Hero content updated successfully!");
+//       } else {
+//         const result = await response.json();
+//         setDialogMessage(
+//           `Error updating content: ${result.message || response.statusText}`
+//         );
+//       }
+//     } catch (err) {
+//       setDialogMessage(`Error updating content: ${err.message}`);
+//     } finally {
+//       setIsDialogOpen(true);
+//       setLoading(false);
+//     }
+//   };
 
-  return (
-    <div className="container mx-auto p-4">
-      <h2 className="text-2xl font-semibold mb-4">
-        Edit How It Works - Hero Section
-      </h2>
+//   return (
+//     <div className="container mx-auto p-4">
+//       <h2 className="text-2xl font-semibold mb-4">
+//         Edit How It Works - Hero Section
+//       </h2>
 
-      {error && <div className="text-red-500 mb-4">{error}</div>}
+//       {error && <div className="text-red-500 mb-4">{error}</div>}
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Title Field */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Title
-          </label>
-          <input
-            type="text"
-            value={content.Hero.Title}
-            onChange={(e) =>
-              setContent({
-                ...content,
-                Hero: { ...content.Hero, Title: e.target.value },
-              })
-            }
-            className="w-full p-2 border border-gray-300 rounded-md"
-          />
-        </div>
+//       <form onSubmit={handleSubmit} className="space-y-4">
+//         {/* Title Field */}
+//         <div>
+//           <label className="block text-sm font-medium text-gray-700">
+//             Title
+//           </label>
+//           <input
+//             type="text"
+//             value={content.Hero.Title}
+//             onChange={(e) =>
+//               setContent({
+//                 ...content,
+//                 Hero: { ...content.Hero, Title: e.target.value },
+//               })
+//             }
+//             className="w-full p-2 border border-gray-300 rounded-md"
+//           />
+//         </div>
 
-        {/* Featured Text Field */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Featured Text
-          </label>
-          <input
-            type="text"
-            value={content.Hero.featuredText}
-            onChange={(e) =>
-              setContent({
-                ...content,
-                Hero: { ...content.Hero, featuredText: e.target.value },
-              })
-            }
-            className="w-full p-2 border border-gray-300 rounded-md"
-          />
-        </div>
+//         {/* Featured Text Field */}
+//         <div>
+//           <label className="block text-sm font-medium text-gray-700">
+//             Featured Text
+//           </label>
+//           <input
+//             type="text"
+//             value={content.Hero.featuredText}
+//             onChange={(e) =>
+//               setContent({
+//                 ...content,
+//                 Hero: { ...content.Hero, featuredText: e.target.value },
+//               })
+//             }
+//             className="w-full p-2 border border-gray-300 rounded-md"
+//           />
+//         </div>
 
-        {/* Body Field */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Body
-          </label>
-          <textarea
-            value={content.Hero.Body}
-            onChange={(e) =>
-              setContent({
-                ...content,
-                Hero: { ...content.Hero, Body: e.target.value },
-              })
-            }
-            className="w-full p-2 border border-gray-300 rounded-md"
-            rows="5"
-          />
-        </div>
+//         {/* additionalField Field */}
+//         <div>
+//           <label
+//             htmlFor={`additionalField-${index}`}
+//             className="block text-sm font-medium text-gray-700"
+//           >
+//             Read More Link:
+//           </label>
+//           <input
+//             type="url" // Changed type to 'url' for built-in URL validation
+//             id={`additionalField-${index}`}
+//             value={content.Hero.additionalField}
+//             placeholder="https://kindilearning.com/p/community"
+//             onChange={(e) =>
+//               setContent({
+//                 ...content,
+//                 Hero: { ...content.Hero, additionalField: e.target.value },
+//               })
+//             }
+//             pattern="https?://.*" // Optional, if you want more control over URL format (e.g., allowing only http or https)
+//             className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+//           />
+//         </div>
 
-        {/* Submit Button */}
-        <div className="flex items-center justify-center">
-          <button
-            type="submit"
-            disabled={loading}
-            className="px-4 py-2 bg-red text-white rounded-md disabled:bg-gray-400"
-          >
-            {loading ? "Updating..." : "Update Hero Section"}
-          </button>
-        </div>
-      </form>
+//         {/* Body Field */}
+//         <div>
+//           <label className="block text-sm font-medium text-gray-700">
+//             Body
+//           </label>
+//           <textarea
+//             value={content.Hero.Body}
+//             onChange={(e) =>
+//               setContent({
+//                 ...content,
+//                 Hero: { ...content.Hero, Body: e.target.value },
+//               })
+//             }
+//             className="w-full p-2 border border-gray-300 rounded-md"
+//             rows="5"
+//           />
+//         </div>
 
-      {/* Success/Failure Dialog */}
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>{dialogMessage}</DialogTitle>
-          </DialogHeader>
-          <DialogFooter>
-            <DialogClose asChild>
-              <button className="px-4 py-2 bg-red-500 text-red rounded-md">
-                Close
-              </button>
-            </DialogClose>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-    </div>
-  );
-}
+//         {/* Submit Button */}
+//         <div className="flex items-center justify-center">
+//           <button
+//             type="submit"
+//             disabled={loading}
+//             className="px-4 py-2 bg-red text-white rounded-md disabled:bg-gray-400"
+//           >
+//             {loading ? "Updating..." : "Update Hero Section"}
+//           </button>
+//         </div>
+//       </form>
+
+//       {/* Success/Failure Dialog */}
+//       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+//         <DialogContent>
+//           <DialogHeader>
+//             <DialogTitle>{dialogMessage}</DialogTitle>
+//           </DialogHeader>
+//           <DialogFooter>
+//             <DialogClose asChild>
+//               <button className="px-4 py-2 bg-red-500 text-red rounded-md">
+//                 Close
+//               </button>
+//             </DialogClose>
+//           </DialogFooter>
+//         </DialogContent>
+//       </Dialog>
+//     </div>
+//   );
+// }
 
 export function UpdateHowItWorkSection() {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [featuredText, setFeaturedText] = useState("");
+  const [additionalField, setAdditionalField] = useState("");
   const [media, setMedia] = useState(null); // Media state
-  const [openDialog, setOpenDialog] = useState(false); 
+  const [openDialog, setOpenDialog] = useState(false);
   const [error, setError] = useState("");
 
   // Fetch existing data for MonthlyTheme content
@@ -306,6 +336,7 @@ export function UpdateHowItWorkSection() {
           setTitle(content.Hero?.Title || ""); // Set default values if not found
           setBody(content.Hero?.Body || "");
           setFeaturedText(content.Hero?.featuredText || "");
+          setAdditionalField(content.Hero?.additionalField || ""); // Set the media ID or null if no media is selected
           setMedia(content.Hero?.Media?.id || null); // Set the media ID or null if no media is selected
         }
 
@@ -328,6 +359,7 @@ export function UpdateHowItWorkSection() {
           Title: title,
           Body: body,
           featuredText: featuredText,
+          additionalField: additionalField,
           Media: media?.id || null, // Use media ID if selected
         },
       },
@@ -335,13 +367,16 @@ export function UpdateHowItWorkSection() {
     console.log("Payload Created", payload);
 
     try {
-      const res = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/how-it-work-page", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
+      const res = await fetch(
+        "https://lionfish-app-98urn.ondigitalocean.app/api/how-it-work-page",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        }
+      );
 
       const data = await res.json();
       console.log("Updated our-mission Content:", data);
@@ -353,6 +388,7 @@ export function UpdateHowItWorkSection() {
   };
 
   const handleMediaSelect = (selectedMedia) => {
+    
     setMedia(selectedMedia); // Store the selected media object
   };
   const handleEditorChange = (newValue) => {
@@ -410,6 +446,25 @@ export function UpdateHowItWorkSection() {
             value={featuredText}
             onChange={(e) => setFeaturedText(e.target.value)}
             className="border p-2 w-full"
+          />
+        </div>
+
+        {/* additionalField Field */}
+        <div>
+          <label
+            htmlFor={`additionalField`}
+            className="block text-sm font-medium text-gray-700"
+          >
+            Read More Link:
+          </label>
+          <input
+            type="url" // Changed type to 'url' for built-in URL validation
+            id={`additionalField`}
+            value={additionalField}
+            placeholder="https://kindilearning.com/p/community"
+            onChange={(e) => setAdditionalField(e.target.value)}
+            pattern="https?://.*" // Optional, if you want more control over URL format (e.g., allowing only http or https)
+            className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 

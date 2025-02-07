@@ -6,7 +6,7 @@ import {
   DialogClose,
   DialogContent,
   DialogDescription,
-  DialogFooter,
+  DialogFooter,   
   DialogHeader,
   DialogTitle,
   DialogTrigger,

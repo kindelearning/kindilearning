@@ -4,6 +4,7 @@ import { fetchChildDevelopmentUnlock } from "@/app/data/p/Home";
 import { Button } from "@/components/ui/button";
 import { PromotionalImage } from "@/public/Images";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function PromotionalSection() {
@@ -86,11 +87,11 @@ export default function PromotionalSection() {
             </div>
 
             {/* Button */}
-            <div className="w-auto hover:pl-[4px] duration-200 h-auto animate-fade-in">
+            <Link target="_blank" href={content.additionalField || "/profile"}  className="w-auto hover:pl-[4px] duration-200 h-auto animate-fade-in">
               <Button className="bg-[#ffffff] hover:bg-red hover:text-white text-[#029871] clarabutton">
                 Get Started
               </Button>
-            </div>
+            </Link>
           </div>
 
           {/* Image Section */}

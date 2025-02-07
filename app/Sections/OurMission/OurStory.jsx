@@ -101,7 +101,7 @@ export default function OurStory() {
                 )}
               </div>
             </div>
-            <Link href="/profile" target="_blank" className="w-full flex">
+            <Link href={content?.additionalField || "/p/how-it-works#video"} target="_blank" className="w-full flex">
               <Button className="bg-[#ffffff] text-[#EEBA00] hover:bg-red hover:text-white animate-fadeIn animate-delay-150 hover:border-2  px-4 md:px-8 xl:px-12 border-2 clarabutton rounded-[10px]">
                 Get Started
               </Button>

@@ -106,7 +106,7 @@ export default function HowItWorks() {
                       )}
                     </div>
                     <Link
-                      href="/p/how-it-works#video"
+                      href={section?.additionalField || "/p/how-it-works#video"}
                       rel="noopener noreferrer"
                       className="w-full h-12 "
                     >
@@ -204,7 +204,7 @@ export default function HowItWorks() {
                       )}
                     </div>
                     <Link
-                      href="/p/how-it-works#video"
+                      href={section?.additionalField || "/p/how-it-works#video"}
                       rel="noopener noreferrer"
                       className="w-full h-12 "
                     >
@@ -240,10 +240,12 @@ export default function HowItWorks() {
                           {section.featuredText || "Enjoy"}{" "}
                         </span>
                         <span className="text-red animate-fade-in w-[max-content] claraheading lg:text-[44px]">
-                          {section.title.split(" ").slice(0, 2).join(" ") || "Precious Time"}
+                          {section.title.split(" ").slice(0, 2).join(" ") ||
+                            "Precious Time"}
                         </span>{" "}
                         <span className="text-white animate-fade-in w-[max-content] claraheading lg:text-[44px]">
-                          {section.title.split(" ").slice(2, 12).join(" ") || "Together"}
+                          {section.title.split(" ").slice(2, 12).join(" ") ||
+                            "Together"}
                         </span>
                       </div>
                       {section.BodyDescription ? (
@@ -266,7 +268,7 @@ export default function HowItWorks() {
                       )}
                     </div>
                     <Link
-                      href="/p/how-it-works#video"
+                      href={section?.additionalField || "/p/how-it-works#video"}
                       rel="noopener noreferrer"
                       className="w-full h-12 "
                     >

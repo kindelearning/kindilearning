@@ -1,6 +1,6 @@
 import HomepageHeroSectionPage from "../../Sections/Home/HomepageHeroSectionPage";
 import {
-  Table,
+  Table, 
   TableBody,
   TableCell,
   TableHead,

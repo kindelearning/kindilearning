@@ -67,11 +67,6 @@ export default function MediaSelector({ onMediaSelect }) {
     currentPage * itemsPerPage
   );
 
-  // Handle media selection
-  //   const handleMediaSelect = (selectedMedia) => {
-  //     onMediaSelect(selectedMedia); // Pass the selected media back to the parent
-  //   };
-
   const handleMediaSelect = (selectedMedia) => {
     setSelectedMediaId(selectedMedia.id); // Highlight the selected image
     onMediaSelect(selectedMedia); // Pass the selected media back to the parent

@@ -95,7 +95,7 @@ export default function Hero() {
               </div>
             </div>
             <Link
-              href="/profile"
+              href={data.additionalField || "/profile"} 
               target="_blank"
               className="w-auto animate-fade-in"
             >

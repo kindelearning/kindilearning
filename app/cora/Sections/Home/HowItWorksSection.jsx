@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import {
   Dialog,
-  DialogClose, 
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -13,6 +13,7 @@ import {
 import ClaraMarkdownRichEditor from "../TextEditor/ClaraMarkdownRichEditor";
 import MediaSelector from "../../website/media/Section/MediaSelector";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function HowItWorksSection() {
   const [data, setData] = useState(null);
@@ -81,7 +82,7 @@ export default function HowItWorksSection() {
                 <span>No Image Available</span>
               </div>
             )}
-            <div className="flex flex-col justify-start items-start">
+            <div className="flex gap-4 flex-col justify-start items-start">
               {/* Title and Featured Text */}
               <span className="text-2xl font-semibold text-gray-800 mb-4 text-center">
                 {section.title} {section.featuredText}
@@ -96,12 +97,25 @@ export default function HowItWorksSection() {
                   {body.children[0].text}
                 </p>
               ))} */}
+
               <p
                 className="prose w-full text-start text-[#101010] clarabodyTwo"
                 dangerouslySetInnerHTML={{
                   __html: section.BodyDescription,
                 }}
               />
+              {/* Get Started Link */}
+              {section?.additionalField && (
+                <div>
+                  <Link
+                    href={section.additionalField}
+                    target="_blank"
+                    className="bg-[#3f3a64] mt-4 text-white px-6 py-3 rounded-xl text-lg font-medium shadow-md transition hover:shadow-lg hover:bg-[#2d2a4b]"
+                  >
+                    Get Started
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
         ))}
@@ -400,6 +414,7 @@ export function UpdateHowItWorks() {
           title: section.title,
           featuredText: section.featuredText,
           BodyDescription: section.BodyDescription,
+          additionalField: section.additionalField,
           Media: section.Media ? { id: section.Media.id } : null, // Pass Media ID if it exists
         })), // Send the updated HIWSection
       },
@@ -407,13 +422,16 @@ export function UpdateHowItWorks() {
     console.log("payload sent", payload);
 
     try {
-      const res = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/how-it-work-section", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
+      const res = await fetch(
+        "https://lionfish-app-98urn.ondigitalocean.app/api/how-it-work-section",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        }
+      );
 
       const data = await res.json();
       console.log("Updated How It Works Data:", data);
@@ -522,6 +540,32 @@ export function UpdateHowItWorks() {
                   }}
                   className="border p-2 w-full"
                   rows="4"
+                />
+              </div>
+
+              {/* additionalField Field */}
+              <div>
+                <label
+                  htmlFor={`additionalField`}
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Read More Link:
+                </label>
+                <input
+                  type="url" // Changed type to 'url' for built-in URL validation
+                  id={`additionalField`}
+                  value={section.additionalField}
+                  placeholder="https://kindilearning.com/p/community"
+                  // onChange={(e) => setAdditionalField(e.target.value)}
+                  onChange={(e) => {
+                    const updatedSection = {
+                      ...section,
+                      additionalField: e.target.value,
+                    };
+                    handleHIWSectionUpdate(index, updatedSection);
+                  }}
+                  pattern="https?://.*" // Optional, if you want more control over URL format (e.g., allowing only http or https)
+                  className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
 

@@ -17,6 +17,7 @@ export default function HeroSectionForm() {
   const [featuredText, setFeaturedText] = useState("");
   const [heroTitle, setHeroTitle] = useState("");
   const [bgcolor, setBgcolor] = useState("");
+  const [additionalField, setAdditionalField] = useState("");
   const [bodyDescription, setBodyDescription] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -38,6 +39,8 @@ export default function HeroSectionForm() {
           setHeroTitle(data.data.HeroTitle || "");
           setBgcolor(data.data.bgColor || "");
           setBodyDescription(data.data.BodyDescription || "");
+          setAdditionalField(data.data.additionalField || ""); // Set the media ID or null if no media is selected
+
         } else {
           setError("Unable to fetch current data.");
         }
@@ -60,6 +63,7 @@ export default function HeroSectionForm() {
         featuredText,
         HeroTitle: heroTitle,
         BodyDescription: bodyDescription,
+        additionalField: additionalField,
         bgColor: bgcolor,
         Image: media.id,
       },
@@ -152,6 +156,26 @@ export default function HeroSectionForm() {
             required
           />
         </div>
+
+          {/* additionalField Field */}
+          <div>
+          <label
+            htmlFor={`additionalField`}
+            className="block text-sm font-medium text-gray-700"
+          >
+            Read More Link:
+          </label>
+          <input
+            type="url" // Changed type to 'url' for built-in URL validation
+            id={`additionalField`}
+            value={additionalField}
+            placeholder="https://kindilearning.com/p/community"
+            onChange={(e) => setAdditionalField(e.target.value)}
+            pattern="https?://.*" // Optional, if you want more control over URL format (e.g., allowing only http or https)
+            className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+
 
         <div>
           <label className="block text-gray-700">Body Description</label>

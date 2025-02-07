@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dialog";
 import ClaraMarkdownRichEditor from "../TextEditor/ClaraMarkdownRichEditor";
 import MediaSelector from "../../website/media/Section/MediaSelector";
+import Link from "next/link";
 
 export default function EarlyLearningExpert() {
   const [content, setContent] = useState(null); // To store the fetched data
@@ -54,7 +55,7 @@ export default function EarlyLearningExpert() {
 
   return (
     <div className="container mx-auto flex justify-between font-fredoka px-8 py-12">
-      <div className="flex flex-col max-w-[50%]">
+      <div className="flex gap-4 flex-col max-w-[50%]">
         {/* Title */}
         <h1 className="text-4xl font-bold mb-6">{content?.title}</h1>
 
@@ -71,6 +72,18 @@ export default function EarlyLearningExpert() {
             dangerouslySetInnerHTML={{ __html: content?.BodyDescription }}
           />
         </div>
+        {/* Get Started Link */}
+        {content?.additionalField && (
+          <div>
+            <Link
+              href={content.additionalField}
+              target="_blank"
+              className="bg-[#3f3a64] text-white px-6 py-3 rounded-xl text-lg font-medium shadow-md transition hover:shadow-lg hover:bg-[#2d2a4b]"
+            >
+              Get Started
+            </Link>
+          </div>
+        )}
       </div>
 
       {/* Media */}
@@ -256,6 +269,7 @@ export function UpdateEarlyLearningExpert() {
   const [title, setTitle] = useState("");
   const [bodyDescription, setBodyDescription] = useState("");
   const [featuredText, setFeaturedText] = useState("");
+  const [additionalField, setAdditionalField] = useState("");
   const [media, setMedia] = useState(null); // Media state
   const [openDialog, setOpenDialog] = useState(false);
   const [error, setError] = useState("");
@@ -274,6 +288,7 @@ export function UpdateEarlyLearningExpert() {
           setTitle(content.Content?.title || ""); // Set default values if not found
           setBodyDescription(content.Content?.BodyDescription || "");
           setFeaturedText(content.Content?.featuredText || "");
+          setAdditionalField(content.Hero?.additionalField || ""); // Set the media ID or null if no media is selected
           setMedia(content.Content?.Media?.id || null); // Set the media ID or null if no media is selected
         }
 
@@ -296,6 +311,7 @@ export function UpdateEarlyLearningExpert() {
           title: title,
           BodyDescription: bodyDescription,
           featuredText: featuredText,
+          additionalField: additionalField,
           Media: media?.id || null, // Use media ID if selected
         },
       },
@@ -303,13 +319,16 @@ export function UpdateEarlyLearningExpert() {
     console.log("Payload Created", payload);
 
     try {
-      const res = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/early-learning-expert", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
+      const res = await fetch(
+        "https://lionfish-app-98urn.ondigitalocean.app/api/early-learning-expert",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        }
+      );
 
       const data = await res.json();
       console.log("Updated our-mission Content:", data);
@@ -324,7 +343,7 @@ export function UpdateEarlyLearningExpert() {
     setMedia(selectedMedia); // Store the selected media object
   };
   const handleEditorChange = (newValue) => {
-    setBodyDescription(newValue);  // Update body state with the new value from the editor
+    setBodyDescription(newValue); // Update body state with the new value from the editor
   };
   return (
     <div className="p-8">
@@ -379,7 +398,25 @@ export function UpdateEarlyLearningExpert() {
             className="border p-2 w-full"
           />
         </div>
-
+ {/* additionalField Field */}
+ <div>
+          <label
+            htmlFor={`additionalField`}
+            className="block text-sm font-medium text-gray-700"
+          >
+            Get Started Link:
+          </label>
+          <input
+          required
+            type="url" // Changed type to 'url' for built-in URL validation
+            id={`additionalField`}
+            value={additionalField}
+            placeholder="https://kindilearning.com/p/community"
+            onChange={(e) => setAdditionalField(e.target.value)}
+            pattern="https?://.*" // Optional, if you want more control over URL format (e.g., allowing only http or https)
+            className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
         {/* Media Field */}
         <div>
           <label>Media:</label>

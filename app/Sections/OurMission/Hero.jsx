@@ -102,7 +102,7 @@ export default function Hero() {
               </div>
             </div>
             <Link
-              href="/profile"
+              href={content?.additionalField || "/p/how-it-works#video"}
               target="_blank"
               className="w-auto animate-slideInUp animate-delay-4000"
             >
