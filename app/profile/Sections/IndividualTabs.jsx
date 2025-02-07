@@ -184,7 +184,8 @@ export default function IndividualTabs({ userData }) {
             <p className="py-2 font-fredoka">
               You have added{" "}
               <span className="font-medium text-red">
-                {currentKidsCount} out of {maxKidsAllowed}
+                {" "}
+                {currentKidsCount} out of {maxKidsAllowed}{" "}
               </span>{" "}
               Child allowed for your{" "}
               <span className="font-medium text-red">{subscriptionLevel}</span>{" "}
@@ -253,7 +254,7 @@ export default function IndividualTabs({ userData }) {
                     Add New Child
                   </Button>
                 </DialogTrigger>
-                <DialogContent>
+                <DialogContent className="max-w-[1000px] max-h-[600px] overflow-y-scroll">
                   <DialogHeader>
                     <DialogDescription>
                       <AddKidForm parentId={userData.id} />
@@ -298,9 +299,9 @@ export default function IndividualTabs({ userData }) {
           <div className="flex flex-col gap-4 w-full justify-center items-center">
             <Dialog>
               <DialogTrigger className="justify-end w-full flex">
-              <Button className="px-4 md:mx-6" variant="outline" >
-
-                My Partners</Button>
+                <Button className="px-4 md:mx-6" variant="outline">
+                  My Partners
+                </Button>
               </DialogTrigger>
               <DialogContent className="max-w-[600px] max-h-[800px] overflow-y-scroll">
                 <DialogHeader>

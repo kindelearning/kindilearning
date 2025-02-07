@@ -300,6 +300,7 @@ export default function UpdateKidForm({ parentId, kidId }) {
   const handleMediaSelect = (selectedMedia) => {
     setDP(selectedMedia); // Store the selected media object
   };
+  const today = new Date().toISOString().split("T")[0];
 
   return (
     <form
@@ -387,6 +388,7 @@ export default function UpdateKidForm({ parentId, kidId }) {
             id="dob"
             name="dob"
             value={dob}
+            max={today}
             onChange={(e) => setDob(e.target.value)}
             required
             className="input"
@@ -407,7 +409,7 @@ export default function UpdateKidForm({ parentId, kidId }) {
             name="attendingNursery"
             checked={attendingNursery}
             onChange={(e) => setAttendingNursery(e.target.checked)}
-            className="input justify-start items-start text-start"
+            className="relative inline-flex h-6 w-11 rounded-full transition-colors focus:outline-none"
           />
         </div>
 

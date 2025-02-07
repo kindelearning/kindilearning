@@ -213,7 +213,8 @@ export async function fetchPricingDataFeatures() {
 export async function fetchMonthlyPricingDataFeatures() {
   try {
     const response = await fetch(
-      "https://lionfish-app-98urn.ondigitalocean.app/api/ourpricing?populate[MonthlyPlans][populate]=Features"
+      // "https://lionfish-app-98urn.ondigitalocean.app/api/ourpricing?populate[MonthlyPlans][populate]=Features"
+      "https://lionfish-app-98urn.ondigitalocean.app/api/ourpricing?populate[MonthlyPlans][populate][0]=Features&populate[MonthlyPlans][populate][1]=Thumbnail "
     );
 
     if (!response.ok) {

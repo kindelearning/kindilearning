@@ -40,7 +40,7 @@ export default function PricingTabs() {
   useEffect(() => {
     const loadPricingData = async () => {
       const fetchedData = await fetchPricingDataFeatures();
-      // console.log("Fetched Data:", fetchedData); // Log data here
+      console.log("Fetched Data:", fetchedData); // Log data here
 
       if (fetchedData) {
         setPricingDataFeature(fetchedData);
@@ -52,6 +52,8 @@ export default function PricingTabs() {
 
     loadPricingData();
   }, []);
+
+  // console.log('setPricingDataFeature',pricingDataFeature )
 
   // Fetch Annual pricing features on component mount
   useEffect(() => {
@@ -69,6 +71,7 @@ export default function PricingTabs() {
 
     loadPricingDataTwo();
   }, []);
+  // console.log('setMonthlyPricingDataFeature',monthlypricingDataFeature )
 
   // Loading state
   if (loading) {
@@ -113,6 +116,16 @@ export default function PricingTabs() {
           }}
         >
           <div className="flex justify-center space-x-4">
+            {/* <button
+              onClick={() => setActiveTab("monthlyy")}
+              className={`text-[#3F3D91] rounded-[10px]  font-medium flex px-6 justify-center items-center p-2 ${
+                activeTab === "monthlyy"
+                  ? "bg-[#3F3D91] text-[#ffffff]"
+                  : "bg-[white]  text-[#3F3D91]"
+              } transition-all duration-500`}
+            >
+              Monthly
+            </button> */}
             <button
               onClick={() => setActiveTab("monthly")}
               className={`text-[#3F3D91] rounded-[10px]  font-medium flex px-6 justify-center items-center p-2 ${
@@ -138,6 +151,59 @@ export default function PricingTabs() {
 
         {/* Tab Content */}
         <div className="flex flex-nowrap overflow-x-auto justify-start md:justify-start lg:justify-center lg:items-start items-start scrollbar-hidden px-0 w-full claracontainer gap-2 md:gap-4 scrollbar-hidden">
+          {/* {activeTab === "monthlyy" && (
+            <>
+              {pricingData.MonthlyPlans &&
+                pricingData.MonthlyPlans.length > 0 && (
+                  <>
+                    {monthlypricingDataFeature?.MonthlyPlans?.length > 0 ? (
+                      monthlypricingDataFeature.MonthlyPlans.slice(0, 10).map(
+                        (plan, index) => (
+                          <PricingCard
+                            key={index}
+                            title={plan.PriceTitle || "Default Plan Title"}
+                            paymentLink="https://buy.stripe.com/6oEbKT0yJa5qbPG28h"
+                            description={
+                              plan.PriceBody ? (
+                                <div
+                                  dangerouslySetInnerHTML={{
+                                    __html: plan.PriceBody, // Render Markdown or Rich Text
+                                  }}
+                                />
+                              ) : (
+                                <p className="prose clarabodyTwo ">
+                                  No more guesswork! Unlock your childs full
+                                  potential with our affordable Milestone
+                                  Tracker—an essential tool for every parent.
+                                  Ensure your child gets the right support when
+                                  they need it, keeping them on track and
+                                  maximizing their brain growth effortlessly.
+                                </p>
+                              )
+                            }
+                            price={plan.Price} // Fallback to 'N/A' if price is missing
+                            duration={plan.Duration || "/Monthly"}
+                            pricingDetails={transformFeaturesToPricingDetailsFamily(
+                              plan.Features
+                            )}
+                            isOpen={isAccordionOpen} // Pass the state here
+                            toggleAccordion={toggleAccordion} // Pass toggle function
+                            image={
+                              plan.Thumbnail
+                                ? `https://lionfish-app-98urn.ondigitalocean.app${plan.Thumbnail[0]?.url}`
+                                : "Images/PricingThumb.svg"
+                            }
+                            // image={`https://lionfish-app-98urn.ondigitalocean.app${plan.Thumbnail?.url}`}
+                          />
+                        )
+                      )
+                    ) : (
+                      <p>No Monthly Plans available.</p>
+                    )}
+                  </>
+                )}
+            </>
+          )} */}
           {activeTab === "monthly" && (
             <>
               {pricingData.MonthlyPlans &&
@@ -176,8 +242,8 @@ export default function PricingTabs() {
                             isOpen={isAccordionOpen} // Pass the state here
                             toggleAccordion={toggleAccordion} // Pass toggle function
                             image={
-                              plan.Thumbnail?.url
-                                ? `https://lionfish-app-98urn.ondigitalocean.app${plan.Thumbnail?.url}`
+                              plan.Thumbnail
+                                ? `https://lionfish-app-98urn.ondigitalocean.app${plan.Thumbnail[0]?.url}`
                                 : "Images/PricingThumb.svg"
                             }
                             // image={`https://lionfish-app-98urn.ondigitalocean.app${plan.Thumbnail?.url}`}
@@ -230,8 +296,8 @@ export default function PricingTabs() {
                             toggleAccordion={toggleAccordion} // Pass toggle function
                             // image={`https://lionfish-app-98urn.ondigitalocean.app${plan.Thumbnail?.url}`}
                             image={
-                              plan.Thumbnail?.url
-                                ? `https://lionfish-app-98urn.ondigitalocean.app${plan.Thumbnail?.url}`
+                              plan.Thumbnail
+                                ? `https://lionfish-app-98urn.ondigitalocean.app${plan.Thumbnail[0]?.url}`
                                 : "Images/PricingThumb.svg"
                             }
                           />

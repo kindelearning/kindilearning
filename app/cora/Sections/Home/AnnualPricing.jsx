@@ -73,11 +73,11 @@ export default function AnnualPriceing() {
               className="plan-card p-2 border rounded-lg shadow-lg hover:bg-white hover:duration-300 ease-in-out transition-shadow"
             >
               {/* Thumbnail Image */}
-              {plan.Thumbnail?.url && (
+              {plan.Thumbnail && (
                 <div className="thumbnail flex justify-center">
                   <img
                     // src={plan.Thumbnail?.url}
-                    src={`https://lionfish-app-98urn.ondigitalocean.app${plan.Thumbnail?.url}`}
+                    src={`https://lionfish-app-98urn.ondigitalocean.app${plan.Thumbnail[0]?.url}`}
                     alt={plan.Thumbnail?.name}
                     className="rounded-lg object-cover w-full h-48  "
                   />
@@ -136,7 +136,7 @@ export default function AnnualPriceing() {
           No annual plans available at the moment.
         </div>
       )}
-    </div>
+    </div> 
   );
 }
 
@@ -278,10 +278,11 @@ export function EditAnnualPricing() {
                 <label className="font-medium text-gray-600">
                   Plan Thumbnail
                 </label>
-                {plan.Thumbnail ? (
+                {plan.Thumbnail?.length  ? (
+                // {plan.Thumbnail?.length > 0 && plan.Thumbnail[0]?.url  ? (
                   <div className="mt-4">
                     <img
-                      src={`https://lionfish-app-98urn.ondigitalocean.app${plan.Thumbnail.url}`}
+                      src={`https://lionfish-app-98urn.ondigitalocean.app${plan.Thumbnail[0].url}`}
                       alt={plan.name}
                       className="w-32 h-32 object-cover rounded-md"
                     />
