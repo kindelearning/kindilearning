@@ -19,6 +19,7 @@ import { Button } from "@/components/ui/button";
 
 export default function ProductUpdateForm({ documentId }) {
   const [existingData, setExistingData] = useState(null);
+  const [additionalField, setAdditionalField] = useState("");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [longDescription, setLongDescription] = useState("");
@@ -44,6 +45,7 @@ export default function ProductUpdateForm({ documentId }) {
           setLongDescription(data.data.LongDescription || "");
           setPrice(data.data.Price || "");
           setDiscountPrice(data.data.DiscountPrice || "");
+          setAdditionalField(data.data.additionalField || "");
           setSEOKeywords(data.data.SEOKeywords || "");
           setMaterialOptions(data.data.MaterialOptions || "");
           setMedia(data.data?.FeaturedImage?.id || null); // Set the media ID or null if no media is selected
@@ -72,6 +74,7 @@ export default function ProductUpdateForm({ documentId }) {
         LongDescription: longDescription,
         Price: price,
         DiscountPrice: discountPrice,
+        additionalField: additionalField,
         SEOKeywords: seoKeywords,
         Gallery: formattedGallery,
         // Gallery: [{ id: 2 }, { id: 4 }, { id: 5 }],
@@ -133,8 +136,8 @@ export default function ProductUpdateForm({ documentId }) {
                     {media ? (
                       <div className="flex flex-col">
                         <img
-                          src={media.url}
-                          // src={`https://lionfish-app-98urn.ondigitalocean.app${media.url}`}
+                          // src={media.url}
+                          src={`https://lionfish-app-98urn.ondigitalocean.app${media.url}`}
                           className="w-32 h-32 object-cover rounded-full flex "
                         />
                         <p>{media.name}</p>
@@ -185,7 +188,40 @@ export default function ProductUpdateForm({ documentId }) {
             className="w-full p-2 border border-gray-300 rounded"
           />
         </div>
+        
+        <div>
+          <label className="block mb-2">
+            Is this For App?{" "}
+            <span className="text-red">
+              Yes- if you want to display it on App home page
+            </span>
+          </label>
+          <div className="flex gap-4">
+            <label className="flex items-center gap-2">
+              <input
+                type="radio"
+                name="additionalField"
+                value="shop"
+                checked={additionalField === "shop"}
+                onChange={() => setAdditionalField("shop")}
+                className="cursor-pointer"
+              />
+              Yes
+            </label>
 
+            <label className="flex items-center gap-2">
+              <input
+                type="radio"
+                name="additionalField"
+                value="notShop"
+                checked={additionalField === "notShop"}
+                onChange={() => setAdditionalField("notShop")}
+                className="cursor-pointer"
+              />
+              No
+            </label>
+          </div>
+        </div>
         <div>
           <label className="block">Description</label>
           <ClaraMarkdownRichEditor

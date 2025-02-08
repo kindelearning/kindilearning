@@ -6,7 +6,7 @@ import {
   DialogContent,
   DialogDescription,
   DialogFooter,
-  DialogHeader, 
+  DialogHeader,
   DialogText,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -172,6 +172,7 @@ const BlogUpdateForm = ({ documentId }) => {
   const [description, setDescription] = useState("");
   const [sEOKeywords, setSEOKeywords] = useState("");
   const [metaDescription, setMetaDescription] = useState("");
+  const [additionalField, setAdditionalField] = useState("");
   const [likes, setLikes] = useState(null);
   const [Content, setContent] = useState(null);
   const [dislikes, setDislikes] = useState(null);
@@ -196,6 +197,7 @@ const BlogUpdateForm = ({ documentId }) => {
           setDescription(content.Description || "");
           setSEOKeywords(content.SEOKeywords || "");
           setMetaDescription(content.MetaDescription || "");
+          setAdditionalField(content.additionalField || "");
           setLikes(content.Likes || "");
           setContent(content.Content || "");
           setDislikes(content.Dislikes || "");
@@ -224,6 +226,7 @@ const BlogUpdateForm = ({ documentId }) => {
         Description: description,
         Content: Content,
         SEOKeywords: sEOKeywords,
+        additionalField: additionalField,
         MetaDescription: metaDescription,
         Likes: likes,
         Dislikes: dislikes,
@@ -233,13 +236,16 @@ const BlogUpdateForm = ({ documentId }) => {
     console.log("Payload Created", payload);
 
     try {
-      const res = await fetch(`https://lionfish-app-98urn.ondigitalocean.app/api/blogs/${documentId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
+      const res = await fetch(
+        `https://lionfish-app-98urn.ondigitalocean.app/api/blogs/${documentId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        }
+      );
 
       const data = await res.json();
       console.log("Updated Badge Content:", data);
@@ -252,11 +258,9 @@ const BlogUpdateForm = ({ documentId }) => {
 
   return (
     <div className="container mx-auto p-4">
-       <head>
-        <title>
-          Update Blog - Kindi
-        </title>
-        </head>
+      <head>
+        <title>Update Blog - Kindi</title>
+      </head>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block">Text</label>
@@ -304,6 +308,51 @@ const BlogUpdateForm = ({ documentId }) => {
             className="w-full p-2 border border-gray-300 rounded-md"
             required
           />
+        </div>
+        {/* <div>
+          <label className="block">additionalField</label>
+          <input
+            type="text"
+            name="additionalField"
+            value={additionalField}
+            onChange={(e) => setAdditionalField(e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded-md"
+            required
+          />
+        </div> */}
+
+        <div>
+          <label className="block mb-2">
+            Is this For App?{" "}
+            <span className="text-red">
+              Yes- if you want to display it on App home page
+            </span>
+          </label>
+          <div className="flex gap-4">
+            <label className="flex items-center gap-2">
+              <input
+                type="radio"
+                name="additionalField"
+                value="shop"
+                checked={additionalField === "shop"}
+                onChange={() => setAdditionalField("shop")}
+                className="cursor-pointer"
+              />
+              Yes
+            </label>
+
+            <label className="flex items-center gap-2">
+              <input
+                type="radio"
+                name="additionalField"
+                value="notShop"
+                checked={additionalField === "notShop"}
+                onChange={() => setAdditionalField("notShop")}
+                className="cursor-pointer"
+              />
+              No
+            </label>
+          </div>
         </div>
 
         <div>
@@ -362,4 +411,3 @@ const BlogUpdateForm = ({ documentId }) => {
   );
 };
 export default BlogUpdateForm;
- 

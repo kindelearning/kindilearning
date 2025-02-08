@@ -24,6 +24,7 @@ export function CreateTheme2() {
   const [metaDesc, setMetaDesc] = useState("");
   const [thumbnail, setThumbnail] = useState(null);
   const [mainContent, setMainContent] = useState("");
+  const [additionalField, setAdditionalField] = useState("");
   const [launchTime, setLaunchTime] = useState("");
   const [loading, setLoading] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
@@ -72,6 +73,7 @@ export function CreateTheme2() {
     formData.append("data[Title]", title);
     formData.append("data[metaDesc]", metaDesc);
     formData.append("data[MainContent]", mainContent);
+    formData.append("data[additionalField]", additionalField);
     formData.append("data[LaunchTime]", launchTime);
 
     if (thumbnail) {
@@ -79,10 +81,13 @@ export function CreateTheme2() {
     }
 
     try {
-      const res = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/our-themes", {
-        method: "POST",
-        body: formData,
-      });
+      const res = await fetch(
+        "https://lionfish-app-98urn.ondigitalocean.app/api/our-themes",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       const data = await res.json();
 
@@ -97,6 +102,7 @@ export function CreateTheme2() {
         setOpenDialog(true); // Open custom dialog
         setTitle("");
         setMetaDesc("");
+        setAdditionalField("");
         setThumbnail(null);
         setMainContent("");
         setLaunchTime("");
@@ -194,7 +200,39 @@ export function CreateTheme2() {
                   />
                 </div>
               </div>
+              <div>
+                <label className="block mb-2">
+                  Is this For App?{" "}
+                  <span className="text-red">
+                    Yes- if you want to display it on App home page
+                  </span>
+                </label>
+                <div className="flex gap-4">
+                  <label className="flex items-center gap-2">
+                    <input
+                      type="radio"
+                      name="additionalField"
+                      value="shop"
+                      checked={additionalField === "shop"}
+                      onChange={() => setAdditionalField("shop")}
+                      className="cursor-pointer"
+                    />
+                    Yes
+                  </label>
 
+                  <label className="flex items-center gap-2">
+                    <input
+                      type="radio"
+                      name="additionalField"
+                      value="notShop"
+                      checked={additionalField === "notShop"}
+                      onChange={() => setAdditionalField("notShop")}
+                      className="cursor-pointer"
+                    />
+                    No
+                  </label>
+                </div>
+              </div>
               <div className="mb-6 w-full">
                 <label
                   htmlFor="thumbnail"
@@ -306,6 +344,7 @@ export default function CreateTheme() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [dialogMessage, setDialogMessage] = useState("");
   const [dialogType, setDialogType] = useState("success"); // To distinguish between success/error messages
+  const [additionalField, setAdditionalField] = useState("");
 
   // Handle form submission
   const handleSubmit = async (e) => {
@@ -315,19 +354,23 @@ export default function CreateTheme() {
       LaunchTime: launchTime,
       Title: title,
       metaDesc: metaDesc,
+      additionalField: additionalField,
       MainContent: mainContent,
       Thumbnail: media?.id || null, // Use media ID if selected
     };
 
     console.log("New Theme data", newBadge);
     try {
-      const response = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/our-themes", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ data: newBadge }),
-      });
+      const response = await fetch(
+        "https://lionfish-app-98urn.ondigitalocean.app/api/our-themes",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ data: newBadge }),
+        }
+      );
 
       const responseData = await response.json();
 
@@ -338,7 +381,8 @@ export default function CreateTheme() {
         setMainContent("");
         setMetaDesc("");
         setTitle("");
-        setLaunchTime("");
+    setAdditionalField("");
+    setLaunchTime("");
         setMedia(null);
       } else {
         setDialogMessage(
@@ -361,9 +405,7 @@ export default function CreateTheme() {
   return (
     <div className="p-8 font-fredoka">
       <head>
-        <title>
-          Create a new Theme | Kindi Learning
-        </title>
+        <title>Create a new Theme | Kindi Learning</title>
       </head>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
@@ -420,6 +462,39 @@ export default function CreateTheme() {
             className="border p-2 w-full"
           />
         </div>
+        <div>
+            <label className="block mb-2">
+              Is this For App?{" "}
+              <span className="text-red">
+                Yes- if you want to display it on App home page
+              </span>
+            </label>
+            <div className="flex gap-4">
+              <label className="flex items-center gap-2">
+                <input
+                  type="radio"
+                  name="additionalField"
+                  value="shop"
+                  checked={additionalField === "shop"}
+                  onChange={() => setAdditionalField("shop")}
+                  className="cursor-pointer"
+                />
+                Yes
+              </label>
+
+              <label className="flex items-center gap-2">
+                <input
+                  type="radio"
+                  name="additionalField"
+                  value="notShop"
+                  checked={additionalField === "notShop"}
+                  onChange={() => setAdditionalField("notShop")}
+                  className="cursor-pointer"
+                />
+                No
+              </label>
+            </div>
+          </div>
         <div>
           <label htmlFor="subCategory" className="block">
             Launch Time

@@ -239,6 +239,7 @@ export default function ShopPage() {
                   <TableHead>Price</TableHead>
                   <TableHead>Sale Price</TableHead>
                   <TableHead>Stock</TableHead>
+                  <TableHead>For App</TableHead>
                   <TableHead onClick={() => handleProductSort("createdAt")}>
                     Created At {sortDirection === "asc" ? "↑" : "↓"}
                   </TableHead>
@@ -288,6 +289,9 @@ export default function ShopPage() {
                       <TableCell>${product.DiscountPrice || "N/A"}</TableCell>
                       <TableCell>
                         {product.inStock === "true" ? "Yes" : "No"}
+                      </TableCell>
+                      <TableCell>
+                      {product.additionalField ? (product.additionalField === "shop"? "Yes": "No") : null} 
                       </TableCell>
                       <TableCell>
                         {new Date(product.createdAt).toLocaleString()}

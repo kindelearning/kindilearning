@@ -393,137 +393,328 @@ export const TrigSnakeCurve = ({
   );
 };
 
-export function DisplayAllMileStone2({ passThecurrentUserId }) {
-  const [milestones, setMilestones] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [userData, setUserData] = useState(null);
-  const [realMilestoneData, setRealMilestoneData] = useState([]);
-  const router = useRouter();
-  const [selectedCategory, setSelectedCategory] = useState("All");
-  const [selectedSubCategory, setSelectedSubCategory] = useState("All");
+const ParametricWave = ({
+  width = 300,
+  step = 5,
+  amplitude = 50,
+  frequency = 2,
+  strokeColor = "red",
+  strokeWidth = 3,
+  strokeDasharray = "6,6",
+  items = [],
+  currentUserId,
+  custommilestoneidfromuser,
+}) => {
+  const [dialogContent, setDialogContent] = useState(null); // State to store dialog content
+  const [currentDate, setCurrentDate] = useState("");
+  const dynamicHeight = Math.max(200, items.length * 100 + 50);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const token = localStorage.getItem("jwt");
-      if (!token) {
-        return;
-      }
+    const today = new Date();
+    const formattedDate = today.toLocaleDateString("en-US", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+    setCurrentDate(formattedDate);
+  }, []);
 
-      try {
-        const data = await fetchUserDetails(token);
-        setUserData(data);
-        const evenIndexedMilestones = data.allMilestones.filter(
-          (_, index) => index % 2 === 0
-        );
-        console.log("even Indexed Milestones", evenIndexedMilestones);
-        // setRealMilestoneData(data.allMilestones);
-        setRealMilestoneData(evenIndexedMilestones);
-
-        // Milestone Data fetchcing
-        const response = await fetch(
-          "https://lionfish-app-98urn.ondigitalocean.app/api/milestones?populate=*"
-        );
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const milestoneData = await response.json(); // Parse the JSON from the response
-        if (!Array.isArray(milestoneData.data)) {
-          throw new Error("Fetched data is not an array.");
-        }
-
-        setMilestones(milestoneData.data);
-      } catch (error) {
-        console.error("Error fetching user data", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [router]);
-
-  console.log("Fetched milestones:", milestones);
-  // console.log("Fetched euserData on Milestone pag:", userData);
-  // console.log("Fetched setRealMilestoneId ", realMilestoneData);
-
-  if (!Array.isArray(milestones)) {
-    return <p>Error: Expected milestones to be an array.</p>;
-  }
-
-  // Extract unique categories and subcategories
-  const categories = [
-    // "All",
-    ...new Set(milestones.map((m) => m.Category).filter(Boolean)),
-  ];
-
-  const subCategories = [
-    "All",
-    ...new Set(
-      milestones
-        .filter(
-          (m) => selectedCategory === "All" || m.Category === selectedCategory
-        )
-        .map((m) => m.SubCategory)
-        .filter(Boolean)
-    ),
-  ];
-
-  // Filter milestones based on selected filters
-  const filteredMilestones = milestones.filter(
-    (m) =>
-      (selectedCategory === "All" || m.Category === selectedCategory) &&
-      (selectedSubCategory === "All" || m.SubCategory === selectedSubCategory)
+  const { pathD, turningPoints } = generateWavePath(
+    width,
+    dynamicHeight,
+    step,
+    amplitude,
+    frequency
   );
 
-  console.log(
-    "Filtered Milestone based on category and subcategory",
-    filteredMilestones
-  );
+  const handleDialogOpen = (item) => {
+    setDialogContent(item); // Set dialog content to the clicked item
+  };
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
+  const handleDialogClose = () => {
+    setDialogContent(null); // Close dialog
+  };
 
   return (
-    <>
-      <div className=" mx-auto flex flex-col gap-4">
-        <div className="flex gap-2 w-full  items-center justify-center max-w-full overflow-x-scroll scrollbar-hidden">
-          {categories && <CategorySlider categories={categories} />}
-        </div>
+    <div
+      style={{
+        position: "relative",
+        width: `${width}px`,
+        height: `${dynamicHeight}px`,
+      }}
+    >
+      <svg
+        width={width}
+        height={dynamicHeight}
+        viewBox={`0 0 ${width} ${dynamicHeight}`}
+        xmlns="http://www.w3.org/2000/svg"
+        style={{ position: "absolute" }}
+      >
+        <path
+          d={pathD}
+          fill="none"
+          stroke={strokeColor}
+          strokeWidth={strokeWidth}
+          strokeDasharray={strokeDasharray}
+          strokeLinecap="round"
+        />
+      </svg>
 
-        {/* SubCategory Filter */}
-        <div className="flex gap-2 w-full max-w-full items-center justify-center overflow-x-scroll scrollbar-hidden">
-          {subCategories.map((subCat) => (
-            <Badge
-              key={subCat}
-              onClick={() => setSelectedSubCategory(subCat)}
-              className={`px-4 py-1 hover:bg-red hover:text-white rounded-full text-sm ${
-                selectedSubCategory === subCat
-                  ? "bg-red text-white"
-                  : "bg-gray-200  text-gray-700"
-              }`}
-            >
-              {subCat}
-            </Badge>
-          ))}
+      {/* Render Item Titles at each turning point Custom Dialog trigger */}
+      {turningPoints.map((point, index) => (
+        <div
+          key={index}
+          // className="text-[16px]  min-w-[100px] max-w-[160px] w-full font-fredoka rounded-full px-2 pl-4 bg-red text-white"
+          className="transition duration-300 ease-in-out hover:scale-[1.03] font-fredoka tracking-wider font-bold text-[10px] md:text-[16px] hover:bg-purple hover:border-2 hover:border-[#ffffff] border-transparent md:px-6 border-2 rounded-[12px] bg-red px-4 py-2 hover:shadow text-white"
+          style={{
+            position: "absolute",
+            left: `${point.x - 15}px`,
+            top: `${point.y - 15}px`,
+            zIndex: 10,
+            cursor: "pointer", // Add cursor style to indicate clickable
+          }}
+          onClick={() => handleDialogOpen(items[index])} // Open dialog on click
+        >
+          <text
+            x={point.x + 20}
+            y={point.y}
+            fill="black"
+            fontSize="12"
+            fontFamily="Arial"
+            textAnchor="start"
+            dominantBaseline="middle"
+          >
+            {items[index] ? items[index].Title : "More Comming Soon..."}
+          </text>
         </div>
-      </div>
+      ))}
 
-      <section className="w-full pb-24 h-full bg-[#EAEAF5] items-center justify-center py-4 flex flex-col gap-[20px]"></section>
-      <TrigSnakeCurve
-        amplitude={6}
-        custommilestoneidfromuser={realMilestoneData}
-        mileStoneCustomData={filteredMilestones}
-        currentUserId={passThecurrentUserId}
-      />
-      <CurvePath
-        custommilestoneidfromuser={realMilestoneData}
-        milestones={filteredMilestones}
-        currentUserId={passThecurrentUserId}
-      />
-    </>
+      {/* Dialog Box using Radix UI Dialog */}
+      {dialogContent && (
+        <Dialog open={!!dialogContent} onOpenChange={handleDialogClose}>
+          <DialogContent className="w-full bg-[#eaeaf5] p-2 lg:p-4 lg:min-w-[800px]">
+            <DialogHeader>
+              <DialogTitle>
+                <div className="text-center">
+                  <span className="text-[#3f3a64] text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
+                    Update {dialogContent?.Title || "No Title"}
+                  </span>{" "}
+                  {/* <span className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
+                      for your Kid
+                    </span> */}
+                </div>
+              </DialogTitle>
+              <DialogDescription className="w-full p-4 flex overflow-x-scroll scrollbar-hidden flex-col gap-4 justify-start items-start">
+                <div className="flex w-full overflow-x-scroll scrollbar-hidden font-fredoka gap-2 justify-between items-center">
+                  <Badge className="bg-[#eaeaf5] cursor-pointer hover:bg-red text-red hover:text-white font-medium text-[12px] border-red">
+                    {dialogContent?.Category}
+                  </Badge>
+                  <Badge className="bg-[#eaeaf5] cursor-pointer hover:bg-red text-red hover:text-white font-medium text-[12px] border-red">
+                    {/* {mileStoneCustomData[index]?.SubCategory.split(" ")[0]} */}
+                    {dialogContent?.SubCategory}
+                  </Badge>
+                </div>
+                <div className="text-[#0a1932] w-full text-start font-fredoka text-[20px] font-[600]">
+                  {dialogContent?.Title}
+                </div>
+                <div
+                  className="w-full text-start text-[#4a4a4a] clarabodyTwo justify-center items-center prose"
+                  dangerouslySetInnerHTML={{
+                    __html:
+                      dialogContent?.Description || "Description not found",
+                  }}
+                />
+                <div className="w-full p-2 flex flex-col gap-2 bg-white rounded-lg shadow">
+                  <div className="text-[#757575] clarabodyTwo">
+                    Date of Completion
+                  </div>
+                  <div className="text-[#0a1932] text-[20px] font-normal font-fredoka leading-[20px]">
+                    {currentDate}
+                  </div>
+                </div>
+                {/* <p>
+                  <strong>Document ID:</strong>{" "}
+                  {dialogContent?.documentId || "N/A"}
+                </p> */}
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+              <section className="w-full h-auto shadow-upper bg-[#ffffff] -top-2 sticky bottom-0 z-10 rounded-[16px] items-center justify-between py-4 flex flex-row">
+                <div className="w-fit flex flex-row justify-between items-center gap-4 px-4">
+                  <Button className="px-4 py-2 bg-white hover:bg-white text-[#3f3a64] text-[20px] md:text-[24px] font-medium font-fredoka leading-none rounded-2xl border-2 border-[#3f3a64] justify-center items-center gap-1 inline-flex">
+                    <ChevronLeft className="w-[24px] h-[24px]" />
+                    Back
+                  </Button>
+                </div>
+                <div className="w-fit flex flex-row justify-between items-center gap-4 px-4">
+                  <MarkMilestoneCompleteForm
+                    passmilestoneId={custommilestoneidfromuser?.id}
+                    userId={currentUserId}
+                  />
+                </div>
+              </section>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      )}
+    </div>
   );
+};
+
+function generateWavePath(width, height, step, amplitude, frequency) {
+  let d = `M ${width / 2},0 `;
+  const turningPoints = [];
+  let previousSlope = 0;
+
+  for (let y = 0; y <= height; y += step) {
+    const x =
+      width / 2 + amplitude * Math.sin((frequency * (y * Math.PI)) / 180);
+    d += `L ${x},${y} `;
+
+    const slope = amplitude * Math.cos((frequency * (y * Math.PI)) / 180);
+
+    if ((previousSlope > 0 && slope < 0) || (previousSlope < 0 && slope > 0)) {
+      turningPoints.push({ x, y });
+    }
+
+    previousSlope = slope;
+  }
+
+  return { pathD: d, turningPoints };
 }
+
+// export function DisplayAllMileStoneOld({ passThecurrentUserId }) {
+//   const [milestones, setMilestones] = useState([]);
+//   const [loading, setLoading] = useState(true);
+//   const [error, setError] = useState(null);
+//   const [userData, setUserData] = useState(null);
+//   const [realMilestoneData, setRealMilestoneData] = useState([]);
+//   const router = useRouter();
+//   const [selectedCategory, setSelectedCategory] = useState("All");
+//   const [selectedSubCategory, setSelectedSubCategory] = useState("All");
+
+//   useEffect(() => {
+//     const fetchData = async () => {
+//       const token = localStorage.getItem("jwt");
+//       if (!token) {
+//         return;
+//       }
+
+//       try {
+//         const data = await fetchUserDetails(token);
+//         setUserData(data);
+//         const evenIndexedMilestones = data.allMilestones.filter(
+//           (_, index) => index % 2 === 0
+//         );
+//         console.log("even Indexed Milestones", evenIndexedMilestones);
+//         // setRealMilestoneData(data.allMilestones);
+//         setRealMilestoneData(evenIndexedMilestones);
+
+//         // Milestone Data fetchcing
+//         const response = await fetch(
+//           "https://lionfish-app-98urn.ondigitalocean.app/api/milestones?populate=*"
+//         );
+//         if (!response.ok) {
+//           throw new Error(`HTTP error! status: ${response.status}`);
+//         }
+//         const milestoneData = await response.json(); // Parse the JSON from the response
+//         if (!Array.isArray(milestoneData.data)) {
+//           throw new Error("Fetched data is not an array.");
+//         }
+
+//         setMilestones(milestoneData.data);
+//       } catch (error) {
+//         console.error("Error fetching user data", error);
+//       } finally {
+//         setLoading(false);
+//       }
+//     };
+
+//     fetchData();
+//   }, [router]);
+
+//   console.log("Fetched milestones:", milestones);
+//   // console.log("Fetched euserData on Milestone pag:", userData);
+//   // console.log("Fetched setRealMilestoneId ", realMilestoneData);
+
+//   if (!Array.isArray(milestones)) {
+//     return <p>Error: Expected milestones to be an array.</p>;
+//   }
+
+//   // Extract unique categories and subcategories
+//   const categories = [
+//     // "All",
+//     ...new Set(milestones.map((m) => m.Category).filter(Boolean)),
+//   ];
+
+//   const subCategories = [
+//     "All",
+//     ...new Set(
+//       milestones
+//         .filter(
+//           (m) => selectedCategory === "All" || m.Category === selectedCategory
+//         )
+//         .map((m) => m.SubCategory)
+//         .filter(Boolean)
+//     ),
+//   ];
+
+//   // Filter milestones based on selected filters
+//   const filteredMilestones = milestones.filter(
+//     (m) =>
+//       (selectedCategory === "All" || m.Category === selectedCategory) &&
+//       (selectedSubCategory === "All" || m.SubCategory === selectedSubCategory)
+//   );
+
+//   console.log(
+//     "Filtered Milestone based on category and subcategory",
+//     filteredMilestones
+//   );
+
+//   if (loading) return <p>Loading...</p>;
+//   if (error) return <p>Error: {error}</p>;
+
+//   return (
+//     <>
+//       <div className=" mx-auto flex flex-col gap-4">
+//         <div className="flex gap-2 w-full  items-center justify-center max-w-full overflow-x-scroll scrollbar-hidden">
+//           {categories && <CategorySlider categories={categories} />}
+//         </div>
+
+//         {/* SubCategory Filter */}
+//         <div className="flex gap-2 w-full max-w-full items-center justify-center overflow-x-scroll scrollbar-hidden">
+//           {subCategories.map((subCat) => (
+//             <Badge
+//               key={subCat}
+//               onClick={() => setSelectedSubCategory(subCat)}
+//               className={`px-4 py-1 hover:bg-red hover:text-white rounded-full text-sm ${
+//                 selectedSubCategory === subCat
+//                   ? "bg-red text-white"
+//                   : "bg-gray-200  text-gray-700"
+//               }`}
+//             >
+//               {subCat}
+//             </Badge>
+//           ))}
+//         </div>
+//       </div>
+
+//       <section className="w-full pb-24 h-full bg-[#EAEAF5] items-center justify-center py-4 flex flex-col gap-[20px]"></section>
+//       <TrigSnakeCurve
+//         amplitude={6}
+//         custommilestoneidfromuser={realMilestoneData}
+//         mileStoneCustomData={filteredMilestones}
+//         currentUserId={passThecurrentUserId}
+//       />
+//       <CurvePath
+//         custommilestoneidfromuser={realMilestoneData}
+//         milestones={filteredMilestones}
+//         currentUserId={passThecurrentUserId}
+//       />
+//     </>
+//   );
+// }
 
 export function CategorySlider({ categories }) {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -596,6 +787,7 @@ export default function DisplayAllMileStone({ passThecurrentUserId }) {
   const [filteredData, setFilteredData] = useState([]); // Stores filtered milestones
   const [realMilestoneData, setRealMilestoneData] = useState([]);
   const [userData, setUserData] = useState(null);
+  const [amplitude, setAmplitude] = useState(100); // State to control amplitude
 
   // Fetch milestones from the API
   useEffect(() => {
@@ -765,8 +957,18 @@ export default function DisplayAllMileStone({ passThecurrentUserId }) {
           ))}
         </div>
       )}
-
-      <div className="flex flex-col lg:py-12 w-full">
+      <ParametricWave
+        width={1200}
+        amplitude={amplitude}
+        items={filteredData}
+        currentUserId={passThecurrentUserId}
+        custommilestoneidfromuser={realMilestoneData}
+        frequency={2}
+        strokeColor="red"
+        strokeWidth={2}
+        strokeDasharray="6,3"
+      />
+      {/* <div className="flex flex-col lg:py-12 w-full">
         {Array.isArray(filteredData) ? (
           <CurvePath
             custommilestoneidfromuser={realMilestoneData}
@@ -782,7 +984,7 @@ export default function DisplayAllMileStone({ passThecurrentUserId }) {
             currentUserId={passThecurrentUserId}
           />
         ) : null}
-      </div>
+      </div> */}
     </div>
   );
 }
@@ -857,7 +1059,7 @@ function CategoryCarousel({
         {/* Visible Category */}
         <div className="flex w-fit justify-center">
           <div className="px-2 py-2 w-full max-w-[360px] rounded-full gap-2 bg-white transition duration-200 flex items-center">
-          {matchedIcon && (
+            {matchedIcon && (
               <Image
                 src={matchedIcon.icon}
                 alt={categories[currentIndex]}

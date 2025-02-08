@@ -17,7 +17,6 @@ import Link from "next/link";
 import MediaSelector from "../../media/Section/MediaSelector";
 import ClaraMarkdownRichEditor from "@/app/cora/Sections/TextEditor/ClaraMarkdownRichEditor";
 
-
 export default function CreateBlog() {
   const [text, setText] = useState("");
   const [description, setDescription] = useState("");
@@ -25,6 +24,7 @@ export default function CreateBlog() {
   const [likes, setLikes] = useState("");
   const [dislikes, setDislikes] = useState("");
   const [seoKeywords, setSeoKeywords] = useState("");
+  const [additionalField, setAdditionalField] = useState("");
   const [metaDescription, setMetaDescription] = useState("");
   const [media, setMedia] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -48,6 +48,7 @@ export default function CreateBlog() {
     setLikes("");
     setDislikes("");
     setSeoKeywords("");
+    setAdditionalField("");
     setMetaDescription("");
     setMedia(null);
     setBlogCreated(false);
@@ -65,17 +66,20 @@ export default function CreateBlog() {
       MetaDescription: metaDescription,
       Likes: likes || 0,
       Dislikes: dislikes || 0,
+      additionalField: additionalField,
       FeaturedImage: media?.id || null,
     };
 
-
-    console.log('Payload Sent', newBlog)
+    console.log("Payload Sent", newBlog);
     try {
-      const response = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/blogs", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ data: newBlog }),
-      });
+      const response = await fetch(
+        "https://lionfish-app-98urn.ondigitalocean.app/api/blogs",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ data: newBlog }),
+        }
+      );
 
       const responseData = await response.json();
 
@@ -106,9 +110,7 @@ export default function CreateBlog() {
   return (
     <section className="p-8 font-fredoka bg-gray-50 min-h-screen flex justify-center items-center">
       <head>
-        <title>
-          Create New Blog - Cora
-        </title>
+        <title>Create New Blog - Cora</title>
       </head>
       <div className="container mx-auto bg-white shadow-lg rounded-lg p-8">
         <div className="flex justify-between mb-6">
@@ -180,6 +182,41 @@ export default function CreateBlog() {
               className="p-3 border border-gray-300 rounded-md w-full"
             />
           </div>
+
+          <div>
+            <label className="block mb-2">
+              Is this For App?{" "}
+              <span className="text-red">
+                Yes- if you want to display it on App home page
+              </span>
+            </label>
+            <div className="flex gap-4">
+              <label className="flex items-center gap-2">
+                <input
+                  type="radio"
+                  name="additionalField"
+                  value="shop"
+                  checked={additionalField === "shop"}
+                  onChange={() => setAdditionalField("shop")}
+                  className="cursor-pointer"
+                />
+                Yes
+              </label>
+
+              <label className="flex items-center gap-2">
+                <input
+                  type="radio"
+                  name="additionalField"
+                  value="notShop"
+                  checked={additionalField === "notShop"}
+                  onChange={() => setAdditionalField("notShop")}
+                  className="cursor-pointer"
+                />
+                No
+              </label>
+            </div>
+          </div>
+
           <div className="mb-6">
             <label
               htmlFor="description"

@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { useRouter } from "next/navigation";
 import { fetchUserDetails } from "../../api";
+import { KidsDP } from "../../Sections/IndividualTabs";
 
 // export  function MilestoneCompleteButton({ userId, milestoneId }) {
 //   const [loading, setLoading] = useState(false);
@@ -83,7 +84,7 @@ import { fetchUserDetails } from "../../api";
 //     </Button>
 //   );
 // }
- 
+
 export default function MarkMilestoneCompleteForm({ passmilestoneId }) {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -126,27 +127,34 @@ export default function MarkMilestoneCompleteForm({ passmilestoneId }) {
                 <div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {userData.myKids && userData.myKids.length > 0 ? (
-                      userData.myKids.filter((_, index) => index % 2 === 0).map((kid, index) => (
-                        <div
-                          key={index}
-                          className="p-4 bg-gray-50 rounded-lg shadow-sm"
-                        >
-                          <p>
-                            <strong>Id:</strong> {kid.id}
-                          </p>
-                          <p>
-                            <strong>documentId:</strong> {kid.documentId}
-                          </p>
-                          <p>
-                            <strong>Name:</strong> {kid.Name}
-                          </p>
-                          <MilestoneCOmpletedButton
-                            kidDocumentId={kid.documentId} // Pass the kid's documentId
-                            milestoneId={passmilestoneId} // Pass the activity ID to associate with the kid
-                            parentId={userData.id} // Pass the parent's ID
-                          />
-                        </div>
-                      ))
+                      userData.myKids
+                        .filter((_, index) => index % 2 === 0)
+                        .map((kid, index) => (
+                          <div
+                            key={index}
+                            className="p-4 bg-gray-50 rounded-lg flex flex-col gap-2 w-full shadow-sm"
+                          >
+                            <div className="flex w-full justify-start gap-2 items-center">
+                            <KidsDP kidId={kid.documentId} />
+                              <div className="flex font-fredoka flex-col w-full justify-start items-start">
+                                <p>
+                                  <strong>Id:</strong> {kid.id}
+                                </p>
+                                <p>
+                                  <strong>documentId:</strong> {kid.documentId}
+                                </p>
+                                <p>
+                                  <strong>Name:</strong> {kid.Name}
+                                </p>
+                              </div>
+                            </div>
+                            <MilestoneCOmpletedButton
+                              kidDocumentId={kid.documentId} // Pass the kid's documentId
+                              milestoneId={passmilestoneId} // Pass the activity ID to associate with the kid
+                              parentId={userData.id} // Pass the parent's ID
+                            />
+                          </div>
+                        ))
                     ) : (
                       <p>No kids profiles available.</p>
                     )}
@@ -193,9 +201,9 @@ const MilestoneCOmpletedButton = ({ kidDocumentId, milestoneId }) => {
       if (!response.ok) {
         throw new Error("Failed to update milestones's data.");
       }
-      
+
       const data = await response.json();
-      console.log('Payload sent', data)
+      console.log("Payload sent", data);
       // On success, set success state to true
       setSuccess(true);
       console.log("milestones's data updated successfully:", data);
@@ -208,19 +216,17 @@ const MilestoneCOmpletedButton = ({ kidDocumentId, milestoneId }) => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-between">
+    <div className="flex flex-col items-start justify-start">
       <button
         onClick={handleUpdate}
         disabled={loading}
-        className="p-2 bg-blue-500 text-white rounded-lg disabled:bg-gray-400"
+        className="p-2 bg-red text-white rounded-lg disabled:bg-gray-400"
       >
-        {loading ? "Updating..." : "Update Kid's Activity"}
+        {loading ? "Updating..." : "Update Child's Activity"}
       </button>
       {error && <p className="text-red-500 mt-2">{error}</p>}
       {success && (
-        <p className="text-green-500 mt-2">
-          Milestone marked as completed
-        </p>
+        <p className="text-green-500 mt-2">Milestone marked as completed</p>
       )}
     </div>
   );

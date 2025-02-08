@@ -26,7 +26,7 @@ import DeleteContent from "./delete/page";
 import {
   Eye,
   FilePenLine,
-  MessageCircleMore,
+  MessageCircleMore, 
   ThumbsUp,
   TrashIcon,
 } from "lucide-react";
@@ -240,6 +240,7 @@ export default function AdminBlogs() {
                     Meta Description
                   </TableHead>
                   <TableHead>Likes</TableHead>
+                  <TableHead>For App</TableHead>
                   <TableHead
                     className="min-w-[200px] cursor-pointer"
                     onClick={() => handleSort("createdAt")}
@@ -273,6 +274,9 @@ export default function AdminBlogs() {
                     {/* likes */}
                     <TableCell className="flex gap-1 ">
                       {blog.Likes} <ThumbsUp className="w-4 h-4" />
+                    </TableCell>
+                    <TableCell >
+                      {blog.additionalField ? (blog.additionalField === "shop"? "Yes": "No") : null} 
                     </TableCell>
 
                     {/* date */}

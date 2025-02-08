@@ -171,7 +171,7 @@ export default function ShopPage() {
       <section className="w-full pb-32 bg-[#EAEAF5] flex flex-col gap-0 justify-center items-start">
         <div className="flex flex-col w-full justify-center items-center">
           <Banner />
-          <div className="flex pl-4 lg:px-0 claracontainer lg:hover:pl-4 duration-300 ease-ease-in-out scrollbar-hidden bg-[#eaeaf5] scrollbar-none py-2 overflow-x-scroll overflow-y-hidden gap-2 pr-4 md:gap-3 lg:gap-4">
+          <div className="lg:flex pl-4 lg:px-0 claracontainer hidden lg:hover:pl-4 duration-300 ease-ease-in-out scrollbar-hidden bg-[#eaeaf5] scrollbar-none py-2 overflow-x-scroll overflow-y-hidden gap-2 pr-4 md:gap-3 lg:gap-4">
             {keywordOptions.map((keyword, index) => (
               <div key={index} className="keyword-card">
                 {cardGroupData
@@ -451,8 +451,9 @@ export default function ShopPage() {
                       <ProductCard
                         productUrl={`/shop/${product.documentId}`}
                         image={
-                          product?.FeaturedImage? `https://lionfish-app-98urn.ondigitalocean.app${product?.FeaturedImage?.[0]?.url}` :
-                          "/Images/BlogThumb.png"
+                          product?.FeaturedImage
+                            ? `https://lionfish-app-98urn.ondigitalocean.app${product?.FeaturedImage?.[0]?.url}`
+                            : "/Images/BlogThumb.png"
                         }
                         // image={
                         //   product?.FeaturedImage?.[0]?.url ||

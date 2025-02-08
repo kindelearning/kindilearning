@@ -234,6 +234,7 @@ export default function CreateProductPage() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [typeOfToy, setTypeOfToy] = useState("");
+  const [additionalField, setAdditionalField] = useState("");
   const [educationalFeatures, setEducationalFeatures] = useState("");
   const [discountType, setDiscountType] = useState("");
   const [longDescription, setLongDescription] = useState("");
@@ -260,6 +261,7 @@ export default function CreateProductPage() {
       // LongDescription: longDescription,
       Price: price,
       DiscountPrice: discountPrice,
+      additionalField: additionalField,
       MetaDescription: metaDescription,
       SEOKeywords: seoKeywords,
       Keywords: seoKeywords,
@@ -274,13 +276,16 @@ export default function CreateProductPage() {
 
     console.log("New Product data", newProducts);
     try {
-      const response = await fetch("https://lionfish-app-98urn.ondigitalocean.app/api/products", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ data: newProducts }),
-      });
+      const response = await fetch(
+        "https://lionfish-app-98urn.ondigitalocean.app/api/products",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ data: newProducts }),
+        }
+      );
 
       const responseData = await response.json();
 
@@ -294,6 +299,7 @@ export default function CreateProductPage() {
         setEducationalFeatures("");
         setDiscountPrice("");
         setDiscountType("");
+        setAdditionalField("");
         setLongDescription("");
         setSkillOptions("");
         setSEOKeywords("");
@@ -438,6 +444,40 @@ export default function CreateProductPage() {
               className="w-full p-2 border border-gray-300 rounded"
               required
             />
+          </div>
+        </div>
+
+        <div>
+          <label className="block mb-2">
+            Is this For App?{" "}
+            <span className="text-red">
+              Yes- if you want to display it on App home page
+            </span>
+          </label>
+          <div className="flex gap-4">
+            <label className="flex items-center gap-2">
+              <input
+                type="radio"
+                name="additionalField"
+                value="shop"
+                checked={additionalField === "shop"}
+                onChange={() => setAdditionalField("shop")}
+                className="cursor-pointer"
+              />
+              Yes
+            </label>
+
+            <label className="flex items-center gap-2">
+              <input
+                type="radio"
+                name="additionalField"
+                value="notShop"
+                checked={additionalField === "notShop"}
+                onChange={() => setAdditionalField("notShop")}
+                className="cursor-pointer"
+              />
+              No
+            </label>
           </div>
         </div>
         <div className="flex gap-1 justify-start items-start">

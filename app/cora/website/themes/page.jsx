@@ -169,6 +169,12 @@ export default function AdminThemes() {
                   </TableHead>
                   <TableHead
                     className=" cursor-pointer"
+                    
+                  >
+                    For App
+                  </TableHead>
+                  <TableHead
+                    className=" cursor-pointer"
                     onClick={() => handleSort("createdAt")}
                   >
                     Created At {sortDirection === "asc" ? "↑" : "↓"}
@@ -204,6 +210,10 @@ export default function AdminThemes() {
                     <TableCell>{theme.metaDesc.slice(0, 50)}...</TableCell>
                     <TableCell>
                       {new Date(theme.LaunchTime).toLocaleString()}
+                    </TableCell>
+                    
+                    <TableCell>
+                    {theme.additionalField ? (theme.additionalField === "shop"? "Yes": "No") : null} 
                     </TableCell>
                     <TableCell>
                       {new Date(theme.createdAt).toLocaleString()}

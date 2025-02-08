@@ -229,6 +229,7 @@ export default function UpdateThemeForm({ documentId }) {
   const [media, setMedia] = useState(null); // Media state
   const [openDialog, setOpenDialog] = useState(false);
   const [error, setError] = useState("");
+  const [additionalField, setAdditionalField] = useState("");
 
   // Fetch existing data for the "How It Works" section
   useEffect(() => {
@@ -243,6 +244,7 @@ export default function UpdateThemeForm({ documentId }) {
         if (content) {
           setTitle(content.Title || ""); // Set default values if not found
           setMetaDesc(content.metaDesc || ""); // Set default values if not found
+          setAdditionalField(content.additionalField || "");
           setMainContent(content.MainContent || ""); // Set default values if not found
           setLaunchTime(content.LaunchTime || "");
           setMedia(content?.Thumbnail?.id || null); // Set the media ID or null if no media is selected
@@ -265,6 +267,7 @@ export default function UpdateThemeForm({ documentId }) {
         LaunchTime: launchTime,
         Title: title,
         metaDesc: metaDesc,
+        additionalField: additionalField,
         MainContent: mainContent,
         Thumbnail: media?.id || null, // Use media ID if selected
       },
@@ -329,6 +332,39 @@ export default function UpdateThemeForm({ documentId }) {
             onChange={(e) => setTitle(e.target.value)}
             className="border p-2 w-full"
           />
+        </div>
+        <div>
+          <label className="block mb-2">
+            Is this For App?{" "}
+            <span className="text-red">
+              Yes- if you want to display it on App home page
+            </span>
+          </label>
+          <div className="flex gap-4">
+            <label className="flex items-center gap-2">
+              <input
+                type="radio"
+                name="additionalField"
+                value="shop"
+                checked={additionalField === "shop"}
+                onChange={() => setAdditionalField("shop")}
+                className="cursor-pointer"
+              />
+              Yes
+            </label>
+
+            <label className="flex items-center gap-2">
+              <input
+                type="radio"
+                name="additionalField"
+                value="notShop"
+                checked={additionalField === "notShop"}
+                onChange={() => setAdditionalField("notShop")}
+                className="cursor-pointer"
+              />
+              No
+            </label>
+          </div>
         </div>
         <div>
           <label htmlFor="metaDesc" className="block">
