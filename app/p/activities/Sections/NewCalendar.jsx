@@ -183,21 +183,20 @@ function CalendarDay({
   activitiesForThisDate,
   handleDrop,
   handleDragStart,
-  handleDragEnd,
   handleDragOver,
 }) {
   return (
     <div
       key={date}
-      className={`flex flex-col justify-between items-center p-2  relative py-2 bg-[#EaEaf5] border-[1.2px] border-[white] w-full rounded-md overflow-clip cursor-pointer h-[140px] ${
+      className={`flex flex-col justify-between items-center p-2 relative py-2 bg-[#EaEaf5] border-[1.2px] border-[white] w-full rounded-md overflow-clip cursor-pointer h-[140px] ${
         isSameMonth(date, currentDate)
-          ? "bg-[#eaeaf5] text-gray-700 hover:bg-gray-200  "
+          ? "bg-[#eaeaf5] text-gray-700 hover:bg-gray-200"
           : "bg-[#EaEaf5] text-[#8C8C8C] cursor-not-allowed"
       }`}
       onDrop={(event) => handleDrop(event, date)}
       onDragOver={handleDragOver}
     >
-      <span className=" flex w-full text-[#000000] justify-between left-0 right-0 text-xs font-semibold p-1 rounded-t-md">
+      <span className="flex w-full text-[#000000] justify-between left-0 right-0 text-xs font-semibold p-1 rounded-t-md">
         {format(date, "d")}
       </span>
 
@@ -206,7 +205,6 @@ function CalendarDay({
           key={activity.id}
           draggable
           onDragStart={(event) => handleDragStart(event, activity)}
-          onDragEnd={handleDragEnd}
           className="max-w-full text-white h-full w-full rounded-md cursor-pointer"
         >
           <ActivityCard activityData={activity} />
@@ -219,6 +217,8 @@ function CalendarDay({
 export default function NewCalendar({ activities }) {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [updatedActivities, setUpdatedActivities] = useState(activities);
+  const [draggedActivity, setDraggedActivity] = useState(null);
+  const [dragging, setDragging] = useState(false);
 
   const currentYear = new Date().getFullYear();
   const availableYears = Array.from(
@@ -240,87 +240,36 @@ export default function NewCalendar({ activities }) {
 
   const handleDrop = async (event, date) => {
     event.preventDefault();
-    const activityId = event.dataTransfer.getData("activityId");
-
-    // Log the dropped date to the console
-    console.log("Dropped on date: ", format(date, "yyyy-MM-dd"));
-
-    // Find the activity that was dragged and update its date
+    if (!draggedActivity) return;
     const updatedActivitiesList = updatedActivities.map((activity) =>
-      activity.id === parseInt(activityId)
+      activity.id === draggedActivity.id
         ? { ...activity, newDate: format(date, "yyyy-MM-dd") }
         : activity
     );
-
     setUpdatedActivities(updatedActivitiesList);
-
-    // Get the updated event with the documentId
-    const updatedEvent = updatedActivitiesList.find(
-      (activity) => activity.id === parseInt(activityId)
-    );
-
-    // Check if documentId exists
-    if (updatedEvent.documentId) {
-      const payload = {
-        data: {
-          newDate: format(date, "yyyy-MM-dd"),
-        },
-      };
-
-      // Log the payload to check if it's in the right format
-      console.log("Payload to send:", payload);
-
-      try {
-        // Send the PUT request using the documentId
-        const response = await fetch(
-          `https://lionfish-app-98urn.ondigitalocean.app/api/rescheduled-events/${updatedEvent.documentId}`,
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(payload),
-          }
-        );
-
-        // Check for successful response
-        if (response.ok) {
-          console.log("Event updated successfully!");
-        } else {
-          // Log response if there's an error
-          const data = await response.json();
-          console.error("Error updating event:", data);
-        }
-      } catch (error) {
-        console.error("Error during API request:", error);
-      }
-    } else {
-      console.error("No documentId found for the event.");
-    }
+    setDragging(false);
   };
 
-  const getActivitiesForDate = (date) => {
-    const dateString = format(date, "yyyy-MM-dd");
-    return updatedActivities.filter((activity) => {
-      return format(parseISO(activity.newDate), "yyyy-MM-dd") === dateString;
-    });
-  };
-
-  // For Mouse Drag Events
   const handleDragStart = (event, activity) => {
     event.dataTransfer.setData("activityId", activity.id);
-    event.target.style.opacity = 0.5;
+    setDraggedActivity(activity);
+    setDragging(true);
   };
 
-  const handleDragEnd = (event) => {
-    event.target.style.opacity = 1;
+  const handleDragEnd = () => {
+    setDraggedActivity(null);
+    setDragging(false);
   };
 
-  // For Mobile Touch Events
-  const handleTouchStart = (event, activity) => {
+  const handleDragOver = (event) => {
+    event.preventDefault();
+  };
+
+  // Mobile touch events
+  let touchStartPosition = null;
+
+  const handleTouchStart = (event, date) => {
     const touch = event.touches[0];
-    event.target.style.opacity = 0.5;
-    event.dataTransfer.setData("activityId", activity.id);
     touchStartPosition = { x: touch.clientX, y: touch.clientY };
   };
 
@@ -332,61 +281,21 @@ export default function NewCalendar({ activities }) {
     dragElement.style.transform = `translate(${dx}px, ${dy}px)`;
   };
 
-  const handleTouchEnd = async (event, date) => {
+  const handleTouchEnd = (event, date) => {
     const touch = event.changedTouches[0];
-    const activityId = event.dataTransfer.getData("activityId");
+    const elements = document.elementsFromPoint(touch.clientX, touch.clientY);
+    const calendarDay = elements.find((el) =>
+      el.classList.contains("calendar-day")
+    );
 
-    // Log the dropped date to the console
-    console.log("Dropped on date: ", format(date, "yyyy-MM-dd"));
+    if (!calendarDay || !draggedActivity) return;
 
+    const newDate = calendarDay.getAttribute("data-date");
     const updatedActivitiesList = updatedActivities.map((activity) =>
-      activity.id === parseInt(activityId)
-        ? { ...activity, newDate: format(date, "yyyy-MM-dd") }
-        : activity
+      activity.id === draggedActivity.id ? { ...activity, newDate } : activity
     );
-
     setUpdatedActivities(updatedActivitiesList);
-
-    const updatedEvent = updatedActivitiesList.find(
-      (activity) => activity.id === parseInt(activityId)
-    );
-
-    if (updatedEvent.documentId) {
-      const payload = {
-        data: {
-          newDate: format(date, "yyyy-MM-dd"),
-        },
-      };
-
-      try {
-        const response = await fetch(
-          `https://lionfish-app-98urn.ondigitalocean.app/api/rescheduled-events/${updatedEvent.documentId}`,
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(payload),
-          }
-        );
-
-        if (response.ok) {
-          console.log("Event updated successfully!");
-        } else {
-          const data = await response.json();
-          console.error("Error updating event:", data);
-        }
-      } catch (error) {
-        console.error("Error during API request:", error);
-      }
-    } else {
-      console.error("No documentId found for the event.");
-    }
-    event.target.style.opacity = 1; // Reset opacity after touch end
-  };
-
-  const handleDragOver = (event) => {
-    event.preventDefault();
+    setDragging(false);
   };
 
   const calendarDays = getCalendarDays(currentDate);
@@ -414,7 +323,11 @@ export default function NewCalendar({ activities }) {
         <Weekdays />
         <div className="flex-col flex lg:grid grid-cols-7 font-fredoka p-0 lg:p-4 bg-[#eaeaf5] lg:bg-[#DCDCE8] rounded-[20px] w-full gap-0 text-center">
           {calendarDays.map((date) => {
-            const activitiesForThisDate = getActivitiesForDate(date);
+            const activitiesForThisDate = updatedActivities.filter(
+              (activity) =>
+                format(parseISO(activity.newDate), "yyyy-MM-dd") ===
+                format(date, "yyyy-MM-dd")
+            );
 
             return (
               <CalendarDay
@@ -426,9 +339,9 @@ export default function NewCalendar({ activities }) {
                 handleDragStart={handleDragStart}
                 handleDragEnd={handleDragEnd}
                 handleDragOver={handleDragOver}
-                handleTouchStart={handleTouchStart} // Touch start event for mobile
-                handleTouchMove={handleTouchMove} // Touch move event for mobile
-                handleTouchEnd={handleTouchEnd} // Touch end event for mobile
+                handleTouchStart={handleTouchStart}
+                handleTouchMove={handleTouchMove}
+                handleTouchEnd={handleTouchEnd}
               />
             );
           })}
@@ -437,9 +350,6 @@ export default function NewCalendar({ activities }) {
     </div>
   );
 }
-
-
-
 
 // export default function NewCalendar({ activities }) {
 //   const [currentDate, setCurrentDate] = useState(new Date());
