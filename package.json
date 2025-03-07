@@ -53,6 +53,8 @@
     "node-fetch": "^3.3.2",
     "nodemailer": "^6.9.16",
     "pdf-lib": "^1.17.1",
+    "pg": "^8.13.3",
+    "pg-connection-string": "^2.7.0",
     "quill": "^2.0.3",
     "react": "^18",
     "react-apexcharts": "^1.7.0",

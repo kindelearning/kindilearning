@@ -215,153 +215,6 @@ function CalendarDay({
     </div>
   );
 }
-// export default function NewCalendar({ activities }) {
-//   const [currentDate, setCurrentDate] = useState(new Date());
-//   const [updatedActivities, setUpdatedActivities] = useState(activities);
-
-//   const currentYear = new Date().getFullYear();
-//   const availableYears = Array.from(
-//     { length: 8 },
-//     (_, index) => currentYear - 2 + index
-//   );
-
-//   const getCalendarDays = (date) => {
-//     const startOfMonthDate = startOfMonth(date);
-//     const endOfMonthDate = endOfMonth(date);
-//     const startOfCalendar = startOfWeek(startOfMonthDate);
-//     const endOfCalendar = endOfWeek(endOfMonthDate);
-
-//     return eachDayOfInterval({
-//       start: startOfCalendar,
-//       end: endOfCalendar,
-//     });
-//   };
-
-//   const getActivitiesForDate = (date) => {
-//     const dateString = format(date, "yyyy-MM-dd");
-//     return updatedActivities.filter((activity) => {
-//       return format(parseISO(activity.newDate), "yyyy-MM-dd") === dateString;
-//     });
-//   };
-
-//   const handleDragStart = (event, activity) => {
-//     event.dataTransfer.setData("activityId", activity.id);
-//     event.target.style.opacity = 0.5;
-//   };
-
-//   const handleDragEnd = (event) => {
-//     event.target.style.opacity = 1;
-//   };
-
-//   const handleDrop = async (event, date) => {
-//     event.preventDefault();
-//     const activityId = event.dataTransfer.getData("activityId");
-
-//     // Log the dropped date to the console
-//     console.log("Dropped on date: ", format(date, "yyyy-MM-dd"));
-
-//     // Find the activity that was dragged and update its date
-//     const updatedActivitiesList = updatedActivities.map((activity) =>
-//       activity.id === parseInt(activityId)
-//         ? { ...activity, newDate: format(date, "yyyy-MM-dd") }
-//         : activity
-//     );
-
-//     setUpdatedActivities(updatedActivitiesList);
-
-//     // Get the updated event with the documentId
-//     const updatedEvent = updatedActivitiesList.find(
-//       (activity) => activity.id === parseInt(activityId)
-//     );
-
-//     // Check if documentId exists
-//     if (updatedEvent.documentId) {
-//       const payload = {
-//         data: {
-//           newDate: format(date, "yyyy-MM-dd"),
-//         },
-//       };
-
-//       // Log the payload to check if it's in the right format
-//       console.log("Payload to send:", payload);
-
-//       try {
-//         // Send the PUT request using the documentId
-//         const response = await fetch(
-//           `https://lionfish-app-98urn.ondigitalocean.app/api/rescheduled-events/${updatedEvent.documentId}`,
-//           {
-//             method: "PUT",
-//             headers: {
-//               "Content-Type": "application/json",
-//             },
-//             body: JSON.stringify(payload),
-//           }
-//         );
-
-//         // Check for successful response
-//         if (response.ok) {
-//           console.log("Event updated successfully!");
-//         } else {
-//           // Log response if there's an error
-//           const data = await response.json();
-//           console.error("Error updating event:", data);
-//         }
-//       } catch (error) {
-//         console.error("Error during API request:", error);
-//       }
-//     } else {
-//       console.error("No documentId found for the event.");
-//     }
-//   };
-
-//   const handleDragOver = (event) => {
-//     event.preventDefault();
-//   };
-
-//   const calendarDays = getCalendarDays(currentDate);
-
-//   return (
-//     <div className="w-full max-w-full mx-auto my-6">
-//       <CalendarNavigation
-//         currentDate={currentDate}
-//         onPrevMonth={() => setCurrentDate(subMonths(currentDate, 1))}
-//         onNextMonth={() => setCurrentDate(addMonths(currentDate, 1))}
-//       />
-
-//       <YearMonthSelector
-//         currentDate={currentDate}
-//         availableYears={availableYears}
-//         onYearChange={(e) =>
-//           setCurrentDate(new Date(e.target.value, currentDate.getMonth()))
-//         }
-//         onMonthChange={(e) =>
-//           setCurrentDate(new Date(currentDate.getFullYear(), e.target.value))
-//         }
-//       />
-
-//       <div className="flex w-full  bg-[#eaeaf5] lg:bg-[#DCDCE8] rounded-[20px] flex-col">
-//         <Weekdays />
-//         <div className="flex-col flex lg:grid grid-cols-7 font-fredoka p-0 lg:p-4 bg-[#eaeaf5] lg:bg-[#DCDCE8] rounded-[20px] w-full  gap-0 text-center">
-//           {calendarDays.map((date) => {
-//             const activitiesForThisDate = getActivitiesForDate(date);
-//             return (
-//               <CalendarDay
-//                 key={date}
-//                 date={date}
-//                 currentDate={currentDate}
-//                 activitiesForThisDate={activitiesForThisDate}
-//                 handleDrop={handleDrop}
-//                 handleDragStart={handleDragStart}
-//                 handleDragEnd={handleDragEnd}
-//                 handleDragOver={handleDragOver}
-//               />
-//             );
-//           })}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
 
 export default function NewCalendar({ activities }) {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -584,3 +437,154 @@ export default function NewCalendar({ activities }) {
     </div>
   );
 }
+
+
+
+
+// export default function NewCalendar({ activities }) {
+//   const [currentDate, setCurrentDate] = useState(new Date());
+//   const [updatedActivities, setUpdatedActivities] = useState(activities);
+
+//   const currentYear = new Date().getFullYear();
+//   const availableYears = Array.from(
+//     { length: 8 },
+//     (_, index) => currentYear - 2 + index
+//   );
+
+//   const getCalendarDays = (date) => {
+//     const startOfMonthDate = startOfMonth(date);
+//     const endOfMonthDate = endOfMonth(date);
+//     const startOfCalendar = startOfWeek(startOfMonthDate);
+//     const endOfCalendar = endOfWeek(endOfMonthDate);
+
+//     return eachDayOfInterval({
+//       start: startOfCalendar,
+//       end: endOfCalendar,
+//     });
+//   };
+
+//   const getActivitiesForDate = (date) => {
+//     const dateString = format(date, "yyyy-MM-dd");
+//     return updatedActivities.filter((activity) => {
+//       return format(parseISO(activity.newDate), "yyyy-MM-dd") === dateString;
+//     });
+//   };
+
+//   const handleDragStart = (event, activity) => {
+//     event.dataTransfer.setData("activityId", activity.id);
+//     event.target.style.opacity = 0.5;
+//   };
+
+//   const handleDragEnd = (event) => {
+//     event.target.style.opacity = 1;
+//   };
+
+//   const handleDrop = async (event, date) => {
+//     event.preventDefault();
+//     const activityId = event.dataTransfer.getData("activityId");
+
+//     // Log the dropped date to the console
+//     console.log("Dropped on date: ", format(date, "yyyy-MM-dd"));
+
+//     // Find the activity that was dragged and update its date
+//     const updatedActivitiesList = updatedActivities.map((activity) =>
+//       activity.id === parseInt(activityId)
+//         ? { ...activity, newDate: format(date, "yyyy-MM-dd") }
+//         : activity
+//     );
+
+//     setUpdatedActivities(updatedActivitiesList);
+
+//     // Get the updated event with the documentId
+//     const updatedEvent = updatedActivitiesList.find(
+//       (activity) => activity.id === parseInt(activityId)
+//     );
+
+//     // Check if documentId exists
+//     if (updatedEvent.documentId) {
+//       const payload = {
+//         data: {
+//           newDate: format(date, "yyyy-MM-dd"),
+//         },
+//       };
+
+//       // Log the payload to check if it's in the right format
+//       console.log("Payload to send:", payload);
+
+//       try {
+//         // Send the PUT request using the documentId
+//         const response = await fetch(
+//           `https://lionfish-app-98urn.ondigitalocean.app/api/rescheduled-events/${updatedEvent.documentId}`,
+//           {
+//             method: "PUT",
+//             headers: {
+//               "Content-Type": "application/json",
+//             },
+//             body: JSON.stringify(payload),
+//           }
+//         );
+
+//         // Check for successful response
+//         if (response.ok) {
+//           console.log("Event updated successfully!");
+//         } else {
+//           // Log response if there's an error
+//           const data = await response.json();
+//           console.error("Error updating event:", data);
+//         }
+//       } catch (error) {
+//         console.error("Error during API request:", error);
+//       }
+//     } else {
+//       console.error("No documentId found for the event.");
+//     }
+//   };
+
+//   const handleDragOver = (event) => {
+//     event.preventDefault();
+//   };
+
+//   const calendarDays = getCalendarDays(currentDate);
+
+//   return (
+//     <div className="w-full max-w-full mx-auto my-6">
+//       <CalendarNavigation
+//         currentDate={currentDate}
+//         onPrevMonth={() => setCurrentDate(subMonths(currentDate, 1))}
+//         onNextMonth={() => setCurrentDate(addMonths(currentDate, 1))}
+//       />
+
+//       <YearMonthSelector
+//         currentDate={currentDate}
+//         availableYears={availableYears}
+//         onYearChange={(e) =>
+//           setCurrentDate(new Date(e.target.value, currentDate.getMonth()))
+//         }
+//         onMonthChange={(e) =>
+//           setCurrentDate(new Date(currentDate.getFullYear(), e.target.value))
+//         }
+//       />
+
+//       <div className="flex w-full  bg-[#eaeaf5] lg:bg-[#DCDCE8] rounded-[20px] flex-col">
+//         <Weekdays />
+//         <div className="flex-col flex lg:grid grid-cols-7 font-fredoka p-0 lg:p-4 bg-[#eaeaf5] lg:bg-[#DCDCE8] rounded-[20px] w-full  gap-0 text-center">
+//           {calendarDays.map((date) => {
+//             const activitiesForThisDate = getActivitiesForDate(date);
+//             return (
+//               <CalendarDay
+//                 key={date}
+//                 date={date}
+//                 currentDate={currentDate}
+//                 activitiesForThisDate={activitiesForThisDate}
+//                 handleDrop={handleDrop}
+//                 handleDragStart={handleDragStart}
+//                 handleDragEnd={handleDragEnd}
+//                 handleDragOver={handleDragOver}
+//               />
+//             );
+//           })}
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
