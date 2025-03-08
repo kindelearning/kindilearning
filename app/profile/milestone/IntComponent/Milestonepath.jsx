@@ -22,7 +22,7 @@ import MarkMilestoneCompleteForm from "./MilestoneCompleteButton";
 import { fetchUserDetails } from "../../api";
 import { activityIcons } from "@/app/constant/menu";
 
-export function CurvePath({
+function CurvePath({
   milestones = [],
   currentUserId,
   custommilestoneidfromuser,
@@ -225,7 +225,7 @@ export function CurvePath({
   );
 }
 
-export const TrigSnakeCurve = ({
+const TrigSnakeCurve = ({
   amplitude = 6,
   mileStoneCustomData = [],
   step = 0.1,
@@ -462,33 +462,37 @@ const ParametricWave = ({
       </svg>
 
       {/* Render Item Titles at each turning point Custom Dialog trigger */}
-      {turningPoints.map((point, index) => (
-        <div
-          key={index}
-          // className="text-[16px]  min-w-[100px] max-w-[160px] w-full font-fredoka rounded-full px-2 pl-4 bg-red text-white"
-          className="transition duration-300 ease-in-out hover:scale-[1.03] font-fredoka tracking-wider font-bold text-[10px] md:text-[16px] hover:bg-purple hover:border-2 hover:border-[#ffffff] border-transparent md:px-6 border-2 rounded-[12px] bg-red px-4 py-2 hover:shadow text-white"
-          style={{
-            position: "absolute",
-            left: `${point.x - 15}px`,
-            top: `${point.y - 15}px`,
-            zIndex: 10,
-            cursor: "pointer", // Add cursor style to indicate clickable
-          }}
-          onClick={() => handleDialogOpen(items[index])} // Open dialog on click
-        >
-          <text
-            x={point.x + 20}
-            y={point.y}
-            fill="black"
-            fontSize="12"
-            fontFamily="Arial"
-            textAnchor="start"
-            dominantBaseline="middle"
+      {turningPoints.map((point, index) => {
+        const isLeftSide = point.x < width / 2; // Check if the point is on the left side
+        const shiftX = isLeftSide ? -120 : 0; // Shift left-side elements by 30px
+
+        return (
+          <div
+            key={index}
+            className="transition duration-300 ease-in-out hover:scale-[1.03] font-fredoka tracking-wider font-bold text-[10px] md:text-[16px] hover:bg-purple hover:border-2 hover:border-[#ffffff] border-transparent md:px-6 border-2 rounded-[12px] bg-red px-4 py-2 hover:shadow text-white"
+            style={{
+              position: "absolute",
+              left: `${point.x + shiftX}px`, // Shift left-side elements
+              top: `${point.y - 15}px`,
+              zIndex: 10,
+              cursor: "pointer",
+            }}
+            onClick={() => handleDialogOpen(items[index])} // Open dialog on click
           >
-            {items[index] ? items[index].Title : "More Comming Soon..."}
-          </text>
-        </div>
-      ))}
+            <text
+              x={point.x + 20}
+              y={point.y}
+              fill="black"
+              fontSize="12"
+              fontFamily="Arial"
+              textAnchor="start"
+              dominantBaseline="middle"
+            >
+              {items[index] ? items[index].Title : "More Coming Soon..."}
+            </text>
+          </div>
+        );
+      })}
 
       {/* Dialog Box using Radix UI Dialog */}
       {dialogContent && (
@@ -505,8 +509,8 @@ const ParametricWave = ({
                     </span> */}
                 </div>
               </DialogTitle>
-              <DialogDescription className="w-full p-4 flex overflow-x-scroll scrollbar-hidden flex-col gap-4 justify-start items-start">
-                <div className="flex w-full overflow-x-scroll scrollbar-hidden font-fredoka gap-2 justify-between items-center">
+              <DialogDescription className="w-full p-4 flex overflow-x-scroll scrollbar-hidden flex-col gap-2 justify-start items-start">
+                <div className="flex w-full overflow-x-scroll scrollbar-hidden font-fredoka gap-2 pt-2 justify-between items-center">
                   <Badge className="bg-[#eaeaf5] cursor-pointer hover:bg-red text-red hover:text-white font-medium text-[12px] border-red">
                     {dialogContent?.Category}
                   </Badge>
@@ -519,7 +523,7 @@ const ParametricWave = ({
                   {dialogContent?.Title}
                 </div>
                 <div
-                  className="w-full text-start text-[#4a4a4a] clarabodyTwo justify-center items-center prose"
+                  className="w-full text-start -my-[20px] text-[#4a4a4a] clarabodyTwo justify-center items-center prose"
                   dangerouslySetInnerHTML={{
                     __html:
                       dialogContent?.Description || "Description not found",
@@ -563,7 +567,7 @@ const ParametricWave = ({
 };
 
 function generateWavePath(width, height, step, amplitude, frequency) {
-  let d = `M ${width / 2},0 `;
+  let d = `M ${width / 2},0 `; // Move to the center-top
   const turningPoints = [];
   let previousSlope = 0;
 
@@ -573,9 +577,8 @@ function generateWavePath(width, height, step, amplitude, frequency) {
     d += `L ${x},${y} `;
 
     const slope = amplitude * Math.cos((frequency * (y * Math.PI)) / 180);
-
     if ((previousSlope > 0 && slope < 0) || (previousSlope < 0 && slope > 0)) {
-      turningPoints.push({ x, y });
+      turningPoints.push({ x, y }); // Capture peaks & troughs
     }
 
     previousSlope = slope;
