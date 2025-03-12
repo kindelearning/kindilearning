@@ -523,7 +523,7 @@ const ParametricWave = ({
                   {dialogContent?.Title}
                 </div>
                 <div
-                  className="w-full text-start -my-[20px] text-[#4a4a4a] clarabodyTwo justify-center items-center prose"
+                  className="w-full text-start -my-[10px] text-[#4a4a4a] clarabodyTwo justify-center items-center prose"
                   dangerouslySetInnerHTML={{
                     __html:
                       dialogContent?.Description || "Description not found",
@@ -537,10 +537,6 @@ const ParametricWave = ({
                     {currentDate}
                   </div>
                 </div>
-                {/* <p>
-                  <strong>Document ID:</strong>{" "}
-                  {dialogContent?.documentId || "N/A"}
-                </p> */}
               </DialogDescription>
             </DialogHeader>
             <DialogFooter>
@@ -718,7 +714,7 @@ function generateWavePath(width, height, step, amplitude, frequency) {
 //     </>
 //   );
 // }
-
+ 
 export function CategorySlider({ categories }) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -912,29 +908,6 @@ export default function DisplayAllMileStone({ passThecurrentUserId }) {
           setSelectedCategory={setSelectedCategory}
         />
       )}
-      {/* {categories && (
-        <div className="flex gap-2 w-full max-w-full items-center justify-center overflow-x-scroll scrollbar-hidden">
-          {categories.map((category) => (
-            <Badge
-              key={category}
-              className={`px-4 py-1 hover:bg-red hover:text-white rounded-full text-sm 
-              ${
-                selectedCategory === category
-                  ? "bg-red text-white"
-                  : "bg-gray-200  text-gray-700"
-              }
-            hover:bg-hoverRed cursor-pointer transition`}
-              onClick={() =>
-                setSelectedCategory(
-                  selectedCategory === category ? null : category
-                )
-              }
-            >
-              {category}
-            </Badge>
-          ))}
-        </div>
-      )} */}
 
       {/* Subcategories */}
       {selectedCategory && (
