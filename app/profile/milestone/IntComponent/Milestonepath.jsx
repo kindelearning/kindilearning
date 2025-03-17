@@ -14,7 +14,7 @@ import {
 import { getUserDataByEmail } from "@/lib/hygraph";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { DialogClose } from "@radix-ui/react-dialog";
@@ -229,12 +229,10 @@ const VerticalMilestonePath = ({ milestones, currentUserId }) => {
   const containerRef = useRef(null);
   const [containerHeight, setContainerHeight] = useState(0);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const updateDimensions = () => {
       if (containerRef.current) {
-        setContainerHeight(
-          containerRef.current.clientHeight || milestones.length * 200
-        ); // Fallback height
+        setContainerHeight(containerRef.current.clientHeight);
       }
     };
 
@@ -243,14 +241,15 @@ const VerticalMilestonePath = ({ milestones, currentUserId }) => {
     return () => window.removeEventListener("resize", updateDimensions);
   }, [milestones.length]);
 
-  const segmentHeight = containerHeight / (milestones.length + 2);
-  const lineX = "50%"; // Centered line
+  const segmentHeight = containerHeight / (milestones.length || 1);
+  const lineX = "50%";
+  const formattedDate = new Date().toLocaleDateString();
 
   return (
     <div
       ref={containerRef}
       className="relative w-[100px]"
-      style={{ height: `${milestones.length * 100}px` }}
+      style={{ height: `${milestones.length * 120}px` }}
     >
       {/* Vertical dotted line */}
       <svg className="absolute top-0 left-0 w-full h-full">
@@ -258,7 +257,7 @@ const VerticalMilestonePath = ({ milestones, currentUserId }) => {
           x1={lineX}
           y1={0}
           x2={lineX}
-          y2={containerHeight * 2.2}
+          y2={containerHeight}
           stroke="#f05c5c"
           strokeWidth={3}
           strokeDasharray="5,5"
@@ -267,7 +266,7 @@ const VerticalMilestonePath = ({ milestones, currentUserId }) => {
 
       {/* Render milestone dialogs */}
       {milestones.map((milestone, index) => {
-        const posY = (index + 1) * segmentHeight * 2.2;
+        const posY = index * segmentHeight;
 
         return (
           <div
@@ -279,7 +278,7 @@ const VerticalMilestonePath = ({ milestones, currentUserId }) => {
               <DialogTrigger asChild>
                 <button className="transition duration-300 ease-in-out hover:scale-[1.03] w-max font-fredoka tracking-wider font-bold text-[10px] md:text-[16px] hover:bg-purple hover:border-white border-transparent md:px-6 border-2 rounded-[12px] bg-red px-4 py-2 hover:shadow text-white">
                   {milestone.Title?.length > 28
-                    ? milestone.Title.substring(0, 28) + "..."
+                    ? `${milestone.Title.substring(0, 28)}...`
                     : milestone.Title || "Action"}
                 </button>
               </DialogTrigger>
@@ -299,12 +298,14 @@ const VerticalMilestonePath = ({ milestones, currentUserId }) => {
 
                   <DialogDescription className="w-full p-4 flex flex-col gap-4">
                     <div className="flex flex-wrap font-fredoka gap-2">
-                      <Badge className="bg-[#eaeaf5] hover:bg-red text-red hover:text-white font-medium text-[12px] border-red">
-                        {milestone.Category}
-                      </Badge>
-                      <Badge className="bg-[#eaeaf5] hover:bg-red text-red hover:text-white font-medium text-[12px] border-red">
-                        {milestone.SubCategory}
-                      </Badge>
+                      {[milestone.Category, milestone.SubCategory].map((tag, i) => (
+                        <Badge
+                          key={i}
+                          className="bg-[#eaeaf5] hover:bg-red text-red hover:text-white font-medium text-[12px] border-red"
+                        >
+                          {tag}
+                        </Badge>
+                      ))}
                     </div>
 
                     <div className="text-[#0a1932] text-[32px] font-semibold leading-8 font-fredoka">
@@ -323,7 +324,7 @@ const VerticalMilestonePath = ({ milestones, currentUserId }) => {
                         Date of Completion
                       </div>
                       <div className="text-[#0a1932] text-[20px] font-normal font-fredoka">
-                        {new Date().toLocaleDateString()}
+                        {formattedDate}
                       </div>
                     </div>
                   </DialogDescription>
@@ -347,6 +348,7 @@ const VerticalMilestonePath = ({ milestones, currentUserId }) => {
     </div>
   );
 };
+
 
 
 const TrigSnakeCurve = ({
