@@ -262,6 +262,17 @@ const VerticalMilestonePath = ({ milestones, currentUserId }) => {
           strokeWidth={3}
           strokeDasharray="5,5"
         />
+        {/* Dots near milestone buttons */}
+        {milestones.map((_, index) => (
+          <circle
+            key={index}
+            cx={lineX}
+            cy={index * segmentHeight * 1.025}
+            r={5}
+            fill="#f05c5c"
+            className="animate-pulse drop-shadow-md ring-2 ring-red-500"
+          />
+        ))}
       </svg>
 
       {/* Render milestone dialogs */}
@@ -298,14 +309,16 @@ const VerticalMilestonePath = ({ milestones, currentUserId }) => {
 
                   <DialogDescription className="w-full p-4 flex flex-col gap-4">
                     <div className="flex flex-wrap font-fredoka gap-2">
-                      {[milestone.Category, milestone.SubCategory].map((tag, i) => (
-                        <Badge
-                          key={i}
-                          className="bg-[#eaeaf5] hover:bg-red text-red hover:text-white font-medium text-[12px] border-red"
-                        >
-                          {tag}
-                        </Badge>
-                      ))}
+                      {[milestone.Category, milestone.SubCategory].map(
+                        (tag, i) => (
+                          <Badge
+                            key={i}
+                            className="bg-[#eaeaf5] hover:bg-red text-red hover:text-white font-medium text-[12px] border-red"
+                          >
+                            {tag}
+                          </Badge>
+                        )
+                      )}
                     </div>
 
                     <div className="text-[#0a1932] text-[32px] font-semibold leading-8 font-fredoka">
@@ -348,8 +361,6 @@ const VerticalMilestonePath = ({ milestones, currentUserId }) => {
     </div>
   );
 };
-
-
 
 const TrigSnakeCurve = ({
   amplitude = 6,
