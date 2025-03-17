@@ -14,7 +14,7 @@ import {
 import { getUserDataByEmail } from "@/lib/hygraph";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { DialogClose } from "@radix-ui/react-dialog";
@@ -224,6 +224,130 @@ function CurvePath({
     </div>
   );
 }
+
+const VerticalMilestonePath = ({ milestones, currentUserId }) => {
+  const containerRef = useRef(null);
+  const [containerHeight, setContainerHeight] = useState(0);
+
+  useEffect(() => {
+    const updateDimensions = () => {
+      if (containerRef.current) {
+        setContainerHeight(
+          containerRef.current.clientHeight || milestones.length * 200
+        ); // Fallback height
+      }
+    };
+
+    updateDimensions();
+    window.addEventListener("resize", updateDimensions);
+    return () => window.removeEventListener("resize", updateDimensions);
+  }, [milestones.length]);
+
+  const segmentHeight = containerHeight / (milestones.length + 2);
+  const lineX = "50%"; // Centered line
+
+  return (
+    <div
+      ref={containerRef}
+      className="relative w-[100px]"
+      style={{ height: `${milestones.length * 100}px` }}
+    >
+      {/* Vertical dotted line */}
+      <svg className="absolute top-0 left-0 w-full h-full">
+        <line
+          x1={lineX}
+          y1={0}
+          x2={lineX}
+          y2={containerHeight * 2.2}
+          stroke="#f05c5c"
+          strokeWidth={3}
+          strokeDasharray="5,5"
+        />
+      </svg>
+
+      {/* Render milestone dialogs */}
+      {milestones.map((milestone, index) => {
+        const posY = (index + 1) * segmentHeight * 2.2;
+
+        return (
+          <div
+            key={index}
+            className="absolute left-[60%] transform"
+            style={{ top: `${posY}px` }}
+          >
+            <Dialog>
+              <DialogTrigger asChild>
+                <button className="transition duration-300 ease-in-out hover:scale-[1.03] w-max font-fredoka tracking-wider font-bold text-[10px] md:text-[16px] hover:bg-purple hover:border-white border-transparent md:px-6 border-2 rounded-[12px] bg-red px-4 py-2 hover:shadow text-white">
+                  {milestone.Title?.length > 28
+                    ? milestone.Title.substring(0, 28) + "..."
+                    : milestone.Title || "Action"}
+                </button>
+              </DialogTrigger>
+
+              <DialogContent className="w-full bg-[#eaeaf5] p-0 lg:min-w-[800px]">
+                <DialogHeader className="p-4">
+                  <DialogTitle>
+                    <div className="text-center">
+                      <span className="text-[#3f3a64] text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
+                        Update {milestone.Title}
+                      </span>{" "}
+                      <span className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
+                        for your Kid
+                      </span>
+                    </div>
+                  </DialogTitle>
+
+                  <DialogDescription className="w-full p-4 flex flex-col gap-4">
+                    <div className="flex flex-wrap font-fredoka gap-2">
+                      <Badge className="bg-[#eaeaf5] hover:bg-red text-red hover:text-white font-medium text-[12px] border-red">
+                        {milestone.Category}
+                      </Badge>
+                      <Badge className="bg-[#eaeaf5] hover:bg-red text-red hover:text-white font-medium text-[12px] border-red">
+                        {milestone.SubCategory}
+                      </Badge>
+                    </div>
+
+                    <div className="text-[#0a1932] text-[32px] font-semibold leading-8 font-fredoka">
+                      {milestone.Title}
+                    </div>
+
+                    <div
+                      className="w-full prose text-[#4a4a4a] clarabodyTwo"
+                      dangerouslySetInnerHTML={{
+                        __html: milestone.Description,
+                      }}
+                    />
+
+                    <div className="w-full p-2 flex flex-col gap-2 bg-white rounded-lg shadow">
+                      <div className="text-[#757575] clarabodyTwo">
+                        Date of Completion
+                      </div>
+                      <div className="text-[#0a1932] text-[20px] font-normal font-fredoka">
+                        {new Date().toLocaleDateString()}
+                      </div>
+                    </div>
+                  </DialogDescription>
+                </DialogHeader>
+
+                <DialogFooter>
+                  <section className="w-full shadow-upper bg-[#ffffff] -top-2 sticky bottom-0 z-10 rounded-t-[16px] flex justify-between py-4">
+                    <DialogClose className="px-4">
+                      <Button className="px-4 py-2 bg-white hover:bg-white text-[#3f3a64] text-[20px] md:text-[24px] font-medium font-fredoka rounded-2xl border-2 border-[#3f3a64] flex items-center gap-1">
+                        <ChevronLeft className="w-[24px] h-[24px]" />
+                        Back
+                      </Button>
+                    </DialogClose>
+                  </section>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
 
 const TrigSnakeCurve = ({
   amplitude = 6,
@@ -714,7 +838,7 @@ function generateWavePath(width, height, step, amplitude, frequency) {
 //     </>
 //   );
 // }
- 
+
 export function CategorySlider({ categories }) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -933,7 +1057,7 @@ export default function DisplayAllMileStone({ passThecurrentUserId }) {
           ))}
         </div>
       )}
-      <ParametricWave
+      {/*   <ParametricWave
         width={1200}
         amplitude={amplitude}
         items={filteredData}
@@ -943,24 +1067,30 @@ export default function DisplayAllMileStone({ passThecurrentUserId }) {
         strokeColor="red"
         strokeWidth={2}
         strokeDasharray="6,3"
-      />
-      {/* <div className="flex flex-col lg:py-12 w-full">
+      />*/}
+      <div className="flex w-full items-start justify-start lg:items-center lg:justify-center flex-col lg:py-12 ">
         {Array.isArray(filteredData) ? (
-          <CurvePath
-            custommilestoneidfromuser={realMilestoneData}
+          // <CurvePath
+          //   custommilestoneidfromuser={realMilestoneData}
+          //   milestones={filteredData}
+          //   currentUserId={passThecurrentUserId}
+          // />
+          <VerticalMilestonePath
+            // custommilestoneidfromuser={realMilestoneData}
             milestones={filteredData}
-            currentUserId={passThecurrentUserId}
+            // currentUserId={passThecurrentUserId}
           />
         ) : null}
-        {Array.isArray(filteredData) ? (
+
+        {/* {Array.isArray(filteredData) ? (
           <TrigSnakeCurve
             amplitude={6}
             custommilestoneidfromuser={realMilestoneData}
             mileStoneCustomData={filteredData}
             currentUserId={passThecurrentUserId}
           />
-        ) : null}
-      </div> */}
+        ) : null} */}
+      </div>
     </div>
   );
 }
